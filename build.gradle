@@ -1,0 +1,162 @@
+buildscript 
+{
+    repositories 
+    {
+        jcenter()
+        maven { url = "http://files.minecraftforge.net/maven" }
+    }
+    
+    dependencies 
+    {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+if (project.hasProperty("dev")) 
+{
+    version += "-dev" + dev
+}
+
+group = "mchorse.mappet"
+archivesBaseName = "mappet"
+sourceCompatibility = targetCompatibility = "1.8"
+
+compileJava {
+    sourceCompatibility = targetCompatibility = "1.8"
+}
+
+minecraft 
+{
+    version = "1.12.2-14.23.3.2655"
+    runDir = "run"
+    
+    mappings = "snapshot_20171003"
+    
+    clientJvmArgs = ["-Xmx1G"]
+    serverJvmArgs = ["-Xmx1G"]
+
+    replace "%VERSION%", project.version
+    replace "%MCLIB%", project.mclib
+    replace "%METAMORPH%", project.metamorph
+    replace "%BLOCKBUSTER%", project.blockbuster
+}
+
+dependencies {
+    compileOnly files("run/libs/blockbuster-${blockbuster}-${project.minecraft.version}-dev.jar")
+    compileOnly files("run/libs/metamorph-${metamorph}-${project.minecraft.version}-dev.jar")
+    compileOnly files("run/libs/mclib-${mclib}-${project.minecraft.version}-dev.jar")
+}
+
+processResources
+{
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    project.version += "-" + project.minecraft.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+                
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+        
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
+/* Dev build */
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'dev'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    classifier = 'sources'
+}
+
+artifacts {
+    archives deobfJar
+    archives sourcesJar
+}
+
+/* Comparing keys */
+task compareLangFiles {
+    doLast {
+        def help = file("src/main/resources/assets/${project.archivesBaseName}/lang/")
+        def parse = { File file ->
+            def map = new HashMap()
+            def splits = file.text.split("\n");
+
+            for (split in splits) {
+                def index = split.indexOf("=")
+
+                if (index == -1) {
+                    continue
+                }
+
+                map.put(split.substring(0, index), true)
+            }
+
+            return map
+        }
+
+        if (!help.exists()) {
+            return
+        }
+
+        def en = file("${help.getAbsolutePath()}/en_US.lang")
+        def en_map = parse(en)
+
+        for (lang_file in help.listFiles()) {
+            if (!lang_file.name.endsWith(".lang") || lang_file.name.startsWith("en_US")) {
+                continue
+            }
+
+            def lang_map = parse(lang_file)
+            def missing = new ArrayList()
+            def extra = new ArrayList()
+
+            for (key in en_map.keySet()) {
+                if (!lang_map.containsKey(key)) {
+                    missing.add(key)
+                }
+            }
+
+            for (key in lang_map.keySet()) {
+                if (!en_map.containsKey(key)) {
+                    extra.add(key)
+                }
+            }
+
+            missing.sort()
+            extra.sort()
+
+            print("\n")
+
+            if (!missing.isEmpty() || !extra.isEmpty()) {
+                if (!missing.isEmpty()) {
+                    print("Language file ${lang_file.getName()} misses following keys:\n")
+
+                    for (key in missing) {
+                        print("- ${key}\n")
+                    }
+                }
+
+                if (!extra.isEmpty()) {
+                    print("Language file ${lang_file.getName()} has additional keys:\n")
+
+                    for (key in extra) {
+                        print("- ${key}\n")
+                    }
+                }
+            }
+            else {
+                print("Language file ${lang_file.getName()} fully matches ${en.getName()}!\n")
+            }
+        }
+    }
+}
