@@ -1,15 +1,22 @@
 package mchorse.mappet;
 
+import mchorse.mappet.api.States;
+import mchorse.mappet.commands.CommandMappet;
 import mchorse.mclib.McLib;
+import mchorse.mclib.commands.utils.L10n;
 import mchorse.mclib.config.ConfigBuilder;
 import mchorse.mclib.events.RegisterConfigEvent;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import java.io.File;
 
 /**
  * Mappet mod
@@ -28,12 +35,15 @@ public final class Mappet
     @SidedProxy(serverSide = "mchorse.mappet.CommonProxy", clientSide = "mchorse.mappet.ClientProxy")
     public static CommonProxy proxy;
 
+    public static L10n l10n = new L10n(MOD_ID);
+    public static States states;
+
     @SubscribeEvent
     public void onConfigRegister(RegisterConfigEvent event)
     {
         ConfigBuilder builder = event.createBuilder(MOD_ID);
 
-        event.modules.add(builder.build());
+        /* ... */
     }
 
     @EventHandler
@@ -51,6 +61,21 @@ public final class Mappet
     }
 
     @EventHandler
-    public void serverStart(FMLServerStartedEvent event)
-    {}
+    public void serverStarting(FMLServerStartingEvent event)
+    {
+        File mappetWorldFolder = new File(DimensionManager.getCurrentSaveRootDirectory(), MOD_ID);
+
+        mappetWorldFolder.mkdirs();
+        states = new States(new File(mappetWorldFolder, "states.json"));
+        states.load();
+
+        event.registerServerCommand(new CommandMappet());
+    }
+
+    @EventHandler
+    public void serverStopped(FMLServerStoppedEvent event)
+    {
+        states.save();
+        states = null;
+    }
 }

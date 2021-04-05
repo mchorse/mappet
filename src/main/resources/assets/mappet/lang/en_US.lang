@@ -1,0 +1,17 @@
+# Error
+mappet.error.states.missing=§fValue by key §7%s§f is missing!
+mappet.error.states.false=§fGiven expression evaluates to §cfalse§f for value by given §7%s§r key!
+
+# Info
+mappet.info.states.reset=§fValue by key §7%s§f was removed from states.
+mappet.info.states.set=§fValue by key §7%s§f was set to §7%s§r.
+mappet.info.states.changed=§fValue by key §7%s§f was §7%s§r, and it's §7%s§r.
+mappet.info.states.true=§fGiven expression evaluates to §atrue§f for value by given §7%s§r key.
+
+# Commands
+mappet.commands.mp.help=Main Mappet command that provides subcommands for working with Mappet's features.
+mappet.commands.mp.state.help=State management subcommand.
+mappet.commands.mp.state.add=This command adds to value by §7<id>§r key the value evaluated by §7<expression>§r. If §7<id>§r state didn't exist, §7<expression>§r will be added to 0.
+mappet.commands.mp.state.reset=This command removes value by §7<id>§r key.
+mappet.commands.mp.state.set=This command assigns value by §7<id>§r key to value evaluated by §7<expression>§r.
+mappet.commands.mp.state.sub=This command subtracts to value by §7<id>§r key the value evaluated by §7<expression>§r. If §7<id>§r state didn't exist, §7<expression>§r will be subtracted to 0.
