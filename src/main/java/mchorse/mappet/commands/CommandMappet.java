@@ -8,6 +8,7 @@ public class CommandMappet extends MappetSubCommandBase
     public CommandMappet()
     {
         this.add(new CommandState());
+        
     }
 
     @Override
