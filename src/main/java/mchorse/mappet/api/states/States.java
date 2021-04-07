@@ -1,4 +1,4 @@
-package mchorse.mappet.api;
+package mchorse.mappet.api.states;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

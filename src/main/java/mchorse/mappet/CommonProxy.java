@@ -1,6 +1,11 @@
 package mchorse.mappet;
 
+import mchorse.mappet.capabilities.Character;
+import mchorse.mappet.capabilities.CharacterStorage;
+import mchorse.mappet.capabilities.ICharacter;
 import mchorse.mappet.network.Dispatcher;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
@@ -26,6 +31,10 @@ public class CommonProxy
         configFolder.mkdir();
 
         Dispatcher.register();
+
+        MinecraftForge.EVENT_BUS.register(new EventHandler());
+
+        CapabilityManager.INSTANCE.register(ICharacter.class, new CharacterStorage(), Character::new);
     }
 
     public void init(FMLInitializationEvent event)

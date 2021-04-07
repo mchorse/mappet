@@ -2,16 +2,29 @@
 mappet.error.states.missing=§fValue by key §7%s§f is missing!
 mappet.error.states.false=§fGiven expression evaluates to §cfalse§f for value by given §7%s§r key!
 
+mappet.error.quest.missing=§fQuest by ID §7%s§f is missing in quest database!
+
 # Info
 mappet.info.states.reset=§fValue by key §7%s§f was removed from states.
 mappet.info.states.set=§fValue by key §7%s§f was set to §7%s§r.
 mappet.info.states.changed=§fValue by key §7%s§f was §7%s§r, and it's §7%s§r.
 mappet.info.states.true=§fGiven expression evaluates to §atrue§f for value by given §7%s§r key.
 
+# Success
+mappet.success.quest.accepted=§fQuest by ID §7%s§f was given to player §7%s§f.
+mappet.success.quest.completed=§fQuest by ID §7%s§f was force completed by player §7%s§f.
+mappet.success.quest.declined=§fQuest by ID §7%s§f was removed from player §7%s§f.
+
 # Commands
 mappet.commands.mp.help=Main Mappet command that provides subcommands for working with Mappet's features.
+
 mappet.commands.mp.state.help=State management subcommand.
 mappet.commands.mp.state.add=This command adds to value by §7<id>§r key the value evaluated by §7<expression>§r. If §7<id>§r state didn't exist, §7<expression>§r will be added to 0.
 mappet.commands.mp.state.reset=This command removes value by §7<id>§r key.
 mappet.commands.mp.state.set=This command assigns value by §7<id>§r key to value evaluated by §7<expression>§r.
 mappet.commands.mp.state.sub=This command subtracts to value by §7<id>§r key the value evaluated by §7<expression>§r. If §7<id>§r state didn't exist, §7<expression>§r will be subtracted to 0.
+
+mappet.commands.mp.quest.help=Quest management subcommand.
+mappet.commands.mp.quest.accept=This command gives a quest by §7<id>§r from quest database to one or multiple §7<player>§r(s). If §7<player>§r(s) has this quest, then it will be ignored.
+mappet.commands.mp.quest.complete=This command completes the quest (regardless whether player has needed objectives completed) by §7<id>§r for one or multiple §7<player>§r(s).
+mappet.commands.mp.quest.decline=This command removes the quest by §7<id>§r from one or multiple §7<player>§r(s). 

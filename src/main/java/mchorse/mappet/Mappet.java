@@ -1,11 +1,20 @@
 package mchorse.mappet;
 
-import mchorse.mappet.api.States;
+import mchorse.mappet.api.quests.Quest;
+import mchorse.mappet.api.quests.QuestManager;
+import mchorse.mappet.api.quests.Quests;
+import mchorse.mappet.api.quests.objectives.CollectObjective;
+import mchorse.mappet.api.quests.objectives.KillObjective;
+import mchorse.mappet.api.quests.rewards.ItemStackReward;
+import mchorse.mappet.api.states.States;
 import mchorse.mappet.commands.CommandMappet;
 import mchorse.mclib.McLib;
 import mchorse.mclib.commands.utils.L10n;
 import mchorse.mclib.config.ConfigBuilder;
 import mchorse.mclib.events.RegisterConfigEvent;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -36,7 +45,10 @@ public final class Mappet
     public static CommonProxy proxy;
 
     public static L10n l10n = new L10n(MOD_ID);
+
+    /* Server side data */
     public static States states;
+    public static QuestManager quests;
 
     @SubscribeEvent
     public void onConfigRegister(RegisterConfigEvent event)
@@ -69,6 +81,9 @@ public final class Mappet
         states = new States(new File(mappetWorldFolder, "states.json"));
         states.load();
 
+        quests = new QuestManager(new File(mappetWorldFolder, "quests"));
+        quests.loadCache();
+
         event.registerServerCommand(new CommandMappet());
     }
 
@@ -77,5 +92,8 @@ public final class Mappet
     {
         states.save();
         states = null;
+
+        quests.save();
+        quests = null;
     }
 }
