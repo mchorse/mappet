@@ -1,20 +1,13 @@
 package mchorse.mappet;
 
-import mchorse.mappet.api.quests.Quest;
+import mchorse.mappet.api.crafting.CraftingManager;
 import mchorse.mappet.api.quests.QuestManager;
-import mchorse.mappet.api.quests.Quests;
-import mchorse.mappet.api.quests.objectives.CollectObjective;
-import mchorse.mappet.api.quests.objectives.KillObjective;
-import mchorse.mappet.api.quests.rewards.ItemStackReward;
 import mchorse.mappet.api.states.States;
 import mchorse.mappet.commands.CommandMappet;
 import mchorse.mclib.McLib;
 import mchorse.mclib.commands.utils.L10n;
 import mchorse.mclib.config.ConfigBuilder;
 import mchorse.mclib.events.RegisterConfigEvent;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -49,6 +42,7 @@ public final class Mappet
     /* Server side data */
     public static States states;
     public static QuestManager quests;
+    public static CraftingManager crafting;
 
     @SubscribeEvent
     public void onConfigRegister(RegisterConfigEvent event)
@@ -84,6 +78,8 @@ public final class Mappet
         quests = new QuestManager(new File(mappetWorldFolder, "quests"));
         quests.loadCache();
 
+        crafting = new CraftingManager(new File(mappetWorldFolder, "crafting"));
+
         event.registerServerCommand(new CommandMappet());
     }
 
@@ -95,5 +91,7 @@ public final class Mappet
 
         quests.save();
         quests = null;
+
+        crafting = null;
     }
 }

@@ -103,6 +103,7 @@ public class EventHandler
                     {
                         player.sendMessage(new TextComponentString("Quest '" + quest.getId() + "' was completed! Here is your reward!"));
                         it.remove();
+
                         // Dispatcher.sendTo(new PacketCompleteQuest(quest.getId()), (EntityPlayerMP) player);
                     }
                     else

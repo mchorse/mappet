@@ -1,6 +1,7 @@
 package mchorse.mappet.api.quests.objectives;
 
 import io.netty.buffer.ByteBuf;
+import mchorse.mappet.utils.InventoryUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,11 +10,6 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 public class CollectObjective implements IObjective
 {
     public ItemStack stack = ItemStack.EMPTY;
-
-    public static boolean areStacksSimilar(ItemStack a, ItemStack b)
-    {
-        return ItemStack.areItemsEqualIgnoreDurability(a, b) && ItemStack.areItemStackTagsEqual(a, b);
-    }
 
     public CollectObjective()
     {}
@@ -32,55 +28,12 @@ public class CollectObjective implements IObjective
     @Override
     public void complete(EntityPlayer player)
     {
-        int count = this.stack.getCount();
-
-        for (int i = 0, c = player.inventory.getSizeInventory(); i < c; i ++)
-        {
-            ItemStack stack = player.inventory.getStackInSlot(i);
-
-            if (areStacksSimilar(this.stack, stack))
-            {
-                if (stack.getCount() <= count)
-                {
-                    player.inventory.setInventorySlotContents(i, ItemStack.EMPTY);
-
-                    if (count == stack.getCount())
-                    {
-                        return;
-                    }
-
-                    count -= stack.getCount();
-                }
-                else
-                {
-                    stack.shrink(count);
-
-                    return;
-                }
-            }
-        }
+        player.inventory.clearMatchingItems(this.stack.getItem(), -1, this.stack.getCount(), null);
     }
 
     private int countItems(EntityPlayer player)
     {
-        int count = 0;
-
-        for (int i = 0, c = player.inventory.getSizeInventory(); i < c; i ++)
-        {
-            ItemStack stack = player.inventory.getStackInSlot(i);
-
-            if (areStacksSimilar(this.stack, stack))
-            {
-                count += stack.getCount();
-
-                if (count >= this.stack.getCount())
-                {
-                    return count;
-                }
-            }
-        }
-
-        return count;
+        return InventoryUtils.countItems(player, this.stack);
     }
 
     @Override

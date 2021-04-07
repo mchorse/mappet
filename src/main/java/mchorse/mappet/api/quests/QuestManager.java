@@ -1,20 +1,15 @@
 package mchorse.mappet.api.quests;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import mchorse.mappet.utils.NBTToJson;
 import mchorse.mclib.utils.JsonUtils;
-import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.nio.charset.Charset;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
