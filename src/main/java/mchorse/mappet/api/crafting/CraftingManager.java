@@ -9,6 +9,8 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CraftingManager
 {
@@ -65,5 +67,22 @@ public class CraftingManager
     private File getCraftingFile(String name)
     {
         return new File(this.folder, name + ".json");
+    }
+
+    public List<String> getKeys()
+    {
+        List<String> list = new ArrayList<String>();
+
+        for (File file : this.folder.listFiles())
+        {
+            String name = file.getName();
+
+            if (file.isFile() && name.endsWith(".json"))
+            {
+                list.add(name.substring(0, name.lastIndexOf(".")));
+            }
+        }
+
+        return list;
     }
 }

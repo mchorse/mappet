@@ -1,6 +1,12 @@
 package mchorse.mappet.network;
 
 import mchorse.mappet.Mappet;
+import mchorse.mappet.network.client.ClientHandlerCraft;
+import mchorse.mappet.network.client.ClientHandlerCraftingTable;
+import mchorse.mappet.network.common.PacketCraft;
+import mchorse.mappet.network.common.PacketCraftingTable;
+import mchorse.mappet.network.server.ServerHandlerCraft;
+import mchorse.mappet.network.server.ServerHandlerCraftingTable;
 import mchorse.mclib.network.AbstractDispatcher;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityTracker;
@@ -8,11 +14,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.relauncher.Side;
 
 /**
  * Network dispatcher
- *
- * @author Ernio (Ernest Sadowski)
  */
 public class Dispatcher
 {
@@ -20,7 +25,13 @@ public class Dispatcher
     {
         @Override
         public void register()
-        {}
+        {
+            /* Crafting table */
+            this.register(PacketCraftingTable.class, ClientHandlerCraftingTable.class, Side.CLIENT);
+            this.register(PacketCraftingTable.class, ServerHandlerCraftingTable.class, Side.SERVER);
+            this.register(PacketCraft.class, ClientHandlerCraft.class, Side.CLIENT);
+            this.register(PacketCraft.class, ServerHandlerCraft.class, Side.SERVER);
+        }
     };
 
     /**

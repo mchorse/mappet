@@ -14,6 +14,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 
 public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
 {
+    public String title = "";
     public NonNullList<ItemStack> input = NonNullList.create();
     public NonNullList<ItemStack> output = NonNullList.create();
 
@@ -39,7 +40,7 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
         return true;
     }
 
-    private boolean isPlayerHasAllItems(EntityPlayer player)
+    public boolean isPlayerHasAllItems(EntityPlayer player)
     {
         for (ItemStack stack : this.input)
         {
@@ -80,6 +81,11 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
         NBTTagList input = this.serializeList(this.input);
         NBTTagList output = this.serializeList(this.output);
 
+        if (!this.title.isEmpty())
+        {
+            tag.setString("Title", this.title);
+        }
+
         if (input != null)
         {
             tag.setTag("Input", input);
@@ -111,6 +117,11 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
     @Override
     public void deserializeNBT(NBTTagCompound tag)
     {
+        if (tag.hasKey("Title"))
+        {
+            this.title = tag.getString("Title");
+        }
+
         if (tag.hasKey("Input"))
         {
             this.deserializeList(this.input, tag.getTagList("Input", Constants.NBT.TAG_COMPOUND));

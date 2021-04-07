@@ -10,6 +10,7 @@ import java.util.List;
 
 public class CraftingTable implements INBTSerializable<NBTTagCompound>
 {
+    public String title = "";
     public List<CraftingRecipe> recipes = new ArrayList<CraftingRecipe>();
 
     @Override
@@ -28,6 +29,11 @@ public class CraftingTable implements INBTSerializable<NBTTagCompound>
             }
         }
 
+        if (!this.title.isEmpty())
+        {
+            tag.setString("Title", this.title);
+        }
+
         if (recipes.tagCount() > 0)
         {
             tag.setTag("Recipes", recipes);
@@ -39,6 +45,11 @@ public class CraftingTable implements INBTSerializable<NBTTagCompound>
     @Override
     public void deserializeNBT(NBTTagCompound tag)
     {
+        if (tag.hasKey("Title"))
+        {
+            this.title = tag.getString("Title");
+        }
+
         if (tag.hasKey("Recipes"))
         {
             NBTTagList recipes = tag.getTagList("Recipes", Constants.NBT.TAG_COMPOUND);

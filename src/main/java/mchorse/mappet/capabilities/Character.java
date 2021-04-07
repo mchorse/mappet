@@ -1,5 +1,6 @@
 package mchorse.mappet.capabilities;
 
+import mchorse.mappet.api.crafting.CraftingTable;
 import mchorse.mappet.api.quests.Quests;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,11 +14,24 @@ public class Character implements ICharacter
     }
 
     private Quests quests = new Quests();
+    private CraftingTable table;
 
     @Override
     public Quests getQuests()
     {
         return this.quests;
+    }
+
+    @Override
+    public void setCraftingTable(CraftingTable table)
+    {
+        this.table = table;
+    }
+
+    @Override
+    public CraftingTable getCraftingTable()
+    {
+        return this.table;
     }
 
     @Override
