@@ -25,14 +25,14 @@ public class GuiCraftingRecipeList extends GuiListElement<CraftingRecipe>
         {
             ItemStack stack = element.input.get(j);
 
-            GuiInventoryElement.drawItemStack(stack, x + this.area.x(0.33F) + 20 * j, y + this.scroll.scrollItemSize / 2 - 8, null);
+            GuiInventoryElement.drawItemStack(stack, this.area.x(0.33F) + 20 * j, y + this.scroll.scrollItemSize / 2 - 8, null);
         }
 
         for (int j = 0; j < element.output.size(); j++)
         {
             ItemStack stack = element.output.get(j);
 
-            GuiInventoryElement.drawItemStack(stack, x + this.area.x(0.66F) + 20 * j, y + this.scroll.scrollItemSize / 2 - 8, null);
+            GuiInventoryElement.drawItemStack(stack, this.area.x(0.66F) + 20 * j, y + this.scroll.scrollItemSize / 2 - 8, null);
         }
     }
 
