@@ -14,8 +14,6 @@ public class ClientHandlerCraftingTable extends ClientMessageHandler<PacketCraft
     @SideOnly(Side.CLIENT)
     public void run(EntityPlayerSP player, PacketCraftingTable message)
     {
-        GuiCraftingTableScreen screen = new GuiCraftingTableScreen(message.table);
-
-        Minecraft.getMinecraft().displayGuiScreen(screen);
+        Minecraft.getMinecraft().displayGuiScreen(new GuiCraftingTableScreen(message.table));
     }
 }
