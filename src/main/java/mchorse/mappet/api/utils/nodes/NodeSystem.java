@@ -71,6 +71,18 @@ public class NodeSystem <T extends Node> implements INBTSerializable<NBTTagCompo
         return false;
     }
 
+    public void addTie(T output, T toAdd)
+    {
+        this.add(toAdd);
+        this.tie(output, toAdd);
+    }
+
+    public void addMain(T node)
+    {
+        this.add(node);
+        this.main = node;
+    }
+
     /**
      * Checks whether output and input has a relationship in this
      * node system
@@ -125,7 +137,7 @@ public class NodeSystem <T extends Node> implements INBTSerializable<NBTTagCompo
 
             if (this.main != null && this.nodes.containsKey(this.main.getId()))
             {
-                tag.setUniqueId("Main", this.main.getId());
+                tag.setString("Main", this.main.getId().toString());
             }
 
             NBTTagList relations = new NBTTagList();
@@ -134,8 +146,8 @@ public class NodeSystem <T extends Node> implements INBTSerializable<NBTTagCompo
             {
                 NBTTagCompound tagRelation = new NBTTagCompound();
 
-                tagRelation.setUniqueId("Output", relation.output.getId());
-                tagRelation.setUniqueId("Input", relation.input.getId());
+                tagRelation.setString("Output", relation.output.getId().toString());
+                tagRelation.setString("Input", relation.input.getId().toString());
 
                 relations.appendTag(tagRelation);
             }
@@ -171,16 +183,16 @@ public class NodeSystem <T extends Node> implements INBTSerializable<NBTTagCompo
             for (int i = 0; i < relations.tagCount(); i++)
             {
                 NBTTagCompound relationTag = relations.getCompoundTagAt(i);
-                T output = this.nodes.get(relationTag.getUniqueId("Output"));
-                T input = this.nodes.get(relationTag.getUniqueId("Input"));
+                T output = this.nodes.get(UUID.fromString(relationTag.getString("Output")));
+                T input = this.nodes.get(UUID.fromString(relationTag.getString("Input")));
 
                 this.relations.add(new NodeRelation<T>(output, input));
             }
         }
 
-        if (tag.hasUniqueId("Main"))
+        if (tag.hasKey("Main"))
         {
-            this.main = this.nodes.get(tag.getUniqueId("Main"));
+            this.main = this.nodes.get(UUID.fromString(tag.getString("Main")));
         }
     }
 }

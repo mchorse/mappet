@@ -1,5 +1,6 @@
 package mchorse.mappet.api.events;
 
+import mchorse.mappet.api.events.nodes.SwitchNode;
 import mchorse.mappet.api.utils.BaseManager;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.events.nodes.CommandNode;
@@ -13,9 +14,10 @@ import java.util.List;
 
 public class EventManager extends BaseManager<NodeSystem<EventNode>>
 {
-    public static final MapNodeFactory factory = new MapNodeFactory()
+    public static final MapNodeFactory FACTORY = new MapNodeFactory()
         .register("command", CommandNode.class)
-        .register("condition", ConditionNode.class);
+        .register("condition", ConditionNode.class)
+        .register("switch", SwitchNode.class);
 
     public EventManager(File folder)
     {
@@ -41,15 +43,24 @@ public class EventManager extends BaseManager<NodeSystem<EventNode>>
             return;
         }
 
-        if (node.execute(context))
+        int result = node.execute(context);
+
+        if (result >= EventNode.ALL)
         {
             context.nesting += 1;
 
             List<EventNode> children = system.getChildren(node);
 
-            for (EventNode child : children)
+            if (result == EventNode.ALL)
             {
-                this.recursiveExecute(system, child, context);
+                for (EventNode child : children)
+                {
+                    this.recursiveExecute(system, child, context);
+                }
+            }
+            else if (result <= children.size())
+            {
+                this.recursiveExecute(system, children.get(result - 1), context);
             }
 
             context.nesting -= 1;
@@ -61,6 +72,6 @@ public class EventManager extends BaseManager<NodeSystem<EventNode>>
     @Override
     public NodeSystem<EventNode> create()
     {
-        return new NodeSystem<EventNode>(factory);
+        return new NodeSystem<EventNode>(FACTORY);
     }
 }

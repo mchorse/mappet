@@ -33,7 +33,7 @@ public abstract class Node implements INBTSerializable<NBTTagCompound>
 
         if (this.id != null)
         {
-            tag.setUniqueId("Id", this.id);
+            tag.setString("Id", this.id.toString());
         }
 
         tag.setInteger("X", this.x);
@@ -45,9 +45,9 @@ public abstract class Node implements INBTSerializable<NBTTagCompound>
     @Override
     public void deserializeNBT(NBTTagCompound tag)
     {
-        if (tag.hasUniqueId("Id"))
+        if (tag.hasKey("Id"))
         {
-            this.id = tag.getUniqueId("Id");
+            this.id = UUID.fromString(tag.getString("Id"));
         }
 
         this.x = tag.getInteger("X");

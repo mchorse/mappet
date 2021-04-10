@@ -8,36 +8,37 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class ConditionNode extends EventNode
 {
-    public String condition = "";
+    public String expression = "";
 
     public ConditionNode()
     {}
 
-    public ConditionNode(String condition)
+    public ConditionNode(String expression)
     {
-        this.condition = condition;
+        this.expression = expression;
     }
 
     @Override
-    public boolean execute(EventContext context)
+    public int execute(EventContext context)
     {
+        /* TODO: switch to global expressions */
         MathBuilder builder = new MathBuilder();
 
         try
         {
-            IValue value = builder.parse(this.condition);
+            IValue value = builder.parse(this.expression);
             boolean result = !Operation.equals(value.get(), 0);
 
-            context.log("The result \"" + this.condition + "\" is " + (result ? "true" : "false"));
+            context.log("The result \"" + this.expression + "\" is " + (result ? "true" : "false"));
 
-            return result;
+            return this.booleanToExecutionCode(result);
         }
         catch (Exception e)
         {}
 
-        context.log("Condition \"" + this.condition + "\" could not be executed!");
+        context.log("Condition \"" + this.expression + "\" could not be executed!");
 
-        return false;
+        return this.booleanToExecutionCode(false);
     }
 
     @Override
@@ -45,9 +46,9 @@ public class ConditionNode extends EventNode
     {
         NBTTagCompound tag = super.serializeNBT();
 
-        if (!this.condition.isEmpty())
+        if (!this.expression.isEmpty())
         {
-            tag.setString("Condition", this.condition);
+            tag.setString(this.getKey(), this.expression);
         }
 
         return tag;
@@ -58,9 +59,14 @@ public class ConditionNode extends EventNode
     {
         super.deserializeNBT(tag);
 
-        if (tag.hasKey("Condition"))
+        if (tag.hasKey(this.getKey()))
         {
-            this.condition = tag.getString("Condition");
+            this.expression = tag.getString(this.getKey());
         }
+    }
+
+    protected String getKey()
+    {
+        return "Expression";
     }
 }

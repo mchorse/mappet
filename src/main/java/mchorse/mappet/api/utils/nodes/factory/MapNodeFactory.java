@@ -4,6 +4,8 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import mchorse.mappet.api.utils.nodes.Node;
 
+import java.util.Map;
+
 /**
  * Basic implementation of node factory based on a map of
  * String key and Class value
@@ -11,6 +13,18 @@ import mchorse.mappet.api.utils.nodes.Node;
 public class MapNodeFactory implements INodeFactory
 {
     private BiMap<String, Class<? extends Node>> factory = HashBiMap.create();
+
+    public MapNodeFactory copy()
+    {
+        MapNodeFactory factory = new MapNodeFactory();
+
+        for (Map.Entry<String, Class<? extends Node>> entry : this.factory.entrySet())
+        {
+            factory.register(entry.getKey(), entry.getValue());
+        }
+
+        return factory;
+    }
 
     public MapNodeFactory register(String type, Class<? extends Node> clazz)
     {

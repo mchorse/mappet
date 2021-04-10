@@ -45,6 +45,7 @@ public class CommandStateIf extends CommandStateBase
             throw new CommandException("states.missing", id);
         }
 
+        /* TODO: switch to global expressions */
         double previous = Mappet.states.get(id);
         double value = 0;
         MathBuilder builder = new MathBuilder();

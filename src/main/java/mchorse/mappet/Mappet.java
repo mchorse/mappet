@@ -85,7 +85,6 @@ public final class Mappet
         quests.loadCache();
 
         crafting = new CraftingManager(new File(mappetWorldFolder, "crafting"));
-
         events = new EventManager(new File(mappetWorldFolder, "events"));
 
         event.registerServerCommand(new CommandMappet());
@@ -101,7 +100,6 @@ public final class Mappet
         quests = null;
 
         crafting = null;
-
         events = null;
     }
 }
