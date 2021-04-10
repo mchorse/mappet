@@ -15,14 +15,14 @@ public abstract class CommandCraftingBase extends MappetCommandBase
 {
     protected CraftingTable getCraftingTable(String id) throws CommandException
     {
-        CraftingTable quest = Mappet.crafting.load(id);
+        CraftingTable craftingTable = Mappet.crafting.load(id);
 
-        if (quest == null)
+        if (craftingTable == null)
         {
             throw new CommandException("crafting.missing", id);
         }
 
-        return quest;
+        return craftingTable;
     }
 
     @Override

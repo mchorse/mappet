@@ -1,6 +1,8 @@
 package mchorse.mappet.capabilities;
 
 import mchorse.mappet.api.crafting.CraftingTable;
+import mchorse.mappet.api.dialogues.DialogueContext;
+import mchorse.mappet.api.dialogues.DialogueNodeSystem;
 import mchorse.mappet.api.quests.Quests;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,6 +17,9 @@ public class Character implements ICharacter
 
     private Quests quests = new Quests();
     private CraftingTable table;
+
+    private DialogueNodeSystem dialogue;
+    private DialogueContext dialogueContext;
 
     @Override
     public Quests getQuests()
@@ -32,6 +37,25 @@ public class Character implements ICharacter
     public CraftingTable getCraftingTable()
     {
         return this.table;
+    }
+
+    @Override
+    public void setDialogue(DialogueNodeSystem dialogue, DialogueContext context)
+    {
+        this.dialogue = dialogue;
+        this.dialogueContext = context;
+    }
+
+    @Override
+    public DialogueNodeSystem getDialogue()
+    {
+        return this.dialogue;
+    }
+
+    @Override
+    public DialogueContext getDialogueContext()
+    {
+        return this.dialogueContext;
     }
 
     @Override

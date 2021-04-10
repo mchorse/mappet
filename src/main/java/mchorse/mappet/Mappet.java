@@ -1,7 +1,12 @@
 package mchorse.mappet;
 
 import mchorse.mappet.api.crafting.CraftingManager;
+import mchorse.mappet.api.dialogues.DialogueManager;
+import mchorse.mappet.api.dialogues.DialogueNodeSystem;
+import mchorse.mappet.api.dialogues.nodes.ReactionNode;
+import mchorse.mappet.api.dialogues.nodes.ReplyNode;
 import mchorse.mappet.api.events.EventManager;
+import mchorse.mappet.api.events.nodes.CommandNode;
 import mchorse.mappet.api.quests.QuestManager;
 import mchorse.mappet.api.states.States;
 import mchorse.mappet.commands.CommandMappet;
@@ -46,6 +51,7 @@ public final class Mappet
     public static QuestManager quests;
     public static CraftingManager crafting;
     public static EventManager events;
+    public static DialogueManager dialogues;
 
     /* Configuration */
     public static ValueInt eventMaxExecutions;
@@ -86,6 +92,7 @@ public final class Mappet
 
         crafting = new CraftingManager(new File(mappetWorldFolder, "crafting"));
         events = new EventManager(new File(mappetWorldFolder, "events"));
+        dialogues = new DialogueManager(new File(mappetWorldFolder, "dialogues"));
 
         event.registerServerCommand(new CommandMappet());
     }
@@ -101,5 +108,6 @@ public final class Mappet
 
         crafting = null;
         events = null;
+        dialogues = null;
     }
 }

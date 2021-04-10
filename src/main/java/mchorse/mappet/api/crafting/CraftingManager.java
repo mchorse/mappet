@@ -12,7 +12,7 @@ public class CraftingManager extends BaseManager<CraftingTable>
     }
 
     @Override
-    protected CraftingTable create()
+    public CraftingTable create()
     {
         return new CraftingTable();
     }

@@ -1,8 +1,7 @@
-package mchorse.mappet.commands.events;
+package mchorse.mappet.commands.dialogues;
 
 import mchorse.mappet.Mappet;
-import mchorse.mappet.api.events.nodes.EventNode;
-import mchorse.mappet.api.utils.nodes.NodeSystem;
+import mchorse.mappet.api.dialogues.DialogueNodeSystem;
 import mchorse.mappet.commands.MappetCommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -12,18 +11,18 @@ import net.minecraft.util.math.BlockPos;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public abstract class CommandEventBase extends MappetCommandBase
+public abstract class CommandDialogueBase extends MappetCommandBase
 {
-    protected NodeSystem<EventNode> getEvent(String id) throws CommandException
+    protected DialogueNodeSystem getDialogue(String id) throws CommandException
     {
-        NodeSystem<EventNode> event = Mappet.events.load(id);
+        DialogueNodeSystem dialogue = Mappet.dialogues.load(id);
 
-        if (event == null)
+        if (dialogue == null)
         {
-            throw new CommandException("event.missing", id);
+            throw new CommandException("dialogue.missing", id);
         }
 
-        return event;
+        return dialogue;
     }
 
     @Override
@@ -37,7 +36,7 @@ public abstract class CommandEventBase extends MappetCommandBase
     {
         if (args.length == 2)
         {
-            return getListOfStringsMatchingLastWord(args, Mappet.events.getKeys());
+            return getListOfStringsMatchingLastWord(args, Mappet.dialogues.getKeys());
         }
 
         return super.getTabCompletions(server, sender, args, targetPos);

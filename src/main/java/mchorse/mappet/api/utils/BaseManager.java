@@ -49,7 +49,7 @@ public abstract class BaseManager <T extends INBTSerializable<NBTTagCompound>>
         return null;
     }
 
-    protected abstract T create();
+    public abstract T create();
 
     public boolean save(String name, T nodeSystem)
     {

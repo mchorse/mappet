@@ -3,10 +3,14 @@ package mchorse.mappet.network;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.network.client.ClientHandlerCraft;
 import mchorse.mappet.network.client.ClientHandlerCraftingTable;
+import mchorse.mappet.network.client.ClientHandlerDialogueFragment;
 import mchorse.mappet.network.common.PacketCraft;
 import mchorse.mappet.network.common.PacketCraftingTable;
+import mchorse.mappet.network.common.PacketDialogueFragment;
+import mchorse.mappet.network.common.PacketPickReply;
 import mchorse.mappet.network.server.ServerHandlerCraft;
 import mchorse.mappet.network.server.ServerHandlerCraftingTable;
+import mchorse.mappet.network.server.ServerHandlerPickReply;
 import mchorse.mclib.network.AbstractDispatcher;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityTracker;
@@ -31,6 +35,10 @@ public class Dispatcher
             this.register(PacketCraftingTable.class, ServerHandlerCraftingTable.class, Side.SERVER);
             this.register(PacketCraft.class, ClientHandlerCraft.class, Side.CLIENT);
             this.register(PacketCraft.class, ServerHandlerCraft.class, Side.SERVER);
+
+            /* Dialogue */
+            this.register(PacketDialogueFragment.class, ClientHandlerDialogueFragment.class, Side.CLIENT);
+            this.register(PacketPickReply.class, ServerHandlerPickReply.class, Side.SERVER);
         }
     };
 
