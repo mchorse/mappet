@@ -10,6 +10,11 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * States allow to store global values of the world that can be
+ * used in dialogues, crafting tables, events and et cetera
+ * to control logic and store arbitrary numerical values
+ */
 public class States
 {
     public Map<String, Double> values = new HashMap<String, Double>();
@@ -20,6 +25,8 @@ public class States
     {
         this.file = file;
     }
+
+    /* CRUD */
 
     public void add(String id, double value)
     {
@@ -46,6 +53,8 @@ public class States
 
         return !existed;
     }
+
+    /* Deserialization and serialization */
 
     public void load()
     {
