@@ -8,6 +8,7 @@ import mchorse.mappet.commands.CommandMappet;
 import mchorse.mclib.McLib;
 import mchorse.mclib.commands.utils.L10n;
 import mchorse.mclib.config.ConfigBuilder;
+import mchorse.mclib.config.values.ValueInt;
 import mchorse.mclib.events.RegisterConfigEvent;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.Mod;
@@ -46,12 +47,15 @@ public final class Mappet
     public static CraftingManager crafting;
     public static EventManager events;
 
+    /* Configuration */
+    public static ValueInt eventMaxExecutions;
+
     @SubscribeEvent
     public void onConfigRegister(RegisterConfigEvent event)
     {
         ConfigBuilder builder = event.createBuilder(MOD_ID);
 
-        /* ... */
+        eventMaxExecutions = builder.category("events").getInt("max_executions", 10000, 100, 1000000);
     }
 
     @EventHandler

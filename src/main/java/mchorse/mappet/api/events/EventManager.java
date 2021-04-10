@@ -2,6 +2,7 @@ package mchorse.mappet.api.events;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import mchorse.mappet.Mappet;
 import mchorse.mappet.api.events.nodes.CommandNode;
 import mchorse.mappet.api.events.nodes.ConditionNode;
 import mchorse.mappet.api.events.nodes.EventNode;
@@ -9,6 +10,7 @@ import mchorse.mappet.api.utils.nodes.NodeSystem;
 import mchorse.mappet.api.utils.nodes.factory.MapNodeFactory;
 import mchorse.mappet.utils.NBTToJson;
 import mchorse.mclib.utils.JsonUtils;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -35,15 +37,8 @@ public class EventManager
 
     /* Execution */
 
-    public EventContext execute(NodeSystem<EventNode> event, MinecraftServer server, EntityPlayerMP player)
+    public EventContext execute(NodeSystem<EventNode> event, EventContext context)
     {
-        return this.execute(event, server, player, false);
-    }
-
-    public EventContext execute(NodeSystem<EventNode> event, MinecraftServer server, EntityPlayerMP player, boolean debug)
-    {
-        EventContext context = new EventContext(server, player, debug);
-
         if (event.main != null)
         {
             this.recursiveExecute(event, event.main, context);
@@ -54,6 +49,11 @@ public class EventManager
 
     private void recursiveExecute(NodeSystem<EventNode> system, EventNode node, EventContext context)
     {
+        if (context.executions >= Mappet.eventMaxExecutions.get())
+        {
+            return;
+        }
+
         if (node.execute(context))
         {
             context.nesting += 1;
@@ -67,6 +67,8 @@ public class EventManager
 
             context.nesting -= 1;
         }
+
+        context.executions += 1;
     }
 
     /* Load and save */

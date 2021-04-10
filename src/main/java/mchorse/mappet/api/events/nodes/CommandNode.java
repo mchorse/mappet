@@ -18,7 +18,8 @@ public class CommandNode extends EventNode
     @Override
     public boolean execute(EventContext context)
     {
-        boolean result = context.server.getCommandManager().executeCommand(context.server, this.command) > 0;
+        String command = context.processCommand(this.command);
+        boolean result = context.server.getCommandManager().executeCommand(context.server, command) > 0;
 
         context.log("Executed \"" + this.command + "\" " + (result ? "successfully" : "unsuccessfully"));
 
