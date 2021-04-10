@@ -4,6 +4,12 @@ mappet.error.states.false=§fGiven expression evaluates to §cfalse§f for value
 
 mappet.error.quest.missing=§fQuest by ID §7%s§f is missing in quest database!
 
+mappet.error.crafting.missing=§fCrafting table by ID §7%s§f is missing!
+mappet.error.crafting.empty=§fCrafting table by ID §7%s§f is empty (it has 0 recipes)!
+
+mappet.error.event.missing=§fEvent by ID §7%s§f is missing!
+mappet.error.event.empty=§fEvent by ID §7%s§f is empty (it has no entry node)!
+
 # Info
 mappet.info.states.reset=§fValue by key §7%s§f was removed from states.
 mappet.info.states.set=§fValue by key §7%s§f was set to §7%s§r.
@@ -28,3 +34,9 @@ mappet.commands.mp.quest.help=Quest management subcommand.
 mappet.commands.mp.quest.accept=This command gives a quest by §7<id>§r from quest database to one or multiple §7<player>§r(s). If §7<player>§r(s) has this quest, then it will be ignored.
 mappet.commands.mp.quest.complete=This command completes the quest (regardless whether player has needed objectives completed) by §7<id>§r for one or multiple §7<player>§r(s).
 mappet.commands.mp.quest.decline=This command removes the quest by §7<id>§r from one or multiple §7<player>§r(s). 
+
+mappet.commands.mp.crafting.help=Mappet's crafting table subcommand.
+mappet.commands.mp.crafting.open=This command opens a crafting table by §7<id>§r for §7<player>§r(s).
+
+mappet.commands.mp.event.help=Mappet's event subcommand.
+mappet.commands.mp.event.trigger=This command triggers an event by §7<id>§r using §7<player>§r(s) as context.

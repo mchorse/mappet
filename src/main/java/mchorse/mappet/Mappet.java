@@ -1,6 +1,7 @@
 package mchorse.mappet;
 
 import mchorse.mappet.api.crafting.CraftingManager;
+import mchorse.mappet.api.events.EventManager;
 import mchorse.mappet.api.quests.QuestManager;
 import mchorse.mappet.api.states.States;
 import mchorse.mappet.commands.CommandMappet;
@@ -43,6 +44,7 @@ public final class Mappet
     public static States states;
     public static QuestManager quests;
     public static CraftingManager crafting;
+    public static EventManager events;
 
     @SubscribeEvent
     public void onConfigRegister(RegisterConfigEvent event)
@@ -80,6 +82,8 @@ public final class Mappet
 
         crafting = new CraftingManager(new File(mappetWorldFolder, "crafting"));
 
+        events = new EventManager(new File(mappetWorldFolder, "events"));
+
         event.registerServerCommand(new CommandMappet());
     }
 
@@ -93,5 +97,7 @@ public final class Mappet
         quests = null;
 
         crafting = null;
+
+        events = null;
     }
 }
