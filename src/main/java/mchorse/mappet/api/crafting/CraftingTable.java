@@ -1,11 +1,16 @@
 package mchorse.mappet.api.crafting;
 
+import mchorse.mappet.Mappet;
+import mchorse.mclib.math.IValue;
+import mchorse.mclib.math.Operation;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class CraftingTable implements INBTSerializable<NBTTagCompound>
@@ -60,6 +65,26 @@ public class CraftingTable implements INBTSerializable<NBTTagCompound>
 
                 recipe.deserializeNBT(recipes.getCompoundTagAt(i));
                 this.recipes.add(recipe);
+            }
+        }
+    }
+
+    public void filter(EntityPlayerMP player)
+    {
+        Iterator<CraftingRecipe> it = this.recipes.iterator();
+
+        while (it.hasNext())
+        {
+            CraftingRecipe recipe = it.next();
+
+            if (!recipe.condition.isEmpty())
+            {
+                IValue value = Mappet.expressions.evalute(recipe.condition, player);
+
+                if (value != null && value.isNumber() && !Operation.isTrue(value.doubleValue()))
+                {
+                    it.remove();
+                }
             }
         }
     }

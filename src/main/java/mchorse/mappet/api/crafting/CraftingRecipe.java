@@ -17,8 +17,9 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
     public String title = "";
     public NonNullList<ItemStack> input = NonNullList.create();
     public NonNullList<ItemStack> output = NonNullList.create();
+    public String condition = "";
 
-    /* TODO: expression and trigger */
+    /* TODO: trigger */
 
     public boolean craft(EntityPlayer player)
     {
@@ -96,6 +97,11 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
             tag.setTag("Output", output);
         }
 
+        if (!this.condition.isEmpty())
+        {
+            tag.setString("Condition", this.condition);
+        }
+
         return tag;
     }
 
@@ -130,6 +136,11 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("Output"))
         {
             this.deserializeList(this.output, tag.getTagList("Output", Constants.NBT.TAG_COMPOUND));
+        }
+
+        if (tag.hasKey("Condition"))
+        {
+            this.condition = tag.getString("Condition");
         }
     }
 

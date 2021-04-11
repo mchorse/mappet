@@ -62,7 +62,9 @@ public class ExpressionManager
             return this.builder.parse(expression);
         }
         catch (Exception e)
-        {}
+        {
+            e.printStackTrace();
+        }
 
         return null;
     }

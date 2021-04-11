@@ -36,6 +36,8 @@ public class CommandCraftingOpen extends CommandCraftingBase
         EntityPlayerMP player = getPlayer(server, sender, args[0]);
         CraftingTable table = this.getCraftingTable(args[1]);
 
+        table.filter(player);
+
         if (table.recipes.isEmpty())
         {
             throw new CommandException("crafting.empty", args[1]);
