@@ -1,8 +1,8 @@
 package mchorse.mappet.api.events.nodes;
 
+import mchorse.mappet.Mappet;
 import mchorse.mappet.api.events.EventContext;
 import mchorse.mclib.math.IValue;
-import mchorse.mclib.math.MathBuilder;
 import mchorse.mclib.math.Operation;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -21,20 +21,16 @@ public class ConditionNode extends EventNode
     @Override
     public int execute(EventContext context)
     {
-        /* TODO: switch to global expressions */
-        MathBuilder builder = new MathBuilder();
+        IValue value = Mappet.expressions.evalute(this.expression, context.subject);
 
-        try
+        if (value != null && value.isNumber())
         {
-            IValue value = builder.parse(this.expression);
-            boolean result = !Operation.equals(value.get(), 0);
+            boolean result = !Operation.equals(value.doubleValue(), 0);
 
             context.log("The result \"" + this.expression + "\" is " + (result ? "true" : "false"));
 
             return this.booleanToExecutionCode(result);
         }
-        catch (Exception e)
-        {}
 
         context.log("Condition \"" + this.expression + "\" could not be executed!");
 

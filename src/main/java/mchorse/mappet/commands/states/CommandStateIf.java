@@ -2,11 +2,14 @@ package mchorse.mappet.commands.states;
 
 import mchorse.mappet.Mappet;
 import mchorse.mclib.commands.SubCommandBase;
+import mchorse.mclib.math.IValue;
 import mchorse.mclib.math.MathBuilder;
 import mchorse.mclib.math.Operation;
 import mchorse.mclib.math.Variable;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 
 public class CommandStateIf extends CommandStateBase
@@ -45,20 +48,16 @@ public class CommandStateIf extends CommandStateBase
             throw new CommandException("states.missing", id);
         }
 
-        /* TODO: switch to global expressions */
         double previous = Mappet.states.get(id);
         double value = 0;
-        MathBuilder builder = new MathBuilder();
 
-        builder.register(new Variable("value", previous));
+        EntityLivingBase subject = sender instanceof EntityPlayer ? (EntityPlayer) sender : null;
+        String expression = String.join(" ", SubCommandBase.dropFirstArgument(args));
+        IValue result = Mappet.expressions.evalute(expression, subject, previous);
 
-        try
+        if (result != null && result.isNumber())
         {
-            value = builder.parse(String.join(" ", SubCommandBase.dropFirstArgument(args))).get();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
+            value = result.doubleValue();
         }
 
         if (Operation.equals(value, 0))

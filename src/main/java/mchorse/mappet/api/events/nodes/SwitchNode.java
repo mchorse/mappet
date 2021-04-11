@@ -1,8 +1,8 @@
 package mchorse.mappet.api.events.nodes;
 
+import mchorse.mappet.Mappet;
 import mchorse.mappet.api.events.EventContext;
 import mchorse.mclib.math.IValue;
-import mchorse.mclib.math.MathBuilder;
 
 public class SwitchNode extends ConditionNode
 {
@@ -17,20 +17,16 @@ public class SwitchNode extends ConditionNode
     @Override
     public int execute(EventContext context)
     {
-        /* TODO: switch to global expressions */
-        MathBuilder builder = new MathBuilder();
+        IValue value = Mappet.expressions.evalute(this.expression, context.subject);
 
-        try
+        if (value != null && value.isNumber())
         {
-            IValue value = builder.parse(this.expression);
-            int result = (int) value.get();
+            int result = (int) value.get().doubleValue();
 
             context.log("Expression \"" + this.expression + "\" is going to switch to its " + result + " execution branch...");
 
             return result;
         }
-        catch (Exception e)
-        {}
 
         context.log("Switching \"" + this.expression + "\" could not be executed!");
 

@@ -95,4 +95,17 @@ public class Quests implements INBTSerializable<NBTTagList>
 
         return false;
     }
+
+    public Quest getByName(String id)
+    {
+        for (Quest quest : this.quests)
+        {
+            if (quest.getId().equals(id))
+            {
+                return quest;
+            }
+        }
+
+        return null;
+    }
 }
