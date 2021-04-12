@@ -8,6 +8,14 @@ public class TileTrigger extends TileEntity
     public String leftClick = "test";
     public String rightClick = "test2";
 
+    public void set(String left, String right)
+    {
+        this.leftClick = left;
+        this.rightClick = right;
+
+        this.markDirty();
+    }
+
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag)
     {

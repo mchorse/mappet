@@ -2,6 +2,8 @@ package mchorse.mappet.blocks;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.events.EventContext;
+import mchorse.mappet.network.Dispatcher;
+import mchorse.mappet.network.common.PacketEditTrigger;
 import mchorse.mappet.tile.TileTrigger;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -12,6 +14,7 @@ import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
@@ -84,7 +87,7 @@ public class BlockTrigger extends Block implements ITileEntityProvider
 
             if (playerIn.isCreative())
             {
-                /* TODO: send */
+                Dispatcher.sendTo(new PacketEditTrigger(trigger), (EntityPlayerMP) playerIn);
             }
             else
             {

@@ -5,14 +5,17 @@ import mchorse.mappet.network.client.ClientHandlerCraft;
 import mchorse.mappet.network.client.ClientHandlerCraftingTable;
 import mchorse.mappet.network.client.ClientHandlerDialogueFragment;
 import mchorse.mappet.network.client.ClientHandlerEditEmitter;
+import mchorse.mappet.network.client.ClientHandlerEditTrigger;
 import mchorse.mappet.network.common.PacketCraft;
 import mchorse.mappet.network.common.PacketCraftingTable;
 import mchorse.mappet.network.common.PacketDialogueFragment;
 import mchorse.mappet.network.common.PacketEditEmitter;
+import mchorse.mappet.network.common.PacketEditTrigger;
 import mchorse.mappet.network.common.PacketPickReply;
 import mchorse.mappet.network.server.ServerHandlerCraft;
 import mchorse.mappet.network.server.ServerHandlerCraftingTable;
 import mchorse.mappet.network.server.ServerHandlerEditEmitter;
+import mchorse.mappet.network.server.ServerHandlerEditTrigger;
 import mchorse.mappet.network.server.ServerHandlerPickReply;
 import mchorse.mclib.network.AbstractDispatcher;
 import net.minecraft.entity.Entity;
@@ -46,6 +49,9 @@ public class Dispatcher
             /* Blocks */
             this.register(PacketEditEmitter.class, ClientHandlerEditEmitter.class, Side.CLIENT);
             this.register(PacketEditEmitter.class, ServerHandlerEditEmitter.class, Side.SERVER);
+
+            this.register(PacketEditTrigger.class, ClientHandlerEditTrigger.class, Side.CLIENT);
+            this.register(PacketEditTrigger.class, ServerHandlerEditTrigger.class, Side.SERVER);
         }
     };
 
