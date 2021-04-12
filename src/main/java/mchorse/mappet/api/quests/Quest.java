@@ -3,6 +3,7 @@ package mchorse.mappet.api.quests;
 import mchorse.mappet.api.quests.objectives.IObjective;
 import mchorse.mappet.api.quests.objectives.KillObjective;
 import mchorse.mappet.api.quests.rewards.IReward;
+import mchorse.mappet.api.utils.Trigger;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,9 +20,9 @@ public class Quest implements INBTSerializable<NBTTagCompound>
     public String customTitle = "";
     public String customStory = "";
 
-    public QuestTrigger accept = new QuestTrigger();
-    public QuestTrigger decline = new QuestTrigger();
-    public QuestTrigger complete = new QuestTrigger();
+    public Trigger accept = new Trigger();
+    public Trigger decline = new Trigger();
+    public Trigger complete = new Trigger();
 
     public final List<IObjective> objectives = new ArrayList<IObjective>();
     public final List<IReward> rewards = new ArrayList<IReward>();

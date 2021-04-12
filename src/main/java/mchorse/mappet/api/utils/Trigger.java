@@ -1,4 +1,4 @@
-package mchorse.mappet.api.quests;
+package mchorse.mappet.api.utils;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.events.EventContext;
@@ -9,12 +9,12 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.util.INBTSerializable;
 
-public class QuestTrigger implements INBTSerializable<NBTTagCompound>
+public class Trigger implements INBTSerializable<NBTTagCompound>
 {
     public String soundEvent = "";
     public String triggerEvent = "";
 
-    public void copy(QuestTrigger trigger)
+    public void copy(Trigger trigger)
     {
         this.soundEvent = trigger.soundEvent;
         this.triggerEvent = trigger.triggerEvent;

@@ -1,5 +1,6 @@
 package mchorse.mappet.api.crafting;
 
+import mchorse.mappet.api.utils.Trigger;
 import mchorse.mappet.utils.InventoryUtils;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,8 +19,7 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
     public NonNullList<ItemStack> input = NonNullList.create();
     public NonNullList<ItemStack> output = NonNullList.create();
     public String condition = "";
-
-    /* TODO: trigger */
+    public Trigger trigger = new Trigger();
 
     public boolean craft(EntityPlayer player)
     {
@@ -37,6 +37,8 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
         {
             this.addOrDrop(player, stack.copy());
         }
+
+        this.trigger.trigger(player);
 
         return true;
     }
@@ -102,6 +104,13 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
             tag.setString("Condition", this.condition);
         }
 
+        NBTTagCompound trigger = this.trigger.serializeNBT();
+
+        if (trigger.getSize() > 0)
+        {
+            tag.setTag("Trigger", trigger);
+        }
+
         return tag;
     }
 
@@ -141,6 +150,11 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("Condition"))
         {
             this.condition = tag.getString("Condition");
+        }
+
+        if (tag.hasKey("Trigger"))
+        {
+            this.trigger.deserializeNBT(tag.getCompoundTag("Trigger"));
         }
     }
 
