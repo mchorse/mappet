@@ -10,13 +10,19 @@ import mchorse.mappet.api.events.nodes.CommandNode;
 import mchorse.mappet.api.expressions.ExpressionManager;
 import mchorse.mappet.api.quests.QuestManager;
 import mchorse.mappet.api.states.States;
+import mchorse.mappet.blocks.BlockEmitter;
 import mchorse.mappet.commands.CommandMappet;
 import mchorse.mclib.McLib;
 import mchorse.mclib.commands.utils.L10n;
 import mchorse.mclib.config.ConfigBuilder;
 import mchorse.mclib.config.values.ValueInt;
 import mchorse.mclib.events.RegisterConfigEvent;
+import net.minecraft.client.Minecraft;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -47,6 +53,18 @@ public final class Mappet
 
     public static L10n l10n = new L10n(MOD_ID);
 
+    /* Content */
+    public static BlockEmitter emitterBlock;
+
+    public static CreativeTabs creativeTab = new CreativeTabs(MOD_ID)
+    {
+        @Override
+        public ItemStack getTabIconItem()
+        {
+            return new ItemStack(emitterBlock);
+        }
+    };
+
     /* Server side data */
     public static States states;
     public static QuestManager quests;
@@ -57,6 +75,11 @@ public final class Mappet
 
     /* Configuration */
     public static ValueInt eventMaxExecutions;
+
+    public Mappet()
+    {
+        MinecraftForge.EVENT_BUS.register(new RegisterHandler());
+    }
 
     @SubscribeEvent
     public void onConfigRegister(RegisterConfigEvent event)

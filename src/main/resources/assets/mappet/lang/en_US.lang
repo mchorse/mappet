@@ -40,3 +40,9 @@ mappet.commands.mp.crafting.open=This command opens a crafting table by §7<id>�
 
 mappet.commands.mp.event.help=Mappet's event subcommand.
 mappet.commands.mp.event.trigger=This command triggers an event by §7<id>§r using §7<player>§r(s) as context.
+
+# Items, blocks and entities
+itemGroup.mappet=Mappet
+
+tile.mappet.emitter.name=Emitter block
+tile.mappet.emitter.tooltip=Checks for expression condition and emits redstone signal upon non-zero value

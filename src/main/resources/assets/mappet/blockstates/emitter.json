@@ -1,0 +1,14 @@
+{
+    "forge_marker": 1,
+    "variants": {
+        "powered": {
+            "true": {
+                "model": "mappet:emitter",
+                "textures": { "all": "mappet:blocks/emitter_powered" }
+            },
+            "false": {
+                "model": "mappet:emitter"
+            }
+        }
+    }
+}
