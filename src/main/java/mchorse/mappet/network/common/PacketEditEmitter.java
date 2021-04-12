@@ -10,19 +10,21 @@ public class PacketEditEmitter implements IMessage
 {
     public BlockPos pos;
     public String expression = "";
+    public float radius;
 
     public PacketEditEmitter()
     {}
 
     public PacketEditEmitter(TileEmitter tile)
     {
-        this(tile.getPos(), tile.expression);
+        this(tile.getPos(), tile.getExpression(), tile.getRadius());
     }
 
-    public PacketEditEmitter(BlockPos pos, String expression)
+    public PacketEditEmitter(BlockPos pos, String expression, float radius)
     {
         this.pos = pos;
         this.expression = expression;
+        this.radius = radius;
     }
 
     @Override
@@ -30,6 +32,7 @@ public class PacketEditEmitter implements IMessage
     {
         this.pos = new BlockPos(buf.readInt(), buf.readInt(), buf.readInt());
         this.expression = ByteBufUtils.readUTF8String(buf);
+        this.radius = buf.readFloat();
     }
 
     @Override
@@ -39,5 +42,6 @@ public class PacketEditEmitter implements IMessage
         buf.writeInt(this.pos.getY());
         buf.writeInt(this.pos.getZ());
         ByteBufUtils.writeUTF8String(buf, this.expression);
+        buf.writeFloat(this.radius);
     }
 }

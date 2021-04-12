@@ -14,6 +14,6 @@ public class ClientHandlerEditEmitter extends ClientMessageHandler<PacketEditEmi
     @SideOnly(Side.CLIENT)
     public void run(EntityPlayerSP player, PacketEditEmitter message)
     {
-        Minecraft.getMinecraft().displayGuiScreen(new GuiEmitterBlockScreen(message.pos, message.expression));
+        Minecraft.getMinecraft().displayGuiScreen(new GuiEmitterBlockScreen(message.pos, message.expression, message.radius));
     }
 }

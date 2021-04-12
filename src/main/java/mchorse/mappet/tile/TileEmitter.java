@@ -4,6 +4,7 @@ import mchorse.mappet.Mappet;
 import mchorse.mappet.blocks.BlockEmitter;
 import mchorse.mclib.math.IValue;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
@@ -12,16 +13,28 @@ import net.minecraft.world.World;
 
 public class TileEmitter extends TileEntity implements ITickable
 {
-    public String expression = "";
+    private String expression = "";
+    private float radius;
 
     private int tick = 0;
 
     public TileEmitter()
     {}
 
-    public void setExpression(String expression)
+    public String getExpression()
+    {
+        return this.expression;
+    }
+
+    public float getRadius()
+    {
+        return this.radius;
+    }
+
+    public void setExpression(String expression, float radius)
     {
         this.expression = expression;
+        this.radius = radius;
         this.updateExpression();
         this.markDirty();
     }
@@ -35,7 +48,8 @@ public class TileEmitter extends TileEntity implements ITickable
     @Override
     public void update()
     {
-        if (this.tick % 10 == 0 && !this.expression.isEmpty())
+        /* TODO: rewrite to use state changes */
+        if (this.tick % 5 == 0 && !this.expression.isEmpty())
         {
             this.updateExpression();
         }
@@ -45,6 +59,27 @@ public class TileEmitter extends TileEntity implements ITickable
 
     private void updateExpression()
     {
+        if (this.radius > 0)
+        {
+            BlockPos pos = this.getPos();
+            boolean playerIn = false;
+
+            for (EntityPlayer player : this.world.playerEntities)
+            {
+                if (player.getDistance(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5) <= this.radius)
+                {
+                    playerIn = true;
+
+                    break;
+                }
+            }
+
+            if (!playerIn)
+            {
+                return;
+            }
+        }
+
         IValue value = Mappet.expressions.evalute(this.expression, null);
 
         if (value != null)
@@ -67,6 +102,11 @@ public class TileEmitter extends TileEntity implements ITickable
             tag.setString("Expression", this.expression);
         }
 
+        if (this.radius > 0)
+        {
+            tag.setFloat("Radius", this.radius);
+        }
+
         return super.writeToNBT(tag);
     }
 
@@ -78,6 +118,11 @@ public class TileEmitter extends TileEntity implements ITickable
         if (tag.hasKey("Expression"))
         {
             this.expression = tag.getString("Expression");
+        }
+
+        if (tag.hasKey("Radius"))
+        {
+            this.radius = tag.getFloat("Radius");
         }
     }
 }

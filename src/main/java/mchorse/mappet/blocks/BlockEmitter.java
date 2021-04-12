@@ -63,12 +63,10 @@ public class BlockEmitter extends Block implements ITileEntityProvider
             if (tile instanceof TileEmitter)
             {
                 Dispatcher.sendTo(new PacketEditEmitter((TileEmitter) tile), (EntityPlayerMP) playerIn);
-
-                return true;
             }
         }
 
-        return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
+        return true;
     }
 
     /* States */
