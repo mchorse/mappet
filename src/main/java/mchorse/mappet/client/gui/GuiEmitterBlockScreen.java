@@ -25,6 +25,7 @@ public class GuiEmitterBlockScreen extends GuiBase
 
         Minecraft mc = Minecraft.getMinecraft();
 
+        /* TODO: tooltips */
         this.expression = new GuiTextElement(mc, 10000, null);
         this.expression.flex().relative(this.viewport).x(0.5F).y(0.5F).w(0.5F).anchor(0.5F, 0.5F);
         this.expression.setText(expression);
@@ -57,6 +58,7 @@ public class GuiEmitterBlockScreen extends GuiBase
 
         super.drawScreen(mouseX, mouseY, partialTicks);
 
+        /* TODO: extract */
         this.fontRenderer.drawStringWithShadow("Expression", this.expression.area.x, this.expression.area.y - 12, 0xffffff);
         this.fontRenderer.drawStringWithShadow("Radius", this.radius.area.x, this.radius.area.y - 12, 0xffffff);
     }

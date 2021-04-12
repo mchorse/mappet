@@ -1,7 +1,9 @@
 package mchorse.mappet;
 
 import mchorse.mappet.blocks.BlockEmitter;
+import mchorse.mappet.blocks.BlockTrigger;
 import mchorse.mappet.tile.TileEmitter;
+import mchorse.mappet.tile.TileTrigger;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -22,6 +24,7 @@ public class RegisterHandler
     public void onBlocksRegister(RegistryEvent.Register<Block> event)
     {
         event.getRegistry().register(Mappet.emitterBlock = new BlockEmitter());
+        event.getRegistry().register(Mappet.triggerBlock = new BlockTrigger());
     }
 
     @SubscribeEvent
@@ -30,12 +33,17 @@ public class RegisterHandler
         event.getRegistry().register(new ItemBlock(Mappet.emitterBlock)
             .setRegistryName(new ResourceLocation(Mappet.MOD_ID, "emitter"))
             .setUnlocalizedName(Mappet.MOD_ID + ".emitter"));
+
+        event.getRegistry().register(new ItemBlock(Mappet.triggerBlock)
+            .setRegistryName(new ResourceLocation(Mappet.MOD_ID, "trigger"))
+            .setUnlocalizedName(Mappet.MOD_ID + ".trigger"));
     }
 
     @SubscribeEvent
     public void onEntityRegister(RegistryEvent.Register<EntityEntry> event)
     {
         GameRegistry.registerTileEntity(TileEmitter.class, Mappet.MOD_ID + ":emitter");
+        GameRegistry.registerTileEntity(TileTrigger.class, Mappet.MOD_ID + ":trigger");
     }
 
     @SubscribeEvent
@@ -43,5 +51,6 @@ public class RegisterHandler
     public void onModelRegistry(ModelRegistryEvent event)
     {
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(Mappet.emitterBlock), 0, new ModelResourceLocation(Mappet.MOD_ID + ":emitter", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(Mappet.triggerBlock), 0, new ModelResourceLocation(Mappet.MOD_ID + ":trigger", "inventory"));
     }
 }

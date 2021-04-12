@@ -11,6 +11,7 @@ import mchorse.mappet.api.expressions.ExpressionManager;
 import mchorse.mappet.api.quests.QuestManager;
 import mchorse.mappet.api.states.States;
 import mchorse.mappet.blocks.BlockEmitter;
+import mchorse.mappet.blocks.BlockTrigger;
 import mchorse.mappet.commands.CommandMappet;
 import mchorse.mclib.McLib;
 import mchorse.mclib.commands.utils.L10n;
@@ -55,6 +56,7 @@ public final class Mappet
 
     /* Content */
     public static BlockEmitter emitterBlock;
+    public static BlockTrigger triggerBlock;
 
     public static CreativeTabs creativeTab = new CreativeTabs(MOD_ID)
     {
