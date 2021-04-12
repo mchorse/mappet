@@ -26,6 +26,18 @@ public class EventManager extends BaseManager<NodeSystem<EventNode>>
 
     /* Execution */
 
+    public EventContext execute(String id, EventContext context)
+    {
+        NodeSystem<EventNode> event = this.load(id);
+
+        if (event != null)
+        {
+            this.execute(event, context);
+        }
+
+        return context;
+    }
+
     public EventContext execute(NodeSystem<EventNode> event, EventContext context)
     {
         if (event.main != null)

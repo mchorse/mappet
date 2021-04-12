@@ -40,8 +40,6 @@ public class CommandEventTrigger extends CommandEventBase
             throw new CommandException("event.empty", args[1]);
         }
 
-        EventContext context = Mappet.events.execute(event, new EventContext(server, player, true));
-
-        System.out.println("\n" + context.log.toString());
+        Mappet.events.execute(event, new EventContext(server, player));
     }
 }

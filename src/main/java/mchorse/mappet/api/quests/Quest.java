@@ -1,6 +1,5 @@
 package mchorse.mappet.api.quests;
 
-import io.netty.buffer.ByteBuf;
 import mchorse.mappet.api.quests.objectives.IObjective;
 import mchorse.mappet.api.quests.objectives.KillObjective;
 import mchorse.mappet.api.quests.rewards.IReward;
@@ -10,20 +9,22 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Quest implements INBTSerializable<NBTTagCompound>, IMessage
+public class Quest implements INBTSerializable<NBTTagCompound>
 {
     private String id = "";
-    public final List<IObjective> objectives = new ArrayList<IObjective>();
-    public final List<IReward> rewards = new ArrayList<IReward>();
-
     public String customTitle = "";
     public String customStory = "";
+
+    public QuestTrigger accept = new QuestTrigger();
+    public QuestTrigger decline = new QuestTrigger();
+    public QuestTrigger complete = new QuestTrigger();
+
+    public final List<IObjective> objectives = new ArrayList<IObjective>();
+    public final List<IReward> rewards = new ArrayList<IReward>();
 
     public Quest()
     {}
@@ -100,6 +101,8 @@ public class Quest implements INBTSerializable<NBTTagCompound>, IMessage
         {
             reward.reward(player);
         }
+
+        this.complete.trigger(player);
     }
 
     public boolean rewardIfComplete(EntityPlayer player)
@@ -120,6 +123,10 @@ public class Quest implements INBTSerializable<NBTTagCompound>, IMessage
 
         quest.customTitle = this.customTitle;
         quest.customStory = this.customStory;
+
+        quest.accept.copy(this.accept);
+        quest.decline.copy(this.decline);
+        quest.complete.copy(this.complete);
 
         for (IObjective objective : this.objectives)
         {
@@ -144,11 +151,19 @@ public class Quest implements INBTSerializable<NBTTagCompound>, IMessage
         NBTTagList rewards = new NBTTagList();
 
         tag.setString("Id", this.id);
-        tag.setTag("Objectives", objectives);
-        tag.setTag("Rewards", rewards);
-
         tag.setString("Title", this.customTitle);
         tag.setString("Story", this.customStory);
+
+        NBTTagCompound accept = this.accept.serializeNBT();
+        NBTTagCompound decline = this.decline.serializeNBT();
+        NBTTagCompound complete = this.complete.serializeNBT();
+
+        if (accept.getSize() > 0) tag.setTag("Accept", accept);
+        if (decline.getSize() > 0) tag.setTag("Decline", decline);
+        if (complete.getSize() > 0) tag.setTag("Complete", complete);
+
+        tag.setTag("Objectives", objectives);
+        tag.setTag("Rewards", rewards);
 
         for (IObjective objective : this.objectives)
         {
@@ -175,6 +190,21 @@ public class Quest implements INBTSerializable<NBTTagCompound>, IMessage
         this.id = tag.getString("Id");
         this.customTitle = tag.getString("Title");
         this.customStory = tag.getString("Story");
+
+        if (tag.hasKey("Accept"))
+        {
+            this.accept.deserializeNBT(tag.getCompoundTag("Accept"));
+        }
+
+        if (tag.hasKey("Decline"))
+        {
+            this.decline.deserializeNBT(tag.getCompoundTag("Decline"));
+        }
+
+        if (tag.hasKey("Complete"))
+        {
+            this.complete.deserializeNBT(tag.getCompoundTag("Complete"));
+        }
 
         if (tag.hasKey("Objectives"))
         {
@@ -208,62 +238,6 @@ public class Quest implements INBTSerializable<NBTTagCompound>, IMessage
                     this.rewards.add(reward);
                 }
             }
-        }
-    }
-
-    /* Byte buffer */
-
-    @Override
-    public void fromBytes(ByteBuf buf)
-    {
-        this.id = ByteBufUtils.readUTF8String(buf);
-
-        /* Custom title and story */
-        this.customTitle = ByteBufUtils.readUTF8String(buf);
-        this.customStory = ByteBufUtils.readUTF8String(buf);
-
-        /* Objectives and rewards */
-        for (int i = 0, c = buf.readInt(); i < c; i ++)
-        {
-            IObjective objective = IObjective.fromType(ByteBufUtils.readUTF8String(buf));
-
-            objective.fromBytes(buf);
-            this.objectives.add(objective);
-        }
-
-        for (int i = 0, c = buf.readInt(); i < c; i ++)
-        {
-            IReward reward = IReward.fromType(ByteBufUtils.readUTF8String(buf));
-
-            reward.fromBytes(buf);
-            this.rewards.add(reward);
-        }
-    }
-
-    @Override
-    public void toBytes(ByteBuf buf)
-    {
-        ByteBufUtils.writeUTF8String(buf, this.id);
-
-        /* Custom title and story */
-        ByteBufUtils.writeUTF8String(buf, this.customTitle);
-        ByteBufUtils.writeUTF8String(buf, this.customStory);
-
-        /* Objectives and rewards */
-        buf.writeInt(this.objectives.size());
-
-        for (IObjective objective : this.objectives)
-        {
-            ByteBufUtils.writeUTF8String(buf, objective.getType());
-            objective.toBytes(buf);
-        }
-
-        buf.writeInt(this.rewards.size());
-
-        for (IReward reward : this.rewards)
-        {
-            ByteBufUtils.writeUTF8String(buf, reward.getType());
-            reward.toBytes(buf);
         }
     }
 }

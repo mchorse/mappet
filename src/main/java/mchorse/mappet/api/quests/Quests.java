@@ -37,7 +37,7 @@ public class Quests implements INBTSerializable<NBTTagList>
         }
     }
 
-    public boolean add(Quest quest)
+    public boolean add(Quest quest, EntityPlayer player)
     {
         if (this.has(quest.getId()))
         {
@@ -45,6 +45,7 @@ public class Quests implements INBTSerializable<NBTTagList>
         }
 
         this.quests.add(quest);
+        quest.accept.trigger(player);
 
         return true;
     }
@@ -72,6 +73,10 @@ public class Quests implements INBTSerializable<NBTTagList>
                 if (reward)
                 {
                     quest.reward(player);
+                }
+                else
+                {
+                    quest.decline.trigger(player);
                 }
 
                 it.remove();
