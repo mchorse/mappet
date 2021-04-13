@@ -1,50 +1,53 @@
 package mchorse.mappet.api.quests;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
-public class Quests implements INBTSerializable<NBTTagList>
+public class Quests implements INBTSerializable<NBTTagCompound>
 {
-    public List<Quest> quests = new ArrayList<Quest>();
+    public Map<String, Quest> quests = new LinkedHashMap<String, Quest>();
 
     @Override
-    public NBTTagList serializeNBT()
+    public NBTTagCompound serializeNBT()
     {
-        NBTTagList list = new NBTTagList();
+        NBTTagCompound tag = new NBTTagCompound();
 
-        for (Quest quest : this.quests)
+        for (Map.Entry<String, Quest> entry : this.quests.entrySet())
         {
-            list.appendTag(quest.serializeNBT());
+            tag.setTag(entry.getKey(), entry.getValue().serializeNBT());
         }
 
-        return list;
+        return tag;
     }
 
     @Override
-    public void deserializeNBT(NBTTagList list)
+    public void deserializeNBT(NBTTagCompound tag)
     {
-        for (int i = 0; i < list.tagCount(); i++)
+        for (String key : tag.getKeySet())
         {
             Quest quest = new Quest();
 
-            quest.deserializeNBT(list.getCompoundTagAt(i));
-            this.quests.add(quest);
+            quest.deserializeNBT(tag.getCompoundTag(key));
+            this.quests.put(key, quest);
         }
     }
 
-    public boolean add(Quest quest, EntityPlayer player)
+    public boolean add(String id, Quest quest, EntityPlayer player)
     {
-        if (this.has(quest.getId()))
+        if (this.has(id))
         {
             return false;
         }
 
-        this.quests.add(quest);
+        this.quests.put(id, quest);
         quest.accept.trigger(player);
 
         return true;
@@ -62,27 +65,20 @@ public class Quests implements INBTSerializable<NBTTagList>
 
     public boolean remove(String id, EntityPlayer player, boolean reward)
     {
-        Iterator<Quest> it = this.quests.iterator();
+        Quest quest = this.quests.remove(id);
 
-        while (it.hasNext())
+        if (quest == null)
         {
-            Quest quest = it.next();
+            return false;
+        }
 
-            if (quest.getId().equals(id))
-            {
-                if (reward)
-                {
-                    quest.reward(player);
-                }
-                else
-                {
-                    quest.decline.trigger(player);
-                }
-
-                it.remove();
-
-                return true;
-            }
+        if (reward)
+        {
+            quest.reward(player);
+        }
+        else
+        {
+            quest.decline.trigger(player);
         }
 
         return false;
@@ -90,27 +86,11 @@ public class Quests implements INBTSerializable<NBTTagList>
 
     public boolean has(String id)
     {
-        for (Quest quest : this.quests)
-        {
-            if (quest.getId().equals(id))
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return this.quests.containsKey(id);
     }
 
     public Quest getByName(String id)
     {
-        for (Quest quest : this.quests)
-        {
-            if (quest.getId().equals(id))
-            {
-                return quest;
-            }
-        }
-
-        return null;
+        return this.quests.get(id);
     }
 }

@@ -115,8 +115,6 @@ public final class Mappet
         states.load();
 
         quests = new QuestManager(new File(mappetWorldFolder, "quests"));
-        quests.loadCache();
-
         crafting = new CraftingManager(new File(mappetWorldFolder, "crafting"));
         events = new EventManager(new File(mappetWorldFolder, "events"));
         dialogues = new DialogueManager(new File(mappetWorldFolder, "dialogues"));
@@ -131,9 +129,7 @@ public final class Mappet
         states.save();
         states = null;
 
-        quests.save();
         quests = null;
-
         crafting = null;
         events = null;
         dialogues = null;

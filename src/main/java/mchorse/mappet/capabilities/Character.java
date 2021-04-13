@@ -73,7 +73,7 @@ public class Character implements ICharacter
     {
         if (tag.hasKey("Quests"))
         {
-            this.quests.deserializeNBT(tag.getTagList("Quests", Constants.NBT.TAG_COMPOUND));
+            this.quests.deserializeNBT(tag.getCompoundTag("Quests"));
         }
     }
 }

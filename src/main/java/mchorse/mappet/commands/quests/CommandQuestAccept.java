@@ -32,12 +32,13 @@ public class CommandQuestAccept extends CommandQuestBase
     public void executeCommand(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         EntityPlayer player = getPlayer(server, sender, args[0]);
-        Quest quest = this.getQuest(args[1]);
+        String id = args[1];
+        Quest quest = this.getQuest(id);
         ICharacter character = Character.get(player);
 
-        if (character != null && character.getQuests().add(quest, player))
+        if (character != null && character.getQuests().add(id, quest, player))
         {
-            this.getL10n().success(sender, "quest.accepted", args[1], player.getName());
+            this.getL10n().success(sender, "quest.accepted", id, player.getName());
         }
     }
 }

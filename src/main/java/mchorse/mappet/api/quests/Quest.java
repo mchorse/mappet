@@ -16,7 +16,6 @@ import java.util.List;
 
 public class Quest implements INBTSerializable<NBTTagCompound>
 {
-    private String id = "";
     public String customTitle = "";
     public String customStory = "";
 
@@ -29,21 +28,6 @@ public class Quest implements INBTSerializable<NBTTagCompound>
 
     public Quest()
     {}
-
-    public Quest(String id)
-    {
-        this.id = id;
-    }
-
-    public String getId()
-    {
-        return this.id;
-    }
-
-    public void setId(String id)
-    {
-        this.id = id;
-    }
 
     /* Quest building */
 
@@ -123,30 +107,6 @@ public class Quest implements INBTSerializable<NBTTagCompound>
         return true;
     }
 
-    public Quest copy()
-    {
-        Quest quest = new Quest(this.id);
-
-        quest.customTitle = this.customTitle;
-        quest.customStory = this.customStory;
-
-        quest.accept.copy(this.accept);
-        quest.decline.copy(this.decline);
-        quest.complete.copy(this.complete);
-
-        for (IObjective objective : this.objectives)
-        {
-            quest.objectives.add(objective.copy());
-        }
-
-        for (IReward reward : this.rewards)
-        {
-            quest.rewards.add(reward.copy());
-        }
-
-        return quest;
-    }
-
     /* NBT stuff */
 
     @Override
@@ -156,7 +116,6 @@ public class Quest implements INBTSerializable<NBTTagCompound>
         NBTTagList objectives = new NBTTagList();
         NBTTagList rewards = new NBTTagList();
 
-        tag.setString("Id", this.id);
         tag.setString("Title", this.customTitle);
         tag.setString("Story", this.customStory);
 
@@ -193,7 +152,6 @@ public class Quest implements INBTSerializable<NBTTagCompound>
     @Override
     public void deserializeNBT(NBTTagCompound tag)
     {
-        this.id = tag.getString("Id");
         this.customTitle = tag.getString("Title");
         this.customStory = tag.getString("Story");
 

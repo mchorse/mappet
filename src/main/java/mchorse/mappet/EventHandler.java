@@ -21,6 +21,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class EventHandler
 {
@@ -73,7 +74,7 @@ public class EventHandler
 
         if (character != null)
         {
-            for (Quest quest : character.getQuests().quests)
+            for (Quest quest : character.getQuests().quests.values())
             {
                 quest.mobWasKilled(player, event.getEntity());
             }
@@ -96,15 +97,16 @@ public class EventHandler
 
             if (character != null)
             {
-                Iterator<Quest> it = character.getQuests().quests.iterator();
+                Iterator<Map.Entry<String, Quest>> it = character.getQuests().quests.entrySet().iterator();
 
                 while (it.hasNext())
                 {
-                    Quest quest = it.next();
+                    Map.Entry<String, Quest> entry = it.next();
+                    Quest quest = entry.getValue();
 
                     if (quest.rewardIfComplete(player))
                     {
-                        player.sendMessage(new TextComponentString("Quest '" + quest.getId() + "' was completed! Here is your reward!"));
+                        player.sendMessage(new TextComponentString("Quest '" + entry.getKey() + "' was completed! Here is your reward!"));
                         it.remove();
 
                         // Dispatcher.sendTo(new PacketCompleteQuest(quest.getId()), (EntityPlayerMP) player);
