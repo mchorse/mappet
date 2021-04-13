@@ -1,12 +1,10 @@
 package mchorse.mappet.api.quests.objectives;
 
-import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 public class KillObjective implements IObjective
 {
@@ -60,6 +58,25 @@ public class KillObjective implements IObjective
     }
 
     @Override
+    public NBTTagCompound partialSerializeNBT()
+    {
+        NBTTagCompound tag = new NBTTagCompound();
+
+        tag.setInteger("Killed", this.killed);
+
+        return tag;
+    }
+
+    @Override
+    public void partialDeserializeNBT(NBTTagCompound tag)
+    {
+        if (tag.hasKey("Killed"))
+        {
+            this.killed = tag.getInteger("Killed");
+        }
+    }
+
+    @Override
     public NBTTagCompound serializeNBT()
     {
         NBTTagCompound tag = new NBTTagCompound();
@@ -77,21 +94,5 @@ public class KillObjective implements IObjective
         this.entity = new ResourceLocation(tag.getString("Entity"));
         this.count = tag.getInteger("Count");
         this.killed = tag.getInteger("Killed");
-    }
-
-    @Override
-    public void fromBytes(ByteBuf buf)
-    {
-        this.entity = new ResourceLocation(ByteBufUtils.readUTF8String(buf));
-        this.count = buf.readInt();
-        this.killed = buf.readInt();
-    }
-
-    @Override
-    public void toBytes(ByteBuf buf)
-    {
-        ByteBufUtils.writeUTF8String(buf, this.entity.toString());
-        buf.writeInt(this.count);
-        buf.writeInt(this.killed);
     }
 }

@@ -1,11 +1,9 @@
 package mchorse.mappet.api.quests.objectives;
 
-import io.netty.buffer.ByteBuf;
 import mchorse.mappet.utils.InventoryUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 public class CollectObjective implements IObjective
 {
@@ -55,6 +53,16 @@ public class CollectObjective implements IObjective
     }
 
     @Override
+    public NBTTagCompound partialSerializeNBT()
+    {
+        return new NBTTagCompound();
+    }
+
+    @Override
+    public void partialDeserializeNBT(NBTTagCompound tag)
+    {}
+
+    @Override
     public NBTTagCompound serializeNBT()
     {
         NBTTagCompound tag = new NBTTagCompound();
@@ -74,17 +82,5 @@ public class CollectObjective implements IObjective
         {
             this.stack = new ItemStack(tag.getCompoundTag("Item"));
         }
-    }
-
-    @Override
-    public void fromBytes(ByteBuf buf)
-    {
-        this.stack = ByteBufUtils.readItemStack(buf);
-    }
-
-    @Override
-    public void toBytes(ByteBuf buf)
-    {
-        ByteBufUtils.writeItemStack(buf, this.stack);
     }
 }

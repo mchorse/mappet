@@ -14,7 +14,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Quest implements INBTSerializable<NBTTagCompound>
+public class Quest implements INBTSerializable<NBTTagCompound>, INBTPartialSerializable
 {
     public String customTitle = "";
     public String customStory = "";
@@ -108,6 +108,36 @@ public class Quest implements INBTSerializable<NBTTagCompound>
     }
 
     /* NBT stuff */
+
+    @Override
+    public NBTTagCompound partialSerializeNBT()
+    {
+        NBTTagCompound tag = new NBTTagCompound();
+        NBTTagList objectives = new NBTTagList();
+
+        tag.setTag("Objectives", objectives);
+
+        for (IObjective objective : this.objectives)
+        {
+            objectives.appendTag(objective.partialSerializeNBT());
+        }
+
+        return tag;
+    }
+
+    @Override
+    public void partialDeserializeNBT(NBTTagCompound tag)
+    {
+        if (tag.hasKey("Objectives", Constants.NBT.TAG_LIST))
+        {
+            NBTTagList list = tag.getTagList("Objectives", Constants.NBT.TAG_COMPOUND);
+
+            for (int i = 0; i < Math.min(list.tagCount(), this.objectives.size()); i++)
+            {
+                this.objectives.get(i).partialDeserializeNBT(list.getCompoundTagAt(i));
+            }
+        }
+    }
 
     @Override
     public NBTTagCompound serializeNBT()

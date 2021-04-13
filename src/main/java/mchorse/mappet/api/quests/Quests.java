@@ -1,5 +1,6 @@
 package mchorse.mappet.api.quests;
 
+import mchorse.mappet.Mappet;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -22,7 +23,7 @@ public class Quests implements INBTSerializable<NBTTagCompound>
 
         for (Map.Entry<String, Quest> entry : this.quests.entrySet())
         {
-            tag.setTag(entry.getKey(), entry.getValue().serializeNBT());
+            tag.setTag(entry.getKey(), entry.getValue().partialSerializeNBT());
         }
 
         return tag;
@@ -33,10 +34,13 @@ public class Quests implements INBTSerializable<NBTTagCompound>
     {
         for (String key : tag.getKeySet())
         {
-            Quest quest = new Quest();
+            Quest quest = Mappet.quests.load(key);
 
-            quest.deserializeNBT(tag.getCompoundTag(key));
-            this.quests.put(key, quest);
+            if (quest != null)
+            {
+                quest.partialDeserializeNBT(tag.getCompoundTag(key));
+                this.quests.put(key, quest);
+            }
         }
     }
 
