@@ -1,13 +1,11 @@
-package mchorse.mappet.network.client;
+package mchorse.mappet.network.client.crafting;
 
 import mchorse.mappet.client.gui.GuiCraftingTableScreen;
-import mchorse.mappet.network.common.PacketCraft;
+import mchorse.mappet.network.common.crafting.PacketCraft;
 import mchorse.mclib.network.ClientMessageHandler;
-import mchorse.mclib.network.ServerMessageHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 

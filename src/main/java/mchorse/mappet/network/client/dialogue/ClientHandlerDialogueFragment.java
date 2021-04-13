@@ -1,7 +1,7 @@
-package mchorse.mappet.network.client;
+package mchorse.mappet.network.client.dialogue;
 
 import mchorse.mappet.client.gui.GuiDialogueScreen;
-import mchorse.mappet.network.common.PacketDialogueFragment;
+import mchorse.mappet.network.common.dialogue.PacketDialogueFragment;
 import mchorse.mclib.network.ClientMessageHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;

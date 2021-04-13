@@ -1,9 +1,9 @@
-package mchorse.mappet.network.server;
+package mchorse.mappet.network.server.crafting;
 
 import mchorse.mappet.capabilities.Character;
 import mchorse.mappet.capabilities.ICharacter;
 import mchorse.mappet.network.Dispatcher;
-import mchorse.mappet.network.common.PacketCraft;
+import mchorse.mappet.network.common.crafting.PacketCraft;
 import mchorse.mclib.network.ServerMessageHandler;
 import net.minecraft.entity.player.EntityPlayerMP;
 

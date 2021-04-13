@@ -1,7 +1,7 @@
 package mchorse.mappet.client.gui;
 
 import mchorse.mappet.network.Dispatcher;
-import mchorse.mappet.network.common.PacketEditEmitter;
+import mchorse.mappet.network.common.blocks.PacketEditEmitter;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;

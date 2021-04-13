@@ -33,6 +33,8 @@ public class ExpressionManager
         this.builder.functions.put("inv_armor", InventoryArmor.class);
     }
 
+    /* TODO: look into caching these values or something */
+
     public IValue evalute(String expression, EntityLivingBase subject, double value)
     {
         this.subject = subject;

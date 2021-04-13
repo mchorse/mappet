@@ -67,7 +67,7 @@ public final class Mappet
         }
     };
 
-    /* Server side data */
+    /* Server side data, TODO: make these available on the client side when on dedicated server */
     public static States states;
     public static QuestManager quests;
     public static CraftingManager crafting;

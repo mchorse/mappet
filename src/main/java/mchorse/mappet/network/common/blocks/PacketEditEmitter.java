@@ -1,4 +1,4 @@
-package mchorse.mappet.network.common;
+package mchorse.mappet.network.common.blocks;
 
 import io.netty.buffer.ByteBuf;
 import mchorse.mappet.tile.TileEmitter;

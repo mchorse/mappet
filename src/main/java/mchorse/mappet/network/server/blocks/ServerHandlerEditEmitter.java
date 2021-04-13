@@ -1,6 +1,6 @@
-package mchorse.mappet.network.server;
+package mchorse.mappet.network.server.blocks;
 
-import mchorse.mappet.network.common.PacketEditEmitter;
+import mchorse.mappet.network.common.blocks.PacketEditEmitter;
 import mchorse.mappet.tile.TileEmitter;
 import mchorse.mclib.network.ServerMessageHandler;
 import net.minecraft.entity.player.EntityPlayerMP;

@@ -2,7 +2,7 @@ package mchorse.mappet.blocks;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.network.Dispatcher;
-import mchorse.mappet.network.common.PacketEditEmitter;
+import mchorse.mappet.network.common.blocks.PacketEditEmitter;
 import mchorse.mappet.tile.TileEmitter;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;

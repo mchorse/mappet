@@ -1,5 +1,7 @@
 package mchorse.mappet;
 
+import mchorse.mappet.client.KeyboardHandler;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -12,6 +14,8 @@ public class ClientProxy extends CommonProxy
     public void preInit(FMLPreInitializationEvent event)
     {
         super.preInit(event);
+
+        MinecraftForge.EVENT_BUS.register(new KeyboardHandler());
     }
 
     @Override

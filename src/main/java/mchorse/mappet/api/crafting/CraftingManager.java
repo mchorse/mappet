@@ -1,6 +1,7 @@
 package mchorse.mappet.api.crafting;
 
 import mchorse.mappet.api.utils.BaseManager;
+import net.minecraft.nbt.NBTTagCompound;
 
 import java.io.File;
 
@@ -12,8 +13,15 @@ public class CraftingManager extends BaseManager<CraftingTable>
     }
 
     @Override
-    public CraftingTable create()
+    public CraftingTable create(NBTTagCompound tag)
     {
-        return new CraftingTable();
+        CraftingTable table = new CraftingTable();
+
+        if (tag != null)
+        {
+            table.deserializeNBT(tag);
+        }
+
+        return table;
     }
 }

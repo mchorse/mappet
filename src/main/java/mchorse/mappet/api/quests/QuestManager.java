@@ -2,18 +2,20 @@ package mchorse.mappet.api.quests;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import mchorse.mappet.api.utils.IManager;
 import mchorse.mappet.utils.NBTToJson;
 import mchorse.mclib.utils.JsonUtils;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.INBTSerializable;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
-public class QuestManager
+public class QuestManager implements IManager<Quest>
 {
     /**
      * Quest folder where all the quests will be stored
@@ -29,14 +31,6 @@ public class QuestManager
     {
         this.folder = folder;
         this.folder.mkdirs();
-    }
-
-    /**
-     * Reset cache
-     */
-    public void resetCache()
-    {
-        this.cache.clear();
     }
 
     public void loadCache()
@@ -67,9 +61,40 @@ public class QuestManager
         this.cache.put(quest.getId(), quest);
     }
 
+    @Override
+    public Quest create(NBTTagCompound tag)
+    {
+        Quest quest = new Quest();
+
+        if (tag != null)
+        {
+            quest.deserializeNBT(tag);
+        }
+
+        return quest;
+    }
+
+    @Override
+    public boolean rename(String id, String newId)
+    {
+        boolean exists = this.cache.containsKey(id);
+
+        if (exists)
+        {
+            Quest quest = this.cache.remove(id);
+
+            quest.setId(newId);
+            this.cache.put(newId, quest);
+        }
+
+        return exists;
+    }
+
     /**
      * Load a quest
+     * @param id
      */
+    @Override
     public Quest load(String id)
     {
         Quest cached = this.cache.get(id);
@@ -106,15 +131,28 @@ public class QuestManager
         }
     }
 
+    @Override
+    public boolean save(String name, NBTTagCompound tag)
+    {
+        Quest quest = new Quest();
+
+        quest.deserializeNBT(tag);
+        this.cache.put(name, quest);
+
+        return true;
+    }
+
     /**
      * Delete quest from server's directory
      */
+    @Override
     public boolean delete(String id)
     {
         return this.cache.remove(id) != null;
     }
 
-    public Set<String> getKeys()
+    @Override
+    public Collection<String> getKeys()
     {
         return this.cache.keySet();
     }

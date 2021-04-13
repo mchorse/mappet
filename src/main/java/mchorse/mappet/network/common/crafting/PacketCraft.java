@@ -1,16 +1,16 @@
-package mchorse.mappet.network.common;
+package mchorse.mappet.network.common.crafting;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public class PacketPickReply implements IMessage
+public class PacketCraft implements IMessage
 {
     public int index;
 
-    public PacketPickReply()
+    public PacketCraft()
     {}
 
-    public PacketPickReply(int index)
+    public PacketCraft(int index)
     {
         this.index = index;
     }

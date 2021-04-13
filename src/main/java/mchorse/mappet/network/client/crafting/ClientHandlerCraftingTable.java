@@ -1,7 +1,7 @@
-package mchorse.mappet.network.client;
+package mchorse.mappet.network.client.crafting;
 
 import mchorse.mappet.client.gui.GuiCraftingTableScreen;
-import mchorse.mappet.network.common.PacketCraftingTable;
+import mchorse.mappet.network.common.crafting.PacketCraftingTable;
 import mchorse.mclib.network.ClientMessageHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;

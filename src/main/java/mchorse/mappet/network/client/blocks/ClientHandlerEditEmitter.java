@@ -1,7 +1,7 @@
-package mchorse.mappet.network.client;
+package mchorse.mappet.network.client.blocks;
 
 import mchorse.mappet.client.gui.GuiEmitterBlockScreen;
-import mchorse.mappet.network.common.PacketEditEmitter;
+import mchorse.mappet.network.common.blocks.PacketEditEmitter;
 import mchorse.mclib.network.ClientMessageHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;

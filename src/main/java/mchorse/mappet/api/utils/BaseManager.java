@@ -11,13 +11,14 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
  * Base JSON manager which loads and saves different data
  * structures based upon NBT
  */
-public abstract class BaseManager <T extends INBTSerializable<NBTTagCompound>>
+public abstract class BaseManager <T extends INBTSerializable<NBTTagCompound>> implements IManager<T>
 {
     private File folder;
 
@@ -27,11 +28,12 @@ public abstract class BaseManager <T extends INBTSerializable<NBTTagCompound>>
         this.folder.mkdirs();
     }
 
-    public T load(String name)
+    @Override
+    public T load(String id)
     {
         try
         {
-            File file = this.getFile(name);
+            File file = this.getFile(id);
             String json = FileUtils.readFileToString(file, Charset.defaultCharset());
             JsonElement element = new JsonParser().parse(json);
             NBTTagCompound tag = (NBTTagCompound) NBTToJson.fromJson(element);
@@ -49,14 +51,17 @@ public abstract class BaseManager <T extends INBTSerializable<NBTTagCompound>>
         return null;
     }
 
-    public abstract T create();
+    public boolean save(String name, T data)
+    {
+        return this.save(name, data.serializeNBT());
+    }
 
-    public boolean save(String name, T nodeSystem)
+    @Override
+    public boolean save(String name, NBTTagCompound tag)
     {
         try
         {
             File file = this.getFile(name);
-            NBTTagCompound tag = nodeSystem.serializeNBT();
             JsonElement element = NBTToJson.toJson(tag);
 
             FileUtils.writeStringToFile(file, JsonUtils.jsonToPretty(element), Charset.defaultCharset());
@@ -71,12 +76,27 @@ public abstract class BaseManager <T extends INBTSerializable<NBTTagCompound>>
         return false;
     }
 
-    private File getFile(String name)
+    @Override
+    public boolean rename(String id, String newId)
     {
-        return new File(this.folder, name + ".json");
+        File file = this.getFile(id);
+
+        if (file.exists())
+        {
+            return file.renameTo(this.getFile(newId));
+        }
+
+        return false;
     }
 
-    public List<String> getKeys()
+    @Override
+    public boolean delete(String name)
+    {
+        return this.getFile(name).delete();
+    }
+
+    @Override
+    public Collection<String> getKeys()
     {
         List<String> list = new ArrayList<String>();
 
@@ -91,5 +111,10 @@ public abstract class BaseManager <T extends INBTSerializable<NBTTagCompound>>
         }
 
         return list;
+    }
+
+    public File getFile(String name)
+    {
+        return new File(this.folder, name + ".json");
     }
 }

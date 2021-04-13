@@ -1,13 +1,14 @@
 package mchorse.mappet.api.events;
 
-import mchorse.mappet.api.events.nodes.SwitchNode;
-import mchorse.mappet.api.utils.BaseManager;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.events.nodes.CommandNode;
 import mchorse.mappet.api.events.nodes.ConditionNode;
 import mchorse.mappet.api.events.nodes.EventNode;
+import mchorse.mappet.api.events.nodes.SwitchNode;
+import mchorse.mappet.api.utils.BaseManager;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
 import mchorse.mappet.api.utils.nodes.factory.MapNodeFactory;
+import net.minecraft.nbt.NBTTagCompound;
 
 import java.io.File;
 import java.util.List;
@@ -22,6 +23,19 @@ public class EventManager extends BaseManager<NodeSystem<EventNode>>
     public EventManager(File folder)
     {
         super(folder);
+    }
+
+    @Override
+    public NodeSystem<EventNode> create(NBTTagCompound tag)
+    {
+        NodeSystem<EventNode> event = new NodeSystem<EventNode>(FACTORY);
+
+        if (tag != null)
+        {
+            event.deserializeNBT(tag);
+        }
+
+        return event;
     }
 
     /* Execution */
@@ -79,11 +93,5 @@ public class EventManager extends BaseManager<NodeSystem<EventNode>>
         }
 
         context.executions += 1;
-    }
-
-    @Override
-    public NodeSystem<EventNode> create()
-    {
-        return new NodeSystem<EventNode>(FACTORY);
     }
 }

@@ -1,12 +1,14 @@
 package mchorse.mappet.api.dialogues;
 
 import mchorse.mappet.Mappet;
+import mchorse.mappet.api.crafting.CraftingTable;
 import mchorse.mappet.api.dialogues.nodes.ReactionNode;
 import mchorse.mappet.api.dialogues.nodes.ReplyNode;
 import mchorse.mappet.api.events.EventManager;
 import mchorse.mappet.api.events.nodes.EventNode;
 import mchorse.mappet.api.utils.BaseManager;
 import mchorse.mappet.api.utils.nodes.factory.MapNodeFactory;
+import net.minecraft.nbt.NBTTagCompound;
 
 import java.io.File;
 import java.util.List;
@@ -20,6 +22,19 @@ public class DialogueManager extends BaseManager<DialogueNodeSystem>
     public DialogueManager(File folder)
     {
         super(folder);
+    }
+
+    @Override
+    public DialogueNodeSystem create(NBTTagCompound tag)
+    {
+        DialogueNodeSystem dialogue = new DialogueNodeSystem(FACTORY);
+
+        if (tag != null)
+        {
+            dialogue.deserializeNBT(tag);
+        }
+
+        return dialogue;
     }
 
     public DialogueContext execute(DialogueNodeSystem event, DialogueContext context)
@@ -63,11 +78,5 @@ public class DialogueManager extends BaseManager<DialogueNodeSystem>
         }
 
         context.executions += 1;
-    }
-
-    @Override
-    public DialogueNodeSystem create()
-    {
-        return new DialogueNodeSystem(FACTORY);
     }
 }

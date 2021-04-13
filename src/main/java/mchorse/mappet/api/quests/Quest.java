@@ -40,6 +40,11 @@ public class Quest implements INBTSerializable<NBTTagCompound>
         return this.id;
     }
 
+    public void setId(String id)
+    {
+        this.id = id;
+    }
+
     /* Quest building */
 
     public Quest setStory(String title, String story)

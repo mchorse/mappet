@@ -1,22 +1,31 @@
 package mchorse.mappet.network;
 
 import mchorse.mappet.Mappet;
-import mchorse.mappet.network.client.ClientHandlerCraft;
-import mchorse.mappet.network.client.ClientHandlerCraftingTable;
-import mchorse.mappet.network.client.ClientHandlerDialogueFragment;
-import mchorse.mappet.network.client.ClientHandlerEditEmitter;
-import mchorse.mappet.network.client.ClientHandlerEditTrigger;
-import mchorse.mappet.network.common.PacketCraft;
-import mchorse.mappet.network.common.PacketCraftingTable;
-import mchorse.mappet.network.common.PacketDialogueFragment;
-import mchorse.mappet.network.common.PacketEditEmitter;
-import mchorse.mappet.network.common.PacketEditTrigger;
-import mchorse.mappet.network.common.PacketPickReply;
-import mchorse.mappet.network.server.ServerHandlerCraft;
-import mchorse.mappet.network.server.ServerHandlerCraftingTable;
-import mchorse.mappet.network.server.ServerHandlerEditEmitter;
-import mchorse.mappet.network.server.ServerHandlerEditTrigger;
-import mchorse.mappet.network.server.ServerHandlerPickReply;
+import mchorse.mappet.network.client.blocks.ClientHandlerEditEmitter;
+import mchorse.mappet.network.client.blocks.ClientHandlerEditTrigger;
+import mchorse.mappet.network.client.content.ClientHandlerContentData;
+import mchorse.mappet.network.client.content.ClientHandlerContentNames;
+import mchorse.mappet.network.client.crafting.ClientHandlerCraft;
+import mchorse.mappet.network.client.crafting.ClientHandlerCraftingTable;
+import mchorse.mappet.network.client.dialogue.ClientHandlerDialogueFragment;
+import mchorse.mappet.network.common.blocks.PacketEditEmitter;
+import mchorse.mappet.network.common.blocks.PacketEditTrigger;
+import mchorse.mappet.network.common.content.PacketContentData;
+import mchorse.mappet.network.common.content.PacketContentNames;
+import mchorse.mappet.network.common.content.PacketContentRequestData;
+import mchorse.mappet.network.common.content.PacketContentRequestNames;
+import mchorse.mappet.network.common.crafting.PacketCraft;
+import mchorse.mappet.network.common.crafting.PacketCraftingTable;
+import mchorse.mappet.network.common.dialogue.PacketDialogueFragment;
+import mchorse.mappet.network.common.dialogue.PacketPickReply;
+import mchorse.mappet.network.server.blocks.ServerHandlerEditEmitter;
+import mchorse.mappet.network.server.blocks.ServerHandlerEditTrigger;
+import mchorse.mappet.network.server.content.ServerHandlerContentData;
+import mchorse.mappet.network.server.content.ServerHandlerContentRequestData;
+import mchorse.mappet.network.server.content.ServerHandlerContentRequestNames;
+import mchorse.mappet.network.server.crafting.ServerHandlerCraft;
+import mchorse.mappet.network.server.crafting.ServerHandlerCraftingTable;
+import mchorse.mappet.network.server.dialogue.ServerHandlerPickReply;
 import mchorse.mclib.network.AbstractDispatcher;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityTracker;
@@ -52,6 +61,13 @@ public class Dispatcher
 
             this.register(PacketEditTrigger.class, ClientHandlerEditTrigger.class, Side.CLIENT);
             this.register(PacketEditTrigger.class, ServerHandlerEditTrigger.class, Side.SERVER);
+
+            /* Creative editing */
+            this.register(PacketContentRequestNames.class, ServerHandlerContentRequestNames.class, Side.SERVER);
+            this.register(PacketContentRequestData.class, ServerHandlerContentRequestData.class, Side.SERVER);
+            this.register(PacketContentData.class, ClientHandlerContentData.class, Side.CLIENT);
+            this.register(PacketContentData.class, ServerHandlerContentData.class, Side.SERVER);
+            this.register(PacketContentNames.class, ClientHandlerContentNames.class, Side.CLIENT);
         }
     };
 

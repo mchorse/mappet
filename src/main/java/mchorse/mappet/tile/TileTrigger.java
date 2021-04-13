@@ -5,8 +5,8 @@ import net.minecraft.tileentity.TileEntity;
 
 public class TileTrigger extends TileEntity
 {
-    public String leftClick = "test";
-    public String rightClick = "test2";
+    public String leftClick = "";
+    public String rightClick = "";
 
     public void set(String left, String right)
     {

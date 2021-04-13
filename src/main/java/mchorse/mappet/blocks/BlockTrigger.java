@@ -3,7 +3,7 @@ package mchorse.mappet.blocks;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.events.EventContext;
 import mchorse.mappet.network.Dispatcher;
-import mchorse.mappet.network.common.PacketEditTrigger;
+import mchorse.mappet.network.common.blocks.PacketEditTrigger;
 import mchorse.mappet.tile.TileTrigger;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;

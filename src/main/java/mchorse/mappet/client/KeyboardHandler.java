@@ -1,5 +1,7 @@
 package mchorse.mappet.client;
 
+import mchorse.mappet.client.gui.GuiMappetDashboard;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -17,23 +19,25 @@ import org.lwjgl.input.Keyboard;
 @SideOnly(Side.CLIENT)
 public class KeyboardHandler
 {
-    public KeyBinding test;
+    public KeyBinding openMappetDashboard;
 
     public KeyboardHandler()
     {
         String prefix = "mappet.keys.";
 
-        this.test = new KeyBinding(prefix + "test", Keyboard.KEY_NONE, prefix + "category");
+        this.openMappetDashboard = new KeyBinding(prefix + "dashboard", Keyboard.KEY_NONE, prefix + "category");
 
-        ClientRegistry.registerKeyBinding(this.test);
+        ClientRegistry.registerKeyBinding(this.openMappetDashboard);
     }
 
     @SubscribeEvent
     public void onKeyPress(KeyInputEvent event)
     {
-        if (this.test.isPressed())
+        Minecraft mc = Minecraft.getMinecraft();
+
+        if (this.openMappetDashboard.isPressed())
         {
-            /* ... */
+            mc.displayGuiScreen(new GuiMappetDashboard(mc));
         }
     }
 }

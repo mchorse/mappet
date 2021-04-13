@@ -1,4 +1,4 @@
-package mchorse.mappet.network.server;
+package mchorse.mappet.network.server.dialogue;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.dialogues.DialogueContext;
@@ -8,8 +8,8 @@ import mchorse.mappet.api.dialogues.nodes.ReplyNode;
 import mchorse.mappet.capabilities.Character;
 import mchorse.mappet.capabilities.ICharacter;
 import mchorse.mappet.network.Dispatcher;
-import mchorse.mappet.network.common.PacketDialogueFragment;
-import mchorse.mappet.network.common.PacketPickReply;
+import mchorse.mappet.network.common.dialogue.PacketDialogueFragment;
+import mchorse.mappet.network.common.dialogue.PacketPickReply;
 import mchorse.mclib.network.ServerMessageHandler;
 import net.minecraft.entity.player.EntityPlayerMP;
 

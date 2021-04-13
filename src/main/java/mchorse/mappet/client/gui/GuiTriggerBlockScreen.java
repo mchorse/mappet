@@ -1,15 +1,11 @@
 package mchorse.mappet.client.gui;
 
 import mchorse.mappet.network.Dispatcher;
-import mchorse.mappet.network.common.PacketEditEmitter;
-import mchorse.mappet.network.common.PacketEditTrigger;
+import mchorse.mappet.network.common.blocks.PacketEditTrigger;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
-import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.BlockPos;
-
-import java.util.function.Consumer;
 
 public class GuiTriggerBlockScreen extends GuiBase
 {

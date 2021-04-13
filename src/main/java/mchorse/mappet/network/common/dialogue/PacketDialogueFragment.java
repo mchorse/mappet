@@ -1,4 +1,4 @@
-package mchorse.mappet.network.common;
+package mchorse.mappet.network.common.dialogue;
 
 import io.netty.buffer.ByteBuf;
 import mchorse.mappet.api.dialogues.DialogueFragment;

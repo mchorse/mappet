@@ -48,6 +48,11 @@ public class TileEmitter extends TileEntity implements ITickable
     @Override
     public void update()
     {
+        if (this.world.isRemote)
+        {
+            return;
+        }
+
         /* TODO: rewrite to use state changes */
         if (this.tick % 5 == 0 && !this.expression.isEmpty())
         {

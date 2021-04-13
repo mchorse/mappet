@@ -1,8 +1,8 @@
 package mchorse.mappet.client.gui;
 
 import mchorse.mappet.network.Dispatcher;
-import mchorse.mappet.network.common.PacketDialogueFragment;
-import mchorse.mappet.network.common.PacketPickReply;
+import mchorse.mappet.network.common.dialogue.PacketDialogueFragment;
+import mchorse.mappet.network.common.dialogue.PacketPickReply;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.list.GuiStringListElement;

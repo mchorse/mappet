@@ -7,7 +7,7 @@ import mchorse.mappet.api.dialogues.DialogueNodeSystem;
 import mchorse.mappet.capabilities.Character;
 import mchorse.mappet.capabilities.ICharacter;
 import mchorse.mappet.network.Dispatcher;
-import mchorse.mappet.network.common.PacketDialogueFragment;
+import mchorse.mappet.network.common.dialogue.PacketDialogueFragment;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
