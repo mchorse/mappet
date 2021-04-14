@@ -11,6 +11,8 @@ import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 
+import java.io.IOException;
+
 public class GuiCraftingTableScreen extends GuiBase
 {
     public GuiCraftingRecipeList recipes;
@@ -66,6 +68,24 @@ public class GuiCraftingTableScreen extends GuiBase
         super.closeScreen();
 
         Dispatcher.sendToServer(new PacketCraftingTable(null));
+    }
+
+    @Override
+    protected void keyTyped(char typedChar, int keyCode) throws IOException
+    {
+        for (CraftingRecipe recipe : this.table.recipes)
+        {
+            if (recipe.hotkey > 0 && recipe.hotkey == keyCode)
+            {
+                this.pickRecipe(recipe);
+                this.recipes.setCurrentScroll(recipe);
+                this.craft(this.craft);
+
+                return;
+            }
+        }
+
+        super.keyTyped(typedChar, keyCode);
     }
 
     @Override

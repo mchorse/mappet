@@ -19,6 +19,7 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
     public NonNullList<ItemStack> input = NonNullList.create();
     public NonNullList<ItemStack> output = NonNullList.create();
     public String condition = "";
+    public int hotkey = -1;
     public Trigger trigger = new Trigger();
 
     public boolean craft(EntityPlayer player)
@@ -111,6 +112,11 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
             tag.setTag("Trigger", trigger);
         }
 
+        if (this.hotkey > 0)
+        {
+            tag.setInteger("Hotkey", this.hotkey);
+        }
+
         return tag;
     }
 
@@ -155,6 +161,11 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("Trigger"))
         {
             this.trigger.deserializeNBT(tag.getCompoundTag("Trigger"));
+        }
+
+        if (tag.hasKey("Hotkey"))
+        {
+            this.hotkey = tag.getInteger("Hotkey");
         }
     }
 
