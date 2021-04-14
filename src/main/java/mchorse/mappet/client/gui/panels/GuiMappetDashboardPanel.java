@@ -21,11 +21,14 @@ import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
+import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
 public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTagCompound>> extends GuiDashboardPanel<GuiMappetDashboard>
 {
+    public static final IKey KEYS_CATEGORY = IKey.str("Mappet panel keybinds");
+
     public GuiIconElement toggleSidebar;
     public GuiElement sidebar;
     public GuiIconElement add;
@@ -50,7 +53,7 @@ public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTag
         this.sidebar.flex().relative(this).x(1F).w(200).h(1F).anchorX(1F);
         this.sidebar.add(buttons);
 
-        this.toggleSidebar = new GuiIconElement(mc, Icons.RIGHTLOAD, this::toggleSidebar);
+        this.toggleSidebar = new GuiIconElement(mc, Icons.RIGHTLOAD, (element) -> this.toggleSidebar());
         this.toggleSidebar.flex().relative(this.sidebar).x(-20);
 
         this.add = new GuiIconElement(mc, Icons.ADD, this::addNewData);
@@ -72,9 +75,11 @@ public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTag
         buttons.add(this.add, this.dupe, this.rename, this.remove);
 
         this.add(this.sidebar, this.editor, this.toggleSidebar);
+
+        this.keys().register(IKey.str("Toggle sidebar"), Keyboard.KEY_N, this::toggleSidebar).category(KEYS_CATEGORY);
     }
 
-    private void toggleSidebar(GuiIconElement element)
+    private void toggleSidebar()
     {
         this.sidebar.toggleVisible();
         this.toggleSidebar.both(this.sidebar.isVisible() ? Icons.RIGHTLOAD : Icons.LEFTLOAD);
