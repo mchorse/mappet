@@ -26,7 +26,7 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
         this.title = new GuiTextElement(mc, 1000, (text) -> this.data.title = text);
         this.title.flex().relative(this.editor).x(10).y(-30).w(1F, -20);
 
-        this.editor.flex().y(55).h(1F, -55);
+        this.editor.flex().y(55).h(1F, -55).column(5).margin = 30;
         this.editor.context(() -> new GuiSimpleContextMenu(this.mc)
             .action(Icons.ADD, IKey.str("Add a recipe"), this::addRecipe));
 
@@ -60,20 +60,15 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
 
         if (data != null)
         {
-            this.fillData();
+            this.title.setText(this.data.title);
+
+            for (CraftingRecipe recipe : this.data.recipes)
+            {
+                this.editor.add(this.createRecipe(recipe));
+            }
+
+            this.resize();
         }
-    }
-
-    private void fillData()
-    {
-        this.title.setText(this.data.title);
-
-        for (CraftingRecipe recipe : this.data.recipes)
-        {
-            this.editor.add(this.createRecipe(recipe));
-        }
-
-        this.resize();
     }
 
     private void addRecipe()
@@ -108,11 +103,13 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
     @Override
     public void draw(GuiContext context)
     {
+        this.editor.area.draw(0x66000000);
+
         super.draw(context);
 
         if (this.title.isVisible())
         {
-            this.font.drawStringWithShadow("Crafting's title", this.title.area.x, this.area.y + 10, 0xffffff);
+            this.font.drawStringWithShadow("Crafting table's title", this.title.area.x, this.area.y + 10, 0xffffff);
         }
     }
 }

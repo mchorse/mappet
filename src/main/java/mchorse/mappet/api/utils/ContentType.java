@@ -40,7 +40,7 @@ public enum ContentType
         @SideOnly(Side.CLIENT)
         public GuiMappetDashboardPanel get(GuiMappetDashboard dashboard)
         {
-            return null;
+            return dashboard.quest;
         }
     },
     CRAFTING_TABLE()
@@ -90,7 +90,7 @@ public enum ContentType
         @SideOnly(Side.CLIENT)
         public GuiMappetDashboardPanel get(GuiMappetDashboard dashboard)
         {
-            return null;
+            return dashboard.event;
         }
     },
     DIALOGUE()
@@ -115,7 +115,7 @@ public enum ContentType
         @SideOnly(Side.CLIENT)
         public GuiMappetDashboardPanel get(GuiMappetDashboard dashboard)
         {
-            return null;
+            return dashboard.dialogue;
         }
     };
 

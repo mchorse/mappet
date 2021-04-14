@@ -5,12 +5,10 @@ import mchorse.mappet.client.gui.utils.GuiItemsElement;
 import mchorse.mappet.client.gui.utils.GuiTriggerElement;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
-import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 
 import java.util.function.Supplier;
 
@@ -46,13 +44,5 @@ public class GuiCraftingRecipe extends GuiElement
 
         this.add(Elements.label(IKey.str("Recipe's title")), this.title, this.input, this.output);
         this.add(Elements.label(IKey.str("Expression condition"), 20).anchor(0, 1F), this.condition, this.trigger);
-    }
-
-    @Override
-    public void draw(GuiContext context)
-    {
-        Gui.drawRect(this.area.x, this.area.y, this.area.ex(), this.area.y + 1, 0x88000000);
-
-        super.draw(context);
     }
 }

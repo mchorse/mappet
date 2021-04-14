@@ -205,7 +205,7 @@ public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTag
         {
             this.update = false;
 
-            Dispatcher.sendToServer(new PacketContentRequestNames(ContentType.CRAFTING_TABLE));
+            Dispatcher.sendToServer(new PacketContentRequestNames(this.getType()));
         }
     }
 
@@ -216,7 +216,7 @@ public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTag
 
         if (!this.update && this.data != null)
         {
-            Dispatcher.sendToServer(new PacketContentData(ContentType.CRAFTING_TABLE, this.id, this.data.serializeNBT()));
+            Dispatcher.sendToServer(new PacketContentData(this.getType(), this.id, this.data.serializeNBT()));
         }
     }
 
@@ -224,7 +224,6 @@ public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTag
     public void draw(GuiContext context)
     {
         this.sidebar.area.draw(0xaa000000);
-        this.editor.area.draw(0x66000000);
 
         super.draw(context);
 

@@ -16,8 +16,8 @@ import java.util.List;
 
 public class Quest implements INBTSerializable<NBTTagCompound>, INBTPartialSerializable
 {
-    public String customTitle = "";
-    public String customStory = "";
+    public String title = "";
+    public String story = "";
 
     public Trigger accept = new Trigger();
     public Trigger decline = new Trigger();
@@ -33,8 +33,8 @@ public class Quest implements INBTSerializable<NBTTagCompound>, INBTPartialSeria
 
     public Quest setStory(String title, String story)
     {
-        this.customTitle = title;
-        this.customStory = story;
+        this.title = title;
+        this.story = story;
 
         return this;
     }
@@ -146,8 +146,8 @@ public class Quest implements INBTSerializable<NBTTagCompound>, INBTPartialSeria
         NBTTagList objectives = new NBTTagList();
         NBTTagList rewards = new NBTTagList();
 
-        tag.setString("Title", this.customTitle);
-        tag.setString("Story", this.customStory);
+        tag.setString("Title", this.title);
+        tag.setString("Story", this.story);
 
         NBTTagCompound accept = this.accept.serializeNBT();
         NBTTagCompound decline = this.decline.serializeNBT();
@@ -182,8 +182,8 @@ public class Quest implements INBTSerializable<NBTTagCompound>, INBTPartialSeria
     @Override
     public void deserializeNBT(NBTTagCompound tag)
     {
-        this.customTitle = tag.getString("Title");
-        this.customStory = tag.getString("Story");
+        this.title = tag.getString("Title");
+        this.story = tag.getString("Story");
 
         if (tag.hasKey("Accept"))
         {
