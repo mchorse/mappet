@@ -26,7 +26,6 @@ public class GuiItemsElement extends GuiElement
     {
         super(mc);
 
-        this.items = items;
         this.inventory = inventory;
 
         GuiIconElement add = new GuiIconElement(mc, Icons.ADD, (b) ->
@@ -39,17 +38,28 @@ public class GuiItemsElement extends GuiElement
         GuiElement row = Elements.row(mc, 5, 0, 20, label, add);
         this.stacks = new GuiElement(mc);
 
-        add.flex().wh(10, 16);
         label.flex().h(0);
         row.flex().row(5).preferred(0);
-        this.stacks.flex().grid(7).items(7).resizes(true);
+        this.stacks.flex().grid(5).width(24).resizes(true);
 
         this.flex().column(5).vertical().stretch();
         this.add(row, this.stacks);
 
-        for (ItemStack stack : this.items)
+        this.set(items);
+    }
+
+    public void set(List<ItemStack> items)
+    {
+        this.stacks.removeAll();
+
+        this.items = items;
+
+        if (this.items != null)
         {
-            this.addItem(stack);
+            for (ItemStack stack : this.items)
+            {
+                this.addItem(stack);
+            }
         }
     }
 

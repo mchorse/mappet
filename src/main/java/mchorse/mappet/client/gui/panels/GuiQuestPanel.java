@@ -103,5 +103,12 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
             this.objectives.set(data.objectives, () -> this.inventory);
             this.rewards.set(data.rewards, () -> this.inventory);
         }
+
+        /* Hack: due to grid resizer with custom width can't access
+         * width for reasons it not being assigned yet, I have to double
+         * resize it so the second time it could calculate correct height
+         * if the editor */
+        this.resize();
+        this.resize();
     }
 }

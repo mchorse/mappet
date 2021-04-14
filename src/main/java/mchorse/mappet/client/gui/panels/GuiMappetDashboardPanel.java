@@ -44,8 +44,11 @@ public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTag
     {
         super(mc, dashboard);
 
+        GuiElement buttons = new GuiElement(mc);
+
         this.sidebar = new GuiElement(mc);
         this.sidebar.flex().relative(this).x(1F).w(200).h(1F).anchorX(1F);
+        this.sidebar.add(buttons);
 
         this.toggleSidebar = new GuiIconElement(mc, Icons.RIGHTLOAD, this::toggleSidebar);
         this.toggleSidebar.flex().relative(this.sidebar).x(-20);
@@ -61,16 +64,12 @@ public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTag
         this.names.flex().relative(this.sidebar).xy(10, 25).w(1F, -20).h(1F, -35);
         this.sidebar.add(drawable, this.names);
 
-        GuiElement buttons = new GuiElement(mc);
-
-        buttons.flex().relative(this.names).x(1F).y(-20).anchorX(1F).row(0).resize();
-        buttons.add(this.add, this.dupe, this.rename, this.remove);
-
-        this.sidebar.add(buttons);
-
         this.editor = new GuiScrollElement(mc);
         this.editor.markContainer();
         this.editor.flex().relative(this).wTo(this.sidebar.area).h(1F).column(5).vertical().stretch().scroll();
+
+        buttons.flex().relative(this.names).x(1F).y(-20).anchorX(1F).row(0).resize();
+        buttons.add(this.add, this.dupe, this.rename, this.remove);
 
         this.add(this.sidebar, this.editor, this.toggleSidebar);
     }
@@ -82,16 +81,26 @@ public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTag
 
         if (this.sidebar.isVisible())
         {
+            this.toggleWithSidebar();
             this.toggleSidebar.flex().relative(this.sidebar).x(-20);
-            this.editor.flex().wTo(this.sidebar.area);
         }
         else
         {
-            this.editor.flex().w(1F);
+            this.toggleFull();
             this.toggleSidebar.flex().relative(this).x(1F, -20);
         }
 
         this.resize();
+    }
+
+    protected void toggleWithSidebar()
+    {
+        this.editor.flex().wTo(this.sidebar.area);
+    }
+
+    protected void toggleFull()
+    {
+        this.editor.flex().w(1F);
     }
 
     /**

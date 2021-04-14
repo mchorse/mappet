@@ -4,6 +4,7 @@ import mchorse.mappet.api.crafting.CraftingRecipe;
 import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
@@ -21,18 +22,25 @@ public class GuiCraftingRecipeList extends GuiListElement<CraftingRecipe>
     {
         super.drawElementPart(element, i, x, y, hover, selected);
 
-        for (int j = 0; j < element.input.size(); j++)
+        if (this.area.w > 300)
         {
-            ItemStack stack = element.input.get(j);
+            RenderHelper.enableGUIStandardItemLighting();
 
-            GuiInventoryElement.drawItemStack(stack, this.area.x(0.33F) + 20 * j, y + this.scroll.scrollItemSize / 2 - 8, null);
-        }
+            for (int j = 0; j < element.input.size(); j++)
+            {
+                ItemStack stack = element.input.get(j);
 
-        for (int j = 0; j < element.output.size(); j++)
-        {
-            ItemStack stack = element.output.get(j);
+                GuiInventoryElement.drawItemStack(stack, this.area.x(0.33F) + 20 * j, y + this.scroll.scrollItemSize / 2 - 8, null);
+            }
 
-            GuiInventoryElement.drawItemStack(stack, this.area.x(0.66F) + 20 * j, y + this.scroll.scrollItemSize / 2 - 8, null);
+            for (int j = 0; j < element.output.size(); j++)
+            {
+                ItemStack stack = element.output.get(j);
+
+                GuiInventoryElement.drawItemStack(stack, this.area.x(0.66F) + 20 * j, y + this.scroll.scrollItemSize / 2 - 8, null);
+            }
+
+            RenderHelper.disableStandardItemLighting();
         }
     }
 
