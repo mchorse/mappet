@@ -15,6 +15,12 @@ public class SwitchNode extends ConditionNode
     }
 
     @Override
+    public int getColor()
+    {
+        return 0xf1c40f;
+    }
+
+    @Override
     public int execute(EventContext context)
     {
         IValue value = Mappet.expressions.evalute(this.expression, context.subject);

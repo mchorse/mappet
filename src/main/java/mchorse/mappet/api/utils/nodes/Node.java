@@ -26,6 +26,8 @@ public abstract class Node implements INBTSerializable<NBTTagCompound>
         }
     }
 
+    public abstract int getColor();
+
     @Override
     public NBTTagCompound serializeNBT()
     {

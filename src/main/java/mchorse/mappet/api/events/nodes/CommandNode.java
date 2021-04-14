@@ -16,6 +16,12 @@ public class CommandNode extends EventNode
     }
 
     @Override
+    public int getColor()
+    {
+        return 0x942aff;
+    }
+
+    @Override
     public int execute(EventContext context)
     {
         String command = context.processCommand(this.command);

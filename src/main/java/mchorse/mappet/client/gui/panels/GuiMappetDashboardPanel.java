@@ -6,6 +6,7 @@ import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.content.PacketContentData;
 import mchorse.mappet.network.common.content.PacketContentRequestData;
 import mchorse.mappet.network.common.content.PacketContentRequestNames;
+import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
@@ -76,7 +77,7 @@ public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTag
 
         this.add(this.sidebar, this.editor, this.toggleSidebar);
 
-        this.keys().register(IKey.str("Toggle sidebar"), Keyboard.KEY_N, this::toggleSidebar).category(KEYS_CATEGORY);
+        this.keys().register(IKey.str("Toggle sidebar"), Keyboard.KEY_N, () -> this.toggleSidebar.clickItself(GuiBase.getCurrent())).category(KEYS_CATEGORY);
     }
 
     private void toggleSidebar()

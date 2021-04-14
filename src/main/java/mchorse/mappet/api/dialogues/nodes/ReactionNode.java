@@ -14,6 +14,12 @@ public class ReactionNode extends DialogueNode
     }
 
     @Override
+    public int getColor()
+    {
+        return 0xed3623;
+    }
+
+    @Override
     public int execute(EventContext context)
     {
         if (context instanceof DialogueContext)

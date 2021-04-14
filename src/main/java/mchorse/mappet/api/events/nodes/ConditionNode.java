@@ -19,6 +19,12 @@ public class ConditionNode extends EventNode
     }
 
     @Override
+    public int getColor()
+    {
+        return 0xff1493;
+    }
+
+    @Override
     public int execute(EventContext context)
     {
         IValue value = Mappet.expressions.evalute(this.expression, context.subject);
