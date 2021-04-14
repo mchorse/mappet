@@ -14,6 +14,7 @@ import mchorse.mclib.client.gui.framework.elements.modals.GuiConfirmModal;
 import mchorse.mclib.client.gui.framework.elements.modals.GuiModal;
 import mchorse.mclib.client.gui.framework.elements.modals.GuiPromptModal;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiDrawable;
 import mchorse.mclib.client.gui.mclib.GuiDashboardPanel;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
@@ -25,6 +26,7 @@ import java.util.List;
 
 public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTagCompound>> extends GuiDashboardPanel<GuiMappetDashboard>
 {
+    public GuiIconElement toggleSidebar;
     public GuiElement sidebar;
     public GuiIconElement add;
     public GuiIconElement dupe;
@@ -45,14 +47,19 @@ public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTag
         this.sidebar = new GuiElement(mc);
         this.sidebar.flex().relative(this).x(1F).w(200).h(1F).anchorX(1F);
 
+        this.toggleSidebar = new GuiIconElement(mc, Icons.RIGHTLOAD, this::toggleSidebar);
+        this.toggleSidebar.flex().relative(this.sidebar).x(-20);
+
         this.add = new GuiIconElement(mc, Icons.ADD, this::addNewData);
         this.dupe = new GuiIconElement(mc, Icons.DUPE, this::dupeData);
         this.rename = new GuiIconElement(mc, Icons.EDIT, this::renameData);
         this.remove = new GuiIconElement(mc, Icons.REMOVE, this::removeData);
 
+        GuiDrawable drawable = new GuiDrawable((context) -> this.font.drawStringWithShadow("Data", this.names.area.x, this.area.y + 10, 0xffffff));
+
         this.names = new GuiStringListElement(mc, (list) -> this.pickData(list.get(0)));
         this.names.flex().relative(this.sidebar).xy(10, 25).w(1F, -20).h(1F, -35);
-        this.sidebar.add(this.names);
+        this.sidebar.add(drawable, this.names);
 
         GuiElement buttons = new GuiElement(mc);
 
@@ -65,7 +72,26 @@ public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTag
         this.editor.markContainer();
         this.editor.flex().relative(this).wTo(this.sidebar.area).h(1F).column(5).vertical().stretch().scroll();
 
-        this.add(this.sidebar, this.editor);
+        this.add(this.sidebar, this.editor, this.toggleSidebar);
+    }
+
+    private void toggleSidebar(GuiIconElement element)
+    {
+        this.sidebar.toggleVisible();
+        this.toggleSidebar.both(this.sidebar.isVisible() ? Icons.RIGHTLOAD : Icons.LEFTLOAD);
+
+        if (this.sidebar.isVisible())
+        {
+            this.toggleSidebar.flex().relative(this.sidebar).x(-20);
+            this.editor.flex().wTo(this.sidebar.area);
+        }
+        else
+        {
+            this.editor.flex().w(1F);
+            this.toggleSidebar.flex().relative(this).x(1F, -20);
+        }
+
+        this.resize();
     }
 
     /**
@@ -223,10 +249,11 @@ public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTag
     @Override
     public void draw(GuiContext context)
     {
-        this.sidebar.area.draw(0xaa000000);
+        if (this.sidebar.isVisible())
+        {
+            this.sidebar.area.draw(0xaa000000);
+        }
 
         super.draw(context);
-
-        this.font.drawStringWithShadow("Data", this.names.area.x, this.area.y + 10, 0xffffff);
     }
 }
