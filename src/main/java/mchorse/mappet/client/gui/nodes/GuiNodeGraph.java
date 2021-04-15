@@ -204,7 +204,7 @@ public class GuiNodeGraph extends GuiCanvas
             int x = system.main == null ? 0 : system.main.x;
             int y = system.main == null ? 0 : system.main.y;
 
-            if (system.main == null)
+            if (system.main == null && !system.nodes.isEmpty())
             {
                 for (EventNode node : system.nodes.values())
                 {
