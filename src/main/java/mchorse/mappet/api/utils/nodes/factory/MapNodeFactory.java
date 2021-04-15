@@ -4,6 +4,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import mchorse.mappet.api.utils.nodes.Node;
 
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -62,5 +63,11 @@ public class MapNodeFactory implements INodeFactory
         }
 
         throw new IllegalStateException("Node type " + type + " is not part of event node system!");
+    }
+
+    @Override
+    public Collection<String> getKeys()
+    {
+        return this.factory.keySet();
     }
 }

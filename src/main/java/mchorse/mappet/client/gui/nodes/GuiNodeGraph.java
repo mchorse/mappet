@@ -3,10 +3,19 @@ package mchorse.mappet.client.gui.nodes;
 import mchorse.mappet.api.events.nodes.EventNode;
 import mchorse.mappet.api.utils.nodes.NodeRelation;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
+import mchorse.mclib.client.gui.framework.GuiBase;
+import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiCanvas;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.Area;
+import mchorse.mclib.client.gui.utils.Icons;
+import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.mclib.utils.Color;
+import mchorse.mclib.utils.ColorUtils;
+import mchorse.mclib.utils.Interpolation;
+import mchorse.mclib.utils.Interpolations;
+import mchorse.mclib.utils.MathUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
@@ -14,28 +23,170 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class GuiNodeGraph extends GuiCanvas
 {
+    public static final IKey KEYS_CATEGORY = IKey.str("Node editor");
+
     public NodeSystem<EventNode> system;
 
     private List<EventNode> selected = new ArrayList<EventNode>();
     private boolean lastSelected;
+    private boolean selecting;
     private int lastNodeX;
     private int lastNodeY;
 
-    public GuiNodeGraph(Minecraft mc)
+    private Consumer<EventNode> callback;
+
+    public GuiNodeGraph(Minecraft mc, Consumer<EventNode> callback)
     {
         super(mc);
+
+        this.callback = callback;
+
+        this.context(() ->
+        {
+            GuiSimpleContextMenu menu = new GuiSimpleContextMenu(this.mc);
+
+            int x = (int) this.fromX(GuiBase.getCurrent().mouseX);
+            int y = (int) this.fromY(GuiBase.getCurrent().mouseY);
+
+            for (String key : this.system.getFactory().getKeys())
+            {
+                menu.action(Icons.ADD, IKey.str("Add " + key + " node"), () -> this.addNode(key, x, y));
+            }
+
+            if (!this.selected.isEmpty())
+            {
+                menu.action(Icons.FAVORITE, IKey.str("Mark main entry node"), this::markMain);
+                menu.action(Icons.MINIMIZE, IKey.str("Tie to last selected"), this::tieSelected);
+                menu.action(Icons.MAXIMIZE, IKey.str("Untie selected"), this::untieSelected);
+                menu.action(Icons.REMOVE, IKey.str("Remove selected nodes"), this::removeSelected);
+            }
+
+            return menu;
+        });
+
+        this.keys().register(IKey.str("Tie to last selected"), Keyboard.KEY_F, this::tieSelected).inside().category(KEYS_CATEGORY);
+        this.keys().register(IKey.str("Untie selected"), Keyboard.KEY_U, this::untieSelected).inside().category(KEYS_CATEGORY);
+        this.keys().register(IKey.str("Mark main entry node"), Keyboard.KEY_M, this::markMain).inside().category(KEYS_CATEGORY);
+    }
+
+    private void addNode(String key, int x, int y)
+    {
+        EventNode node = this.system.getFactory().create(key);
+
+        if (node != null)
+        {
+            node.x = x;
+            node.y = y;
+
+            this.system.add(node);
+            this.select(node);
+        }
+    }
+
+    private void removeSelected()
+    {
+        for (EventNode selected : this.selected)
+        {
+            this.system.remove(selected);
+        }
+
+        this.select(null);
+    }
+
+    private void tieSelected()
+    {
+        if (this.selected.size() <= 1)
+        {
+            return;
+        }
+
+        EventNode last = this.selected.get(this.selected.size() - 1);
+
+        for (int i = 0; i < this.selected.size() - 1; i++)
+        {
+            this.system.tie(last, this.selected.get(i));
+        }
+    }
+
+    private void untieSelected()
+    {
+        if (this.selected.size() <= 1)
+        {
+            return;
+        }
+
+        EventNode last = this.selected.get(this.selected.size() - 1);
+
+        for (int i = 0; i < this.selected.size() - 1; i++)
+        {
+            this.system.untie(last, this.selected.get(i));
+        }
+    }
+
+    private void markMain()
+    {
+        if (this.selected.isEmpty())
+        {
+            return;
+        }
+
+        this.system.main = this.selected.get(this.selected.size() - 1);
+    }
+
+    public void setNode(EventNode node)
+    {
+        if (this.callback != null)
+        {
+            this.callback.accept(node);
+        }
+    }
+
+    public void select(EventNode node)
+    {
+        this.select(node, false);
+    }
+
+    public void select(EventNode node, boolean add)
+    {
+        if (!add)
+        {
+            this.selected.clear();
+        }
+
+        if (node != null)
+        {
+            this.selected.add(node);
+        }
+
+        this.setNode(node);
+    }
+
+    public Area getNodeArea(EventNode node)
+    {
+        int x1 = this.toX(node.x - 60);
+        int y1 = this.toY(node.y - 35);
+        int x2 = this.toX(node.x + 60);
+        int y2 = this.toY(node.y + 35);
+
+        Area.SHARED.setPoints(x1, y1, x2, y2);
+
+        return Area.SHARED;
     }
 
     public void set(NodeSystem<EventNode> system)
     {
         this.system = system;
+
+        this.selected.clear();
 
         if (system != null)
         {
@@ -78,35 +229,44 @@ public class GuiNodeGraph extends GuiCanvas
         {
             this.lastNodeX = (int) this.fromX(context.mouseX);
             this.lastNodeY = (int) this.fromY(context.mouseY);
+            boolean shift = GuiScreen.isShiftKeyDown();
 
             for (EventNode node : this.system.nodes.values())
             {
-                int x1 = this.toX(node.x - 60);
-                int y1 = this.toY(node.y - 35);
-                int x2 = this.toX(node.x + 60);
-                int y2 = this.toY(node.y + 35);
+                Area nodeArea = this.getNodeArea(node);
 
-                Area.SHARED.setPoints(x1, y1, x2, y2);
-
-                if (Area.SHARED.isInside(context))
+                if (nodeArea.isInside(context))
                 {
-                    if (GuiScreen.isCtrlKeyDown())
+                    if (shift)
                     {
                         if (!this.selected.contains(node))
                         {
-                            this.selected.add(node);
+                            this.select(node, true);
+                        }
+                        else
+                        {
+                            this.selected.remove(node);
+                            this.select(node, true);
                         }
                     }
-                    else
+                    else if (!this.selected.contains(node))
                     {
-                        this.selected.clear();
-                        this.selected.add(node);
+                        this.select(node);
                     }
 
                     this.lastSelected = true;
 
                     return true;
                 }
+            }
+
+            if (shift)
+            {
+                this.selecting = true;
+            }
+            else
+            {
+                this.select(null);
             }
         }
 
@@ -118,7 +278,31 @@ public class GuiNodeGraph extends GuiCanvas
     {
         super.mouseReleased(context);
 
+        if (this.selecting)
+        {
+            Area area = new Area();
+            boolean wasSelected = !this.selected.isEmpty();
+
+            area.setPoints(this.lastX, this.lastY, context.mouseX, context.mouseY);
+
+            for (EventNode node : this.system.nodes.values())
+            {
+                Area nodeArea = this.getNodeArea(node);
+
+                if (nodeArea.intersects(area) && !this.selected.contains(node))
+                {
+                    this.selected.add(0, node);
+                }
+            }
+
+            if (!wasSelected && !this.selected.isEmpty())
+            {
+                this.setNode(this.selected.get(this.selected.size() - 1));
+            }
+        }
+
         this.lastSelected = false;
+        this.selecting = false;
     }
 
     @Override
@@ -155,33 +339,53 @@ public class GuiNodeGraph extends GuiCanvas
         GlStateManager.enableBlend();
         GlStateManager.disableTexture2D();
         GlStateManager.glLineWidth(3);
+        GlStateManager.shadeModel(GL11.GL_SMOOTH);
         GlStateManager.color(1F, 1F, 1F, 1F);
 
         BufferBuilder builder = Tessellator.getInstance().getBuffer();
+        Color a = new Color();
+        Color b = new Color();
 
         builder.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
+
+        float factor = (context.tick + context.partialTicks) / 60F;
+        final float segments = 8F;
 
         for (NodeRelation<EventNode> relation : this.system.relations)
         {
             int x1 = this.toX(relation.input.x);
-            int y1 = this.toY(relation.input.y);
+            int y1 = this.toY(relation.input.y - 42);
             int x2 = this.toX(relation.output.x);
-            int y2 = this.toY(relation.output.y);
+            int y2 = this.toY(relation.output.y + 42);
 
-            builder.pos(x1, y1, 0).color(0.0F, 0.0F, 0F, 0.75F).endVertex();
-            builder.pos(x2, y2, 0).color(0.0F, 0.0F, 0F, 0.75F).endVertex();
+            for (int i = 0; i < segments; i ++)
+            {
+                float factor1 = i / segments;
+                float factor2 = (i + 1) / segments;
+                float color1 = 1 - MathUtils.clamp(Math.abs((1 - factor1) - (factor % 1)) / 0.2F, 0F, 1F);
+                float color2 = 1 - MathUtils.clamp(Math.abs((1 - factor2) - (factor % 1)) / 0.2F, 0F, 1F);
+
+                color1 = Math.max(color1, 1 - MathUtils.clamp(Math.abs(((1 - factor1) + 1) - (factor % 1)) / 0.2F, 0F, 1F));
+                color2 = Math.max(color2, 1 - MathUtils.clamp(Math.abs(((1 - factor2) + 1) - (factor % 1)) / 0.2F, 0F, 1F));
+
+                color1 = Math.max(color1, 1 - MathUtils.clamp(Math.abs(((1 - factor1) - 1) - (factor % 1)) / 0.2F, 0F, 1F));
+                color2 = Math.max(color2, 1 - MathUtils.clamp(Math.abs(((1 - factor2) - 1) - (factor % 1)) / 0.2F, 0F, 1F));
+
+                a.set(0, Interpolations.lerp(0, 0.5F, color1), Interpolations.lerp(0, 1F, color1), 0.75F);
+                b.set(0, Interpolations.lerp(0, 0.5F, color2), Interpolations.lerp(0, 1F, color2), 0.75F);
+
+                builder.pos(Interpolations.lerp(x1, x2, factor1), Interpolations.lerp(y1, y2, factor1), 0).color(a.r, a.g, a.b, a.a).endVertex();
+                builder.pos(Interpolations.lerp(x1, x2, factor2), Interpolations.lerp(y1, y2, factor2), 0).color(b.r, b.g, b.b, b.a).endVertex();
+            }
         }
 
         Tessellator.getInstance().draw();
 
+        Area main = null;
+
         for (EventNode node : this.system.nodes.values())
         {
-            int x1 = this.toX(node.x - 60);
-            int y1 = this.toY(node.y - 35);
-            int x2 = this.toX(node.x + 60);
-            int y2 = this.toY(node.y + 35);
-
-            Area.SHARED.setPoints(x1, y1, x2, y2);
+            Area nodeArea = this.getNodeArea(node);
 
             boolean hover = Area.SHARED.isInside(context);
             int index = this.selected.indexOf(node);
@@ -191,16 +395,33 @@ public class GuiNodeGraph extends GuiCanvas
 
             if (index >= 0)
             {
-                int colorSh = index == 0 ? 0x0088ff : 0x0022aa;
+                int colorSh = index == this.selected.size() - 1 ? 0x0088ff : 0x0022aa;
 
-                GuiDraw.drawDropShadow(x1 + 4, y1 + 4, x2 - 4, y2 - 4, 8, 0xff000000 + colorSh, colorSh);
+                GuiDraw.drawDropShadow(nodeArea.x + 4, nodeArea.y + 4, nodeArea.ex() - 4, nodeArea.ey() - 4, 8, 0xff000000 + colorSh, colorSh);
             }
 
-            Gui.drawRect(x1 + 1, y1, x2 - 1, y2, colorBg);
-            Gui.drawRect(x1, y1 + 1, x2, y2 - 1, colorBg);
-            GuiDraw.drawOutline(x1 + 3, y1 + 3, x2 - 3, y2 - 3, colorFg);
+            Gui.drawRect(nodeArea.x + 1, nodeArea.y, nodeArea.ex() - 1, nodeArea.ey(), colorBg);
+            Gui.drawRect(nodeArea.x, nodeArea.y + 1, nodeArea.ex(), nodeArea.ey() - 1, colorBg);
+            GuiDraw.drawOutline(nodeArea.x + 3, nodeArea.y + 3, nodeArea.ex() - 3, nodeArea.ey() - 3, colorFg);
+
+            if (node == this.system.main)
+            {
+                main = new Area();
+                main.copy(nodeArea);
+            }
+        }
+
+        if (main != null)
+        {
+            GlStateManager.color(1F, 1F, 1F, 1F);
+            GuiDraw.drawOutlinedIcon(Icons.DOWNLOAD, main.mx(), main.y - 4, 0xffffffff, 0.5F, 1F);
         }
 
         GlStateManager.glLineWidth(1);
+
+        if (this.selecting)
+        {
+            Gui.drawRect(this.lastX, this.lastY, context.mouseX, context.mouseY, 0x880088ff);
+        }
     }
 }

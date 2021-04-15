@@ -7,7 +7,9 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -24,6 +26,11 @@ public class NodeSystem <T extends Node> implements INBTSerializable<NBTTagCompo
     public NodeSystem(INodeFactory<T> factory)
     {
         this.factory = factory;
+    }
+
+    public INodeFactory<T> getFactory()
+    {
+        return this.factory;
     }
 
     /**
@@ -71,6 +78,21 @@ public class NodeSystem <T extends Node> implements INBTSerializable<NBTTagCompo
         return false;
     }
 
+    public void untie(T output, T input)
+    {
+        NodeRelation<T> relation = this.getRelation(output, input);
+
+        if (relation == null)
+        {
+            relation = this.getRelation(input, output);
+        }
+
+        if (relation != null)
+        {
+            this.relations.remove(relation);
+        }
+    }
+
     public void addTie(T output, T toAdd)
     {
         this.add(toAdd);
@@ -83,21 +105,41 @@ public class NodeSystem <T extends Node> implements INBTSerializable<NBTTagCompo
         this.main = node;
     }
 
+    public boolean remove(T node)
+    {
+        UUID key = node.getId();
+
+        if (!this.nodes.containsKey(key))
+        {
+            return false;
+        }
+
+        this.nodes.remove(key);
+        this.relations.removeIf((relation) -> relation.input == node || relation.output == node);
+
+        return true;
+    }
+
     /**
      * Checks whether output and input has a relationship in this
      * node system
      */
     public boolean hasRelation(T output, T input)
     {
+        return this.getRelation(output, input) != null;
+    }
+
+    public NodeRelation<T> getRelation(T output, T input)
+    {
         for (NodeRelation<T> relation : this.relations)
         {
             if (Objects.equals(relation.output.getId(), output.getId()) && Objects.equals(relation.input.getId(), input.getId()))
             {
-                return true;
+                return relation;
             }
         }
 
-        return false;
+        return null;
     }
 
     public List<T> getChildren(T node)
