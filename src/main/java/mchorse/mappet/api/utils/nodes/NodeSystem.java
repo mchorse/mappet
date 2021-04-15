@@ -3,6 +3,8 @@ package mchorse.mappet.api.utils.nodes;
 import mchorse.mappet.api.utils.nodes.factory.INodeFactory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagShort;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -203,34 +205,30 @@ public class NodeSystem <T extends Node> implements INBTSerializable<NBTTagCompo
             NBTTagCompound nodeTag = node.serializeNBT();
 
             nodeTag.setString("Type", this.factory.getType(node));
+
+            if (this.relations.containsKey(node.getId()))
+            {
+                NBTTagList relations = new NBTTagList();
+
+                for (NodeRelation<T> relation : this.relations.get(node.getId()))
+                {
+                    relations.appendTag(new NBTTagString(relation.input.getId().toString()));
+                }
+
+                nodeTag.setTag("Relations", relations);
+            }
+
             nodes.appendTag(nodeTag);
         }
 
         if (nodes.tagCount() > 0)
         {
-            tag.setTag("Nodes", nodes);
-
             if (this.main != null && this.nodes.containsKey(this.main.getId()))
             {
                 tag.setString("Main", this.main.getId().toString());
             }
 
-            NBTTagList relations = new NBTTagList();
-
-            for (List<NodeRelation<T>> list : this.relations.values())
-            {
-                for (NodeRelation<T> relation : list)
-                {
-                    NBTTagCompound tagRelation = new NBTTagCompound();
-
-                    tagRelation.setString("Output", relation.output.getId().toString());
-                    tagRelation.setString("Input", relation.input.getId().toString());
-
-                    relations.appendTag(tagRelation);
-                }
-            }
-
-            tag.setTag("Relations", relations);
+            tag.setTag("Nodes", nodes);
         }
 
         return tag;
@@ -239,6 +237,8 @@ public class NodeSystem <T extends Node> implements INBTSerializable<NBTTagCompo
     @Override
     public void deserializeNBT(NBTTagCompound tag)
     {
+        Map<UUID, List<UUID>> map = new HashMap<UUID, List<UUID>>();
+
         if (tag.hasKey("Nodes", Constants.NBT.TAG_LIST))
         {
             NBTTagList nodes = tag.getTagList("Nodes", Constants.NBT.TAG_COMPOUND);
@@ -250,26 +250,38 @@ public class NodeSystem <T extends Node> implements INBTSerializable<NBTTagCompo
 
                 node.deserializeNBT(nodeTag);
 
+                /* Relations are not serialized by nodes themselves */
+                if (nodeTag.hasKey("Relations"))
+                {
+                    List<UUID> uuids = new ArrayList<UUID>();
+                    NBTTagList relations = nodeTag.getTagList("Relations", Constants.NBT.TAG_STRING);
+
+                    map.put(node.getId(), uuids);
+
+                    for (int j = 0; j < relations.tagCount(); j++)
+                    {
+                        uuids.add(UUID.fromString(relations.getStringTagAt(j)));
+                    }
+                }
+
                 this.add(node);
             }
         }
 
-        if (tag.hasKey("Relations"))
+        /* Tie collected nodes */
+        for (Map.Entry<UUID, List<UUID>> entry : map.entrySet())
         {
-            NBTTagList relations = tag.getTagList("Relations", Constants.NBT.TAG_COMPOUND);
-
-            for (int i = 0; i < relations.tagCount(); i++)
+            for (UUID input : entry.getValue())
             {
-                NBTTagCompound relationTag = relations.getCompoundTagAt(i);
-                T output = this.nodes.get(UUID.fromString(relationTag.getString("Output")));
-                T input = this.nodes.get(UUID.fromString(relationTag.getString("Input")));
+                T nodeOutput = this.nodes.get(entry.getKey());
+                T nodeInput = this.nodes.get(input);
 
-                if (output == input || input == null || output == null)
+                if (nodeOutput == nodeInput || nodeInput == null || nodeOutput == null)
                 {
                     continue;
                 }
 
-                this.tie(output, input);
+                this.tie(nodeOutput, nodeInput);
             }
         }
 
