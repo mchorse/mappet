@@ -13,7 +13,6 @@ import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.Color;
 import mchorse.mclib.utils.ColorUtils;
-import mchorse.mclib.utils.Interpolation;
 import mchorse.mclib.utils.Interpolations;
 import mchorse.mclib.utils.MathUtils;
 import net.minecraft.client.Minecraft;
@@ -26,13 +25,21 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
+import javax.vecmath.Vector2d;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Consumer;
 
 public class GuiNodeGraph extends GuiCanvas
 {
     public static final IKey KEYS_CATEGORY = IKey.str("Node editor");
+
+    public static final int ACTIVE = 0x0088ff;
+    public static final int IF = 0x00ff44;
+    public static final int ELSE = 0xff0044;
+    public static final int INACTIVE = 0xffbb00;
 
     public NodeSystem<EventNode> system;
 
@@ -110,10 +117,14 @@ public class GuiNodeGraph extends GuiCanvas
         }
 
         EventNode last = this.selected.get(this.selected.size() - 1);
+        List<EventNode> nodes = new ArrayList<EventNode>(this.selected);
 
-        for (int i = 0; i < this.selected.size() - 1; i++)
+        nodes.remove(last);
+        Collections.sort(nodes, Comparator.comparingInt(a -> a.x));
+
+        for (EventNode node : nodes)
         {
-            this.system.tie(last, this.selected.get(i));
+            this.system.tie(last, node);
         }
     }
 
@@ -343,44 +354,17 @@ public class GuiNodeGraph extends GuiCanvas
         GlStateManager.color(1F, 1F, 1F, 1F);
 
         BufferBuilder builder = Tessellator.getInstance().getBuffer();
-        Color a = new Color();
-        Color b = new Color();
+        EventNode lastSelected = this.selected.isEmpty() ? null : this.selected.get(this.selected.size() - 1);
+        List<Vector2d> positions = new ArrayList<Vector2d>();
 
+        /* Draw connections */
         builder.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
 
-        float factor = (context.tick + context.partialTicks) / 60F;
-        final float segments = 8F;
-
-        for (NodeRelation<EventNode> relation : this.system.relations)
-        {
-            int x1 = this.toX(relation.input.x);
-            int y1 = this.toY(relation.input.y - 42);
-            int x2 = this.toX(relation.output.x);
-            int y2 = this.toY(relation.output.y + 42);
-
-            for (int i = 0; i < segments; i ++)
-            {
-                float factor1 = i / segments;
-                float factor2 = (i + 1) / segments;
-                float color1 = 1 - MathUtils.clamp(Math.abs((1 - factor1) - (factor % 1)) / 0.2F, 0F, 1F);
-                float color2 = 1 - MathUtils.clamp(Math.abs((1 - factor2) - (factor % 1)) / 0.2F, 0F, 1F);
-
-                color1 = Math.max(color1, 1 - MathUtils.clamp(Math.abs(((1 - factor1) + 1) - (factor % 1)) / 0.2F, 0F, 1F));
-                color2 = Math.max(color2, 1 - MathUtils.clamp(Math.abs(((1 - factor2) + 1) - (factor % 1)) / 0.2F, 0F, 1F));
-
-                color1 = Math.max(color1, 1 - MathUtils.clamp(Math.abs(((1 - factor1) - 1) - (factor % 1)) / 0.2F, 0F, 1F));
-                color2 = Math.max(color2, 1 - MathUtils.clamp(Math.abs(((1 - factor2) - 1) - (factor % 1)) / 0.2F, 0F, 1F));
-
-                a.set(0, Interpolations.lerp(0, 0.5F, color1), Interpolations.lerp(0, 1F, color1), 0.75F);
-                b.set(0, Interpolations.lerp(0, 0.5F, color2), Interpolations.lerp(0, 1F, color2), 0.75F);
-
-                builder.pos(Interpolations.lerp(x1, x2, factor1), Interpolations.lerp(y1, y2, factor1), 0).color(a.r, a.g, a.b, a.a).endVertex();
-                builder.pos(Interpolations.lerp(x1, x2, factor2), Interpolations.lerp(y1, y2, factor2), 0).color(b.r, b.g, b.b, b.a).endVertex();
-            }
-        }
+        this.renderConnections(context, builder, positions, lastSelected);
 
         Tessellator.getInstance().draw();
 
+        /* Draw node boxes */
         Area main = null;
 
         for (EventNode node : this.system.nodes.values())
@@ -411,6 +395,16 @@ public class GuiNodeGraph extends GuiCanvas
             }
         }
 
+        /* Draw selected node's indices */
+        for (int i = 0; i < positions.size(); i++)
+        {
+            Vector2d pos = positions.get(i);
+            String label = String.valueOf(i);
+
+            this.font.drawStringWithShadow(label, (int) pos.x - this.font.getStringWidth(label) / 2, (int) pos.y - 4, lastSelected.binary && i >= 2 ? 0x666666 : 0xffffff);
+        }
+
+        /* Draw main entry node icon */
         if (main != null)
         {
             GlStateManager.color(1F, 1F, 1F, 1F);
@@ -419,9 +413,94 @@ public class GuiNodeGraph extends GuiCanvas
 
         GlStateManager.glLineWidth(1);
 
+        /* Draw selection */
         if (this.selecting)
         {
-            Gui.drawRect(this.lastX, this.lastY, context.mouseX, context.mouseY, 0x880088ff);
+            Gui.drawRect(this.lastX, this.lastY, context.mouseX, context.mouseY, 0x440088ff);
+        }
+    }
+
+    private void renderConnections(GuiContext context, BufferBuilder builder, List<Vector2d> positions, EventNode lastSelected)
+    {
+        float factor = (context.tick + context.partialTicks) / 60F;
+        final float segments = 8F;
+
+        Color a = new Color();
+        Color b = new Color();
+
+        for (List<NodeRelation<EventNode>> relations : this.system.relations.values())
+        {
+            for (int r = 0; r < relations.size(); r++)
+            {
+                NodeRelation<EventNode> relation = relations.get(r);
+
+                int x1 = this.toX(relation.input.x);
+                int y1 = this.toY(relation.input.y - 42);
+                int x2 = this.toX(relation.output.x);
+                int y2 = this.toY(relation.output.y + 42);
+
+                float opacity = 0.75F;
+                boolean binary = relation.output.binary;
+
+                if (binary && r >= 2)
+                {
+                    opacity = 0.25F;
+                }
+
+                for (int i = 0; i < segments; i ++)
+                {
+                    float factor1 = i / segments;
+                    float factor2 = (i + 1) / segments;
+                    float color1 = 1 - MathUtils.clamp(Math.abs((1 - factor1) - (factor % 1)) / 0.2F, 0F, 1F);
+                    float color2 = 1 - MathUtils.clamp(Math.abs((1 - factor2) - (factor % 1)) / 0.2F, 0F, 1F);
+
+                    color1 = Math.max(color1, 1 - MathUtils.clamp(Math.abs(((1 - factor1) + 1) - (factor % 1)) / 0.2F, 0F, 1F));
+                    color2 = Math.max(color2, 1 - MathUtils.clamp(Math.abs(((1 - factor2) + 1) - (factor % 1)) / 0.2F, 0F, 1F));
+
+                    color1 = Math.max(color1, 1 - MathUtils.clamp(Math.abs(((1 - factor1) - 1) - (factor % 1)) / 0.2F, 0F, 1F));
+                    color2 = Math.max(color2, 1 - MathUtils.clamp(Math.abs(((1 - factor2) - 1) - (factor % 1)) / 0.2F, 0F, 1F));
+
+                    int c1 = 0;
+                    int c2 = ACTIVE;
+
+                    if (binary)
+                    {
+                        c2 = r == 0 ? IF : (r == 1 ? ELSE : INACTIVE);
+                    }
+
+                    ColorUtils.interpolate(a, c1, c2, color1, false);
+                    ColorUtils.interpolate(b, c1, c2, color2, false);
+
+                    a.a = opacity;
+                    b.a = opacity;
+
+                    if (y2 <= y1)
+                    {
+                        builder.pos(Interpolations.lerp(x1, x2, factor1), Interpolations.lerp(y1, y2, factor1), 0).color(a.r, a.g, a.b, a.a).endVertex();
+                        builder.pos(Interpolations.lerp(x1, x2, factor2), Interpolations.lerp(y1, y2, factor2), 0).color(b.r, b.g, b.b, b.a).endVertex();
+                    }
+                    else
+                    {
+                        if (i == segments / 2)
+                        {
+                            builder.pos(Interpolations.lerp(x1, x2, 0.5F), y1, 0).color(a.r, a.g, a.b, a.a).endVertex();
+                            builder.pos(Interpolations.lerp(x1, x2, 0.5F), y2, 0).color(b.r, b.g, b.b, b.a).endVertex();
+                        }
+                        else
+                        {
+                            int y = i < segments / 2 ? y1 : y2;
+
+                            builder.pos(Interpolations.lerp(x1, x2, i == segments / 2 + 1 ? 0.5F : factor1), y, 0).color(a.r, a.g, a.b, a.a).endVertex();
+                            builder.pos(Interpolations.lerp(x1, x2, i == segments / 2 - 1 ? 0.5F : factor2), y, 0).color(b.r, b.g, b.b, b.a).endVertex();
+                        }
+                    }
+                }
+
+                if (relation.output == lastSelected)
+                {
+                    positions.add(new Vector2d((x1 + x2) / 2F, (y1 + y2) / 2F));
+                }
+            }
         }
     }
 }

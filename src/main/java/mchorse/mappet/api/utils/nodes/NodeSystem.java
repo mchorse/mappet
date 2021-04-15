@@ -7,7 +7,6 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -20,7 +19,7 @@ public class NodeSystem <T extends Node> implements INBTSerializable<NBTTagCompo
     private INodeFactory<T> factory;
 
     public Map<UUID, T> nodes = new HashMap<UUID, T>();
-    public List<NodeRelation<T>> relations = new ArrayList<NodeRelation<T>>();
+    public Map<UUID, List<NodeRelation<T>>> relations = new HashMap<UUID, List<NodeRelation<T>>>();
     public T main;
 
     public NodeSystem(INodeFactory<T> factory)
@@ -68,9 +67,23 @@ public class NodeSystem <T extends Node> implements INBTSerializable<NBTTagCompo
      */
     public boolean tie(T output, T input)
     {
+        if (output == input)
+        {
+            return false;
+        }
+
         if (this.nodes.containsKey(output.getId()) && this.nodes.containsKey(input.getId()) && !this.hasRelation(output, input))
         {
-            this.relations.add(new NodeRelation<T>(output, input));
+            List<NodeRelation<T>> relations = this.relations.get(output.getId());
+
+            if (relations == null)
+            {
+                relations = new ArrayList<NodeRelation<T>>();
+
+                this.relations.put(output.getId(), relations);
+            }
+
+            relations.add(new NodeRelation<T>(output, input));
 
             return true;
         }
@@ -80,16 +93,16 @@ public class NodeSystem <T extends Node> implements INBTSerializable<NBTTagCompo
 
     public void untie(T output, T input)
     {
-        NodeRelation<T> relation = this.getRelation(output, input);
+        List<NodeRelation<T>> relations = this.relations.get(output.getId());
 
-        if (relation == null)
+        if (relations != null)
         {
-            relation = this.getRelation(input, output);
-        }
+            relations.removeIf((relation) -> relation.input == input);
 
-        if (relation != null)
-        {
-            this.relations.remove(relation);
+            if (relations.isEmpty())
+            {
+                this.relations.remove(output.getId());
+            }
         }
     }
 
@@ -115,7 +128,22 @@ public class NodeSystem <T extends Node> implements INBTSerializable<NBTTagCompo
         }
 
         this.nodes.remove(key);
-        this.relations.removeIf((relation) -> relation.input == node || relation.output == node);
+
+        this.relations.remove(node.getId());
+
+        Iterator<Map.Entry<UUID, List<NodeRelation<T>>>> it = this.relations.entrySet().iterator();
+
+        while (it.hasNext())
+        {
+            Map.Entry<UUID, List<NodeRelation<T>>> entry = it.next();
+
+            entry.getValue().removeIf(relation -> relation.input == node);
+
+            if (entry.getValue().isEmpty())
+            {
+                it.remove();
+            }
+        }
 
         return true;
     }
@@ -131,9 +159,14 @@ public class NodeSystem <T extends Node> implements INBTSerializable<NBTTagCompo
 
     public NodeRelation<T> getRelation(T output, T input)
     {
-        for (NodeRelation<T> relation : this.relations)
+        if (!this.relations.containsKey(output.getId()))
         {
-            if (Objects.equals(relation.output.getId(), output.getId()) && Objects.equals(relation.input.getId(), input.getId()))
+            return null;
+        }
+
+        for (NodeRelation<T> relation : this.relations.get(output.getId()))
+        {
+            if (Objects.equals(relation.input.getId(), input.getId()))
             {
                 return relation;
             }
@@ -146,7 +179,7 @@ public class NodeSystem <T extends Node> implements INBTSerializable<NBTTagCompo
     {
         List<T> children = new ArrayList<T>();
 
-        for (NodeRelation<T> relation : this.relations)
+        for (NodeRelation<T> relation : this.relations.get(node.getId()))
         {
             if (relation.output == node)
             {
@@ -184,14 +217,17 @@ public class NodeSystem <T extends Node> implements INBTSerializable<NBTTagCompo
 
             NBTTagList relations = new NBTTagList();
 
-            for (NodeRelation<T> relation : this.relations)
+            for (List<NodeRelation<T>> list : this.relations.values())
             {
-                NBTTagCompound tagRelation = new NBTTagCompound();
+                for (NodeRelation<T> relation : list)
+                {
+                    NBTTagCompound tagRelation = new NBTTagCompound();
 
-                tagRelation.setString("Output", relation.output.getId().toString());
-                tagRelation.setString("Input", relation.input.getId().toString());
+                    tagRelation.setString("Output", relation.output.getId().toString());
+                    tagRelation.setString("Input", relation.input.getId().toString());
 
-                relations.appendTag(tagRelation);
+                    relations.appendTag(tagRelation);
+                }
             }
 
             tag.setTag("Relations", relations);
@@ -228,7 +264,12 @@ public class NodeSystem <T extends Node> implements INBTSerializable<NBTTagCompo
                 T output = this.nodes.get(UUID.fromString(relationTag.getString("Output")));
                 T input = this.nodes.get(UUID.fromString(relationTag.getString("Input")));
 
-                this.relations.add(new NodeRelation<T>(output, input));
+                if (output == input || input == null || output == null)
+                {
+                    continue;
+                }
+
+                this.tie(output, input);
             }
         }
 

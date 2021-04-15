@@ -10,7 +10,6 @@ import mchorse.mappet.client.gui.nodes.GuiCommandNodePanel;
 import mchorse.mappet.client.gui.nodes.GuiConditionNodePanel;
 import mchorse.mappet.client.gui.nodes.GuiNodeGraph;
 import mchorse.mappet.client.gui.nodes.GuiNodePanel;
-import mchorse.mclib.client.gui.framework.elements.utils.GuiDrawable;
 import net.minecraft.client.Minecraft;
 
 public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventNode>>
@@ -25,15 +24,7 @@ public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventNode>
         this.graph = new GuiNodeGraph(mc, this::pickNode);
         this.graph.flex().relative(this.editor).wh(1F, 1F);
 
-        GuiDrawable drawable = new GuiDrawable((context) ->
-        {
-            if (this.panel != null)
-            {
-                // this.panel.area.draw(0xaa000000);
-            }
-        });
-
-        this.add(this.graph, drawable, this.panel);
+        this.add(this.graph, this.panel);
 
         this.fill("", null);
     }

@@ -24,5 +24,7 @@ public abstract class GuiNodePanel <T extends EventNode> extends GuiElement
     public void set(T node)
     {
         this.node = node;
+
+        this.binary.toggled(node.binary);
     }
 }
