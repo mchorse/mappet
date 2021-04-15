@@ -52,7 +52,6 @@ public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTag
 
         this.sidebar = new GuiElement(mc);
         this.sidebar.flex().relative(this).x(1F).w(200).h(1F).anchorX(1F);
-        this.sidebar.add(buttons);
 
         this.toggleSidebar = new GuiIconElement(mc, Icons.RIGHTLOAD, (element) -> this.toggleSidebar());
         this.toggleSidebar.flex().relative(this.sidebar).x(-20);
@@ -67,7 +66,7 @@ public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTag
         this.names = new GuiStringSearchListElement(mc, (list) -> this.pickData(list.get(0)));
         this.names.label(IKey.str("Search..."));
         this.names.flex().relative(this.sidebar).xy(10, 25).w(1F, -20).h(1F, -35);
-        this.sidebar.add(drawable, this.names);
+        this.sidebar.add(drawable, this.names, buttons);
 
         this.editor = new GuiScrollElement(mc);
         this.editor.markContainer();
@@ -227,9 +226,12 @@ public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTag
 
     public void fillNames(List<String> names)
     {
+        String value = this.names.list.getCurrentFirst();
+
         this.names.list.clear();
         this.names.list.add(names);
         this.names.list.sort();
+        this.names.list.setCurrentScroll(value);
     }
 
     @Override

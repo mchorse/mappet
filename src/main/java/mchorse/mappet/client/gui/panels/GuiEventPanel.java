@@ -10,6 +10,8 @@ import mchorse.mappet.client.gui.nodes.GuiCommandNodePanel;
 import mchorse.mappet.client.gui.nodes.GuiConditionNodePanel;
 import mchorse.mappet.client.gui.nodes.GuiNodeGraph;
 import mchorse.mappet.client.gui.nodes.GuiNodePanel;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import net.minecraft.client.Minecraft;
 
 public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventNode>>
@@ -87,6 +89,20 @@ public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventNode>
         if (data != null)
         {
             this.graph.set(data);
+        }
+    }
+
+    @Override
+    public void draw(GuiContext context)
+    {
+        super.draw(context);
+
+        if (!this.graph.isVisible())
+        {
+            int w = this.editor.area.w / 2;
+            int x = this.editor.area.mx() - w / 2;
+
+            GuiDraw.drawMultiText(this.font, "Select or create an event in the list on the right, to start editing...", x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
         }
     }
 }

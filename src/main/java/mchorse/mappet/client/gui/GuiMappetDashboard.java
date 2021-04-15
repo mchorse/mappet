@@ -12,10 +12,22 @@ import net.minecraft.client.Minecraft;
 
 public class GuiMappetDashboard extends GuiAbstractDashboard
 {
+    public static GuiMappetDashboard dashboard;
+
     public GuiCraftingTablePanel crafting;
     public GuiQuestPanel quest;
     public GuiEventPanel event;
     public GuiDialoguePanel dialogue;
+
+    public static GuiMappetDashboard get(Minecraft mc)
+    {
+        if (dashboard == null)
+        {
+            dashboard = new GuiMappetDashboard(mc);
+        }
+
+        return dashboard;
+    }
 
     public GuiMappetDashboard(Minecraft mc)
     {
@@ -38,7 +50,7 @@ public class GuiMappetDashboard extends GuiAbstractDashboard
 
         this.panels.registerPanel(this.crafting, IKey.lang("mappet.gui.panels.crafting"), Icons.WRENCH);
         this.panels.registerPanel(this.quest, IKey.lang("mappet.gui.panels.quests"), Icons.EXCLAMATION);
-        this.panels.registerPanel(this.event, IKey.lang("mappet.gui.panels.events"), Icons.GEAR);
+        this.panels.registerPanel(this.event, IKey.lang("mappet.gui.panels.events"), Icons.FILE);
         this.panels.registerPanel(this.dialogue, IKey.lang("mappet.gui.panels.dialogues"), Icons.BUBBLE);
 
         this.panels.setPanel(this.crafting);

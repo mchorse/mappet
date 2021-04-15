@@ -12,6 +12,7 @@ import mchorse.mappet.api.quests.QuestManager;
 import mchorse.mappet.api.states.States;
 import mchorse.mappet.blocks.BlockEmitter;
 import mchorse.mappet.blocks.BlockTrigger;
+import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.commands.CommandMappet;
 import mchorse.mclib.McLib;
 import mchorse.mclib.commands.utils.L10n;
@@ -19,6 +20,7 @@ import mchorse.mclib.config.ConfigBuilder;
 import mchorse.mclib.config.values.ValueBoolean;
 import mchorse.mclib.config.values.ValueInt;
 import mchorse.mclib.events.RegisterConfigEvent;
+import mchorse.mclib.events.RemoveDashboardPanels;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -33,6 +35,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.File;
 
@@ -98,6 +102,13 @@ public final class Mappet
         nodePulseBackgroundMcLibPrimary = builder.getBoolean("pulse_background_mclib", false);
 
         builder.getCategory().markClientSide();
+    }
+
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onDashboardPanelsRemove(RemoveDashboardPanels event)
+    {
+        GuiMappetDashboard.dashboard = null;
     }
 
     @EventHandler

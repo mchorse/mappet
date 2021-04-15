@@ -37,7 +37,7 @@ public class KeyboardHandler
 
         if (this.openMappetDashboard.isPressed())
         {
-            mc.displayGuiScreen(new GuiMappetDashboard(mc));
+            mc.displayGuiScreen(GuiMappetDashboard.get(mc));
         }
     }
 }
