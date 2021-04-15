@@ -16,6 +16,7 @@ import mchorse.mappet.commands.CommandMappet;
 import mchorse.mclib.McLib;
 import mchorse.mclib.commands.utils.L10n;
 import mchorse.mclib.config.ConfigBuilder;
+import mchorse.mclib.config.values.ValueBoolean;
 import mchorse.mclib.config.values.ValueInt;
 import mchorse.mclib.events.RegisterConfigEvent;
 import net.minecraft.client.Minecraft;
@@ -78,6 +79,9 @@ public final class Mappet
     /* Configuration */
     public static ValueInt eventMaxExecutions;
 
+    public static ValueInt nodePulseBackgroundColor;
+    public static ValueBoolean nodePulseBackgroundMcLibPrimary;
+
     public Mappet()
     {
         MinecraftForge.EVENT_BUS.register(new RegisterHandler());
@@ -89,6 +93,11 @@ public final class Mappet
         ConfigBuilder builder = event.createBuilder(MOD_ID);
 
         eventMaxExecutions = builder.category("events").getInt("max_executions", 10000, 100, 1000000);
+
+        nodePulseBackgroundColor = builder.category("gui").getInt("pulse_background_color", 0x000000).color();
+        nodePulseBackgroundMcLibPrimary = builder.getBoolean("pulse_background_mclib", false);
+
+        builder.getCategory().markClientSide();
     }
 
     @EventHandler

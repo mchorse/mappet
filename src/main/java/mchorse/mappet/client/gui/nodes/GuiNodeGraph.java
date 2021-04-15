@@ -1,8 +1,10 @@
 package mchorse.mappet.client.gui.nodes;
 
+import mchorse.mappet.Mappet;
 import mchorse.mappet.api.events.nodes.EventNode;
 import mchorse.mappet.api.utils.nodes.NodeRelation;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
+import mchorse.mclib.McLib;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiCanvas;
@@ -27,6 +29,7 @@ import org.lwjgl.opengl.GL11;
 
 import javax.vecmath.Vector2d;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -241,8 +244,11 @@ public class GuiNodeGraph extends GuiCanvas
             this.lastNodeX = (int) this.fromX(context.mouseX);
             this.lastNodeY = (int) this.fromY(context.mouseY);
             boolean shift = GuiScreen.isShiftKeyDown();
+            List<EventNode> nodes = new ArrayList<EventNode>(this.system.nodes.values());
 
-            for (EventNode node : this.system.nodes.values())
+            Collections.reverse(nodes);
+
+            for (EventNode node : nodes)
             {
                 Area nodeArea = this.getNodeArea(node);
 
@@ -460,7 +466,7 @@ public class GuiNodeGraph extends GuiCanvas
                     color1 = Math.max(color1, 1 - MathUtils.clamp(Math.abs(((1 - factor1) - 1) - (factor % 1)) / 0.2F, 0F, 1F));
                     color2 = Math.max(color2, 1 - MathUtils.clamp(Math.abs(((1 - factor2) - 1) - (factor % 1)) / 0.2F, 0F, 1F));
 
-                    int c1 = 0;
+                    int c1 = Mappet.nodePulseBackgroundMcLibPrimary.get() ? McLib.primaryColor.get() : Mappet.nodePulseBackgroundColor.get();
                     int c2 = ACTIVE;
 
                     if (binary)

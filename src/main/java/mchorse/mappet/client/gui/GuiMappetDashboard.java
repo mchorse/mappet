@@ -1,8 +1,8 @@
 package mchorse.mappet.client.gui;
 
 import mchorse.mappet.client.gui.panels.GuiCraftingTablePanel;
+import mchorse.mappet.client.gui.panels.GuiDialoguePanel;
 import mchorse.mappet.client.gui.panels.GuiEventPanel;
-import mchorse.mappet.client.gui.panels.GuiMappetDashboardPanel;
 import mchorse.mappet.client.gui.panels.GuiQuestPanel;
 import mchorse.mclib.client.gui.mclib.GuiAbstractDashboard;
 import mchorse.mclib.client.gui.mclib.GuiDashboardPanels;
@@ -15,7 +15,7 @@ public class GuiMappetDashboard extends GuiAbstractDashboard
     public GuiCraftingTablePanel crafting;
     public GuiQuestPanel quest;
     public GuiEventPanel event;
-    public GuiMappetDashboardPanel dialogue;
+    public GuiDialoguePanel dialogue;
 
     public GuiMappetDashboard(Minecraft mc)
     {
@@ -34,10 +34,12 @@ public class GuiMappetDashboard extends GuiAbstractDashboard
         this.crafting = new GuiCraftingTablePanel(mc, this);
         this.quest = new GuiQuestPanel(mc, this);
         this.event = new GuiEventPanel(mc, this);
+        this.dialogue = new GuiDialoguePanel(mc, this);
 
         this.panels.registerPanel(this.crafting, IKey.lang("mappet.gui.panels.crafting"), Icons.WRENCH);
         this.panels.registerPanel(this.quest, IKey.lang("mappet.gui.panels.quests"), Icons.EXCLAMATION);
         this.panels.registerPanel(this.event, IKey.lang("mappet.gui.panels.events"), Icons.GEAR);
+        this.panels.registerPanel(this.dialogue, IKey.lang("mappet.gui.panels.dialogues"), Icons.BUBBLE);
 
         this.panels.setPanel(this.crafting);
     }

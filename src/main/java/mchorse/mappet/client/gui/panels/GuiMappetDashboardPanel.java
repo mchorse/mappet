@@ -10,7 +10,7 @@ import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
-import mchorse.mclib.client.gui.framework.elements.list.GuiStringListElement;
+import mchorse.mclib.client.gui.framework.elements.list.GuiStringSearchListElement;
 import mchorse.mclib.client.gui.framework.elements.modals.GuiConfirmModal;
 import mchorse.mclib.client.gui.framework.elements.modals.GuiModal;
 import mchorse.mclib.client.gui.framework.elements.modals.GuiPromptModal;
@@ -36,7 +36,7 @@ public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTag
     public GuiIconElement dupe;
     public GuiIconElement rename;
     public GuiIconElement remove;
-    public GuiStringListElement names;
+    public GuiStringSearchListElement names;
 
     public GuiScrollElement editor;
 
@@ -62,9 +62,10 @@ public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTag
         this.rename = new GuiIconElement(mc, Icons.EDIT, this::renameData);
         this.remove = new GuiIconElement(mc, Icons.REMOVE, this::removeData);
 
-        GuiDrawable drawable = new GuiDrawable((context) -> this.font.drawStringWithShadow("Data", this.names.area.x, this.area.y + 10, 0xffffff));
+        GuiDrawable drawable = new GuiDrawable((context) -> this.font.drawStringWithShadow(this.getTitle(), this.names.area.x, this.area.y + 10, 0xffffff));
 
-        this.names = new GuiStringListElement(mc, (list) -> this.pickData(list.get(0)));
+        this.names = new GuiStringSearchListElement(mc, (list) -> this.pickData(list.get(0)));
+        this.names.label(IKey.str("Search..."));
         this.names.flex().relative(this.sidebar).xy(10, 25).w(1F, -20).h(1F, -35);
         this.sidebar.add(drawable, this.names);
 
@@ -114,6 +115,8 @@ public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTag
      */
     public abstract ContentType getType();
 
+    public abstract String getTitle();
+
     protected void pickData(String id)
     {
         if (this.data != null && this.id != null)
@@ -128,18 +131,18 @@ public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTag
 
     protected void addNewData(GuiIconElement element)
     {
-        GuiModal.addFullModal(this.sidebar, () -> new GuiPromptModal(this.mc, IKey.str("Type in name:"), this::addNewData));
+        GuiModal.addFullModal(this.sidebar, () -> new GuiPromptModal(this.mc, IKey.str("Type in name:"), this::addNewData).filename());
     }
 
     protected void addNewData(String name)
     {
-        if (!this.names.getList().contains(name))
+        if (!this.names.list.getList().contains(name))
         {
             Dispatcher.sendToServer(new PacketContentData(this.getType(), name, null));
 
-            this.names.add(name);
-            this.names.sort();
-            this.names.setCurrentScroll(name);
+            this.names.list.add(name);
+            this.names.list.sort();
+            this.names.list.setCurrentScroll(name);
 
             T data = (T) this.getType().getManager().create();
 
@@ -153,19 +156,19 @@ public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTag
         {
             GuiPromptModal promptModal = new GuiPromptModal(this.mc, IKey.str("Type in a new name for a duplicate:"), this::dupeData);
 
-            return promptModal.setValue(this.id);
+            return promptModal.setValue(this.id).filename();
         });
     }
 
     protected void dupeData(String name)
     {
-        if (this.data != null && !this.names.getList().contains(name))
+        if (this.data != null && !this.names.list.getList().contains(name))
         {
             Dispatcher.sendToServer(new PacketContentData(this.getType(), this.id, this.data.serializeNBT()));
 
-            this.names.add(name);
-            this.names.sort();
-            this.names.setCurrentScroll(name);
+            this.names.list.add(name);
+            this.names.list.sort();
+            this.names.list.setCurrentScroll(name);
 
             T data = (T) this.getType().getManager().create(this.data.serializeNBT());
 
@@ -179,20 +182,20 @@ public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTag
         {
             GuiPromptModal promptModal = new GuiPromptModal(this.mc, IKey.str("Type in a new name:"), this::renameData);
 
-            return promptModal.setValue(this.id);
+            return promptModal.setValue(this.id).filename();
         });
     }
 
     protected void renameData(String name)
     {
-        if (this.id != null && !this.names.getList().contains(name))
+        if (this.id != null && !this.names.list.getList().contains(name))
         {
             Dispatcher.sendToServer(new PacketContentData(this.getType(), this.id).rename(name));
 
-            this.names.remove(this.id);
-            this.names.add(name);
-            this.names.sort();
-            this.names.setCurrentScroll(name);
+            this.names.list.remove(this.id);
+            this.names.list.add(name);
+            this.names.list.sort();
+            this.names.list.setCurrentScroll(name);
         }
     }
 
@@ -207,9 +210,9 @@ public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTag
         {
             Dispatcher.sendToServer(new PacketContentData(this.getType(), this.id, null));
 
-            this.names.remove(this.id);
-            this.names.sort();
-            this.names.setCurrentScroll("");
+            this.names.list.remove(this.id);
+            this.names.list.sort();
+            this.names.list.setCurrentScroll("");
             this.fill("", null);
         }
     }
@@ -224,9 +227,9 @@ public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTag
 
     public void fillNames(List<String> names)
     {
-        this.names.clear();
-        this.names.add(names);
-        this.names.sort();
+        this.names.list.clear();
+        this.names.list.add(names);
+        this.names.list.sort();
     }
 
     @Override

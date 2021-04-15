@@ -9,6 +9,7 @@ import mchorse.mappet.client.gui.crafting.GuiCraftingRecipeList;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
@@ -65,12 +66,17 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
 
     private void pickRecipe(CraftingRecipe recipe, boolean select)
     {
-        this.recipe.set(recipe);
-        this.editor.resize();
+        this.recipe.setVisible(recipe != null);
 
-        if (select)
+        if (recipe != null)
         {
-            this.recipes.setCurrentScroll(recipe);
+            this.recipe.set(recipe);
+            this.editor.resize();
+
+            if (select)
+            {
+                this.recipes.setCurrentScroll(recipe);
+            }
         }
     }
 
@@ -81,13 +87,23 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
         this.data.recipes.add(recipe);
         this.pickRecipe(recipe, true);
         this.editor.resize();
+        this.recipes.update();
 
         this.editor.scroll.scrollTo(this.editor.scroll.scrollSize);
     }
 
     private void removeRecipe()
     {
+        int index = this.recipes.getIndex();
+
         this.data.recipes.remove(this.recipes.getCurrentFirst());
+
+        if (index > 0)
+        {
+            index -= 1;
+        }
+
+        this.pickRecipe(this.data.recipes.isEmpty() ? null : this.data.recipes.get(index), true);
         this.recipes.update();
     }
 
@@ -98,12 +114,19 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
     }
 
     @Override
+    public String getTitle()
+    {
+        return "Crafting tables";
+    }
+
+    @Override
     public void fill(String id, CraftingTable data)
     {
         super.fill(id, data);
 
         this.title.setVisible(data != null);
         this.editor.setVisible(data != null);
+        this.recipes.setVisible(data != null);
 
         if (data != null)
         {
@@ -141,6 +164,22 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
         if (this.title.isVisible())
         {
             this.font.drawStringWithShadow("Crafting table's title", this.title.area.x, this.area.y + 10, 0xffffff);
+        }
+
+        if (!this.editor.isVisible())
+        {
+            int w = (this.editor.area.ex() - this.area.x) / 2;
+            int x = (this.area.x + this.editor.area.ex()) / 2 - w / 2;
+
+            GuiDraw.drawMultiText(this.font, "Select or create a crafting table in the list on the left, to start editing...", x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
+        }
+
+        if (this.editor.isVisible() && !this.recipe.isVisible())
+        {
+            int w = this.editor.area.w / 2;
+            int x = this.editor.area.mx(w);
+
+            GuiDraw.drawMultiText(this.font, "Select or create a new crafting recipe in the list on the left...", x, this.editor.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
         }
     }
 }

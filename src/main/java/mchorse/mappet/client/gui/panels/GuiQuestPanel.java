@@ -9,6 +9,8 @@ import mchorse.mappet.client.gui.utils.GuiTriggerElement;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiLabel;
 import mchorse.mclib.client.gui.utils.Elements;
@@ -85,6 +87,12 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
     }
 
     @Override
+    public String getTitle()
+    {
+        return "Quests";
+    }
+
+    @Override
     public void fill(String id, Quest data)
     {
         super.fill(id, data);
@@ -110,5 +118,19 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
          * if the editor */
         this.resize();
         this.resize();
+    }
+
+    @Override
+    public void draw(GuiContext context)
+    {
+        super.draw(context);
+
+        if (!this.editor.isVisible())
+        {
+            int w = this.editor.area.w / 2;
+            int x = this.editor.area.mx() - w / 2;
+
+            GuiDraw.drawMultiText(this.font, "Select or create a quest in the list on the right, to start editing...", x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
+        }
     }
 }
