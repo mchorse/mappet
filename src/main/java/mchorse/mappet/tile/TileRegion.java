@@ -26,14 +26,6 @@ public class TileRegion extends TileEntity implements ITickable
     }
 
     @Override
-    public void setPos(BlockPos posIn)
-    {
-        super.setPos(posIn);
-
-        this.region.setInitialPos(posIn);
-    }
-
-    @Override
     public void update()
     {
         if (this.world.isRemote)
@@ -61,7 +53,7 @@ public class TileRegion extends TileEntity implements ITickable
             UUID id = player.getGameProfile().getId();
             boolean wasInside = this.players.contains(id);
 
-            if (this.region.shape.isPlayerInside(player))
+            if (this.region.shape.isPlayerInside(player, this.getPos()))
             {
                 if (!wasInside)
                 {

@@ -6,7 +6,6 @@ import mchorse.mappet.api.regions.shapes.IShape;
 import mchorse.mappet.api.utils.Trigger;
 import mchorse.mclib.math.IValue;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -16,11 +15,6 @@ public class Region implements INBTSerializable<NBTTagCompound>
     public Trigger onExit = new Trigger("ui.button.click", "test");
     public String enabled = "state(\"i\") == 12";
     public IShape shape = new BoxShape();
-
-    public void setInitialPos(BlockPos pos)
-    {
-        this.shape.setInitialPos(pos);
-    }
 
     public boolean isEnabled()
     {

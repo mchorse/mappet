@@ -53,7 +53,7 @@ public class TileRegionRenderer extends TileBaseBlockRenderer<TileRegion>
         if (te.region.shape instanceof AbstractShape)
         {
             AbstractShape shape = (AbstractShape) te.region.shape;
-            Vector3d diff = new Vector3d(shape.pos.x - te.getPos().getX(), shape.pos.y - te.getPos().getY(), shape.pos.z - te.getPos().getZ());
+            Vector3d diff = new Vector3d(shape.pos.x + 0.5F, shape.pos.y + 0.5F, shape.pos.z + 0.5F);
 
             diff.x += x;
             diff.y += y;

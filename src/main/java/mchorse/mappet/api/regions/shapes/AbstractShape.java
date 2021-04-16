@@ -8,7 +8,7 @@ import javax.vecmath.Vector3d;
 
 public abstract class AbstractShape implements IShape
 {
-    public Vector3d pos;
+    public Vector3d pos = new Vector3d();
 
     public void setPos(double x, double y, double z)
     {
@@ -16,23 +16,14 @@ public abstract class AbstractShape implements IShape
     }
 
     @Override
-    public void setInitialPos(BlockPos pos)
-    {
-        if (this.pos == null)
-        {
-            this.pos = new Vector3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
-        }
-    }
-
-    @Override
-    public boolean isPlayerInside(EntityPlayer player)
+    public boolean isPlayerInside(EntityPlayer player, BlockPos tile)
     {
         if (this.pos == null)
         {
             return false;
         }
 
-        return this.isInside(player.posX, player.posY, player.posZ);
+        return this.isInside(player.posX - tile.getX() - 0.5, player.posY - tile.getY() - 0.5, player.posZ - tile.getZ() - 0.5);
     }
 
     public abstract boolean isInside(double x, double y, double z);

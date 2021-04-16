@@ -25,9 +25,7 @@ public interface IShape extends INBTSerializable<NBTTagCompound>
         return null;
     }
 
-    void setInitialPos(BlockPos pos);
-
-    public boolean isPlayerInside(EntityPlayer player);
+    public boolean isPlayerInside(EntityPlayer player, BlockPos tile);
 
     public String getType();
 }
