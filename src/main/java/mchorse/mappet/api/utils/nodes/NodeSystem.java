@@ -181,11 +181,14 @@ public class NodeSystem <T extends Node> implements INBTSerializable<NBTTagCompo
     {
         List<T> children = new ArrayList<T>();
 
-        for (NodeRelation<T> relation : this.relations.get(node.getId()))
+        if (this.relations.containsKey(node.getId()))
         {
-            if (relation.output == node)
+            for (NodeRelation<T> relation : this.relations.get(node.getId()))
             {
-                children.add(relation.input);
+                if (relation.output == node)
+                {
+                    children.add(relation.input);
+                }
             }
         }
 

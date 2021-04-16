@@ -1,7 +1,12 @@
 package mchorse.mappet;
 
 import mchorse.mappet.client.KeyboardHandler;
+import mchorse.mappet.client.renders.TileRegionRenderer;
+import mchorse.mappet.client.renders.TileTriggerRenderer;
+import mchorse.mappet.tile.TileRegion;
+import mchorse.mappet.tile.TileTrigger;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -16,6 +21,9 @@ public class ClientProxy extends CommonProxy
         super.preInit(event);
 
         MinecraftForge.EVENT_BUS.register(new KeyboardHandler());
+
+        ClientRegistry.bindTileEntitySpecialRenderer(TileTrigger.class, new TileTriggerRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileRegion.class, new TileRegionRenderer());
     }
 
     @Override

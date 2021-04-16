@@ -1,8 +1,10 @@
 package mchorse.mappet;
 
 import mchorse.mappet.blocks.BlockEmitter;
+import mchorse.mappet.blocks.BlockRegion;
 import mchorse.mappet.blocks.BlockTrigger;
 import mchorse.mappet.tile.TileEmitter;
+import mchorse.mappet.tile.TileRegion;
 import mchorse.mappet.tile.TileTrigger;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -25,6 +27,7 @@ public class RegisterHandler
     {
         event.getRegistry().register(Mappet.emitterBlock = new BlockEmitter());
         event.getRegistry().register(Mappet.triggerBlock = new BlockTrigger());
+        event.getRegistry().register(Mappet.regionBlock = new BlockRegion());
     }
 
     @SubscribeEvent
@@ -37,6 +40,10 @@ public class RegisterHandler
         event.getRegistry().register(new ItemBlock(Mappet.triggerBlock)
             .setRegistryName(new ResourceLocation(Mappet.MOD_ID, "trigger"))
             .setUnlocalizedName(Mappet.MOD_ID + ".trigger"));
+
+        event.getRegistry().register(new ItemBlock(Mappet.regionBlock)
+            .setRegistryName(new ResourceLocation(Mappet.MOD_ID, "region"))
+            .setUnlocalizedName(Mappet.MOD_ID + ".region"));
     }
 
     @SubscribeEvent
@@ -44,6 +51,7 @@ public class RegisterHandler
     {
         GameRegistry.registerTileEntity(TileEmitter.class, Mappet.MOD_ID + ":emitter");
         GameRegistry.registerTileEntity(TileTrigger.class, Mappet.MOD_ID + ":trigger");
+        GameRegistry.registerTileEntity(TileRegion.class, Mappet.MOD_ID + ":region");
     }
 
     @SubscribeEvent
@@ -52,5 +60,6 @@ public class RegisterHandler
     {
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(Mappet.emitterBlock), 0, new ModelResourceLocation(Mappet.MOD_ID + ":emitter", "inventory"));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(Mappet.triggerBlock), 0, new ModelResourceLocation(Mappet.MOD_ID + ":trigger", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(Mappet.regionBlock), 0, new ModelResourceLocation(Mappet.MOD_ID + ":region", "inventory"));
     }
 }

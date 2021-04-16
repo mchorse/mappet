@@ -14,6 +14,15 @@ public class Trigger implements INBTSerializable<NBTTagCompound>
     public String soundEvent = "";
     public String triggerEvent = "";
 
+    public Trigger()
+    {}
+
+    public Trigger(String soundEvent, String triggerEvent)
+    {
+        this.soundEvent = soundEvent;
+        this.triggerEvent = triggerEvent;
+    }
+
     public void copy(Trigger trigger)
     {
         this.soundEvent = trigger.soundEvent;

@@ -58,3 +58,5 @@ tile.mappet.emitter.name=Emitter block
 tile.mappet.emitter.tooltip=Checks for expression condition and emits redstone signal upon non-zero value
 tile.mappet.trigger.name=Trigger block
 tile.mappet.trigger.tooltip=Trigger events from player right and left clicking the block
+tile.mappet.region.name=Region block
+tile.mappet.region.tooltip=Trigger events when players enter and exit configured region
