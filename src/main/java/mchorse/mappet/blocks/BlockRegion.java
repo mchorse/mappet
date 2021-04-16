@@ -1,12 +1,14 @@
 package mchorse.mappet.blocks;
 
 import mchorse.mappet.Mappet;
+import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.tile.TileRegion;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -56,7 +58,7 @@ public class BlockRegion extends Block implements ITileEntityProvider
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if (!worldIn.isRemote)
+        if (worldIn.isRemote)
         {
             TileEntity tile = worldIn.getTileEntity(pos);
 
@@ -69,11 +71,22 @@ public class BlockRegion extends Block implements ITileEntityProvider
 
             if (playerIn.isCreative())
             {
-                // TODO: Dispatcher.sendTo(new PacketEditTrigger(region), (EntityPlayerMP) playerIn);
+                this.openRegion(region);
             }
         }
 
         return true;
+    }
+
+    @SideOnly(Side.CLIENT)
+    private void openRegion(TileRegion region)
+    {
+        GuiMappetDashboard dashboard = GuiMappetDashboard.get(Minecraft.getMinecraft());
+
+        dashboard.panels.setPanel(dashboard.region);
+        dashboard.region.fill(region);
+
+        Minecraft.getMinecraft().displayGuiScreen(dashboard);
     }
 
     /* Make the block walkable through and invisible */

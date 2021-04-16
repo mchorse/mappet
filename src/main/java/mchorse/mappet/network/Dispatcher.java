@@ -2,6 +2,7 @@ package mchorse.mappet.network;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.network.client.blocks.ClientHandlerEditEmitter;
+import mchorse.mappet.network.client.blocks.ClientHandlerEditRegion;
 import mchorse.mappet.network.client.blocks.ClientHandlerEditTrigger;
 import mchorse.mappet.network.client.content.ClientHandlerContentData;
 import mchorse.mappet.network.client.content.ClientHandlerContentNames;
@@ -9,6 +10,7 @@ import mchorse.mappet.network.client.crafting.ClientHandlerCraft;
 import mchorse.mappet.network.client.crafting.ClientHandlerCraftingTable;
 import mchorse.mappet.network.client.dialogue.ClientHandlerDialogueFragment;
 import mchorse.mappet.network.common.blocks.PacketEditEmitter;
+import mchorse.mappet.network.common.blocks.PacketEditRegion;
 import mchorse.mappet.network.common.blocks.PacketEditTrigger;
 import mchorse.mappet.network.common.content.PacketContentData;
 import mchorse.mappet.network.common.content.PacketContentNames;
@@ -19,6 +21,7 @@ import mchorse.mappet.network.common.crafting.PacketCraftingTable;
 import mchorse.mappet.network.common.dialogue.PacketDialogueFragment;
 import mchorse.mappet.network.common.dialogue.PacketPickReply;
 import mchorse.mappet.network.server.blocks.ServerHandlerEditEmitter;
+import mchorse.mappet.network.server.blocks.ServerHandlerEditRegion;
 import mchorse.mappet.network.server.blocks.ServerHandlerEditTrigger;
 import mchorse.mappet.network.server.content.ServerHandlerContentData;
 import mchorse.mappet.network.server.content.ServerHandlerContentRequestData;
@@ -61,6 +64,9 @@ public class Dispatcher
 
             this.register(PacketEditTrigger.class, ClientHandlerEditTrigger.class, Side.CLIENT);
             this.register(PacketEditTrigger.class, ServerHandlerEditTrigger.class, Side.SERVER);
+
+            this.register(PacketEditRegion.class, ClientHandlerEditRegion.class, Side.CLIENT);
+            this.register(PacketEditRegion.class, ServerHandlerEditRegion.class, Side.SERVER);
 
             /* Creative editing */
             this.register(PacketContentRequestNames.class, ServerHandlerContentRequestNames.class, Side.SERVER);

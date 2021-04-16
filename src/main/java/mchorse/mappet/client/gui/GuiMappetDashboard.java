@@ -4,6 +4,7 @@ import mchorse.mappet.client.gui.panels.GuiCraftingTablePanel;
 import mchorse.mappet.client.gui.panels.GuiDialoguePanel;
 import mchorse.mappet.client.gui.panels.GuiEventPanel;
 import mchorse.mappet.client.gui.panels.GuiQuestPanel;
+import mchorse.mappet.client.gui.panels.GuiRegionPanel;
 import mchorse.mclib.client.gui.mclib.GuiAbstractDashboard;
 import mchorse.mclib.client.gui.mclib.GuiDashboardPanels;
 import mchorse.mclib.client.gui.utils.Icons;
@@ -18,6 +19,7 @@ public class GuiMappetDashboard extends GuiAbstractDashboard
     public GuiQuestPanel quest;
     public GuiEventPanel event;
     public GuiDialoguePanel dialogue;
+    public GuiRegionPanel region;
 
     public static GuiMappetDashboard get(Minecraft mc)
     {
@@ -47,11 +49,13 @@ public class GuiMappetDashboard extends GuiAbstractDashboard
         this.quest = new GuiQuestPanel(mc, this);
         this.event = new GuiEventPanel(mc, this);
         this.dialogue = new GuiDialoguePanel(mc, this);
+        this.region = new GuiRegionPanel(mc, this);
 
         this.panels.registerPanel(this.crafting, IKey.lang("mappet.gui.panels.crafting"), Icons.WRENCH);
         this.panels.registerPanel(this.quest, IKey.lang("mappet.gui.panels.quests"), Icons.EXCLAMATION);
         this.panels.registerPanel(this.event, IKey.lang("mappet.gui.panels.events"), Icons.FILE);
         this.panels.registerPanel(this.dialogue, IKey.lang("mappet.gui.panels.dialogues"), Icons.BUBBLE);
+        this.panels.registerPanel(this.region, IKey.lang("mappet.gui.panels.regions"), Icons.FULLSCREEN);
 
         this.panels.setPanel(this.crafting);
     }

@@ -27,7 +27,7 @@ public abstract class TileBaseBlockRenderer <T extends TileEntity> extends TileE
     {
         Minecraft mc = Minecraft.getMinecraft();
 
-        if (mc.gameSettings.showDebugInfo && !mc.gameSettings.hideGUI)
+        if (this.canRender(mc, te))
         {
             int shader = GL11.glGetInteger(GL20.GL_CURRENT_PROGRAM);
 
@@ -41,9 +41,11 @@ public abstract class TileBaseBlockRenderer <T extends TileEntity> extends TileE
             GlStateManager.disableTexture2D();
             GlStateManager.enableBlend();
 
-            Draw.cube(x + 0.25F, y + 0.25F, z + 0.25F, x + 0.75F, y + 0.75F, z + 0.75F, this.color.r, this.color.g, this.color.b, this.color.a);
+            Color color = this.getBoxColor(te);
 
-            this.drawMoreDebug(te, x, y, z, partialTicks, destroyStage, alpha);
+            Draw.cube(x + 0.25F, y + 0.25F, z + 0.25F, x + 0.75F, y + 0.75F, z + 0.75F, color.r, color.g, color.b, color.a);
+
+            this.renderMoreDebug(te, x, y, z, partialTicks, destroyStage, alpha);
 
             GlStateManager.disableBlend();
             GlStateManager.enableTexture2D();
@@ -57,6 +59,16 @@ public abstract class TileBaseBlockRenderer <T extends TileEntity> extends TileE
         }
     }
 
-    protected void drawMoreDebug(T te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
+    protected Color getBoxColor(T te)
+    {
+        return this.color;
+    }
+
+    protected boolean canRender(Minecraft mc, T te)
+    {
+        return mc.gameSettings.showDebugInfo && !mc.gameSettings.hideGUI;
+    }
+
+    protected void renderMoreDebug(T te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {}
 }

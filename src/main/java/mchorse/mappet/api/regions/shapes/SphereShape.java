@@ -17,6 +17,23 @@ public class SphereShape extends AbstractShape
     }
 
     @Override
+    public void copyFrom(AbstractShape shape)
+    {
+        super.copyFrom(shape);
+
+        if (shape instanceof BoxShape)
+        {
+            this.horizontal = ((BoxShape) shape).size.x;
+            this.vertical = ((BoxShape) shape).size.y;
+        }
+        else if (shape instanceof SphereShape)
+        {
+            this.horizontal = ((SphereShape) shape).horizontal;
+            this.vertical = ((SphereShape) shape).vertical;
+        }
+    }
+
+    @Override
     public boolean isInside(double x, double y, double z)
     {
         double dx = x - this.pos.x;

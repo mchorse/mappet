@@ -4,8 +4,11 @@ import mchorse.mappet.api.regions.shapes.AbstractShape;
 import mchorse.mappet.api.regions.shapes.BoxShape;
 import mchorse.mappet.api.regions.shapes.CylinderShape;
 import mchorse.mappet.api.regions.shapes.SphereShape;
+import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.tile.TileRegion;
 import mchorse.mclib.utils.Color;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;
@@ -18,16 +21,25 @@ import org.lwjgl.opengl.GL11;
 import javax.vecmath.Matrix3d;
 import javax.vecmath.Matrix3f;
 import javax.vecmath.Vector3d;
+import java.util.ArrayList;
+import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class TileRegionRenderer extends TileBaseBlockRenderer<TileRegion>
 {
     public static final float SEGMENTS = 16;
+    public static List<TileRegion> regions = new ArrayList<TileRegion>();
+    public static boolean cache;
+
+    private static final Color SELECTED = new Color(0, 0.5F, 1F, 0.5F);
+    private static final Color NOT_SELECTED = new Color(1F, 1F, 1F, 1F);
 
     private Matrix3d a1 = new Matrix3d();
     private Matrix3d a2 = new Matrix3d();
     private Matrix3d a3 = new Matrix3d();
     private Vector3d vec = new Vector3d();
+
+    private TileRegion selected;
 
     public TileRegionRenderer()
     {
@@ -48,46 +60,105 @@ public class TileRegionRenderer extends TileBaseBlockRenderer<TileRegion>
     }
 
     @Override
-    protected void drawMoreDebug(TileRegion te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
+    protected Color getBoxColor(TileRegion te)
     {
-        if (te.region.shape instanceof AbstractShape)
+        if (te == this.selected)
         {
-            AbstractShape shape = (AbstractShape) te.region.shape;
-            Vector3d diff = new Vector3d(shape.pos.x + 0.5F, shape.pos.y + 0.5F, shape.pos.z + 0.5F);
+            return SELECTED;
+        }
 
-            diff.x += x;
-            diff.y += y;
-            diff.z += z;
+        return super.getBoxColor(te);
+    }
 
-            if (shape instanceof BoxShape)
+    @Override
+    protected boolean canRender(Minecraft mc, TileRegion te)
+    {
+        if (super.canRender(mc, te))
+        {
+            return true;
+        }
+
+        GuiScreen screen = mc.currentScreen;
+
+        if (screen instanceof GuiMappetDashboard)
+        {
+            GuiMappetDashboard dashboard = (GuiMappetDashboard) screen;
+
+            if (dashboard.panels.view.delegate == dashboard.region)
             {
-                this.drawBox((BoxShape) shape, diff);
+                this.selected = dashboard.region.getTile();
+
+                return true;
             }
-            else if (shape instanceof CylinderShape)
+        }
+
+        this.selected = null;
+
+        return false;
+    }
+
+    @Override
+    public void render(TileRegion te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
+    {
+        super.render(te, x, y, z, partialTicks, destroyStage, alpha);
+
+        if (cache)
+        {
+            if (regions.contains(te))
             {
-                this.drawCylinder((CylinderShape) shape, diff);
+                cache = false;
             }
-            else if (shape instanceof SphereShape)
+            else
             {
-                this.drawSphere((SphereShape) shape, diff);
+                regions.add(te);
             }
+        }
+        else
+        {
+            regions.clear();
         }
     }
 
-    private void drawBox(BoxShape shape, Vector3d diff)
+    @Override
+    protected void renderMoreDebug(TileRegion te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
+    {
+        AbstractShape shape = te.region.shape;
+        Vector3d diff = new Vector3d(shape.pos.x + 0.5F, shape.pos.y + 0.5F, shape.pos.z + 0.5F);
+
+        diff.x += x;
+        diff.y += y;
+        diff.z += z;
+
+        Color color = te == this.selected ? SELECTED : NOT_SELECTED;
+
+        if (shape instanceof BoxShape)
+        {
+            this.renderBoxShape((BoxShape) shape, diff, color);
+        }
+        else if (shape instanceof CylinderShape)
+        {
+            this.renderCylinderShape((CylinderShape) shape, diff, color);
+        }
+        else if (shape instanceof SphereShape)
+        {
+            this.renderSphereShape((SphereShape) shape, diff, color);
+        }
+    }
+
+    private void renderBoxShape(BoxShape shape, Vector3d diff, Color color)
     {
         RenderGlobal.drawBoundingBox(
             diff.x - shape.size.x, diff.y - shape.size.y, diff.z - shape.size.z,
             diff.x + shape.size.x, diff.y + shape.size.y, diff.z + shape.size.z,
-            1F, 1F, 1F, 1F
+            color.r, color.g, color.b, 1
         );
     }
 
-    private void drawCylinder(CylinderShape shape, Vector3d diff)
+    private void renderCylinderShape(CylinderShape shape, Vector3d diff, Color color)
     {
         BufferBuilder buffer = Tessellator.getInstance().getBuffer();
 
-        GlStateManager.color(1F, 1F, 1F, 1F);
+        GlStateManager.color(color.r, color.g, color.b, 1);
         buffer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION);
 
         for (int i = 0; i < SEGMENTS; i++)
@@ -114,11 +185,11 @@ public class TileRegionRenderer extends TileBaseBlockRenderer<TileRegion>
         Tessellator.getInstance().draw();
     }
 
-    private void drawSphere(SphereShape shape, Vector3d diff)
+    private void renderSphereShape(SphereShape shape, Vector3d diff, Color color)
     {
         BufferBuilder buffer = Tessellator.getInstance().getBuffer();
 
-        GlStateManager.color(1F, 1F, 1F, 1F);
+        GlStateManager.color(color.r, color.g, color.b, 1);
         buffer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION);
 
         Matrix3f matA = new Matrix3f();
@@ -159,5 +230,11 @@ public class TileRegionRenderer extends TileBaseBlockRenderer<TileRegion>
         }
 
         Tessellator.getInstance().draw();
+    }
+
+    @Override
+    public boolean isGlobalRenderer(TileRegion te)
+    {
+        return true;
     }
 }

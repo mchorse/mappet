@@ -7,9 +7,15 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.mutable.MutableInt;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -18,10 +24,12 @@ public class TileRegion extends TileEntity implements ITickable
     public Region region = new Region();
 
     private Set<UUID> players = new HashSet<UUID>(10);
+    private Map<UUID, MutableInt> delays = new HashMap<UUID, MutableInt>();
     private int tick;
 
     public void set(NBTTagCompound tag)
     {
+        this.region = new Region();
         this.region.deserializeNBT(tag);
     }
 
@@ -33,12 +41,43 @@ public class TileRegion extends TileEntity implements ITickable
             return;
         }
 
+        if (!this.delays.isEmpty())
+        {
+            this.checkDelays();
+        }
+
         if (this.tick % 3 == 0)
         {
             this.checkRegion();
         }
 
         this.tick += 1;
+    }
+
+    private void checkDelays()
+    {
+        Iterator<Map.Entry<UUID, MutableInt>> it = this.delays.entrySet().iterator();
+
+        while (it.hasNext())
+        {
+            Map.Entry<UUID, MutableInt> trigger = it.next();
+            int delay = trigger.getValue().intValue();
+
+            if (delay <= 0)
+            {
+                UUID id = trigger.getKey();
+                EntityPlayer player = this.world.getPlayerEntityByUUID(id);
+
+                if (player != null)
+                {
+                    this.region.onEnter.trigger(player);
+                }
+
+                it.remove();
+            }
+
+            trigger.getValue().setValue(delay - 1);
+        }
     }
 
     private void checkRegion()
@@ -57,16 +96,50 @@ public class TileRegion extends TileEntity implements ITickable
             {
                 if (!wasInside)
                 {
-                    this.region.onEnter.trigger(player);
+                    if (this.region.delay > 0)
+                    {
+                        this.delays.put(id, new MutableInt(this.region.delay));
+                    }
+                    else
+                    {
+                        this.region.onEnter.trigger(player);
+                    }
+
                     this.players.add(id);
                 }
             }
             else if (wasInside)
             {
-                this.region.onExit.trigger(player);
+                if (this.delays.containsKey(id))
+                {
+                    this.delays.remove(id);
+                }
+                else
+                {
+                    this.region.onExit.trigger(player);
+                }
+
                 this.players.remove(id);
             }
         }
+    }
+
+    /* Rendering related stuff */
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        return TileEntity.INFINITE_EXTENT_AABB;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public double getMaxRenderDistanceSquared()
+    {
+        float range = 128;
+
+        return range * range;
     }
 
     /* NBT stuff */

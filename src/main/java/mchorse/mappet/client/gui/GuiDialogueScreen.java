@@ -45,6 +45,8 @@ public class GuiDialogueScreen extends GuiBase
 
         this.fragment = fragment;
         this.replies.setList(replies);
+        this.replies.setCurrent("");
+        this.replies.scroll.scrollTo(0);
     }
 
     private void pickReply()

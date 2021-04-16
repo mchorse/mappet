@@ -9,6 +9,24 @@ public class BoxShape extends AbstractShape
     public Vector3d size = new Vector3d(1, 1, 1);
 
     @Override
+    public void copyFrom(AbstractShape shape)
+    {
+        super.copyFrom(shape);
+
+        if (shape instanceof BoxShape)
+        {
+            this.size.set(((BoxShape) shape).size);
+        }
+        else if (shape instanceof SphereShape)
+        {
+            double h = ((SphereShape) shape).horizontal;
+            double v = ((SphereShape) shape).vertical;
+
+            this.size.set(h, v, h);
+        }
+    }
+
+    @Override
     public boolean isInside(double x, double y, double z)
     {
         double dx = x - this.pos.x;

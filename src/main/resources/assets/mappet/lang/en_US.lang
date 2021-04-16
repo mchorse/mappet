@@ -46,6 +46,7 @@ mappet.gui.panels.quests=Quests
 mappet.gui.panels.crafting=Crafting Tables
 mappet.gui.panels.events=Events
 mappet.gui.panels.dialogues=Dialogues
+mappet.gui.panels.regions=Regions
 
 # Keys
 mappet.keys.category=Mappet
