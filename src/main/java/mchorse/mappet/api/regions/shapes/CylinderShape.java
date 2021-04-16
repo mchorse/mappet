@@ -20,7 +20,7 @@ public class CylinderShape extends SphereShape
         double dz = z - this.pos.z;
 
         boolean isXZ = Math.sqrt(dx * dx + dz * dz) <= this.horizontal;
-        boolean isY = Math.abs(dy) < this.vertical / 2;
+        boolean isY = Math.abs(dy) < this.vertical;
 
         return isXZ && isY;
     }

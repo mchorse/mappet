@@ -73,11 +73,6 @@ public class TileRegionRenderer extends TileBaseBlockRenderer<TileRegion>
     @Override
     protected boolean canRender(Minecraft mc, TileRegion te)
     {
-        if (super.canRender(mc, te))
-        {
-            return true;
-        }
-
         GuiScreen screen = mc.currentScreen;
 
         if (screen instanceof GuiMappetDashboard)
@@ -94,7 +89,7 @@ public class TileRegionRenderer extends TileBaseBlockRenderer<TileRegion>
 
         this.selected = null;
 
-        return false;
+        return super.canRender(mc, te);
     }
 
     @Override
@@ -166,20 +161,20 @@ public class TileRegionRenderer extends TileBaseBlockRenderer<TileRegion>
             double a1 = i / SEGMENTS * Math.PI * 2;
             double a2 = (i + 1) / SEGMENTS * Math.PI * 2;
 
-            buffer.pos(diff.x + Math.cos(a1) * shape.horizontal, diff.y + shape.vertical / 2,  diff.z + Math.sin(a1) * shape.horizontal).endVertex();
-            buffer.pos(diff.x + Math.cos(a2) * shape.horizontal, diff.y + shape.vertical / 2,  diff.z + Math.sin(a2) * shape.horizontal).endVertex();
+            buffer.pos(diff.x + Math.cos(a1) * shape.horizontal, diff.y + shape.vertical,  diff.z + Math.sin(a1) * shape.horizontal).endVertex();
+            buffer.pos(diff.x + Math.cos(a2) * shape.horizontal, diff.y + shape.vertical,  diff.z + Math.sin(a2) * shape.horizontal).endVertex();
 
-            buffer.pos(diff.x + Math.cos(a1) * shape.horizontal, diff.y + shape.vertical / 2,  diff.z + Math.sin(a1) * shape.horizontal).endVertex();
-            buffer.pos(diff.x + Math.cos(a1) * shape.horizontal, diff.y - shape.vertical / 2,  diff.z + Math.sin(a1) * shape.horizontal).endVertex();
+            buffer.pos(diff.x + Math.cos(a1) * shape.horizontal, diff.y + shape.vertical,  diff.z + Math.sin(a1) * shape.horizontal).endVertex();
+            buffer.pos(diff.x + Math.cos(a1) * shape.horizontal, diff.y - shape.vertical,  diff.z + Math.sin(a1) * shape.horizontal).endVertex();
 
             if (i == SEGMENTS - 1)
             {
-                buffer.pos(diff.x + Math.cos(a2) * shape.horizontal, diff.y + shape.vertical / 2,  diff.z + Math.sin(a2) * shape.horizontal).endVertex();
-                buffer.pos(diff.x + Math.cos(a2) * shape.horizontal, diff.y - shape.vertical / 2,  diff.z + Math.sin(a2) * shape.horizontal).endVertex();
+                buffer.pos(diff.x + Math.cos(a2) * shape.horizontal, diff.y + shape.vertical,  diff.z + Math.sin(a2) * shape.horizontal).endVertex();
+                buffer.pos(diff.x + Math.cos(a2) * shape.horizontal, diff.y - shape.vertical,  diff.z + Math.sin(a2) * shape.horizontal).endVertex();
             }
 
-            buffer.pos(diff.x + Math.cos(a1) * shape.horizontal, diff.y - shape.vertical / 2,  diff.z + Math.sin(a1) * shape.horizontal).endVertex();
-            buffer.pos(diff.x + Math.cos(a2) * shape.horizontal, diff.y - shape.vertical / 2,  diff.z + Math.sin(a2) * shape.horizontal).endVertex();
+            buffer.pos(diff.x + Math.cos(a1) * shape.horizontal, diff.y - shape.vertical,  diff.z + Math.sin(a1) * shape.horizontal).endVertex();
+            buffer.pos(diff.x + Math.cos(a2) * shape.horizontal, diff.y - shape.vertical,  diff.z + Math.sin(a2) * shape.horizontal).endVertex();
         }
 
         Tessellator.getInstance().draw();

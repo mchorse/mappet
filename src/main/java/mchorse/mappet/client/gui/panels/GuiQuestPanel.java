@@ -76,6 +76,7 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
         this.editor.add(Elements.label(IKey.str("Accept quest trigger"), 20).anchor(0, 1F).background(0x88000000), this.accept);
         this.editor.add(Elements.label(IKey.str("Decline quest trigger"), 20).anchor(0, 1F).background(0x88000000), this.decline);
         this.editor.add(Elements.label(IKey.str("Complete quest trigger"), 20).anchor(0, 1F).background(0x88000000), this.complete);
+        this.editor.scroll.opposite = true;
 
         this.fill("", null);
     }

@@ -83,11 +83,12 @@ public class GuiRegionPanel extends GuiDashboardPanel<GuiMappetDashboard>
         this.shape.addLabel(IKey.str("cylinder"));
         this.shapeEditor = new GuiShapeEditor(mc);
 
+        this.editor.scroll.opposite = true;
         this.editor.add(Elements.label(IKey.str("Enabled expression")).background(0x88000000), this.enabled);
         this.editor.add(Elements.label(IKey.str("Trigger delay"), 20).anchor(0, 1F).background(0x88000000), this.delay);
         this.editor.add(Elements.label(IKey.str("On player enter trigger"), 26).anchor(0, 0.75F).background(0x88000000), this.onEnter);
         this.editor.add(Elements.label(IKey.str("On player exit trigger"), 26).anchor(0, 0.75F).background(0x88000000), this.onExit);
-        this.editor.add(Elements.row(mc, 0, Elements.label(IKey.str("Shape"), 20).anchor(0, 0.5F), this.shape));
+        this.editor.add(Elements.label(IKey.str("Shape"), 26).anchor(0, 0.75F).background(0x88000000), this.shape);
         this.editor.add(this.shapeEditor);
 
         this.add(this.sidebar, this.editor, this.toggleSidebar);
@@ -228,15 +229,15 @@ public class GuiRegionPanel extends GuiDashboardPanel<GuiMappetDashboard>
             this.update = false;
         }
 
-        if (this.sidebar.isVisible())
-        {
-            this.sidebar.area.draw(0xaa000000);
-        }
-
         if (this.editor.isVisible())
         {
-            Gui.drawRect(this.editor.area.x, this.editor.area.y, this.editor.area.mx(), this.editor.area.ey(), 0xaa000000);
-            GuiDraw.drawHorizontalGradientRect(this.editor.area.mx(), this.editor.area.y, this.editor.area.ex(), this.editor.area.ey(), 0xaa000000, 0);
+            Gui.drawRect(this.editor.area.x, this.editor.area.y, this.editor.area.mx(), this.editor.area.ey(), 0xbb000000);
+            GuiDraw.drawHorizontalGradientRect(this.editor.area.mx(), this.editor.area.y, this.editor.area.x(1.25F), this.editor.area.ey(), 0xbb000000, 0);
+        }
+
+        if (this.sidebar.isVisible())
+        {
+            this.sidebar.area.draw(0xdd000000);
         }
 
         super.draw(context);

@@ -7,8 +7,14 @@ import net.minecraftforge.common.util.INBTSerializable;
 
 import javax.vecmath.Vector3d;
 
+/**
+ * Abstract shape class
+ *
+ * This base class provides base of operation for region's shapes
+ */
 public abstract class AbstractShape implements INBTSerializable<NBTTagCompound>
 {
+    /* TODO: check whether javax.vecmath exists on dedicated server */
     public Vector3d pos = new Vector3d();
 
     public static AbstractShape fromString(String string)
@@ -32,11 +38,6 @@ public abstract class AbstractShape implements INBTSerializable<NBTTagCompound>
     public void copyFrom(AbstractShape shape)
     {
         this.pos.set(shape.pos);
-    }
-
-    public void setPos(double x, double y, double z)
-    {
-        this.pos.set(x, y, z);
     }
 
     public boolean isPlayerInside(EntityPlayer player, BlockPos tile)
