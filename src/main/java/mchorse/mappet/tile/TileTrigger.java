@@ -1,17 +1,18 @@
 package mchorse.mappet.tile;
 
+import mchorse.mappet.api.utils.Trigger;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileTrigger extends TileEntity
 {
-    public String leftClick = "";
-    public String rightClick = "";
+    public Trigger leftClick = new Trigger();
+    public Trigger rightClick = new Trigger();
 
-    public void set(String left, String right)
+    public void set(NBTTagCompound left, NBTTagCompound right)
     {
-        this.leftClick = left;
-        this.rightClick = right;
+        this.leftClick.deserializeNBT(left);
+        this.rightClick.deserializeNBT(right);
 
         this.markDirty();
     }
@@ -19,15 +20,8 @@ public class TileTrigger extends TileEntity
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag)
     {
-        if (!this.leftClick.isEmpty())
-        {
-            tag.setString("Left", this.leftClick);
-        }
-
-        if (!this.rightClick.isEmpty())
-        {
-            tag.setString("Right", this.rightClick);
-        }
+        tag.setTag("Left", this.leftClick.serializeNBT());
+        tag.setTag("Right", this.rightClick.serializeNBT());
 
         return super.writeToNBT(tag);
     }
@@ -39,12 +33,12 @@ public class TileTrigger extends TileEntity
 
         if (tag.hasKey("Left"))
         {
-            this.leftClick = tag.getString("Left");
+            this.leftClick.deserializeNBT(tag.getCompoundTag("Left"));
         }
 
         if (tag.hasKey("Right"))
         {
-            this.rightClick = tag.getString("Right");
+            this.rightClick.deserializeNBT(tag.getCompoundTag("Right"));
         }
     }
 }

@@ -1,5 +1,6 @@
 package mchorse.mappet.network.client.blocks;
 
+import mchorse.mappet.api.utils.Trigger;
 import mchorse.mappet.client.gui.GuiTriggerBlockScreen;
 import mchorse.mappet.network.common.blocks.PacketEditTrigger;
 import mchorse.mclib.network.ClientMessageHandler;
@@ -14,6 +15,12 @@ public class ClientHandlerEditTrigger extends ClientMessageHandler<PacketEditTri
     @SideOnly(Side.CLIENT)
     public void run(EntityPlayerSP player, PacketEditTrigger message)
     {
-        Minecraft.getMinecraft().displayGuiScreen(new GuiTriggerBlockScreen(message.pos, message.left, message.right));
+        Trigger left = new Trigger();
+        Trigger right = new Trigger();
+
+        left.deserializeNBT(message.left);
+        right.deserializeNBT(message.right);
+
+        Minecraft.getMinecraft().displayGuiScreen(new GuiTriggerBlockScreen(message.pos, left, right));
     }
 }

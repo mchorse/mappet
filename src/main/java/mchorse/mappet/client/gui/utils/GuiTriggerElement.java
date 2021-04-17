@@ -38,6 +38,11 @@ public class GuiTriggerElement extends GuiElement
         this.set(trigger);
     }
 
+    public Trigger get()
+    {
+        return this.trigger;
+    }
+
     public void set(Trigger trigger)
     {
         this.trigger = trigger;

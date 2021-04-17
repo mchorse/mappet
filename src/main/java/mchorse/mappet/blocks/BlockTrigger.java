@@ -66,7 +66,7 @@ public class BlockTrigger extends Block implements ITileEntityProvider
 
             if (tile instanceof TileTrigger)
             {
-                Mappet.events.execute(((TileTrigger) tile).leftClick, new EventContext(playerIn.getServer(), playerIn));
+                ((TileTrigger) tile).leftClick.trigger(playerIn);
             }
         }
     }
@@ -91,7 +91,7 @@ public class BlockTrigger extends Block implements ITileEntityProvider
             }
             else
             {
-                Mappet.events.execute(trigger.rightClick, new EventContext(playerIn.getServer(), playerIn));
+                trigger.rightClick.trigger(playerIn);
             }
         }
 

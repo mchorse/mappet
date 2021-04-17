@@ -47,6 +47,7 @@ mappet.gui.panels.crafting=Crafting Tables
 mappet.gui.panels.events=Events
 mappet.gui.panels.dialogues=Dialogues
 mappet.gui.panels.regions=Regions
+mappet.gui.panels.npcs=NPCs
 
 # Keys
 mappet.keys.category=Mappet
