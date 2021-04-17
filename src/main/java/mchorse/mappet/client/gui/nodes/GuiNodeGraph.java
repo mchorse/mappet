@@ -4,6 +4,7 @@ import mchorse.mappet.Mappet;
 import mchorse.mappet.api.events.nodes.EventNode;
 import mchorse.mappet.api.utils.nodes.NodeRelation;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
+import mchorse.mappet.api.utils.nodes.factory.INodeFactory;
 import mchorse.mclib.McLib;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
@@ -12,6 +13,7 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.Area;
 import mchorse.mclib.client.gui.utils.Icons;
+import mchorse.mclib.client.gui.utils.Keybind;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.Color;
 import mchorse.mclib.utils.ColorUtils;
@@ -38,6 +40,7 @@ import java.util.function.Consumer;
 public class GuiNodeGraph extends GuiCanvas
 {
     public static final IKey KEYS_CATEGORY = IKey.str("Node editor");
+    public static final IKey ADD_CATEGORY = IKey.str("Add nodes");
 
     public static final int ACTIVE = 0x0088ff;
     public static final int IF = 0x00ff44;
@@ -54,7 +57,7 @@ public class GuiNodeGraph extends GuiCanvas
 
     private Consumer<EventNode> callback;
 
-    public GuiNodeGraph(Minecraft mc, Consumer<EventNode> callback)
+    public GuiNodeGraph(Minecraft mc, INodeFactory<EventNode> factory, Consumer<EventNode> callback)
     {
         super(mc);
 
@@ -69,6 +72,7 @@ public class GuiNodeGraph extends GuiCanvas
 
             for (String key : this.system.getFactory().getKeys())
             {
+                /* TODO: extract language */
                 menu.action(Icons.ADD, IKey.str("Add " + key + " node"), () -> this.addNode(key, x, y));
             }
 
@@ -86,6 +90,21 @@ public class GuiNodeGraph extends GuiCanvas
         this.keys().register(IKey.str("Tie to last selected"), Keyboard.KEY_F, this::tieSelected).inside().category(KEYS_CATEGORY);
         this.keys().register(IKey.str("Untie selected"), Keyboard.KEY_U, this::untieSelected).inside().category(KEYS_CATEGORY);
         this.keys().register(IKey.str("Mark main entry node"), Keyboard.KEY_M, this::markMain).inside().category(KEYS_CATEGORY);
+
+        int keycode = Keyboard.KEY_1;
+
+        for (String key : factory.getKeys())
+        {
+            Keybind keybind = this.keys().register(IKey.str("Add " + key + " node"), keycode, () ->
+            {
+                GuiContext context = GuiBase.getCurrent();
+
+                this.addNode(key, (int) this.fromX(context.mouseX), (int) this.fromY(context.mouseY));
+            });
+
+            keybind.inside().held(Keyboard.KEY_LCONTROL).category(ADD_CATEGORY);
+            keycode += 1;
+        }
     }
 
     private void addNode(String key, int x, int y)

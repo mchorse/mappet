@@ -1,12 +1,12 @@
 package mchorse.mappet.client.gui.panels;
 
+import mchorse.mappet.api.dialogues.DialogueManager;
 import mchorse.mappet.api.dialogues.DialogueNodeSystem;
 import mchorse.mappet.api.dialogues.nodes.DialogueNode;
 import mchorse.mappet.api.events.nodes.CommandNode;
 import mchorse.mappet.api.events.nodes.ConditionNode;
 import mchorse.mappet.api.events.nodes.EventNode;
 import mchorse.mappet.api.utils.ContentType;
-import mchorse.mappet.api.utils.nodes.NodeSystem;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.nodes.GuiCommandNodePanel;
 import mchorse.mappet.client.gui.nodes.GuiConditionNodePanel;
@@ -26,7 +26,7 @@ public class GuiDialoguePanel extends GuiMappetDashboardPanel<DialogueNodeSystem
     {
         super(mc, dashboard);
 
-        this.graph = new GuiNodeGraph(mc, this::pickNode);
+        this.graph = new GuiNodeGraph(mc, DialogueManager.FACTORY, this::pickNode);
         this.graph.flex().relative(this.editor).wh(1F, 1F);
 
         this.add(this.graph, this.panel);

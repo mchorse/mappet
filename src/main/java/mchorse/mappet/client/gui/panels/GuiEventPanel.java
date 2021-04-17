@@ -1,5 +1,6 @@
 package mchorse.mappet.client.gui.panels;
 
+import mchorse.mappet.api.events.EventManager;
 import mchorse.mappet.api.events.nodes.CommandNode;
 import mchorse.mappet.api.events.nodes.ConditionNode;
 import mchorse.mappet.api.events.nodes.EventNode;
@@ -23,7 +24,7 @@ public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventNode>
     {
         super(mc, dashboard);
 
-        this.graph = new GuiNodeGraph(mc, this::pickNode);
+        this.graph = new GuiNodeGraph(mc, EventManager.FACTORY, this::pickNode);
         this.graph.flex().relative(this.editor).wh(1F, 1F);
 
         this.add(this.graph, this.panel);
