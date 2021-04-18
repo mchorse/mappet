@@ -4,6 +4,7 @@ import mchorse.mappet.network.common.blocks.PacketEditRegion;
 import mchorse.mappet.network.common.blocks.PacketEditTrigger;
 import mchorse.mappet.tile.TileRegion;
 import mchorse.mappet.tile.TileTrigger;
+import mchorse.mappet.utils.WorldUtils;
 import mchorse.mclib.network.ServerMessageHandler;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
@@ -13,7 +14,7 @@ public class ServerHandlerEditRegion extends ServerMessageHandler<PacketEditRegi
     @Override
     public void run(EntityPlayerMP player, PacketEditRegion message)
     {
-        TileEntity tile = player.world.getTileEntity(message.pos);
+        TileEntity tile = WorldUtils.getTileEntity(player.world, message.pos);
 
         if (tile instanceof TileRegion)
         {
