@@ -25,7 +25,7 @@ public class ClientHandlerContentData extends ClientMessageHandler<PacketContent
 
             if (panel != null)
             {
-                panel.fill(message.name, message.type.deserialize(message.data));
+                panel.fill(message.name, message.type.getManager().create(message.data));
             }
         }
     }

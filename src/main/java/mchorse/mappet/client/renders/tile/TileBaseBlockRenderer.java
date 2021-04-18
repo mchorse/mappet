@@ -1,4 +1,4 @@
-package mchorse.mappet.client.renders;
+package mchorse.mappet.client.renders.tile;
 
 import mchorse.mclib.client.Draw;
 import mchorse.mclib.utils.Color;

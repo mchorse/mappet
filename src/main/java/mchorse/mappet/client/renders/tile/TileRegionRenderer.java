@@ -1,4 +1,4 @@
-package mchorse.mappet.client.renders;
+package mchorse.mappet.client.renders.tile;
 
 import mchorse.mappet.api.regions.shapes.AbstractShape;
 import mchorse.mappet.api.regions.shapes.BoxShape;

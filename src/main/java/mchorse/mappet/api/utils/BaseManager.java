@@ -24,8 +24,11 @@ public abstract class BaseManager <T extends INBTSerializable<NBTTagCompound>> i
 
     public BaseManager(File folder)
     {
-        this.folder = folder;
-        this.folder.mkdirs();
+        if (folder != null)
+        {
+            this.folder = folder;
+            this.folder.mkdirs();
+        }
     }
 
     @Override
@@ -81,7 +84,7 @@ public abstract class BaseManager <T extends INBTSerializable<NBTTagCompound>> i
     {
         File file = this.getFile(id);
 
-        if (file.exists())
+        if (file != null && file.exists())
         {
             return file.renameTo(this.getFile(newId));
         }
@@ -92,13 +95,20 @@ public abstract class BaseManager <T extends INBTSerializable<NBTTagCompound>> i
     @Override
     public boolean delete(String name)
     {
-        return this.getFile(name).delete();
+        File file = this.getFile(name);
+
+        return file != null && file.delete();
     }
 
     @Override
     public Collection<String> getKeys()
     {
         List<String> list = new ArrayList<String>();
+
+        if (this.folder == null)
+        {
+            return list;
+        }
 
         for (File file : this.folder.listFiles())
         {
@@ -115,6 +125,11 @@ public abstract class BaseManager <T extends INBTSerializable<NBTTagCompound>> i
 
     public File getFile(String name)
     {
+        if (this.folder == null)
+        {
+            return null;
+        }
+
         return new File(this.folder, name + ".json");
     }
 }

@@ -27,16 +27,6 @@ public enum ContentType
         }
 
         @Override
-        public INBTSerializable<NBTTagCompound> deserialize(NBTTagCompound data)
-        {
-            Quest quest = new Quest();
-
-            quest.deserializeNBT(data);
-
-            return quest;
-        }
-
-        @Override
         @SideOnly(Side.CLIENT)
         public GuiMappetDashboardPanel get(GuiMappetDashboard dashboard)
         {
@@ -49,16 +39,6 @@ public enum ContentType
         public IManager<? extends INBTSerializable<NBTTagCompound>> getManager()
         {
             return Mappet.crafting;
-        }
-
-        @Override
-        public INBTSerializable<NBTTagCompound> deserialize(NBTTagCompound data)
-        {
-            CraftingTable table = new CraftingTable();
-
-            table.deserializeNBT(data);
-
-            return table;
         }
 
         @Override
@@ -77,16 +57,6 @@ public enum ContentType
         }
 
         @Override
-        public INBTSerializable<NBTTagCompound> deserialize(NBTTagCompound data)
-        {
-            NodeSystem<EventNode> system = Mappet.events.create();
-
-            system.deserializeNBT(data);
-
-            return system;
-        }
-
-        @Override
         @SideOnly(Side.CLIENT)
         public GuiMappetDashboardPanel get(GuiMappetDashboard dashboard)
         {
@@ -102,27 +72,30 @@ public enum ContentType
         }
 
         @Override
-        public INBTSerializable<NBTTagCompound> deserialize(NBTTagCompound data)
+        @SideOnly(Side.CLIENT)
+        public GuiMappetDashboardPanel get(GuiMappetDashboard dashboard)
         {
-            DialogueNodeSystem dialogue = Mappet.dialogues.create();
-
-            dialogue.deserializeNBT(data);
-
-            return dialogue;
+            return dashboard.dialogue;
+        }
+    },
+    NPC()
+    {
+        @Override
+        public IManager<? extends INBTSerializable<NBTTagCompound>> getManager()
+        {
+            return Mappet.npcs;
         }
 
         @Override
         @SideOnly(Side.CLIENT)
         public GuiMappetDashboardPanel get(GuiMappetDashboard dashboard)
         {
-            return dashboard.dialogue;
+            return dashboard.npc;
         }
     };
 
     /* Every Karen be like :D */
     public abstract IManager<? extends INBTSerializable<NBTTagCompound>> getManager();
-
-    public abstract INBTSerializable<NBTTagCompound> deserialize(NBTTagCompound data);
 
     @SideOnly(Side.CLIENT)
     public abstract GuiMappetDashboardPanel get(GuiMappetDashboard dashboard);
