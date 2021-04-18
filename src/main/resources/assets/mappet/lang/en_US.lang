@@ -1,64 +1,64 @@
 # Error
-mappet.error.states.missing=§fValue by key §7%s§f is missing!
-mappet.error.states.false=§fGiven expression evaluates to §cfalse§f for value by given §7%s§r key!
+mappet.error.states.missing=§fЗначение с маркером §7%s§f не найдено!
+mappet.error.states.false=§fЗаданное выражение установлено на §cfalse§f для значения с маркером §7%s§r!
 
-mappet.error.quest.missing=§fQuest by ID §7%s§f is missing in quest database!
+mappet.error.quest.missing=§fКвест с ID §7%s§f не найден в базе данных квестов!
 
-mappet.error.crafting.missing=§fCrafting table by ID §7%s§f is missing!
-mappet.error.crafting.empty=§fCrafting table by ID §7%s§f is empty (it has 0 recipes)!
+mappet.error.crafting.missing=§fТаблица рецептов с ID §7%s§f не найдена!
+mappet.error.crafting.empty=§fТаблица рецептов с ID §7%s§f пустоа (в ней 0 рецептов)!
 
-mappet.error.event.missing=§fEvent by ID §7%s§f is missing!
-mappet.error.event.empty=§fEvent by ID §7%s§f is empty (it has no entry node)!
+mappet.error.event.missing=§fСобытие с ID §7%s§f не найдено!
+mappet.error.event.empty=§fСобытие с ID §7%s§f пустое (не имеет вступительного нода)!
 
 # Info
-mappet.info.states.reset=§fValue by key §7%s§f was removed from states.
-mappet.info.states.set=§fValue by key §7%s§f was set to §7%s§r.
-mappet.info.states.changed=§fValue by key §7%s§f was §7%s§r, and it's §7%s§r.
-mappet.info.states.true=§fGiven expression evaluates to §atrue§f for value by given §7%s§r key.
+mappet.info.states.reset=§fЗначение с маркером §7%s§f было удалено из состояний.
+mappet.info.states.set=§fЗначение с маркером §7%s§f было установлено на §7%s§r.
+mappet.info.states.changed=§fЗначение с маркером §7%s§f было §7%s§r, стало §7%s§r.
+mappet.info.states.true=§fЗаданное выражение установлено на §atrue§f для значения с маркером §7%s§r.
 
 # Success
-mappet.success.quest.accepted=§fQuest by ID §7%s§f was given to player §7%s§f.
-mappet.success.quest.completed=§fQuest by ID §7%s§f was force completed by player §7%s§f.
-mappet.success.quest.declined=§fQuest by ID §7%s§f was removed from player §7%s§f.
+mappet.success.quest.accepted=§fКвест с ID §7%s§f был выдан игроку §7%s§f.
+mappet.success.quest.completed=§fКвест с ID §7%s§f был принудительно завершён у игрока §7%s§f.
+mappet.success.quest.declined=§fКвест с ID §7%s§f был удалён у игрока §7%s§f.
 
 # Commands
-mappet.commands.mp.help=Main Mappet command that provides subcommands for working with Mappet's features.
+mappet.commands.mp.help=Главная команда Маппета, предоставляющая подкоманды для работы с возможностями Маппета.
 
-mappet.commands.mp.state.help=State management subcommand.
-mappet.commands.mp.state.add=This command adds to value by §7<id>§r key the value evaluated by §7<expression>§r. If §7<id>§r state didn't exist, §7<expression>§r will be added to 0.
-mappet.commands.mp.state.reset=This command removes value by §7<id>§r key.
-mappet.commands.mp.state.set=This command assigns value by §7<id>§r key to value evaluated by §7<expression>§r.
-mappet.commands.mp.state.sub=This command subtracts to value by §7<id>§r key the value evaluated by §7<expression>§r. If §7<id>§r state didn't exist, §7<expression>§r will be subtracted to 0.
+mappet.commands.mp.state.help=Команда управления состояниями.
+mappet.commands.mp.state.add=Эта команда добавляет к значению с маркером §7<id>§r значение, результирая в выражение §7<expression>§r. Если состояние §7<id>§r не существует, то выражение §7<expression>§r будет добавлено к нулю.
+mappet.commands.mp.state.reset=Эта команда удаляет значение с маркером §7<id>§r.
+mappet.commands.mp.state.set=Эта команда назначает значение с маркером §7<id>§r значению результирая в выражение §7<expression>§r.
+mappet.commands.mp.state.sub=Эта команда разделяет значение с маркером §7<id>§r, результирая в выражение §7<expression>§r. Если состояние §7<id>§r не существует, выражение §7<expression>§r будет разделено на 0.
 
-mappet.commands.mp.quest.help=Quest management subcommand.
-mappet.commands.mp.quest.accept=This command gives a quest by §7<id>§r from quest database to one or multiple §7<player>§r(s). If §7<player>§r(s) has this quest, then it will be ignored.
-mappet.commands.mp.quest.complete=This command completes the quest (regardless whether player has needed objectives completed) by §7<id>§r for one or multiple §7<player>§r(s).
-mappet.commands.mp.quest.decline=This command removes the quest by §7<id>§r from one or multiple §7<player>§r(s). 
+mappet.commands.mp.quest.help=Подкоманда управления квестами.
+mappet.commands.mp.quest.accept=Эта команда даёт квест с §7<id>§r из базы данных квестов одному или нескольким игрокам §7<player>§r. Если игрок или игроки §7<player>§r уже имеют этот квест, событие будет проигнорировано.
+mappet.commands.mp.quest.complete=Эта команда завершает квест (вне зависимости от того достиг ли игрок поставленных задач) с §7<id>§r для одного или нескольких игроков §7<player>§r.
+mappet.commands.mp.quest.decline=Эта команда удаляет квест с ID с §7<id>§r у одного или нескольких игроков §7<player>§r. 
 
-mappet.commands.mp.crafting.help=Mappet's crafting table subcommand.
-mappet.commands.mp.crafting.open=This command opens a crafting table by §7<id>§r for §7<player>§r(s).
+mappet.commands.mp.crafting.help=Подкоманда верстака Маппета.
+mappet.commands.mp.crafting.open=Эта команда открывает таблицу рецептов с §7<id>§r для игрока/ов §7<player>§r.
 
-mappet.commands.mp.event.help=Mappet's event subcommand.
-mappet.commands.mp.event.trigger=This command triggers an event by §7<id>§r using §7<player>§r(s) as context.
+mappet.commands.mp.event.help=Подкоманда событий Маппета.
+mappet.commands.mp.event.trigger=Эта команда включает событие с §7<id>§r используя игрока/ов §7<player>§r в качестве контекста.
 
 # GUI
-mappet.gui.panels.quests=Quests
-mappet.gui.panels.crafting=Crafting Tables
-mappet.gui.panels.events=Events
-mappet.gui.panels.dialogues=Dialogues
-mappet.gui.panels.regions=Regions
-mappet.gui.panels.npcs=NPCs
+mappet.gui.panels.quests=Квесты
+mappet.gui.panels.crafting=Верстак
+mappet.gui.panels.events=События
+mappet.gui.panels.dialogues=Диалоги
+mappet.gui.panels.regions=Регионы
+mappet.gui.panels.npcs=НПЦ
 
 # Keys
-mappet.keys.category=Mappet
-mappet.keys.dashboard=Creative dashboard
+mappet.keys.category=Маппет
+mappet.keys.dashboard=Главная панель креатива
 
 # Items, blocks and entities
-itemGroup.mappet=Mappet
+itemGroup.mappet=Маппет
 
-tile.mappet.emitter.name=Emitter block
-tile.mappet.emitter.tooltip=Checks for expression condition and emits redstone signal upon non-zero value
-tile.mappet.trigger.name=Trigger block
-tile.mappet.trigger.tooltip=Trigger events from player right and left clicking the block
-tile.mappet.region.name=Region block
-tile.mappet.region.tooltip=Trigger events when players enter and exit configured region
+tile.mappet.emitter.name=Блок-излучатель
+tile.mappet.emitter.tooltip=Проверяет условие выражения и излучает сигнал красного камени при значении больше нуля
+tile.mappet.trigger.name=Блок-триггер
+tile.mappet.trigger.tooltip=Включает заданные события при нажатии на блок игроком ПКМ или ЛКМ
+tile.mappet.region.name=Блок-регион
+tile.mappet.region.tooltip=Включает заданные события когда игрок заходит и/ли выходит в указанный регион
