@@ -1,0 +1,64 @@
+# Error
+mappet.error.states.missing=§fЗначение с маркером §7%s§f не найдено!
+mappet.error.states.false=§fЗаданное выражение установлено на §cfalse§f для значения с маркером §7%s§r!
+
+mappet.error.quest.missing=§fКвест с ID §7%s§f не найден в базе данных квестов!
+
+mappet.error.crafting.missing=§fТаблица рецептов с ID §7%s§f не найдена!
+mappet.error.crafting.empty=§fТаблица рецептов с ID §7%s§f пустоа (в ней 0 рецептов)!
+
+mappet.error.event.missing=§fСобытие с ID §7%s§f не найдено!
+mappet.error.event.empty=§fСобытие с ID §7%s§f пустое (не имеет вступительного нода)!
+
+# Info
+mappet.info.states.reset=§fЗначение с маркером §7%s§f было удалено из состояний.
+mappet.info.states.set=§fЗначение с маркером §7%s§f было установлено на §7%s§r.
+mappet.info.states.changed=§fЗначение с маркером §7%s§f было §7%s§r, стало §7%s§r.
+mappet.info.states.true=§fЗаданное выражение установлено на §atrue§f для значения с маркером §7%s§r.
+
+# Success
+mappet.success.quest.accepted=§fКвест с ID §7%s§f был выдан игроку §7%s§f.
+mappet.success.quest.completed=§fКвест с ID §7%s§f был принудительно завершён у игрока §7%s§f.
+mappet.success.quest.declined=§fКвест с ID §7%s§f был удалён у игрока §7%s§f.
+
+# Commands
+mappet.commands.mp.help=Главная команда Маппета, предоставляющая подкоманды для работы с возможностями Маппета.
+
+mappet.commands.mp.state.help=Команда управления состояниями.
+mappet.commands.mp.state.add=Эта команда добавляет к значению с маркером §7<id>§r значение, результирая в выражение §7<expression>§r. Если состояние §7<id>§r не существует, то выражение §7<expression>§r будет добавлено к нулю.
+mappet.commands.mp.state.reset=Эта команда удаляет значение с маркером §7<id>§r.
+mappet.commands.mp.state.set=Эта команда назначает значение с маркером §7<id>§r значению результирая в выражение §7<expression>§r.
+mappet.commands.mp.state.sub=Эта команда разделяет значение с маркером §7<id>§r, результирая в выражение §7<expression>§r. Если состояние §7<id>§r не существует, выражение §7<expression>§r будет разделено на 0.
+
+mappet.commands.mp.quest.help=Подкоманда управления квестами.
+mappet.commands.mp.quest.accept=Эта команда даёт квест с §7<id>§r из базы данных квестов одному или нескольким игрокам §7<player>§r. Если игрок или игроки §7<player>§r уже имеют этот квест, событие будет проигнорировано.
+mappet.commands.mp.quest.complete=Эта команда завершает квест (вне зависимости от того достиг ли игрок поставленных задач) с §7<id>§r для одного или нескольких игроков §7<player>§r.
+mappet.commands.mp.quest.decline=Эта команда удаляет квест с ID с §7<id>§r у одного или нескольких игроков §7<player>§r. 
+
+mappet.commands.mp.crafting.help=Подкоманда верстака Маппета.
+mappet.commands.mp.crafting.open=Эта команда открывает таблицу рецептов с §7<id>§r для игрока/ов §7<player>§r.
+
+mappet.commands.mp.event.help=Подкоманда событий Маппета.
+mappet.commands.mp.event.trigger=Эта команда включает событие с §7<id>§r используя игрока/ов §7<player>§r в качестве контекста.
+
+# GUI
+mappet.gui.panels.quests=Квесты
+mappet.gui.panels.crafting=Верстак
+mappet.gui.panels.events=События
+mappet.gui.panels.dialogues=Диалоги
+mappet.gui.panels.regions=Регионы
+mappet.gui.panels.npcs=НПЦ
+
+# Keys
+mappet.keys.category=Маппет
+mappet.keys.dashboard=Главная панель креатива
+
+# Items, blocks and entities
+itemGroup.mappet=Маппет
+
+tile.mappet.emitter.name=Блок-излучатель
+tile.mappet.emitter.tooltip=Проверяет условие выражения и излучает сигнал красного камени при значении больше нуля
+tile.mappet.trigger.name=Блок-триггер
+tile.mappet.trigger.tooltip=Включает заданные события при нажатии на блок игроком ПКМ или ЛКМ
+tile.mappet.region.name=Блок-регион
+tile.mappet.region.tooltip=Включает заданные события когда игрок заходит и/ли выходит в указанный регион
