@@ -111,7 +111,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     /**
      * The UUID of the player that must be followed
      */
-    public UUID follow;
+    public String follow = "";
 
     /* General */
 
@@ -221,10 +221,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
 
             tag.setTag("Points", points);
         }
-        if ((all || options.contains("follow")) && this.follow != null)
-        {
-            tag.setString("Follow", this.follow.toString());
-        }
+        if ((all || options.contains("follow"))) tag.setString("Follow", this.follow);
 
         /* General */
         if ((all || options.contains("morph")) && this.morph != null) tag.setTag("Morph", this.morph.toNBT());
@@ -299,17 +296,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
                 }
             }
         }
-        if (tag.hasKey("Follow", Constants.NBT.TAG_STRING))
-        {
-            try
-            {
-                this.follow = UUID.fromString(tag.getString("Follow"));
-            }
-            catch (Exception e)
-            {
-                this.follow = null;
-            }
-        }
+        if (tag.hasKey("Follow", Constants.NBT.TAG_STRING)) this.follow = tag.getString("Follow");
 
         /* General */
         if (tag.hasKey("Morph", Constants.NBT.TAG_COMPOUND)) this.morph = MorphManager.INSTANCE.morphFromNBT(tag.getCompoundTag("Morph"));

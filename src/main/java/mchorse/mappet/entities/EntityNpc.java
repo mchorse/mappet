@@ -3,14 +3,17 @@ package mchorse.mappet.entities;
 import io.netty.buffer.ByteBuf;
 import mchorse.mappet.api.npcs.NpcDrop;
 import mchorse.mappet.api.npcs.NpcState;
+import mchorse.mappet.entities.ai.EntityAIFollowTarget;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.npc.PacketNpcMorph;
 import mchorse.mclib.utils.Interpolations;
+import mchorse.mclib.utils.MathUtils;
 import mchorse.metamorph.api.Morph;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.models.IMorphProvider;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAISwimming;
@@ -24,6 +27,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
+import java.util.UUID;
 
 public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnData, IMorphProvider
 {
@@ -54,6 +60,11 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         if (this.state != null && this.state.canSwim)
         {
             this.tasks.addTask(0, new EntityAISwimming(this));
+        }
+
+        if (this.state != null && !this.state.follow.isEmpty())
+        {
+            this.tasks.addTask(6, new EntityAIFollowTarget(this, 1.0D, 2.0F, 10.0F));
         }
 
         if (this.state != null && this.state.lookAround)
@@ -114,6 +125,33 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     public AbstractMorph getMorph()
     {
         return this.morph.get();
+    }
+
+    public EntityLivingBase getFollowTarget()
+    {
+        if (this.state.follow.isEmpty())
+        {
+            return null;
+        }
+
+        if (this.state.follow.equals("@r"))
+        {
+            List<EntityPlayer> players = this.world.playerEntities;
+            int index = (int) MathUtils.clamp(Math.random() * players.size() - 1, 0, players.size() - 1);
+
+            return players.isEmpty() ? null : players.get(index);
+        }
+        else
+        {
+            try
+            {
+                return this.world.getPlayerEntityByUUID(UUID.fromString(this.state.follow));
+            }
+            catch (Exception e)
+            {}
+        }
+
+        return null;
     }
 
     public void setMorph(AbstractMorph morph)
@@ -225,9 +263,12 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
             this.morph.fromNBT(tag.getCompoundTag("Morph"));
         }
 
+        NpcState state = new NpcState();
+
+        state.deserializeNBT(tag.getCompoundTag("State"));
+
         this.npcId = tag.getString("NpcId");
-        this.state = new NpcState();
-        this.state.deserializeNBT(tag.getCompoundTag("State"));
+        this.setState(state, false);
         this.unique = tag.getBoolean("Unique");
     }
 
