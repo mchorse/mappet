@@ -317,7 +317,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("SightRadius")) this.sightRadius = tag.getFloat("SightRadius");
         if (tag.hasKey("Drops"))
         {
-            NBTTagList drops = tag.getTagList("Drops", Constants.NBT.TAG_LIST);
+            NBTTagList drops = tag.getTagList("Drops", Constants.NBT.TAG_COMPOUND);
 
             this.drops.clear();
 

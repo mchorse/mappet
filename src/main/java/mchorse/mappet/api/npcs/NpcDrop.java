@@ -24,7 +24,14 @@ public class NpcDrop implements INBTSerializable<NBTTagCompound>
     @Override
     public void deserializeNBT(NBTTagCompound tag)
     {
-        this.stack = new ItemStack(tag.getCompoundTag("Stack"));
-        this.chance = MathUtils.clamp(tag.getFloat("Chance"), 0, 1);
+        if (tag.hasKey("Stack"))
+        {
+            this.stack = new ItemStack(tag.getCompoundTag("Stack"));
+        }
+
+        if (tag.hasKey("Chance"))
+        {
+            this.chance = MathUtils.clamp(tag.getFloat("Chance"), 0, 1);
+        }
     }
 }

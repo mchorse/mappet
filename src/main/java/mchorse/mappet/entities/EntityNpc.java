@@ -1,6 +1,7 @@
 package mchorse.mappet.entities;
 
 import io.netty.buffer.ByteBuf;
+import mchorse.mappet.api.npcs.NpcDrop;
 import mchorse.mappet.api.npcs.NpcState;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.npc.PacketNpcMorph;
@@ -15,6 +16,7 @@ import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
@@ -22,6 +24,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
 
 public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnData, IMorphProvider
 {
@@ -135,6 +139,18 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
             }
 
             this.lastDamageTime += 1;
+        }
+    }
+
+    @Override
+    protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier)
+    {
+        for (NpcDrop drop : this.state.drops)
+        {
+            if (this.rand.nextFloat() < drop.chance)
+            {
+                this.entityDropItem(drop.stack.copy(), 0F);
+            }
         }
     }
 
