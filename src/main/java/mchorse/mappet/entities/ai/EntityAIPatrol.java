@@ -3,6 +3,8 @@ package mchorse.mappet.entities.ai;
 import mchorse.mappet.api.npcs.NpcState;
 import mchorse.mappet.entities.EntityNpc;
 import mchorse.mclib.utils.MathUtils;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigate;
@@ -30,13 +32,17 @@ public class EntityAIPatrol extends EntityAIBase
     @Override
     public boolean shouldExecute()
     {
-        return true;
+        EntityLivingBase target = this.target.getAttackTarget();
+
+        return target == null;
     }
 
     @Override
     public boolean shouldContinueExecuting()
     {
-        return true;
+        EntityLivingBase target = this.target.getAttackTarget();
+
+        return target == null;
     }
 
     @Override

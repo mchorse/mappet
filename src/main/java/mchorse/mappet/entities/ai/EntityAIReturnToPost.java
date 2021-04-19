@@ -29,12 +29,22 @@ public class EntityAIReturnToPost extends EntityAIBase
     @Override
     public boolean shouldExecute()
     {
+        if (this.target.getAttackTarget() != null)
+        {
+            return false;
+        }
+
         return this.target.getDistanceSq(this.post) > this.min * this.min;
     }
 
     @Override
     public boolean shouldContinueExecuting()
     {
+        if (this.target.getAttackTarget() != null)
+        {
+            return false;
+        }
+
         return !this.target.getNavigator().noPath() && this.target.getDistanceSq(this.post) > this.min * this.min;
     }
 

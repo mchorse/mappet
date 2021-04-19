@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import mchorse.mappet.api.npcs.Npc;
 import mchorse.mappet.api.npcs.NpcDrop;
 import mchorse.mappet.api.npcs.NpcState;
+import mchorse.mappet.entities.ai.EntityAIAttackNpcMelee;
 import mchorse.mappet.entities.ai.EntityAIFollowTarget;
 import mchorse.mappet.entities.ai.EntityAIPatrol;
 import mchorse.mappet.entities.ai.EntityAIReturnToPost;
@@ -15,10 +16,12 @@ import mchorse.metamorph.api.Morph;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.models.IMorphProvider;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAILookIdle;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
@@ -45,6 +48,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     private double pathDistance = 16;
 
     private int lastDamageTime;
+    private boolean unkillableFailsafe = true;
 
     public float smoothYawHead;
     public float prevSmoothYawHead;
@@ -98,7 +102,10 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
             }
         }
 
+        this.tasks.addTask(4, new EntityAIAttackNpcMelee(this, 0.5F, false));
         this.tasks.addTask(9, new EntityAIWanderAvoidWater(this, 0.25D));
+
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<EntityNpc>(this, EntityNpc.class, true));
     }
 
     /* Getter and setters */
@@ -199,14 +206,18 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     @Override
     public void onUpdate()
     {
+        this.healthFailsafe();
+
         super.onUpdate();
+
+        this.updateArmSwingProgress();
 
         if (!this.morph.isEmpty())
         {
             this.morph.get().update(this);
         }
 
-        if (this.state.regenDelay > 0)
+        if (this.state.regenDelay > 0 && !this.world.isRemote)
         {
             if (this.lastDamageTime >= this.state.regenDelay && this.ticksExisted % this.state.regenFrequency == 0)
             {
@@ -227,6 +238,15 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     }
 
     @Override
+    protected void onDeathUpdate()
+    {
+        if (this.state.killable)
+        {
+            super.onDeathUpdate();
+        }
+    }
+
+    @Override
     protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier)
     {
         for (NpcDrop drop : this.state.drops)
@@ -239,6 +259,14 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     }
 
     @Override
+    public boolean attackEntityAsMob(Entity entityIn)
+    {
+        entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), this.state.damage);
+
+        return super.attackEntityAsMob(entityIn);
+    }
+
+    @Override
     protected void damageEntity(DamageSource damage, float damageAmount)
     {
         super.damageEntity(damage, damageAmount);
@@ -247,6 +275,32 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         {
             this.lastDamageTime = 0;
         }
+
+        this.healthFailsafe();
+    }
+
+    @Override
+    public boolean isEntityInvulnerable(DamageSource source)
+    {
+        if (this.state.invincible)
+        {
+            return !(source.isCreativePlayer() || source == DamageSource.OUT_OF_WORLD);
+        }
+
+        if (!this.state.canFallDamage && source == DamageSource.FALL)
+        {
+            return true;
+        }
+
+        return super.isEntityInvulnerable(source);
+    }
+
+    @Override
+    public void onKillCommand()
+    {
+        this.unkillableFailsafe = false;
+
+        super.onKillCommand();
     }
 
     @Override
@@ -255,15 +309,12 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         return this.unique;
     }
 
-    @Override
-    public boolean isEntityInvulnerable(DamageSource source)
+    public void healthFailsafe()
     {
-        if (!this.state.canFallDamage && source == DamageSource.FALL)
+        if (!this.state.killable && this.getHealth() <= 0 && this.unkillableFailsafe)
         {
-            return true;
+            this.setHealth(0.001F);
         }
-
-        return super.isEntityInvulnerable(source);
     }
 
     /* NBT (de)serialization */
