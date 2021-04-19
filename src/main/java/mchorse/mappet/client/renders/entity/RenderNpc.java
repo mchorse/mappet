@@ -26,8 +26,16 @@ public class RenderNpc extends RenderLiving<EntityNpc>
     @Override
     public void doRender(EntityNpc entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
-        // super.doRender(entity, x, y, z, entityYaw, partialTicks);
+        float yawHead = entity.rotationYawHead;
+        float prevYawHead = entity.prevRotationYawHead;
+
+        entity.rotationYawHead = entity.smoothYawHead;
+        entity.prevRotationYawHead = entity.prevSmoothYawHead;
+
         MorphUtils.render(entity.getMorph(), entity, x, y, z, entityYaw, partialTicks);
+
+        entity.rotationYawHead = yawHead;
+        entity.prevRotationYawHead = prevYawHead;
     }
 
     public static class Factory implements IRenderFactory<EntityNpc>

@@ -5,18 +5,18 @@ import mchorse.mappet.api.npcs.NpcDrop;
 import mchorse.mappet.api.npcs.NpcState;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.npc.PacketNpcMorph;
+import mchorse.mclib.utils.Interpolations;
 import mchorse.metamorph.api.Morph;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.models.IMorphProvider;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
@@ -24,8 +24,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nullable;
 
 public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnData, IMorphProvider
 {
@@ -37,6 +35,9 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     private boolean unique;
 
     private int lastDamageTime;
+
+    public float smoothYawHead;
+    public float prevSmoothYawHead;
 
     public EntityNpc(World worldIn)
     {
@@ -55,7 +56,16 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
             this.tasks.addTask(0, new EntityAISwimming(this));
         }
 
-        this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+        if (this.state != null && this.state.lookAround)
+        {
+            this.tasks.addTask(8, new EntityAILookIdle(this));
+        }
+
+        if (this.state != null && this.state.lookAtPlayer)
+        {
+            this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+        }
+
         this.tasks.addTask(9, new EntityAIWanderAvoidWater(this, 0.25D));
     }
 
@@ -139,6 +149,12 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
             }
 
             this.lastDamageTime += 1;
+        }
+
+        if (this.world.isRemote)
+        {
+            this.prevSmoothYawHead = this.smoothYawHead;
+            this.smoothYawHead = Interpolations.lerpYaw(this.smoothYawHead, this.rotationYawHead, 0.5F);
         }
     }
 
@@ -227,6 +243,9 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     public void readSpawnData(ByteBuf buf)
     {
         this.morph.setDirect(MorphUtils.morphFromBuf(buf));
+
+        this.prevRotationYawHead = this.rotationYawHead;
+        this.smoothYawHead = this.rotationYawHead;
     }
 
     /* Client stuff */
