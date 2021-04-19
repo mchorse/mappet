@@ -2,6 +2,8 @@ package mchorse.mappet.entities;
 
 import io.netty.buffer.ByteBuf;
 import mchorse.mappet.api.npcs.NpcState;
+import mchorse.mappet.network.Dispatcher;
+import mchorse.mappet.network.common.npc.PacketNpcMorph;
 import mchorse.metamorph.api.Morph;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.models.IMorphProvider;
@@ -12,7 +14,10 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
@@ -26,6 +31,8 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     private NpcState state = new NpcState();
     private String npcId = "";
     private boolean unique;
+
+    private int lastDamageTime;
 
     public EntityNpc(World worldIn)
     {
@@ -45,7 +52,14 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         }
 
         this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-        this.tasks.addTask(9, new EntityAIWanderAvoidWater(this, 0.1D));
+        this.tasks.addTask(9, new EntityAIWanderAvoidWater(this, 0.25D));
+    }
+
+    /* Getter and setters */
+
+    public String getId()
+    {
+        return this.npcId;
     }
 
     public void setId(String npcId)
@@ -53,25 +67,31 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         this.npcId = npcId;
     }
 
-    public String getId()
-    {
-        return this.npcId;
-    }
-
     public void setUnique(boolean unique)
     {
         this.unique = unique;
     }
 
-    public void setState(NpcState state)
+    public void setState(NpcState state, boolean notify)
     {
         this.state = new NpcState();
         this.state.deserializeNBT(state.serializeNBT());
 
-        double max = this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH).getBaseValue();
+        double max = this.getMaxHealth();
+        double health = this.getHealth();
 
+        /* Set health */
+        this.setMaxHealth(state.maxHealth);
+        this.setHealth((float) MathHelper.clamp(state.maxHealth * (health / max), 1, state.maxHealth));
+
+        this.isImmuneToFire = !this.state.canGetBurned;
 
         this.morph.set(state.morph);
+
+        if (notify)
+        {
+            Dispatcher.sendToTracked(this, new PacketNpcMorph(this));
+        }
 
         this.initEntityAI();
     }
@@ -82,6 +102,18 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         return this.morph.get();
     }
 
+    public void setMorph(AbstractMorph morph)
+    {
+        this.morph.set(morph);
+    }
+
+    public void setMaxHealth(double value)
+    {
+        this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(value);
+    }
+
+    /* Other stuff */
+
     @Override
     public void onUpdate()
     {
@@ -91,12 +123,47 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         {
             this.morph.get().update(this);
         }
+
+        if (this.state.regenDelay > 0)
+        {
+            if (this.lastDamageTime >= this.state.regenDelay && this.ticksExisted % this.state.regenFrequency == 0)
+            {
+                if (this.getHealth() > 0 && this.getHealth() < this.getMaxHealth())
+                {
+                    this.heal(1F);
+                }
+            }
+
+            this.lastDamageTime += 1;
+        }
+    }
+
+    @Override
+    protected void damageEntity(DamageSource damageSrc, float damageAmount)
+    {
+        super.damageEntity(damageSrc, damageAmount);
+
+        if (!this.isEntityInvulnerable(damageSrc))
+        {
+            this.lastDamageTime = 0;
+        }
     }
 
     @Override
     protected boolean canDespawn()
     {
         return this.unique;
+    }
+
+    @Override
+    public boolean isEntityInvulnerable(DamageSource source)
+    {
+        if (!this.state.canFallDamage && source == DamageSource.FALL)
+        {
+            return true;
+        }
+
+        return super.isEntityInvulnerable(source);
     }
 
     /* NBT (de)serialization */
@@ -145,6 +212,8 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     {
         this.morph.setDirect(MorphUtils.morphFromBuf(buf));
     }
+
+    /* Client stuff */
 
     /**
      * Is actor in range in render distance

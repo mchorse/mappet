@@ -47,6 +47,6 @@ public class CommandNpcState extends CommandNpcBase
             throw new CommandException("npc.missing_state", args[1]);
         }
 
-        entity.setState(state);
+        entity.setState(state, true);
     }
 }

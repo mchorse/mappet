@@ -39,12 +39,12 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     /**
      * Whether this NPC is resistible to fall damage
      */
-    public boolean canFallDamage;
+    public boolean canFallDamage = true;
 
     /**
      * Whether this NPC is resistible to fire damage
      */
-    public boolean canGetBurned;
+    public boolean canGetBurned = true;
 
     /**
      * Whether this NPC can be damaged

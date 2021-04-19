@@ -24,7 +24,9 @@ public class NBTToJson
     {
         if (base instanceof NBTTagByte)
         {
-            return new JsonPrimitive(((NBTTagByte) base).getByte());
+            byte value = ((NBTTagByte) base).getByte();
+
+            return value < 2 ? new JsonPrimitive(value == 1) : new JsonPrimitive(value);
         }
         else if (base instanceof NBTTagShort)
         {
