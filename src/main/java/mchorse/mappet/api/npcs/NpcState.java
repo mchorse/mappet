@@ -155,6 +155,11 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
      */
     public List<NpcDrop> drops = new ArrayList<NpcDrop>();
 
+    /**
+     * How much XP drops an NPC after getting killed
+     */
+    public int xp = 0;
+
     /* Behavior */
 
     /**
@@ -250,6 +255,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
 
             tag.setTag("Drops", drops);
         }
+        if (all || options.contains("xp")) tag.setInteger("Xp", this.xp);
 
         /* Behavior */
         if (all || options.contains("look_at_player")) tag.setBoolean("LookAtPlayer", this.lookAtPlayer);
@@ -333,6 +339,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
                 this.drops.add(drop);
             }
         }
+        if (tag.hasKey("Xp")) this.xp = tag.getInteger("Xp");
 
         /* Behavior */
         if (tag.hasKey("LookAtPlayer")) this.lookAtPlayer = tag.getBoolean("LookAtPlayer");

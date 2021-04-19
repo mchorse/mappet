@@ -130,15 +130,17 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         this.state = new NpcState();
         this.state.deserializeNBT(state.serializeNBT());
 
+        /* Set health */
         double max = this.getMaxHealth();
         double health = this.getHealth();
 
-        /* Set health */
         this.setMaxHealth(state.maxHealth);
         this.setHealth((float) MathHelper.clamp(state.maxHealth * (health / max), 1, state.maxHealth));
 
         this.isImmuneToFire = !this.state.canGetBurned;
+        this.experienceValue = this.state.xp;
 
+        /* Morphing */
         this.morph.set(state.morph);
 
         if (notify)
