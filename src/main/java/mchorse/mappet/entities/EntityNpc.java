@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import mchorse.mappet.api.npcs.NpcDrop;
 import mchorse.mappet.api.npcs.NpcState;
 import mchorse.mappet.entities.ai.EntityAIFollowTarget;
+import mchorse.mappet.entities.ai.EntityAIReturnToPost;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.npc.PacketNpcMorph;
 import mchorse.mclib.utils.Interpolations;
@@ -51,30 +52,45 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     }
 
     @Override
+    protected void applyEntityAttributes()
+    {
+        super.applyEntityAttributes();
+
+        this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(48.0D);
+    }
+
+    @Override
     protected void initEntityAI()
     {
         super.initEntityAI();
 
         this.tasks.taskEntries.clear();
 
-        if (this.state != null && this.state.canSwim)
+        if (this.state != null)
         {
-            this.tasks.addTask(0, new EntityAISwimming(this));
-        }
+            if (this.state.canSwim)
+            {
+                this.tasks.addTask(0, new EntityAISwimming(this));
+            }
 
-        if (this.state != null && !this.state.follow.isEmpty())
-        {
-            this.tasks.addTask(6, new EntityAIFollowTarget(this, 1.0D, 2.0F, 10.0F));
-        }
+            if (!this.state.follow.isEmpty())
+            {
+                this.tasks.addTask(6, new EntityAIFollowTarget(this, 1, 2, 10));
+            }
+            else if (this.state.hasPost && this.state.postPosition != null)
+            {
+                this.tasks.addTask(6, new EntityAIReturnToPost(this, this.state.postPosition, 0.5F, this.state.postRadius));
+            }
 
-        if (this.state != null && this.state.lookAround)
-        {
-            this.tasks.addTask(8, new EntityAILookIdle(this));
-        }
+            if (this.state.lookAround)
+            {
+                this.tasks.addTask(8, new EntityAILookIdle(this));
+            }
 
-        if (this.state != null && this.state.lookAtPlayer)
-        {
-            this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+            if (this.state.lookAtPlayer)
+            {
+                this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+            }
         }
 
         this.tasks.addTask(9, new EntityAIWanderAvoidWater(this, 0.25D));

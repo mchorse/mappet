@@ -1,10 +1,9 @@
 package mchorse.mappet.api.npcs;
 
+import mchorse.mappet.utils.NBTUtils;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
@@ -12,7 +11,6 @@ import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class NpcState implements INBTSerializable<NBTTagCompound>
 {
@@ -95,7 +93,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
      * radius. This could be used if wandering option wandered NPC out of
      * the radius
      */
-    public float postThreshold = 1F;
+    public float postRadius = 1F;
 
     /**
      * After what distance from the post or patrol point the NPC will
@@ -198,11 +196,9 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (all || options.contains("has_post")) tag.setBoolean("HasPost", this.hasPost);
         if ((all || options.contains("post")) && this.postPosition != null)
         {
-            tag.setInteger("PostX", this.postPosition.getX());
-            tag.setInteger("PostY", this.postPosition.getY());
-            tag.setInteger("PostZ", this.postPosition.getZ());
+            tag.setTag("Post", NBTUtils.blockPosTo(this.postPosition));
         }
-        if (all || options.contains("post_threshold")) tag.setFloat("PostThreshold", this.postThreshold);
+        if (all || options.contains("post_radius")) tag.setFloat("PostRadius", this.postRadius);
         if (all || options.contains("fallback")) tag.setFloat("Fallback", this.fallback);
         if ((all || options.contains("patrol")) && !this.patrol.isEmpty())
         {
@@ -210,13 +206,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
 
             for (BlockPos pos : this.patrol)
             {
-                NBTTagList point = new NBTTagList();
-
-                point.appendTag(new NBTTagInt(pos.getX()));
-                point.appendTag(new NBTTagInt(pos.getY()));
-                point.appendTag(new NBTTagInt(pos.getZ()));
-
-                points.appendTag(point);
+                points.appendTag(NBTUtils.blockPosTo(pos));
             }
 
             tag.setTag("Points", points);
@@ -271,11 +261,11 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("CanSwim")) this.canSwim = tag.getBoolean("CanSwim");
         if (tag.hasKey("CanFly")) this.canFly = tag.getBoolean("CanFly");
         if (tag.hasKey("HasPost")) this.hasPost = tag.getBoolean("HasPost");
-        if (tag.hasKey("PostX") && tag.hasKey("PostY") && tag.hasKey("PostZ"))
+        if (tag.hasKey("Post", Constants.NBT.TAG_LIST))
         {
-            this.postPosition = new BlockPos(tag.getInteger("PostX"), tag.getInteger("PostY"), tag.getInteger("PostZ"));
+            this.postPosition = NBTUtils.blockPosFrom(tag.getTag("Post"));
         }
-        if (tag.hasKey("PostThreshold")) this.postThreshold = tag.getFloat("PostThreshold");
+        if (tag.hasKey("PostRadius")) this.postRadius = tag.getFloat("PostRadius");
         if (tag.hasKey("Fallback")) this.fallback = tag.getFloat("Fallback");
         if (tag.hasKey("Patrol", Constants.NBT.TAG_LIST))
         {
@@ -285,13 +275,10 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
 
             for (int i = 0; i < points.tagCount(); i++)
             {
-                NBTBase element = points.get(i);
+                BlockPos pos = NBTUtils.blockPosFrom(points.get(i));
 
-                if (element instanceof NBTTagList && ((NBTTagList) element).tagCount() >= 3)
+                if (pos != null)
                 {
-                    NBTTagList point = (NBTTagList) element;
-                    BlockPos pos = new BlockPos(point.getIntAt(0), point.getIntAt(1), point.getIntAt(1));
-
                     this.patrol.add(pos);
                 }
             }

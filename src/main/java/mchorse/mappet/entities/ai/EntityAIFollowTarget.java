@@ -30,28 +30,29 @@ public class EntityAIFollowTarget extends EntityAIBase
         this.speed = followSpeedIn;
         this.min = minDistIn;
         this.max = maxDistIn;
+
         this.setMutexBits(3);
     }
 
     @Override
     public boolean shouldExecute()
     {
-        EntityLivingBase entitylivingbase = this.target.getFollowTarget();
+        EntityLivingBase target = this.target.getFollowTarget();
 
-        if (entitylivingbase == null)
+        if (target == null)
         {
             return false;
         }
-        else if (entitylivingbase instanceof EntityPlayer && ((EntityPlayer)entitylivingbase).isSpectator())
+        else if (target instanceof EntityPlayer && ((EntityPlayer) target).isSpectator())
         {
             return false;
         }
-        else if (this.target.getDistanceSq(entitylivingbase) < this.min * this.min)
+        else if (this.target.getDistanceSq(target) < this.min * this.min)
         {
             return false;
         }
 
-        this.follow = entitylivingbase;
+        this.follow = target;
 
         return true;
     }
