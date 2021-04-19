@@ -15,10 +15,26 @@ import java.util.List;
 public class NpcState implements INBTSerializable<NBTTagCompound>
 {
     /* Health */
+
+    /**
+     * Max health an NPC can have
+     */
     public float maxHealth = 20;
+
+    /**
+     * The initial health
+     */
     public float health = 20;
+
+    /**
+     * Regeneration delay (in ticks)
+     */
     public int regenDelay = 80;
-    public int regenFrequency = 80;
+
+    /**
+     * How frequently will an NPC regenerate one heart (in ticks)
+     */
+    public int regenFrequency = 20;
 
     /* Faction (coming soon...) */
 
@@ -100,6 +116,11 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
      * stop chasing and come back
      */
     public float fallback = 30F;
+
+    /**
+     * Whether patrol points should circulate rather than ping-pong
+     */
+    public boolean patrolCirculate;
 
     /**
      * List of position through which an NPC must patrol through
@@ -200,6 +221,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         }
         if (all || options.contains("post_radius")) tag.setFloat("PostRadius", this.postRadius);
         if (all || options.contains("fallback")) tag.setFloat("Fallback", this.fallback);
+        if (all || options.contains("patrol_circulate")) tag.setBoolean("PatrolCirculate", this.patrolCirculate);
         if ((all || options.contains("patrol")) && !this.patrol.isEmpty())
         {
             NBTTagList points = new NBTTagList();
@@ -209,7 +231,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
                 points.appendTag(NBTUtils.blockPosTo(pos));
             }
 
-            tag.setTag("Points", points);
+            tag.setTag("Patrol", points);
         }
         if ((all || options.contains("follow"))) tag.setString("Follow", this.follow);
 
@@ -267,9 +289,10 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         }
         if (tag.hasKey("PostRadius")) this.postRadius = tag.getFloat("PostRadius");
         if (tag.hasKey("Fallback")) this.fallback = tag.getFloat("Fallback");
+        if (tag.hasKey("PatrolCirculate")) this.patrolCirculate = tag.getBoolean("PatrolCirculate");
         if (tag.hasKey("Patrol", Constants.NBT.TAG_LIST))
         {
-            NBTTagList points = tag.getTagList("Patrol", Constants.NBT.TAG_COMPOUND);
+            NBTTagList points = tag.getTagList("Patrol", Constants.NBT.TAG_LIST);
 
             this.patrol.clear();
 

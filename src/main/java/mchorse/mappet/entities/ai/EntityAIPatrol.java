@@ -1,27 +1,28 @@
 package mchorse.mappet.entities.ai;
 
+import mchorse.mappet.api.npcs.NpcState;
 import mchorse.mappet.entities.EntityNpc;
+import mchorse.mclib.utils.MathUtils;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.math.BlockPos;
 
-public class EntityAIReturnToPost extends EntityAIBase
+public class EntityAIPatrol extends EntityAIBase
 {
     private final EntityNpc target;
-    private BlockPos post;
     private final double speed;
     private int timer;
-    private float min;
     private float prevWaterFactor;
 
-    public EntityAIReturnToPost(EntityNpc target, BlockPos post, double followSpeedIn, float minDistIn)
+    private int index;
+    private int direction = 1;
+
+    public EntityAIPatrol(EntityNpc target, double followSpeedIn)
     {
         this.target = target;
-        this.post = post;
         this.speed = followSpeedIn;
-        this.min = minDistIn;
 
         this.setMutexBits(3);
     }
@@ -29,13 +30,13 @@ public class EntityAIReturnToPost extends EntityAIBase
     @Override
     public boolean shouldExecute()
     {
-        return this.target.getDistanceSq(this.post) > this.min * this.min;
+        return true;
     }
 
     @Override
     public boolean shouldContinueExecuting()
     {
-        return !this.target.getNavigator().noPath() && this.target.getDistanceSq(this.post) > this.min * this.min;
+        return true;
     }
 
     @Override
@@ -59,9 +60,31 @@ public class EntityAIReturnToPost extends EntityAIBase
     @Override
     public void updateTask()
     {
-        int x = this.post.getX();
-        int y = this.post.getY();
-        int z = this.post.getZ();
+        NpcState state = this.target.getState();
+        BlockPos pos = state.patrol.get(this.index);
+
+        if (this.target.getDistanceSq(pos) < 2)
+        {
+            int next = this.index + this.direction;
+
+            if (state.patrolCirculate)
+            {
+                this.index = MathUtils.cycler(this.index + this.direction, 0, state.patrol.size() - 1);
+            }
+            else
+            {
+                if (next < 0 || next >= this.target.getState().patrol.size())
+                {
+                    this.direction *= -1;
+                }
+
+                this.index += this.direction;
+            }
+        }
+
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
 
         this.target.getLookHelper().setLookPosition(x, y + this.target.height, z, 10, this.target.getVerticalFaceSpeed());
 

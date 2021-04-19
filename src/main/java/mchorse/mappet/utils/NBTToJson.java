@@ -18,6 +18,13 @@ import net.minecraft.nbt.NBTTagString;
 
 import java.util.Map;
 
+/**
+ * NBT to JSON conversion utils
+ *
+ * This way you can turn any NBTBase into a JsonElement and
+ * vice versa. The usage of these two methods should be pretty
+ * self-explanatory.
+ */
 public class NBTToJson
 {
     public static JsonElement toJson(NBTBase base)

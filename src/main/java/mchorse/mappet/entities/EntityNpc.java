@@ -1,9 +1,11 @@
 package mchorse.mappet.entities;
 
 import io.netty.buffer.ByteBuf;
+import mchorse.mappet.api.npcs.Npc;
 import mchorse.mappet.api.npcs.NpcDrop;
 import mchorse.mappet.api.npcs.NpcState;
 import mchorse.mappet.entities.ai.EntityAIFollowTarget;
+import mchorse.mappet.entities.ai.EntityAIPatrol;
 import mchorse.mappet.entities.ai.EntityAIReturnToPost;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.npc.PacketNpcMorph;
@@ -40,6 +42,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     private NpcState state = new NpcState();
     private String npcId = "";
     private boolean unique;
+    private double pathDistance = 16;
 
     private int lastDamageTime;
 
@@ -55,8 +58,6 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-
-        this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(48.0D);
     }
 
     @Override
@@ -81,6 +82,10 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
             {
                 this.tasks.addTask(6, new EntityAIReturnToPost(this, this.state.postPosition, 0.5F, this.state.postRadius));
             }
+            else if (!this.state.patrol.isEmpty())
+            {
+                this.tasks.addTask(6, new EntityAIPatrol(this, 0.5F));
+            }
 
             if (this.state.lookAround)
             {
@@ -98,19 +103,26 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
     /* Getter and setters */
 
+    public void setNpc(String id, Npc npc, NpcState state)
+    {
+        this.npcId = id;
+        this.unique = npc.unique;
+        this.pathDistance = npc.pathDistance;
+
+        this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(this.pathDistance);
+        this.navigator = this.createNavigator(this.world);
+
+        this.setState(state, false);
+    }
+
     public String getId()
     {
         return this.npcId;
     }
 
-    public void setId(String npcId)
+    public NpcState getState()
     {
-        this.npcId = npcId;
-    }
-
-    public void setUnique(boolean unique)
-    {
-        this.unique = unique;
+        return this.state;
     }
 
     public void setState(NpcState state, boolean notify)
@@ -225,11 +237,11 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     }
 
     @Override
-    protected void damageEntity(DamageSource damageSrc, float damageAmount)
+    protected void damageEntity(DamageSource damage, float damageAmount)
     {
-        super.damageEntity(damageSrc, damageAmount);
+        super.damageEntity(damage, damageAmount);
 
-        if (!this.isEntityInvulnerable(damageSrc))
+        if (!this.isEntityInvulnerable(damage))
         {
             this.lastDamageTime = 0;
         }
@@ -267,6 +279,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         tag.setString("NpcId", this.npcId);
         tag.setTag("State", this.state.serializeNBT());
         tag.setBoolean("Unique", this.unique);
+        tag.setDouble("PathDistance", this.pathDistance);
     }
 
     @Override
@@ -286,6 +299,11 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         this.npcId = tag.getString("NpcId");
         this.setState(state, false);
         this.unique = tag.getBoolean("Unique");
+
+        if (tag.hasKey("PathDistance"))
+        {
+            this.pathDistance = tag.getDouble("PathDistance");
+        }
     }
 
     /* Network (de)serialization */

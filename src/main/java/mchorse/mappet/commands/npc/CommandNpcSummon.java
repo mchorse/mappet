@@ -73,10 +73,7 @@ public class CommandNpcSummon extends CommandNpcBase
         EntityNpc entity = new EntityNpc(sender.getEntityWorld());
 
         entity.setPosition(x, y, z);
-        entity.setState(state, false);
-        entity.setId(id);
-        entity.setUnique(npc.unique);
-        entity.setHealth(state.health);
+        entity.setNpc(id, npc, state);
 
         entity.world.spawnEntity(entity);
     }
