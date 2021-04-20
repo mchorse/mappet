@@ -7,9 +7,9 @@ import net.minecraft.util.EnumHand;
 
 public class EntityAIAttackNpcMelee extends EntityAIAttackMelee
 {
-    public EntityAIAttackNpcMelee(EntityCreature creature, double speedIn, boolean useLongMemory)
+    public EntityAIAttackNpcMelee(EntityCreature creature, double speed, boolean useLongMemory)
     {
-        super(creature, speedIn, useLongMemory);
+        super(creature, speed, useLongMemory);
     }
 
     @Override

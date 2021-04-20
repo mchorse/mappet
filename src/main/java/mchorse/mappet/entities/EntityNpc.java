@@ -20,6 +20,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
@@ -62,6 +63,8 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
+
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3125D);
     }
 
     @Override
@@ -71,8 +74,12 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
         this.tasks.taskEntries.clear();
 
+        double speed = 1D;
+
         if (this.state != null)
         {
+            speed = this.state.speed;
+
             if (this.state.canSwim)
             {
                 this.tasks.addTask(0, new EntityAISwimming(this));
@@ -80,15 +87,15 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
             if (!this.state.follow.isEmpty())
             {
-                this.tasks.addTask(6, new EntityAIFollowTarget(this, 1, 2, 10));
+                this.tasks.addTask(6, new EntityAIFollowTarget(this, speed, 2, 10));
             }
             else if (this.state.hasPost && this.state.postPosition != null)
             {
-                this.tasks.addTask(6, new EntityAIReturnToPost(this, this.state.postPosition, 0.5F, this.state.postRadius));
+                this.tasks.addTask(6, new EntityAIReturnToPost(this, this.state.postPosition, speed, this.state.postRadius));
             }
             else if (!this.state.patrol.isEmpty())
             {
-                this.tasks.addTask(6, new EntityAIPatrol(this, 0.5F));
+                this.tasks.addTask(6, new EntityAIPatrol(this, speed));
             }
 
             if (this.state.lookAround)
@@ -102,10 +109,11 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
             }
         }
 
-        this.tasks.addTask(4, new EntityAIAttackNpcMelee(this, 0.5F, false));
-        this.tasks.addTask(9, new EntityAIWanderAvoidWater(this, 0.25D));
+        this.tasks.addTask(4, new EntityAIAttackNpcMelee(this, speed, false));
+        this.tasks.addTask(9, new EntityAIWanderAvoidWater(this, speed / 2D));
 
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<EntityNpc>(this, EntityNpc.class, true));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityNpc>(this, EntityNpc.class, true));
     }
 
     /* Getter and setters */
@@ -240,7 +248,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     @Override
     protected void onDeathUpdate()
     {
-        if (this.state.killable)
+        if (this.state.killable || !this.unkillableFailsafe)
         {
             super.onDeathUpdate();
         }
@@ -269,11 +277,6 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     @Override
     protected void damageEntity(DamageSource damage, float damageAmount)
     {
-        if (damage.getTrueSource() instanceof EntityLivingBase)
-        {
-            this.setAttackTarget((EntityLivingBase) damage.getTrueSource());
-        }
-
         super.damageEntity(damage, damageAmount);
 
         if (!this.isEntityInvulnerable(damage))

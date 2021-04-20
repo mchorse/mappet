@@ -24,12 +24,12 @@ public class EntityAIFollowTarget extends EntityAIBase
     private float min;
     private float prevWaterFactor;
 
-    public EntityAIFollowTarget(EntityNpc target, double followSpeedIn, float minDistIn, float maxDistIn)
+    public EntityAIFollowTarget(EntityNpc target, double speed, float min, float max)
     {
         this.target = target;
-        this.speed = followSpeedIn;
-        this.min = minDistIn;
-        this.max = maxDistIn;
+        this.speed = speed;
+        this.min = min;
+        this.max = max;
 
         this.setMutexBits(3);
     }

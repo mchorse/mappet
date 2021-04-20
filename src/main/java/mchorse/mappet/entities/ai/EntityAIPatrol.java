@@ -21,10 +21,10 @@ public class EntityAIPatrol extends EntityAIBase
     private int index;
     private int direction = 1;
 
-    public EntityAIPatrol(EntityNpc target, double followSpeedIn)
+    public EntityAIPatrol(EntityNpc target, double speed)
     {
         this.target = target;
-        this.speed = followSpeedIn;
+        this.speed = speed;
 
         this.setMutexBits(3);
     }
