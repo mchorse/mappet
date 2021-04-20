@@ -86,6 +86,8 @@ public class EntityAIPatrol extends EntityAIBase
 
                 this.index += this.direction;
             }
+
+            this.timer = 0;
         }
 
         int x = pos.getX();

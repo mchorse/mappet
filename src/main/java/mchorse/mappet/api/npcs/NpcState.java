@@ -176,7 +176,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
      * NPCs can go around in different direction, this property
      * sets its maximum distance it can wander off at a time
      */
-    public float wander = 1F;
+    public boolean wander;
 
     /**
      * The health threshold until NPC starts to run away
@@ -260,7 +260,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         /* Behavior */
         if (all || options.contains("look_at_player")) tag.setBoolean("LookAtPlayer", this.lookAtPlayer);
         if (all || options.contains("look_around")) tag.setBoolean("LookAround", this.lookAround);
-        if (all || options.contains("wander")) tag.setFloat("Wander", this.wander);
+        if (all || options.contains("wander")) tag.setBoolean("Wander", this.wander);
         if (all || options.contains("flee")) tag.setFloat("Flee", this.flee);
 
         return tag;
@@ -344,7 +344,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         /* Behavior */
         if (tag.hasKey("LookAtPlayer")) this.lookAtPlayer = tag.getBoolean("LookAtPlayer");
         if (tag.hasKey("LookAround")) this.lookAround = tag.getBoolean("LookAround");
-        if (tag.hasKey("Wander")) this.wander = tag.getFloat("Wander");
+        if (tag.hasKey("Wander")) this.wander = tag.getBoolean("Wander");
         if (tag.hasKey("Flee")) this.flee = tag.getFloat("Flee");
     }
 }

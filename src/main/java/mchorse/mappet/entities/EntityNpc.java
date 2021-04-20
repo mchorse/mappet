@@ -107,10 +107,14 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
             {
                 this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
             }
+
+            if (this.state.wander)
+            {
+                this.tasks.addTask(9, new EntityAIWanderAvoidWater(this, speed / 2D));
+            }
         }
 
         this.tasks.addTask(4, new EntityAIAttackNpcMelee(this, speed, false));
-        this.tasks.addTask(9, new EntityAIWanderAvoidWater(this, speed / 2D));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityNpc>(this, EntityNpc.class, true));

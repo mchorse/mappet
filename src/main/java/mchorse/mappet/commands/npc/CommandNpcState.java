@@ -38,6 +38,7 @@ public class CommandNpcState extends CommandNpcBase
     {
         EntityNpc entity = getEntity(server, sender, args[0], EntityNpc.class);
 
+        /* TODO: implement partial parsing */
         String id = args[1];
         Npc npc = this.getNpc(entity.getId());
         NpcState state = npc.states.get(id);
