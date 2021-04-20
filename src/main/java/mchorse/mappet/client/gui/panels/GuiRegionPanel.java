@@ -19,6 +19,7 @@ import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.math.BlockPos;
 import org.lwjgl.input.Keyboard;
 
@@ -209,8 +210,7 @@ public class GuiRegionPanel extends GuiDashboardPanel<GuiMappetDashboard>
         {
             BlockPos pos = element.getPos();
 
-            /* TODO: extract */
-            return element.region.shape.getType() + " (" + pos.getX() + ", " + pos.getY() + ", " + pos.getZ() + ")";
+            return I18n.format("mappet.gui.shapes."+ element.region.shape.getType()) + " (" + pos.getX() + ", " + pos.getY() + ", " + pos.getZ() + ")";
         }
     }
 }

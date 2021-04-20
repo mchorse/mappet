@@ -49,6 +49,10 @@ mappet.gui.panels.dialogues=Dialogues
 mappet.gui.panels.regions=Regions
 mappet.gui.panels.npcs=NPCs
 
+mappet.gui.shapes.box=Box
+mappet.gui.shapes.sphere=Sphere
+mappet.gui.shapes.cylinder=Cylinder
+
 # Keys
 mappet.keys.category=Mappet
 mappet.keys.dashboard=Creative dashboard

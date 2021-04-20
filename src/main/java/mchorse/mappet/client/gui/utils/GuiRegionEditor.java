@@ -35,9 +35,9 @@ public class GuiRegionEditor extends GuiElement
         this.onExit = new GuiTriggerElement(mc);
         this.shape = new GuiCirculateElement(mc, this::changeShape);
         this.shape.flex().w(80);
-        this.shape.addLabel(IKey.str("box"));
-        this.shape.addLabel(IKey.str("sphere"));
-        this.shape.addLabel(IKey.str("cylinder"));
+        this.shape.addLabel(IKey.lang("mappet.gui.shapes.box"));
+        this.shape.addLabel(IKey.lang("mappet.gui.shapes.sphere"));
+        this.shape.addLabel(IKey.lang("mappet.gui.shapes.cylinder"));
         this.shapeEditor = new GuiShapeEditor(mc);
 
         this.add(Elements.label(IKey.str("Enabled expression")).background(0x88000000), this.enabled);
