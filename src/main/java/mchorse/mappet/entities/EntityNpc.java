@@ -269,6 +269,11 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     @Override
     protected void damageEntity(DamageSource damage, float damageAmount)
     {
+        if (damage.getTrueSource() instanceof EntityLivingBase)
+        {
+            this.setAttackTarget((EntityLivingBase) damage.getTrueSource());
+        }
+
         super.damageEntity(damage, damageAmount);
 
         if (!this.isEntityInvulnerable(damage))
