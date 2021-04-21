@@ -28,14 +28,16 @@ public class GuiItemsElement extends GuiElement
 
         this.inventory = inventory;
 
+        GuiLabel label = Elements.label(title);
         GuiIconElement add = new GuiIconElement(mc, Icons.ADD, (b) ->
         {
             this.items.add(ItemStack.EMPTY);
             this.addItem(ItemStack.EMPTY);
             this.getParentContainer().resize();
         });
-        GuiLabel label = Elements.label(title).anchor(0, 0.5F);
-        GuiElement row = Elements.row(mc, 5, 0, 20, label, add);
+        add.flex().wh(10, 8);
+
+        GuiElement row = Elements.row(mc, 5, 0, this.font.FONT_HEIGHT, label, add);
         this.stacks = new GuiElement(mc);
 
         label.flex().h(0);
@@ -83,7 +85,7 @@ public class GuiItemsElement extends GuiElement
             }
         });
         slotElement.stack = stack;
-        slotElement.context(() -> new GuiSimpleContextMenu(this.mc).action(Icons.REMOVE, IKey.str("Remove item"), () ->
+        slotElement.context(() -> slotElement.createDefaultSlotContextMenu().action(Icons.REMOVE, IKey.str("Remove item"), () ->
         {
             int index = this.stacks.getChildren().indexOf(slotElement);
 

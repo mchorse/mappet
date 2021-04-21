@@ -25,7 +25,7 @@ public class GuiObjectives extends GuiElement
     {
         super(mc);
 
-        this.flex().column(15).vertical().stretch();
+        this.flex().column(10).vertical().stretch();
     }
 
     public GuiSimpleContextMenu getAdds()

@@ -30,19 +30,21 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
         this.pathDistance = new GuiTrackpadElement(mc, (v) -> this.data.pathDistance = v);
 
         this.states = new GuiStringListElement(mc, (list) -> this.pickState(list.get(0), false));
-        this.states.flex().relative(this).y(40).w(120).h(1F, -40);
+        this.states.flex().relative(this).y(52).w(120).h(1F, -52);
 
         this.npcEditor = new GuiNpcEditor(mc);
-        this.npcEditor.flex().relative(this).x(120).y(40).wTo(this.editor.area, 1F).h(1F, -40);
+        this.npcEditor.flex().relative(this).x(120).y(52).wTo(this.editor.area, 1F).h(1F, -52);
         this.npcEditor.setVisible(false);
 
         GuiElement bar = new GuiElement(mc);
 
-        bar.flex().relative(this).xy(10, 10).wTo(this.editor.area, 1F, -10).h(20).row(5);
-        bar.add(this.unique, this.pathDistance);
+        bar.flex().relative(this).xy(10, 22).wTo(this.editor.area, 1F, -10).h(20).row(10);
+        bar.add(this.pathDistance, this.unique);
 
         this.toggleSidebar.removeFromParent();
         this.add(bar, this.states, this.npcEditor, this.toggleSidebar);
+
+        this.fill("", null);
     }
 
     private void pickState(String name, boolean select)
@@ -67,15 +69,22 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
     {
         super.fill(id, data);
 
-        this.unique.toggled(data.unique);
-        this.pathDistance.setValue(data.pathDistance);
+        this.unique.setVisible(data != null);
+        this.pathDistance.setVisible(data != null);
+        this.npcEditor.setVisible(data != null);
 
-        this.states.clear();
-        this.states.add(data.states.keySet());
-        this.states.sort();
+        if (data != null)
+        {
+            this.unique.toggled(data.unique);
+            this.pathDistance.setValue(data.pathDistance);
 
-        this.pickState(data.states.isEmpty() ? null : this.states.getList().get(0), true);
-        this.npcEditor.setPanel(this.npcEditor.panels.get(0));
+            this.states.clear();
+            this.states.add(data.states.keySet());
+            this.states.sort();
+
+            this.pickState(data.states.isEmpty() ? null : this.states.getList().get(0), true);
+            this.npcEditor.setPanel(this.npcEditor.panels.get(0));
+        }
     }
 
     @Override
@@ -99,5 +108,10 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
         }
 
         super.draw(context);
+
+        if (this.pathDistance.isVisible())
+        {
+            this.font.drawStringWithShadow("Path finding distance", this.pathDistance.area.x, this.pathDistance.area.y - 12, 0xffffff);
+        }
     }
 }

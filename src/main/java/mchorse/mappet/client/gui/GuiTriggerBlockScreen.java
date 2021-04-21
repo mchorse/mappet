@@ -38,8 +38,8 @@ public class GuiTriggerBlockScreen extends GuiBase
         this.right.flex().relative(this.left).y(1F, 20).w(1F);
         this.right.set(right);
 
-        element.add(Elements.label(IKey.str("Trigger event on left click"), 14).background(0x88000000), this.left);
-        element.add(Elements.label(IKey.str("Trigger event on right click"), 26).anchor(0, 0.75F).background(0x88000000), this.right);
+        element.add(Elements.label(IKey.str("Trigger event on left click")).background().marginBottom(5), this.left);
+        element.add(Elements.label(IKey.str("Trigger event on right click")).background().marginTop(12).marginBottom(5), this.right);
 
         this.root.add(element);
     }

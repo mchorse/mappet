@@ -26,7 +26,7 @@ public class GuiCollectObjective extends GuiObjective<CollectObjective>
         this.stack.stack = objective.stack;
         this.stack.flex().relative(this).y(1F).anchorY(1F);
 
-        this.flex().h(40);
+        this.flex().h(36);
 
         this.add(this.stack);
     }

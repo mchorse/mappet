@@ -37,17 +37,18 @@ public class GuiNpcMovementPanel extends GuiNpcPanel
         this.patrol = new GuiBlockPosList(mc);
         this.follow = new GuiTextElement(mc, 1000, (t) -> this.state.follow = t);
 
-        GuiLabel patrolLabel = Elements.label(IKey.str("Patrol points"), 20).anchor(0, 1F).background(0x88000000);
+        GuiLabel patrolLabel = Elements.label(IKey.str("Patrol points")).background();
+        patrolLabel.marginTop(12);
         GuiIconElement add = new GuiIconElement(mc, Icons.ADD, (b) -> this.patrol.addBlockPos());
 
         add.flex().relative(patrolLabel).x(1F, -20);
         patrolLabel.add(add);
 
-        this.scroll.add(Elements.label(IKey.str("Speed")).background(0x88000000), this.speed);
+        this.scroll.add(Elements.label(IKey.str("Speed")).background(), this.speed);
         this.scroll.add(this.canSwim);
-        this.scroll.add(Elements.label(IKey.str("Post point"), 20).anchor(0, 1F).background(0x88000000), this.hasPost, this.postPosition, this.postRadius);
+        this.scroll.add(Elements.label(IKey.str("Post point")).background().marginTop(12), this.hasPost, this.postPosition, this.postRadius);
         this.scroll.add(patrolLabel, this.patrolCirculate, this.patrol);
-        this.scroll.add(Elements.label(IKey.str("Follow target"), 20).anchor(0, 1F).background(0x88000000), this.follow);
+        this.scroll.add(Elements.label(IKey.str("Follow target")).background().marginTop(12), this.follow);
     }
 
     @Override

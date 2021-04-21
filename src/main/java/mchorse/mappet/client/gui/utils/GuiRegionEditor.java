@@ -40,11 +40,11 @@ public class GuiRegionEditor extends GuiElement
         this.shape.addLabel(IKey.lang("mappet.gui.shapes.cylinder"));
         this.shapeEditor = new GuiShapeEditor(mc);
 
-        this.add(Elements.label(IKey.str("Enabled expression")).background(0x88000000), this.enabled);
-        this.add(Elements.label(IKey.str("Trigger delay"), 20).anchor(0, 1F).background(0x88000000), this.delay);
-        this.add(Elements.label(IKey.str("On player enter trigger"), 26).anchor(0, 0.75F).background(0x88000000), this.onEnter);
-        this.add(Elements.label(IKey.str("On player exit trigger"), 26).anchor(0, 0.75F).background(0x88000000), this.onExit);
-        this.add(Elements.label(IKey.str("Shape"), 26).anchor(0, 0.75F).background(0x88000000), this.shape);
+        this.add(Elements.label(IKey.str("Enabled expression")), this.enabled);
+        this.add(Elements.label(IKey.str("Trigger delay")).marginTop(12), this.delay);
+        this.add(Elements.label(IKey.str("On player enter trigger")).background().marginTop(12).marginBottom(5), this.onEnter);
+        this.add(Elements.label(IKey.str("On player exit trigger")).background().marginTop(12).marginBottom(5), this.onExit);
+        this.add(Elements.label(IKey.str("Shape")).background().marginTop(12).marginBottom(5), this.shape);
         this.add(this.shapeEditor);
 
         this.flex().column(5).vertical().stretch();

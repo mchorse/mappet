@@ -1,7 +1,5 @@
 package mchorse.mappet.client.gui.quests;
 
-import mchorse.mappet.api.quests.objectives.CollectObjective;
-import mchorse.mappet.api.quests.objectives.KillObjective;
 import mchorse.mappet.api.quests.rewards.IReward;
 import mchorse.mappet.api.quests.rewards.ItemStackReward;
 import mchorse.mappet.client.gui.quests.rewards.GuiItemStackReward;
@@ -25,7 +23,7 @@ public class GuiRewards extends GuiElement
     {
         super(mc);
 
-        this.flex().column(5).vertical().stretch();
+        this.flex().column(10).vertical().stretch();
     }
 
     public GuiSimpleContextMenu getAdds()

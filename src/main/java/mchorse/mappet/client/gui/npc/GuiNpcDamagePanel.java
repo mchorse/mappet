@@ -26,7 +26,7 @@ public class GuiNpcDamagePanel extends GuiNpcPanel
         this.invincible = new GuiToggleElement(mc, IKey.str("Invincible"), (b) -> this.state.invincible = b.isToggled());
         this.killable = new GuiToggleElement(mc, IKey.str("Killable"), (b) -> this.state.killable = b.isToggled());
 
-        this.scroll.add(Elements.label(IKey.str("Damage")).background(0x88000000), this.damage);
+        this.scroll.add(Elements.label(IKey.str("Damage")).background(), this.damage);
         this.scroll.add(this.canFallDamage, this.canGetBurned, this.invincible, this.killable);
     }
 

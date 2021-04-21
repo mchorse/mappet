@@ -54,9 +54,9 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
 
         this.recipe = new GuiCraftingRecipe(mc, () -> this.inventory);
 
-        this.title.flex().relative(this.recipes).x(10).y(-30).wTo(this.editor.area, 1F, -10);
-        this.recipes.flex().relative(this).y(55).w(120).h(1F, -55);
-        this.editor.flex().x(120).y(55).h(1F, -55).column(0);
+        this.title.flex().relative(this).x(10).y(22).wTo(this.editor.area, 1F, -10);
+        this.recipes.flex().relative(this).y(52).w(120).h(1F, -55);
+        this.editor.flex().x(120).y(52).h(1F, -55).column(0);
 
         this.add(this.title, this.recipes, this.inventory);
         this.editor.add(this.recipe);
@@ -163,7 +163,7 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
 
         if (this.title.isVisible())
         {
-            this.font.drawStringWithShadow("Crafting table's title", this.title.area.x, this.area.y + 10, 0xffffff);
+            this.font.drawStringWithShadow("Crafting table's title", this.title.area.x, this.title.area.y - 12, 0xffffff);
         }
 
         if (!this.editor.isVisible())
