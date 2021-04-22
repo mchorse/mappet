@@ -60,7 +60,7 @@ public class EntityAIFollowTarget extends EntityAIBase
     @Override
     public boolean shouldContinueExecuting()
     {
-        return !this.target.getNavigator().noPath() && this.target.getDistanceSq(this.follow) > this.max * this.max;
+        return !this.target.getNavigator().noPath() && this.target.getDistanceSq(this.follow) > this.min * this.min;
     }
 
     @Override
@@ -95,10 +95,9 @@ public class EntityAIFollowTarget extends EntityAIBase
 
         this.timer = 10;
 
-        if (
-            !this.target.getNavigator().tryMoveToEntityLiving(this.follow, this.speed) &&
+        if ((!this.target.getNavigator().tryMoveToEntityLiving(this.follow, this.speed) &&
             !this.target.getLeashed() &&
-            !this.target.isRiding() &&
+            !this.target.isRiding()) ||
             this.target.getDistanceSq(this.follow) >= TELEPORT_DISTANCE
         ) {
             int x = MathHelper.floor(this.follow.posX) - 2;

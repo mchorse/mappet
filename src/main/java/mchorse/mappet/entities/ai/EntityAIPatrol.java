@@ -34,7 +34,7 @@ public class EntityAIPatrol extends EntityAIBase
     {
         EntityLivingBase target = this.target.getAttackTarget();
 
-        return target == null;
+        return target == null && !this.target.getState().patrol.isEmpty();
     }
 
     @Override
@@ -42,7 +42,7 @@ public class EntityAIPatrol extends EntityAIBase
     {
         EntityLivingBase target = this.target.getAttackTarget();
 
-        return target == null;
+        return target == null && !this.target.getState().patrol.isEmpty();
     }
 
     @Override
@@ -67,6 +67,12 @@ public class EntityAIPatrol extends EntityAIBase
     public void updateTask()
     {
         NpcState state = this.target.getState();
+
+        if (this.index < 0 || this.index >= state.patrol.size())
+        {
+            return;
+        }
+
         BlockPos pos = state.patrol.get(this.index);
 
         if (this.target.getDistanceSq(pos) < 2)

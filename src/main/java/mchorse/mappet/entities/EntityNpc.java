@@ -26,6 +26,7 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
+import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
@@ -73,6 +74,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         super.initEntityAI();
 
         this.tasks.taskEntries.clear();
+        this.targetTasks.taskEntries.clear();
 
         double speed = 1D;
 
@@ -117,7 +119,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         this.tasks.addTask(4, new EntityAIAttackNpcMelee(this, speed, false));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityNpc>(this, EntityNpc.class, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPig>(this, EntityPig.class, true));
     }
 
     /* Getter and setters */
