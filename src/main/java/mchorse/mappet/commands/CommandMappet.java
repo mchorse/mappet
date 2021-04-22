@@ -7,6 +7,7 @@ import mchorse.mappet.commands.npc.CommandNpc;
 import mchorse.mappet.commands.quests.CommandQuest;
 import mchorse.mappet.commands.states.CommandState;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.server.MinecraftServer;
 
 public class CommandMappet extends MappetSubCommandBase
 {
@@ -30,5 +31,11 @@ public class CommandMappet extends MappetSubCommandBase
     public String getUsage(ICommandSender sender)
     {
         return "mappet.commands.mp.help";
+    }
+
+    @Override
+    public int getRequiredPermissionLevel()
+    {
+        return 2;
     }
 }
