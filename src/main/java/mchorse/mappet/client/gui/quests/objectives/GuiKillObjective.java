@@ -38,7 +38,7 @@ public class GuiKillObjective extends GuiObjective<KillObjective>
     {
         GuiResourceLocationOverlayPanel overlay = new GuiEntityOverlayPanel(this.mc, (rl) -> this.objective.entity = rl).set(this.objective.entity);
 
-        GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay);
+        GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay, 0.5F, 0.6F);
     }
 
     @Override

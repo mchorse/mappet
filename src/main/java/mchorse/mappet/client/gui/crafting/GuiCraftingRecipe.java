@@ -52,7 +52,7 @@ public class GuiCraftingRecipe extends GuiElement
         this.add(Elements.label(IKey.str("Recipe's title")), this.title, this.input, this.output);
         this.add(Elements.label(IKey.str("Expression condition")).marginTop(12), this.condition);
         this.add(Elements.label(IKey.str("Crafting hotkey")).marginTop(12), this.hotkey);
-        this.add(Elements.label(IKey.str("Crafting trigger")).marginTop(12), this.trigger);
+        this.add(Elements.label(IKey.str("Crafting trigger")).background().marginTop(12).marginBottom(5), this.trigger);
     }
 
     public void set(CraftingRecipe recipe)

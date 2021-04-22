@@ -32,6 +32,12 @@ public abstract class CommandQuestBase extends MappetCommandBase
     }
 
     @Override
+    public boolean isUsernameIndex(String[] args, int index)
+    {
+        return index == 0;
+    }
+
+    @Override
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos)
     {
         if (args.length == 2)

@@ -30,6 +30,12 @@ public class CommandEventTrigger extends CommandEventBase
     }
 
     @Override
+    public boolean isUsernameIndex(String[] args, int index)
+    {
+        return index == 0;
+    }
+
+    @Override
     public void executeCommand(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         EntityPlayerMP player = getPlayer(server, sender, args[0]);

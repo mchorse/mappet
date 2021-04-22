@@ -34,6 +34,12 @@ public class CommandNpcState extends CommandNpcBase
     }
 
     @Override
+    public boolean isUsernameIndex(String[] args, int index)
+    {
+        return index == 0;
+    }
+
+    @Override
     public void executeCommand(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         EntityNpc entity = getEntity(server, sender, args[0], EntityNpc.class);
