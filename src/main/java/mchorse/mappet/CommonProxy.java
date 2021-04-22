@@ -4,10 +4,12 @@ import mchorse.mappet.capabilities.Character;
 import mchorse.mappet.capabilities.CharacterStorage;
 import mchorse.mappet.capabilities.ICharacter;
 import mchorse.mappet.network.Dispatcher;
+import mchorse.mappet.utils.MappetNpcSelector;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.io.File;
 
@@ -33,6 +35,8 @@ public class CommonProxy
         Dispatcher.register();
 
         MinecraftForge.EVENT_BUS.register(new EventHandler());
+
+        GameRegistry.registerEntitySelector(new MappetNpcSelector(), MappetNpcSelector.ARGUMENT_MAPPET_NPC_ID);
 
         CapabilityManager.INSTANCE.register(ICharacter.class, new CharacterStorage(), Character::new);
     }
