@@ -33,6 +33,12 @@ public class GuiOverlayPanel extends GuiElement
     }
 
     @Override
+    public boolean mouseClicked(GuiContext context)
+    {
+        return super.mouseClicked(context) || this.area.isInside(context);
+    }
+
+    @Override
     public void draw(GuiContext context)
     {
         int color = McLib.primaryColor.get();

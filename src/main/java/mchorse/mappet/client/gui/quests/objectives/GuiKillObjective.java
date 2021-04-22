@@ -3,6 +3,7 @@ package mchorse.mappet.client.gui.quests.objectives;
 import mchorse.mappet.api.quests.objectives.KillObjective;
 import mchorse.mappet.client.gui.utils.overlays.GuiEntityOverlayPanel;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
+import mchorse.mappet.client.gui.utils.overlays.GuiResourceLocationOverlayPanel;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
@@ -35,7 +36,7 @@ public class GuiKillObjective extends GuiObjective<KillObjective>
 
     private void openPickEntityOverlay()
     {
-        GuiEntityOverlayPanel overlay = new GuiEntityOverlayPanel(this.mc, (rl) -> this.objective.entity = rl).set(this.objective.entity);
+        GuiResourceLocationOverlayPanel overlay = new GuiEntityOverlayPanel(this.mc, (rl) -> this.objective.entity = rl).set(this.objective.entity);
 
         GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay);
     }

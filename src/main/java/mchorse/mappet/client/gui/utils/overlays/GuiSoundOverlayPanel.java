@@ -7,10 +7,10 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.util.function.Consumer;
 
-public class GuiEntityOverlayPanel extends GuiResourceLocationOverlayPanel
+public class GuiSoundOverlayPanel extends GuiResourceLocationOverlayPanel
 {
-    public GuiEntityOverlayPanel(Minecraft mc, Consumer<ResourceLocation> callback)
+    public GuiSoundOverlayPanel(Minecraft mc, Consumer<ResourceLocation> callback)
     {
-        super(mc, IKey.str("Pick entity ID..."), ForgeRegistries.ENTITIES.getKeys(), callback);
+        super(mc, IKey.str("Pick sound event..."), ForgeRegistries.SOUND_EVENTS.getKeys(), callback);
     }
 }

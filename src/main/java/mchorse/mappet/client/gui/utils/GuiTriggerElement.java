@@ -1,14 +1,21 @@
 package mchorse.mappet.client.gui.utils;
 
 import mchorse.mappet.api.utils.Trigger;
+import mchorse.mappet.client.gui.utils.overlays.GuiEntityOverlayPanel;
+import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
+import mchorse.mappet.client.gui.utils.overlays.GuiResourceLocationOverlayPanel;
+import mchorse.mappet.client.gui.utils.overlays.GuiSoundOverlayPanel;
+import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
+import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 
 public class GuiTriggerElement extends GuiElement
 {
-    public GuiTextElement soundEvent;
+    public GuiButtonElement soundEvent;
     public GuiTextElement triggerEvent;
     public GuiTextElement command;
 
@@ -23,7 +30,7 @@ public class GuiTriggerElement extends GuiElement
     {
         super(mc);
 
-        this.soundEvent = new GuiTextElement(mc, 1000, (text) -> this.trigger.soundEvent = text);
+        this.soundEvent = new GuiButtonElement(mc, IKey.str("Pick sound event..."), (b) -> this.openPickSoundOverlay());
         this.soundEvent.flex().relative(this).y(12).w(0.5F, -3);
 
         this.triggerEvent = new GuiTextElement(mc, 1000, (text) -> this.trigger.triggerEvent = text);
@@ -38,6 +45,13 @@ public class GuiTriggerElement extends GuiElement
         this.set(trigger);
     }
 
+    private void openPickSoundOverlay()
+    {
+        GuiResourceLocationOverlayPanel overlay = new GuiSoundOverlayPanel(this.mc, (rl) -> this.trigger.soundEvent = rl.toString()).set(this.trigger.soundEvent);
+
+        GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay, 0.5F, 0.9F);
+    }
+
     public Trigger get()
     {
         return this.trigger;
@@ -49,7 +63,6 @@ public class GuiTriggerElement extends GuiElement
 
         if (trigger != null)
         {
-            this.soundEvent.setText(trigger.soundEvent);
             this.triggerEvent.setText(trigger.triggerEvent);
             this.command.setText(trigger.command);
         }
