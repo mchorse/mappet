@@ -11,6 +11,7 @@ import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import mchorse.mclib.client.gui.framework.elements.list.GuiStringListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.metamorph.client.gui.creative.GuiCreativeMorphsMenu;
 import net.minecraft.client.Minecraft;
 
 public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
@@ -19,6 +20,8 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
     public GuiTrackpadElement pathDistance;
     public GuiStringListElement states;
     public GuiNpcEditor npcEditor;
+
+    public GuiCreativeMorphsMenu morphs;
 
     public GuiNpcPanel(Minecraft mc, GuiMappetDashboard dashboard)
     {
@@ -32,7 +35,7 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
         this.states = new GuiStringListElement(mc, (list) -> this.pickState(list.get(0), false));
         this.states.flex().relative(this).y(52).w(120).h(1F, -52);
 
-        this.npcEditor = new GuiNpcEditor(mc);
+        this.npcEditor = new GuiNpcEditor(mc, () -> this.inventory, this::getMorphMenu);
         this.npcEditor.flex().relative(this).x(120).y(52).wTo(this.editor.area, 1F).h(1F, -52);
         this.npcEditor.setVisible(false);
 
@@ -42,9 +45,19 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
         bar.add(this.pathDistance, this.unique);
 
         this.toggleSidebar.removeFromParent();
-        this.add(bar, this.states, this.npcEditor, this.toggleSidebar);
+        this.add(bar, this.states, this.npcEditor, this.toggleSidebar, this.inventory);
 
         this.fill("", null);
+    }
+
+    private GuiCreativeMorphsMenu getMorphMenu()
+    {
+        if (this.morphs == null)
+        {
+            this.morphs = new GuiCreativeMorphsMenu(this.mc, null);
+        }
+
+        return this.morphs;
     }
 
     private void pickState(String name, boolean select)

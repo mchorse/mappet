@@ -16,6 +16,7 @@ import mchorse.mclib.client.gui.framework.elements.modals.GuiModal;
 import mchorse.mclib.client.gui.framework.elements.modals.GuiPromptModal;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDrawable;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.mclib.GuiDashboardPanel;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
@@ -39,6 +40,7 @@ public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTag
     public GuiStringSearchListElement names;
 
     public GuiScrollElement editor;
+    public GuiInventoryElement inventory;
 
     protected boolean update;
     protected String id;
@@ -72,9 +74,18 @@ public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTag
         this.editor.markContainer();
         this.editor.flex().relative(this).wTo(this.sidebar.area).h(1F).column(5).vertical().stretch().scroll();
 
+        this.inventory = new GuiInventoryElement(mc, (stack) ->
+        {
+            this.inventory.linked.acceptStack(stack);
+            this.inventory.unlink();
+        });
+        this.inventory.flex().relative(this.editor).xy(0.5F, 0.5F).anchor(0.5F, 0.5F);
+        this.inventory.setVisible(false);
+
         buttons.flex().relative(this.names).x(1F).y(-20).anchorX(1F).row(0).resize();
         buttons.add(this.add, this.dupe, this.rename, this.remove);
 
+        this.markContainer();
         this.add(this.sidebar, this.editor, this.toggleSidebar);
 
         this.keys().register(IKey.str("Toggle sidebar"), Keyboard.KEY_N, () -> this.toggleSidebar.clickItself(GuiBase.getCurrent())).category(KEYS_CATEGORY);

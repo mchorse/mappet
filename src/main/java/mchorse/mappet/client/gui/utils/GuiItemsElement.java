@@ -72,31 +72,31 @@ public class GuiItemsElement extends GuiElement
             return;
         }
 
-        GuiSlotElement slotElement = new GuiSlotElement(this.mc, 0, this.inventory.get());
+        GuiSlotElement slot = new GuiSlotElement(this.mc, 0, this.inventory.get());
 
-        slotElement.stackCallback((item) ->
+        slot.stackCallback((item) ->
         {
-            int index = this.stacks.getChildren().indexOf(slotElement);
+            int index = this.stacks.getChildren().indexOf(slot);
 
             if (index != -1)
             {
                 this.items.set(index, item);
-                slotElement.stack = item;
+                slot.stack = item;
             }
         });
-        slotElement.stack = stack;
-        slotElement.context(() -> slotElement.createDefaultSlotContextMenu().action(Icons.REMOVE, IKey.str("Remove item"), () ->
+        slot.stack = stack;
+        slot.context(() -> slot.createDefaultSlotContextMenu().action(Icons.REMOVE, IKey.str("Remove item"), () ->
         {
-            int index = this.stacks.getChildren().indexOf(slotElement);
+            int index = this.stacks.getChildren().indexOf(slot);
 
             if (index != -1)
             {
                 this.items.remove(index);
-                slotElement.removeFromParent();
+                slot.removeFromParent();
                 this.getParentContainer().resize();
             }
         }));
 
-        this.stacks.add(slotElement);
+        this.stacks.add(slot);
     }
 }

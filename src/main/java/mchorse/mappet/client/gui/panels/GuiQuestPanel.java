@@ -30,8 +30,6 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
     public GuiObjectives objectives;
     public GuiRewards rewards;
 
-    public GuiInventoryElement inventory;
-
     public GuiQuestPanel(Minecraft mc, GuiMappetDashboard dashboard)
     {
         super(mc, dashboard);
@@ -46,14 +44,6 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
         this.objectives = new GuiObjectives(mc);
         this.objectives.marginBottom(20);
         this.rewards = new GuiRewards(mc);
-
-        this.inventory = new GuiInventoryElement(mc, (stack) ->
-        {
-            this.inventory.linked.acceptStack(stack);
-            this.inventory.unlink();
-        });
-        this.inventory.flex().relative(this.editor).xy(0.5F, 0.5F).anchor(0.5F, 0.5F);
-        this.inventory.setVisible(false);
 
         this.add(this.inventory);
 

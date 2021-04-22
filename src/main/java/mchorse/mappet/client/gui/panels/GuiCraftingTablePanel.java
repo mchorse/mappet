@@ -19,7 +19,6 @@ import net.minecraft.client.Minecraft;
 public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable>
 {
     public GuiTextElement title;
-    public GuiInventoryElement inventory;
 
     public GuiCraftingRecipe recipe;
     public GuiCraftingRecipeList recipes;
@@ -29,14 +28,6 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
         super(mc, dashboard);
 
         this.title = new GuiTextElement(mc, 1000, (text) -> this.data.title = text);
-
-        this.inventory = new GuiInventoryElement(mc, (stack) ->
-        {
-            this.inventory.linked.acceptStack(stack);
-            this.inventory.unlink();
-        });
-        this.inventory.flex().relative(this.editor).xy(0.5F, 0.5F).anchor(0.5F, 0.5F);
-        this.inventory.setVisible(false);
 
         this.recipes = new GuiCraftingRecipeList(mc, (list) -> this.pickRecipe(list.get(0), false));
         this.recipes.sorting().context(() ->
