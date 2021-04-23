@@ -32,7 +32,7 @@ public class CommandNpcState extends CommandNpcBase
     @Override
     public int getRequiredArgs()
     {
-        return 1;
+        return 2;
     }
 
     @Override

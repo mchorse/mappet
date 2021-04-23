@@ -55,7 +55,7 @@ public class CommandNpcSummon extends CommandNpcBase
 
         if (state == null)
         {
-            throw new CommandException("npc.missing_state", args[1]);
+            throw new CommandException("npc.missing_state", id, args[1]);
         }
 
         Vec3d position = sender.getPositionVector();

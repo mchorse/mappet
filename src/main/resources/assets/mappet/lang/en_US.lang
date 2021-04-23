@@ -1,3 +1,5 @@
+#PARSE_ESCAPES
+
 # Error
 mappet.error.states.missing=§fValue by key §7%s§f is missing!
 mappet.error.states.false=§fGiven expression evaluates to §cfalse§f for value by given §7%s§r key!
@@ -9,6 +11,12 @@ mappet.error.crafting.empty=§fCrafting table by ID §7%s§f is empty (it has 0 
 
 mappet.error.event.missing=§fEvent by ID §7%s§f is missing!
 mappet.error.event.empty=§fEvent by ID §7%s§f is empty (it has no entry node)!
+
+mappet.error.npc.missing=§fNPC by ID §7%s§f is missing!
+mappet.error.npc.empty=§fNPC by ID §7%s§f has no states!
+mappet.error.npc.missing_state=§fNPC by ID §7%s§f has no §7%s§f state!
+mappet.error.npc.invalid_property=§fNPC state property §7%s§f does not exist!
+mappet.error.npc.cant_edit=§fGiven value for §7%s§f property: §7%s§f is in invalid format!
 
 # Info
 mappet.info.states.reset=§fValue by key §7%s§f was removed from states.
@@ -33,13 +41,18 @@ mappet.commands.mp.state.sub=This command subtracts to value by §7<id>§r key t
 mappet.commands.mp.quest.help=Quest management subcommand.
 mappet.commands.mp.quest.accept=This command gives a quest by §7<id>§r from quest database to one or multiple §7<player>§r(s). If §7<player>§r(s) has this quest, then it will be ignored.
 mappet.commands.mp.quest.complete=This command completes the quest (regardless whether player has needed objectives completed) by §7<id>§r for one or multiple §7<player>§r(s).
-mappet.commands.mp.quest.decline=This command removes the quest by §7<id>§r from one or multiple §7<player>§r(s). 
+mappet.commands.mp.quest.decline=This command removes the quest by §7<id>§r from one or multiple §7<player>§r(s).
 
 mappet.commands.mp.crafting.help=Mappet's crafting table subcommand.
 mappet.commands.mp.crafting.open=This command opens a crafting table by §7<id>§r for §7<player>§r(s).
 
 mappet.commands.mp.event.help=Mappet's event subcommand.
 mappet.commands.mp.event.trigger=This command triggers an event by §7<id>§r using §7<player>§r(s) as context.
+
+mappet.commands.mp.npc.help=NPC management subcommand.
+mappet.commands.mp.npc.edit=This command allows to change an individual §7<property>§r to given §7<value>§r of NPC(s) found by §7<target>§r selector.
+mappet.commands.mp.npc.state=This command allows to switch the §7<state>§r of NPC(s) found by §7<target>§r selector.\n\n§7<state>§r argument supports following format: §7[npc_id@]state[:properties]§r, where §7npc_id§r and §7properties§r are optional.\n\nWith this format, you can change the state from another NPC blueprint, or even change only certain properties from another state.
+mappet.commands.mp.npc.summon=This command spawns an NPC with §7<id>§r with optional §7[state]§r (§7default§r is the default name of the state) at §7[x] [y] [z]§r. If §7[x] [y] [z]§r are omitted, then NPC will be spawned at place of command sender. Relative §7~§r is supported.
 
 # GUI
 mappet.gui.panels.quests=Quests

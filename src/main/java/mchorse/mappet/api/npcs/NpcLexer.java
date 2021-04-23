@@ -13,7 +13,7 @@ import java.util.Set;
  *
  * [npc_id@]state_name[:property1[,property2,etc]]
  *
- * Where the NPC ID and properties are optional
+ * Where the NPC ID and properties are optional.
  */
 public class NpcLexer
 {

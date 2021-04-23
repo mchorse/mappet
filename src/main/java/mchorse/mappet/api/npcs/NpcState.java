@@ -3,6 +3,7 @@ package mchorse.mappet.api.npcs;
 import mchorse.mappet.utils.NBTUtils;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
@@ -182,6 +183,144 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
      * The health threshold until NPC starts to run away
      */
     public float flee = 4F;
+
+    /**
+     * I should've used my Value API for this, but now it's too late
+     */
+    public boolean edit(String property, String value)
+    {
+        /* Health */
+        if (property.equals("max_health"))
+        {
+            this.maxHealth = Float.parseFloat(value);
+        }
+        else if (property.equals("health"))
+        {
+            this.health = Float.parseFloat(value);
+        }
+        else if (property.equals("regen_delay"))
+        {
+            this.regenDelay = Integer.parseInt(value);
+        }
+        else if (property.equals("regen_frequency"))
+        {
+            this.regenFrequency = Integer.parseInt(value);
+        }
+        /* Damage */
+        else if (property.equals("damage"))
+        {
+            this.damage = Float.parseFloat(value);
+        }
+        else if (property.equals("can_ranged"))
+        {
+            this.canRanged = Boolean.parseBoolean(value);
+        }
+        else if (property.equals("can_fall_damage"))
+        {
+            this.canFallDamage = Boolean.parseBoolean(value);
+        }
+        else if (property.equals("can_get_burned"))
+        {
+            this.canGetBurned = Boolean.parseBoolean(value);
+        }
+        else if (property.equals("invincible"))
+        {
+            this.invincible = Boolean.parseBoolean(value);
+        }
+        else if (property.equals("killable"))
+        {
+            this.killable = Boolean.parseBoolean(value);
+        }
+        /* Movement */
+        else if (property.equals("speed"))
+        {
+            this.speed = Float.parseFloat(value);
+        }
+        else if (property.equals("can_walk"))
+        {
+            this.canWalk = Boolean.parseBoolean(value);
+        }
+        else if (property.equals("can_swim"))
+        {
+            this.canSwim = Boolean.parseBoolean(value);
+        }
+        else if (property.equals("can_fly"))
+        {
+            this.canFly = Boolean.parseBoolean(value);
+        }
+        else if (property.equals("has_post"))
+        {
+            this.hasPost = Boolean.parseBoolean(value);
+        }
+        else if (property.equals("patrol"))
+        {
+            String[] splits = property.split(" ");
+
+            if (splits.length >= 3)
+            {
+                int x = Integer.parseInt(splits[0]);
+                int y = Integer.parseInt(splits[1]);
+                int z = Integer.parseInt(splits[2]);
+
+                this.postPosition = new BlockPos(x, y, z);
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else if (property.equals("fallback"))
+        {
+            this.fallback = Float.parseFloat(value);
+        }
+        else if (property.equals("patrol_circulate"))
+        {
+            this.patrolCirculate = Boolean.parseBoolean(value);
+        }
+        else if (property.equals("follow"))
+        {
+            this.follow = value;
+        }
+        /* General */
+        else if (property.equals("morph"))
+        {
+            try
+            {
+                this.morph = MorphManager.INSTANCE.morphFromNBT(JsonToNBT.getTagFromJson(value));
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+        else if (property.equals("xp"))
+        {
+            this.xp = Integer.parseInt(value);
+        }
+        /* Behavior */
+        else if (property.equals("look_at_player"))
+        {
+            this.lookAtPlayer = Boolean.parseBoolean(value);
+        }
+        else if (property.equals("look_around"))
+        {
+            this.lookAround = Boolean.parseBoolean(value);
+        }
+        else if (property.equals("wander"))
+        {
+            this.wander = Boolean.parseBoolean(value);
+        }
+        else if (property.equals("flee"))
+        {
+            this.flee = Float.parseFloat(value);
+        }
+        else
+        {
+            return false;
+        }
+
+        return true;
+    }
 
     @Override
     public NBTTagCompound serializeNBT()
