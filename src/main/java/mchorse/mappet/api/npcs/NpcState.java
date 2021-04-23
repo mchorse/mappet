@@ -220,14 +220,14 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (all || options.contains("can_swim")) tag.setBoolean("CanSwim", this.canSwim);
         if (all || options.contains("can_fly")) tag.setBoolean("CanFly", this.canFly);
         if (all || options.contains("has_post")) tag.setBoolean("HasPost", this.hasPost);
-        if ((all || options.contains("post")) && this.postPosition != null)
+        if ((all || options.contains("post")))
         {
-            tag.setTag("Post", NBTUtils.blockPosTo(this.postPosition));
+            tag.setTag("Post", this.postPosition == null ? new NBTTagList() : NBTUtils.blockPosTo(this.postPosition));
         }
         if (all || options.contains("post_radius")) tag.setFloat("PostRadius", this.postRadius);
         if (all || options.contains("fallback")) tag.setFloat("Fallback", this.fallback);
         if (all || options.contains("patrol_circulate")) tag.setBoolean("PatrolCirculate", this.patrolCirculate);
-        if ((all || options.contains("patrol")) && !this.patrol.isEmpty())
+        if ((all || options.contains("patrol")))
         {
             NBTTagList points = new NBTTagList();
 
@@ -241,10 +241,10 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if ((all || options.contains("follow"))) tag.setString("Follow", this.follow);
 
         /* General */
-        if ((all || options.contains("morph")) && this.morph != null) tag.setTag("Morph", this.morph.toNBT());
+        if ((all || options.contains("morph"))) tag.setTag("Morph", this.morph == null ? new NBTTagCompound() : this.morph.toNBT());
         if (all || options.contains("sight_distance")) tag.setFloat("SightDistance", this.sightDistance);
         if (all || options.contains("sight_radius")) tag.setFloat("SightRadius", this.sightRadius);
-        if ((all || options.contains("drops")) && !this.drops.isEmpty())
+        if ((all || options.contains("drops")))
         {
             NBTTagList drops = new NBTTagList();
 
