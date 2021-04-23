@@ -17,10 +17,11 @@ public class GuiCollectObjective extends GuiObjective<CollectObjective>
         super(mc, objective);
 
         this.stack = new GuiSlotElement(mc, 0, inventory.get());
-        this.stack.stackCallback((stack) ->
+        this.stack.stackCallback((item) ->
         {
-            this.objective.stack = stack;
-            this.stack.stack = stack;
+            item = item.copy();
+            this.objective.stack = item;
+            this.stack.stack = item;
         });
 
         this.stack.stack = objective.stack;

@@ -80,6 +80,7 @@ public class GuiItemsElement extends GuiElement
 
             if (index != -1)
             {
+                item = item.copy();
                 this.items.set(index, item);
                 slot.stack = item;
             }

@@ -63,6 +63,7 @@ public class GuiNpcDrops extends GuiElement
         chance.limit(0, 100).flex().h(24);
         slot.stackCallback((item) ->
         {
+            item = item.copy();
             drop.stack = item;
             slot.stack = item;
         });
