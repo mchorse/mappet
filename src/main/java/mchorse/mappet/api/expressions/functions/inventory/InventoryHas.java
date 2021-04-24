@@ -1,13 +1,11 @@
-package mchorse.mappet.api.expressions.functions;
+package mchorse.mappet.api.expressions.functions.inventory;
 
-import mchorse.mappet.Mappet;
 import mchorse.mclib.math.IValue;
-import mchorse.mclib.math.functions.SNFunction;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
-public class InventoryHas extends SNFunction
+public class InventoryHas extends InventoryFunction
 {
     public static boolean compareItemById(String id, ItemStack stack)
     {
@@ -38,25 +36,8 @@ public class InventoryHas extends SNFunction
     }
 
     @Override
-    public int getRequiredArguments()
+    protected boolean isTrue(String id, EntityPlayer player)
     {
-        return 1;
-    }
-
-    @Override
-    public double doubleValue()
-    {
-        if (Mappet.expressions.subject instanceof EntityPlayer)
-        {
-            EntityPlayer subject = (EntityPlayer) Mappet.expressions.subject;
-            String id = this.getArg(0).stringValue();
-
-            if (compareInventory(id, subject.inventory.mainInventory))
-            {
-                return 1;
-            }
-        }
-
-        return 0;
+        return compareInventory(id, player.inventory.mainInventory);
     }
 }

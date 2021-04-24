@@ -1,11 +1,11 @@
 package mchorse.mappet.api.expressions;
 
-import mchorse.mappet.api.expressions.functions.InventoryArmor;
-import mchorse.mappet.api.expressions.functions.InventoryHas;
-import mchorse.mappet.api.expressions.functions.InventoryHolds;
-import mchorse.mappet.api.expressions.functions.QuestCompleted;
-import mchorse.mappet.api.expressions.functions.QuestPresent;
-import mchorse.mappet.api.expressions.functions.QuestPresentCompleted;
+import mchorse.mappet.api.expressions.functions.inventory.InventoryArmor;
+import mchorse.mappet.api.expressions.functions.inventory.InventoryHas;
+import mchorse.mappet.api.expressions.functions.inventory.InventoryHolds;
+import mchorse.mappet.api.expressions.functions.quests.QuestCompleted;
+import mchorse.mappet.api.expressions.functions.quests.QuestPresent;
+import mchorse.mappet.api.expressions.functions.quests.QuestPresentCompleted;
 import mchorse.mappet.api.expressions.functions.State;
 import mchorse.mclib.math.IValue;
 import mchorse.mclib.math.MathBuilder;

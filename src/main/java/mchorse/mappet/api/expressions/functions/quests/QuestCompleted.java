@@ -1,4 +1,4 @@
-package mchorse.mappet.api.expressions.functions;
+package mchorse.mappet.api.expressions.functions.quests;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.capabilities.character.Character;
