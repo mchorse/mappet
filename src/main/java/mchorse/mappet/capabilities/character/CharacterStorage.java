@@ -1,4 +1,4 @@
-package mchorse.mappet.capabilities;
+package mchorse.mappet.capabilities.character;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;

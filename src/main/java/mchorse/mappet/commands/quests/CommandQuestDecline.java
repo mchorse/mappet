@@ -1,7 +1,7 @@
 package mchorse.mappet.commands.quests;
 
-import mchorse.mappet.capabilities.Character;
-import mchorse.mappet.capabilities.ICharacter;
+import mchorse.mappet.capabilities.character.Character;
+import mchorse.mappet.capabilities.character.ICharacter;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;

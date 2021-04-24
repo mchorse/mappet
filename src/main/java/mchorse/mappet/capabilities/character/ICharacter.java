@@ -1,14 +1,17 @@
-package mchorse.mappet.capabilities;
+package mchorse.mappet.capabilities.character;
 
 import mchorse.mappet.api.crafting.CraftingTable;
 import mchorse.mappet.api.dialogues.DialogueContext;
 import mchorse.mappet.api.dialogues.DialogueNodeSystem;
 import mchorse.mappet.api.quests.Quests;
+import mchorse.mappet.api.states.States;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 
 public interface ICharacter extends INBTSerializable<NBTTagCompound>
 {
+    public States getStates();
+
     public Quests getQuests();
 
     /* Crafting table */

@@ -1,8 +1,8 @@
 package mchorse.mappet.api.expressions.functions;
 
 import mchorse.mappet.Mappet;
-import mchorse.mappet.capabilities.Character;
-import mchorse.mappet.capabilities.ICharacter;
+import mchorse.mappet.capabilities.character.Character;
+import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mclib.math.IValue;
 import mchorse.mclib.math.functions.SNFunction;
 import net.minecraft.entity.player.EntityPlayer;

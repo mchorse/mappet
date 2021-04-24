@@ -1,7 +1,7 @@
 package mchorse.mappet.network.server.crafting;
 
-import mchorse.mappet.capabilities.Character;
-import mchorse.mappet.capabilities.ICharacter;
+import mchorse.mappet.capabilities.character.Character;
+import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.network.common.crafting.PacketCraftingTable;
 import mchorse.mclib.network.ServerMessageHandler;
 import net.minecraft.entity.player.EntityPlayerMP;

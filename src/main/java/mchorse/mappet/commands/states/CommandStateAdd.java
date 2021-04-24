@@ -1,6 +1,6 @@
 package mchorse.mappet.commands.states;
 
-import mchorse.mappet.Mappet;
+import mchorse.mappet.api.states.States;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -23,24 +23,19 @@ public class CommandStateAdd extends CommandStateBase
     @Override
     public String getSyntax()
     {
-        return "{l}{6}/{r}mp {8}state add{r} {7}<id> <expression>{r}";
-    }
-
-    @Override
-    public int getRequiredArgs()
-    {
-        return 2;
+        return "{l}{6}/{r}mp {8}state add{r} {7}<target> <id> <expression>{r}";
     }
 
     @Override
     public void executeCommand(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
-        String id = args[0];
-        double value = CommandBase.parseDouble(args[1]);
-        double previous = Mappet.states.get(id);
+        States states = this.getStates(server, sender, args[0]);
+        String id = args[1];
+        double value = CommandBase.parseDouble(args[2]);
+        double previous = states.get(id);
 
-        Mappet.states.add(id, value);
+        states.add(id, value);
 
-        this.getL10n().info(sender, "states.changed", id, previous, Mappet.states.get(id));
+        this.getL10n().info(sender, "states.changed", id, previous, states.get(id));
     }
 }

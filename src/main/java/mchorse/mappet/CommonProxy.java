@@ -1,8 +1,8 @@
 package mchorse.mappet;
 
-import mchorse.mappet.capabilities.Character;
-import mchorse.mappet.capabilities.CharacterStorage;
-import mchorse.mappet.capabilities.ICharacter;
+import mchorse.mappet.capabilities.character.Character;
+import mchorse.mappet.capabilities.character.CharacterStorage;
+import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.utils.MappetNpcSelector;
 import net.minecraftforge.common.MinecraftForge;

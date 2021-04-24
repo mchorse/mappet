@@ -9,6 +9,7 @@ public class CommandState extends MappetSubCommandBase
     {
         this.add(new CommandStateAdd());
         this.add(new CommandStateIf());
+        this.add(new CommandStatePrint());
         this.add(new CommandStateReset());
         this.add(new CommandStateSet());
         this.add(new CommandStateSub());

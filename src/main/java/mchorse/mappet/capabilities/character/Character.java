@@ -1,12 +1,12 @@
-package mchorse.mappet.capabilities;
+package mchorse.mappet.capabilities.character;
 
 import mchorse.mappet.api.crafting.CraftingTable;
 import mchorse.mappet.api.dialogues.DialogueContext;
 import mchorse.mappet.api.dialogues.DialogueNodeSystem;
 import mchorse.mappet.api.quests.Quests;
+import mchorse.mappet.api.states.States;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.Constants;
 
 public class Character implements ICharacter
 {
@@ -16,10 +16,18 @@ public class Character implements ICharacter
     }
 
     private Quests quests = new Quests();
+    private States states = new States();
+
     private CraftingTable table;
 
     private DialogueNodeSystem dialogue;
     private DialogueContext dialogueContext;
+
+    @Override
+    public States getStates()
+    {
+        return this.states;
+    }
 
     @Override
     public Quests getQuests()
@@ -64,6 +72,7 @@ public class Character implements ICharacter
         NBTTagCompound tag = new NBTTagCompound();
 
         tag.setTag("Quests", this.quests.serializeNBT());
+        tag.setTag("States", this.states.serializeNBT());
 
         return tag;
     }
@@ -74,6 +83,11 @@ public class Character implements ICharacter
         if (tag.hasKey("Quests"))
         {
             this.quests.deserializeNBT(tag.getCompoundTag("Quests"));
+        }
+
+        if (tag.hasKey("States"))
+        {
+            this.states.deserializeNBT(tag.getCompoundTag("States"));
         }
     }
 }

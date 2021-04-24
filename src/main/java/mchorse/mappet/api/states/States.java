@@ -3,6 +3,8 @@ package mchorse.mappet.api.states;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import mchorse.mclib.utils.JsonUtils;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.INBTSerializable;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -15,11 +17,14 @@ import java.util.Map;
  * used in dialogues, crafting tables, events and et cetera
  * to control logic and store arbitrary numerical values
  */
-public class States
+public class States implements INBTSerializable<NBTTagCompound>
 {
     public Map<String, Double> values = new HashMap<String, Double>();
 
     private File file;
+
+    public States()
+    {}
 
     public States(File file)
     {
@@ -52,6 +57,32 @@ public class States
         this.values.remove(id);
 
         return !existed;
+    }
+
+    /* NBT */
+
+    @Override
+    public NBTTagCompound serializeNBT()
+    {
+        NBTTagCompound tag = new NBTTagCompound();
+
+        for (Map.Entry<String, Double> entry : this.values.entrySet())
+        {
+            tag.setDouble(entry.getKey(), entry.getValue());
+        }
+
+        return tag;
+    }
+
+    @Override
+    public void deserializeNBT(NBTTagCompound tag)
+    {
+        this.values.clear();
+
+        for (String key : tag.getKeySet())
+        {
+            this.values.put(key, tag.getDouble(key));
+        }
     }
 
     /* Deserialization and serialization */
