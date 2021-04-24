@@ -11,9 +11,9 @@ import net.minecraft.server.MinecraftServer;
 
 import java.util.List;
 
-public class QuestPresent extends SNFunction
+public class QuestPresentCompleted extends SNFunction
 {
-    public QuestPresent(IValue[] values, String name) throws Exception
+    public QuestPresentCompleted(IValue[] values, String name) throws Exception
     {
         super(values, name);
     }
@@ -21,7 +21,7 @@ public class QuestPresent extends SNFunction
     @Override
     public int getRequiredArguments()
     {
-        return 2;
+        return 1;
     }
 
     @Override
@@ -30,16 +30,19 @@ public class QuestPresent extends SNFunction
         try
         {
             String id = this.getArg(0).stringValue();
-            String target = this.getArg(1).stringValue();
+
+            if (Mappet.states.wasQuestCompleted(id))
+            {
+                return 1;
+            }
 
             MinecraftServer server = Mappet.expressions.server;
-            List<EntityPlayerMP> players = CommandBase.getPlayers(server, server, target);
 
-            for (EntityPlayerMP player : players)
+            for (EntityPlayerMP player : server.getPlayerList().getPlayers())
             {
                 ICharacter character = Character.get(player);
 
-                if (character != null && character.getQuests().getByName(id) != null)
+                if (character != null && (character.getStates().wasQuestCompleted(id) || character.getQuests().getByName(id) != null))
                 {
                     return 1;
                 }

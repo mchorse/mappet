@@ -1,9 +1,12 @@
 package mchorse.mappet.api.quests;
 
+import mchorse.mappet.Mappet;
 import mchorse.mappet.api.quests.objectives.IObjective;
 import mchorse.mappet.api.quests.objectives.KillObjective;
 import mchorse.mappet.api.quests.rewards.IReward;
 import mchorse.mappet.api.utils.Trigger;
+import mchorse.mappet.capabilities.character.Character;
+import mchorse.mappet.capabilities.character.ICharacter;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,6 +28,19 @@ public class Quest implements INBTSerializable<NBTTagCompound>, INBTPartialSeria
 
     public final List<IObjective> objectives = new ArrayList<IObjective>();
     public final List<IReward> rewards = new ArrayList<IReward>();
+
+    public static void complete(String id, EntityPlayer player)
+    {
+        /* Write down that the quest was completed */
+        ICharacter character = Character.get(player);
+
+        if (character != null)
+        {
+            character.getStates().completeQuest(id);
+        }
+
+        Mappet.states.completeQuest(id);
+    }
 
     public Quest()
     {}

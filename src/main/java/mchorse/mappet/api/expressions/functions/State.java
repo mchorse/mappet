@@ -12,27 +12,10 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public class State extends SNFunction
 {
-    public State(IValue[] values, String name) throws Exception
-    {
-        super(values, name);
-    }
-
-    @Override
-    public int getRequiredArguments()
-    {
-        return 1;
-    }
-
-    @Override
-    public double doubleValue()
-    {
-        String target = this.args.length > 1 ? this.getArg(1).stringValue() : "";
-        States states = this.getState(target);
-
-        return states.get(this.getArg(0).stringValue());
-    }
-
-    private States getState(String target)
+    /**
+     * Get states repository out of given target
+     */
+    public static States getState(String target)
     {
         States states = Mappet.states;
 
@@ -53,5 +36,25 @@ public class State extends SNFunction
         }
 
         return states;
+    }
+
+    public State(IValue[] values, String name) throws Exception
+    {
+        super(values, name);
+    }
+
+    @Override
+    public int getRequiredArguments()
+    {
+        return 1;
+    }
+
+    @Override
+    public double doubleValue()
+    {
+        String target = this.args.length > 1 ? this.getArg(1).stringValue() : "";
+        States states = getState(target);
+
+        return states.get(this.getArg(0).stringValue());
     }
 }

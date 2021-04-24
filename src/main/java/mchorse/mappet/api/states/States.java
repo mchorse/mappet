@@ -13,8 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * States allow to store global values of the world that can be
- * used in dialogues, crafting tables, events and et cetera
+ * States allow to store values of the world that can be
+ * used in dialogues, crafting tables, events and etc.
  * to control logic and store arbitrary numerical values
  */
 public class States implements INBTSerializable<NBTTagCompound>
@@ -57,6 +57,18 @@ public class States implements INBTSerializable<NBTTagCompound>
         this.values.remove(id);
 
         return !existed;
+    }
+
+    /* Convenience states */
+
+    public void completeQuest(String id)
+    {
+        this.add("quests." + id, 1);
+    }
+
+    public boolean wasQuestCompleted(String id)
+    {
+        return this.get("quests." + id) > 0;
     }
 
     /* NBT */

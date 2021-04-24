@@ -1,6 +1,8 @@
 package mchorse.mappet.api.quests;
 
 import mchorse.mappet.Mappet;
+import mchorse.mappet.capabilities.character.Character;
+import mchorse.mappet.capabilities.character.ICharacter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -79,6 +81,8 @@ public class Quests implements INBTSerializable<NBTTagCompound>
         if (reward)
         {
             quest.reward(player);
+
+            Quest.complete(id, player);
         }
         else
         {
