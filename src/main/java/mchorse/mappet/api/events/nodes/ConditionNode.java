@@ -27,7 +27,7 @@ public class ConditionNode extends EventNode
     @Override
     public int execute(EventContext context)
     {
-        IValue value = Mappet.expressions.evalute(this.expression, context.subject);
+        IValue value = Mappet.expressions.evalute(this.expression, context.server, context.subject);
 
         if (value != null && value.isNumber())
         {

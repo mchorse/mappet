@@ -47,7 +47,7 @@ public class CommandStateIf extends CommandStateBase
 
         EntityLivingBase subject = sender instanceof EntityPlayer ? (EntityPlayer) sender : null;
         String expression = String.join(" ", SubCommandBase.dropFirstArguments(args, 2));
-        IValue result = Mappet.expressions.evalute(expression, subject, previous);
+        IValue result = Mappet.expressions.evalute(expression, server, subject, previous);
 
         if (result != null && result.isNumber())
         {

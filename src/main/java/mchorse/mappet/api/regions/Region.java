@@ -6,6 +6,7 @@ import mchorse.mappet.api.regions.shapes.BoxShape;
 import mchorse.mappet.api.utils.Trigger;
 import mchorse.mclib.math.IValue;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -17,14 +18,14 @@ public class Region implements INBTSerializable<NBTTagCompound>
     public Trigger onExit = new Trigger();
     public AbstractShape shape = new BoxShape();
 
-    public boolean isEnabled()
+    public boolean isEnabled(MinecraftServer server)
     {
         if (this.enabled == null || this.enabled.isEmpty())
         {
             return true;
         }
 
-        IValue value = Mappet.expressions.evalute(this.enabled, null);
+        IValue value = Mappet.expressions.evalute(this.enabled, server, null);
 
         return value == null || value.booleanValue();
     }

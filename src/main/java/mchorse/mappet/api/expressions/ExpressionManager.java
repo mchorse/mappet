@@ -9,12 +9,14 @@ import mchorse.mclib.math.IValue;
 import mchorse.mclib.math.MathBuilder;
 import mchorse.mclib.math.Variable;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.server.MinecraftServer;
 
 public class ExpressionManager
 {
     public MathBuilder builder;
     public Variable value;
 
+    public MinecraftServer server;
     public EntityLivingBase subject;
     public EntityLivingBase object;
 
@@ -35,8 +37,9 @@ public class ExpressionManager
 
     /* TODO: look into caching these values or something */
 
-    public IValue evalute(String expression, EntityLivingBase subject, double value)
+    public IValue evalute(String expression, MinecraftServer server, EntityLivingBase subject, double value)
     {
+        this.server = server;
         this.subject = subject;
         this.object = null;
         this.value.set(value);
@@ -53,8 +56,9 @@ public class ExpressionManager
         return null;
     }
 
-    public IValue evalute(String expression, EntityLivingBase subject)
+    public IValue evalute(String expression, MinecraftServer server, EntityLivingBase subject)
     {
+        this.server = server;
         this.subject = subject;
         this.object = null;
         this.value.set(0);

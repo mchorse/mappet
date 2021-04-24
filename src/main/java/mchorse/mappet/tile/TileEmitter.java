@@ -85,7 +85,7 @@ public class TileEmitter extends TileEntity implements ITickable
             }
         }
 
-        IValue value = Mappet.expressions.evalute(this.expression, null);
+        IValue value = Mappet.expressions.evalute(this.expression, this.world.getMinecraftServer(), null);
 
         if (value != null)
         {

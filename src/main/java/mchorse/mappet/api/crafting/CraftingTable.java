@@ -79,7 +79,7 @@ public class CraftingTable implements INBTSerializable<NBTTagCompound>
 
             if (!recipe.condition.isEmpty())
             {
-                IValue value = Mappet.expressions.evalute(recipe.condition, player);
+                IValue value = Mappet.expressions.evalute(recipe.condition, player.getServer(), player);
 
                 if (value != null && value.isNumber() && !Operation.isTrue(value.doubleValue()))
                 {
