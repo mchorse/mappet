@@ -40,11 +40,16 @@ public abstract class BaseManager <T extends INBTSerializable<NBTTagCompound>> i
             String json = FileUtils.readFileToString(file, Charset.defaultCharset());
             JsonElement element = new JsonParser().parse(json);
             NBTTagCompound tag = (NBTTagCompound) NBTToJson.fromJson(element);
-            T table = this.create();
+            T data = this.create();
 
-            table.deserializeNBT(tag);
+            data.deserializeNBT(tag);
 
-            return table;
+            if (data instanceof IID)
+            {
+                ((IID) data).setId(id);
+            }
+
+            return data;
         }
         catch (Exception e)
         {

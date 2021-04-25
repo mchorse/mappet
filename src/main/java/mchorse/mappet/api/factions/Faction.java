@@ -1,12 +1,14 @@
 package mchorse.mappet.api.factions;
 
+import mchorse.mappet.api.states.States;
+import mchorse.mappet.api.utils.IID;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Faction implements INBTSerializable<NBTTagCompound>
+public class Faction implements INBTSerializable<NBTTagCompound>, IID
 {
     private String id;
 
@@ -44,19 +46,44 @@ public class Faction implements INBTSerializable<NBTTagCompound>
     /**
      * Relations to other factions
      */
-    public Map<String, FactionRelation> relations = new HashMap<String, FactionRelation>();
+    public Map<String, FactionAttitude> relations = new HashMap<String, FactionAttitude>();
 
     public Faction()
     {}
 
     public Faction(String id)
     {
-        this.id = id;
+        this.setId(id);
     }
 
+    @Override
     public String getId()
     {
         return this.id;
+    }
+
+    @Override
+    public void setId(String id)
+    {
+        this.id = id;
+    }
+
+    public FactionAttitude get(States states)
+    {
+        if (states.hasFaction(this.getId()))
+        {
+            return this.ownRelation.getAttitude(states.getFactionScore(this.getId()));
+        }
+
+        for (String key : this.relations.keySet())
+        {
+            if (states.hasFaction(key))
+            {
+                return this.relations.get(key);
+            }
+        }
+
+        return this.playerAttitude;
     }
 
     @Override
@@ -73,9 +100,9 @@ public class Faction implements INBTSerializable<NBTTagCompound>
 
         NBTTagCompound relations = new NBTTagCompound();
 
-        for (Map.Entry<String, FactionRelation> entry : this.relations.entrySet())
+        for (Map.Entry<String, FactionAttitude> entry : this.relations.entrySet())
         {
-            relations.setTag(entry.getKey(), entry.getValue().serializeNBT());
+            relations.setString(entry.getKey(), entry.getValue().name());
         }
 
         if (relations.getSize() > 0)
@@ -100,10 +127,7 @@ public class Faction implements INBTSerializable<NBTTagCompound>
 
             for (String key : relations.getKeySet())
             {
-                FactionRelation relation = new FactionRelation();
-
-                relation.deserializeNBT(relations.getCompoundTag(key));
-                this.relations.put(key, relation);
+                this.relations.put(key, FactionAttitude.get(tag.getString(key)));
             }
         }
     }

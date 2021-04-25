@@ -1,12 +1,17 @@
 package mchorse.mappet.api.expressions;
 
+import mchorse.mappet.api.expressions.functions.State;
+import mchorse.mappet.api.expressions.functions.factions.FactionFriendly;
+import mchorse.mappet.api.expressions.functions.factions.FactionHas;
+import mchorse.mappet.api.expressions.functions.factions.FactionHostile;
+import mchorse.mappet.api.expressions.functions.factions.FactionNeutral;
+import mchorse.mappet.api.expressions.functions.factions.FactionScore;
 import mchorse.mappet.api.expressions.functions.inventory.InventoryArmor;
 import mchorse.mappet.api.expressions.functions.inventory.InventoryHas;
 import mchorse.mappet.api.expressions.functions.inventory.InventoryHolds;
 import mchorse.mappet.api.expressions.functions.quests.QuestCompleted;
 import mchorse.mappet.api.expressions.functions.quests.QuestPresent;
 import mchorse.mappet.api.expressions.functions.quests.QuestPresentCompleted;
-import mchorse.mappet.api.expressions.functions.State;
 import mchorse.mclib.math.IValue;
 import mchorse.mclib.math.MathBuilder;
 import mchorse.mclib.math.Variable;
@@ -33,6 +38,12 @@ public class ExpressionManager
         this.builder.functions.put("quest_present", QuestPresent.class);
         this.builder.functions.put("quest_completed", QuestCompleted.class);
         this.builder.functions.put("quest_present_or_completed", QuestPresentCompleted.class);
+
+        this.builder.functions.put("faction_friendly", FactionFriendly.class);
+        this.builder.functions.put("faction_neutral", FactionNeutral.class);
+        this.builder.functions.put("faction_hostile", FactionHostile.class);
+        this.builder.functions.put("faction_has", FactionHas.class);
+        this.builder.functions.put("faction_score", FactionScore.class);
 
         this.builder.functions.put("state", State.class);
 
