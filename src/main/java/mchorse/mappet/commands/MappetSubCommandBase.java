@@ -12,4 +12,10 @@ public abstract class MappetSubCommandBase extends SubCommandBase
     {
         return Mappet.l10n;
     }
+
+    @Override
+    public String getSyntax()
+    {
+        return "{l}{6}/{r}mp {8}" + this.getName() + "{r} {7}...{r}";
+    }
 }

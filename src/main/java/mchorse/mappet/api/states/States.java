@@ -59,7 +59,7 @@ public class States implements INBTSerializable<NBTTagCompound>
         return !existed;
     }
 
-    /* Convenience states */
+    /* Quest convenience methods */
 
     public void completeQuest(String id)
     {
@@ -69,6 +69,38 @@ public class States implements INBTSerializable<NBTTagCompound>
     public boolean wasQuestCompleted(String id)
     {
         return this.get("quests." + id) > 0;
+    }
+
+    /* Faction convenience methods */
+
+    public void addFactionScore(String id, int score)
+    {
+        this.add("factions." + id, score);
+    }
+
+    public void setFactionScore(String id, int score)
+    {
+        this.set("factions." + id, score);
+    }
+
+    public int getFactionScore(String id)
+    {
+        return (int) this.get("factions." + id);
+    }
+
+    public boolean clearFactionScore(String id)
+    {
+        return this.reset("factions." + id);
+    }
+
+    public void clearAllFactionScores()
+    {
+        this.values.keySet().removeIf((key) -> key.startsWith("factions."));
+    }
+
+    public boolean hasFaction(String id)
+    {
+        return this.values.containsKey("factions." + id);
     }
 
     /* NBT */

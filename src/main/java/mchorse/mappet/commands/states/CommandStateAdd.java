@@ -29,13 +29,18 @@ public class CommandStateAdd extends CommandStateBase
     @Override
     public void executeCommand(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
-        States states = this.getStates(server, sender, args[0]);
+        States states = CommandState.getStates(server, sender, args[0]);
         String id = args[1];
         double value = CommandBase.parseDouble(args[2]);
         double previous = states.get(id);
 
-        states.add(id, value);
+        states.add(id, this.processValue(value));
 
         this.getL10n().info(sender, "states.changed", id, previous, states.get(id));
+    }
+
+    protected double processValue(double value)
+    {
+        return value;
     }
 }

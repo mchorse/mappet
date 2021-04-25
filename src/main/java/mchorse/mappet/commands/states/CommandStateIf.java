@@ -34,7 +34,7 @@ public class CommandStateIf extends CommandStateBase
     @Override
     public void executeCommand(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
-        States states = this.getStates(server, sender, args[0]);
+        States states = CommandState.getStates(server, sender, args[0]);
         String id = args[1];
 
         if (!states.values.containsKey(id))

@@ -142,7 +142,7 @@ public class GuiNodeGraph extends GuiCanvas
         List<EventNode> nodes = new ArrayList<EventNode>(this.selected);
 
         nodes.remove(last);
-        Collections.sort(nodes, Comparator.comparingInt(a -> a.x));
+        nodes.sort(Comparator.comparingInt(a -> a.x));
 
         for (EventNode node : nodes)
         {

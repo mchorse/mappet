@@ -1,6 +1,6 @@
-package mchorse.mappet.commands.states;
+package mchorse.mappet.commands.factions;
 
-import mchorse.mappet.api.states.States;
+import mchorse.mappet.Mappet;
 import mchorse.mappet.commands.MappetCommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,9 +11,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class CommandStateBase extends MappetCommandBase
+public abstract class CommandFactionBase extends MappetCommandBase
 {
-
     @Override
     public int getRequiredArgs()
     {
@@ -27,8 +26,6 @@ public abstract class CommandStateBase extends MappetCommandBase
         {
             List<String> list = server.getPlayerList().getPlayers().stream().map(EntityPlayer::getName).collect(Collectors.toList());
 
-            list.add("~");
-
             return getListOfStringsMatchingLastWord(args, list);
         }
 
@@ -36,9 +33,7 @@ public abstract class CommandStateBase extends MappetCommandBase
         {
             try
             {
-                States states = CommandState.getStates(server, sender, args[0]);
-
-                return getListOfStringsMatchingLastWord(args, states.values.keySet());
+                return getListOfStringsMatchingLastWord(args, Mappet.factions.getKeys());
             }
             catch (Exception e)
             {}

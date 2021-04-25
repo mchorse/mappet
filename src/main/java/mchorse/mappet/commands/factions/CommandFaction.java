@@ -1,47 +1,45 @@
-package mchorse.mappet.commands.states;
+package mchorse.mappet.commands.factions;
 
-import mchorse.mappet.Mappet;
 import mchorse.mappet.api.states.States;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.commands.MappetSubCommandBase;
-import mchorse.mappet.commands.factions.CommandFaction;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 
-public class CommandState extends MappetSubCommandBase
+public class CommandFaction extends MappetSubCommandBase
 {
     public static States getStates(MinecraftServer server, ICommandSender sender, String target) throws CommandException
     {
-        if (target.equals("~"))
+        EntityPlayer player = getPlayer(server, sender, target);
+        ICharacter character = Character.get(player);
+
+        if (character != null)
         {
-            return Mappet.states;
+            return character.getStates();
         }
 
-        return CommandFaction.getStates(server, sender, target);
+        throw new CommandException("states.invalid_target", target);
     }
 
-    public CommandState()
+    public CommandFaction()
     {
-        this.add(new CommandStateAdd());
-        this.add(new CommandStateClear());
-        this.add(new CommandStateIf());
-        this.add(new CommandStatePrint());
-        this.add(new CommandStateSet());
-        this.add(new CommandStateSub());
+        this.add(new CommandFactionAdd());
+        this.add(new CommandFactionClear());
+        this.add(new CommandFactionSet());
     }
 
     @Override
     public String getName()
     {
-        return "state";
+        return "faction";
     }
 
     @Override
     public String getUsage(ICommandSender sender)
     {
-        return "mappet.commands.mp.state.help";
+        return "mappet.commands.mp.faction.help";
     }
 }

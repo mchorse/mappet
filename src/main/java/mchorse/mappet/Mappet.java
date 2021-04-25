@@ -8,6 +8,7 @@ import mchorse.mappet.api.dialogues.nodes.ReplyNode;
 import mchorse.mappet.api.events.EventManager;
 import mchorse.mappet.api.events.nodes.CommandNode;
 import mchorse.mappet.api.expressions.ExpressionManager;
+import mchorse.mappet.api.factions.FactionManager;
 import mchorse.mappet.api.npcs.Npc;
 import mchorse.mappet.api.npcs.NpcManager;
 import mchorse.mappet.api.npcs.NpcState;
@@ -87,6 +88,7 @@ public final class Mappet
     public static DialogueManager dialogues;
     public static ExpressionManager expressions;
     public static NpcManager npcs;
+    public static FactionManager factions;
 
     /* Configuration */
     public static ValueInt eventMaxExecutions;
@@ -148,6 +150,7 @@ public final class Mappet
         dialogues = new DialogueManager(new File(mappetWorldFolder, "dialogues"));
         expressions = new ExpressionManager();
         npcs = new NpcManager(new File(mappetWorldFolder, "npcs"));
+        factions = new FactionManager(new File(mappetWorldFolder, "factions"));
 
         event.registerServerCommand(new CommandMappet());
     }
@@ -164,5 +167,6 @@ public final class Mappet
         dialogues = null;
         expressions = null;
         npcs = null;
+        factions = null;
     }
 }

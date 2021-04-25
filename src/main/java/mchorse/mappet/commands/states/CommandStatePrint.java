@@ -1,7 +1,6 @@
 package mchorse.mappet.commands.states;
 
 import mchorse.mappet.api.states.States;
-import mchorse.mclib.commands.utils.L10n;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
@@ -37,7 +36,7 @@ public class CommandStatePrint extends CommandStateBase
     @Override
     public void executeCommand(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
-        States states = this.getStates(server, sender, args[0]);
+        States states = CommandState.getStates(server, sender, args[0]);
         ITextComponent component = this.getL10n().info("states.print", args[0]);
         int i = 0;
 

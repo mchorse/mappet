@@ -1,27 +1,27 @@
-package mchorse.mappet.commands.states;
+package mchorse.mappet.commands.factions;
 
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 
-public class CommandStateReset extends CommandStateBase
+public class CommandFactionClear extends CommandFactionBase
 {
     @Override
     public String getName()
     {
-        return "reset";
+        return "clear";
     }
 
     @Override
     public String getUsage(ICommandSender sender)
     {
-        return "mappet.commands.mp.state.reset";
+        return "mappet.commands.mp.faction.clear";
     }
 
     @Override
     public String getSyntax()
     {
-        return "{l}{6}/{r}mp {8}state reset{r} {7}<target> [id]{r}";
+        return "{l}{6}/{r}mp {8}faction clear{r} {7}<target> [id]{r}";
     }
 
     @Override
@@ -37,13 +37,13 @@ public class CommandStateReset extends CommandStateBase
         {
             String id = args[1];
 
-            this.getStates(server, sender,args[0]).reset(id);
-            this.getL10n().info(sender, "states.reset", id);
+            CommandFaction.getStates(server, sender,args[0]).clearFactionScore(id);
+            this.getL10n().info(sender, "factions.clear", id);
         }
         else
         {
-            this.getStates(server, sender,args[0]).values.clear();
-            this.getL10n().info(sender, "states.reset_all");
+            CommandFaction.getStates(server, sender,args[0]).clearAllFactionScores();
+            this.getL10n().info(sender, "factions.clear_all", args[0]);
         }
     }
 }

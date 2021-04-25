@@ -20,11 +20,17 @@ mappet.error.npc.invalid_property=§fNPC state property §7%s§f does not exist!
 mappet.error.npc.cant_edit=§fGiven value for §7%s§f property: §7%s§f is in invalid format!
 
 # Info
-mappet.info.states.reset=§fValue by key §7%s§f was removed from states.
+mappet.info.states.clear=§fValue by key §7%s§f was removed from states.
+mappet.info.states.clear_all=§fAll values were removed from §7%s§f's states.
 mappet.info.states.set=§fValue by key §7%s§f was set to §7%s§r.
-mappet.info.states.changed=§fValue by key §7%s§f was §7%s§r, and it's §7%s§r.
+mappet.info.states.changed=§fValue by key §7%s§f was §7%s§r, and it became §7%s§r.
 mappet.info.states.true=§fGiven expression evaluates to §atrue§f for value by given §7%s§r key.
 mappet.info.states.print=§fStates of §7%s§r:\n\n
+
+mappet.info.factions.clear=§fFaction score by ID §7%s§f was removed.
+mappet.info.factions.clear_all=§fAll faction scores were removed from §7%s§f.
+mappet.info.factions.set=§fFaction score by ID §7%s§f was set to §7%s§r.
+mappet.info.factions.changed=§fFaction score by ID §7%s§f was §7%s§r, and it became §7%s§r.
 
 # Success
 mappet.success.quest.accepted=§fQuest by ID §7%s§f was given to player §7%s§f.
@@ -35,9 +41,10 @@ mappet.success.quest.declined=§fQuest by ID §7%s§f was removed from player §
 mappet.commands.mp.help=Main Mappet command that provides subcommands for working with Mappet's features.
 
 mappet.commands.mp.state.help=State management subcommand.\n\n§7<target>§r argument is used to determine where to edit the state. You can either specify player's name to edit player's states or §7~§r for global state.
-mappet.commands.mp.state.add=This command adds to value by §7<id>§r key the value evaluated by §7<expression>§r. If §7<id>§r state didn't exist, §7<expression>§r will be added to 0.
+mappet.commands.mp.state.add=This command adds to value by §7<id>§r key the value evaluated by §7<expression>§r. If §7<id>§r state doesn't exist, §7<expression>§r will be added to 0.
+mappet.commands.mp.state.clear=This command removes value by §7[id]§r key. If §7[id]§r was omitted, then all values will be erased.
+mappet.commands.mp.state.if=This command evaluates §7<expression>§r against value §7<id>§r state, and if resulted §7<expression>§r is a non-zero value it does nothing, but if if outputs zero then the command will error.\n\nThis is useful for command blocks that can stop on errors.
 mappet.commands.mp.state.print=This command prints out all the values §7<target>§r state has.
-mappet.commands.mp.state.reset=This command removes value by §7[id]§r key. If §7[id]§r was omitted, then all values will be erased.
 mappet.commands.mp.state.set=This command assigns value by §7<id>§r key to value evaluated by §7<expression>§r.
 mappet.commands.mp.state.sub=This command subtracts to value by §7<id>§r key the value evaluated by §7<expression>§r. If §7<id>§r state didn't exist, §7<expression>§r will be subtracted to 0.
 
@@ -52,10 +59,18 @@ mappet.commands.mp.crafting.open=This command opens a crafting table by §7<id>�
 mappet.commands.mp.event.help=Mappet's event subcommand.
 mappet.commands.mp.event.trigger=This command triggers an event by §7<id>§r using §7<player>§r(s) as context.
 
+mappet.commands.mp.dialogue.help=Mappet's dialogue subcommand.
+mappet.commands.mp.dialogue.open=This command opens a dialogue by §7<id>§r for §7<player>§r(s).
+
 mappet.commands.mp.npc.help=NPC management subcommand.
 mappet.commands.mp.npc.edit=This command allows to change an individual §7<property>§r to given §7<value>§r of NPC(s) found by §7<target>§r selector.
 mappet.commands.mp.npc.state=This command allows to switch the §7<state>§r of NPC(s) found by §7<target>§r selector.\n\n§7<state>§r argument supports following format: §7[npc_id@]state[:properties]§r, where §7npc_id§r and §7properties§r are optional.\n\nWith this format, you can change the state from another NPC blueprint, or even change only certain properties from another state.
 mappet.commands.mp.npc.summon=This command spawns an NPC with §7<id>§r with optional §7[state]§r (§7default§r is the default name of the state) at §7[x] [y] [z]§r. If §7[x] [y] [z]§r are omitted, then NPC will be spawned at place of command sender. Relative §7~§r is supported.
+
+mappet.commands.mp.faction.help=Faction management subcommand. This command allows to manage faction score of individual or multiple players.
+mappet.commands.mp.faction.add=This command adds faction score evaluated by §7<expression>§r to faction by §7<id>§r. If §7<id>§r doesn't exist, §7<expression>§r will be added to 0.
+mappet.commands.mp.faction.clear=This command removes faction score of a faction by §7[id]§r. If §7[id]§r was omitted, then all faction score will be erased.
+mappet.commands.mp.faction.set=This command assigns faction score evaluated by §7<expression>§r to faction by §7<id>§r.
 
 # GUI
 mappet.gui.panels.quests=Quests

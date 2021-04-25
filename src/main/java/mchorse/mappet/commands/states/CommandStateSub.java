@@ -1,12 +1,8 @@
 package mchorse.mappet.commands.states;
 
-import mchorse.mappet.api.states.States;
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.server.MinecraftServer;
 
-public class CommandStateSub extends CommandStateBase
+public class CommandStateSub extends CommandStateAdd
 {
     @Override
     public String getName()
@@ -27,15 +23,8 @@ public class CommandStateSub extends CommandStateBase
     }
 
     @Override
-    public void executeCommand(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
+    protected double processValue(double value)
     {
-        States states = this.getStates(server, sender, args[0]);
-        String id = args[1];
-        double value = CommandBase.parseDouble(args[2]);
-        double previous = states.get(id);
-
-        states.add(id, -value);
-
-        this.getL10n().info(sender, "states.changed", id, previous, states.get(id));
+        return -value;
     }
 }
