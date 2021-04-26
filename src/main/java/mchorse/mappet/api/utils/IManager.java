@@ -7,12 +7,12 @@ import java.util.Collection;
 
 public interface IManager <T extends INBTSerializable<NBTTagCompound>>
 {
-    public default T create()
+    public default T create(String id)
     {
-        return this.create(null);
+        return this.create(id, null);
     }
 
-    public T create(NBTTagCompound tag);
+    public T create(String id, NBTTagCompound tag);
 
     public T load(String id);
 

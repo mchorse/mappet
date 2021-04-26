@@ -13,7 +13,7 @@ public class QuestManager extends BaseManager<Quest>
     }
 
     @Override
-    public Quest create(NBTTagCompound tag)
+    public Quest create(String id, NBTTagCompound tag)
     {
         Quest quest = new Quest();
 

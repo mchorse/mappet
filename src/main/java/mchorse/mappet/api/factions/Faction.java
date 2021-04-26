@@ -86,6 +86,13 @@ public class Faction implements INBTSerializable<NBTTagCompound>, IID
         return this.playerAttitude;
     }
 
+    public FactionAttitude get(String faction)
+    {
+        FactionAttitude attitude = this.relations.get(faction);
+
+        return attitude == null ? this.othersAttitude : attitude;
+    }
+
     @Override
     public NBTTagCompound serializeNBT()
     {

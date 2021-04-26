@@ -1,7 +1,6 @@
 package mchorse.mappet.api.dialogues;
 
 import mchorse.mappet.Mappet;
-import mchorse.mappet.api.crafting.CraftingTable;
 import mchorse.mappet.api.dialogues.nodes.ReactionNode;
 import mchorse.mappet.api.dialogues.nodes.ReplyNode;
 import mchorse.mappet.api.events.EventManager;
@@ -25,7 +24,7 @@ public class DialogueManager extends BaseManager<DialogueNodeSystem>
     }
 
     @Override
-    public DialogueNodeSystem create(NBTTagCompound tag)
+    public DialogueNodeSystem create(String id, NBTTagCompound tag)
     {
         DialogueNodeSystem dialogue = new DialogueNodeSystem(FACTORY);
 

@@ -154,7 +154,7 @@ public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTag
             this.names.list.sort();
             this.names.list.setCurrentScroll(name);
 
-            T data = (T) this.getType().getManager().create();
+            T data = (T) this.getType().getManager().create(name);
 
             this.fill(name, data);
         }
@@ -180,7 +180,7 @@ public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTag
             this.names.list.sort();
             this.names.list.setCurrentScroll(name);
 
-            T data = (T) this.getType().getManager().create(this.data.serializeNBT());
+            T data = (T) this.getType().getManager().create(name, this.data.serializeNBT());
 
             this.fill(name, data);
         }
