@@ -1,7 +1,11 @@
 package mchorse.mappet.commands.factions;
 
 import mchorse.mappet.Mappet;
+import mchorse.mappet.api.events.nodes.EventNode;
+import mchorse.mappet.api.factions.Faction;
+import mchorse.mappet.api.utils.nodes.NodeSystem;
 import mchorse.mappet.commands.MappetCommandBase;
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
@@ -13,6 +17,18 @@ import java.util.stream.Collectors;
 
 public abstract class CommandFactionBase extends MappetCommandBase
 {
+    protected Faction getFaction(String id) throws CommandException
+    {
+        Faction event = Mappet.factions.load(id);
+
+        if (event == null)
+        {
+            throw new CommandException("faction.missing", id);
+        }
+
+        return event;
+    }
+
     @Override
     public int getRequiredArgs()
     {

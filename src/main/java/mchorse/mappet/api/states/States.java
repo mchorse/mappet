@@ -73,9 +73,16 @@ public class States implements INBTSerializable<NBTTagCompound>
 
     /* Faction convenience methods */
 
-    public void addFactionScore(String id, int score)
+    public void addFactionScore(String id, int score, int defaultScore)
     {
-        this.add("factions." + id, score);
+        if (this.hasFaction(id))
+        {
+            this.add("factions." + id, score);
+        }
+        else
+        {
+            this.set("factions." + id, defaultScore + score);
+        }
     }
 
     public void setFactionScore(String id, int score)

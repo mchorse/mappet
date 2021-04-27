@@ -1,5 +1,6 @@
 package mchorse.mappet.commands.factions;
 
+import mchorse.mappet.api.factions.Faction;
 import mchorse.mappet.api.states.States;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -29,8 +30,9 @@ public class CommandFactionSet extends CommandFactionBase
     @Override
     public void executeCommand(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
-        States states = CommandFaction.getStates(server, sender, args[0]);
         String id = args[1];
+        Faction faction = this.getFaction(id);
+        States states = CommandFaction.getStates(server, sender, args[0]);
         int value = CommandBase.parseInt(args[2]);
 
         states.setFactionScore(id, value);

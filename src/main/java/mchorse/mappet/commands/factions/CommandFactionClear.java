@@ -1,5 +1,6 @@
 package mchorse.mappet.commands.factions;
 
+import mchorse.mappet.api.factions.Faction;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
@@ -36,6 +37,7 @@ public class CommandFactionClear extends CommandFactionBase
         if (args.length > 1)
         {
             String id = args[1];
+            Faction faction = this.getFaction(id);
 
             CommandFaction.getStates(server, sender,args[0]).clearFactionScore(id);
             this.getL10n().info(sender, "factions.clear", id);
