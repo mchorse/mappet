@@ -3,6 +3,7 @@ package mchorse.mappet.client.gui.npc;
 import mchorse.mappet.api.npcs.NpcState;
 import mchorse.mappet.client.gui.npc.utils.GuiNpcDrops;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
+import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.utils.Elements;
@@ -15,6 +16,7 @@ import java.util.function.Supplier;
 
 public class GuiNpcGeneralPanel extends GuiNpcPanel
 {
+    public GuiTextElement faction;
     public GuiNestedEdit morph;
     public GuiNpcDrops drops;
     public GuiTrackpadElement xp;
@@ -23,12 +25,14 @@ public class GuiNpcGeneralPanel extends GuiNpcPanel
     {
         super(mc);
 
+        this.faction = new GuiTextElement(mc, (t) -> this.state.faction = t);
         this.morph = new GuiNestedEdit(mc, (b) -> this.openMorphMenu(b, morphs));
         this.drops = new GuiNpcDrops(mc, inventory);
         this.xp = new GuiTrackpadElement(mc, (v) -> this.state.xp = v.intValue());
         this.xp.limit(0).integer();
 
-        this.scroll.add(Elements.label(IKey.str("NPC's morph")), this.morph);
+        this.scroll.add(Elements.label(IKey.str("Faction")), this.faction);
+        this.scroll.add(Elements.label(IKey.str("NPC's morph")).marginTop(12), this.morph);
         this.scroll.add(this.drops.marginTop(12));
         this.scroll.add(Elements.label(IKey.str("XP drop")).marginTop(12), this.xp);
     }
@@ -66,6 +70,7 @@ public class GuiNpcGeneralPanel extends GuiNpcPanel
     {
         super.set(state);
 
+        this.faction.setText(state.faction);
         this.morph.setMorph(state.morph);
         this.drops.set(state.drops);
         this.xp.setValue(state.xp);

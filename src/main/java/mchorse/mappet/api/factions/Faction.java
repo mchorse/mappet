@@ -88,6 +88,11 @@ public class Faction implements INBTSerializable<NBTTagCompound>, IID
 
     public FactionAttitude get(String faction)
     {
+        if (faction.equals(this.getId()))
+        {
+            return FactionAttitude.FRIENDLY;
+        }
+
         FactionAttitude attitude = this.relations.get(faction);
 
         return attitude == null ? this.othersAttitude : attitude;

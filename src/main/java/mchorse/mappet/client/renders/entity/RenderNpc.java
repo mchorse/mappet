@@ -28,14 +28,20 @@ public class RenderNpc extends RenderLiving<EntityNpc>
     {
         float yawHead = entity.rotationYawHead;
         float prevYawHead = entity.prevRotationYawHead;
+        float bodyYaw = entity.renderYawOffset;
+        float bodyPrevYaw = entity.prevRenderYawOffset;
 
         entity.rotationYawHead = entity.smoothYawHead;
         entity.prevRotationYawHead = entity.prevSmoothYawHead;
+        entity.renderYawOffset = entity.smoothBodyYawHead;
+        entity.prevRenderYawOffset = entity.prevSmoothBodyYawHead;
 
         MorphUtils.render(entity.getMorph(), entity, x, y, z, entityYaw, partialTicks);
 
         entity.rotationYawHead = yawHead;
         entity.prevRotationYawHead = prevYawHead;
+        entity.renderYawOffset = bodyYaw;
+        entity.prevRenderYawOffset = bodyPrevYaw;
     }
 
     public static class Factory implements IRenderFactory<EntityNpc>

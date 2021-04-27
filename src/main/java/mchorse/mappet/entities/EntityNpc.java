@@ -1,9 +1,14 @@
 package mchorse.mappet.entities;
 
 import io.netty.buffer.ByteBuf;
+import mchorse.mappet.Mappet;
+import mchorse.mappet.api.factions.Faction;
+import mchorse.mappet.api.factions.FactionAttitude;
 import mchorse.mappet.api.npcs.Npc;
 import mchorse.mappet.api.npcs.NpcDrop;
 import mchorse.mappet.api.npcs.NpcState;
+import mchorse.mappet.capabilities.character.Character;
+import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.entities.ai.EntityAIAttackNpcMelee;
 import mchorse.mappet.entities.ai.EntityAIFollowTarget;
 import mchorse.mappet.entities.ai.EntityAIPatrol;
@@ -28,6 +33,7 @@ import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
@@ -51,9 +57,12 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
     private int lastDamageTime;
     private boolean unkillableFailsafe = true;
+    private Faction faction;
 
     public float smoothYawHead;
     public float prevSmoothYawHead;
+    public float smoothBodyYawHead;
+    public float prevSmoothBodyYawHead;
 
     public EntityNpc(World worldIn)
     {
@@ -119,7 +128,39 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         this.tasks.addTask(4, new EntityAIAttackNpcMelee(this, speed, false));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPig>(this, EntityPig.class, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityLivingBase>(this, EntityLivingBase.class, 10, true, false, this::targetCheck));
+    }
+
+    private boolean targetCheck(EntityLivingBase entity)
+    {
+        if (entity instanceof EntityNpc)
+        {
+            EntityNpc npc = (EntityNpc) entity;
+
+            if (this.faction != null)
+            {
+                return this.faction.get(npc.getState().faction) == FactionAttitude.AGGRESSIVE;
+            }
+        }
+
+        if (entity instanceof EntityPlayerMP)
+        {
+            EntityPlayerMP player = (EntityPlayerMP) entity;
+
+            if (player.isSpectator() || player.isCreative())
+            {
+                return false;
+            }
+
+            ICharacter character = Character.get(player);
+
+            if (this.faction != null && character != null)
+            {
+                return this.faction.get(character.getStates()) == FactionAttitude.AGGRESSIVE;
+            }
+        }
+
+        return this.faction != null && this.faction.othersAttitude == FactionAttitude.AGGRESSIVE;
     }
 
     /* Getter and setters */
@@ -168,6 +209,8 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         {
             Dispatcher.sendToTracked(this, new PacketNpcMorph(this));
         }
+
+        this.faction = state.faction.isEmpty() ? null : Mappet.factions.load(state.faction);
 
         this.initEntityAI();
     }
@@ -248,6 +291,8 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         {
             this.prevSmoothYawHead = this.smoothYawHead;
             this.smoothYawHead = Interpolations.lerpYaw(this.smoothYawHead, this.rotationYawHead, 0.5F);
+            this.prevSmoothBodyYawHead = this.smoothBodyYawHead;
+            this.smoothBodyYawHead = Interpolations.lerpYaw(this.smoothBodyYawHead, this.renderYawOffset, 0.5F);
         }
     }
 

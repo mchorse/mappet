@@ -136,6 +136,11 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     /* General */
 
     /**
+     * To which faction does this NPC belongs to
+     */
+    public String faction = "";
+
+    /**
      * How does the NPC looks like
      */
     public AbstractMorph morph;
@@ -380,6 +385,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if ((all || options.contains("follow"))) tag.setString("Follow", this.follow);
 
         /* General */
+        if (all || options.contains("faction")) tag.setString("Faction", this.faction);
         if ((all || options.contains("morph"))) tag.setTag("Morph", this.morph == null ? new NBTTagCompound() : this.morph.toNBT());
         if (all || options.contains("sight_distance")) tag.setFloat("SightDistance", this.sightDistance);
         if (all || options.contains("sight_radius")) tag.setFloat("SightRadius", this.sightRadius);
@@ -454,6 +460,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("Follow", Constants.NBT.TAG_STRING)) this.follow = tag.getString("Follow");
 
         /* General */
+        if (tag.hasKey("Faction")) this.faction = tag.getString("Faction");
         if (tag.hasKey("Morph", Constants.NBT.TAG_COMPOUND)) this.morph = MorphManager.INSTANCE.morphFromNBT(tag.getCompoundTag("Morph"));
         if (tag.hasKey("SightDistance")) this.sightDistance = tag.getFloat("SightDistance");
         if (tag.hasKey("SightRadius")) this.sightRadius = tag.getFloat("SightRadius");
