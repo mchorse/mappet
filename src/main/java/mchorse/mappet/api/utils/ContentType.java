@@ -92,6 +92,21 @@ public enum ContentType
         {
             return dashboard.npc;
         }
+    },
+    FACTION()
+    {
+        @Override
+        public IManager<? extends INBTSerializable<NBTTagCompound>> getManager()
+        {
+            return Mappet.factions;
+        }
+
+        @Override
+        @SideOnly(Side.CLIENT)
+        public GuiMappetDashboardPanel get(GuiMappetDashboard dashboard)
+        {
+            return dashboard.faction;
+        }
     };
 
     /* Every Karen be like :D */

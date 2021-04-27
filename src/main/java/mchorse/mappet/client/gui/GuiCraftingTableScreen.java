@@ -28,7 +28,7 @@ public class GuiCraftingTableScreen extends GuiBase
 
         Minecraft mc = Minecraft.getMinecraft();
 
-        this.craft = new GuiButtonElement(mc, IKey.lang("Craft!"), this::craft);
+        this.craft = new GuiButtonElement(mc, IKey.str("Craft!"), this::craft);
         this.craft.flex().relative(this.viewport).x(1F, -10).y(1F, -10).wh(80, 20).anchor(1F, 1F);
 
         this.recipes = new GuiCraftingRecipeList(mc, (list) -> this.pickRecipe(list.get(0)));

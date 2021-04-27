@@ -68,7 +68,7 @@ public class GuiNpcDrops extends GuiElement
             slot.stack = item;
         });
         slot.stack = drop.stack;
-        row.context(() -> new GuiSimpleContextMenu(this.mc).action(Icons.REMOVE, IKey.str("Remove item"), () ->
+        row.context(() -> new GuiSimpleContextMenu(this.mc).action(Icons.REMOVE, IKey.str("Remove drop"), () ->
         {
             int index = this.element.getChildren().indexOf(row);
 

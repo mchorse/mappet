@@ -79,10 +79,15 @@ mappet.gui.panels.events=Events
 mappet.gui.panels.dialogues=Dialogues
 mappet.gui.panels.regions=Regions
 mappet.gui.panels.npcs=NPCs
+mappet.gui.panels.factions=Factions
 
 mappet.gui.shapes.box=Box
 mappet.gui.shapes.sphere=Sphere
 mappet.gui.shapes.cylinder=Cylinder
+
+mappet.gui.faction_attitudes.aggressive=Aggressive
+mappet.gui.faction_attitudes.passive=Passive
+mappet.gui.faction_attitudes.friendly=Friendly
 
 # Keys
 mappet.keys.category=Mappet

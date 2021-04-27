@@ -134,7 +134,7 @@ public class Faction implements INBTSerializable<NBTTagCompound>, IID
 
             for (String key : relations.getKeySet())
             {
-                this.relations.put(key, FactionAttitude.get(tag.getString(key)));
+                this.relations.put(key, FactionAttitude.get(relations.getString(key)));
             }
         }
     }

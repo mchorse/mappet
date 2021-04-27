@@ -32,6 +32,11 @@ public class GuiOverlayPanel extends GuiElement
         this.add(this.title, this.close, this.content);
     }
 
+    public void close()
+    {
+        this.getParent().removeFromParent();
+    }
+
     @Override
     public boolean mouseClicked(GuiContext context)
     {

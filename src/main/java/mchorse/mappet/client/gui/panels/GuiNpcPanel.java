@@ -32,6 +32,7 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
 
         this.pathDistance = new GuiTrackpadElement(mc, (v) -> this.data.pathDistance = v);
 
+        /* TODO: add context menu to add and remove states */
         this.states = new GuiStringListElement(mc, (list) -> this.pickState(list.get(0), false));
         this.states.flex().relative(this).y(52).w(120).h(1F, -52);
 
