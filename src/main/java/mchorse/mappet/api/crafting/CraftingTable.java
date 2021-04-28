@@ -71,21 +71,6 @@ public class CraftingTable implements INBTSerializable<NBTTagCompound>
 
     public void filter(EntityPlayerMP player)
     {
-        Iterator<CraftingRecipe> it = this.recipes.iterator();
-
-        while (it.hasNext())
-        {
-            CraftingRecipe recipe = it.next();
-
-            if (!recipe.condition.isEmpty())
-            {
-                IValue value = Mappet.expressions.evalute(recipe.condition, player.getServer(), player);
-
-                if (value != null && value.isNumber() && !Operation.isTrue(value.doubleValue()))
-                {
-                    it.remove();
-                }
-            }
-        }
+        this.recipes.removeIf(recipe -> !recipe.isAvailable(player));
     }
 }

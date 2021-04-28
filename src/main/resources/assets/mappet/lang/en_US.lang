@@ -9,6 +9,7 @@ mappet.error.quest.missing=§fQuest by ID §7%s§f is missing in quest database!
 
 mappet.error.crafting.missing=§fCrafting table by ID §7%s§f is missing!
 mappet.error.crafting.empty=§fCrafting table by ID §7%s§f is empty (it has 0 recipes)!
+mappet.error.crafting.empty_output=§fCrafting table recipe's output item(s) by ID §7%s§f at index §7%s§f are practically empty!
 
 mappet.error.event.missing=§fEvent by ID §7%s§f is missing!
 mappet.error.event.empty=§fEvent by ID §7%s§f is empty (it has no entry node)!
@@ -55,6 +56,7 @@ mappet.commands.mp.quest.decline=This command removes the quest by §7<id>§r fr
 
 mappet.commands.mp.crafting.help=Mappet's crafting table subcommand.
 mappet.commands.mp.crafting.open=This command opens a crafting table by §7<id>§r for §7<player>§r(s).
+mappet.commands.mp.crafting.drop=This command drops an output item stacks from a crafting table by §7<id>§r from its recipe at index §7[index]§r at §7[x] [y] [z]§r.\n\n§7[x] [y] [z]§r support relative position using §7~§r and can be omitted. §7[index]§r can be also §7@r§r which means it will use a random recipe. §7[mx] [my] [mz]§r can be provided to setup initial velocity of item entities.
 
 mappet.commands.mp.event.help=Mappet's event subcommand.
 mappet.commands.mp.event.trigger=This command triggers an event by §7<id>§r using §7<player>§r(s) as context.

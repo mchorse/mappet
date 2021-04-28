@@ -7,6 +7,7 @@ public class CommandCrafting extends MappetSubCommandBase
 {
     public CommandCrafting()
     {
+        this.add(new CommandCraftingDrop());
         this.add(new CommandCraftingOpen());
     }
 

@@ -1,9 +1,13 @@
 package mchorse.mappet.api.crafting;
 
+import mchorse.mappet.Mappet;
 import mchorse.mappet.api.utils.Trigger;
 import mchorse.mappet.utils.InventoryUtils;
+import mchorse.mclib.math.IValue;
+import mchorse.mclib.math.Operation;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,6 +25,18 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
     public String condition = "";
     public int hotkey = -1;
     public Trigger trigger = new Trigger();
+
+    public boolean isAvailable(EntityPlayer player)
+    {
+        if (!this.condition.isEmpty())
+        {
+            IValue value = Mappet.expressions.evalute(this.condition, player.getServer(), player);
+
+            return value != null && value.isNumber() && !Operation.isTrue(value.doubleValue());
+        }
+
+        return true;
+    }
 
     public boolean craft(EntityPlayer player)
     {
