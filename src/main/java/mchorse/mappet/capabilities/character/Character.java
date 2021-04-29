@@ -8,6 +8,8 @@ import mchorse.mappet.api.states.States;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
+import java.time.Instant;
+
 public class Character implements ICharacter
 {
     public static ICharacter get(EntityPlayer player)
@@ -22,6 +24,8 @@ public class Character implements ICharacter
 
     private DialogueNodeSystem dialogue;
     private DialogueContext dialogueContext;
+
+    private Instant lastClear = Instant.now();
 
     @Override
     public States getStates()
@@ -67,12 +71,25 @@ public class Character implements ICharacter
     }
 
     @Override
+    public Instant getLastClear()
+    {
+        return this.lastClear;
+    }
+
+    @Override
+    public void updateLastClear(Instant instant)
+    {
+        this.lastClear = instant;
+    }
+
+    @Override
     public NBTTagCompound serializeNBT()
     {
         NBTTagCompound tag = new NBTTagCompound();
 
         tag.setTag("Quests", this.quests.serializeNBT());
         tag.setTag("States", this.states.serializeNBT());
+        tag.setString("LastClear", this.lastClear.toString());
 
         return tag;
     }
@@ -88,6 +105,16 @@ public class Character implements ICharacter
         if (tag.hasKey("States"))
         {
             this.states.deserializeNBT(tag.getCompoundTag("States"));
+        }
+
+        if (tag.hasKey("LastClear"))
+        {
+            try
+            {
+                this.lastClear = Instant.parse(tag.getString("LastClear"));
+            }
+            catch (Exception e)
+            {}
         }
     }
 }

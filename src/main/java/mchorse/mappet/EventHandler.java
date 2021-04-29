@@ -4,6 +4,7 @@ import mchorse.mappet.api.quests.Quest;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.CharacterProvider;
 import mchorse.mappet.capabilities.character.ICharacter;
+import mchorse.mappet.commands.data.CommandDataClear;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -15,6 +16,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -47,7 +49,15 @@ public class EventHandler
     @SubscribeEvent
     public void onPlayerLogsIn(PlayerEvent.PlayerLoggedInEvent event)
     {
-        /* ... */
+        ICharacter character = Character.get(event.player);
+        Instant lastClear = Mappet.data.getLastClear();
+
+        if (character != null && character.getLastClear().isBefore(lastClear))
+        {
+            CommandDataClear.clear(event.player);
+
+            character.updateLastClear(lastClear);
+        }
     }
 
     @SubscribeEvent

@@ -8,6 +8,8 @@ import mchorse.mappet.api.states.States;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 
+import java.time.Instant;
+
 public interface ICharacter extends INBTSerializable<NBTTagCompound>
 {
     public States getStates();
@@ -27,4 +29,10 @@ public interface ICharacter extends INBTSerializable<NBTTagCompound>
     public DialogueNodeSystem getDialogue();
 
     public DialogueContext getDialogueContext();
+
+    /* Last clear */
+
+    public Instant getLastClear();
+
+    public void updateLastClear(Instant instant);
 }

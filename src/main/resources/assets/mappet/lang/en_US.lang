@@ -20,6 +20,8 @@ mappet.error.npc.missing_state=§fNPC by ID §7%s§f has no §7%s§f state!
 mappet.error.npc.invalid_property=§fNPC state property §7%s§f does not exist!
 mappet.error.npc.cant_edit=§fGiven value for §7%s§f property: §7%s§f is in invalid format!
 
+mappet.error.data.missing=§fData by ID §7%s§f is missing!
+
 # Info
 mappet.info.states.clear=§fValue by key §7%s§f was removed from states.
 mappet.info.states.clear_all=§fAll values were removed from §7%s§f's states.
@@ -33,10 +35,15 @@ mappet.info.factions.clear_all=§fAll faction scores were removed from §7%s§f.
 mappet.info.factions.set=§fFaction score by ID §7%s§f was set to §7%s§r.
 mappet.info.factions.changed=§fFaction score by ID §7%s§f was §7%s§r, and it became §7%s§r.
 
+mappet.info.data.cleared=§fGlobal states, player states and inventories were cleared.
+
 # Success
 mappet.success.quest.accepted=§fQuest by ID §7%s§f was given to player §7%s§f.
 mappet.success.quest.completed=§fQuest by ID §7%s§f was force completed by player §7%s§f.
 mappet.success.quest.declined=§fQuest by ID §7%s§f was removed from player §7%s§f.
+
+mappet.success.data.saved=§fData by ID §7%s§f was saved.
+mappet.success.data.loaded=§fData by ID §7%s§f was loaded.
 
 # Commands
 mappet.commands.mp.help=Main Mappet command that provides subcommands for working with Mappet's features.
@@ -73,6 +80,11 @@ mappet.commands.mp.faction.help=Faction management subcommand. This command allo
 mappet.commands.mp.faction.add=This command adds faction score evaluated by §7<expression>§r to faction by §7<id>§r. If §7<id>§r doesn't exist, §7<expression>§r will be added to 0.
 mappet.commands.mp.faction.clear=This command removes faction score of a faction by §7[id]§r. If §7[id]§r was omitted, then all faction score will be erased.
 mappet.commands.mp.faction.set=This command assigns faction score evaluated by §7<expression>§r to faction by §7<id>§r.
+
+mappet.commands.mp.data.help=Data utility subcommand that provides an ability to manage player inventory and states, and global state.
+mappet.commands.mp.data.clear=Clears all global and player states, and also all player inventories.
+mappet.commands.mp.data.load=Loads saved data by §7<id>§r. §7[global]§r determines whether global states should be loaded too (it's §7true§r (enabled) by default). §7[players]§r allows to pick another player whose inventory and player states should be loaded to.
+mappet.commands.mp.data.save=Saves global states, and current player's states and inventory to data by §7<id>§r.
 
 # GUI
 mappet.gui.panels.quests=Quests

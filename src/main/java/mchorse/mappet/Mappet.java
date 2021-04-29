@@ -1,20 +1,12 @@
 package mchorse.mappet;
 
 import mchorse.mappet.api.crafting.CraftingManager;
+import mchorse.mappet.api.data.DataManager;
 import mchorse.mappet.api.dialogues.DialogueManager;
-import mchorse.mappet.api.dialogues.DialogueNodeSystem;
-import mchorse.mappet.api.dialogues.nodes.ReactionNode;
-import mchorse.mappet.api.dialogues.nodes.ReplyNode;
 import mchorse.mappet.api.events.EventManager;
-import mchorse.mappet.api.events.nodes.CommandNode;
 import mchorse.mappet.api.expressions.ExpressionManager;
-import mchorse.mappet.api.factions.Faction;
-import mchorse.mappet.api.factions.FactionAttitude;
 import mchorse.mappet.api.factions.FactionManager;
-import mchorse.mappet.api.factions.FactionRelation;
-import mchorse.mappet.api.npcs.Npc;
 import mchorse.mappet.api.npcs.NpcManager;
-import mchorse.mappet.api.npcs.NpcState;
 import mchorse.mappet.api.quests.QuestManager;
 import mchorse.mappet.api.states.States;
 import mchorse.mappet.blocks.BlockEmitter;
@@ -29,12 +21,8 @@ import mchorse.mclib.config.values.ValueBoolean;
 import mchorse.mclib.config.values.ValueInt;
 import mchorse.mclib.events.RegisterConfigEvent;
 import mchorse.mclib.events.RemoveDashboardPanels;
-import mchorse.metamorph.api.MorphManager;
-import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -92,6 +80,7 @@ public final class Mappet
     public static ExpressionManager expressions;
     public static NpcManager npcs;
     public static FactionManager factions;
+    public static DataManager data;
 
     /* Configuration */
     public static ValueInt eventMaxExecutions;
@@ -154,6 +143,7 @@ public final class Mappet
         expressions = new ExpressionManager();
         npcs = new NpcManager(new File(mappetWorldFolder, "npcs"));
         factions = new FactionManager(new File(mappetWorldFolder, "factions"));
+        data = new DataManager(new File(mappetWorldFolder, "data"));
 
         event.registerServerCommand(new CommandMappet());
     }
@@ -171,5 +161,6 @@ public final class Mappet
         expressions = null;
         npcs = null;
         factions = null;
+        data = null;
     }
 }

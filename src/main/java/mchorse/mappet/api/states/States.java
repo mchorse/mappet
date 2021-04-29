@@ -59,6 +59,12 @@ public class States implements INBTSerializable<NBTTagCompound>
         return !existed;
     }
 
+    public void copy(States states)
+    {
+        this.values.clear();
+        this.values.putAll(states.values);
+    }
+
     /* Quest convenience methods */
 
     public void completeQuest(String id)

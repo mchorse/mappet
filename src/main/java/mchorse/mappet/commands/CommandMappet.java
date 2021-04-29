@@ -1,6 +1,7 @@
 package mchorse.mappet.commands;
 
 import mchorse.mappet.commands.crafting.CommandCrafting;
+import mchorse.mappet.commands.data.CommandData;
 import mchorse.mappet.commands.dialogues.CommandDialogue;
 import mchorse.mappet.commands.events.CommandEvent;
 import mchorse.mappet.commands.factions.CommandFaction;
@@ -14,6 +15,7 @@ public class CommandMappet extends MappetSubCommandBase
     public CommandMappet()
     {
         this.add(new CommandCrafting());
+        this.add(new CommandData());
         this.add(new CommandDialogue());
         this.add(new CommandEvent());
         this.add(new CommandFaction());
