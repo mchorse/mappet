@@ -110,6 +110,23 @@ public class States implements INBTSerializable<NBTTagCompound>
         return this.values.containsKey("factions." + id);
     }
 
+    /* Dialogues convenience methods */
+
+    public void readDialogue(String id)
+    {
+        this.add("dialogue." + id, 1);
+    }
+
+    public boolean hasReadDialogue(String id)
+    {
+        return this.getReadDialogueTimes(id) > 0;
+    }
+
+    public int getReadDialogueTimes(String id)
+    {
+        return (int) this.get("dialogue." + id);
+    }
+
     /* NBT */
 
     @Override

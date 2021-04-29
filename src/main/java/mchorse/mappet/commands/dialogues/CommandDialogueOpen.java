@@ -45,12 +45,13 @@ public class CommandDialogueOpen extends CommandDialogueBase
     @Override
     public void executeCommand(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
+        String id = args[1];
         EntityPlayerMP player = getPlayer(server, sender, args[0]);
-        DialogueNodeSystem dialogue = this.getDialogue(args[1]);
+        DialogueNodeSystem dialogue = this.getDialogue(id);
 
         if (dialogue.main == null)
         {
-            throw new CommandException("dialogue.empty", args[1]);
+            throw new CommandException("dialogue.empty", id);
         }
 
         ICharacter character = Character.get(player);
@@ -60,6 +61,7 @@ public class CommandDialogueOpen extends CommandDialogueBase
             DialogueContext context = new DialogueContext(server, player);
 
             character.setDialogue(dialogue, context);
+            character.getStates().readDialogue(id);
             Mappet.dialogues.execute(dialogue, context);
 
             List<DialogueFragment> replies = context.replyNodes.stream().map((r) -> r.message).collect(Collectors.toList());
