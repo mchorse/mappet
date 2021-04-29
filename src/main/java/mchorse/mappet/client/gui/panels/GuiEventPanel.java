@@ -4,6 +4,7 @@ import mchorse.mappet.api.events.EventManager;
 import mchorse.mappet.api.events.nodes.CommandNode;
 import mchorse.mappet.api.events.nodes.ConditionNode;
 import mchorse.mappet.api.events.nodes.EventNode;
+import mchorse.mappet.api.events.nodes.TimerNode;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
@@ -11,6 +12,7 @@ import mchorse.mappet.client.gui.nodes.GuiCommandNodePanel;
 import mchorse.mappet.client.gui.nodes.GuiConditionNodePanel;
 import mchorse.mappet.client.gui.nodes.GuiNodeGraph;
 import mchorse.mappet.client.gui.nodes.GuiNodePanel;
+import mchorse.mappet.client.gui.nodes.GuiTimerNodePanel;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import net.minecraft.client.Minecraft;
@@ -52,6 +54,11 @@ public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventNode>
             else if (node instanceof ConditionNode)
             {
                 panel = new GuiConditionNodePanel(this.mc);
+                panel.set(node);
+            }
+            else if (node instanceof TimerNode)
+            {
+                panel = new GuiTimerNodePanel(this.mc);
                 panel.set(node);
             }
 

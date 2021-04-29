@@ -1,5 +1,6 @@
 package mchorse.mappet;
 
+import mchorse.mappet.api.events.EventManager;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.CharacterStorage;
 import mchorse.mappet.capabilities.character.ICharacter;
@@ -24,6 +25,8 @@ public class CommonProxy
      */
     public static File configFolder;
 
+    public static EventHandler eventHandler;
+
     public void preInit(FMLPreInitializationEvent event)
     {
         /* Setup config folder path */
@@ -34,7 +37,7 @@ public class CommonProxy
 
         Dispatcher.register();
 
-        MinecraftForge.EVENT_BUS.register(new EventHandler());
+        MinecraftForge.EVENT_BUS.register(eventHandler = new EventHandler());
 
         GameRegistry.registerEntitySelector(new MappetNpcSelector(), MappetNpcSelector.ARGUMENT_MAPPET_NPC_ID);
 

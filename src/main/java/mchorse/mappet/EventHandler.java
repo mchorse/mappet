@@ -1,5 +1,7 @@
 package mchorse.mappet;
 
+import mchorse.mappet.api.events.EventExecutionFork;
+import mchorse.mappet.api.events.nodes.EventNode;
 import mchorse.mappet.api.quests.Quest;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.CharacterProvider;
@@ -33,6 +35,22 @@ public class EventHandler
      * Players that must be checked
      */
     private List<EntityPlayer> playersToCheck = new ArrayList<EntityPlayer>();
+
+    /**
+     * Delayed event executions
+     */
+    private List<EventExecutionFork> eventForks = new ArrayList<EventExecutionFork>();
+
+    /**
+     * Second event execution forks to avoid concurrent modification
+     * exceptions when adding consequent delayed events
+     */
+    private List<EventExecutionFork> secondList = new ArrayList<EventExecutionFork>();
+
+    public void addExecutionForks(List<EventExecutionFork> executionForks)
+    {
+        this.eventForks.addAll(executionForks);
+    }
 
     /**
      * Attach player capabilities
@@ -126,6 +144,27 @@ public class EventHandler
                     }
                 }
             }
+        }
+
+        if (!this.eventForks.isEmpty())
+        {
+            this.secondList.addAll(this.eventForks);
+            this.eventForks.clear();
+
+            Iterator<EventExecutionFork> it = this.secondList.iterator();
+
+            while (it.hasNext())
+            {
+                if (it.next().update())
+                {
+                    it.remove();
+                }
+            }
+
+            this.secondList.addAll(this.eventForks);
+            this.eventForks.clear();
+            this.eventForks.addAll(this.secondList);
+            this.secondList.clear();
         }
 
         this.playersToCheck.clear();

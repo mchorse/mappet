@@ -1,11 +1,19 @@
 package mchorse.mappet.api.events;
 
+import mchorse.mappet.CommonProxy;
+import mchorse.mappet.api.events.nodes.EventNode;
+import mchorse.mappet.api.utils.nodes.NodeSystem;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.server.MinecraftServer;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EventContext
 {
+    public NodeSystem<EventNode> system;
+
     public MinecraftServer server;
     public EntityLivingBase subject;
     public EntityLivingBase object;
@@ -14,6 +22,8 @@ public class EventContext
     public StringBuilder log = new StringBuilder();
     public int nesting = 0;
     public int executions = 0;
+
+    public List<EventExecutionFork> executionForks = new ArrayList<EventExecutionFork>();
 
     public EventContext(MinecraftServer server, EntityLivingBase subject)
     {
@@ -32,6 +42,24 @@ public class EventContext
         this(server, subject, debug);
 
         this.object = object;
+    }
+
+    public void addExecutionFork(EventNode node, int timer)
+    {
+        if (this.system != null && timer > 0)
+        {
+            this.executionForks.add(new EventExecutionFork(this.system, node, this, timer));
+        }
+    }
+
+    public void submitDelayedExecutions()
+    {
+        if (!this.executionForks.isEmpty())
+        {
+            CommonProxy.eventHandler.addExecutionForks(this.executionForks);
+
+            this.executionForks.clear();
+        }
     }
 
     public String processCommand(String command)
