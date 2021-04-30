@@ -24,7 +24,11 @@ import java.util.Map;
  * This way you can turn any NBTBase into a JsonElement and
  * vice versa. The usage of these two methods should be pretty
  * self-explanatory.
+ *
+ * @deprecated because it's not safely store the NBT types which
+ * cause issues with NBT comparison later on. Use {@link NBTToJsonLike}.
  */
+@Deprecated
 public class NBTToJson
 {
     public static JsonElement toJson(NBTBase base)

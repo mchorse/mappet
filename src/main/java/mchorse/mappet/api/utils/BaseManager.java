@@ -3,6 +3,7 @@ package mchorse.mappet.api.utils;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import mchorse.mappet.utils.NBTToJson;
+import mchorse.mappet.utils.NBTToJsonLike;
 import mchorse.mclib.utils.JsonUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -38,8 +39,7 @@ public abstract class BaseManager <T extends INBTSerializable<NBTTagCompound>> i
         {
             File file = this.getFile(id);
             String json = FileUtils.readFileToString(file, Charset.defaultCharset());
-            JsonElement element = new JsonParser().parse(json);
-            NBTTagCompound tag = (NBTTagCompound) NBTToJson.fromJson(element);
+            NBTTagCompound tag = NBTToJsonLike.fromJson(json);
             T data = this.create(id);
 
             data.deserializeNBT(tag);
@@ -65,9 +65,9 @@ public abstract class BaseManager <T extends INBTSerializable<NBTTagCompound>> i
         try
         {
             File file = this.getFile(name);
-            JsonElement element = NBTToJson.toJson(tag);
+            String element = NBTToJsonLike.toJson(tag);
 
-            FileUtils.writeStringToFile(file, JsonUtils.jsonToPretty(element), Charset.defaultCharset());
+            FileUtils.writeStringToFile(file, element, Charset.defaultCharset());
 
             return true;
         }
