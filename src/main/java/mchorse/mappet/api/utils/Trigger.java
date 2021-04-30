@@ -2,6 +2,7 @@ package mchorse.mappet.api.utils;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.events.EventContext;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -33,16 +34,16 @@ public class Trigger implements INBTSerializable<NBTTagCompound>
         this.command = trigger.command;
     }
 
-    public void trigger(EntityPlayer player)
+    public void trigger(EntityLivingBase target)
     {
-        SoundEvent event = null;
-
         if (!this.command.isEmpty())
         {
-            MinecraftServer server = player.getServer();
+            MinecraftServer server = target.getServer();
 
-            server.getCommandManager().executeCommand(server, this.command);
+            server.getCommandManager().executeCommand(new TriggerSender().set(target), this.command);
         }
+
+        SoundEvent event = null;
 
         if (!this.soundEvent.isEmpty())
         {
@@ -51,12 +52,12 @@ public class Trigger implements INBTSerializable<NBTTagCompound>
 
         if (event != null)
         {
-            player.world.playSound(null, player.posX, player.posY, player.posZ, event, SoundCategory.MASTER, 1, 1);
+            target.world.playSound(null, target.posX, target.posY, target.posZ, event, SoundCategory.MASTER, 1, 1);
         }
 
         if (!this.triggerEvent.isEmpty())
         {
-            Mappet.events.execute(this.triggerEvent, new EventContext(player.getServer(), player));
+            Mappet.events.execute(this.triggerEvent, new EventContext(new TriggerSender().set(target), target));
         }
     }
 

@@ -4,6 +4,7 @@ import mchorse.mappet.Mappet;
 import mchorse.mappet.api.dialogues.DialogueContext;
 import mchorse.mappet.api.dialogues.DialogueFragment;
 import mchorse.mappet.api.dialogues.DialogueNodeSystem;
+import mchorse.mappet.api.utils.TriggerSender;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.network.Dispatcher;
@@ -58,7 +59,7 @@ public class CommandDialogueOpen extends CommandDialogueBase
 
         if (character != null)
         {
-            DialogueContext context = new DialogueContext(server, player);
+            DialogueContext context = new DialogueContext(new TriggerSender().set(player), player);
 
             character.setDialogue(dialogue, context);
             character.getStates().readDialogue(id);

@@ -3,6 +3,7 @@ package mchorse.mappet.api.dialogues;
 import mchorse.mappet.api.dialogues.nodes.ReactionNode;
 import mchorse.mappet.api.dialogues.nodes.ReplyNode;
 import mchorse.mappet.api.events.EventContext;
+import mchorse.mappet.api.utils.TriggerSender;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.server.MinecraftServer;
 
@@ -14,18 +15,18 @@ public class DialogueContext extends EventContext
     public ReactionNode reactionNode;
     public List<ReplyNode> replyNodes = new ArrayList<ReplyNode>();
 
-    public DialogueContext(MinecraftServer server, EntityLivingBase subject)
+    public DialogueContext(TriggerSender sender, EntityLivingBase subject)
     {
-        super(server, subject);
+        super(sender, subject);
     }
 
-    public DialogueContext(MinecraftServer server, EntityLivingBase subject, boolean debug)
+    public DialogueContext(TriggerSender sender, EntityLivingBase subject, boolean debug)
     {
-        super(server, subject, debug);
+        super(sender, subject, debug);
     }
 
-    public DialogueContext(MinecraftServer server, EntityLivingBase subject, EntityLivingBase object, boolean debug)
+    public DialogueContext(TriggerSender sender, EntityLivingBase subject, EntityLivingBase object, boolean debug)
     {
-        super(server, subject, object, debug);
+        super(sender, subject, object, debug);
     }
 }

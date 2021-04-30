@@ -24,6 +24,7 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -36,12 +37,15 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
@@ -161,6 +165,11 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         }
 
         return this.faction != null && this.faction.othersAttitude == FactionAttitude.AGGRESSIVE;
+    }
+
+    public void initialize()
+    {
+        this.state.triggerInitialize.trigger(this);
     }
 
     /* Getter and setters */
@@ -294,6 +303,10 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
             this.prevSmoothBodyYawHead = this.smoothBodyYawHead;
             this.smoothBodyYawHead = Interpolations.lerpYaw(this.smoothBodyYawHead, this.renderYawOffset, 0.5F);
         }
+        else
+        {
+            this.state.triggerTick.trigger(this);
+        }
     }
 
     @Override
@@ -336,6 +349,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         }
 
         this.healthFailsafe();
+        this.state.triggerDamaged.trigger(this);
     }
 
     @Override
@@ -363,6 +377,14 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     }
 
     @Override
+    public void onDeath(DamageSource cause)
+    {
+        super.onDeath(cause);
+
+        this.state.triggerDied.trigger(this);
+    }
+
+    @Override
     protected boolean canDespawn()
     {
         return this.unique;
@@ -374,6 +396,17 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         {
             this.setHealth(0.001F);
         }
+    }
+
+    @Override
+    protected boolean processInteract(EntityPlayer player, EnumHand hand)
+    {
+        if (hand == EnumHand.MAIN_HAND)
+        {
+            this.state.triggerInteract.trigger(this);
+        }
+
+        return hand == EnumHand.MAIN_HAND;
     }
 
     /* NBT (de)serialization */

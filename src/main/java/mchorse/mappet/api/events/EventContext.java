@@ -2,7 +2,9 @@ package mchorse.mappet.api.events;
 
 import mchorse.mappet.CommonProxy;
 import mchorse.mappet.api.events.nodes.EventNode;
+import mchorse.mappet.api.utils.TriggerSender;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
+import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.server.MinecraftServer;
 import org.apache.commons.lang3.StringUtils;
@@ -14,7 +16,7 @@ public class EventContext
 {
     public NodeSystem<EventNode> system;
 
-    public MinecraftServer server;
+    public TriggerSender sender;
     public EntityLivingBase subject;
     public EntityLivingBase object;
 
@@ -25,21 +27,21 @@ public class EventContext
 
     public List<EventExecutionFork> executionForks = new ArrayList<EventExecutionFork>();
 
-    public EventContext(MinecraftServer server, EntityLivingBase subject)
+    public EventContext(TriggerSender server, EntityLivingBase subject)
     {
         this(server, subject, false);
     }
 
-    public EventContext(MinecraftServer server, EntityLivingBase subject, boolean debug)
+    public EventContext(TriggerSender sender, EntityLivingBase subject, boolean debug)
     {
-        this.server = server;
+        this.sender = sender;
         this.subject = subject;
         this.debug = debug;
     }
 
-    public EventContext(MinecraftServer server, EntityLivingBase subject, EntityLivingBase object, boolean debug)
+    public EventContext(TriggerSender sender, EntityLivingBase subject, EntityLivingBase object, boolean debug)
     {
-        this(server, subject, debug);
+        this(sender, subject, debug);
 
         this.object = object;
     }

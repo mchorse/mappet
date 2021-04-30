@@ -1,5 +1,6 @@
 package mchorse.mappet.api.npcs;
 
+import mchorse.mappet.api.utils.Trigger;
 import mchorse.mappet.utils.NBTUtils;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
@@ -188,6 +189,16 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
      * The health threshold until NPC starts to run away
      */
     public float flee = 4F;
+
+    /* Triggers */
+
+    public Trigger triggerDied = new Trigger();
+    public Trigger triggerDamaged = new Trigger();
+    public Trigger triggerInteract = new Trigger();
+    public Trigger triggerTick = new Trigger();
+    /* TODO: implement this */
+    public Trigger triggerTarget = new Trigger();
+    public Trigger triggerInitialize = new Trigger();
 
     /**
      * I should've used my Value API for this, but now it's too late
@@ -408,6 +419,14 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (all || options.contains("wander")) tag.setBoolean("Wander", this.wander);
         if (all || options.contains("flee")) tag.setFloat("Flee", this.flee);
 
+        /* Triggers */
+        if (all || options.contains("trigger_died")) tag.setTag("TriggerDied", this.triggerDied.serializeNBT());
+        if (all || options.contains("trigger_damaged")) tag.setTag("TriggerDamaged", this.triggerDamaged.serializeNBT());
+        if (all || options.contains("trigger_interact")) tag.setTag("TriggerInteract", this.triggerInteract.serializeNBT());
+        if (all || options.contains("trigger_tick")) tag.setTag("TriggerTick", this.triggerTick.serializeNBT());
+        if (all || options.contains("trigger_target")) tag.setTag("TriggerTarget", this.triggerTarget.serializeNBT());
+        if (all || options.contains("trigger_initialize")) tag.setTag("TriggerInitialize", this.triggerInitialize.serializeNBT());
+
         return tag;
     }
 
@@ -492,5 +511,13 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("LookAround")) this.lookAround = tag.getBoolean("LookAround");
         if (tag.hasKey("Wander")) this.wander = tag.getBoolean("Wander");
         if (tag.hasKey("Flee")) this.flee = tag.getFloat("Flee");
+
+        /* Triggers */
+        if (tag.hasKey("TriggerDied")) this.triggerDied.deserializeNBT(tag.getCompoundTag("TriggerDied"));
+        if (tag.hasKey("TriggerDamaged")) this.triggerDamaged.deserializeNBT(tag.getCompoundTag("TriggerDamaged"));
+        if (tag.hasKey("TriggerInteract")) this.triggerInteract.deserializeNBT(tag.getCompoundTag("TriggerInteract"));
+        if (tag.hasKey("TriggerTick")) this.triggerTick.deserializeNBT(tag.getCompoundTag("TriggerTick"));
+        if (tag.hasKey("TriggerTarget")) this.triggerTarget.deserializeNBT(tag.getCompoundTag("TriggerTarget"));
+        if (tag.hasKey("TriggerInitialize")) this.triggerInitialize.deserializeNBT(tag.getCompoundTag("TriggerInitialize"));
     }
 }

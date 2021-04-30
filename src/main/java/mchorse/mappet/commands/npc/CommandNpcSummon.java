@@ -76,6 +76,7 @@ public class CommandNpcSummon extends CommandNpcBase
         entity.setNpc(id, npc, state);
 
         entity.world.spawnEntity(entity);
+        entity.initialize();
     }
 
     @Override

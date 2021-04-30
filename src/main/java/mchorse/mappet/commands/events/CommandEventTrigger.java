@@ -3,6 +3,7 @@ package mchorse.mappet.commands.events;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.events.EventContext;
 import mchorse.mappet.api.events.nodes.EventNode;
+import mchorse.mappet.api.utils.TriggerSender;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -46,6 +47,6 @@ public class CommandEventTrigger extends CommandEventBase
             throw new CommandException("event.empty", args[1]);
         }
 
-        Mappet.events.execute(event, new EventContext(server, player));
+        Mappet.events.execute(event, new EventContext(new TriggerSender().set(player), player));
     }
 }
