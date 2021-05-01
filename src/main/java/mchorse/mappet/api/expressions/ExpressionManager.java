@@ -10,6 +10,12 @@ import mchorse.mappet.api.expressions.functions.factions.FactionScore;
 import mchorse.mappet.api.expressions.functions.inventory.InventoryArmor;
 import mchorse.mappet.api.expressions.functions.inventory.InventoryHas;
 import mchorse.mappet.api.expressions.functions.inventory.InventoryHolds;
+import mchorse.mappet.api.expressions.functions.player.PlayerArmor;
+import mchorse.mappet.api.expressions.functions.player.PlayerHp;
+import mchorse.mappet.api.expressions.functions.player.PlayerHunger;
+import mchorse.mappet.api.expressions.functions.player.PlayerIsAlive;
+import mchorse.mappet.api.expressions.functions.player.PlayerXp;
+import mchorse.mappet.api.expressions.functions.player.PlayerXpLevel;
 import mchorse.mappet.api.expressions.functions.quests.QuestCompleted;
 import mchorse.mappet.api.expressions.functions.quests.QuestPresent;
 import mchorse.mappet.api.expressions.functions.quests.QuestPresentCompleted;
@@ -56,6 +62,13 @@ public class ExpressionManager
         this.builder.functions.put("inv_has", InventoryHas.class);
         this.builder.functions.put("inv_holds", InventoryHolds.class);
         this.builder.functions.put("inv_armor", InventoryArmor.class);
+
+        this.builder.functions.put("player_armor", PlayerArmor.class);
+        this.builder.functions.put("player_hp", PlayerHp.class);
+        this.builder.functions.put("player_hunger", PlayerHunger.class);
+        this.builder.functions.put("player_is_alive", PlayerIsAlive.class);
+        this.builder.functions.put("player_xp", PlayerXp.class);
+        this.builder.functions.put("player_xp_level", PlayerXpLevel.class);
 
         this.builder.functions.put("dialogue_read", DialogueRead.class);
 
