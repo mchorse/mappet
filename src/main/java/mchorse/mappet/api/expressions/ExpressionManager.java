@@ -1,6 +1,7 @@
 package mchorse.mappet.api.expressions;
 
 import mchorse.mappet.api.expressions.functions.State;
+import mchorse.mappet.api.expressions.functions.dialogue.DialogueRead;
 import mchorse.mappet.api.expressions.functions.factions.FactionFriendly;
 import mchorse.mappet.api.expressions.functions.factions.FactionHas;
 import mchorse.mappet.api.expressions.functions.factions.FactionHostile;
@@ -55,6 +56,8 @@ public class ExpressionManager
         this.builder.functions.put("inv_has", InventoryHas.class);
         this.builder.functions.put("inv_holds", InventoryHolds.class);
         this.builder.functions.put("inv_armor", InventoryArmor.class);
+
+        this.builder.functions.put("dialogue_read", DialogueRead.class);
 
         this.builder.functions.put("world_time", WorldTime.class);
         this.builder.functions.put("world_total_time", WorldTotalTime.class);
