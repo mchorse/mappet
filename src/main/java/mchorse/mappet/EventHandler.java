@@ -17,6 +17,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -157,6 +158,8 @@ public class EventHandler
             }
         }
 
+        this.playersToCheck.clear();
+
         if (!this.eventForks.isEmpty())
         {
             this.secondList.addAll(this.eventForks);
@@ -177,7 +180,5 @@ public class EventHandler
             this.eventForks.addAll(this.secondList);
             this.secondList.clear();
         }
-
-        this.playersToCheck.clear();
     }
 }

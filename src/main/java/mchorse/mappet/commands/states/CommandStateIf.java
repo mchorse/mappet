@@ -7,7 +7,6 @@ import mchorse.mclib.math.IValue;
 import mchorse.mclib.math.Operation;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 
@@ -45,9 +44,18 @@ public class CommandStateIf extends CommandStateBase
         double previous = states.get(id);
         double value = 0;
 
-        EntityLivingBase subject = sender instanceof EntityPlayer ? (EntityPlayer) sender : null;
         String expression = String.join(" ", SubCommandBase.dropFirstArguments(args, 2));
-        IValue result = Mappet.expressions.evalute(expression, server, subject, previous);
+
+        if (sender instanceof EntityPlayer)
+        {
+            Mappet.expressions.set((EntityPlayer) sender);
+        }
+        else
+        {
+            Mappet.expressions.set(server);
+        }
+
+        IValue result = Mappet.expressions.set(previous).evaluate(expression);
 
         if (result != null && result.isNumber())
         {

@@ -12,11 +12,16 @@ import mchorse.mappet.api.expressions.functions.inventory.InventoryHolds;
 import mchorse.mappet.api.expressions.functions.quests.QuestCompleted;
 import mchorse.mappet.api.expressions.functions.quests.QuestPresent;
 import mchorse.mappet.api.expressions.functions.quests.QuestPresentCompleted;
+import mchorse.mappet.api.expressions.functions.world.WorldIsDay;
+import mchorse.mappet.api.expressions.functions.world.WorldIsNight;
+import mchorse.mappet.api.expressions.functions.world.WorldTime;
+import mchorse.mappet.api.expressions.functions.world.WorldTotalTime;
 import mchorse.mclib.math.IValue;
 import mchorse.mclib.math.MathBuilder;
 import mchorse.mclib.math.Variable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.World;
 
 public class ExpressionManager
 {
@@ -25,8 +30,8 @@ public class ExpressionManager
     public Variable varSubject;
 
     public MinecraftServer server;
+    public World world;
     public EntityLivingBase subject;
-    public EntityLivingBase object;
 
     public ExpressionManager()
     {
@@ -50,19 +55,60 @@ public class ExpressionManager
         this.builder.functions.put("inv_has", InventoryHas.class);
         this.builder.functions.put("inv_holds", InventoryHolds.class);
         this.builder.functions.put("inv_armor", InventoryArmor.class);
+
+        this.builder.functions.put("world_time", WorldTime.class);
+        this.builder.functions.put("world_total_time", WorldTotalTime.class);
+        this.builder.functions.put("world_is_day", WorldIsDay.class);
+        this.builder.functions.put("world_is_night", WorldIsNight.class);
     }
 
     /* TODO: look into caching these values or something */
 
-    public IValue evalute(String expression, MinecraftServer server, EntityLivingBase subject, double value)
+    public ExpressionManager set(MinecraftServer server)
     {
         this.server = server;
-        this.subject = subject;
-        this.object = null;
+        this.subject = null;
+        this.world = server.getEntityWorld();
 
-        this.varSubject.set(subject == null ? "" : subject.getCachedUniqueIdString());
+        this.varSubject.set("");
+        this.varValue.set(0);
+
+        return this;
+    }
+
+    public ExpressionManager set(World world)
+    {
+        this.server = world.getMinecraftServer();
+        this.subject = null;
+        this.world = world;
+
+        this.varSubject.set("");
+        this.varValue.set(0);
+
+        return this;
+    }
+
+    public ExpressionManager set(EntityLivingBase subject)
+    {
+        this.server = subject.getServer();
+        this.subject = subject;
+        this.world = subject.getEntityWorld();
+
+        this.varSubject.set(subject.getCachedUniqueIdString());
+        this.varValue.set(0);
+
+        return this;
+    }
+
+    public ExpressionManager set(double value)
+    {
         this.varValue.set(value);
 
+        return this;
+    }
+
+    public IValue evaluate(String expression)
+    {
         try
         {
             return this.builder.parse(expression);
@@ -75,24 +121,13 @@ public class ExpressionManager
         return null;
     }
 
-    public IValue evalute(String expression, MinecraftServer server, EntityLivingBase subject)
+    private void reset()
     {
-        this.server = server;
-        this.subject = subject;
-        this.object = null;
+        this.server = null;
+        this.subject = null;
+        this.world = null;
 
-        this.varSubject.set(subject == null ? "" : subject.getCachedUniqueIdString());
+        this.varSubject.set("");
         this.varValue.set(0);
-
-        try
-        {
-            return this.builder.parse(expression);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 }

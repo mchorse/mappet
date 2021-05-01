@@ -82,7 +82,7 @@ public class TileRegion extends TileEntity implements ITickable
 
     private void checkRegion()
     {
-        if (!this.region.isEnabled(this.world.getMinecraftServer()))
+        if (!this.region.isEnabled(this.world))
         {
             return;
         }

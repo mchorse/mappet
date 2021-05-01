@@ -23,7 +23,7 @@ public class SwitchNode extends ConditionNode
     @Override
     public int execute(EventContext context)
     {
-        IValue value = Mappet.expressions.evalute(this.expression, context.sender.getServer(), context.subject);
+        IValue value = Mappet.expressions.set(context.subject).evaluate(this.expression);
 
         if (value != null && value.isNumber())
         {

@@ -7,7 +7,6 @@ import mchorse.mclib.math.IValue;
 import mchorse.mclib.math.Operation;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,7 +29,7 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
     {
         if (!this.condition.isEmpty())
         {
-            IValue value = Mappet.expressions.evalute(this.condition, player.getServer(), player);
+            IValue value = Mappet.expressions.set(player).evaluate(this.condition);
 
             return value != null && value.isNumber() && !Operation.isTrue(value.doubleValue());
         }
