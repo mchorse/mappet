@@ -1,6 +1,7 @@
 package mchorse.mappet;
 
 import mchorse.mappet.client.KeyboardHandler;
+import mchorse.mappet.client.RenderingHandler;
 import mchorse.mappet.client.renders.entity.RenderNpc;
 import mchorse.mappet.client.renders.tile.TileRegionRenderer;
 import mchorse.mappet.client.renders.tile.TileTriggerRenderer;
@@ -24,6 +25,7 @@ public class ClientProxy extends CommonProxy
         super.preInit(event);
 
         MinecraftForge.EVENT_BUS.register(new KeyboardHandler());
+        MinecraftForge.EVENT_BUS.register(new RenderingHandler());
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileTrigger.class, new TileTriggerRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileRegion.class, new TileRegionRenderer());

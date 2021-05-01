@@ -48,7 +48,7 @@ public class KillObjective implements IObjective
     @Override
     public String stringify(EntityPlayer player)
     {
-        return "Kill " + this.entity.toString() + " (" + Math.min(this.killed, this.count) + "/" + this.count + ")";
+        return "Kill " + EntityList.getTranslationName(this.entity) + " (" + Math.min(this.killed, this.count) + "/" + this.count + ")";
     }
 
     @Override

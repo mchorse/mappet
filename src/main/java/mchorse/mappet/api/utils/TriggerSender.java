@@ -34,7 +34,7 @@ public class TriggerSender implements ICommandSender
     @Override
     public String getName()
     {
-        return "Trigger sender";
+        return "Mappet command sender";
     }
 
     @Override

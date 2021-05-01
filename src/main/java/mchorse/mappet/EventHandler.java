@@ -1,14 +1,17 @@
 package mchorse.mappet;
 
 import mchorse.mappet.api.events.EventExecutionFork;
-import mchorse.mappet.api.events.nodes.EventNode;
 import mchorse.mappet.api.quests.Quest;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.CharacterProvider;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.commands.data.CommandDataClear;
+import mchorse.mappet.network.Dispatcher;
+import mchorse.mappet.network.common.quests.PacketQuest;
+import mchorse.mappet.network.common.quests.PacketQuests;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -70,11 +73,19 @@ public class EventHandler
         ICharacter character = Character.get(event.player);
         Instant lastClear = Mappet.data.getLastClear();
 
-        if (character != null && character.getLastClear().isBefore(lastClear))
+        if (character != null)
         {
-            CommandDataClear.clear(event.player);
+            if (character.getLastClear().isBefore(lastClear))
+            {
+                CommandDataClear.clear(event.player);
 
-            character.updateLastClear(lastClear);
+                character.updateLastClear(lastClear);
+            }
+
+            if (!character.getQuests().quests.isEmpty())
+            {
+                Dispatcher.sendTo(new PacketQuests(character.getQuests()), (EntityPlayerMP) event.player);
+            }
         }
     }
 
@@ -136,11 +147,11 @@ public class EventHandler
                         player.sendMessage(new TextComponentString("Quest '" + entry.getKey() + "' was completed! Here is your reward!"));
                         it.remove();
 
-                        // Dispatcher.sendTo(new PacketCompleteQuest(quest.getId()), (EntityPlayerMP) player);
+                        Dispatcher.sendTo(new PacketQuest(entry.getKey(), null), (EntityPlayerMP) player);
                     }
                     else
                     {
-                        // Dispatcher.sendTo(new PacketQuest(quest), (EntityPlayerMP) player);
+                        Dispatcher.sendTo(new PacketQuest(entry.getKey(), entry.getValue()), (EntityPlayerMP) player);
                     }
                 }
             }

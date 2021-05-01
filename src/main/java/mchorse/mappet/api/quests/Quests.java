@@ -3,7 +3,10 @@ package mchorse.mappet.api.quests;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
+import mchorse.mappet.network.Dispatcher;
+import mchorse.mappet.network.common.quests.PacketQuest;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -56,6 +59,11 @@ public class Quests implements INBTSerializable<NBTTagCompound>
         this.quests.put(id, quest);
         quest.accept.trigger(player);
 
+        if (player instanceof EntityPlayerMP)
+        {
+            Dispatcher.sendTo(new PacketQuest(id, quest), (EntityPlayerMP) player);
+        }
+
         return true;
     }
 
@@ -87,6 +95,11 @@ public class Quests implements INBTSerializable<NBTTagCompound>
         else
         {
             quest.decline.trigger(player);
+        }
+
+        if (player instanceof EntityPlayerMP)
+        {
+            Dispatcher.sendTo(new PacketQuest(id, null), (EntityPlayerMP) player);
         }
 
         return false;
