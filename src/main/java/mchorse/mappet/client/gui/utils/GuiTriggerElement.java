@@ -18,6 +18,7 @@ public class GuiTriggerElement extends GuiElement
     public GuiButtonElement soundEvent;
     public GuiTextElement triggerEvent;
     public GuiTextElement command;
+    public GuiTextElement dialogue;
 
     private Trigger trigger;
 
@@ -37,11 +38,15 @@ public class GuiTriggerElement extends GuiElement
         this.triggerEvent.flex().relative(this).x(1F).y(12).w(0.5F, -2).anchorX(1F);
 
         this.command = new GuiTextElement(mc, 10000, (text) -> this.trigger.command = text);
-        this.command.flex().relative(this).y(1F, -20).w(1F);
+        this.command.flex().relative(this).y(49).w(1F);
 
-        this.flex().h(69); /* Nice */
+        this.dialogue = new GuiTextElement(mc, 10000, (text) -> this.trigger.dialogue = text);
+        this.dialogue.flex().relative(this).y(1F, -20).w(1F);
 
-        this.add(this.soundEvent, this.triggerEvent, this.command);
+        this.flex().h(106);
+
+        this.add(this.soundEvent, this.triggerEvent, this.command, this.dialogue);
+
         this.set(trigger);
     }
 
@@ -76,5 +81,6 @@ public class GuiTriggerElement extends GuiElement
         this.font.drawStringWithShadow("Sound event", this.soundEvent.area.x, this.soundEvent.area.y - 12, 0xffffff);
         this.font.drawStringWithShadow("Trigger event", this.triggerEvent.area.x, this.triggerEvent.area.y - 12, 0xffffff);
         this.font.drawStringWithShadow("Command", this.command.area.x, this.command.area.y - 12, 0xffffff);
+        this.font.drawStringWithShadow("Dialogue", this.dialogue.area.x, this.dialogue.area.y - 12, 0xffffff);
     }
 }

@@ -1,9 +1,11 @@
 package mchorse.mappet.api.utils;
 
 import mchorse.mappet.Mappet;
+import mchorse.mappet.api.dialogues.DialogueNodeSystem;
 import mchorse.mappet.api.events.EventContext;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
@@ -16,31 +18,25 @@ public class Trigger implements INBTSerializable<NBTTagCompound>
     public String soundEvent = "";
     public String triggerEvent = "";
     public String command = "";
-
-    public Trigger()
-    {}
-
-    public Trigger(String soundEvent, String triggerEvent, String command)
-    {
-        this.soundEvent = soundEvent;
-        this.triggerEvent = triggerEvent;
-        this.command = command;
-    }
+    public String dialogue = "";
 
     public void copy(Trigger trigger)
     {
         this.soundEvent = trigger.soundEvent;
         this.triggerEvent = trigger.triggerEvent;
         this.command = trigger.command;
+        this.dialogue = trigger.dialogue;
     }
 
     public void trigger(EntityLivingBase target)
     {
+        TriggerSender sender = !this.command.isEmpty() || !this.triggerEvent.isEmpty() ? new TriggerSender().set(target) : null;
+
         if (!this.command.isEmpty())
         {
             MinecraftServer server = target.getServer();
 
-            server.getCommandManager().executeCommand(new TriggerSender().set(target), this.command);
+            server.getCommandManager().executeCommand(sender, this.command);
         }
 
         SoundEvent event = null;
@@ -57,7 +53,17 @@ public class Trigger implements INBTSerializable<NBTTagCompound>
 
         if (!this.triggerEvent.isEmpty())
         {
-            Mappet.events.execute(this.triggerEvent, new EventContext(new TriggerSender().set(target), target));
+            Mappet.events.execute(this.triggerEvent, new EventContext(sender, target));
+        }
+
+        if (!this.dialogue.isEmpty() && target instanceof EntityPlayerMP)
+        {
+            DialogueNodeSystem dialogue = Mappet.dialogues.load(this.dialogue);
+
+            if (dialogue != null)
+            {
+                Mappet.dialogues.open((EntityPlayerMP) target, dialogue);
+            }
         }
     }
 
@@ -81,6 +87,11 @@ public class Trigger implements INBTSerializable<NBTTagCompound>
             tag.setString("Command", this.command);
         }
 
+        if (!this.dialogue.isEmpty())
+        {
+            tag.setString("Dialogue", this.dialogue);
+        }
+
         return tag;
     }
 
@@ -100,6 +111,11 @@ public class Trigger implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("Command"))
         {
             this.command = tag.getString("Command");
+        }
+
+        if (tag.hasKey("Dialogue"))
+        {
+            this.dialogue = tag.getString("Dialogue");
         }
     }
 }
