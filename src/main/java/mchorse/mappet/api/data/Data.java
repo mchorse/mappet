@@ -2,6 +2,7 @@ package mchorse.mappet.api.data;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.states.States;
+import mchorse.mappet.api.utils.AbstractData;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,9 +11,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.common.util.INBTSerializable;
 
-public class Data implements INBTSerializable<NBTTagCompound>
+public class Data extends AbstractData
 {
     public States global = new States();
     public States player = new States();

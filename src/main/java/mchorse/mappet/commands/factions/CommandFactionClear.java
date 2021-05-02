@@ -37,7 +37,9 @@ public class CommandFactionClear extends CommandFactionBase
         if (args.length > 1)
         {
             String id = args[1];
-            Faction faction = this.getFaction(id);
+
+            /* Check that the faction exists */
+            this.getFaction(id);
 
             CommandFaction.getStates(server, sender,args[0]).clearFactionScore(id);
             this.getL10n().info(sender, "factions.clear", id);

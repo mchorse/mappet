@@ -13,7 +13,7 @@ public class CraftingManager extends BaseManager<CraftingTable>
     }
 
     @Override
-    public CraftingTable create(String id, NBTTagCompound tag)
+    protected CraftingTable createData(NBTTagCompound tag)
     {
         CraftingTable table = new CraftingTable();
 

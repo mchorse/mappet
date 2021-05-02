@@ -6,11 +6,18 @@ import mchorse.mappet.api.dialogues.nodes.ReplyNode;
 import mchorse.mappet.api.events.EventManager;
 import mchorse.mappet.api.events.nodes.EventNode;
 import mchorse.mappet.api.utils.BaseManager;
+import mchorse.mappet.api.utils.TriggerSender;
 import mchorse.mappet.api.utils.nodes.factory.MapNodeFactory;
+import mchorse.mappet.capabilities.character.Character;
+import mchorse.mappet.capabilities.character.ICharacter;
+import mchorse.mappet.network.Dispatcher;
+import mchorse.mappet.network.common.dialogue.PacketDialogueFragment;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.io.File;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DialogueManager extends BaseManager<DialogueNodeSystem>
 {
@@ -24,7 +31,7 @@ public class DialogueManager extends BaseManager<DialogueNodeSystem>
     }
 
     @Override
-    public DialogueNodeSystem create(String id, NBTTagCompound tag)
+    protected DialogueNodeSystem createData(NBTTagCompound tag)
     {
         DialogueNodeSystem dialogue = new DialogueNodeSystem(FACTORY);
 
@@ -36,6 +43,26 @@ public class DialogueManager extends BaseManager<DialogueNodeSystem>
         return dialogue;
     }
 
+    public void open(EntityPlayerMP player, DialogueNodeSystem dialogue)
+    {
+        ICharacter character = Character.get(player);
+
+        if (character != null)
+        {
+            DialogueContext context = new DialogueContext(new TriggerSender().set(player), player);
+
+            character.setDialogue(dialogue, context);
+            character.getStates().readDialogue(dialogue.getId());
+            Mappet.dialogues.execute(dialogue, context);
+
+            List<DialogueFragment> replies = context.replyNodes.stream().map((r) -> r.message).collect(Collectors.toList());
+
+            Dispatcher.sendTo(new PacketDialogueFragment(dialogue.title, context.reactionNode.message, replies), player);
+        }
+    }
+
+    /* Dialogue execution */
+
     public DialogueContext execute(DialogueNodeSystem event, DialogueContext context)
     {
         if (event.main != null)
@@ -46,14 +73,14 @@ public class DialogueManager extends BaseManager<DialogueNodeSystem>
         return context;
     }
 
-    public void recursiveExecute(DialogueNodeSystem system, EventNode node, DialogueContext context, boolean ignoreFirstNode)
+    public void recursiveExecute(DialogueNodeSystem system, EventNode node, DialogueContext context, boolean skipFirst)
     {
         if (context.executions >= Mappet.eventMaxExecutions.get())
         {
             return;
         }
 
-        int result = ignoreFirstNode ? EventNode.ALL : node.execute(context);
+        int result = skipFirst ? EventNode.ALL : node.execute(context);
 
         if (result >= EventNode.ALL)
         {

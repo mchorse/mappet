@@ -1,12 +1,11 @@
 package mchorse.mappet.api.utils.nodes;
 
+import mchorse.mappet.api.utils.AbstractData;
 import mchorse.mappet.api.utils.nodes.factory.INodeFactory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagShort;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +15,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-public class NodeSystem <T extends Node> implements INBTSerializable<NBTTagCompound>
+public class NodeSystem <T extends Node> extends AbstractData
 {
     private INodeFactory<T> factory;
 

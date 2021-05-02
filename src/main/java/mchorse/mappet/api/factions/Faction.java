@@ -1,17 +1,14 @@
 package mchorse.mappet.api.factions;
 
 import mchorse.mappet.api.states.States;
-import mchorse.mappet.api.utils.IID;
+import mchorse.mappet.api.utils.AbstractData;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Faction implements INBTSerializable<NBTTagCompound>, IID
+public class Faction extends AbstractData
 {
-    private String id;
-
     /**
      * The display name of the faction
      */
@@ -47,26 +44,6 @@ public class Faction implements INBTSerializable<NBTTagCompound>, IID
      * Relations to other factions
      */
     public Map<String, FactionAttitude> relations = new HashMap<String, FactionAttitude>();
-
-    public Faction()
-    {}
-
-    public Faction(String id)
-    {
-        this.setId(id);
-    }
-
-    @Override
-    public String getId()
-    {
-        return this.id;
-    }
-
-    @Override
-    public void setId(String id)
-    {
-        this.id = id;
-    }
 
     public FactionAttitude get(States states)
     {

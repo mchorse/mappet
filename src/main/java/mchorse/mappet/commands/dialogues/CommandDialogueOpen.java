@@ -55,19 +55,6 @@ public class CommandDialogueOpen extends CommandDialogueBase
             throw new CommandException("dialogue.empty", id);
         }
 
-        ICharacter character = Character.get(player);
-
-        if (character != null)
-        {
-            DialogueContext context = new DialogueContext(new TriggerSender().set(player), player);
-
-            character.setDialogue(dialogue, context);
-            character.getStates().readDialogue(id);
-            Mappet.dialogues.execute(dialogue, context);
-
-            List<DialogueFragment> replies = context.replyNodes.stream().map((r) -> r.message).collect(Collectors.toList());
-
-            Dispatcher.sendTo(new PacketDialogueFragment(dialogue.title, context.reactionNode.message, replies), player);
-        }
+        Mappet.dialogues.open(player, dialogue);
     }
 }

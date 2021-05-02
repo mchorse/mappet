@@ -2,7 +2,6 @@ package mchorse.mappet.api.utils;
 
 import mchorse.mappet.utils.NBTToJsonLike;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.INBTSerializable;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -15,7 +14,7 @@ import java.util.List;
  * Base JSON manager which loads and saves different data
  * structures based upon NBT
  */
-public abstract class BaseManager <T extends INBTSerializable<NBTTagCompound>> implements IManager<T>
+public abstract class BaseManager <T extends AbstractData> implements IManager<T>
 {
     private File folder;
 
@@ -27,6 +26,18 @@ public abstract class BaseManager <T extends INBTSerializable<NBTTagCompound>> i
             this.folder.mkdirs();
         }
     }
+
+    @Override
+    public final T create(String id, NBTTagCompound tag)
+    {
+        T data = this.createData(tag);
+
+        data.setId(id);
+
+        return data;
+    }
+
+    protected abstract T createData(NBTTagCompound tag);
 
     @Override
     public T load(String id)

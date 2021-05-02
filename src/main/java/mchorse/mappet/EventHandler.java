@@ -147,8 +147,6 @@ public class EventHandler
 
                     if (quest.rewardIfComplete(player))
                     {
-                        Quest.complete(entry.getKey(), player);
-
                         player.sendMessage(new TextComponentString("Quest '" + entry.getKey() + "' was completed! Here is your reward!"));
                         it.remove();
 

@@ -1,19 +1,15 @@
 package mchorse.mappet.api.crafting;
 
-import mchorse.mappet.Mappet;
-import mchorse.mclib.math.IValue;
-import mchorse.mclib.math.Operation;
+import mchorse.mappet.api.utils.AbstractData;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-public class CraftingTable implements INBTSerializable<NBTTagCompound>
+public class CraftingTable extends AbstractData
 {
     public String title = "";
     public List<CraftingRecipe> recipes = new ArrayList<CraftingRecipe>();

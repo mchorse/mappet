@@ -89,8 +89,6 @@ public class Quests implements INBTSerializable<NBTTagCompound>
         if (reward)
         {
             quest.reward(player);
-
-            Quest.complete(id, player);
         }
         else
         {

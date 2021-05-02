@@ -28,7 +28,7 @@ public class EventManager extends BaseManager<NodeSystem<EventNode>>
     }
 
     @Override
-    public NodeSystem<EventNode> create(String id, NBTTagCompound tag)
+    protected NodeSystem<EventNode> createData(NBTTagCompound tag)
     {
         NodeSystem<EventNode> event = new NodeSystem<EventNode>(FACTORY);
 

@@ -4,6 +4,7 @@ import mchorse.mappet.Mappet;
 import mchorse.mappet.api.quests.objectives.IObjective;
 import mchorse.mappet.api.quests.objectives.KillObjective;
 import mchorse.mappet.api.quests.rewards.IReward;
+import mchorse.mappet.api.utils.AbstractData;
 import mchorse.mappet.api.utils.Trigger;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
@@ -12,12 +13,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Quest implements INBTSerializable<NBTTagCompound>, INBTPartialSerializable
+public class Quest extends AbstractData implements INBTPartialSerializable
 {
     public String title = "";
     public String story = "";
@@ -28,19 +28,6 @@ public class Quest implements INBTSerializable<NBTTagCompound>, INBTPartialSeria
 
     public final List<IObjective> objectives = new ArrayList<IObjective>();
     public final List<IReward> rewards = new ArrayList<IReward>();
-
-    public static void complete(String id, EntityPlayer player)
-    {
-        /* Write down that the quest was completed */
-        ICharacter character = Character.get(player);
-
-        if (character != null)
-        {
-            character.getStates().completeQuest(id);
-        }
-
-        Mappet.states.completeQuest(id);
-    }
 
     public Quest()
     {}
@@ -109,6 +96,16 @@ public class Quest implements INBTSerializable<NBTTagCompound>, INBTPartialSeria
         }
 
         this.complete.trigger(player);
+
+        /* Write down that the quest was completed */
+        ICharacter character = Character.get(player);
+
+        if (character != null)
+        {
+            character.getStates().completeQuest(this.getId());
+        }
+
+        Mappet.states.completeQuest(this.getId());
     }
 
     public boolean rewardIfComplete(EntityPlayer player)

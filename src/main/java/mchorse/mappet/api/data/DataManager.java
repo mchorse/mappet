@@ -53,7 +53,7 @@ public class DataManager extends BaseManager<Data>
     }
 
     @Override
-    public Data create(String id, NBTTagCompound tag)
+    protected Data createData(NBTTagCompound tag)
     {
         Data data = new Data();
 

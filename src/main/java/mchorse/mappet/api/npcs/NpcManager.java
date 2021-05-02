@@ -13,7 +13,7 @@ public class NpcManager extends BaseManager<Npc>
     }
 
     @Override
-    public Npc create(String id, NBTTagCompound tag)
+    protected Npc createData(NBTTagCompound tag)
     {
         Npc npc = new Npc();
 

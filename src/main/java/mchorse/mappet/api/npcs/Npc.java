@@ -1,13 +1,13 @@
 package mchorse.mappet.api.npcs;
 
+import mchorse.mappet.api.utils.AbstractData;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Npc implements INBTSerializable<NBTTagCompound>
+public class Npc extends AbstractData
 {
     public boolean unique;
     public double pathDistance = 64;
