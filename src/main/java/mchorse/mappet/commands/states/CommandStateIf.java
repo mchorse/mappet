@@ -42,7 +42,6 @@ public class CommandStateIf extends CommandStateBase
         }
 
         double previous = states.get(id);
-        double value = 0;
 
         String expression = String.join(" ", SubCommandBase.dropFirstArguments(args, 2));
 
@@ -57,12 +56,7 @@ public class CommandStateIf extends CommandStateBase
 
         IValue result = Mappet.expressions.set(previous).evaluate(expression);
 
-        if (result != null && result.isNumber())
-        {
-            value = result.doubleValue();
-        }
-
-        if (Operation.equals(value, 0))
+        if (!result.booleanValue())
         {
             throw new CommandException("states.false", id);
         }

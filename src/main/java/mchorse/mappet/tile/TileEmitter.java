@@ -17,6 +17,7 @@ public class TileEmitter extends TileEntity implements ITickable
     private float radius;
 
     private int tick = 0;
+    private IValue value;
 
     public TileEmitter()
     {}
@@ -33,6 +34,7 @@ public class TileEmitter extends TileEntity implements ITickable
 
     public void setExpression(String expression, float radius)
     {
+        this.value = null;
         this.expression = expression;
         this.radius = radius;
         this.updateExpression();
@@ -53,7 +55,7 @@ public class TileEmitter extends TileEntity implements ITickable
             return;
         }
 
-        /* TODO: rewrite to use state changes */
+        /* TODO: add an option to change frequency */
         if (this.tick % 5 == 0 && !this.expression.isEmpty())
         {
             this.updateExpression();
@@ -85,17 +87,19 @@ public class TileEmitter extends TileEntity implements ITickable
             }
         }
 
-        IValue value = Mappet.expressions.set(this.world).evaluate(this.expression);
-
-        if (value != null)
+        if (this.value == null)
         {
-            IBlockState state = this.world.getBlockState(this.pos);
-            boolean result = value.booleanValue();
+            this.value = Mappet.expressions.evaluate(this.expression);
+        }
 
-            if (state.getValue(BlockEmitter.POWERED) != result)
-            {
-                this.world.setBlockState(this.pos, state.withProperty(BlockEmitter.POWERED, result));
-            }
+        Mappet.expressions.set(this.world);
+
+        IBlockState state = this.world.getBlockState(this.pos);
+        boolean result = this.value.booleanValue();
+
+        if (state.getValue(BlockEmitter.POWERED) != result)
+        {
+            this.world.setBlockState(this.pos, state.withProperty(BlockEmitter.POWERED, result));
         }
     }
 

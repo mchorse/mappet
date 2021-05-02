@@ -1,6 +1,7 @@
 package mchorse.mappet.api.crafting;
 
 import mchorse.mappet.Mappet;
+import mchorse.mappet.api.expressions.ExpressionManager;
 import mchorse.mappet.api.utils.Trigger;
 import mchorse.mappet.utils.InventoryUtils;
 import mchorse.mclib.math.IValue;
@@ -29,9 +30,7 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
     {
         if (!this.condition.isEmpty())
         {
-            IValue value = Mappet.expressions.set(player).evaluate(this.condition);
-
-            return value != null && value.isNumber() && !Operation.isTrue(value.doubleValue());
+            return Mappet.expressions.set(player).evaluate(this.condition, ExpressionManager.ONE).booleanValue();
         }
 
         return true;

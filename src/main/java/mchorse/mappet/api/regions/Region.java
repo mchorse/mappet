@@ -1,6 +1,7 @@
 package mchorse.mappet.api.regions;
 
 import mchorse.mappet.Mappet;
+import mchorse.mappet.api.expressions.ExpressionManager;
 import mchorse.mappet.api.regions.shapes.AbstractShape;
 import mchorse.mappet.api.regions.shapes.BoxShape;
 import mchorse.mappet.api.utils.Trigger;
@@ -18,6 +19,8 @@ public class Region implements INBTSerializable<NBTTagCompound>
     public Trigger onExit = new Trigger();
     public AbstractShape shape = new BoxShape();
 
+    private IValue value;
+
     public boolean isEnabled(World world)
     {
         if (this.enabled == null || this.enabled.isEmpty())
@@ -25,9 +28,14 @@ public class Region implements INBTSerializable<NBTTagCompound>
             return true;
         }
 
-        IValue value = Mappet.expressions.set(world).evaluate(this.enabled);
+        if (this.value == null)
+        {
+            this.value = Mappet.expressions.evaluate(this.enabled, ExpressionManager.ONE);
+        }
 
-        return value == null || value.booleanValue();
+        Mappet.expressions.set(world);
+
+        return this.value.booleanValue();
     }
 
     @Override

@@ -23,6 +23,7 @@ import mchorse.mappet.api.expressions.functions.world.WorldIsDay;
 import mchorse.mappet.api.expressions.functions.world.WorldIsNight;
 import mchorse.mappet.api.expressions.functions.world.WorldTime;
 import mchorse.mappet.api.expressions.functions.world.WorldTotalTime;
+import mchorse.mclib.math.Constant;
 import mchorse.mclib.math.IValue;
 import mchorse.mclib.math.MathBuilder;
 import mchorse.mclib.math.Variable;
@@ -32,6 +33,9 @@ import net.minecraft.world.World;
 
 public class ExpressionManager
 {
+    public static IValue ONE = new Constant(1);
+    public static IValue ZERO = new Constant(0);
+
     public MathBuilder builder;
     public Variable varValue;
     public Variable varSubject;
@@ -80,38 +84,45 @@ public class ExpressionManager
 
     /* TODO: look into caching these values or something */
 
-    public ExpressionManager set(MinecraftServer server)
+    private void reset()
     {
-        this.server = server;
+        this.server = null;
         this.subject = null;
-        this.world = server.getEntityWorld();
+        this.world = null;
 
         this.varSubject.set("");
         this.varValue.set(0);
+    }
+
+    public ExpressionManager set(MinecraftServer server)
+    {
+        this.reset();
+
+        this.server = server;
+        this.world = server.getEntityWorld();
 
         return this;
     }
 
     public ExpressionManager set(World world)
     {
-        this.server = world.getMinecraftServer();
-        this.subject = null;
-        this.world = world;
+        this.reset();
 
-        this.varSubject.set("");
-        this.varValue.set(0);
+        this.server = world.getMinecraftServer();
+        this.world = world;
 
         return this;
     }
 
     public ExpressionManager set(EntityLivingBase subject)
     {
+        this.reset();
+
         this.server = subject.getServer();
         this.subject = subject;
         this.world = subject.getEntityWorld();
 
         this.varSubject.set(subject.getCachedUniqueIdString());
-        this.varValue.set(0);
 
         return this;
     }
@@ -125,6 +136,11 @@ public class ExpressionManager
 
     public IValue evaluate(String expression)
     {
+        return this.evaluate(expression, ZERO);
+    }
+
+    public IValue evaluate(String expression, IValue defaultValue)
+    {
         try
         {
             return this.builder.parse(expression);
@@ -134,16 +150,6 @@ public class ExpressionManager
             e.printStackTrace();
         }
 
-        return null;
-    }
-
-    private void reset()
-    {
-        this.server = null;
-        this.subject = null;
-        this.world = null;
-
-        this.varSubject.set("");
-        this.varValue.set(0);
+        return defaultValue;
     }
 }

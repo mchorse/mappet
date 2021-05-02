@@ -27,11 +27,11 @@ public class ConditionNode extends EventNode
     @Override
     public int execute(EventContext context)
     {
-        IValue value = Mappet.expressions.set(context.subject).evaluate(this.expression);
+        IValue value = Mappet.expressions.set(context.subject).evaluate(this.expression, null);
 
-        if (value != null && value.isNumber())
+        if (value != null)
         {
-            boolean result = !Operation.equals(value.doubleValue(), 0);
+            boolean result = value.booleanValue();
 
             context.log("The result \"" + this.expression + "\" is " + (result ? "true" : "false"));
 

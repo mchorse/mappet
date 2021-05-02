@@ -1,10 +1,6 @@
 package mchorse.mappet.api.utils;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import mchorse.mappet.utils.NBTToJson;
 import mchorse.mappet.utils.NBTToJsonLike;
-import mchorse.mclib.utils.JsonUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 import org.apache.commons.io.FileUtils;
