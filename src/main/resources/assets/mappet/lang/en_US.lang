@@ -86,6 +86,26 @@ mappet.commands.mp.data.clear=Clears all global and player states, and also all 
 mappet.commands.mp.data.load=Loads saved data by §7<id>§r. §7[global]§r determines whether global states should be loaded too (it's §7true§r (enabled) by default). §7[players]§r allows to pick another player whose inventory and player states should be loaded to.
 mappet.commands.mp.data.save=Saves global states, and current player's states and inventory to data by §7<id>§r.
 
+# Config
+
+mappet.config.title=Mappet
+
+mappet.config.events.title=Events
+mappet.config.events.tooltip=Mod options related to events
+
+mappet.config.events.max_executions=Max event executions
+mappet.config.comments.events.max_executions=This is the maximum amount of node executions can be done per event (to avoid infinite recursion)
+
+mappet.config.gui.title=GUI
+mappet.config.gui.tooltip=Options to tweak GUI preferences
+
+mappet.config.gui.pulse_background_color=Pulsing inactive color
+mappet.config.comments.gui.pulse_background_color=This option determines the color of node connection pulsing, i.e. the inactive color.
+mappet.config.gui.pulse_background_mclib=Use primary color
+mappet.config.comments.gui.pulse_background_mclib=This option allows instead to use McLib's primary color as the inactive pulsing color.
+mappet.config.gui.quest_preview_rewards=Preview quest rewards
+mappet.config.comments.gui.quest_preview_rewards=This option allows to toggle preview of quest rewards.
+
 # GUI
 mappet.gui.panels.quests=Quests
 mappet.gui.panels.crafting=Crafting Tables
