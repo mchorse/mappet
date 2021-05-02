@@ -9,6 +9,7 @@ import mchorse.mappet.network.client.content.ClientHandlerContentNames;
 import mchorse.mappet.network.client.crafting.ClientHandlerCraft;
 import mchorse.mappet.network.client.crafting.ClientHandlerCraftingTable;
 import mchorse.mappet.network.client.dialogue.ClientHandlerDialogueFragment;
+import mchorse.mappet.network.client.factions.ClientHandlerFactions;
 import mchorse.mappet.network.client.npc.ClientHandlerNpcMorph;
 import mchorse.mappet.network.client.quests.ClientHandlerQuest;
 import mchorse.mappet.network.client.quests.ClientHandlerQuests;
@@ -23,6 +24,8 @@ import mchorse.mappet.network.common.crafting.PacketCraft;
 import mchorse.mappet.network.common.crafting.PacketCraftingTable;
 import mchorse.mappet.network.common.dialogue.PacketDialogueFragment;
 import mchorse.mappet.network.common.dialogue.PacketPickReply;
+import mchorse.mappet.network.common.factions.PacketFactions;
+import mchorse.mappet.network.common.factions.PacketRequestFactions;
 import mchorse.mappet.network.common.npc.PacketNpcMorph;
 import mchorse.mappet.network.common.quests.PacketQuest;
 import mchorse.mappet.network.common.quests.PacketQuests;
@@ -35,6 +38,7 @@ import mchorse.mappet.network.server.content.ServerHandlerContentRequestNames;
 import mchorse.mappet.network.server.crafting.ServerHandlerCraft;
 import mchorse.mappet.network.server.crafting.ServerHandlerCraftingTable;
 import mchorse.mappet.network.server.dialogue.ServerHandlerPickReply;
+import mchorse.mappet.network.server.factions.ServerHandlerRequestFactions;
 import mchorse.mclib.network.AbstractDispatcher;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityTracker;
@@ -87,6 +91,10 @@ public class Dispatcher
             /* Quests */
             this.register(PacketQuest.class, ClientHandlerQuest.class, Side.CLIENT);
             this.register(PacketQuests.class, ClientHandlerQuests.class, Side.CLIENT);
+
+            /* Factions */
+            this.register(PacketFactions.class, ClientHandlerFactions.class, Side.CLIENT);
+            this.register(PacketRequestFactions.class, ServerHandlerRequestFactions.class, Side.SERVER);
         }
     };
 

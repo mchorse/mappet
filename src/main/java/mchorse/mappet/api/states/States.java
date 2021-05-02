@@ -19,6 +19,10 @@ import java.util.Map;
  */
 public class States implements INBTSerializable<NBTTagCompound>
 {
+    public static final String QUEST_PREFIX = "quests.";
+    public static final String DIALOGUE_PREFIX = "dialogue.";
+    public static final String FACTIONS_PREFIX = "factions.";
+
     public Map<String, Double> values = new HashMap<String, Double>();
 
     private File file;
@@ -69,12 +73,12 @@ public class States implements INBTSerializable<NBTTagCompound>
 
     public void completeQuest(String id)
     {
-        this.add("quests." + id, 1);
+        this.add(QUEST_PREFIX + id, 1);
     }
 
     public boolean wasQuestCompleted(String id)
     {
-        return this.get("quests." + id) > 0;
+        return this.get(QUEST_PREFIX + id) > 0;
     }
 
     /* Faction convenience methods */
@@ -83,44 +87,44 @@ public class States implements INBTSerializable<NBTTagCompound>
     {
         if (this.hasFaction(id))
         {
-            this.add("factions." + id, score);
+            this.add(FACTIONS_PREFIX + id, score);
         }
         else
         {
-            this.set("factions." + id, defaultScore + score);
+            this.set(FACTIONS_PREFIX + id, defaultScore + score);
         }
     }
 
     public void setFactionScore(String id, int score)
     {
-        this.set("factions." + id, score);
+        this.set(FACTIONS_PREFIX + id, score);
     }
 
     public int getFactionScore(String id)
     {
-        return (int) this.get("factions." + id);
+        return (int) this.get(FACTIONS_PREFIX + id);
     }
 
     public boolean clearFactionScore(String id)
     {
-        return this.reset("factions." + id);
+        return this.reset(FACTIONS_PREFIX + id);
     }
 
     public void clearAllFactionScores()
     {
-        this.values.keySet().removeIf((key) -> key.startsWith("factions."));
+        this.values.keySet().removeIf((key) -> key.startsWith(FACTIONS_PREFIX));
     }
 
     public boolean hasFaction(String id)
     {
-        return this.values.containsKey("factions." + id);
+        return this.values.containsKey(FACTIONS_PREFIX + id);
     }
 
     /* Dialogues convenience methods */
 
     public void readDialogue(String id)
     {
-        this.add("dialogue." + id, 1);
+        this.add(DIALOGUE_PREFIX + id, 1);
     }
 
     public boolean hasReadDialogue(String id)
@@ -130,7 +134,7 @@ public class States implements INBTSerializable<NBTTagCompound>
 
     public int getReadDialogueTimes(String id)
     {
-        return (int) this.get("dialogue." + id);
+        return (int) this.get(DIALOGUE_PREFIX + id);
     }
 
     /* NBT */

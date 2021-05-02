@@ -87,6 +87,8 @@ public final class Mappet
     public static ValueInt nodePulseBackgroundColor;
     public static ValueBoolean nodePulseBackgroundMcLibPrimary;
 
+    public static ValueBoolean questsPreviewRewards;
+
     public Mappet()
     {
         MinecraftForge.EVENT_BUS.register(new RegisterHandler());
@@ -101,6 +103,8 @@ public final class Mappet
 
         nodePulseBackgroundColor = builder.category("gui").getInt("pulse_background_color", 0x000000).color();
         nodePulseBackgroundMcLibPrimary = builder.getBoolean("pulse_background_mclib", false);
+
+        questsPreviewRewards = builder.getBoolean("quest_preview_rewards", true);
 
         builder.getCategory().markClientSide();
     }

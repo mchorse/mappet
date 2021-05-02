@@ -133,6 +133,7 @@ public class Faction implements INBTSerializable<NBTTagCompound>, IID
         if (tag.hasKey("DefaultScore")) this.score = tag.getInteger("DefaultScore");
         if (tag.hasKey("PlayerAttitude")) this.playerAttitude = FactionAttitude.get(tag.getString("PlayerAttitude"));
         if (tag.hasKey("OthersAttitude")) this.othersAttitude = FactionAttitude.get(tag.getString("OthersAttitude"));
+        if (tag.hasKey("OwnRelation")) this.ownRelation.deserializeNBT(tag.getCompoundTag("OwnRelation"));
         if (tag.hasKey("Relations"))
         {
             NBTTagCompound relations = tag.getCompoundTag("Relations");

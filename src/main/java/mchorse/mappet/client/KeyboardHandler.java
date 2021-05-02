@@ -28,7 +28,7 @@ public class KeyboardHandler
         String prefix = "mappet.keys.";
 
         this.openMappetDashboard = new KeyBinding(prefix + "dashboard", Keyboard.KEY_NONE, prefix + "category");
-        this.openJournal = new KeyBinding(prefix + "journal", Keyboard.KEY_NONE, prefix + "category");
+        this.openJournal = new KeyBinding(prefix + "journal", Keyboard.KEY_J, prefix + "category");
 
         ClientRegistry.registerKeyBinding(this.openMappetDashboard);
         ClientRegistry.registerKeyBinding(this.openJournal);

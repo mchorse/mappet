@@ -1,12 +1,15 @@
 package mchorse.mappet;
 
 import mchorse.mappet.api.events.EventExecutionFork;
+import mchorse.mappet.api.factions.Faction;
 import mchorse.mappet.api.quests.Quest;
+import mchorse.mappet.api.states.States;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.CharacterProvider;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.commands.data.CommandDataClear;
 import mchorse.mappet.network.Dispatcher;
+import mchorse.mappet.network.common.factions.PacketFactions;
 import mchorse.mappet.network.common.quests.PacketQuest;
 import mchorse.mappet.network.common.quests.PacketQuests;
 import net.minecraft.entity.Entity;
@@ -17,13 +20,13 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -71,21 +74,22 @@ public class EventHandler
     @SubscribeEvent
     public void onPlayerLogsIn(PlayerEvent.PlayerLoggedInEvent event)
     {
-        ICharacter character = Character.get(event.player);
+        EntityPlayerMP player = (EntityPlayerMP) event.player;
+        ICharacter character = Character.get(player);
         Instant lastClear = Mappet.data.getLastClear();
 
         if (character != null)
         {
             if (character.getLastClear().isBefore(lastClear))
             {
-                CommandDataClear.clear(event.player);
+                CommandDataClear.clear(player);
 
                 character.updateLastClear(lastClear);
             }
 
             if (!character.getQuests().quests.isEmpty())
             {
-                Dispatcher.sendTo(new PacketQuests(character.getQuests()), (EntityPlayerMP) event.player);
+                Dispatcher.sendTo(new PacketQuests(character.getQuests()), player);
             }
         }
     }
@@ -160,21 +164,23 @@ public class EventHandler
 
         this.playersToCheck.clear();
 
+        /* This block of code might be a bit confusing, but essentially
+         * what it does is prevents concurrent modification when timer nodes
+         * add consequent execution forks, this way I can reliably keep track
+         * of order of both the old executions which are not yet executed and
+         * of new forks that were added by new timer nodes */
         if (!this.eventForks.isEmpty())
         {
+            /* Copy original event forks to another list and clear them
+             * to be ready for new forks */
             this.secondList.addAll(this.eventForks);
             this.eventForks.clear();
 
-            Iterator<EventExecutionFork> it = this.secondList.iterator();
+            /* Execute event forks (and remove those which were finished) */
+            this.secondList.removeIf(EventExecutionFork::update);
 
-            while (it.hasNext())
-            {
-                if (it.next().update())
-                {
-                    it.remove();
-                }
-            }
-
+            /* Add back to the original list the remaining forks and
+             * new forks that were added by consequent timer nodes */
             this.secondList.addAll(this.eventForks);
             this.eventForks.clear();
             this.eventForks.addAll(this.secondList);

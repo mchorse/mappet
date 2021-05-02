@@ -1,5 +1,7 @@
 package mchorse.mappet.client.gui;
 
+import mchorse.mappet.Mappet;
+import mchorse.mappet.api.factions.Faction;
 import mchorse.mappet.api.quests.Quest;
 import mchorse.mappet.api.quests.Quests;
 import mchorse.mappet.api.quests.objectives.IObjective;
@@ -7,7 +9,11 @@ import mchorse.mappet.api.quests.rewards.IReward;
 import mchorse.mappet.api.quests.rewards.ItemStackReward;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
+import mchorse.mappet.client.gui.factions.GuiFactionCard;
+import mchorse.mappet.client.gui.factions.GuiFactions;
 import mchorse.mappet.client.gui.utils.GuiText;
+import mchorse.mappet.network.Dispatcher;
+import mchorse.mappet.network.common.factions.PacketRequestFactions;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
@@ -17,7 +23,6 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.Label;
 import mchorse.mclib.client.gui.utils.keys.IKey;
-import mchorse.mclib.utils.ColorUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
@@ -40,7 +45,7 @@ public class GuiJournalScreen extends GuiBase
         this.factions = new GuiScrollElement(mc);
         this.quests = new GuiElement(mc);
 
-        this.factions.flex().relative(this.viewport).x(1F, -210).y(22).w(200).h(1F, -22).column(5).vertical().stretch().scroll().padding(10);
+        this.factions.flex().relative(this.viewport).x(1F, -250).y(22).w(240).h(1F, -22).column(10).vertical().stretch().scroll().padding(10);
         this.quests.flex().relative(this.viewport).xy(10, 22).wTo(this.factions.area).h(1F, -22);
 
         this.questList = new GuiLabelListElement<Quest>(mc, (l) -> this.pickQuest(l.get(0).value, false));
@@ -60,6 +65,20 @@ public class GuiJournalScreen extends GuiBase
         this.quests.add(this.questList, this.questArea);
 
         this.pickQuest(quests.quests.isEmpty() ? null : quests.quests.values().iterator().next(), true);
+
+        Dispatcher.sendToServer(new PacketRequestFactions());
+    }
+
+    public void fillFactions(Map<String, Faction> factions, Map<String, Double> states)
+    {
+        this.factions.removeAll();
+
+        for (String key : factions.keySet())
+        {
+            this.factions.add(new GuiFactionCard(Minecraft.getMinecraft(), factions.get(key), states.get(key)));
+        }
+
+        this.root.resize();
     }
 
     private void pickQuest(Quest value, boolean select)
@@ -106,6 +125,11 @@ public class GuiJournalScreen extends GuiBase
             element.add(Elements.label(IKey.str("- " + objective.stringify(mc.player))).color(0xaaaaaa));
         }
 
+        if (!Mappet.questsPreviewRewards.get())
+        {
+            return;
+        }
+
         element.add(Elements.label(IKey.str("Rewards")).marginTop(12));
 
         for (IReward reward : value.rewards)
@@ -137,8 +161,8 @@ public class GuiJournalScreen extends GuiBase
     {
         this.drawDefaultBackground();
 
-        this.fontRenderer.drawStringWithShadow("Factions", this.factions.area.x, 10, 0xffffff);
-        this.fontRenderer.drawStringWithShadow("Quests", this.quests.area.x, 10, 0xffffff);
+        this.fontRenderer.drawStringWithShadow("Factions", this.factions.area.x + 10, 10, 0xffffff);
+        this.fontRenderer.drawStringWithShadow("Quests", this.quests.area.x + 4, 10, 0xffffff);
         GuiDraw.drawVerticalGradientRect(this.questArea.area.x, this.questArea.area.y(0.75F), this.questArea.area.ex(), this.questArea.area.ey(), 0, 0x44000000);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
