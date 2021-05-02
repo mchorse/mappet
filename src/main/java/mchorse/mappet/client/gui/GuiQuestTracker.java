@@ -58,7 +58,7 @@ public class GuiQuestTracker extends Gui
 
         for (IObjective objective : value.objectives)
         {
-            String description = "  " + objective.stringify(mc.player);
+            String description = "- " + objective.stringify(mc.player);
             List<String> lines = mc.fontRenderer.listFormattedStringToWidth(description, w - 6);
             boolean complete = objective.isComplete(mc.player);
 

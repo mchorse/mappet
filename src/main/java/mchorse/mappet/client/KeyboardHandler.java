@@ -1,5 +1,6 @@
 package mchorse.mappet.client;
 
+import mchorse.mappet.client.gui.GuiJournalScreen;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
@@ -20,14 +21,17 @@ import org.lwjgl.input.Keyboard;
 public class KeyboardHandler
 {
     public KeyBinding openMappetDashboard;
+    public KeyBinding openJournal;
 
     public KeyboardHandler()
     {
         String prefix = "mappet.keys.";
 
         this.openMappetDashboard = new KeyBinding(prefix + "dashboard", Keyboard.KEY_NONE, prefix + "category");
+        this.openJournal = new KeyBinding(prefix + "journal", Keyboard.KEY_NONE, prefix + "category");
 
         ClientRegistry.registerKeyBinding(this.openMappetDashboard);
+        ClientRegistry.registerKeyBinding(this.openJournal);
     }
 
     @SubscribeEvent
@@ -38,6 +42,11 @@ public class KeyboardHandler
         if (this.openMappetDashboard.isPressed())
         {
             mc.displayGuiScreen(GuiMappetDashboard.get(mc));
+        }
+
+        if (this.openJournal.isPressed())
+        {
+            mc.displayGuiScreen(new GuiJournalScreen(mc));
         }
     }
 }

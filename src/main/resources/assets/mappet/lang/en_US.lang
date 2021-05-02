@@ -106,6 +106,7 @@ mappet.gui.faction_attitudes.friendly=Friendly
 # Keys
 mappet.keys.category=Mappet
 mappet.keys.dashboard=Creative dashboard
+mappet.keys.journal=Player's journal
 
 # Items, blocks and entities
 itemGroup.mappet=Mappet
