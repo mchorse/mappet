@@ -64,7 +64,7 @@ public class GuiDialoguePanel extends GuiMappetDashboardPanel<DialogueNodeSystem
 
             if (panel != null)
             {
-                panel.flex().relative(this).y(1F).w(180).anchorY(1F);
+                panel.flex().relative(this).y(1F).w(220).anchorY(1F);
 
                 this.panel = panel;
                 this.panel.resize();
