@@ -14,6 +14,7 @@ public class DialogueContext extends EventContext
 {
     public ReactionNode reactionNode;
     public List<ReplyNode> replyNodes = new ArrayList<ReplyNode>();
+    public String crafting = "";
 
     public DialogueContext(TriggerSender sender, EntityLivingBase subject)
     {

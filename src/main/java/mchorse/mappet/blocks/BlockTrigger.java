@@ -85,7 +85,7 @@ public class BlockTrigger extends Block implements ITileEntityProvider
 
             TileTrigger trigger = (TileTrigger) tile;
 
-            if (playerIn.isCreative())
+            if (playerIn.isCreative() && !playerIn.isSneaking())
             {
                 Dispatcher.sendTo(new PacketEditTrigger(trigger), (EntityPlayerMP) playerIn);
             }

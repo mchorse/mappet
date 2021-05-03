@@ -1,6 +1,6 @@
 package mchorse.mappet.network.client.dialogue;
 
-import mchorse.mappet.client.gui.GuiDialogueScreen;
+import mchorse.mappet.client.gui.GuiInteractionScreen;
 import mchorse.mappet.network.common.dialogue.PacketDialogueFragment;
 import mchorse.mclib.network.ClientMessageHandler;
 import net.minecraft.client.Minecraft;
@@ -17,15 +17,15 @@ public class ClientHandlerDialogueFragment extends ClientMessageHandler<PacketDi
     {
         GuiScreen screen = Minecraft.getMinecraft().currentScreen;
 
-        if (screen instanceof GuiDialogueScreen)
+        if (screen instanceof GuiInteractionScreen)
         {
-            GuiDialogueScreen dialogue = (GuiDialogueScreen) screen;
+            GuiInteractionScreen dialogue = (GuiInteractionScreen) screen;
 
             dialogue.pickReply(message);
         }
         else if (!message.replies.isEmpty())
         {
-            Minecraft.getMinecraft().displayGuiScreen(new GuiDialogueScreen(message));
+            Minecraft.getMinecraft().displayGuiScreen(new GuiInteractionScreen(message));
         }
     }
 }

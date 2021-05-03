@@ -1,6 +1,7 @@
 package mchorse.mappet.api.dialogues;
 
 import mchorse.mappet.Mappet;
+import mchorse.mappet.api.dialogues.nodes.CraftingNode;
 import mchorse.mappet.api.dialogues.nodes.ReactionNode;
 import mchorse.mappet.api.dialogues.nodes.ReplyNode;
 import mchorse.mappet.api.events.EventManager;
@@ -23,7 +24,8 @@ public class DialogueManager extends BaseManager<DialogueNodeSystem>
 {
     public static final MapNodeFactory FACTORY = EventManager.FACTORY.copy()
         .register("reply", ReplyNode.class)
-        .register("reaction", ReactionNode.class);
+        .register("reaction", ReactionNode.class)
+        .unregister("timer");
 
     public DialogueManager(File folder)
     {

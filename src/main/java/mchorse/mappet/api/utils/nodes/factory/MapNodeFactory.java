@@ -34,6 +34,13 @@ public class MapNodeFactory implements INodeFactory
         return this;
     }
 
+    public MapNodeFactory unregister(String key)
+    {
+        this.factory.remove(key);
+
+        return this;
+    }
+
     @Override
     public String getType(Node node)
     {

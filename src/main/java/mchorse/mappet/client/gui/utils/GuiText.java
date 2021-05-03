@@ -12,6 +12,7 @@ public class GuiText extends GuiElement
     private List<String> text;
     private int lineHeight = 12;
     private int color = 0xffffff;
+    private int hoverColor = 0xffffff;
     private boolean shadow = true;
 
     private int lines;
@@ -54,13 +55,19 @@ public class GuiText extends GuiElement
         return this;
     }
 
+    public GuiText hoverColor(int color)
+    {
+        this.hoverColor = color;
+
+        return this;
+    }
+
     @Override
     public void resize()
     {
         super.resize();
 
         this.text = null;
-        this.lines = 0;
     }
 
     @Override
@@ -78,16 +85,17 @@ public class GuiText extends GuiElement
         }
 
         int y = 0;
+        int color = this.area.isInside(context) ? this.hoverColor : this.color;
 
         for (String line : this.text)
         {
             if (this.shadow)
             {
-                this.font.drawStringWithShadow(line, this.area.x, this.area.y + y, this.color);
+                this.font.drawStringWithShadow(line, this.area.x, this.area.y + y, color);
             }
             else
             {
-                this.font.drawString(line, this.area.x, this.area.y + y, this.color);
+                this.font.drawString(line, this.area.x, this.area.y + y, color);
             }
 
             y += this.lineHeight;
