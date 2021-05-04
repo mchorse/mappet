@@ -103,6 +103,8 @@ mappet.config.gui.pulse_background_color=Pulsing inactive color
 mappet.config.comments.gui.pulse_background_color=This option determines the color of node connection pulsing, i.e. the inactive color.
 mappet.config.gui.pulse_background_mclib=Use primary color
 mappet.config.comments.gui.pulse_background_mclib=This option allows instead to use McLib's primary color as the inactive pulsing color.
+mappet.config.gui.node_thickness=Connection thickness
+mappet.config.comments.gui.node_thickness=This option allows to change line thickness of node connections, in pixels (there might be a limit on line width on some hardware).
 mappet.config.gui.quest_preview_rewards=Preview quest rewards
 mappet.config.comments.gui.quest_preview_rewards=This option allows to toggle preview of quest rewards.
 

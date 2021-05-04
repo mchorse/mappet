@@ -86,6 +86,7 @@ public final class Mappet
 
     public static ValueInt nodePulseBackgroundColor;
     public static ValueBoolean nodePulseBackgroundMcLibPrimary;
+    public static ValueInt nodeThickness;
 
     public static ValueBoolean questsPreviewRewards;
 
@@ -103,6 +104,7 @@ public final class Mappet
 
         nodePulseBackgroundColor = builder.category("gui").getInt("pulse_background_color", 0x000000).color();
         nodePulseBackgroundMcLibPrimary = builder.getBoolean("pulse_background_mclib", false);
+        nodeThickness = builder.getInt("node_thickness", 3, 0, 20);
 
         questsPreviewRewards = builder.getBoolean("quest_preview_rewards", true);
 

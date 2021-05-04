@@ -372,22 +372,27 @@ public class GuiNodeGraph extends GuiCanvas
             return;
         }
 
+        int thickness = Mappet.nodeThickness.get();
+
         GlStateManager.enableBlend();
         GlStateManager.disableTexture2D();
-        GlStateManager.glLineWidth(3);
         GlStateManager.shadeModel(GL11.GL_SMOOTH);
         GlStateManager.color(1F, 1F, 1F, 1F);
+        GlStateManager.glLineWidth(thickness);
 
         BufferBuilder builder = Tessellator.getInstance().getBuffer();
         EventNode lastSelected = this.selected.isEmpty() ? null : this.selected.get(this.selected.size() - 1);
         List<Vector2d> positions = new ArrayList<Vector2d>();
 
         /* Draw connections */
-        builder.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
+        if (thickness > 0)
+        {
+            builder.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
 
-        this.renderConnections(context, builder, positions, lastSelected);
+            this.renderConnections(context, builder, positions, lastSelected);
 
-        Tessellator.getInstance().draw();
+            Tessellator.getInstance().draw();
+        }
 
         /* Draw node boxes */
         Area main = null;
