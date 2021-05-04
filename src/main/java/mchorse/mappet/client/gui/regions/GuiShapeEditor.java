@@ -1,4 +1,4 @@
-package mchorse.mappet.client.gui.utils;
+package mchorse.mappet.client.gui.regions;
 
 import mchorse.mappet.api.regions.shapes.AbstractShape;
 import mchorse.mappet.api.regions.shapes.BoxShape;

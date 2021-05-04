@@ -16,7 +16,7 @@ public class ReplyNode extends DialogueNode
     @Override
     public int getColor()
     {
-        return 0x28a0f0;
+        return 0x00a0ff;
     }
 
     @Override

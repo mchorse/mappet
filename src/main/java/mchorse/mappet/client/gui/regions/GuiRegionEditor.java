@@ -1,10 +1,11 @@
-package mchorse.mappet.client.gui.utils;
+package mchorse.mappet.client.gui.regions;
 
 import mchorse.mappet.api.regions.Region;
 import mchorse.mappet.api.regions.shapes.AbstractShape;
 import mchorse.mappet.api.regions.shapes.BoxShape;
 import mchorse.mappet.api.regions.shapes.CylinderShape;
 import mchorse.mappet.api.regions.shapes.SphereShape;
+import mchorse.mappet.client.gui.utils.GuiTriggerElement;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiCirculateElement;

@@ -20,7 +20,7 @@ public class CraftingNode extends EventNode
     @Override
     public int getColor()
     {
-        return 0xff5e00;
+        return 0xff6600;
     }
 
     @Override

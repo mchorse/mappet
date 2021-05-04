@@ -11,6 +11,7 @@ import mchorse.mclib.client.gui.mclib.GuiAbstractDashboard;
 import mchorse.mclib.client.gui.mclib.GuiDashboardPanels;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.metamorph.client.gui.creative.GuiCreativeMorphsMenu;
 import net.minecraft.client.Minecraft;
 
 public class GuiMappetDashboard extends GuiAbstractDashboard
@@ -24,6 +25,8 @@ public class GuiMappetDashboard extends GuiAbstractDashboard
     public GuiRegionPanel region;
     public GuiNpcPanel npc;
     public GuiFactionPanel faction;
+
+    public GuiCreativeMorphsMenu morphs;
 
     public static GuiMappetDashboard get(Minecraft mc)
     {
@@ -44,6 +47,16 @@ public class GuiMappetDashboard extends GuiAbstractDashboard
     protected GuiDashboardPanels createDashboardPanels(Minecraft mc)
     {
         return new GuiDashboardPanels(mc);
+    }
+
+    public GuiCreativeMorphsMenu getMorphMenu()
+    {
+        if (this.morphs == null)
+        {
+            this.morphs = new GuiCreativeMorphsMenu(this.mc, null);
+        }
+
+        return this.morphs;
     }
 
     @Override

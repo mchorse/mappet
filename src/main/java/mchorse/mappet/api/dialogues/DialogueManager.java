@@ -71,6 +71,11 @@ public class DialogueManager extends BaseManager<DialogueNodeSystem>
         PacketDialogueFragment packet = new PacketDialogueFragment(dialogue.title, reaction, replies);
         ICharacter character = Character.get(player);
 
+        if (context.reactionNode != null)
+        {
+            packet.addMorph(context.reactionNode.morph);
+        }
+
         if (context.crafting != null)
         {
             CraftingTable table = Mappet.crafting.load(context.crafting.table);

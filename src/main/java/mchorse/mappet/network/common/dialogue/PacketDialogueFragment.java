@@ -4,6 +4,8 @@ import io.netty.buffer.ByteBuf;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.crafting.CraftingTable;
 import mchorse.mappet.api.dialogues.DialogueFragment;
+import mchorse.metamorph.api.MorphUtils;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
@@ -13,6 +15,7 @@ import java.util.List;
 public class PacketDialogueFragment implements IMessage
 {
     public String title = "";
+    public AbstractMorph morph;
     public DialogueFragment reaction = new DialogueFragment();
     public List<DialogueFragment> replies = new ArrayList<DialogueFragment>();
     public CraftingTable table;
@@ -27,6 +30,11 @@ public class PacketDialogueFragment implements IMessage
         this.replies = replies;
     }
 
+    public void addMorph(AbstractMorph morph)
+    {
+        this.morph = morph;
+    }
+
     public void addCraftingTable(CraftingTable table)
     {
         this.table = table;
@@ -36,6 +44,7 @@ public class PacketDialogueFragment implements IMessage
     public void fromBytes(ByteBuf buf)
     {
         this.title = ByteBufUtils.readUTF8String(buf);
+        this.morph = MorphUtils.morphFromBuf(buf);
         this.reaction.deserializeNBT(ByteBufUtils.readTag(buf));
 
         for (int i = 0, c = buf.readInt(); i < c; i++)
@@ -58,6 +67,7 @@ public class PacketDialogueFragment implements IMessage
     public void toBytes(ByteBuf buf)
     {
         ByteBufUtils.writeUTF8String(buf, this.title);
+        MorphUtils.morphToBuf(buf, this.morph);
         ByteBufUtils.writeTag(buf, this.reaction.serializeNBT());
 
         buf.writeInt(this.replies.size());

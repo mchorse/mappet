@@ -21,8 +21,6 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
     public GuiStringListElement states;
     public GuiNpcEditor npcEditor;
 
-    public GuiCreativeMorphsMenu morphs;
-
     public GuiNpcPanel(Minecraft mc, GuiMappetDashboard dashboard)
     {
         super(mc, dashboard);
@@ -36,7 +34,7 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
         this.states = new GuiStringListElement(mc, (list) -> this.pickState(list.get(0), false));
         this.states.flex().relative(this).y(52).w(120).h(1F, -52);
 
-        this.npcEditor = new GuiNpcEditor(mc, () -> this.inventory, this::getMorphMenu);
+        this.npcEditor = new GuiNpcEditor(mc, () -> this.inventory, this.dashboard::getMorphMenu);
         this.npcEditor.flex().relative(this).x(120).y(52).wTo(this.editor.area, 1F).h(1F, -52);
         this.npcEditor.setVisible(false);
 
@@ -49,16 +47,6 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
         this.add(bar, this.states, this.npcEditor, this.toggleSidebar, this.inventory);
 
         this.fill("", null);
-    }
-
-    private GuiCreativeMorphsMenu getMorphMenu()
-    {
-        if (this.morphs == null)
-        {
-            this.morphs = new GuiCreativeMorphsMenu(this.mc, null);
-        }
-
-        return this.morphs;
     }
 
     private void pickState(String name, boolean select)

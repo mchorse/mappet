@@ -4,6 +4,7 @@ import mchorse.mappet.api.dialogues.DialogueManager;
 import mchorse.mappet.api.dialogues.DialogueNodeSystem;
 import mchorse.mappet.api.dialogues.nodes.CraftingNode;
 import mchorse.mappet.api.dialogues.nodes.DialogueNode;
+import mchorse.mappet.api.dialogues.nodes.ReactionNode;
 import mchorse.mappet.api.events.nodes.CommandNode;
 import mchorse.mappet.api.events.nodes.ConditionNode;
 import mchorse.mappet.api.events.nodes.EventNode;
@@ -15,14 +16,18 @@ import mchorse.mappet.client.gui.nodes.GuiCraftingNodePanel;
 import mchorse.mappet.client.gui.nodes.GuiDialogueNodePanel;
 import mchorse.mappet.client.gui.nodes.GuiNodeGraph;
 import mchorse.mappet.client.gui.nodes.GuiNodePanel;
+import mchorse.mappet.client.gui.nodes.GuiReactionNodePanel;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
+import mchorse.metamorph.client.gui.creative.GuiCreativeMorphsMenu;
 import net.minecraft.client.Minecraft;
 
 public class GuiDialoguePanel extends GuiMappetDashboardPanel<DialogueNodeSystem>
 {
     public GuiNodeGraph graph;
     public GuiNodePanel panel;
+
+    public GuiCreativeMorphsMenu morphs;
 
     public GuiDialoguePanel(Minecraft mc, GuiMappetDashboard dashboard)
     {
@@ -34,6 +39,16 @@ public class GuiDialoguePanel extends GuiMappetDashboardPanel<DialogueNodeSystem
         this.add(this.graph, this.panel);
 
         this.fill("", null);
+    }
+
+    private GuiCreativeMorphsMenu getMorphMenu()
+    {
+        if (this.morphs == null)
+        {
+            this.morphs = new GuiCreativeMorphsMenu(this.mc, null);
+        }
+
+        return this.morphs;
     }
 
     private void pickNode(EventNode node)
@@ -56,6 +71,11 @@ public class GuiDialoguePanel extends GuiMappetDashboardPanel<DialogueNodeSystem
             else if (node instanceof ConditionNode)
             {
                 panel = new GuiConditionNodePanel(this.mc);
+                panel.set(node);
+            }
+            else if (node instanceof ReactionNode)
+            {
+                panel = new GuiReactionNodePanel(this.mc, this.dashboard::getMorphMenu);
                 panel.set(node);
             }
             else if (node instanceof DialogueNode)

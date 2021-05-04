@@ -5,6 +5,7 @@ import mchorse.mappet.api.dialogues.DialogueFragment;
 import mchorse.mappet.client.gui.crafting.GuiCrafting;
 import mchorse.mappet.client.gui.crafting.ICraftingScreen;
 import mchorse.mappet.client.gui.utils.GuiClickableText;
+import mchorse.mappet.client.gui.utils.GuiMorphRenderer;
 import mchorse.mappet.client.gui.utils.GuiText;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.crafting.PacketCraftingTable;
@@ -15,13 +16,18 @@ import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiDrawable;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.metamorph.api.MorphManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
 {
     public GuiElement area;
+
+    public GuiMorphRenderer morph;
 
     /* Dialogue */
     public GuiScrollElement reaction;
@@ -43,6 +49,16 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
         Minecraft mc = Minecraft.getMinecraft();
 
         /* General */
+        this.morph = new GuiMorphRenderer(mc);
+        this.morph.flex().relative(this.viewport).x(0.4F).w(0.6F).h(1F);
+
+        /* Hardcoded viewport values */
+        this.morph.fov = 40;
+        this.morph.setScale(2.1F);
+        this.morph.setRotation(-27, 5);
+        this.morph.setPosition(-0.1313307F, 1.3154614F, 0.0359409F);
+        this.morph.setEnabled(false);
+
         this.area = new GuiElement(mc);
         this.area.flex().relative(this.viewport).x(0.2F).y(20).w(0.4F).h(1F, -20);
 
@@ -63,8 +79,14 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
 
         this.crafting.add(this.back);
 
+        GuiDrawable drawable = new GuiDrawable((context) ->
+        {
+            Gui.drawRect(0, 0, this.area.area.x(0.65F), this.area.area.ey(), 0xaa000000);
+            GuiDraw.drawHorizontalGradientRect(this.area.area.x(0.65F), 0, this.area.area.x(1.125F), this.area.area.ey(), 0xaa000000, 0);
+        });
+
         this.area.add(this.crafting, this.replies, this.reaction);
-        this.root.add(this.area);
+        this.root.add(this.morph, drawable, this.area);
         this.reaction.add(this.reactionText);
 
         this.setFragment(fragment);
@@ -98,6 +120,11 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
 
     private void setFragment(PacketDialogueFragment fragment)
     {
+        if (fragment.morph != null)
+        {
+            this.morph.morph.set(fragment.morph);
+        }
+
         this.fragment = fragment;
         this.table = null;
 
@@ -170,14 +197,12 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
-        Gui.drawRect(0, 0, this.area.area.x(0.65F), this.area.area.x(1.125F), 0xaa000000);
-        GuiDraw.drawHorizontalGradientRect(this.area.area.x(0.65F), 0, this.area.area.x(1.125F), this.area.area.ey(), 0xaa000000, 0);
+
+        super.drawScreen(mouseX, mouseY, partialTicks);
 
         int y = this.table != null ? this.crafting.area.y - 1 : this.replies.area.y - 1;
         GuiDraw.drawHorizontalGradientRect(this.replies.area.x - 20, y, this.replies.area.mx(), y + 1, 0, 0x88ffffff);
         GuiDraw.drawHorizontalGradientRect(this.replies.area.mx(), y, this.replies.area.ex() + 20, y + 1, 0x88ffffff, 0);
-
-        super.drawScreen(mouseX, mouseY, partialTicks);
 
         this.drawCenteredString(this.fontRenderer, this.fragment.title, this.reaction.area.mx(), 10, 0xffffff);
     }

@@ -1,7 +1,7 @@
 package mchorse.mappet.client.gui.panels;
 
 import mchorse.mappet.client.gui.GuiMappetDashboard;
-import mchorse.mappet.client.gui.utils.GuiRegionEditor;
+import mchorse.mappet.client.gui.regions.GuiRegionEditor;
 import mchorse.mappet.client.renders.tile.TileRegionRenderer;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.blocks.PacketEditRegion;
