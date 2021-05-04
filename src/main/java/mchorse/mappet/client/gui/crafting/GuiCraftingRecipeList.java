@@ -22,7 +22,7 @@ public class GuiCraftingRecipeList extends GuiListElement<CraftingRecipe>
     {
         super.drawElementPart(element, i, x, y, hover, selected);
 
-        if (this.area.w > 300)
+        if (this.area.w > 200)
         {
             RenderHelper.enableGUIStandardItemLighting();
 

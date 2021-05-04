@@ -1,6 +1,6 @@
 package mchorse.mappet.network.client.crafting;
 
-import mchorse.mappet.client.gui.GuiCraftingTableScreen;
+import mchorse.mappet.client.gui.crafting.ICraftingScreen;
 import mchorse.mappet.network.common.crafting.PacketCraft;
 import mchorse.mclib.network.ClientMessageHandler;
 import net.minecraft.client.Minecraft;
@@ -17,9 +17,9 @@ public class ClientHandlerCraft extends ClientMessageHandler<PacketCraft>
     {
         GuiScreen screen = Minecraft.getMinecraft().currentScreen;
 
-        if (screen instanceof GuiCraftingTableScreen)
+        if (screen instanceof ICraftingScreen)
         {
-            ((GuiCraftingTableScreen) screen).refresh();
+            ((ICraftingScreen) screen).refresh();
         }
     }
 }

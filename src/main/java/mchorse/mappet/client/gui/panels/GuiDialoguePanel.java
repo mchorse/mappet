@@ -2,6 +2,7 @@ package mchorse.mappet.client.gui.panels;
 
 import mchorse.mappet.api.dialogues.DialogueManager;
 import mchorse.mappet.api.dialogues.DialogueNodeSystem;
+import mchorse.mappet.api.dialogues.nodes.CraftingNode;
 import mchorse.mappet.api.dialogues.nodes.DialogueNode;
 import mchorse.mappet.api.events.nodes.CommandNode;
 import mchorse.mappet.api.events.nodes.ConditionNode;
@@ -10,6 +11,7 @@ import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.nodes.GuiCommandNodePanel;
 import mchorse.mappet.client.gui.nodes.GuiConditionNodePanel;
+import mchorse.mappet.client.gui.nodes.GuiCraftingNodePanel;
 import mchorse.mappet.client.gui.nodes.GuiDialogueNodePanel;
 import mchorse.mappet.client.gui.nodes.GuiNodeGraph;
 import mchorse.mappet.client.gui.nodes.GuiNodePanel;
@@ -59,6 +61,11 @@ public class GuiDialoguePanel extends GuiMappetDashboardPanel<DialogueNodeSystem
             else if (node instanceof DialogueNode)
             {
                 panel = new GuiDialogueNodePanel(this.mc);
+                panel.set(node);
+            }
+            else if (node instanceof CraftingNode)
+            {
+                panel = new GuiCraftingNodePanel(this.mc);
                 panel.set(node);
             }
 

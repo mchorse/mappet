@@ -5,6 +5,7 @@ import mchorse.mappet.api.dialogues.DialogueContext;
 import mchorse.mappet.api.dialogues.DialogueFragment;
 import mchorse.mappet.api.dialogues.DialogueNodeSystem;
 import mchorse.mappet.api.dialogues.nodes.ReplyNode;
+import mchorse.mappet.api.events.nodes.EventNode;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.network.Dispatcher;
@@ -25,18 +26,15 @@ public class ServerHandlerPickReply extends ServerMessageHandler<PacketPickReply
 
         if (character != null && character.getDialogue() != null)
         {
+            int i = message.index;
+
             DialogueNodeSystem dialogue = character.getDialogue();
-            ReplyNode reply = character.getDialogueContext().replyNodes.get(message.index);
             DialogueContext context = character.getDialogueContext();
+            EventNode node = i >= 0 && i < context.replyNodes.size() ? context.replyNodes.get(message.index) : context.crafting;
 
-            context.reactionNode = null;
-            context.replyNodes.clear();
-            Mappet.dialogues.recursiveExecute(dialogue, reply, context, true);
-
-            List<DialogueFragment> replies = context.replyNodes.stream().map((r) -> r.message).collect(Collectors.toList());
-            DialogueFragment reaction = context.reactionNode == null ? new DialogueFragment() : context.reactionNode.message;
-
-            Dispatcher.sendTo(new PacketDialogueFragment(dialogue.title, reaction, replies), player);
+            context.reset();
+            Mappet.dialogues.recursiveExecute(dialogue, node, context, true);
+            Mappet.dialogues.handleContext(player, dialogue, context);
         }
     }
 }

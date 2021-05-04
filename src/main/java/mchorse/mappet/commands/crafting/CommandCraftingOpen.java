@@ -1,5 +1,6 @@
 package mchorse.mappet.commands.crafting;
 
+import mchorse.mappet.Mappet;
 import mchorse.mappet.api.crafting.CraftingTable;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
@@ -49,12 +50,6 @@ public class CommandCraftingOpen extends CommandCraftingBase
             throw new CommandException("crafting.empty", args[1]);
         }
 
-        ICharacter character = Character.get(player);
-
-        if (character != null)
-        {
-            character.setCraftingTable(table);
-            Dispatcher.sendTo(new PacketCraftingTable(table), player);
-        }
+        Mappet.crafting.open(player, table);
     }
 }

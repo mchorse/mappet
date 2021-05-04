@@ -1,6 +1,8 @@
 package mchorse.mappet.network.common.dialogue;
 
 import io.netty.buffer.ByteBuf;
+import mchorse.mappet.Mappet;
+import mchorse.mappet.api.crafting.CraftingTable;
 import mchorse.mappet.api.dialogues.DialogueFragment;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -13,6 +15,7 @@ public class PacketDialogueFragment implements IMessage
     public String title = "";
     public DialogueFragment reaction = new DialogueFragment();
     public List<DialogueFragment> replies = new ArrayList<DialogueFragment>();
+    public CraftingTable table;
 
     public PacketDialogueFragment()
     {}
@@ -22,6 +25,11 @@ public class PacketDialogueFragment implements IMessage
         this.title = title;
         this.reaction = reaction;
         this.replies = replies;
+    }
+
+    public void addCraftingTable(CraftingTable table)
+    {
+        this.table = table;
     }
 
     @Override
@@ -37,6 +45,13 @@ public class PacketDialogueFragment implements IMessage
             fragment.deserializeNBT(ByteBufUtils.readTag(buf));
             this.replies.add(fragment);
         }
+
+        if (buf.readBoolean())
+        {
+            String id = ByteBufUtils.readUTF8String(buf);
+
+            this.table = Mappet.crafting.create(id, ByteBufUtils.readTag(buf));
+        }
     }
 
     @Override
@@ -50,6 +65,14 @@ public class PacketDialogueFragment implements IMessage
         for (DialogueFragment fragment : this.replies)
         {
             ByteBufUtils.writeTag(buf, fragment.serializeNBT());
+        }
+
+        buf.writeBoolean(this.table != null);
+
+        if (this.table != null)
+        {
+            ByteBufUtils.writeUTF8String(buf, this.table.getId());
+            ByteBufUtils.writeTag(buf, this.table.serializeNBT());
         }
     }
 }

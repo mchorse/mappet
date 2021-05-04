@@ -49,7 +49,7 @@ public class GuiText extends GuiElement
 
     public GuiText color(int color, boolean shadow)
     {
-        this.color = color;
+        this.color = this.hoverColor = color;
         this.shadow = shadow;
 
         return this;

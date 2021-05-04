@@ -70,6 +70,7 @@ public class GuiTriggerElement extends GuiElement
         {
             this.triggerEvent.setText(trigger.triggerEvent);
             this.command.setText(trigger.command);
+            this.dialogue.setText(trigger.dialogue);
         }
     }
 

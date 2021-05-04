@@ -1,6 +1,7 @@
 package mchorse.mappet.api.dialogues;
 
 import mchorse.mappet.Mappet;
+import mchorse.mappet.api.crafting.CraftingTable;
 import mchorse.mappet.api.dialogues.nodes.CraftingNode;
 import mchorse.mappet.api.dialogues.nodes.ReactionNode;
 import mchorse.mappet.api.dialogues.nodes.ReplyNode;
@@ -25,6 +26,7 @@ public class DialogueManager extends BaseManager<DialogueNodeSystem>
     public static final MapNodeFactory FACTORY = EventManager.FACTORY.copy()
         .register("reply", ReplyNode.class)
         .register("reaction", ReactionNode.class)
+        .register("crafting", CraftingNode.class)
         .unregister("timer");
 
     public DialogueManager(File folder)
@@ -57,10 +59,36 @@ public class DialogueManager extends BaseManager<DialogueNodeSystem>
             character.getStates().readDialogue(dialogue.getId());
             Mappet.dialogues.execute(dialogue, context);
 
-            List<DialogueFragment> replies = context.replyNodes.stream().map((r) -> r.message).collect(Collectors.toList());
-
-            Dispatcher.sendTo(new PacketDialogueFragment(dialogue.title, context.reactionNode.message, replies), player);
+            this.handleContext(player, dialogue, context);
         }
+    }
+
+    public void handleContext(EntityPlayerMP player, DialogueNodeSystem dialogue, DialogueContext context)
+    {
+        List<DialogueFragment> replies = context.replyNodes.stream().map((r) -> r.message).collect(Collectors.toList());
+        DialogueFragment reaction = context.reactionNode == null ? new DialogueFragment() : context.reactionNode.message;
+
+        PacketDialogueFragment packet = new PacketDialogueFragment(dialogue.title, reaction, replies);
+        ICharacter character = Character.get(player);
+
+        if (context.crafting != null)
+        {
+            CraftingTable table = Mappet.crafting.load(context.crafting.table);
+
+            if (table != null)
+            {
+                table.filter(player);
+
+                character.setCraftingTable(table);
+                packet.addCraftingTable(table);
+            }
+        }
+        else
+        {
+            character.setCraftingTable(null);
+        }
+
+        Dispatcher.sendTo(packet, player);
     }
 
     /* Dialogue execution */
