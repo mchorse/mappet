@@ -118,4 +118,9 @@ public class Trigger implements INBTSerializable<NBTTagCompound>
             this.dialogue = tag.getString("Dialogue");
         }
     }
+
+    public boolean isEmpty()
+    {
+        return this.triggerEvent.isEmpty() && this.command.isEmpty() && this.dialogue.isEmpty();
+    }
 }

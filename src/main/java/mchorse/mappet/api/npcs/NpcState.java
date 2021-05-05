@@ -268,9 +268,9 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         {
             this.hasPost = Boolean.parseBoolean(value);
         }
-        else if (property.equals("patrol"))
+        else if (property.equals("post"))
         {
-            String[] splits = property.split(" ");
+            String[] splits = value.split(" ");
 
             if (splits.length >= 3)
             {

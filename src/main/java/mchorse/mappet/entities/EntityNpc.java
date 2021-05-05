@@ -401,12 +401,17 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     @Override
     protected boolean processInteract(EntityPlayer player, EnumHand hand)
     {
-        if (hand == EnumHand.MAIN_HAND)
+        if (!this.world.isRemote)
         {
-            this.state.triggerInteract.trigger(this);
+            if (hand == EnumHand.MAIN_HAND)
+            {
+                this.state.triggerInteract.trigger(this);
+            }
+
+            return !this.state.triggerInteract.isEmpty();
         }
 
-        return hand == EnumHand.MAIN_HAND;
+        return false;
     }
 
     /* NBT (de)serialization */

@@ -2,7 +2,9 @@ package mchorse.mappet.client.gui.nodes;
 
 import mchorse.mappet.api.dialogues.nodes.DialogueNode;
 import mchorse.mappet.api.dialogues.nodes.ReactionNode;
+import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
+import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.client.gui.creative.GuiCreativeMorphsMenu;
 import mchorse.metamorph.client.gui.creative.GuiNestedEdit;
 import net.minecraft.client.Minecraft;
@@ -33,9 +35,11 @@ public class GuiReactionNodePanel extends GuiDialogueNodePanel
 
         GuiElement parent = this.getParentContainer();
 
+        GuiBase.getCurrent().unfocus();
+
         menu.callback = (morph) ->
         {
-            morph = morph.copy();
+            morph = MorphUtils.copy(morph);
 
             this.get().morph = morph;
             this.morph.setMorph(morph);

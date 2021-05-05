@@ -2,6 +2,7 @@ package mchorse.mappet.client.gui.npc;
 
 import mchorse.mappet.api.npcs.NpcState;
 import mchorse.mappet.client.gui.npc.utils.GuiNpcDrops;
+import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
@@ -45,6 +46,8 @@ public class GuiNpcGeneralPanel extends GuiNpcPanel
         {
             return;
         }
+
+        GuiBase.getCurrent().unfocus();
 
         GuiElement parent = this.getParentContainer();
 
