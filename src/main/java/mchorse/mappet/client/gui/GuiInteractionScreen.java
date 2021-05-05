@@ -18,6 +18,7 @@ import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDrawable;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.mclib.utils.ColorUtils;
 import mchorse.metamorph.api.MorphManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -89,7 +90,7 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
         this.root.add(this.morph, drawable, this.area);
         this.reaction.add(this.reactionText);
 
-        this.setFragment(fragment);
+        this.pickReply(fragment);
     }
 
     @Override
@@ -128,7 +129,8 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
         this.fragment = fragment;
         this.table = null;
 
-        this.reactionText.text(fragment.reaction.text.replace("\\n", "\n"));
+        this.reactionText.text(fragment.reaction.getProcessedText());
+        this.reactionText.color(fragment.reaction.color, true);
         this.replies.removeAll();
 
         for (DialogueFragment reply : fragment.replies)
@@ -136,7 +138,9 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
             GuiClickableText replyElement = new GuiClickableText(Minecraft.getMinecraft());
 
             replyElement.callback(this::pickReply);
-            this.replies.add(replyElement.text("> " + reply.text.replace("\\n", "\n")).hoverColor(0xffffa0));
+            replyElement.color(reply.color, true);
+            replyElement.hoverColor(ColorUtils.multiplyColor(reply.color, 0.7F));
+            this.replies.add(replyElement.text("> " + reply.getProcessedText()));
         }
 
         this.updateVisibility();
