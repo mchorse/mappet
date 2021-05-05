@@ -1,5 +1,7 @@
 package mchorse.mappet.api.factions;
 
+import mchorse.mappet.Mappet;
+import mchorse.mappet.api.expressions.ExpressionManager;
 import mchorse.mappet.api.states.States;
 import mchorse.mappet.api.utils.AbstractData;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,6 +15,11 @@ public class Faction extends AbstractData
      * The display name of the faction
      */
     public String title = "";
+
+    /**
+     * Enabled condition
+     */
+    public String visible = "";
 
     /**
      * Color of the faction
@@ -75,12 +82,23 @@ public class Faction extends AbstractData
         return attitude == null ? this.othersAttitude : attitude;
     }
 
+    public boolean isVisible()
+    {
+        if (!this.visible.isEmpty())
+        {
+            return Mappet.expressions.evaluate(this.visible, ExpressionManager.ONE).booleanValue();
+        }
+
+        return true;
+    }
+
     @Override
     public NBTTagCompound serializeNBT()
     {
         NBTTagCompound tag = new NBTTagCompound();
 
         tag.setString("Title", this.title);
+        tag.setString("Visible", this.visible.trim());
         tag.setInteger("Color", this.color);
         tag.setInteger("DefaultScore", this.score);
         tag.setString("PlayerAttitude", this.playerAttitude.name());
@@ -106,6 +124,7 @@ public class Faction extends AbstractData
     public void deserializeNBT(NBTTagCompound tag)
     {
         if (tag.hasKey("Title")) this.title = tag.getString("Title");
+        if (tag.hasKey("Visible")) this.visible = tag.getString("Visible");
         if (tag.hasKey("Color")) this.color = tag.getInteger("Color");
         if (tag.hasKey("DefaultScore")) this.score = tag.getInteger("DefaultScore");
         if (tag.hasKey("PlayerAttitude")) this.playerAttitude = FactionAttitude.get(tag.getString("PlayerAttitude"));

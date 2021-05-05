@@ -33,6 +33,7 @@ import java.util.function.Consumer;
 public class GuiFactionPanel extends GuiMappetDashboardPanel<Faction>
 {
     public GuiTextElement title;
+    public GuiTextElement visible;
     public GuiColorElement color;
     public GuiTrackpadElement score;
 
@@ -67,6 +68,7 @@ public class GuiFactionPanel extends GuiMappetDashboardPanel<Faction>
         super(mc, dashboard);
 
         this.title = new GuiTextElement(mc, 1000, (t) -> this.data.title = t);
+        this.visible = new GuiTextElement(mc, 1000, (t) -> this.data.visible = t);
         this.color = new GuiColorElement(mc, (c) -> this.data.color = c);
         this.score = new GuiTrackpadElement(mc, (v) -> this.data.score = v.intValue());
         this.score.limit(0).integer();
@@ -111,6 +113,7 @@ public class GuiFactionPanel extends GuiMappetDashboardPanel<Faction>
 
         this.editor.flex().column(0).padding(10);
         this.editor.add(Elements.row(mc, 5, a, b));
+        this.editor.add(Elements.label(IKey.str("Visible expression")).marginTop(12), this.visible);
         this.editor.add(Elements.label(IKey.str("Default score")).marginTop(12), this.score);
         this.editor.add(Elements.row(mc, 5, c, d).marginTop(12));
         this.editor.add(label.marginTop(12), this.relations);
@@ -154,6 +157,7 @@ public class GuiFactionPanel extends GuiMappetDashboardPanel<Faction>
         if (data != null)
         {
             this.title.setText(data.title);
+            this.visible.setText(data.visible);
             this.color.picker.setColor(data.color);
             this.score.setValue(data.score);
 
