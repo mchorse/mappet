@@ -1,33 +1,24 @@
 package mchorse.mappet.client.gui;
 
-import mchorse.mappet.Mappet;
 import mchorse.mappet.api.factions.Faction;
 import mchorse.mappet.api.quests.Quest;
 import mchorse.mappet.api.quests.Quests;
-import mchorse.mappet.api.quests.objectives.IObjective;
-import mchorse.mappet.api.quests.rewards.IReward;
-import mchorse.mappet.api.quests.rewards.ItemStackReward;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.client.gui.factions.GuiFactionCard;
-import mchorse.mappet.client.gui.factions.GuiFactions;
-import mchorse.mappet.client.gui.utils.GuiText;
+import mchorse.mappet.client.gui.quests.GuiQuestCard;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.factions.PacketRequestFactions;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
-import mchorse.mclib.client.gui.framework.elements.buttons.GuiSlotElement;
 import mchorse.mclib.client.gui.framework.elements.list.GuiLabelListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
-import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.Label;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
 
 import java.util.Map;
-import java.util.function.Consumer;
 
 public class GuiJournalScreen extends GuiBase
 {
@@ -88,7 +79,7 @@ public class GuiJournalScreen extends GuiBase
 
         if (value != null)
         {
-            this.fillQuest(this.questArea, value);
+            GuiQuestCard.fillQuest(this.questArea, value, false);
 
             this.root.resize();
             this.root.resize();
@@ -108,50 +99,6 @@ public class GuiJournalScreen extends GuiBase
                 this.questList.setCurrentScroll(label);
 
                 break;
-            }
-        }
-    }
-
-    private void fillQuest(GuiElement element, Quest value)
-    {
-        Minecraft mc = Minecraft.getMinecraft();
-
-        element.add(Elements.label(IKey.str(value.title)).background().marginBottom(12));
-        element.add(new GuiText(mc).text(value.story.replace("\\n", "\n")).color(0xaaaaaa, true).marginBottom(12));
-        element.add(Elements.label(IKey.str("Objectives")));
-
-        for (IObjective objective : value.objectives)
-        {
-            element.add(Elements.label(IKey.str("- " + objective.stringify(mc.player))).color(0xaaaaaa));
-        }
-
-        if (!Mappet.questsPreviewRewards.get())
-        {
-            return;
-        }
-
-        element.add(Elements.label(IKey.str("Rewards")).marginTop(12));
-
-        for (IReward reward : value.rewards)
-        {
-            if (reward instanceof ItemStackReward)
-            {
-                ItemStackReward stack = (ItemStackReward) reward;
-                GuiElement stacks = new GuiElement(mc);
-
-                stacks.flex().h(24).grid(5).resizes(false).width(24);
-
-                for (ItemStack item : stack.stacks)
-                {
-                    GuiSlotElement slot = new GuiSlotElement(mc, 0, (Consumer<GuiSlotElement>) null);
-
-                    slot.setEnabled(false);
-                    slot.stack = item;
-                    slot.drawDisabled = false;
-                    stacks.add(slot);
-                }
-
-                element.add(stacks);
             }
         }
     }

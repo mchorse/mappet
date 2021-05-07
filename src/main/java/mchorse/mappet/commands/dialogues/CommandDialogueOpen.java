@@ -1,21 +1,11 @@
 package mchorse.mappet.commands.dialogues;
 
 import mchorse.mappet.Mappet;
-import mchorse.mappet.api.dialogues.DialogueContext;
-import mchorse.mappet.api.dialogues.DialogueFragment;
-import mchorse.mappet.api.dialogues.DialogueNodeSystem;
-import mchorse.mappet.api.utils.TriggerSender;
-import mchorse.mappet.capabilities.character.Character;
-import mchorse.mappet.capabilities.character.ICharacter;
-import mchorse.mappet.network.Dispatcher;
-import mchorse.mappet.network.common.dialogue.PacketDialogueFragment;
+import mchorse.mappet.api.dialogues.Dialogue;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class CommandDialogueOpen extends CommandDialogueBase
 {
@@ -48,7 +38,7 @@ public class CommandDialogueOpen extends CommandDialogueBase
     {
         String id = args[1];
         EntityPlayerMP player = getPlayer(server, sender, args[0]);
-        DialogueNodeSystem dialogue = this.getDialogue(id);
+        Dialogue dialogue = this.getDialogue(id);
 
         if (dialogue.main == null)
         {

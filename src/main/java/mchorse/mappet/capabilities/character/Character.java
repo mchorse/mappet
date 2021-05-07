@@ -2,7 +2,7 @@ package mchorse.mappet.capabilities.character;
 
 import mchorse.mappet.api.crafting.CraftingTable;
 import mchorse.mappet.api.dialogues.DialogueContext;
-import mchorse.mappet.api.dialogues.DialogueNodeSystem;
+import mchorse.mappet.api.dialogues.Dialogue;
 import mchorse.mappet.api.quests.Quests;
 import mchorse.mappet.api.states.States;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,7 +22,7 @@ public class Character implements ICharacter
 
     private CraftingTable table;
 
-    private DialogueNodeSystem dialogue;
+    private Dialogue dialogue;
     private DialogueContext dialogueContext;
 
     private Instant lastClear = Instant.now();
@@ -52,14 +52,14 @@ public class Character implements ICharacter
     }
 
     @Override
-    public void setDialogue(DialogueNodeSystem dialogue, DialogueContext context)
+    public void setDialogue(Dialogue dialogue, DialogueContext context)
     {
         this.dialogue = dialogue;
         this.dialogueContext = context;
     }
 
     @Override
-    public DialogueNodeSystem getDialogue()
+    public Dialogue getDialogue()
     {
         return this.dialogue;
     }

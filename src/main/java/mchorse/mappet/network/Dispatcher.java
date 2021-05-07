@@ -28,6 +28,7 @@ import mchorse.mappet.network.common.factions.PacketFactions;
 import mchorse.mappet.network.common.factions.PacketRequestFactions;
 import mchorse.mappet.network.common.npc.PacketNpcMorph;
 import mchorse.mappet.network.common.quests.PacketQuest;
+import mchorse.mappet.network.common.quests.PacketQuestAction;
 import mchorse.mappet.network.common.quests.PacketQuests;
 import mchorse.mappet.network.server.blocks.ServerHandlerEditEmitter;
 import mchorse.mappet.network.server.blocks.ServerHandlerEditRegion;
@@ -39,6 +40,7 @@ import mchorse.mappet.network.server.crafting.ServerHandlerCraft;
 import mchorse.mappet.network.server.crafting.ServerHandlerCraftingTable;
 import mchorse.mappet.network.server.dialogue.ServerHandlerPickReply;
 import mchorse.mappet.network.server.factions.ServerHandlerRequestFactions;
+import mchorse.mappet.network.server.quests.ServerHandlerQuestAction;
 import mchorse.mclib.network.AbstractDispatcher;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityTracker;
@@ -91,6 +93,7 @@ public class Dispatcher
             /* Quests */
             this.register(PacketQuest.class, ClientHandlerQuest.class, Side.CLIENT);
             this.register(PacketQuests.class, ClientHandlerQuests.class, Side.CLIENT);
+            this.register(PacketQuestAction.class, ServerHandlerQuestAction.class, Side.SERVER);
 
             /* Factions */
             this.register(PacketFactions.class, ClientHandlerFactions.class, Side.CLIENT);

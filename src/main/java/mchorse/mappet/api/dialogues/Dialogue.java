@@ -5,11 +5,11 @@ import mchorse.mappet.api.utils.nodes.NodeSystem;
 import mchorse.mappet.api.utils.nodes.factory.INodeFactory;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class DialogueNodeSystem extends NodeSystem<EventNode>
+public class Dialogue extends NodeSystem<EventNode>
 {
     public String title = "";
 
-    public DialogueNodeSystem(INodeFactory<EventNode> factory)
+    public Dialogue(INodeFactory<EventNode> factory)
     {
         super(factory);
     }

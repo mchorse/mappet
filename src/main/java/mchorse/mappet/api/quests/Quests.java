@@ -49,19 +49,19 @@ public class Quests implements INBTSerializable<NBTTagCompound>
         }
     }
 
-    public boolean add(String id, Quest quest, EntityPlayer player)
+    public boolean add(Quest quest, EntityPlayer player)
     {
-        if (this.has(id))
+        if (this.has(quest.getId()))
         {
             return false;
         }
 
-        this.quests.put(id, quest);
+        this.quests.put(quest.getId(), quest);
         quest.accept.trigger(player);
 
         if (player instanceof EntityPlayerMP)
         {
-            Dispatcher.sendTo(new PacketQuest(id, quest), (EntityPlayerMP) player);
+            Dispatcher.sendTo(new PacketQuest(quest.getId(), quest), (EntityPlayerMP) player);
         }
 
         return true;

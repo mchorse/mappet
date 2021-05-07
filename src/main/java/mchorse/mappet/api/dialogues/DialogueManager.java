@@ -3,10 +3,12 @@ package mchorse.mappet.api.dialogues;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.crafting.CraftingTable;
 import mchorse.mappet.api.dialogues.nodes.CraftingNode;
+import mchorse.mappet.api.dialogues.nodes.QuestChainNode;
 import mchorse.mappet.api.dialogues.nodes.ReactionNode;
 import mchorse.mappet.api.dialogues.nodes.ReplyNode;
 import mchorse.mappet.api.events.EventManager;
 import mchorse.mappet.api.events.nodes.EventNode;
+import mchorse.mappet.api.quests.chains.QuestContext;
 import mchorse.mappet.api.utils.BaseManager;
 import mchorse.mappet.api.utils.TriggerSender;
 import mchorse.mappet.api.utils.nodes.factory.MapNodeFactory;
@@ -21,12 +23,13 @@ import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class DialogueManager extends BaseManager<DialogueNodeSystem>
+public class DialogueManager extends BaseManager<Dialogue>
 {
     public static final MapNodeFactory FACTORY = EventManager.FACTORY.copy()
         .register("reply", ReplyNode.class)
         .register("reaction", ReactionNode.class)
         .register("crafting", CraftingNode.class)
+        .register("quest", QuestChainNode.class)
         .unregister("timer");
 
     public DialogueManager(File folder)
@@ -35,9 +38,9 @@ public class DialogueManager extends BaseManager<DialogueNodeSystem>
     }
 
     @Override
-    protected DialogueNodeSystem createData(NBTTagCompound tag)
+    protected Dialogue createData(NBTTagCompound tag)
     {
-        DialogueNodeSystem dialogue = new DialogueNodeSystem(FACTORY);
+        Dialogue dialogue = new Dialogue(FACTORY);
 
         if (tag != null)
         {
@@ -47,7 +50,7 @@ public class DialogueManager extends BaseManager<DialogueNodeSystem>
         return dialogue;
     }
 
-    public void open(EntityPlayerMP player, DialogueNodeSystem dialogue)
+    public void open(EntityPlayerMP player, Dialogue dialogue)
     {
         ICharacter character = Character.get(player);
 
@@ -63,7 +66,7 @@ public class DialogueManager extends BaseManager<DialogueNodeSystem>
         }
     }
 
-    public void handleContext(EntityPlayerMP player, DialogueNodeSystem dialogue, DialogueContext context)
+    public void handleContext(EntityPlayerMP player, Dialogue dialogue, DialogueContext context)
     {
         List<DialogueFragment> replies = context.replyNodes.stream().map((r) -> r.message).collect(Collectors.toList());
         DialogueFragment reaction = context.reactionNode == null ? new DialogueFragment() : context.reactionNode.message;
@@ -76,7 +79,16 @@ public class DialogueManager extends BaseManager<DialogueNodeSystem>
             packet.addMorph(context.reactionNode.morph);
         }
 
-        if (context.crafting != null)
+        if (context.quest != null)
+        {
+            QuestContext quests = Mappet.chains.evaluate(context.quest.chain, player, "test");
+
+            if (!quests.quests.isEmpty())
+            {
+                packet.addQuests(quests);
+            }
+        }
+        else if (context.crafting != null)
         {
             CraftingTable table = Mappet.crafting.load(context.crafting.table);
 
@@ -98,7 +110,7 @@ public class DialogueManager extends BaseManager<DialogueNodeSystem>
 
     /* Dialogue execution */
 
-    public DialogueContext execute(DialogueNodeSystem event, DialogueContext context)
+    public DialogueContext execute(Dialogue event, DialogueContext context)
     {
         if (event.main != null)
         {
@@ -108,7 +120,7 @@ public class DialogueManager extends BaseManager<DialogueNodeSystem>
         return context;
     }
 
-    public void recursiveExecute(DialogueNodeSystem system, EventNode node, DialogueContext context, boolean skipFirst)
+    public void recursiveExecute(Dialogue system, EventNode node, DialogueContext context, boolean skipFirst)
     {
         if (context.executions >= Mappet.eventMaxExecutions.get())
         {

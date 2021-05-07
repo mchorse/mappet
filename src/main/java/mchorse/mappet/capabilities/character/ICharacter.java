@@ -2,7 +2,7 @@ package mchorse.mappet.capabilities.character;
 
 import mchorse.mappet.api.crafting.CraftingTable;
 import mchorse.mappet.api.dialogues.DialogueContext;
-import mchorse.mappet.api.dialogues.DialogueNodeSystem;
+import mchorse.mappet.api.dialogues.Dialogue;
 import mchorse.mappet.api.quests.Quests;
 import mchorse.mappet.api.states.States;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,9 +24,9 @@ public interface ICharacter extends INBTSerializable<NBTTagCompound>
 
     /* Dialogue */
 
-    public void setDialogue(DialogueNodeSystem dialogue, DialogueContext context);
+    public void setDialogue(Dialogue dialogue, DialogueContext context);
 
-    public DialogueNodeSystem getDialogue();
+    public Dialogue getDialogue();
 
     public DialogueContext getDialogueContext();
 

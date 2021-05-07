@@ -1,7 +1,7 @@
 package mchorse.mappet.commands.dialogues;
 
 import mchorse.mappet.Mappet;
-import mchorse.mappet.api.dialogues.DialogueNodeSystem;
+import mchorse.mappet.api.dialogues.Dialogue;
 import mchorse.mappet.commands.MappetCommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -13,9 +13,9 @@ import java.util.List;
 
 public abstract class CommandDialogueBase extends MappetCommandBase
 {
-    protected DialogueNodeSystem getDialogue(String id) throws CommandException
+    protected Dialogue getDialogue(String id) throws CommandException
     {
-        DialogueNodeSystem dialogue = Mappet.dialogues.load(id);
+        Dialogue dialogue = Mappet.dialogues.load(id);
 
         if (dialogue == null)
         {

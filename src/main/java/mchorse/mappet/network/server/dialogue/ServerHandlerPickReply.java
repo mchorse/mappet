@@ -2,20 +2,13 @@ package mchorse.mappet.network.server.dialogue;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.dialogues.DialogueContext;
-import mchorse.mappet.api.dialogues.DialogueFragment;
-import mchorse.mappet.api.dialogues.DialogueNodeSystem;
-import mchorse.mappet.api.dialogues.nodes.ReplyNode;
+import mchorse.mappet.api.dialogues.Dialogue;
 import mchorse.mappet.api.events.nodes.EventNode;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
-import mchorse.mappet.network.Dispatcher;
-import mchorse.mappet.network.common.dialogue.PacketDialogueFragment;
 import mchorse.mappet.network.common.dialogue.PacketPickReply;
 import mchorse.mclib.network.ServerMessageHandler;
 import net.minecraft.entity.player.EntityPlayerMP;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class ServerHandlerPickReply extends ServerMessageHandler<PacketPickReply>
 {
@@ -28,9 +21,18 @@ public class ServerHandlerPickReply extends ServerMessageHandler<PacketPickReply
         {
             int i = message.index;
 
-            DialogueNodeSystem dialogue = character.getDialogue();
+            Dialogue dialogue = character.getDialogue();
             DialogueContext context = character.getDialogueContext();
-            EventNode node = i >= 0 && i < context.replyNodes.size() ? context.replyNodes.get(message.index) : context.crafting;
+            EventNode node = context.crafting;
+
+            if (i >= 0 && i < context.replyNodes.size())
+            {
+                node = context.replyNodes.get(i);
+            }
+            else if (context.quest != null)
+            {
+                node = context.quest;
+            }
 
             context.reset();
             Mappet.dialogues.recursiveExecute(dialogue, node, context, true);

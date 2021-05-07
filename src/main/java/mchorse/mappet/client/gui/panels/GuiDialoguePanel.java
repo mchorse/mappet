@@ -1,31 +1,33 @@
 package mchorse.mappet.client.gui.panels;
 
 import mchorse.mappet.api.dialogues.DialogueManager;
-import mchorse.mappet.api.dialogues.DialogueNodeSystem;
+import mchorse.mappet.api.dialogues.Dialogue;
 import mchorse.mappet.api.dialogues.nodes.CraftingNode;
 import mchorse.mappet.api.dialogues.nodes.DialogueNode;
+import mchorse.mappet.api.dialogues.nodes.QuestChainNode;
 import mchorse.mappet.api.dialogues.nodes.ReactionNode;
 import mchorse.mappet.api.events.nodes.CommandNode;
 import mchorse.mappet.api.events.nodes.ConditionNode;
 import mchorse.mappet.api.events.nodes.EventNode;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
-import mchorse.mappet.client.gui.nodes.GuiCommandNodePanel;
-import mchorse.mappet.client.gui.nodes.GuiConditionNodePanel;
-import mchorse.mappet.client.gui.nodes.GuiCraftingNodePanel;
-import mchorse.mappet.client.gui.nodes.GuiDialogueNodePanel;
-import mchorse.mappet.client.gui.nodes.GuiNodeGraph;
-import mchorse.mappet.client.gui.nodes.GuiNodePanel;
-import mchorse.mappet.client.gui.nodes.GuiReactionNodePanel;
+import mchorse.mappet.client.gui.nodes.events.GuiCommandNodePanel;
+import mchorse.mappet.client.gui.nodes.events.GuiConditionNodePanel;
+import mchorse.mappet.client.gui.nodes.dialogues.GuiCraftingNodePanel;
+import mchorse.mappet.client.gui.nodes.dialogues.GuiDialogueNodePanel;
+import mchorse.mappet.client.gui.nodes.GuiEventNodeGraph;
+import mchorse.mappet.client.gui.nodes.GuiEventNodePanel;
+import mchorse.mappet.client.gui.nodes.dialogues.GuiQuestChainNodePanel;
+import mchorse.mappet.client.gui.nodes.dialogues.GuiReactionNodePanel;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.metamorph.client.gui.creative.GuiCreativeMorphsMenu;
 import net.minecraft.client.Minecraft;
 
-public class GuiDialoguePanel extends GuiMappetDashboardPanel<DialogueNodeSystem>
+public class GuiDialoguePanel extends GuiMappetDashboardPanel<Dialogue>
 {
-    public GuiNodeGraph graph;
-    public GuiNodePanel panel;
+    public GuiEventNodeGraph graph;
+    public GuiEventNodePanel panel;
 
     public GuiCreativeMorphsMenu morphs;
 
@@ -33,7 +35,7 @@ public class GuiDialoguePanel extends GuiMappetDashboardPanel<DialogueNodeSystem
     {
         super(mc, dashboard);
 
-        this.graph = new GuiNodeGraph(mc, DialogueManager.FACTORY, this::pickNode);
+        this.graph = new GuiEventNodeGraph(mc, DialogueManager.FACTORY, this::pickNode);
         this.graph.flex().relative(this.editor).wh(1F, 1F);
 
         this.add(this.graph, this.panel);
@@ -61,7 +63,7 @@ public class GuiDialoguePanel extends GuiMappetDashboardPanel<DialogueNodeSystem
 
         if (node != null)
         {
-            GuiNodePanel panel = null;
+            GuiEventNodePanel panel = null;
 
             if (node instanceof CommandNode)
             {
@@ -86,6 +88,11 @@ public class GuiDialoguePanel extends GuiMappetDashboardPanel<DialogueNodeSystem
             else if (node instanceof CraftingNode)
             {
                 panel = new GuiCraftingNodePanel(this.mc);
+                panel.set(node);
+            }
+            else if (node instanceof QuestChainNode)
+            {
+                panel = new GuiQuestChainNodePanel(this.mc);
                 panel.set(node);
             }
 
@@ -114,7 +121,7 @@ public class GuiDialoguePanel extends GuiMappetDashboardPanel<DialogueNodeSystem
     }
 
     @Override
-    public void fill(String id, DialogueNodeSystem data)
+    public void fill(String id, Dialogue data)
     {
         super.fill(id, data);
 

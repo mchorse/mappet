@@ -8,25 +8,25 @@ import mchorse.mappet.api.events.nodes.TimerNode;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
-import mchorse.mappet.client.gui.nodes.GuiCommandNodePanel;
-import mchorse.mappet.client.gui.nodes.GuiConditionNodePanel;
-import mchorse.mappet.client.gui.nodes.GuiNodeGraph;
-import mchorse.mappet.client.gui.nodes.GuiNodePanel;
-import mchorse.mappet.client.gui.nodes.GuiTimerNodePanel;
+import mchorse.mappet.client.gui.nodes.events.GuiCommandNodePanel;
+import mchorse.mappet.client.gui.nodes.events.GuiConditionNodePanel;
+import mchorse.mappet.client.gui.nodes.GuiEventNodeGraph;
+import mchorse.mappet.client.gui.nodes.GuiEventNodePanel;
+import mchorse.mappet.client.gui.nodes.events.GuiTimerNodePanel;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import net.minecraft.client.Minecraft;
 
 public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventNode>>
 {
-    public GuiNodeGraph graph;
-    public GuiNodePanel panel;
+    public GuiEventNodeGraph graph;
+    public GuiEventNodePanel panel;
 
     public GuiEventPanel(Minecraft mc, GuiMappetDashboard dashboard)
     {
         super(mc, dashboard);
 
-        this.graph = new GuiNodeGraph(mc, EventManager.FACTORY, this::pickNode);
+        this.graph = new GuiEventNodeGraph(mc, EventManager.FACTORY, this::pickNode);
         this.graph.flex().relative(this.editor).wh(1F, 1F);
 
         this.add(this.graph, this.panel);
@@ -44,7 +44,7 @@ public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventNode>
 
         if (node != null)
         {
-            GuiNodePanel panel = null;
+            GuiEventNodePanel panel = null;
 
             if (node instanceof CommandNode)
             {

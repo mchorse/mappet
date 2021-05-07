@@ -36,7 +36,7 @@ public class CommandQuestAccept extends CommandQuestBase
         Quest quest = this.getQuest(id);
         ICharacter character = Character.get(player);
 
-        if (character != null && character.getQuests().add(id, quest, player))
+        if (character != null && character.getQuests().add(quest, player))
         {
             this.getL10n().success(sender, "quest.accepted", id, player.getName());
         }

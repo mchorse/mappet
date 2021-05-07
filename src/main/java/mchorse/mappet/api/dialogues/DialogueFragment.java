@@ -9,9 +9,14 @@ public class DialogueFragment implements INBTSerializable<NBTTagCompound>
     public String text = "";
     public int color = 0xffffff;
 
+    public static String process(String text)
+    {
+        return TextUtils.processColoredText(text.replace("\\n", "\n"));
+    }
+
     public String getProcessedText()
     {
-        return TextUtils.processColoredText(this.text.replace("\\n", "\n"));
+        return process(this.text);
     }
 
     @Override

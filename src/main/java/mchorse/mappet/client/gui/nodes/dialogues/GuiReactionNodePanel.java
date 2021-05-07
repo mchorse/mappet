@@ -1,4 +1,4 @@
-package mchorse.mappet.client.gui.nodes;
+package mchorse.mappet.client.gui.nodes.dialogues;
 
 import mchorse.mappet.api.dialogues.nodes.DialogueNode;
 import mchorse.mappet.api.dialogues.nodes.ReactionNode;

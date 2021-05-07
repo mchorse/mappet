@@ -1,5 +1,6 @@
 package mchorse.mappet.api.utils.nodes;
 
+import mchorse.mappet.api.quests.chains.QuestNode;
 import mchorse.mappet.api.utils.AbstractData;
 import mchorse.mappet.api.utils.nodes.factory.INodeFactory;
 import net.minecraft.nbt.NBTTagCompound;
@@ -291,5 +292,29 @@ public class NodeSystem <T extends Node> extends AbstractData
         {
             this.main = this.nodes.get(UUID.fromString(tag.getString("Main")));
         }
+    }
+
+    public List<T> getRoots()
+    {
+        List<T> roots = new ArrayList<T>();
+
+        main:
+        for (T node : this.nodes.values())
+        {
+            for (List<NodeRelation<T>> relations : this.relations.values())
+            {
+                for (NodeRelation<T> relation : relations)
+                {
+                    if (relation.input == node)
+                    {
+                        continue main;
+                    }
+                }
+            }
+
+            roots.add(node);
+        }
+
+        return roots;
     }
 }

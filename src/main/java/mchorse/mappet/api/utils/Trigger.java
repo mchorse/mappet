@@ -1,10 +1,9 @@
 package mchorse.mappet.api.utils;
 
 import mchorse.mappet.Mappet;
-import mchorse.mappet.api.dialogues.DialogueNodeSystem;
+import mchorse.mappet.api.dialogues.Dialogue;
 import mchorse.mappet.api.events.EventContext;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -58,7 +57,7 @@ public class Trigger implements INBTSerializable<NBTTagCompound>
 
         if (!this.dialogue.isEmpty() && target instanceof EntityPlayerMP)
         {
-            DialogueNodeSystem dialogue = Mappet.dialogues.load(this.dialogue);
+            Dialogue dialogue = Mappet.dialogues.load(this.dialogue);
 
             if (dialogue != null)
             {

@@ -2,6 +2,7 @@ package mchorse.mappet.client.gui.nodes;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.events.nodes.EventNode;
+import mchorse.mappet.api.utils.nodes.Node;
 import mchorse.mappet.api.utils.nodes.NodeRelation;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
 import mchorse.mappet.api.utils.nodes.factory.INodeFactory;
@@ -37,7 +38,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class GuiNodeGraph extends GuiCanvas
+public class GuiNodeGraph <T extends Node> extends GuiCanvas
 {
     public static final IKey KEYS_CATEGORY = IKey.str("Node editor");
     public static final IKey ADD_CATEGORY = IKey.str("Add nodes");
@@ -47,17 +48,17 @@ public class GuiNodeGraph extends GuiCanvas
     public static final int ELSE = 0xff0044;
     public static final int INACTIVE = 0xffbb00;
 
-    public NodeSystem<EventNode> system;
+    public NodeSystem<T> system;
 
-    private List<EventNode> selected = new ArrayList<EventNode>();
+    private List<T> selected = new ArrayList<T>();
     private boolean lastSelected;
     private boolean selecting;
     private int lastNodeX;
     private int lastNodeY;
 
-    private Consumer<EventNode> callback;
+    private Consumer<T> callback;
 
-    public GuiNodeGraph(Minecraft mc, INodeFactory<EventNode> factory, Consumer<EventNode> callback)
+    public GuiNodeGraph(Minecraft mc, INodeFactory<T> factory, Consumer<T> callback)
     {
         super(mc);
 
@@ -109,7 +110,7 @@ public class GuiNodeGraph extends GuiCanvas
 
     private void addNode(String key, int x, int y)
     {
-        EventNode node = this.system.getFactory().create(key);
+        T node = this.system.getFactory().create(key);
 
         if (node != null)
         {
@@ -123,7 +124,7 @@ public class GuiNodeGraph extends GuiCanvas
 
     private void removeSelected()
     {
-        for (EventNode selected : this.selected)
+        for (T selected : this.selected)
         {
             this.system.remove(selected);
         }
@@ -138,13 +139,13 @@ public class GuiNodeGraph extends GuiCanvas
             return;
         }
 
-        EventNode last = this.selected.get(this.selected.size() - 1);
-        List<EventNode> nodes = new ArrayList<EventNode>(this.selected);
+        T last = this.selected.get(this.selected.size() - 1);
+        List<T> nodes = new ArrayList<T>(this.selected);
 
         nodes.remove(last);
         nodes.sort(Comparator.comparingInt(a -> a.x));
 
-        for (EventNode node : nodes)
+        for (T node : nodes)
         {
             this.system.tie(last, node);
         }
@@ -157,7 +158,7 @@ public class GuiNodeGraph extends GuiCanvas
             return;
         }
 
-        EventNode last = this.selected.get(this.selected.size() - 1);
+        T last = this.selected.get(this.selected.size() - 1);
 
         for (int i = 0; i < this.selected.size() - 1; i++)
         {
@@ -175,7 +176,7 @@ public class GuiNodeGraph extends GuiCanvas
         this.system.main = this.selected.get(this.selected.size() - 1);
     }
 
-    public void setNode(EventNode node)
+    public void setNode(T node)
     {
         if (this.callback != null)
         {
@@ -183,12 +184,12 @@ public class GuiNodeGraph extends GuiCanvas
         }
     }
 
-    public void select(EventNode node)
+    public void select(T node)
     {
         this.select(node, false);
     }
 
-    public void select(EventNode node, boolean add)
+    public void select(T node, boolean add)
     {
         if (!add)
         {
@@ -203,7 +204,7 @@ public class GuiNodeGraph extends GuiCanvas
         this.setNode(node);
     }
 
-    public Area getNodeArea(EventNode node)
+    public Area getNodeArea(T node)
     {
         int x1 = this.toX(node.x - 60);
         int y1 = this.toY(node.y - 35);
@@ -215,7 +216,7 @@ public class GuiNodeGraph extends GuiCanvas
         return Area.SHARED;
     }
 
-    public void set(NodeSystem<EventNode> system)
+    public void set(NodeSystem<T> system)
     {
         this.system = system;
 
@@ -228,7 +229,7 @@ public class GuiNodeGraph extends GuiCanvas
 
             if (system.main == null && !system.nodes.isEmpty())
             {
-                for (EventNode node : system.nodes.values())
+                for (T node : system.nodes.values())
                 {
                     x += node.x;
                     y += node.y;
@@ -263,11 +264,11 @@ public class GuiNodeGraph extends GuiCanvas
             this.lastNodeX = (int) this.fromX(context.mouseX);
             this.lastNodeY = (int) this.fromY(context.mouseY);
             boolean shift = GuiScreen.isShiftKeyDown();
-            List<EventNode> nodes = new ArrayList<EventNode>(this.system.nodes.values());
+            List<T> nodes = new ArrayList<T>(this.system.nodes.values());
 
             Collections.reverse(nodes);
 
-            for (EventNode node : nodes)
+            for (T node : nodes)
             {
                 Area nodeArea = this.getNodeArea(node);
 
@@ -321,7 +322,7 @@ public class GuiNodeGraph extends GuiCanvas
 
             area.setPoints(this.lastX, this.lastY, context.mouseX, context.mouseY);
 
-            for (EventNode node : this.system.nodes.values())
+            for (T node : this.system.nodes.values())
             {
                 Area nodeArea = this.getNodeArea(node);
 
@@ -351,7 +352,7 @@ public class GuiNodeGraph extends GuiCanvas
             int lastNodeX = (int) this.fromX(context.mouseX);
             int lastNodeY = (int) this.fromY(context.mouseY);
 
-            for (EventNode node : this.selected)
+            for (T node : this.selected)
             {
                 node.x += lastNodeX - this.lastNodeX;
                 node.y += lastNodeY - this.lastNodeY;
@@ -381,7 +382,7 @@ public class GuiNodeGraph extends GuiCanvas
         GlStateManager.glLineWidth(thickness);
 
         BufferBuilder builder = Tessellator.getInstance().getBuffer();
-        EventNode lastSelected = this.selected.isEmpty() ? null : this.selected.get(this.selected.size() - 1);
+        T lastSelected = this.selected.isEmpty() ? null : this.selected.get(this.selected.size() - 1);
         List<Vector2d> positions = new ArrayList<Vector2d>();
 
         /* Draw connections */
@@ -397,7 +398,7 @@ public class GuiNodeGraph extends GuiCanvas
         /* Draw node boxes */
         Area main = null;
 
-        for (EventNode node : this.system.nodes.values())
+        for (T node : this.system.nodes.values())
         {
             Area nodeArea = this.getNodeArea(node);
 
@@ -431,7 +432,7 @@ public class GuiNodeGraph extends GuiCanvas
             Vector2d pos = positions.get(i);
             String label = String.valueOf(i);
 
-            this.font.drawStringWithShadow(label, (int) pos.x - this.font.getStringWidth(label) / 2, (int) pos.y - 4, lastSelected.binary && i >= 2 ? 0x666666 : 0xffffff);
+            this.font.drawStringWithShadow(label, (int) pos.x - this.font.getStringWidth(label) / 2, (int) pos.y - 4, this.getIndexLabelColor(lastSelected, i));
         }
 
         /* Draw main entry node icon */
@@ -450,7 +451,7 @@ public class GuiNodeGraph extends GuiCanvas
         }
     }
 
-    private void renderConnections(GuiContext context, BufferBuilder builder, List<Vector2d> positions, EventNode lastSelected)
+    private void renderConnections(GuiContext context, BufferBuilder builder, List<Vector2d> positions, T lastSelected)
     {
         float factor = (context.tick + context.partialTicks) / 60F;
         final float segments = 8F;
@@ -458,24 +459,20 @@ public class GuiNodeGraph extends GuiCanvas
         Color a = new Color();
         Color b = new Color();
 
-        for (List<NodeRelation<EventNode>> relations : this.system.relations.values())
+        for (List<NodeRelation<T>> relations : this.system.relations.values())
         {
             for (int r = 0; r < relations.size(); r++)
             {
-                NodeRelation<EventNode> relation = relations.get(r);
+                NodeRelation<T> relation = relations.get(r);
 
                 int x1 = this.toX(relation.input.x);
                 int y1 = this.toY(relation.input.y - 42);
                 int x2 = this.toX(relation.output.x);
                 int y2 = this.toY(relation.output.y + 42);
 
-                float opacity = 0.75F;
-                boolean binary = relation.output.binary;
-
-                if (binary && r >= 2)
-                {
-                    opacity = 0.25F;
-                }
+                float opacity = this.getNodeActiveColorOpacity(relation.output, r);
+                int c1 = Mappet.nodePulseBackgroundMcLibPrimary.get() ? McLib.primaryColor.get() : Mappet.nodePulseBackgroundColor.get();
+                int c2 = this.getNodeActiveColor(relation.output, r);
 
                 for (int i = 0; i < segments; i ++)
                 {
@@ -489,14 +486,6 @@ public class GuiNodeGraph extends GuiCanvas
 
                     color1 = Math.max(color1, 1 - MathUtils.clamp(Math.abs(((1 - factor1) - 1) - (factor % 1)) / 0.2F, 0F, 1F));
                     color2 = Math.max(color2, 1 - MathUtils.clamp(Math.abs(((1 - factor2) - 1) - (factor % 1)) / 0.2F, 0F, 1F));
-
-                    int c1 = Mappet.nodePulseBackgroundMcLibPrimary.get() ? McLib.primaryColor.get() : Mappet.nodePulseBackgroundColor.get();
-                    int c2 = ACTIVE;
-
-                    if (binary)
-                    {
-                        c2 = r == 0 ? IF : (r == 1 ? ELSE : INACTIVE);
-                    }
 
                     ColorUtils.interpolate(a, c1, c2, color1, false);
                     ColorUtils.interpolate(b, c1, c2, color2, false);
@@ -532,5 +521,20 @@ public class GuiNodeGraph extends GuiCanvas
                 }
             }
         }
+    }
+
+    protected int getIndexLabelColor(T lastSelected, int i)
+    {
+        return 0xffffff;
+    }
+
+    protected int getNodeActiveColor(T output, int r)
+    {
+        return ACTIVE;
+    }
+
+    protected float getNodeActiveColorOpacity(T output, int r)
+    {
+        return 0.75F;
     }
 }

@@ -4,6 +4,8 @@ import io.netty.buffer.ByteBuf;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.crafting.CraftingTable;
 import mchorse.mappet.api.dialogues.DialogueFragment;
+import mchorse.mappet.api.quests.chains.QuestContext;
+import mchorse.mappet.api.quests.chains.QuestInfo;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -19,6 +21,7 @@ public class PacketDialogueFragment implements IMessage
     public DialogueFragment reaction = new DialogueFragment();
     public List<DialogueFragment> replies = new ArrayList<DialogueFragment>();
     public CraftingTable table;
+    public List<QuestInfo> quests = new ArrayList<QuestInfo>();
 
     public PacketDialogueFragment()
     {}
@@ -38,6 +41,11 @@ public class PacketDialogueFragment implements IMessage
     public void addCraftingTable(CraftingTable table)
     {
         this.table = table;
+    }
+
+    public void addQuests(QuestContext context)
+    {
+        this.quests.addAll(context.quests);
     }
 
     @Override
@@ -61,6 +69,14 @@ public class PacketDialogueFragment implements IMessage
 
             this.table = Mappet.crafting.create(id, ByteBufUtils.readTag(buf));
         }
+
+        for (int i = 0, c = buf.readInt(); i < c; i++)
+        {
+            QuestInfo info = new QuestInfo();
+
+            info.fromBytes(buf);
+            this.quests.add(info);
+        }
     }
 
     @Override
@@ -83,6 +99,13 @@ public class PacketDialogueFragment implements IMessage
         {
             ByteBufUtils.writeUTF8String(buf, this.table.getId());
             ByteBufUtils.writeTag(buf, this.table.serializeNBT());
+        }
+
+        buf.writeInt(this.quests.size());
+
+        for (QuestInfo info : this.quests)
+        {
+            info.toBytes(buf);
         }
     }
 }

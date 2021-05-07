@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.text.TextFormatting;
 
 import java.util.List;
 import java.util.Map;
@@ -46,11 +47,20 @@ public class GuiQuestTracker extends Gui
 
     private static int renderQuest(Minecraft mc, Quest value, int x, int y, int w)
     {
+        /* TODO: optimize */
+        boolean questComplete = value.isComplete(mc.player);
+        String title = value.title;
+
+        if (questComplete)
+        {
+            title = TextFormatting.GOLD + title;
+        }
+
         GlStateManager.enableBlend();
         GlStateManager.enableAlpha();
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         GuiDraw.drawHorizontalGradientRect(x, y, x + w, y + 16, 0x11000000, 0xaa000000);
-        mc.fontRenderer.drawStringWithShadow(value.title, x + 4, y + 4, 0xffffff);
+        mc.fontRenderer.drawStringWithShadow(title, x + 4, y + 4, 0xffffff);
 
         int original = y;
 
@@ -60,7 +70,7 @@ public class GuiQuestTracker extends Gui
         {
             String description = "- " + objective.stringify(mc.player);
             List<String> lines = mc.fontRenderer.listFormattedStringToWidth(description, w - 6);
-            boolean complete = objective.isComplete(mc.player);
+            boolean complete = questComplete || objective.isComplete(mc.player);
 
             for (String line : lines)
             {

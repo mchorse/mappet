@@ -1,6 +1,7 @@
 package mchorse.mappet.api.dialogues;
 
 import mchorse.mappet.api.dialogues.nodes.CraftingNode;
+import mchorse.mappet.api.dialogues.nodes.QuestChainNode;
 import mchorse.mappet.api.dialogues.nodes.ReactionNode;
 import mchorse.mappet.api.dialogues.nodes.ReplyNode;
 import mchorse.mappet.api.events.EventContext;
@@ -16,6 +17,7 @@ public class DialogueContext extends EventContext
     public ReactionNode reactionNode;
     public List<ReplyNode> replyNodes = new ArrayList<ReplyNode>();
     public CraftingNode crafting;
+    public QuestChainNode quest;
 
     public DialogueContext(TriggerSender sender, EntityLivingBase subject)
     {
@@ -37,5 +39,6 @@ public class DialogueContext extends EventContext
         this.reactionNode = null;
         this.replyNodes.clear();
         this.crafting = null;
+        this.quest = null;
     }
 }

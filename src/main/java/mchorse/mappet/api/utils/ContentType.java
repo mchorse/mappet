@@ -1,11 +1,6 @@
 package mchorse.mappet.api.utils;
 
 import mchorse.mappet.Mappet;
-import mchorse.mappet.api.crafting.CraftingTable;
-import mchorse.mappet.api.dialogues.DialogueNodeSystem;
-import mchorse.mappet.api.events.nodes.EventNode;
-import mchorse.mappet.api.quests.Quest;
-import mchorse.mappet.api.utils.nodes.NodeSystem;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.panels.GuiMappetDashboardPanel;
 import net.minecraft.nbt.NBTTagCompound;
@@ -106,6 +101,21 @@ public enum ContentType
         public GuiMappetDashboardPanel get(GuiMappetDashboard dashboard)
         {
             return dashboard.faction;
+        }
+    },
+    CHAINS()
+    {
+        @Override
+        public IManager<? extends INBTSerializable<NBTTagCompound>> getManager()
+        {
+            return Mappet.chains;
+        }
+
+        @Override
+        @SideOnly(Side.CLIENT)
+        public GuiMappetDashboardPanel get(GuiMappetDashboard dashboard)
+        {
+            return dashboard.chain;
         }
     };
 

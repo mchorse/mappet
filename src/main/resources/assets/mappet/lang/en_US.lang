@@ -116,6 +116,7 @@ mappet.gui.panels.dialogues=Dialogues
 mappet.gui.panels.regions=Regions
 mappet.gui.panels.npcs=NPCs
 mappet.gui.panels.factions=Factions
+mappet.gui.panels.chains=Quest chains
 
 mappet.gui.shapes.box=Box
 mappet.gui.shapes.sphere=Sphere

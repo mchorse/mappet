@@ -1,12 +1,13 @@
-package mchorse.mappet.client.gui.nodes;
+package mchorse.mappet.client.gui.nodes.events;
 
 import mchorse.mappet.api.events.nodes.TimerNode;
+import mchorse.mappet.client.gui.nodes.GuiEventNodePanel;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 
-public class GuiTimerNodePanel extends GuiNodePanel<TimerNode>
+public class GuiTimerNodePanel extends GuiEventNodePanel<TimerNode>
 {
     public GuiTrackpadElement timer;
 
