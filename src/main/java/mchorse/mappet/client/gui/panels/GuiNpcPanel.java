@@ -7,9 +7,14 @@ import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.npc.GuiNpcEditor;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
+import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import mchorse.mclib.client.gui.framework.elements.list.GuiStringListElement;
+import mchorse.mclib.client.gui.framework.elements.modals.GuiConfirmModal;
+import mchorse.mclib.client.gui.framework.elements.modals.GuiModal;
+import mchorse.mclib.client.gui.framework.elements.modals.GuiPromptModal;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
+import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.metamorph.client.gui.creative.GuiCreativeMorphsMenu;
 import net.minecraft.client.Minecraft;
@@ -30,8 +35,20 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
 
         this.pathDistance = new GuiTrackpadElement(mc, (v) -> this.data.pathDistance = v);
 
-        /* TODO: add context menu to add and remove states */
         this.states = new GuiStringListElement(mc, (list) -> this.pickState(list.get(0), false));
+        this.states.context(() ->
+        {
+            GuiSimpleContextMenu menu = new GuiSimpleContextMenu(mc);
+
+            menu.action(Icons.ADD, IKey.str("Add state"), this::addState);
+
+            if (!this.states.isDeselected())
+            {
+                menu.action(Icons.REMOVE, IKey.str("Remove state"), this::removeState);
+            }
+
+            return menu;
+        });
         this.states.flex().relative(this).y(52).w(120).h(1F, -52);
 
         this.npcEditor = new GuiNpcEditor(mc, () -> this.inventory, this.dashboard::getMorphMenu);
@@ -49,6 +66,49 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
         this.fill("", null);
     }
 
+    /* Context menu modals */
+
+    private void addState()
+    {
+        GuiModal.addFullModal(this.states, () -> new GuiPromptModal(this.mc, IKey.str("Type in a name for a new NPC state:"), this::addState));
+    }
+
+    private void addState(String name)
+    {
+        if (!this.data.states.containsKey(name))
+        {
+            NpcState state = new NpcState();
+
+            this.data.states.put(name, state);
+            this.states.add(name);
+            this.states.sort();
+
+            this.pickState(name, true);
+        }
+    }
+
+    private void removeState()
+    {
+        GuiModal.addFullModal(this.states, () -> new GuiConfirmModal(this.mc, IKey.str("Are you sure you want to remove this NPC state?"), this::removeState));
+    }
+
+    private void removeState(boolean confirm)
+    {
+        if (confirm)
+        {
+            int index = this.states.getIndex();
+            String key = this.states.getCurrentFirst();
+
+            this.states.remove(key);
+            this.data.states.remove(key);
+            this.states.setIndex(Math.max(index - 1, 0));
+
+            String state = this.states.isDeselected() ? null : this.states.getList().get(this.states.getIndex());
+
+            this.pickState(state, true);
+        }
+    }
+
     private void pickState(String name, boolean select)
     {
         NpcState state = this.data.states.get(name);
@@ -64,6 +124,8 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
         {
             this.npcEditor.set(state);
         }
+
+        this.resize();
     }
 
     @Override
@@ -109,11 +171,11 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
             this.npcEditor.area.draw(0x66000000);
         }
 
-        super.draw(context);
-
         if (this.pathDistance.isVisible())
         {
             this.font.drawStringWithShadow("Path finding distance", this.pathDistance.area.x, this.pathDistance.area.y - 12, 0xffffff);
         }
+
+        super.draw(context);
     }
 }

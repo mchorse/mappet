@@ -21,6 +21,10 @@ public class NpcManager extends BaseManager<Npc>
         {
             npc.deserializeNBT(tag);
         }
+        else
+        {
+            npc.states.put("default", new NpcState());
+        }
 
         return npc;
     }

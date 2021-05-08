@@ -28,6 +28,7 @@ import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.ColorUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.text.TextFormatting;
 import sun.security.x509.AVA;
 
@@ -321,6 +322,8 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         int y = this.table != null ? this.crafting.area.y - 1 : (this.questInfos != null ? this.quest.area.y - 1 : this.replies.area.y - 1);
+
+        GlStateManager.color(1F, 1F, 1F, 1F);
         GuiDraw.drawHorizontalGradientRect(this.replies.area.x - 20, y, this.replies.area.mx(), y + 1, 0, 0x88ffffff);
         GuiDraw.drawHorizontalGradientRect(this.replies.area.mx(), y, this.replies.area.ex() + 20, y + 1, 0x88ffffff, 0);
 
