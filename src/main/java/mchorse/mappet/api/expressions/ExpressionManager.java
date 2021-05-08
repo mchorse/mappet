@@ -82,8 +82,6 @@ public class ExpressionManager
         this.builder.functions.put("world_is_night", WorldIsNight.class);
     }
 
-    /* TODO: look into caching these values or something */
-
     private void reset()
     {
         this.server = null;

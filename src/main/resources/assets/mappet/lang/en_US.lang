@@ -62,7 +62,7 @@ mappet.commands.mp.quest.complete=This command completes the quest (regardless w
 mappet.commands.mp.quest.decline=This command removes the quest by §7<id>§r from one or multiple §7<player>§r(s).
 
 mappet.commands.mp.crafting.help=Mappet's crafting table subcommand.
-mappet.commands.mp.crafting.open=This command opens a crafting table by §7<id>§r for §7<player>§r(s).
+mappet.commands.mp.crafting.open=This command opens a crafting table by §7<id>§r for §7<player>§r(s). §7[subject_id]§r can be used, which is used for quest chains to determine the receiver.
 mappet.commands.mp.crafting.drop=This command drops an output item stacks from a crafting table by §7<id>§r from its recipe at index §7[index]§r at §7[x] [y] [z]§r.\n\n§7[x] [y] [z]§r support relative position using §7~§r and can be omitted. §7[index]§r can be also §7@r§r which means it will use a random recipe. §7[mx] [my] [mz]§r can be provided to setup initial velocity of item entities.
 
 mappet.commands.mp.event.help=Mappet's event subcommand.

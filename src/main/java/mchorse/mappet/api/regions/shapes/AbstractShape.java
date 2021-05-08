@@ -14,7 +14,6 @@ import javax.vecmath.Vector3d;
  */
 public abstract class AbstractShape implements INBTSerializable<NBTTagCompound>
 {
-    /* TODO: check whether javax.vecmath exists on dedicated server */
     public Vector3d pos = new Vector3d();
 
     public static AbstractShape fromString(String string)

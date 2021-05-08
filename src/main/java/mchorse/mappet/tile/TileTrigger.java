@@ -15,7 +15,9 @@ public class TileTrigger extends TileEntity
 
     public void set(NBTTagCompound left, NBTTagCompound right, boolean collidable)
     {
+        this.leftClick = new Trigger();
         this.leftClick.deserializeNBT(left);
+        this.rightClick = new Trigger();
         this.rightClick.deserializeNBT(right);
         this.world.setBlockState(this.pos, this.world.getBlockState(this.pos).withProperty(BlockTrigger.COLLIDABLE, collidable));
 

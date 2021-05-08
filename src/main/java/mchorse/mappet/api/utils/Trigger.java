@@ -2,6 +2,7 @@ package mchorse.mappet.api.utils;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.dialogues.Dialogue;
+import mchorse.mappet.api.dialogues.DialogueContext;
 import mchorse.mappet.api.events.EventContext;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -61,7 +62,9 @@ public class Trigger implements INBTSerializable<NBTTagCompound>
 
             if (dialogue != null)
             {
-                Mappet.dialogues.open((EntityPlayerMP) target, dialogue);
+                DialogueContext context = new DialogueContext(sender, target);
+
+                Mappet.dialogues.open((EntityPlayerMP) target, dialogue, context);
             }
         }
     }

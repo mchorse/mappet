@@ -4,9 +4,8 @@ import mchorse.mappet.CommonProxy;
 import mchorse.mappet.api.events.nodes.EventNode;
 import mchorse.mappet.api.utils.TriggerSender;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
-import net.minecraft.command.ICommandSender;
+import mchorse.mappet.entities.EntityNpc;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.server.MinecraftServer;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -18,6 +17,7 @@ public class EventContext
 
     public TriggerSender sender;
     public EntityLivingBase subject;
+    public String subjectId;
     public EntityLivingBase object;
 
     public boolean debug;
@@ -27,23 +27,39 @@ public class EventContext
 
     public List<EventExecutionFork> executionForks = new ArrayList<EventExecutionFork>();
 
-    public EventContext(TriggerSender server, EntityLivingBase subject)
-    {
-        this(server, subject, false);
-    }
-
-    public EventContext(TriggerSender sender, EntityLivingBase subject, boolean debug)
+    public EventContext(TriggerSender sender, EntityLivingBase subject)
     {
         this.sender = sender;
         this.subject = subject;
-        this.debug = debug;
     }
 
-    public EventContext(TriggerSender sender, EntityLivingBase subject, EntityLivingBase object, boolean debug)
+    public EventContext(TriggerSender sender, EntityLivingBase subject, EntityLivingBase object)
     {
-        this(sender, subject, debug);
+        this(sender, subject);
 
         this.object = object;
+    }
+
+    public EventContext debug()
+    {
+        this.debug = true;
+
+        return this;
+    }
+
+    public String getSubjectId()
+    {
+        if (this.subjectId != null)
+        {
+            return this.subjectId;
+        }
+
+        if (this.subject instanceof EntityNpc)
+        {
+            return ((EntityNpc) this.subject).getId();
+        }
+
+        return "";
     }
 
     public void addExecutionFork(EventNode node, int timer)

@@ -50,14 +50,12 @@ public class DialogueManager extends BaseManager<Dialogue>
         return dialogue;
     }
 
-    public void open(EntityPlayerMP player, Dialogue dialogue)
+    public void open(EntityPlayerMP player, Dialogue dialogue, DialogueContext context)
     {
         ICharacter character = Character.get(player);
 
         if (character != null)
         {
-            DialogueContext context = new DialogueContext(new TriggerSender().set(player), player);
-
             character.setDialogue(dialogue, context);
             character.getStates().readDialogue(dialogue.getId());
             Mappet.dialogues.execute(dialogue, context);
@@ -81,8 +79,7 @@ public class DialogueManager extends BaseManager<Dialogue>
 
         if (context.quest != null)
         {
-            /* TODO: subject */
-            packet.addQuests(Mappet.chains.evaluate(context.quest.chain, player, "test"));
+            packet.addQuests(Mappet.chains.evaluate(context.quest.chain, player, context.getSubjectId()));
         }
         else if (context.crafting != null)
         {

@@ -2,6 +2,8 @@ package mchorse.mappet.commands.dialogues;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.dialogues.Dialogue;
+import mchorse.mappet.api.dialogues.DialogueContext;
+import mchorse.mappet.api.utils.TriggerSender;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -24,7 +26,7 @@ public class CommandDialogueOpen extends CommandDialogueBase
     @Override
     public String getSyntax()
     {
-        return "{l}{6}/{r}mp {8}dialogue open{r} {7}<player> <id>{r}";
+        return "{l}{6}/{r}mp {8}dialogue open{r} {7}<player> <id> [subject_id]{r}";
     }
 
     @Override
@@ -45,6 +47,13 @@ public class CommandDialogueOpen extends CommandDialogueBase
             throw new CommandException("dialogue.empty", id);
         }
 
-        Mappet.dialogues.open(player, dialogue);
+        DialogueContext context = new DialogueContext(new TriggerSender().set(player), player);
+
+        if (args.length > 2)
+        {
+            context.subjectId = args[2];
+        }
+
+        Mappet.dialogues.open(player, dialogue, context);
     }
 }

@@ -8,12 +8,15 @@ import java.util.List;
 public class QuestContext
 {
     public EntityPlayer player;
-    public String object;
+    public String subject;
     public List<QuestInfo> quests = new ArrayList<QuestInfo>();
 
-    public QuestContext(EntityPlayer player, String object)
+    public int nesting;
+    public int completed;
+
+    public QuestContext(EntityPlayer player, String subject)
     {
         this.player = player;
-        this.object = object;
+        this.subject = subject;
     }
 }

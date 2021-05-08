@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 public class GuiQuestNodePanel extends GuiNodePanel<QuestNode>
 {
     public GuiTextElement quest;
+    public GuiTextElement giver;
     public GuiTextElement receiver;
 
     public GuiQuestNodePanel(Minecraft mc)
@@ -17,9 +18,11 @@ public class GuiQuestNodePanel extends GuiNodePanel<QuestNode>
         super(mc);
 
         this.quest = new GuiTextElement(mc, 10000, (text) -> this.node.quest = text);
+        this.giver = new GuiTextElement(mc, 10000, (text) -> this.node.giver = text);
         this.receiver = new GuiTextElement(mc, 10000, (text) -> this.node.receiver = text);
 
         this.add(Elements.label(IKey.str("Quest")), this.quest);
+        this.add(Elements.label(IKey.str("Giver")).marginTop(12), this.giver);
         this.add(Elements.label(IKey.str("Receiver")).marginTop(12), this.receiver);
     }
 
@@ -29,6 +32,7 @@ public class GuiQuestNodePanel extends GuiNodePanel<QuestNode>
         super.set(node);
 
         this.quest.setText(node.quest);
+        this.giver.setText(node.giver);
         this.receiver.setText(node.receiver);
     }
 }

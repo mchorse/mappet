@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public class QuestNode extends Node
 {
     public String quest = "";
+    public String giver = "";
     public String receiver = "";
 
     @Override
@@ -24,6 +25,11 @@ public class QuestNode extends Node
             tag.setString("Quest", this.quest);
         }
 
+        if (!this.giver.isEmpty())
+        {
+            tag.setString("Giver", this.giver);
+        }
+
         if (!this.receiver.isEmpty())
         {
             tag.setString("Receiver", this.receiver);
@@ -40,6 +46,11 @@ public class QuestNode extends Node
         if (tag.hasKey("Quest"))
         {
             this.quest = tag.getString("Quest");
+        }
+
+        if (tag.hasKey("Giver"))
+        {
+            this.giver = tag.getString("Giver");
         }
 
         if (tag.hasKey("Receiver"))

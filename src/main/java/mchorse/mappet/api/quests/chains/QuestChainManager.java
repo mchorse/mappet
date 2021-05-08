@@ -8,13 +8,13 @@ import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import sun.security.x509.AVA;
 
 import java.io.File;
 
 public class QuestChainManager extends BaseManager<QuestChain>
 {
-    public static final MapNodeFactory FACTORY = new MapNodeFactory()
-        .register("quest", QuestNode.class);
+    public static final MapNodeFactory FACTORY = new MapNodeFactory().register("quest", QuestNode.class);
 
     public QuestChainManager(File folder)
     {
@@ -47,6 +47,8 @@ public class QuestChainManager extends BaseManager<QuestChain>
         for (QuestNode node : chain.getRoots())
         {
             this.evaluateRecursive(node, chain, context);
+            context.nesting = 0;
+            context.completed = 0;
         }
 
         return context;
@@ -55,29 +57,43 @@ public class QuestChainManager extends BaseManager<QuestChain>
     private void evaluateRecursive(QuestNode node, QuestChain chain, QuestContext context)
     {
         ICharacter character = Character.get(context.player);
+
+        if (character == null)
+        {
+            return;
+        }
+
+        boolean wasCompleted = character.getStates().wasQuestCompleted(node.quest);
         QuestInfo info = null;
 
-        if (character != null && !character.getStates().wasQuestCompleted(node.quest))
-        {
-            Quest quest = character.getQuests().getByName(node.quest);
+        Quest quest = character.getQuests().getByName(node.quest);
 
-            if (quest != null && quest.isComplete(context.player) && node.receiver.equals(context.object))
+        if (quest != null)
+        {
+            if (quest.isComplete(context.player))
             {
-                info = new QuestInfo(quest, QuestStatus.COMPLETED);
+                if (context.subject.equals(node.receiver))
+                {
+                    info = new QuestInfo(quest, QuestStatus.COMPLETED);
+                }
+                else
+                {
+                    return;
+                }
             }
-            else if (quest != null)
+            else if (context.subject.equals(node.giver))
             {
                 info = new QuestInfo(quest, QuestStatus.UNAVAILABLE);
             }
+        }
 
-            if (info == null)
+        if (info == null && !wasCompleted)
+        {
+            quest = Mappet.quests.load(node.quest);
+
+            if (quest != null && context.subject.equals(node.giver) && context.nesting == context.completed)
             {
-                quest = Mappet.quests.load(node.quest);
-
-                if (quest != null)
-                {
-                    info = new QuestInfo(quest, QuestStatus.AVAILABLE);
-                }
+                info = new QuestInfo(quest, QuestStatus.AVAILABLE);
             }
         }
 
@@ -88,9 +104,15 @@ public class QuestChainManager extends BaseManager<QuestChain>
             return;
         }
 
+        context.nesting += 1;
+        context.completed += wasCompleted ? 1 : 0;
+
         for (QuestNode child : chain.getChildren(node))
         {
             this.evaluateRecursive(child, chain, context);
         }
+
+        context.completed -= wasCompleted ? 1 : 0;
+        context.nesting -= 1;
     }
 }
