@@ -32,6 +32,9 @@ public class ServerHandlerQuestAction extends ServerMessageHandler<PacketQuestAc
             if (quest != null && quest.isComplete(player))
             {
                 character.getQuests().complete(message.id, player);
+
+                /* Update quests, because there might be some new quests down the chain */
+                Mappet.dialogues.handleContext(player, character.getDialogue(), character.getDialogueContext());
             }
         }
     }

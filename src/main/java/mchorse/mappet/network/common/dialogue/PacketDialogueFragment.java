@@ -21,6 +21,7 @@ public class PacketDialogueFragment implements IMessage
     public DialogueFragment reaction = new DialogueFragment();
     public List<DialogueFragment> replies = new ArrayList<DialogueFragment>();
     public CraftingTable table;
+    public boolean hasQuests;
     public List<QuestInfo> quests = new ArrayList<QuestInfo>();
 
     public PacketDialogueFragment()
@@ -45,6 +46,7 @@ public class PacketDialogueFragment implements IMessage
 
     public void addQuests(QuestContext context)
     {
+        this.hasQuests = true;
         this.quests.addAll(context.quests);
     }
 
@@ -69,6 +71,8 @@ public class PacketDialogueFragment implements IMessage
 
             this.table = Mappet.crafting.create(id, ByteBufUtils.readTag(buf));
         }
+
+        this.hasQuests = buf.readBoolean();
 
         for (int i = 0, c = buf.readInt(); i < c; i++)
         {
@@ -101,6 +105,7 @@ public class PacketDialogueFragment implements IMessage
             ByteBufUtils.writeTag(buf, this.table.serializeNBT());
         }
 
+        buf.writeBoolean(this.hasQuests);
         buf.writeInt(this.quests.size());
 
         for (QuestInfo info : this.quests)

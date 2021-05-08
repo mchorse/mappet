@@ -66,7 +66,7 @@ public abstract class TileBaseBlockRenderer <T extends TileEntity> extends TileE
 
     protected boolean canRender(Minecraft mc, T te)
     {
-        return mc.gameSettings.showDebugInfo && !mc.gameSettings.hideGUI;
+        return mc.gameSettings.showDebugInfo && !mc.gameSettings.hideGUI && mc.player.isCreative();
     }
 
     protected void renderMoreDebug(T te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
