@@ -5,9 +5,12 @@ import mchorse.mappet.api.dialogues.DialogueContext;
 import mchorse.mappet.api.dialogues.Dialogue;
 import mchorse.mappet.api.quests.Quests;
 import mchorse.mappet.api.states.States;
+import mchorse.mappet.utils.PositionCache;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.Vec3d;
 
+import javax.vecmath.Vector3d;
 import java.time.Instant;
 
 public class Character implements ICharacter
@@ -26,6 +29,8 @@ public class Character implements ICharacter
     private DialogueContext dialogueContext;
 
     private Instant lastClear = Instant.now();
+
+    private PositionCache positionCache = new PositionCache();
 
     @Override
     public States getStates()
@@ -80,6 +85,12 @@ public class Character implements ICharacter
     public void updateLastClear(Instant instant)
     {
         this.lastClear = instant;
+    }
+
+    @Override
+    public PositionCache getPositionCache()
+    {
+        return this.positionCache;
     }
 
     @Override

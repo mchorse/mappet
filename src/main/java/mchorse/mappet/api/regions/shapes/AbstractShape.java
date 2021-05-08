@@ -47,7 +47,17 @@ public abstract class AbstractShape implements INBTSerializable<NBTTagCompound>
             return false;
         }
 
-        return this.isInside(player.posX - tile.getX() - 0.5, (player.posY + player.height / 2) - tile.getY() - 0.5, player.posZ - tile.getZ() - 0.5);
+        return this.isPlayerInside(player.posX, (player.posY + player.height / 2), player.posZ, tile);
+    }
+
+    public boolean isPlayerInside(double x, double y, double z, BlockPos tile)
+    {
+        if (this.pos == null)
+        {
+            return false;
+        }
+
+        return this.isInside(x - tile.getX() - 0.5, y - tile.getY() - 0.5, z - tile.getZ() - 0.5);
     }
 
     public abstract String getType();

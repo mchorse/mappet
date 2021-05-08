@@ -9,6 +9,7 @@ import mchorse.mappet.client.gui.utils.GuiTriggerElement;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiCirculateElement;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import mchorse.mclib.client.gui.utils.Elements;
@@ -17,6 +18,7 @@ import net.minecraft.client.Minecraft;
 
 public class GuiRegionEditor extends GuiElement
 {
+    public GuiToggleElement passable;
     public GuiTextElement enabled;
     public GuiTrackpadElement delay;
     public GuiTriggerElement onEnter;
@@ -30,6 +32,7 @@ public class GuiRegionEditor extends GuiElement
     {
         super(mc);
 
+        this.passable = new GuiToggleElement(mc, IKey.str("Passable"), (b) -> this.region.passable = b.isToggled());
         this.enabled = new GuiTextElement(mc, 1000, (text) -> this.region.enabled = text);
         this.delay = new GuiTrackpadElement(mc, (value) -> this.region.delay = value.intValue());
         this.onEnter = new GuiTriggerElement(mc);
@@ -41,7 +44,8 @@ public class GuiRegionEditor extends GuiElement
         this.shape.addLabel(IKey.lang("mappet.gui.shapes.cylinder"));
         this.shapeEditor = new GuiShapeEditor(mc);
 
-        this.add(Elements.label(IKey.str("Enabled expression")), this.enabled);
+        this.add(this.passable);
+        this.add(Elements.label(IKey.str("Enabled expression")).marginTop(6), this.enabled);
         this.add(Elements.label(IKey.str("Trigger delay")).marginTop(12), this.delay);
         this.add(Elements.label(IKey.str("On player enter trigger")).background().marginTop(12).marginBottom(5), this.onEnter);
         this.add(Elements.label(IKey.str("On player exit trigger")).background().marginTop(12).marginBottom(5), this.onExit);
@@ -84,6 +88,7 @@ public class GuiRegionEditor extends GuiElement
 
         if (region != null)
         {
+            this.passable.toggled(region.passable);
             this.enabled.setText(region.enabled);
             this.delay.setValue(region.delay);
             this.onEnter.set(region.onEnter);

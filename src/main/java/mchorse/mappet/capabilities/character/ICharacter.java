@@ -1,10 +1,11 @@
 package mchorse.mappet.capabilities.character;
 
 import mchorse.mappet.api.crafting.CraftingTable;
-import mchorse.mappet.api.dialogues.DialogueContext;
 import mchorse.mappet.api.dialogues.Dialogue;
+import mchorse.mappet.api.dialogues.DialogueContext;
 import mchorse.mappet.api.quests.Quests;
 import mchorse.mappet.api.states.States;
+import mchorse.mappet.utils.PositionCache;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -35,4 +36,8 @@ public interface ICharacter extends INBTSerializable<NBTTagCompound>
     public Instant getLastClear();
 
     public void updateLastClear(Instant instant);
+
+    /* Prev position */
+
+    public PositionCache getPositionCache();
 }

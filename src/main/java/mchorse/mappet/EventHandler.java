@@ -1,24 +1,18 @@
 package mchorse.mappet;
 
 import mchorse.mappet.api.events.EventExecutionFork;
-import mchorse.mappet.api.factions.Faction;
 import mchorse.mappet.api.quests.Quest;
-import mchorse.mappet.api.quests.chains.QuestChain;
-import mchorse.mappet.api.quests.chains.QuestContext;
-import mchorse.mappet.api.states.States;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.CharacterProvider;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.commands.data.CommandDataClear;
 import mchorse.mappet.network.Dispatcher;
-import mchorse.mappet.network.common.factions.PacketFactions;
 import mchorse.mappet.network.common.quests.PacketQuest;
 import mchorse.mappet.network.common.quests.PacketQuests;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
@@ -28,7 +22,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -185,6 +178,17 @@ public class EventHandler
             this.eventForks.clear();
             this.eventForks.addAll(this.secondList);
             this.secondList.clear();
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerTick(TickEvent.PlayerTickEvent event)
+    {
+        ICharacter character = Character.get(event.player);
+
+        if (character != null && !event.player.world.isRemote)
+        {
+            character.getPositionCache().updatePlayer(event.player);
         }
     }
 }

@@ -1,6 +1,9 @@
 package mchorse.mappet.tile;
 
 import mchorse.mappet.api.regions.Region;
+import mchorse.mappet.capabilities.character.Character;
+import mchorse.mappet.capabilities.character.ICharacter;
+import mchorse.mappet.utils.PositionCache;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -8,6 +11,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.mutable.MutableInt;
@@ -89,12 +93,21 @@ public class TileRegion extends TileEntity implements ITickable
 
         for (EntityPlayer player : this.world.playerEntities)
         {
+            if (player.isSpectator())
+            {
+                continue;
+            }
+
             UUID id = player.getGameProfile().getId();
             boolean wasInside = this.players.contains(id);
 
             if (this.region.shape.isPlayerInside(player, this.getPos()))
             {
-                if (!wasInside)
+                if (!this.region.passable)
+                {
+                    this.handlePassing(player);
+                }
+                else if (!wasInside)
                 {
                     if (this.region.delay > 0)
                     {
@@ -122,6 +135,61 @@ public class TileRegion extends TileEntity implements ITickable
                 this.players.remove(id);
             }
         }
+    }
+
+    private void handlePassing(EntityPlayer player)
+    {
+        ICharacter character = Character.get(player);
+
+        if (character == null)
+        {
+            return;
+        }
+
+        PositionCache cache = character.getPositionCache();
+        Vec3d vec = cache.lastPosition;
+
+        if (vec != null && !this.region.shape.isPlayerInside(vec.x, vec.y + player.height / 2, vec.z, this.getPos()))
+        {
+            player.setPositionAndUpdate(vec.x, vec.y, vec.z);
+            cache.resetLastPositionTimer();
+
+            return;
+        }
+
+        vec = cache.lastLastPosition;
+
+        if (vec != null && !this.region.shape.isPlayerInside(vec.x, vec.y + player.height / 2, vec.z, this.getPos()))
+        {
+            player.setPositionAndUpdate(vec.x, vec.y, vec.z);
+            cache.resetLastPositionTimer();
+
+            return;
+        }
+
+        if (vec == null)
+        {
+            return;
+        }
+
+        vec = vec.subtract(player.posX, player.posY, player.posZ);
+
+        if (vec.lengthSquared() > 0)
+        {
+            vec = vec.normalize();
+            vec = vec.scale(-0.5D);
+
+            while (this.region.shape.isPlayerInside(player, this.getPos()))
+            {
+                player.posX += vec.x;
+                player.posY += vec.y;
+                player.posZ += vec.z;
+            }
+
+            player.setPositionAndUpdate(player.posX, player.posY, player.posZ);
+        }
+
+        cache.resetLastPositionTimer();
     }
 
     /* Rendering related stuff */

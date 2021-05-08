@@ -13,6 +13,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 
 public class Region implements INBTSerializable<NBTTagCompound>
 {
+    public boolean passable = true;
     public String enabled = "";
     public int delay;
     public Trigger onEnter = new Trigger();
@@ -43,6 +44,11 @@ public class Region implements INBTSerializable<NBTTagCompound>
     {
         NBTTagCompound tag = new NBTTagCompound();
 
+        if (!this.passable)
+        {
+            tag.setBoolean("Passable", this.passable);
+        }
+
         if (!this.enabled.isEmpty())
         {
             tag.setString("Enabled", this.enabled);
@@ -67,6 +73,11 @@ public class Region implements INBTSerializable<NBTTagCompound>
     @Override
     public void deserializeNBT(NBTTagCompound tag)
     {
+        if (tag.hasKey("Passable"))
+        {
+            this.passable = tag.getBoolean("Passable");
+        }
+
         if (tag.hasKey("Enabled", Constants.NBT.TAG_STRING))
         {
             this.enabled = tag.getString("Enabled");
