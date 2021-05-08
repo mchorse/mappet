@@ -7,6 +7,7 @@ import mchorse.mappet.api.quests.chains.QuestStatus;
 import mchorse.mappet.client.gui.crafting.GuiCrafting;
 import mchorse.mappet.client.gui.crafting.ICraftingScreen;
 import mchorse.mappet.client.gui.quests.GuiQuestCard;
+import mchorse.mappet.client.gui.quests.GuiQuestInfoListElement;
 import mchorse.mappet.client.gui.utils.GuiClickableText;
 import mchorse.mappet.client.gui.utils.GuiMorphRenderer;
 import mchorse.mappet.client.gui.utils.GuiText;
@@ -55,7 +56,7 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
 
     /* Quests */
     public GuiElement quest;
-    public GuiLabelListElement<QuestInfo> quests;
+    public GuiQuestInfoListElement quests;
     public GuiScrollElement questArea;
     public GuiButtonElement actionQuest;
 
@@ -97,7 +98,7 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
 
         /* Quests */
         this.quest = new GuiElement(mc);
-        this.quests = new GuiLabelListElement<QuestInfo>(mc, (l) -> this.pickQuest(l.get(0).value));
+        this.quests = new GuiQuestInfoListElement(mc, (l) -> this.pickQuest(l.get(0)));
         this.questArea = new GuiScrollElement(mc);
         this.actionQuest = new GuiButtonElement(mc, IKey.str("Accept"), (b) -> this.actionQuest());
 
@@ -237,27 +238,11 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
         this.questInfos = quests;
 
         this.quests.clear();
-
-        for (QuestInfo info : quests)
-        {
-            String title = info.quest.title;
-
-            if (info.status == QuestStatus.COMPLETED)
-            {
-                title = TextFormatting.GOLD + title;
-            }
-            else if (info.status == QuestStatus.UNAVAILABLE)
-            {
-                title = TextFormatting.GRAY + title;
-            }
-
-            this.quests.add(IKey.str(title), info);
-        }
-
+        this.quests.setList(quests);
         this.quests.sort();
 
         this.quests.setIndex(0);
-        this.pickQuest(this.quests.getCurrentFirst().value);
+        this.pickQuest(this.quests.getCurrentFirst());
 
         this.updateVisibility();
         this.root.resize();
@@ -279,27 +264,26 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
 
     public void actionQuest()
     {
-        Label<QuestInfo> label = this.quests.getCurrentFirst();
+        QuestInfo info = this.quests.getCurrentFirst();
 
-        Dispatcher.sendToServer(new PacketQuestAction(label.value.quest.getId(), label.value.status));
+        Dispatcher.sendToServer(new PacketQuestAction(info.quest.getId(), info.status));
 
-        if (label.value.status == QuestStatus.AVAILABLE)
+        if (info.status == QuestStatus.AVAILABLE)
         {
-            label.value.status = QuestStatus.UNAVAILABLE;
-            label.title.set(TextFormatting.GRAY + label.value.quest.title);
+            info.status = QuestStatus.UNAVAILABLE;
 
             this.actionQuest.setEnabled(false);
         }
-        else if (label.value.status == QuestStatus.COMPLETED)
+        else if (info.status == QuestStatus.COMPLETED)
         {
-            this.quests.remove(label);
+            this.quests.remove(info);
             this.quests.setIndex(-1);
 
             this.quests.setIndex(0);
 
-            label = this.quests.getCurrentFirst();
+            info = this.quests.getCurrentFirst();
 
-            this.pickQuest(label == null ? null : label.value);
+            this.pickQuest(info);
         }
     }
 
