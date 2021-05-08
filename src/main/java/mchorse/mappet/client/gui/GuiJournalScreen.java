@@ -3,17 +3,22 @@ package mchorse.mappet.client.gui;
 import mchorse.mappet.api.factions.Faction;
 import mchorse.mappet.api.quests.Quest;
 import mchorse.mappet.api.quests.Quests;
+import mchorse.mappet.api.quests.chains.QuestStatus;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.client.gui.factions.GuiFactionCard;
 import mchorse.mappet.client.gui.quests.GuiQuestCard;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.factions.PacketRequestFactions;
+import mchorse.mappet.network.common.quests.PacketQuestAction;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.list.GuiLabelListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
+import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.Label;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
@@ -27,6 +32,7 @@ public class GuiJournalScreen extends GuiBase
 
     public GuiLabelListElement<Quest> questList;
     public GuiScrollElement questArea;
+    public GuiIconElement cancel;
 
     public GuiJournalScreen(Minecraft mc)
     {
@@ -37,7 +43,7 @@ public class GuiJournalScreen extends GuiBase
         this.quests = new GuiElement(mc);
 
         this.factions.flex().relative(this.viewport).x(1F, -250).y(22).w(240).h(1F, -22).column(10).vertical().stretch().scroll().padding(10);
-        this.quests.flex().relative(this.viewport).xy(10, 22).wTo(this.factions.area).h(1F, -22);
+        this.quests.flex().relative(this.viewport).xy(10, 22).wTo(this.factions.area).h(1F, -32);
 
         this.questList = new GuiLabelListElement<Quest>(mc, (l) -> this.pickQuest(l.get(0).value, false));
         this.questArea = new GuiScrollElement(mc);
@@ -49,15 +55,37 @@ public class GuiJournalScreen extends GuiBase
 
         this.questList.background().sort();
 
+        this.cancel = new GuiIconElement(mc, Icons.CLOSE, (b) -> this.cancelQuest());
+        this.cancel.flex().relative(this.quests).x(1F, -14).y(14).anchor(0.5F, 0.5F);
+
         this.questList.flex().relative(this.quests).w(120).h(1F);
         this.questArea.flex().relative(this.quests).x(120).w(1F, -120).h(1F).column(5).vertical().stretch().scroll().padding(10);
 
         this.root.add(this.factions, this.quests);
-        this.quests.add(this.questList, this.questArea);
+        this.quests.add(this.questList, this.questArea, this.cancel);
 
         this.pickQuest(quests.quests.isEmpty() ? null : quests.quests.values().iterator().next(), true);
 
         Dispatcher.sendToServer(new PacketRequestFactions());
+    }
+
+    private void cancelQuest()
+    {
+        Label<Quest> label = this.questList.getCurrentFirst();
+
+        if (label != null)
+        {
+            Dispatcher.sendToServer(new PacketQuestAction(label.value.getId(), QuestStatus.CANCELED));
+
+            int index = this.questList.getIndex();
+
+            this.questList.remove(label);
+            this.questList.setIndex(Math.max(index - 1, 0));
+
+            label = this.questList.getCurrentFirst();
+
+            this.pickQuest(label == null ? null : label.value, true);
+        }
     }
 
     public void fillFactions(Map<String, Faction> factions, Map<String, Double> states)
@@ -76,6 +104,7 @@ public class GuiJournalScreen extends GuiBase
     {
         this.questArea.removeAll();
         this.questArea.setVisible(value != null);
+        this.cancel.setVisible(value != null);
 
         if (value != null)
         {

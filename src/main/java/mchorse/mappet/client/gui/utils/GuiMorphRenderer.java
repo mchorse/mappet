@@ -29,6 +29,8 @@ public class GuiMorphRenderer extends GuiModelRenderer
     @Override
     protected void drawUserModel(GuiContext context)
     {
+        GuiModelRenderer.disableRenderingFlag();
+
         MorphUtils.render(this.morph.get(), this.entity, 0.0D, 0.0D, 0.0D, this.yaw, context.partialTicks);
     }
 

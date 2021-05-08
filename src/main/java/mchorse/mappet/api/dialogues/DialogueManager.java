@@ -81,6 +81,7 @@ public class DialogueManager extends BaseManager<Dialogue>
 
         if (context.quest != null)
         {
+            /* TODO: subject */
             packet.addQuests(Mappet.chains.evaluate(context.quest.chain, player, "test"));
         }
         else if (context.crafting != null)

@@ -37,5 +37,9 @@ public class ServerHandlerQuestAction extends ServerMessageHandler<PacketQuestAc
                 Mappet.dialogues.handleContext(player, character.getDialogue(), character.getDialogueContext());
             }
         }
+        else if (message.status == QuestStatus.CANCELED)
+        {
+            character.getQuests().remove(message.id, player, false);
+        }
     }
 }
