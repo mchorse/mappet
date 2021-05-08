@@ -1,6 +1,7 @@
 package mchorse.mappet.network.common.blocks;
 
 import io.netty.buffer.ByteBuf;
+import mchorse.mappet.blocks.BlockTrigger;
 import mchorse.mappet.tile.TileEmitter;
 import mchorse.mappet.tile.TileTrigger;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,20 +14,22 @@ public class PacketEditTrigger implements IMessage
     public BlockPos pos;
     public NBTTagCompound left = new NBTTagCompound();
     public NBTTagCompound right = new NBTTagCompound();
+    public boolean collidable;
 
     public PacketEditTrigger()
     {}
 
     public PacketEditTrigger(TileTrigger tile)
     {
-        this(tile.getPos(), tile.leftClick.serializeNBT(), tile.rightClick.serializeNBT());
+        this(tile.getPos(), tile.leftClick.serializeNBT(), tile.rightClick.serializeNBT(), tile.getWorld().getBlockState(tile.getPos()).getValue(BlockTrigger.COLLIDABLE));
     }
 
-    public PacketEditTrigger(BlockPos pos, NBTTagCompound left, NBTTagCompound right)
+    public PacketEditTrigger(BlockPos pos, NBTTagCompound left, NBTTagCompound right, boolean collidable)
     {
         this.pos = pos;
         this.left = left;
         this.right = right;
+        this.collidable = collidable;
     }
 
     @Override
@@ -35,6 +38,7 @@ public class PacketEditTrigger implements IMessage
         this.pos = new BlockPos(buf.readInt(), buf.readInt(), buf.readInt());
         this.left = ByteBufUtils.readTag(buf);
         this.right = ByteBufUtils.readTag(buf);
+        this.collidable = buf.readBoolean();
     }
 
     @Override
@@ -45,5 +49,6 @@ public class PacketEditTrigger implements IMessage
         buf.writeInt(this.pos.getZ());
         ByteBufUtils.writeTag(buf, this.left);
         ByteBufUtils.writeTag(buf, this.right);
+        buf.writeBoolean(this.collidable);
     }
 }

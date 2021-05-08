@@ -16,7 +16,7 @@ public class ServerHandlerEditTrigger extends ServerMessageHandler<PacketEditTri
 
         if (tile instanceof TileTrigger)
         {
-            ((TileTrigger) tile).set(message.left, message.right);
+            ((TileTrigger) tile).set(message.left, message.right, message.collidable);
         }
     }
 }

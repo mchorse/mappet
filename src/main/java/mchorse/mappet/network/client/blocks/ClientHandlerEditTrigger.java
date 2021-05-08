@@ -21,6 +21,6 @@ public class ClientHandlerEditTrigger extends ClientMessageHandler<PacketEditTri
         left.deserializeNBT(message.left);
         right.deserializeNBT(message.right);
 
-        Minecraft.getMinecraft().displayGuiScreen(new GuiTriggerBlockScreen(message.pos, left, right));
+        Minecraft.getMinecraft().displayGuiScreen(new GuiTriggerBlockScreen(message.pos, left, right, message.collidable));
     }
 }

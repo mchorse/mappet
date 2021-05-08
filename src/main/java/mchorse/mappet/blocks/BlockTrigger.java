@@ -8,7 +8,9 @@ import mchorse.mappet.tile.TileTrigger;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.resources.I18n;
@@ -33,6 +35,8 @@ import java.util.List;
 
 public class BlockTrigger extends Block implements ITileEntityProvider
 {
+    public static final PropertyBool COLLIDABLE = PropertyBool.create("collidable");
+
     public BlockTrigger()
     {
         super(Material.ROCK);
@@ -98,6 +102,26 @@ public class BlockTrigger extends Block implements ITileEntityProvider
         return true;
     }
 
+    /* Meta */
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return state.getValue(COLLIDABLE) ? 1 : 0;
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(COLLIDABLE, meta == 1);
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, COLLIDABLE);
+    }
+
     /* Make the block walkable through and invisible */
 
     @Override
@@ -130,7 +154,7 @@ public class BlockTrigger extends Block implements ITileEntityProvider
     @Override
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
     {
-        return Block.NULL_AABB;
+        return blockState.getValue(COLLIDABLE) ? Block.FULL_BLOCK_AABB : Block.NULL_AABB;
     }
 
     @Nullable

@@ -6,6 +6,7 @@ import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.blocks.PacketEditTrigger;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;
@@ -16,10 +17,11 @@ public class GuiTriggerBlockScreen extends GuiBase
 {
     public GuiTriggerElement left;
     public GuiTriggerElement right;
+    public GuiToggleElement collidable;
 
     private BlockPos pos;
 
-    public GuiTriggerBlockScreen(BlockPos pos, Trigger left, Trigger right)
+    public GuiTriggerBlockScreen(BlockPos pos, Trigger left, Trigger right, boolean collidable)
     {
         super();
 
@@ -31,15 +33,16 @@ public class GuiTriggerBlockScreen extends GuiBase
         element.flex().relative(this.viewport).xy(0.5F, 0.5F).w(0.5F).anchor(0.5F, 0.5F).column(5).vertical().stretch();
 
         this.left = new GuiTriggerElement(mc);
-        this.left.flex().relative(this.viewport).x(0.5F).y(0.5F).w(0.5F).anchor(0.5F, 0.5F);
         this.left.set(left);
 
         this.right = new GuiTriggerElement(mc);
-        this.right.flex().relative(this.left).y(1F, 20).w(1F);
         this.right.set(right);
 
+        this.collidable = new GuiToggleElement(mc, IKey.str("Collidable"), null);
+        this.collidable.toggled(collidable);
+
         element.add(Elements.label(IKey.str("Trigger event on left click")).background().marginBottom(5), this.left);
-        element.add(Elements.label(IKey.str("Trigger event on right click")).background().marginTop(12).marginBottom(5), this.right);
+        element.add(Elements.label(IKey.str("Trigger event on right click")).background().marginTop(12).marginBottom(5), this.right, this.collidable.marginTop(6));
 
         this.root.add(element);
     }
@@ -55,7 +58,7 @@ public class GuiTriggerBlockScreen extends GuiBase
     {
         super.closeScreen();
 
-        Dispatcher.sendToServer(new PacketEditTrigger(this.pos, this.left.get().serializeNBT(), this.right.get().serializeNBT()));
+        Dispatcher.sendToServer(new PacketEditTrigger(this.pos, this.left.get().serializeNBT(), this.right.get().serializeNBT(), this.collidable.isToggled()));
     }
 
     @Override
