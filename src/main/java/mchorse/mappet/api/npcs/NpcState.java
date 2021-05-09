@@ -79,7 +79,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     /**
      * What is NPC's movement speed
      */
-    public float speed = 0.1F;
+    public float speed = 1F;
 
     /**
      * Can NPC walk on the ground
