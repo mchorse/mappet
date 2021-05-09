@@ -1,7 +1,10 @@
 package mchorse.mappet.client.gui.utils;
 
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
+import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
+import mchorse.mclib.client.gui.utils.Icons;
+import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.BlockPos;
 
@@ -29,6 +32,14 @@ public class GuiBlockPosElement extends GuiElement
 
         this.flex().row(5);
         this.add(this.x, this.y, this.z);
+
+        this.context(() -> new GuiSimpleContextMenu(this.mc).action(Icons.MOVE_TO, IKey.str("Paste your current position"), this::pastePosition));
+    }
+
+    private void pastePosition()
+    {
+        this.set(new BlockPos(this.mc.player));
+        this.callback();
     }
 
     protected void callback()
