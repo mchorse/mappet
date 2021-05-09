@@ -17,7 +17,7 @@ public class GuiConditionNodePanel extends GuiEventNodePanel<ConditionNode>
 
         this.condition = new GuiTextElement(mc, 10000, (text) -> this.node.expression = text);
 
-        this.add(Elements.label(IKey.str("Condition")), this.condition, this.binary);
+        this.add(Elements.label(IKey.str("Condition")).marginTop(12), this.condition, this.binary);
     }
 
     @Override

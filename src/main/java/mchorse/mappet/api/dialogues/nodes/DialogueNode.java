@@ -10,6 +10,12 @@ public abstract class DialogueNode extends EventNode
     public DialogueFragment message = new DialogueFragment();
 
     @Override
+    protected String getDisplayTitle()
+    {
+        return DialogueFragment.process(this.message.text);
+    }
+
+    @Override
     public NBTTagCompound serializeNBT()
     {
         NBTTagCompound tag = super.serializeNBT();

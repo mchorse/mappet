@@ -7,6 +7,8 @@ import java.util.UUID;
 
 public abstract class Node implements INBTSerializable<NBTTagCompound>
 {
+    public String title = "";
+
     private UUID id;
 
     /* Visual properties */
@@ -28,6 +30,21 @@ public abstract class Node implements INBTSerializable<NBTTagCompound>
 
     public abstract int getColor();
 
+    public String getTitle()
+    {
+        if (this.title.isEmpty())
+        {
+            return this.getDisplayTitle();
+        }
+
+        return this.title;
+    }
+
+    protected String getDisplayTitle()
+    {
+        return "";
+    }
+
     @Override
     public NBTTagCompound serializeNBT()
     {
@@ -38,6 +55,7 @@ public abstract class Node implements INBTSerializable<NBTTagCompound>
             tag.setString("Id", this.id.toString());
         }
 
+        tag.setString("Title", this.title);
         tag.setInteger("X", this.x);
         tag.setInteger("Y", this.y);
 
@@ -52,6 +70,7 @@ public abstract class Node implements INBTSerializable<NBTTagCompound>
             this.id = UUID.fromString(tag.getString("Id"));
         }
 
+        this.title = tag.getString("Title");
         this.x = tag.getInteger("X");
         this.y = tag.getInteger("Y");
     }

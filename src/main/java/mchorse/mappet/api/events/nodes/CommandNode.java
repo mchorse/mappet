@@ -22,6 +22,12 @@ public class CommandNode extends EventNode
     }
 
     @Override
+    protected String getDisplayTitle()
+    {
+        return this.command;
+    }
+
+    @Override
     public int execute(EventContext context)
     {
         boolean result = context.data.execute(this.command) > 0;

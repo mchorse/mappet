@@ -27,6 +27,12 @@ public class TimerNode extends EventNode
     }
 
     @Override
+    protected String getDisplayTitle()
+    {
+        return this.timer + " ticks";
+    }
+
+    @Override
     public NBTTagCompound serializeNBT()
     {
         NBTTagCompound tag = super.serializeNBT();

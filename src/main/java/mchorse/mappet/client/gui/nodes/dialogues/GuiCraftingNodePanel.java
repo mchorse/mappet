@@ -17,7 +17,7 @@ public class GuiCraftingNodePanel extends GuiEventNodePanel<CraftingNode>
 
         this.crafting = new GuiTextElement(mc, 10000, (text) -> this.node.table = text);
 
-        this.add(Elements.label(IKey.str("Crafting")), this.crafting);
+        this.add(Elements.label(IKey.str("Crafting")).marginTop(12), this.crafting);
     }
 
     @Override

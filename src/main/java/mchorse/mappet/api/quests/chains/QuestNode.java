@@ -16,6 +16,12 @@ public class QuestNode extends Node
     }
 
     @Override
+    protected String getDisplayTitle()
+    {
+        return this.quest;
+    }
+
+    @Override
     public NBTTagCompound serializeNBT()
     {
         NBTTagCompound tag = super.serializeNBT();

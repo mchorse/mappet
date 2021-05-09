@@ -1,6 +1,8 @@
 package mchorse.mappet.client.gui.nodes;
 
 import mchorse.mappet.Mappet;
+import mchorse.mappet.api.dialogues.DialogueFragment;
+import mchorse.mappet.api.dialogues.nodes.DialogueNode;
 import mchorse.mappet.api.events.nodes.EventNode;
 import mchorse.mappet.api.utils.nodes.Node;
 import mchorse.mappet.api.utils.nodes.NodeRelation;
@@ -12,6 +14,7 @@ import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiCanvas;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
+import mchorse.mclib.client.gui.mclib.GuiDashboardPanel;
 import mchorse.mclib.client.gui.utils.Area;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.Keybind;
@@ -423,6 +426,22 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
             {
                 main = new Area();
                 main.copy(nodeArea);
+            }
+        }
+
+        for (T node : this.system.nodes.values())
+        {
+            Area nodeArea = this.getNodeArea(node);
+            String title = node.getTitle();
+
+            if (!title.isEmpty() && nodeArea.w > 40)
+            {
+                if (title.length() > 37)
+                {
+                    title = title.substring(0, 37) + "...";
+                }
+
+                GuiDraw.drawTextBackground(this.font, title, nodeArea.mx() - this.font.getStringWidth(title) / 2, nodeArea.my() - 4, 0xffffff, 0x88000000);
             }
         }
 

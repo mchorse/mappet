@@ -18,7 +18,7 @@ public class GuiTimerNodePanel extends GuiEventNodePanel<TimerNode>
         this.timer = new GuiTrackpadElement(mc, (value) -> this.node.timer = value.intValue());
         this.timer.integer().limit(0);
 
-        this.add(Elements.label(IKey.str("Timer")), this.timer);
+        this.add(Elements.label(IKey.str("Timer")).marginTop(12), this.timer);
     }
 
     @Override

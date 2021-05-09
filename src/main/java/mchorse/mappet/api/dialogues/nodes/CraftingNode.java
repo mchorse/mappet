@@ -24,6 +24,12 @@ public class CraftingNode extends EventNode
     }
 
     @Override
+    protected String getDisplayTitle()
+    {
+        return this.table;
+    }
+
+    @Override
     public NBTTagCompound serializeNBT()
     {
         NBTTagCompound tag = super.serializeNBT();

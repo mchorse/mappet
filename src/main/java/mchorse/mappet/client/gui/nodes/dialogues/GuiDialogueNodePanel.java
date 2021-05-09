@@ -20,7 +20,7 @@ public class GuiDialogueNodePanel extends GuiEventNodePanel<DialogueNode>
         this.text = new GuiTextElement(mc, 10000, (text) -> this.node.message.text = text);
         this.color = new GuiColorElement(mc, (c) -> this.node.message.color = c);
 
-        this.add(Elements.label(IKey.str("Content")), this.text, this.color);
+        this.add(Elements.label(IKey.str("Content")).marginTop(12), this.text, this.color);
     }
 
     @Override

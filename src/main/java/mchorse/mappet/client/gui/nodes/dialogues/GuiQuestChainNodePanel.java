@@ -17,7 +17,7 @@ public class GuiQuestChainNodePanel extends GuiEventNodePanel<QuestChainNode>
 
         this.questChain = new GuiTextElement(mc, 10000, (text) -> this.node.chain = text);
 
-        this.add(Elements.label(IKey.str("Quest chain")), this.questChain);
+        this.add(Elements.label(IKey.str("Quest chain")).marginTop(12), this.questChain);
     }
 
     @Override

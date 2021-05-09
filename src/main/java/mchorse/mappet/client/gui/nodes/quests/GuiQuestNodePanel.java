@@ -21,7 +21,7 @@ public class GuiQuestNodePanel extends GuiNodePanel<QuestNode>
         this.giver = new GuiTextElement(mc, 10000, (text) -> this.node.giver = text);
         this.receiver = new GuiTextElement(mc, 10000, (text) -> this.node.receiver = text);
 
-        this.add(Elements.label(IKey.str("Quest")), this.quest);
+        this.add(Elements.label(IKey.str("Quest")).marginTop(12), this.quest);
         this.add(Elements.label(IKey.str("Giver")).marginTop(12), this.giver);
         this.add(Elements.label(IKey.str("Receiver")).marginTop(12), this.receiver);
     }

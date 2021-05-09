@@ -24,6 +24,12 @@ public class ConditionNode extends EventNode
     }
 
     @Override
+    protected String getDisplayTitle()
+    {
+        return this.expression;
+    }
+
+    @Override
     public int execute(EventContext context)
     {
         IValue value = Mappet.expressions.set(context.data).evaluate(this.expression, null);

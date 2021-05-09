@@ -24,6 +24,12 @@ public class QuestChainNode extends EventNode
     }
 
     @Override
+    protected String getDisplayTitle()
+    {
+        return this.chain;
+    }
+
+    @Override
     public NBTTagCompound serializeNBT()
     {
         NBTTagCompound tag = super.serializeNBT();
