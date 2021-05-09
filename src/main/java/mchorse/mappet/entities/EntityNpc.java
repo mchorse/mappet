@@ -7,6 +7,7 @@ import mchorse.mappet.api.factions.FactionAttitude;
 import mchorse.mappet.api.npcs.Npc;
 import mchorse.mappet.api.npcs.NpcDrop;
 import mchorse.mappet.api.npcs.NpcState;
+import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.entities.ai.EntityAIAttackNpcMelee;
@@ -401,7 +402,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         {
             if (hand == EnumHand.MAIN_HAND)
             {
-                this.state.triggerInteract.trigger(this);
+                this.state.triggerInteract.trigger(new DataContext(this, player));
             }
 
             return !this.state.triggerInteract.isEmpty();

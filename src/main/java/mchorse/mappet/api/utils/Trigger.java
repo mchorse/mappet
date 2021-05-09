@@ -59,13 +59,27 @@ public class Trigger implements INBTSerializable<NBTTagCompound>
             Mappet.events.execute(this.triggerEvent, new EventContext(context));
         }
 
-        if (!this.dialogue.isEmpty() && target instanceof EntityPlayerMP)
+        if (!this.dialogue.isEmpty())
         {
-            Dialogue dialogue = Mappet.dialogues.load(this.dialogue);
+            EntityPlayerMP player = null;
 
-            if (dialogue != null)
+            if (context.subject instanceof EntityPlayerMP)
             {
-                Mappet.dialogues.open((EntityPlayerMP) target, dialogue, new DialogueContext(context));
+                player = (EntityPlayerMP) context.subject;
+            }
+            else if (context.object instanceof EntityPlayerMP)
+            {
+                player = (EntityPlayerMP) context.object;
+            }
+
+            if (player != null)
+            {
+                Dialogue dialogue = Mappet.dialogues.load(this.dialogue);
+
+                if (dialogue != null)
+                {
+                    Mappet.dialogues.open(player, dialogue, new DialogueContext(context));
+                }
             }
         }
     }
