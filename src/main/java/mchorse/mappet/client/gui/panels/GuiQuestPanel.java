@@ -8,6 +8,7 @@ import mchorse.mappet.client.gui.quests.GuiRewards;
 import mchorse.mappet.client.gui.utils.GuiTriggerElement;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
@@ -22,6 +23,7 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
 {
     public GuiTextElement title;
     public GuiTextElement story;
+    public GuiToggleElement cancelable;
 
     public GuiTriggerElement accept;
     public GuiTriggerElement decline;
@@ -36,6 +38,7 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
 
         this.title = new GuiTextElement(mc, 1000, (text) -> this.data.title = text);
         this.story = new GuiTextElement(mc, 1000, (text) -> this.data.story = text);
+        this.cancelable = new GuiToggleElement(mc, IKey.str("Cancelable"), (b) -> this.data.cancelable = b.isToggled());
 
         this.accept = new GuiTriggerElement(mc);
         this.decline = new GuiTriggerElement(mc);
@@ -60,6 +63,7 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
         this.editor.flex().column(0).padding(10);
         this.editor.add(Elements.label(IKey.str("Quest's title")), this.title);
         this.editor.add(Elements.label(IKey.str("Quest's description")).marginTop(12), this.story);
+        this.editor.add(this.cancelable.marginTop(6));
         this.editor.add(objectiveLabel, this.objectives);
         this.editor.add(rewardLabel, this.rewards);
         this.editor.add(Elements.label(IKey.str("Accept quest trigger")).background().marginTop(20).marginBottom(4), this.accept);
@@ -93,6 +97,7 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
         {
             this.title.setText(data.title);
             this.story.setText(data.story);
+            this.cancelable.toggled(data.cancelable);
 
             this.accept.set(data.accept);
             this.decline.set(data.decline);

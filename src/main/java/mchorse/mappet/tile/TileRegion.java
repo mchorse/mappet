@@ -50,6 +50,7 @@ public class TileRegion extends TileEntity implements ITickable
             this.checkDelays();
         }
 
+        /* TODO: frequency */
         if (this.tick % 3 == 0)
         {
             this.checkRegion();

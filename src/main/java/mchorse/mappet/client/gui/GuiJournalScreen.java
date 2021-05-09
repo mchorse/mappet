@@ -56,6 +56,7 @@ public class GuiJournalScreen extends GuiBase
         this.questList.background().sort();
 
         this.cancel = new GuiIconElement(mc, Icons.CLOSE, (b) -> this.cancelQuest());
+        this.cancel.disabledColor(0x88ffffff);
         this.cancel.flex().relative(this.quests).x(1F, -14).y(14).anchor(0.5F, 0.5F);
 
         this.questList.flex().relative(this.quests).w(120).h(1F);
@@ -109,6 +110,8 @@ public class GuiJournalScreen extends GuiBase
         if (value != null)
         {
             GuiQuestCard.fillQuest(this.questArea, value, false);
+
+            this.cancel.setEnabled(value.cancelable);
 
             this.root.resize();
             this.root.resize();

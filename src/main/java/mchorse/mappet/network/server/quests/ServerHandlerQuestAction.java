@@ -39,7 +39,12 @@ public class ServerHandlerQuestAction extends ServerMessageHandler<PacketQuestAc
         }
         else if (message.status == QuestStatus.CANCELED)
         {
-            character.getQuests().remove(message.id, player, false);
+            Quest quest = character.getQuests().getByName(message.id);
+
+            if (quest != null && quest.cancelable)
+            {
+                character.getQuests().remove(message.id, player, false);
+            }
         }
     }
 }
