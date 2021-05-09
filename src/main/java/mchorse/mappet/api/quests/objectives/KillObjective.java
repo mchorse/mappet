@@ -3,12 +3,15 @@ package mchorse.mappet.api.quests.objectives;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.Constants;
 
 public class KillObjective implements IObjective
 {
     public ResourceLocation entity = new ResourceLocation("");
+    public NBTTagCompound tag;
     public int count;
     public int killed;
 
@@ -25,8 +28,30 @@ public class KillObjective implements IObjective
     {
         if (this.entity.equals(EntityList.getKey(mob)))
         {
+            if (!this.compareTag(mob))
+            {
+                return;
+            }
+
             this.killed += 1;
         }
+    }
+
+    private boolean compareTag(Entity mob)
+    {
+        NBTTagCompound tag = mob.writeToNBT(new NBTTagCompound());
+
+        for (String key : this.tag.getKeySet())
+        {
+            NBTBase tagBase = tag.getTag(key);
+
+            if (tagBase == null || !this.tag.getTag(key).equals(tagBase))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override
@@ -38,12 +63,6 @@ public class KillObjective implements IObjective
     @Override
     public void complete(EntityPlayer player)
     {}
-
-    @Override
-    public IObjective copy()
-    {
-        return new KillObjective(this.entity, this.count);
-    }
 
     @Override
     public String stringify(EntityPlayer player)
@@ -82,6 +101,12 @@ public class KillObjective implements IObjective
         NBTTagCompound tag = new NBTTagCompound();
 
         tag.setString("Entity", this.entity.toString());
+
+        if (this.tag != null)
+        {
+            tag.setTag("Tag", this.tag);
+        }
+
         tag.setInteger("Count", this.count);
         tag.setInteger("Killed", this.killed);
 
@@ -92,6 +117,12 @@ public class KillObjective implements IObjective
     public void deserializeNBT(NBTTagCompound tag)
     {
         this.entity = new ResourceLocation(tag.getString("Entity"));
+
+        if (tag.hasKey("Tag", Constants.NBT.TAG_COMPOUND))
+        {
+            this.tag = tag.getCompoundTag("Tag");
+        }
+
         this.count = tag.getInteger("Count");
         this.killed = tag.getInteger("Killed");
     }

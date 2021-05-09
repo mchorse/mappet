@@ -11,27 +11,48 @@ import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiKillObjective extends GuiObjective<KillObjective>
 {
     public GuiButtonElement entity;
     public GuiTrackpadElement count;
+    public GuiTextElement tag;
 
     public GuiKillObjective(Minecraft mc, KillObjective objective)
     {
         super(mc, objective);
 
         this.entity = new GuiButtonElement(mc, IKey.str("Pick entity..."), (b) -> this.openPickEntityOverlay());
-        this.entity.flex().relative(this).y(1F, -20).w(0.5F, -3);
+        this.entity.flex().relative(this).y(12).w(0.5F, -3);
 
         this.count = new GuiTrackpadElement(mc, (value) -> this.objective.count = value.intValue());
         this.count.integer().limit(0).setValue(objective.count);
-        this.count.flex().relative(this).x(1F).y(1F, -20).w(0.5F, -2).anchorX(1F);
+        this.count.flex().relative(this).x(1F).y(12).w(0.5F, -2).anchorX(1F);
 
-        this.flex().h(32);
+        this.tag = new GuiTextElement(mc, this::parseTag);
+        this.tag.flex().relative(this).y(49).w(1F);
+        this.tag.setText(objective.tag == null ? "" : this.tag.toString());
 
-        this.add(this.entity, this.count);
+        this.flex().h(69);
+
+        this.add(this.entity, this.count, this.tag);
+    }
+
+    private void parseTag(String tag)
+    {
+        NBTTagCompound nbt = null;
+
+        try
+        {
+            nbt = JsonToNBT.getTagFromJson(tag);
+        }
+        catch (Exception e)
+        {}
+
+        this.objective.tag = nbt;
     }
 
     private void openPickEntityOverlay()
@@ -48,5 +69,6 @@ public class GuiKillObjective extends GuiObjective<KillObjective>
 
         this.font.drawStringWithShadow("Entity", this.entity.area.x, this.entity.area.y - 12, 0xffffff);
         this.font.drawStringWithShadow("Count", this.count.area.x, this.count.area.y - 12, 0xffffff);
+        this.font.drawStringWithShadow("Matching NBT", this.tag.area.x, this.tag.area.y - 12, 0xffffff);
     }
 }

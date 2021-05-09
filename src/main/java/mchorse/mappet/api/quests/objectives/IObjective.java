@@ -26,8 +26,6 @@ public interface IObjective extends INBTSerializable<NBTTagCompound>, INBTPartia
 
     public void complete(EntityPlayer player);
 
-    public IObjective copy();
-
     public String stringify(EntityPlayer player);
 
     public String getType();

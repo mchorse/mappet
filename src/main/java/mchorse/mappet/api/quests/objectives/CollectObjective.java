@@ -35,12 +35,6 @@ public class CollectObjective implements IObjective
     }
 
     @Override
-    public IObjective copy()
-    {
-        return new CollectObjective(this.stack.copy());
-    }
-
-    @Override
     public String stringify(EntityPlayer player)
     {
         return "Collect " + this.stack.getDisplayName() + " (" + Math.min(this.countItems(player), this.stack.getCount()) + "/" + this.stack.getCount() + ")";
