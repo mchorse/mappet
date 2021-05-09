@@ -3,8 +3,6 @@ package mchorse.mappet.api.utils;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.panels.GuiMappetDashboardPanel;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -16,7 +14,7 @@ public enum ContentType
     QUEST()
     {
         @Override
-        public IManager<? extends INBTSerializable<NBTTagCompound>> getManager()
+        public IManager<? extends AbstractData> getManager()
         {
             return Mappet.quests;
         }
@@ -31,7 +29,7 @@ public enum ContentType
     CRAFTING_TABLE()
     {
         @Override
-        public IManager<? extends INBTSerializable<NBTTagCompound>> getManager()
+        public IManager<? extends AbstractData> getManager()
         {
             return Mappet.crafting;
         }
@@ -46,7 +44,7 @@ public enum ContentType
     EVENT()
     {
         @Override
-        public IManager<? extends INBTSerializable<NBTTagCompound>> getManager()
+        public IManager<? extends AbstractData> getManager()
         {
             return Mappet.events;
         }
@@ -61,7 +59,7 @@ public enum ContentType
     DIALOGUE()
     {
         @Override
-        public IManager<? extends INBTSerializable<NBTTagCompound>> getManager()
+        public IManager<? extends AbstractData> getManager()
         {
             return Mappet.dialogues;
         }
@@ -76,7 +74,7 @@ public enum ContentType
     NPC()
     {
         @Override
-        public IManager<? extends INBTSerializable<NBTTagCompound>> getManager()
+        public IManager<? extends AbstractData> getManager()
         {
             return Mappet.npcs;
         }
@@ -91,7 +89,7 @@ public enum ContentType
     FACTION()
     {
         @Override
-        public IManager<? extends INBTSerializable<NBTTagCompound>> getManager()
+        public IManager<? extends AbstractData> getManager()
         {
             return Mappet.factions;
         }
@@ -106,7 +104,7 @@ public enum ContentType
     CHAINS()
     {
         @Override
-        public IManager<? extends INBTSerializable<NBTTagCompound>> getManager()
+        public IManager<? extends AbstractData> getManager()
         {
             return Mappet.chains;
         }
@@ -120,7 +118,7 @@ public enum ContentType
     };
 
     /* Every Karen be like :D */
-    public abstract IManager<? extends INBTSerializable<NBTTagCompound>> getManager();
+    public abstract IManager<? extends AbstractData> getManager();
 
     @SideOnly(Side.CLIENT)
     public abstract GuiMappetDashboardPanel get(GuiMappetDashboard dashboard);

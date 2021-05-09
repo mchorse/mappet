@@ -1,5 +1,6 @@
 package mchorse.mappet.client.gui.panels;
 
+import mchorse.mappet.api.utils.AbstractData;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.network.Dispatcher;
@@ -27,7 +28,7 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
-public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTagCompound>> extends GuiDashboardPanel<GuiMappetDashboard>
+public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends GuiDashboardPanel<GuiMappetDashboard>
 {
     public static final IKey KEYS_CATEGORY = IKey.str("Mappet panel keybinds");
 
@@ -206,6 +207,9 @@ public abstract class GuiMappetDashboardPanel <T extends INBTSerializable<NBTTag
             this.names.list.add(name);
             this.names.list.sort();
             this.names.list.setCurrentScroll(name);
+
+            this.id = name;
+            this.data.setId(name);
         }
     }
 
