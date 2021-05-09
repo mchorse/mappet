@@ -3,7 +3,6 @@ package mchorse.mappet.api.events.nodes;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.events.EventContext;
 import mchorse.mclib.math.IValue;
-import mchorse.mclib.math.Operation;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class ConditionNode extends EventNode
@@ -27,7 +26,7 @@ public class ConditionNode extends EventNode
     @Override
     public int execute(EventContext context)
     {
-        IValue value = Mappet.expressions.set(context.subject).evaluate(this.expression, null);
+        IValue value = Mappet.expressions.set(context.data).evaluate(this.expression, null);
 
         if (value != null)
         {

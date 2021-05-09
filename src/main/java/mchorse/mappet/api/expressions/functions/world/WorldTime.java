@@ -14,6 +14,6 @@ public class WorldTime extends NNFunction
     @Override
     public double doubleValue()
     {
-        return Mappet.expressions.world.getWorldTime();
+        return Mappet.expressions.getWorld().getWorldTime();
     }
 }

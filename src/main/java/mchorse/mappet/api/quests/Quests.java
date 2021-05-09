@@ -1,20 +1,14 @@
 package mchorse.mappet.api.quests;
 
 import mchorse.mappet.Mappet;
-import mchorse.mappet.capabilities.character.Character;
-import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.quests.PacketQuest;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.INBTSerializable;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Quests implements INBTSerializable<NBTTagCompound>

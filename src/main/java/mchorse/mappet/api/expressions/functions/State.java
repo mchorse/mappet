@@ -7,7 +7,6 @@ import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mclib.math.IValue;
 import mchorse.mclib.math.functions.SNFunction;
 import net.minecraft.command.CommandBase;
-import net.minecraft.command.EntitySelector;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class State extends SNFunction
@@ -23,7 +22,7 @@ public class State extends SNFunction
         {
             try
             {
-                EntityPlayer player = CommandBase.getPlayer(Mappet.expressions.server, Mappet.expressions.server, target);
+                EntityPlayer player = CommandBase.getPlayer(Mappet.expressions.getServer(), Mappet.expressions.getServer(), target);
                 ICharacter character = Character.get(player);
 
                 if (character != null)

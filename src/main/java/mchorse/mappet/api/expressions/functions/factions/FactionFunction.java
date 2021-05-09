@@ -34,7 +34,7 @@ public abstract class FactionFunction extends SNFunction
         {
             String id = this.getArg(0).stringValue();
             String target = this.getArg(1).stringValue();
-            EntityPlayerMP player = CommandBase.getPlayer(Mappet.expressions.server, Mappet.expressions.server, target);
+            EntityPlayerMP player = CommandBase.getPlayer(Mappet.expressions.getServer(), Mappet.expressions.getServer(), target);
             ICharacter character = Character.get(player);
 
             if (character != null)

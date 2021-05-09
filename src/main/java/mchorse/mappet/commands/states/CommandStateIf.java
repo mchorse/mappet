@@ -2,9 +2,9 @@ package mchorse.mappet.commands.states;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.states.States;
+import mchorse.mappet.api.utils.DataContext;
 import mchorse.mclib.commands.SubCommandBase;
 import mchorse.mclib.math.IValue;
-import mchorse.mclib.math.Operation;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -44,17 +44,20 @@ public class CommandStateIf extends CommandStateBase
         double previous = states.get(id);
 
         String expression = String.join(" ", SubCommandBase.dropFirstArguments(args, 2));
+        DataContext context = null;
 
         if (sender instanceof EntityPlayer)
         {
-            Mappet.expressions.set((EntityPlayer) sender);
+            context = new DataContext((EntityPlayer) sender);
         }
         else
         {
-            Mappet.expressions.set(server);
+            context = new DataContext(server);
         }
 
-        IValue result = Mappet.expressions.set(previous).evaluate(expression);
+        context.set("value", previous);
+
+        IValue result = Mappet.expressions.set(context).evaluate(expression);
 
         if (!result.booleanValue())
         {

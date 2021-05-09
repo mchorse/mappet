@@ -1,8 +1,6 @@
 package mchorse.mappet.api.expressions.functions.player;
 
 import mchorse.mappet.Mappet;
-import mchorse.mappet.capabilities.character.Character;
-import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mclib.math.IValue;
 import mchorse.mclib.math.functions.SNFunction;
 import net.minecraft.command.CommandBase;
@@ -31,7 +29,7 @@ public class PlayerIsAlive extends SNFunction
         {
             String target = this.getArg(0).stringValue();
 
-            MinecraftServer server = Mappet.expressions.server;
+            MinecraftServer server = Mappet.expressions.getServer();
             List<EntityPlayerMP> players = CommandBase.getPlayers(server, server, target);
 
             for (EntityPlayerMP player : players)

@@ -5,11 +5,8 @@ import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mclib.math.IValue;
 import mchorse.mclib.math.functions.SNFunction;
-import net.minecraft.command.CommandBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
-
-import java.util.List;
 
 public class QuestPresentCompleted extends SNFunction
 {
@@ -36,7 +33,7 @@ public class QuestPresentCompleted extends SNFunction
                 return 1;
             }
 
-            MinecraftServer server = Mappet.expressions.server;
+            MinecraftServer server = Mappet.expressions.getServer();
 
             for (EntityPlayerMP player : server.getPlayerList().getPlayers())
             {

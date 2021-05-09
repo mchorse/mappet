@@ -23,6 +23,7 @@ import mchorse.mappet.api.expressions.functions.world.WorldIsDay;
 import mchorse.mappet.api.expressions.functions.world.WorldIsNight;
 import mchorse.mappet.api.expressions.functions.world.WorldTime;
 import mchorse.mappet.api.expressions.functions.world.WorldTotalTime;
+import mchorse.mappet.api.utils.DataContext;
 import mchorse.mclib.math.Constant;
 import mchorse.mclib.math.IValue;
 import mchorse.mclib.math.MathBuilder;
@@ -31,24 +32,19 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 
+import java.util.Map;
+
 public class ExpressionManager
 {
     public static IValue ONE = new Constant(1);
     public static IValue ZERO = new Constant(0);
 
     public MathBuilder builder;
-    public Variable varValue;
-    public Variable varSubject;
-
-    public MinecraftServer server;
-    public World world;
-    public EntityLivingBase subject;
+    public DataContext context;
 
     public ExpressionManager()
     {
         this.builder = new MathBuilder();
-        this.builder.register(this.varValue = new Variable("value", 0));
-        this.builder.register(this.varSubject = new Variable("subject", ""));
 
         /* Functions */
         this.builder.functions.put("quest_present", QuestPresent.class);
@@ -84,50 +80,65 @@ public class ExpressionManager
 
     private void reset()
     {
-        this.server = null;
-        this.subject = null;
-        this.world = null;
+        for (Map.Entry<String, Variable> entry : this.builder.variables.entrySet())
+        {
+            String key = entry.getKey();
+            Variable variable = entry.getValue();
 
-        this.varSubject.set("");
-        this.varValue.set(0);
-    }
+            if (key.equals("PI") || key.equals("E"))
+            {
+                continue;
+            }
 
-    public ExpressionManager set(MinecraftServer server)
-    {
-        this.reset();
+            if (variable.isNumber())
+            {
+                variable.set(0);
+            }
+            else
+            {
+                variable.set("");
+            }
+        }
 
-        this.server = server;
-        this.world = server.getEntityWorld();
-
-        return this;
+        this.context = null;
     }
 
     public ExpressionManager set(World world)
     {
-        this.reset();
-
-        this.server = world.getMinecraftServer();
-        this.world = world;
-
-        return this;
+        return this.set(new DataContext(world));
     }
 
     public ExpressionManager set(EntityLivingBase subject)
     {
-        this.reset();
-
-        this.server = subject.getServer();
-        this.subject = subject;
-        this.world = subject.getEntityWorld();
-
-        this.varSubject.set(subject.getCachedUniqueIdString());
-
-        return this;
+        return this.set(new DataContext(subject));
     }
 
-    public ExpressionManager set(double value)
+    public ExpressionManager set(DataContext context)
     {
-        this.varValue.set(value);
+        this.reset();
+
+        this.context = context;
+
+        for (Map.Entry<String, Object> entry : context.getValues())
+        {
+            String key = entry.getKey();
+            Variable variable = this.builder.variables.get(key);
+
+            if (variable == null)
+            {
+                variable = new Variable(key, 0);
+                this.builder.register(variable);
+            }
+
+            if (entry.getValue() instanceof Number)
+            {
+                variable.set(((Number) entry.getValue()).doubleValue());
+            }
+            else if (entry.getValue() instanceof String)
+            {
+                variable.set((String) entry.getValue());
+            }
+        }
 
         return this;
     }
@@ -149,5 +160,17 @@ public class ExpressionManager
         }
 
         return defaultValue;
+    }
+
+    /* External API */
+
+    public World getWorld()
+    {
+        return this.context.world;
+    }
+
+    public MinecraftServer getServer()
+    {
+        return this.context.getSender().getServer();
     }
 }

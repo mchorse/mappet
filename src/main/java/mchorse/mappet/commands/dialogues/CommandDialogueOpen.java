@@ -3,7 +3,7 @@ package mchorse.mappet.commands.dialogues;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.dialogues.Dialogue;
 import mchorse.mappet.api.dialogues.DialogueContext;
-import mchorse.mappet.api.utils.TriggerSender;
+import mchorse.mappet.api.utils.DataContext;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -47,11 +47,11 @@ public class CommandDialogueOpen extends CommandDialogueBase
             throw new CommandException("dialogue.empty", id);
         }
 
-        DialogueContext context = new DialogueContext(new TriggerSender().set(player), player);
+        DialogueContext context = new DialogueContext(new DataContext(player));
 
         if (args.length > 2)
         {
-            context.subjectId = args[2];
+            context.data.set("subject_id", args[2]);
         }
 
         Mappet.dialogues.open(player, dialogue, context);

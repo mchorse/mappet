@@ -2,7 +2,7 @@ package mchorse.mappet.api.events;
 
 import mchorse.mappet.CommonProxy;
 import mchorse.mappet.api.events.nodes.EventNode;
-import mchorse.mappet.api.utils.TriggerSender;
+import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
 import mchorse.mappet.entities.EntityNpc;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,10 +15,7 @@ public class EventContext
 {
     public NodeSystem<EventNode> system;
 
-    public TriggerSender sender;
-    public EntityLivingBase subject;
-    public String subjectId;
-    public EntityLivingBase object;
+    public DataContext data;
 
     public boolean debug;
     public StringBuilder log = new StringBuilder();
@@ -27,17 +24,9 @@ public class EventContext
 
     public List<EventExecutionFork> executionForks = new ArrayList<EventExecutionFork>();
 
-    public EventContext(TriggerSender sender, EntityLivingBase subject)
+    public EventContext(DataContext data)
     {
-        this.sender = sender;
-        this.subject = subject;
-    }
-
-    public EventContext(TriggerSender sender, EntityLivingBase subject, EntityLivingBase object)
-    {
-        this(sender, subject);
-
-        this.object = object;
+        this.data = data;
     }
 
     public EventContext debug()
@@ -49,14 +38,26 @@ public class EventContext
 
     public String getSubjectId()
     {
-        if (this.subjectId != null)
+        return this.getId(this.data.subject, "subject_id");
+    }
+
+    public String getObjectId()
+    {
+        return this.getId(this.data.object, "object_id");
+    }
+
+    private String getId(EntityLivingBase entity, String variable)
+    {
+        Object id = this.data.getValue(variable);
+
+        if (id instanceof String)
         {
-            return this.subjectId;
+            return (String) id;
         }
 
-        if (this.subject instanceof EntityNpc)
+        if (entity instanceof EntityNpc)
         {
-            return ((EntityNpc) this.subject).getId();
+            return ((EntityNpc) entity).getId();
         }
 
         return "";
@@ -78,21 +79,6 @@ public class EventContext
 
             this.executionForks.clear();
         }
-    }
-
-    public String processCommand(String command)
-    {
-        if (this.subject != null)
-        {
-            command = command.replace("${subject}", this.subject.getCachedUniqueIdString());
-        }
-
-        if (this.object != null)
-        {
-            command = command.replace("${object}", this.object.getCachedUniqueIdString());
-        }
-
-        return command;
     }
 
     public void log(String message)

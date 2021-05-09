@@ -5,6 +5,7 @@ import mchorse.mappet.api.dialogues.nodes.QuestChainNode;
 import mchorse.mappet.api.dialogues.nodes.ReactionNode;
 import mchorse.mappet.api.dialogues.nodes.ReplyNode;
 import mchorse.mappet.api.events.EventContext;
+import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.TriggerSender;
 import net.minecraft.entity.EntityLivingBase;
 
@@ -18,14 +19,9 @@ public class DialogueContext extends EventContext
     public CraftingNode crafting;
     public QuestChainNode quest;
 
-    public DialogueContext(TriggerSender sender, EntityLivingBase subject)
+    public DialogueContext(DataContext data)
     {
-        super(sender, subject);
-    }
-
-    public DialogueContext(TriggerSender sender, EntityLivingBase subject, EntityLivingBase object)
-    {
-        super(sender, subject, object);
+        super(data);
     }
 
     public void reset()

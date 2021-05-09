@@ -46,7 +46,7 @@ public abstract class InventoryFunction extends SNFunction
         {
             if (target != null)
             {
-                MinecraftServer server = Mappet.expressions.server;
+                MinecraftServer server = Mappet.expressions.getServer();
 
                 players = CommandBase.getPlayers(server, server, target);
             }
@@ -54,9 +54,9 @@ public abstract class InventoryFunction extends SNFunction
         catch (Exception e)
         {}
 
-        if (players == null && Mappet.expressions.subject instanceof EntityPlayerMP)
+        if (players == null && Mappet.expressions.context.subject instanceof EntityPlayerMP)
         {
-            players = ImmutableList.of((EntityPlayerMP) Mappet.expressions.subject);
+            players = ImmutableList.of((EntityPlayerMP) Mappet.expressions.context.subject);
         }
 
         if (players != null)

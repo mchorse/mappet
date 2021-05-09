@@ -26,7 +26,7 @@ public abstract class PlayerFunction extends SNFunction
         try
         {
             String target = this.getArg(0).stringValue();
-            EntityPlayerMP player = CommandBase.getPlayer(Mappet.expressions.server, Mappet.expressions.server, target);
+            EntityPlayerMP player = CommandBase.getPlayer(Mappet.expressions.getServer(), Mappet.expressions.getServer(), target);
 
             return this.apply(player);
         }

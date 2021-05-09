@@ -4,8 +4,6 @@ import mchorse.mappet.Mappet;
 import mchorse.mappet.api.expressions.ExpressionManager;
 import mchorse.mappet.api.utils.Trigger;
 import mchorse.mappet.utils.InventoryUtils;
-import mchorse.mclib.math.IValue;
-import mchorse.mclib.math.Operation;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;

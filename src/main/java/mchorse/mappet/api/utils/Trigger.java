@@ -30,13 +30,16 @@ public class Trigger implements INBTSerializable<NBTTagCompound>
 
     public void trigger(EntityLivingBase target)
     {
-        TriggerSender sender = !this.command.isEmpty() || !this.triggerEvent.isEmpty() ? new TriggerSender().set(target) : null;
+        this.trigger(new DataContext(target));
+    }
+
+    public void trigger(DataContext context)
+    {
+        EntityLivingBase target = context.subject;
 
         if (!this.command.isEmpty())
         {
-            MinecraftServer server = target.getServer();
-
-            server.getCommandManager().executeCommand(sender, this.command);
+            context.execute(this.command);
         }
 
         SoundEvent event = null;
@@ -46,14 +49,14 @@ public class Trigger implements INBTSerializable<NBTTagCompound>
             event = SoundEvent.REGISTRY.getObject(new ResourceLocation(this.soundEvent));
         }
 
-        if (event != null)
+        if (event != null && target != null)
         {
             target.world.playSound(null, target.posX, target.posY, target.posZ, event, SoundCategory.MASTER, 1, 1);
         }
 
         if (!this.triggerEvent.isEmpty())
         {
-            Mappet.events.execute(this.triggerEvent, new EventContext(sender, target));
+            Mappet.events.execute(this.triggerEvent, new EventContext(context));
         }
 
         if (!this.dialogue.isEmpty() && target instanceof EntityPlayerMP)
@@ -62,9 +65,7 @@ public class Trigger implements INBTSerializable<NBTTagCompound>
 
             if (dialogue != null)
             {
-                DialogueContext context = new DialogueContext(sender, target);
-
-                Mappet.dialogues.open((EntityPlayerMP) target, dialogue, context);
+                Mappet.dialogues.open((EntityPlayerMP) target, dialogue, new DialogueContext(context));
             }
         }
     }

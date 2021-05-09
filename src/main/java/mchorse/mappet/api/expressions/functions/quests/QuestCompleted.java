@@ -38,7 +38,7 @@ public class QuestCompleted extends SNFunction
             }
             else
             {
-                MinecraftServer server = Mappet.expressions.server;
+                MinecraftServer server = Mappet.expressions.getServer();
                 List<EntityPlayerMP> players = CommandBase.getPlayers(server, server, target);
 
                 for (EntityPlayerMP player : players)

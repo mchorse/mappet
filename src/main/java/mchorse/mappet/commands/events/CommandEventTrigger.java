@@ -3,11 +3,19 @@ package mchorse.mappet.commands.events;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.events.EventContext;
 import mchorse.mappet.api.events.nodes.EventNode;
+import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.TriggerSender;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
+import mchorse.mclib.commands.SubCommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTException;
+import net.minecraft.nbt.NBTPrimitive;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
 
 public class CommandEventTrigger extends CommandEventBase
@@ -27,7 +35,7 @@ public class CommandEventTrigger extends CommandEventBase
     @Override
     public String getSyntax()
     {
-        return "{l}{6}/{r}mp {8}event trigger{r} {7}<player> <id>{r}";
+        return "{l}{6}/{r}mp {8}event trigger{r} {7}<player> <id> [data]{r}";
     }
 
     @Override
@@ -47,6 +55,39 @@ public class CommandEventTrigger extends CommandEventBase
             throw new CommandException("event.empty", args[1]);
         }
 
-        Mappet.events.execute(event, new EventContext(new TriggerSender().set(player), player));
+        DataContext context = new DataContext(player);
+
+        if (args.length > 2)
+        {
+            String nbt = String.join(" ", SubCommandBase.dropFirstArguments(args, 2));
+
+            try
+            {
+                this.apply(nbt, context);
+            }
+            catch (Exception e)
+            {}
+        }
+
+        Mappet.events.execute(event, new EventContext(context));
+    }
+
+    private void apply(String nbt, DataContext context) throws NBTException
+    {
+        NBTTagCompound tag = JsonToNBT.getTagFromJson(nbt);
+
+        for (String key : tag.getKeySet())
+        {
+            NBTBase value = tag.getTag(key);
+
+            if (value instanceof NBTPrimitive)
+            {
+                context.set(key, ((NBTPrimitive) value).getDouble());
+            }
+            else if (value instanceof NBTTagString)
+            {
+                context.set(key, ((NBTTagString) value).getString());
+            }
+        }
     }
 }

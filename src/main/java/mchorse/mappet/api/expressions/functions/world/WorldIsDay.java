@@ -14,6 +14,6 @@ public class WorldIsDay extends NNFunction
     @Override
     public double doubleValue()
     {
-        return Mappet.expressions.world.getWorldTime() % 24000 < 12000 ? 1 : 0;
+        return Mappet.expressions.getWorld().getWorldTime() % 24000 < 12000 ? 1 : 0;
     }
 }

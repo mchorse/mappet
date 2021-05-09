@@ -66,7 +66,7 @@ mappet.commands.mp.crafting.open=This command opens a crafting table by §7<id>�
 mappet.commands.mp.crafting.drop=This command drops an output item stacks from a crafting table by §7<id>§r from its recipe at index §7[index]§r at §7[x] [y] [z]§r.\n\n§7[x] [y] [z]§r support relative position using §7~§r and can be omitted. §7[index]§r can be also §7@r§r which means it will use a random recipe. §7[mx] [my] [mz]§r can be provided to setup initial velocity of item entities.
 
 mappet.commands.mp.event.help=Mappet's event subcommand.
-mappet.commands.mp.event.trigger=This command triggers an event by §7<id>§r using §7<player>§r(s) as context.
+mappet.commands.mp.event.trigger=This command triggers an event by §7<id>§r using §7<player>§r(s) as context. You can also pass arbitrary NBT data to the event using §7[data]§r argument.
 
 mappet.commands.mp.dialogue.help=Mappet's dialogue subcommand.
 mappet.commands.mp.dialogue.open=This command opens a dialogue by §7<id>§r for §7<player>§r(s).

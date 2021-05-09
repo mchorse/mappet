@@ -32,7 +32,7 @@ public class QuestPresent extends SNFunction
             String id = this.getArg(0).stringValue();
             String target = this.getArg(1).stringValue();
 
-            MinecraftServer server = Mappet.expressions.server;
+            MinecraftServer server = Mappet.expressions.getServer();
             List<EntityPlayerMP> players = CommandBase.getPlayers(server, server, target);
 
             for (EntityPlayerMP player : players)
