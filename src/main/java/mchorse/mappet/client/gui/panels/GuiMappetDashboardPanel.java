@@ -128,7 +128,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
 
     public abstract String getTitle();
 
-    protected void pickData(String id)
+    public void pickData(String id)
     {
         if (this.data != null && this.id != null)
         {
@@ -266,8 +266,13 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
         {
             this.update = false;
 
-            Dispatcher.sendToServer(new PacketContentRequestNames(this.getType()));
+            this.requestDataNames();
         }
+    }
+
+    public void requestDataNames()
+    {
+        Dispatcher.sendToServer(new PacketContentRequestNames(this.getType()));
     }
 
     @Override
