@@ -1,6 +1,5 @@
 package mchorse.mappet.api.utils.nodes;
 
-import mchorse.mappet.api.quests.chains.QuestNode;
 import mchorse.mappet.api.utils.AbstractData;
 import mchorse.mappet.api.utils.nodes.factory.INodeFactory;
 import net.minecraft.nbt.NBTTagCompound;

@@ -1,9 +1,6 @@
 package mchorse.mappet.client.gui.nodes;
 
 import mchorse.mappet.Mappet;
-import mchorse.mappet.api.dialogues.DialogueFragment;
-import mchorse.mappet.api.dialogues.nodes.DialogueNode;
-import mchorse.mappet.api.events.nodes.EventNode;
 import mchorse.mappet.api.utils.nodes.Node;
 import mchorse.mappet.api.utils.nodes.NodeRelation;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
@@ -14,7 +11,6 @@ import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiCanvas;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
-import mchorse.mclib.client.gui.mclib.GuiDashboardPanel;
 import mchorse.mclib.client.gui.utils.Area;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.Keybind;
@@ -30,15 +26,23 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTException;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraftforge.common.util.Constants;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import javax.vecmath.Vector2d;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class GuiNodeGraph <T extends Node> extends GuiCanvas
@@ -74,15 +78,35 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
             int x = (int) this.fromX(GuiBase.getCurrent().mouseX);
             int y = (int) this.fromY(GuiBase.getCurrent().mouseY);
 
-            for (String key : this.system.getFactory().getKeys())
+            menu.action(Icons.ADD, IKey.str("Add a node..."), () ->
             {
-                /* TODO: extract language */
-                menu.action(Icons.ADD, IKey.str("Add " + key + " node"), () -> this.addNode(key, x, y));
+                GuiSimpleContextMenu adds = new GuiSimpleContextMenu(this.mc);
+
+                for (String key : this.system.getFactory().getKeys())
+                {
+                    /* TODO: extract language */
+                    adds.action(Icons.ADD, IKey.str("Add " + key + " node"), () -> this.addNode(key, x, y));
+                }
+
+                GuiBase.getCurrent().replaceContextMenu(adds);
+            });
+
+            if (!this.selected.isEmpty())
+            {
+                menu.action(Icons.COPY, IKey.str("Copy selected node(s)"), this::copyNodes);
+            }
+
+            try
+            {
+                this.addPaste(menu, x, y);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
             }
 
             if (!this.selected.isEmpty())
             {
-                menu.action(Icons.FAVORITE, IKey.str("Mark main entry node"), this::markMain);
                 menu.action(Icons.MINIMIZE, IKey.str("Tie to last selected"), this::tieSelected);
                 menu.action(Icons.MAXIMIZE, IKey.str("Untie selected"), this::untieSelected);
                 menu.action(Icons.REMOVE, IKey.str("Remove selected nodes"), this::removeSelected);
@@ -110,6 +134,109 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
             keycode += 1;
         }
     }
+
+    /* Copy/paste */
+
+    private void copyNodes()
+    {
+        NBTTagCompound tag = new NBTTagCompound();
+        NBTTagList list = new NBTTagList();
+        NBTTagCompound relations = new NBTTagCompound();
+
+        for (T node : this.selected)
+        {
+            NBTTagCompound nodeTag = node.serializeNBT();
+
+            nodeTag.setString("Type", this.system.getFactory().getType(node));
+            list.appendTag(nodeTag);
+
+            List<T> children = this.system.getChildren(node);
+
+            for (T child : children)
+            {
+                if (this.selected.contains(child))
+                {
+                    NBTTagList relation;
+                    String key = node.getId().toString();
+
+                    if (relations.hasKey(key))
+                    {
+                        relation = relations.getTagList(key, Constants.NBT.TAG_STRING);
+                    }
+                    else
+                    {
+                        relation = new NBTTagList();
+                        relations.setTag(key, relation);
+                    }
+
+                    relation.appendTag(new NBTTagString(child.getId().toString()));
+                }
+            }
+        }
+
+        tag.setTag("Nodes", list);
+        tag.setTag("Relations", relations);
+        GuiScreen.setClipboardString(tag.toString());
+    }
+
+    private void addPaste(GuiSimpleContextMenu menu, int x, int y) throws NBTException
+    {
+        String json = GuiScreen.getClipboardString();
+
+        NBTTagCompound tag = JsonToNBT.getTagFromJson(json);
+        NBTTagList nodesTag = tag.getTagList("Nodes", Constants.NBT.TAG_COMPOUND);
+        NBTTagCompound relationsTag = tag.getCompoundTag("Relations");
+
+        List<T> nodes = new ArrayList<T>();
+        Map<String, T> mapping = new HashMap<String, T>();
+
+        for (int i = 0; i < nodesTag.tagCount(); i++)
+        {
+            NBTTagCompound nodeTag = nodesTag.getCompoundTagAt(i);
+            T node = this.system.getFactory().create(nodeTag.getString("Type"));
+
+            mapping.put(nodeTag.getString("Id"), node);
+            nodeTag.removeTag("Id");
+            node.deserializeNBT(nodeTag);
+            nodes.add(node);
+        }
+
+        int nx = nodes.get(0).x;
+        int ny = nodes.get(0).y;
+
+        menu.action(Icons.PASTE, IKey.str("Paste a copied node"), () ->
+        {
+            this.selected.clear();
+
+            for (T node : nodes)
+            {
+                this.system.add(node);
+
+                node.x = node.x - nx + x;
+                node.y = node.y - ny + y;
+
+                this.select(node, true);
+            }
+
+            for (String key : relationsTag.getKeySet())
+            {
+                NBTTagList relations = relationsTag.getTagList(key, Constants.NBT.TAG_STRING);
+                T output = mapping.get(key);
+
+                for (NBTBase base : relations)
+                {
+                    T input = mapping.get(((NBTTagString) base).getString());
+
+                    if (output != null && input != null)
+                    {
+                        this.system.tie(output, input);
+                    }
+                }
+            }
+        });
+    }
+
+    /* CRUD */
 
     private void addNode(String key, int x, int y)
     {
