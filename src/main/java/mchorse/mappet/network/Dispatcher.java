@@ -10,6 +10,7 @@ import mchorse.mappet.network.client.crafting.ClientHandlerCraft;
 import mchorse.mappet.network.client.crafting.ClientHandlerCraftingTable;
 import mchorse.mappet.network.client.dialogue.ClientHandlerDialogueFragment;
 import mchorse.mappet.network.client.factions.ClientHandlerFactions;
+import mchorse.mappet.network.client.npc.ClientHandlerNpcList;
 import mchorse.mappet.network.client.npc.ClientHandlerNpcMorph;
 import mchorse.mappet.network.client.npc.ClientHandlerNpcState;
 import mchorse.mappet.network.client.quests.ClientHandlerQuest;
@@ -27,8 +28,10 @@ import mchorse.mappet.network.common.dialogue.PacketDialogueFragment;
 import mchorse.mappet.network.common.dialogue.PacketPickReply;
 import mchorse.mappet.network.common.factions.PacketFactions;
 import mchorse.mappet.network.common.factions.PacketRequestFactions;
+import mchorse.mappet.network.common.npc.PacketNpcList;
 import mchorse.mappet.network.common.npc.PacketNpcMorph;
 import mchorse.mappet.network.common.npc.PacketNpcState;
+import mchorse.mappet.network.common.npc.PacketNpcTool;
 import mchorse.mappet.network.common.quests.PacketQuest;
 import mchorse.mappet.network.common.quests.PacketQuestAction;
 import mchorse.mappet.network.common.quests.PacketQuests;
@@ -42,7 +45,9 @@ import mchorse.mappet.network.server.crafting.ServerHandlerCraft;
 import mchorse.mappet.network.server.crafting.ServerHandlerCraftingTable;
 import mchorse.mappet.network.server.dialogue.ServerHandlerPickReply;
 import mchorse.mappet.network.server.factions.ServerHandlerRequestFactions;
+import mchorse.mappet.network.server.npc.ServerHandlerNpcList;
 import mchorse.mappet.network.server.npc.ServerHandlerNpcState;
+import mchorse.mappet.network.server.npc.ServerHandlerNpcTool;
 import mchorse.mappet.network.server.quests.ServerHandlerQuestAction;
 import mchorse.mclib.network.AbstractDispatcher;
 import net.minecraft.entity.Entity;
@@ -94,6 +99,9 @@ public class Dispatcher
             this.register(PacketNpcMorph.class, ClientHandlerNpcMorph.class, Side.CLIENT);
             this.register(PacketNpcState.class, ClientHandlerNpcState.class, Side.CLIENT);
             this.register(PacketNpcState.class, ServerHandlerNpcState.class, Side.SERVER);
+            this.register(PacketNpcList.class, ClientHandlerNpcList.class, Side.CLIENT);
+            this.register(PacketNpcList.class, ServerHandlerNpcList.class, Side.SERVER);
+            this.register(PacketNpcTool.class, ServerHandlerNpcTool.class, Side.SERVER);
 
             /* Quests */
             this.register(PacketQuest.class, ClientHandlerQuest.class, Side.CLIENT);

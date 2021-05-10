@@ -172,9 +172,9 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
     /* Getter and setters */
 
-    public void setNpc(String id, Npc npc, NpcState state)
+    public void setNpc(Npc npc, NpcState state)
     {
-        this.npcId = id;
+        this.npcId = npc.getId();
         this.unique = npc.unique;
         this.pathDistance = npc.pathDistance;
 
