@@ -16,6 +16,7 @@ import mchorse.mappet.entities.ai.EntityAIPatrol;
 import mchorse.mappet.entities.ai.EntityAIReturnToPost;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.npc.PacketNpcMorph;
+import mchorse.mappet.network.common.npc.PacketNpcState;
 import mchorse.mclib.utils.Interpolations;
 import mchorse.mclib.utils.MathUtils;
 import mchorse.metamorph.api.Morph;
@@ -402,6 +403,13 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         {
             if (hand == EnumHand.MAIN_HAND)
             {
+                if (player.getHeldItem(hand).getItem() == Mappet.npcTool)
+                {
+                    Dispatcher.sendTo(new PacketNpcState(this.getEntityId(), this.state.serializeNBT()), (EntityPlayerMP) player);
+
+                    return true;
+                }
+
                 this.state.triggerInteract.trigger(new DataContext(this, player));
             }
 

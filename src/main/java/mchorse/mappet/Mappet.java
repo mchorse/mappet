@@ -23,6 +23,7 @@ import mchorse.mclib.config.values.ValueInt;
 import mchorse.mclib.events.RegisterConfigEvent;
 import mchorse.mclib.events.RemoveDashboardPanels;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -58,6 +59,8 @@ public final class Mappet
     public static L10n l10n = new L10n(MOD_ID);
 
     /* Content */
+    public static Item npcTool;
+
     public static BlockEmitter emitterBlock;
     public static BlockTrigger triggerBlock;
     public static BlockRegion regionBlock;

@@ -11,6 +11,7 @@ import mchorse.mappet.blocks.BlockEmitter;
 import mchorse.mappet.blocks.BlockRegion;
 import mchorse.mappet.blocks.BlockTrigger;
 import mchorse.mappet.entities.EntityNpc;
+import mchorse.mappet.items.ItemNpcTool;
 import mchorse.mappet.tile.TileEmitter;
 import mchorse.mappet.tile.TileRegion;
 import mchorse.mappet.tile.TileTrigger;
@@ -72,6 +73,10 @@ public class RegisterHandler
     @SubscribeEvent
     public void onItemsRegister(RegistryEvent.Register<Item> event)
     {
+        event.getRegistry().register(Mappet.npcTool = new ItemNpcTool()
+            .setRegistryName(new ResourceLocation(Mappet.MOD_ID, "npc_tool"))
+            .setUnlocalizedName(Mappet.MOD_ID + ".npc_tool"));
+
         event.getRegistry().register(new ItemBlock(Mappet.emitterBlock)
             .setRegistryName(new ResourceLocation(Mappet.MOD_ID, "emitter"))
             .setUnlocalizedName(Mappet.MOD_ID + ".emitter"));
@@ -104,6 +109,8 @@ public class RegisterHandler
     @SideOnly(Side.CLIENT)
     public void onModelRegistry(ModelRegistryEvent event)
     {
+        ModelLoader.setCustomModelResourceLocation(Mappet.npcTool, 0, new ModelResourceLocation(Mappet.MOD_ID + ":npc_tool", "inventory"));
+
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(Mappet.emitterBlock), 0, new ModelResourceLocation(Mappet.MOD_ID + ":emitter", "inventory"));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(Mappet.triggerBlock), 0, new ModelResourceLocation(Mappet.MOD_ID + ":trigger", "inventory"));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(Mappet.regionBlock), 0, new ModelResourceLocation(Mappet.MOD_ID + ":region", "inventory"));

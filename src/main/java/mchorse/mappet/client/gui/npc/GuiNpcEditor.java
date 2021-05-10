@@ -7,6 +7,7 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.Direction;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.creative.GuiCreativeMorphsMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -15,6 +16,8 @@ import java.util.function.Supplier;
 
 public class GuiNpcEditor extends GuiPanelBase<GuiNpcPanel>
 {
+    private NpcState state;
+
     public GuiNpcEditor(Minecraft mc, Supplier<GuiInventoryElement> inventory, Supplier<GuiCreativeMorphsMenu> morphs)
     {
         super(mc, Direction.BOTTOM);
@@ -28,10 +31,17 @@ public class GuiNpcEditor extends GuiPanelBase<GuiNpcPanel>
 
     public void set(NpcState state)
     {
+        this.state = state;
+
         for (GuiNpcPanel panel : this.panels)
         {
             panel.set(state);
         }
+    }
+
+    public NpcState get()
+    {
+        return this.state;
     }
 
     @Override

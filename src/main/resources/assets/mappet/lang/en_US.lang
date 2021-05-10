@@ -134,6 +134,9 @@ mappet.keys.journal=Player's journal
 # Items, blocks and entities
 itemGroup.mappet=Mappet
 
+item.mappet.npc_tool.name=NPC tool
+item.mappet.npc_tool.tooltip=This tool allows summoning and editing NPCs.
+
 tile.mappet.emitter.name=Emitter block
 tile.mappet.emitter.tooltip=Checks for expression condition and emits redstone signal upon non-zero value
 tile.mappet.trigger.name=Trigger block
