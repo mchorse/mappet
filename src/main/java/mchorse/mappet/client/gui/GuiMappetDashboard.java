@@ -55,7 +55,7 @@ public class GuiMappetDashboard extends GuiAbstractDashboard
     {
         if (this.morphs == null)
         {
-            this.morphs = new GuiCreativeMorphsMenu(this.mc, null);
+            this.morphs = new GuiCreativeMorphsMenu(this.mc, null).pickUponExit();
         }
 
         return this.morphs;

@@ -43,16 +43,6 @@ public class GuiDialoguePanel extends GuiMappetDashboardPanel<Dialogue>
         this.fill("", null);
     }
 
-    private GuiCreativeMorphsMenu getMorphMenu()
-    {
-        if (this.morphs == null)
-        {
-            this.morphs = new GuiCreativeMorphsMenu(this.mc, null);
-        }
-
-        return this.morphs;
-    }
-
     private void pickNode(EventNode node)
     {
         if (this.panel != null)
