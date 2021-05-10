@@ -47,8 +47,8 @@ import java.util.function.Consumer;
 
 public class GuiNodeGraph <T extends Node> extends GuiCanvas
 {
-    public static final IKey KEYS_CATEGORY = IKey.str("Node editor");
-    public static final IKey ADD_CATEGORY = IKey.str("Add nodes");
+    public static final IKey KEYS_CATEGORY = IKey.lang("mappet.gui.nodes.keys.editor");
+    public static final IKey ADD_CATEGORY = IKey.lang("mappet.gui.nodes.keys.add");
 
     public static final int ACTIVE = 0x0088ff;
     public static final int IF = 0x00ff44;
@@ -78,14 +78,13 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
             int x = (int) this.fromX(GuiBase.getCurrent().mouseX);
             int y = (int) this.fromY(GuiBase.getCurrent().mouseY);
 
-            menu.action(Icons.ADD, IKey.str("Add a node..."), () ->
+            menu.action(Icons.ADD, IKey.lang("mappet.gui.nodes.context.add"), () ->
             {
                 GuiSimpleContextMenu adds = new GuiSimpleContextMenu(this.mc);
 
                 for (String key : this.system.getFactory().getKeys())
                 {
-                    /* TODO: extract language */
-                    adds.action(Icons.ADD, IKey.str("Add " + key + " node"), () -> this.addNode(key, x, y));
+                    adds.action(Icons.ADD, IKey.format("mappet.gui.nodes.context.add_node", IKey.lang("mappet.gui.node_types." + key)), () -> this.addNode(key, x, y));
                 }
 
                 GuiBase.getCurrent().replaceContextMenu(adds);
@@ -93,7 +92,7 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
 
             if (!this.selected.isEmpty())
             {
-                menu.action(Icons.COPY, IKey.str("Copy selected node(s)"), this::copyNodes);
+                menu.action(Icons.COPY, IKey.lang("mappet.gui.nodes.context.copy"), this::copyNodes);
             }
 
             try
@@ -107,23 +106,23 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
 
             if (!this.selected.isEmpty())
             {
-                menu.action(Icons.MINIMIZE, IKey.str("Tie to last selected"), this::tieSelected);
-                menu.action(Icons.MAXIMIZE, IKey.str("Untie selected"), this::untieSelected);
-                menu.action(Icons.REMOVE, IKey.str("Remove selected nodes"), this::removeSelected);
+                menu.action(Icons.MINIMIZE, IKey.lang("mappet.gui.nodes.context.tie"), this::tieSelected);
+                menu.action(Icons.MAXIMIZE, IKey.lang("mappet.gui.nodes.context.untie"), this::untieSelected);
+                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.nodes.context.remove"), this::removeSelected);
             }
 
             return menu;
         });
 
-        this.keys().register(IKey.str("Tie to last selected"), Keyboard.KEY_F, this::tieSelected).inside().category(KEYS_CATEGORY);
-        this.keys().register(IKey.str("Untie selected"), Keyboard.KEY_U, this::untieSelected).inside().category(KEYS_CATEGORY);
-        this.keys().register(IKey.str("Mark main entry node"), Keyboard.KEY_M, this::markMain).inside().category(KEYS_CATEGORY);
+        this.keys().register(IKey.lang("mappet.gui.nodes.context.tie"), Keyboard.KEY_F, this::tieSelected).inside().category(KEYS_CATEGORY);
+        this.keys().register(IKey.lang("mappet.gui.nodes.context.untie"), Keyboard.KEY_U, this::untieSelected).inside().category(KEYS_CATEGORY);
+        this.keys().register(IKey.lang("mappet.gui.nodes.context.remove"), Keyboard.KEY_M, this::markMain).inside().category(KEYS_CATEGORY);
 
         int keycode = Keyboard.KEY_1;
 
         for (String key : factory.getKeys())
         {
-            Keybind keybind = this.keys().register(IKey.str("Add " + key + " node"), keycode, () ->
+            Keybind keybind = this.keys().register(IKey.format("mappet.gui.nodes.context.add_node", IKey.lang("mappet.gui.node_types." + key)), keycode, () ->
             {
                 GuiContext context = GuiBase.getCurrent();
 
@@ -204,7 +203,7 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
         int nx = nodes.get(0).x;
         int ny = nodes.get(0).y;
 
-        menu.action(Icons.PASTE, IKey.str("Paste a copied node"), () ->
+        menu.action(Icons.PASTE, IKey.lang("mappet.gui.nodes.context.paste"), () ->
         {
             this.selected.clear();
 

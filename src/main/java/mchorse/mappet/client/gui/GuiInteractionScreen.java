@@ -72,7 +72,7 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
         this.morph = new GuiMorphRenderer(mc);
         this.morph.flex().relative(this.viewport).x(0.4F).w(0.6F).h(1F);
 
-        this.back = new GuiButtonElement(mc, IKey.str("Back"), (b) -> Dispatcher.sendToServer(new PacketPickReply(-1)));
+        this.back = new GuiButtonElement(mc, IKey.lang("mappet.gui.interaction.back"), (b) -> Dispatcher.sendToServer(new PacketPickReply(-1)));
 
         /* Hardcoded viewport values */
         this.morph.fov = 40;
@@ -100,7 +100,7 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
         this.quest = new GuiElement(mc);
         this.quests = new GuiQuestInfoListElement(mc, (l) -> this.pickQuest(l.get(0)));
         this.questArea = new GuiScrollElement(mc);
-        this.actionQuest = new GuiButtonElement(mc, IKey.str("Accept"), (b) -> this.actionQuest());
+        this.actionQuest = new GuiButtonElement(mc, IKey.lang("mappet.gui.interaction.accept"), (b) -> this.actionQuest());
 
         this.quest.flex().relative(this.area).y(0.25F).w(1F).hTo(this.area.area, 1F);
         this.quests.background().flex().relative(this.quest).y(10).w(1F).h(56);

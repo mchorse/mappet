@@ -36,7 +36,7 @@ public class GuiFactionRelationOverlay extends GuiOverlayPanel
 
     public GuiFactionRelationOverlay(Minecraft mc, FactionRelation relation)
     {
-        super(mc, IKey.str("Faction relation editor"));
+        super(mc, IKey.lang("mappet.gui.factions.overlay.main"));
 
         this.relation = relation;
 
@@ -44,11 +44,11 @@ public class GuiFactionRelationOverlay extends GuiOverlayPanel
         this.list.sorting().setList(relation.thresholds);
         this.list.context(() ->
         {
-            GuiSimpleContextMenu menu = new GuiSimpleContextMenu(this.mc).action(Icons.ADD, IKey.str("Add a threshold"), this::addRelation);
+            GuiSimpleContextMenu menu = new GuiSimpleContextMenu(this.mc).action(Icons.ADD, IKey.lang("mappet.gui.factions.overlay.context.add"), this::addRelation);
 
             if (this.relation.thresholds.size() > 1)
             {
-                menu.action(Icons.REMOVE, IKey.str("Remove this threshold"), this::removeThreshold);
+                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.factions.overlay.context.remove"), this::removeThreshold);
             }
 
             return menu;
@@ -64,10 +64,10 @@ public class GuiFactionRelationOverlay extends GuiOverlayPanel
         this.list.flex().relative(this.content).w(120).h(1F);
         this.editor.flex().relative(this.content).x(120).w(1F, -120).h(1F).column(5).vertical().stretch().scroll().padding(10);
 
-        this.editor.add(Elements.label(IKey.str("Threshold title")), this.title);
-        this.editor.add(Elements.label(IKey.str("Threshold color")).marginTop(12), this.color);
-        this.editor.add(Elements.label(IKey.str("Threshold score")).marginTop(12), this.score);
-        this.editor.add(Elements.label(IKey.str("Threshold attitude")).marginTop(12), this.attitude);
+        this.editor.add(Elements.label(IKey.lang("mappet.gui.factions.overlay.title")), this.title);
+        this.editor.add(Elements.label(IKey.lang("mappet.gui.factions.overlay.color")).marginTop(12), this.color);
+        this.editor.add(Elements.label(IKey.lang("mappet.gui.factions.overlay.score")).marginTop(12), this.score);
+        this.editor.add(Elements.label(IKey.lang("mappet.gui.factions.overlay.attitude")).marginTop(12), this.attitude);
 
         this.content.add(this.list, this.editor);
 

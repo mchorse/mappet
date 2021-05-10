@@ -35,7 +35,7 @@ public class GuiFactions extends GuiElement
         GuiElement row = Elements.row(this.mc, 5, Elements.label(IKey.str(faction), 20).anchor(0, 0.5F), button);
 
         GuiFactionPanel.setValue(button, attitude);
-        row.context(() -> new GuiSimpleContextMenu(this.mc).action(Icons.REMOVE, IKey.str("Remove this relation"), () ->
+        row.context(() -> new GuiSimpleContextMenu(this.mc).action(Icons.REMOVE, IKey.lang("mappet.gui.factions.relations.context.remove"), () ->
         {
             row.removeFromParent();
             this.relations.remove(faction);

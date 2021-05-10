@@ -13,10 +13,10 @@ public class GuiFactionsOverlay extends GuiOverlayPanel
 {
     public GuiFactionsOverlay(Minecraft mc, List<String> keys, Consumer<String> callback)
     {
-        super(mc, IKey.str("Pick a faction..."));
+        super(mc, IKey.lang("mappet.gui.factions.relations.main"));
 
         GuiStringListElement list = new GuiStringListElement(mc, null);
-        GuiButtonElement button = new GuiButtonElement(mc, IKey.str("Add"), (b) ->
+        GuiButtonElement button = new GuiButtonElement(mc, IKey.lang("mappet.gui.factions.relations.add"), (b) ->
         {
             if (callback != null && !list.isDeselected())
             {

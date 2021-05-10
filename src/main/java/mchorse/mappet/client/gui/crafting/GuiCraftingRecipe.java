@@ -29,9 +29,9 @@ public class GuiCraftingRecipe extends GuiElement
         super(mc);
 
         this.title = new GuiTextElement(mc, 1000, (text) -> this.recipe.title = text);
-        this.input = new GuiItemsElement(mc, IKey.str("Ingredients"), null, inventory);
+        this.input = new GuiItemsElement(mc, IKey.lang("mappet.gui.crafting.input"), null, inventory);
         this.input.marginTop(12);
-        this.output = new GuiItemsElement(mc, IKey.str("Result"), null, inventory);
+        this.output = new GuiItemsElement(mc, IKey.lang("mappet.gui.crafting.output"), null, inventory);
         this.condition = new GuiTextElement(mc, 1000, (text) -> this.recipe.condition = text);
         this.trigger = new GuiTriggerElement(mc);
         this.hotkey = new GuiKeybindElement(mc, (key) ->
@@ -49,10 +49,10 @@ public class GuiCraftingRecipe extends GuiElement
 
         this.flex().column(5).vertical().stretch().padding(10);
 
-        this.add(Elements.label(IKey.str("Recipe's title")), this.title, this.input, this.output);
-        this.add(Elements.label(IKey.str("Expression condition")).marginTop(12), this.condition);
-        this.add(Elements.label(IKey.str("Crafting hotkey")).marginTop(12), this.hotkey);
-        this.add(Elements.label(IKey.str("Crafting trigger")).background().marginTop(12).marginBottom(5), this.trigger);
+        this.add(Elements.label(IKey.lang("mappet.gui.crafting.title")), this.title, this.input, this.output);
+        this.add(Elements.label(IKey.lang("mappet.gui.crafting.condition")).marginTop(12), this.condition);
+        this.add(Elements.label(IKey.lang("mappet.gui.crafting.hotkey")).marginTop(12), this.hotkey);
+        this.add(Elements.label(IKey.lang("mappet.gui.crafting.trigger")).background().marginTop(12).marginBottom(5), this.trigger);
     }
 
     public void set(CraftingRecipe recipe)

@@ -109,6 +109,7 @@ mappet.config.gui.quest_preview_rewards=Preview quest rewards
 mappet.config.comments.gui.quest_preview_rewards=This option allows to toggle preview of quest rewards.
 
 # GUI
+
 mappet.gui.panels.quests=Quests
 mappet.gui.panels.crafting=Crafting Tables
 mappet.gui.panels.events=Events
@@ -118,6 +119,50 @@ mappet.gui.panels.npcs=NPCs
 mappet.gui.panels.factions=Factions
 mappet.gui.panels.chains=Quest chains
 
+mappet.gui.quests.objectives=Objectives
+mappet.gui.quests.rewards=Rewards
+
+mappet.gui.interaction.back=Back
+mappet.gui.interaction.accept=Accept
+
+mappet.gui.trigger.collidable=Collidable
+mappet.gui.trigger.left=Trigger event on left click
+mappet.gui.trigger.right=Trigger event on right click
+
+mappet.gui.crafting.title=Recipe's title
+mappet.gui.crafting.condition=Expression condition
+mappet.gui.crafting.hotkey=Crafting hotkey
+mappet.gui.crafting.trigger=Crafting trigger
+mappet.gui.crafting.input=Ingredients
+mappet.gui.crafting.output=Result
+mappet.gui.crafting.craft=Craft
+
+mappet.gui.nodes.node.title=Title
+mappet.gui.nodes.event.binary=Binary
+mappet.gui.nodes.event.binary_tooltip=When enabled, it allows to limit execution to first two nodes as an if-else statement, instead of default all-or-none execution.
+mappet.gui.nodes.context.add=Add a node...
+mappet.gui.nodes.context.add_node=Add %s node
+mappet.gui.nodes.context.copy=Copy selected node(s)
+mappet.gui.nodes.context.paste=Paste copied node(s)
+mappet.gui.nodes.context.tie=Tie to last selected
+mappet.gui.nodes.context.untie=Untie selected
+mappet.gui.nodes.context.remove=Remove selected nodes
+mappet.gui.nodes.keys.editor=Node editor
+mappet.gui.nodes.keys.add=Add nodes
+
+mappet.gui.factions.overlay.main=Faction relation editor
+mappet.gui.factions.overlay.title=Threshold title
+mappet.gui.factions.overlay.color=Threshold color
+mappet.gui.factions.overlay.score=Threshold score
+mappet.gui.factions.overlay.attitude=Threshold attitude
+mappet.gui.factions.overlay.context.add=Add a threshold
+mappet.gui.factions.overlay.context.remove=Remove this threshold
+mappet.gui.factions.relations.main=Pick a faction...
+mappet.gui.factions.relations.add=Add
+mappet.gui.factions.relations.context.remove=Remove this relation
+
+# GUI enums
+
 mappet.gui.shapes.box=Box
 mappet.gui.shapes.sphere=Sphere
 mappet.gui.shapes.cylinder=Cylinder
@@ -125,6 +170,15 @@ mappet.gui.shapes.cylinder=Cylinder
 mappet.gui.faction_attitudes.aggressive=Aggressive
 mappet.gui.faction_attitudes.passive=Passive
 mappet.gui.faction_attitudes.friendly=Friendly
+
+mappet.gui.node_types.reply=Reply
+mappet.gui.node_types.reaction=Reaction
+mappet.gui.node_types.crafting=Crafting
+mappet.gui.node_types.quest=Quest
+mappet.gui.node_types.command=Command
+mappet.gui.node_types.condition=Condition
+mappet.gui.node_types.switch=Switch
+mappet.gui.node_types.timer=Timer
 
 # Keys
 mappet.keys.category=Mappet

@@ -21,7 +21,7 @@ public class GuiCrafting extends GuiElement implements ICraftingScreen
     {
         super(mc);
 
-        this.craft = new GuiButtonElement(mc, IKey.str("Craft!"), this::craft);
+        this.craft = new GuiButtonElement(mc, IKey.lang("mappet.gui.crafting.craft"), this::craft);
         this.craft.flex().relative(this.area).x(1F, -10).y(1F, -10).wh(80, 20).anchor(1F, 1F);
 
         this.recipes = new GuiCraftingRecipeList(mc, (list) -> this.pickRecipe(list.get(0)));

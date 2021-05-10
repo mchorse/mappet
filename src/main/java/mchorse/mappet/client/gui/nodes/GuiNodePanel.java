@@ -20,7 +20,7 @@ public abstract class GuiNodePanel <T extends Node> extends GuiElement
         this.title = new GuiTextElement(mc, 1000, (t) -> this.node.title = t);
 
         this.flex().column(5).vertical().stretch().padding(10);
-        this.add(Elements.label(IKey.str("Title")), this.title);
+        this.add(Elements.label(IKey.lang("mappet.gui.nodes.node.title")), this.title);
     }
 
     public void set(T node)
