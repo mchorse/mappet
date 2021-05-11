@@ -109,6 +109,18 @@ mappet.config.gui.quest_preview_rewards=Предпросмотр квестов�
 mappet.config.comments.gui.quest_preview_rewards=Эта настройка позволяет включить или выключить предпросмотр наград за выполнение квестов.
 
 # GUI
+
+mappet.gui.search=Search...
+mappet.gui.overlays.entities.main=Pick entity ID...
+mappet.gui.overlays.sounds.main=Pick sound event...
+mappet.gui.block_pos.context.paste=Paste your current position
+mappet.gui.block_pos.context.remove=Remove block position
+mappet.gui.items.context.remove=Remove item
+mappet.gui.trigger.sound=Sound event
+mappet.gui.trigger.event=Trigger event
+mappet.gui.trigger.command=Command
+mappet.gui.trigger.dialogue=Dialogue
+
 mappet.gui.panels.quests=Квесты
 mappet.gui.panels.crafting=Таблицы рецептов
 mappet.gui.panels.events=События
@@ -117,6 +129,164 @@ mappet.gui.panels.regions=Регионы
 mappet.gui.panels.npcs=NPC
 mappet.gui.panels.factions=Фракции
 mappet.gui.panels.chains=Цепочки квестов
+mappet.gui.panels.modals.add=Type in a name:
+mappet.gui.panels.modals.dupe=Type in a new name for a duplicate:
+mappet.gui.panels.modals.rename=Type in a new name:
+mappet.gui.panels.modals.remove=Are you sure you want to remove this?
+mappet.gui.panels.keys.category=Mappet panel keybinds
+mappet.gui.panels.keys.toggle_sidebar=Toggle sidebar
+
+mappet.gui.quests.cancelable=Cancelable
+mappet.gui.quests.title=Title
+mappet.gui.quests.description=Quest's description
+mappet.gui.quests.accept=Accept quest trigger
+mappet.gui.quests.decline=Decline quest trigger
+mappet.gui.quests.complete=Complete quest trigger
+mappet.gui.quests.objectives.title=Objectives
+mappet.gui.quests.objective_kill.entity=Entity
+mappet.gui.quests.objective_kill.count=Count
+mappet.gui.quests.objective_kill.nbt=Matching NBT
+mappet.gui.quests.objective_kill.string=Kill %s (%s/%s)
+mappet.gui.quests.objective_collect.title=Item stack to collect
+mappet.gui.quests.objective_collect.string=Kill %s (%s/%s)
+mappet.gui.quests.objectives.context.remove=Remove this objective
+mappet.gui.quests.objectives.context.add_kill=Add kill objective
+mappet.gui.quests.objectives.context.add_collect=Add collect objective
+mappet.gui.quests.rewards.title=Rewards
+mappet.gui.quests.rewards.context.remove=Remove this reward
+mappet.gui.quests.rewards.context.add_item=Add item stack reward
+mappet.gui.quests.reward_item.title=Reward items
+mappet.gui.quests.info.empty=Select or create a quest in the list on the right, to start editing...
+
+mappet.gui.interaction.back=Back
+mappet.gui.interaction.accept=Accept
+mappet.gui.interaction.crafting.recipe_title=Title
+mappet.gui.interaction.info.no_quests=There are no more available quests for you here...
+
+mappet.gui.trigger_block.collidable=Collidable
+mappet.gui.trigger_block.left=Trigger event on left click
+mappet.gui.trigger_block.right=Trigger event on right click
+
+mappet.gui.emitter_block.expression=Expression
+mappet.gui.emitter_block.radius=Radius
+
+mappet.gui.npc_tool.title=NPC tool configuration
+mappet.gui.npc_tool.npc=NPC
+mappet.gui.npc_tool.state=State
+
+mappet.gui.crafting.title=Crafting table's title
+mappet.gui.crafting.recipe.title=Recipe's title
+mappet.gui.crafting.recipe.condition=Expression condition
+mappet.gui.crafting.recipe.hotkey=Crafting hotkey
+mappet.gui.crafting.recipe.trigger=Crafting trigger
+mappet.gui.crafting.input=Ingredients
+mappet.gui.crafting.output=Result
+mappet.gui.crafting.craft=Craft
+mappet.gui.crafting.context.add=Add a crafting recipe
+mappet.gui.crafting.context.remove=Remove current recipe
+mappet.gui.crafting.info.empty=Select or create a crafting table in the list on the right, to start editing...
+mappet.gui.crafting.info.empty_recipe=Select or create a new crafting recipe in the list on the left...
+
+mappet.gui.region.passable=Passable
+mappet.gui.region.enabled=Enabled expression
+mappet.gui.region.delay=Trigger delay
+mappet.gui.region.on_enter=On player enter trigger
+mappet.gui.region.on_exit=On player exit trigger
+mappet.gui.region.shape=Shape
+mappet.gui.region.offset=Offset
+mappet.gui.region.box_size=Half size
+mappet.gui.region.ellipse_size=Ellipsoid radius
+mappet.gui.region.sphere_size=Radius and height
+mappet.gui.region.info.empty=Select a region block in the list on the right, or interact with any region blocks in the world, to start editing...
+
+mappet.gui.nodes.node.title=Title
+mappet.gui.nodes.event.binary=Binary
+mappet.gui.nodes.event.binary_tooltip=When enabled, it allows to limit execution to first two nodes as an if-else statement, instead of default all-or-none execution.
+mappet.gui.nodes.event.command=Command
+mappet.gui.nodes.event.condition=Condition
+mappet.gui.nodes.event.timer=Timer
+mappet.gui.nodes.dialogue.crafting=Crafting table
+mappet.gui.nodes.dialogue.content=Content
+mappet.gui.nodes.dialogue.quest_chain=Quest chain
+mappet.gui.nodes.dialogue.quest=Quest
+mappet.gui.nodes.dialogue.provider=Quest provider
+mappet.gui.nodes.dialogue.receiver=Quest receiver
+mappet.gui.nodes.context.add=Add a node...
+mappet.gui.nodes.context.add_node=Add %s node
+mappet.gui.nodes.context.copy=Copy selected node(s)
+mappet.gui.nodes.context.paste=Paste copied node(s)
+mappet.gui.nodes.context.tie=Tie to last selected
+mappet.gui.nodes.context.untie=Untie selected
+mappet.gui.nodes.context.remove=Remove selected nodes
+mappet.gui.nodes.keys.editor=Node editor
+mappet.gui.nodes.keys.add=Add nodes
+mappet.gui.nodes.info.empty_event=Select or create an event in the list on the right, to start editing...
+mappet.gui.nodes.info.empty_dialogue=Select or create a dialogue in the list on the right, to start editing...
+mappet.gui.nodes.info.empty_chain=Select or create a quest chain in the list on the right, to start editing...
+
+mappet.gui.npcs.unique=Unique
+mappet.gui.npcs.path_distance=Path finding distance
+mappet.gui.npcs.behavior.title=Behavior
+mappet.gui.npcs.behavior.look_at_player=Look at player
+mappet.gui.npcs.behavior.look_around=Look around
+mappet.gui.npcs.behavior.wander=Wander
+mappet.gui.npcs.behavior.initialize=On NPC initialization
+mappet.gui.npcs.behavior.interact=On NPC interaction trigger
+mappet.gui.npcs.behavior.damaged=On NPC getting damaged trigger
+mappet.gui.npcs.behavior.died=On NPC death trigger
+mappet.gui.npcs.behavior.tick=On NPC tick trigger
+mappet.gui.npcs.behavior.target=On NPC target trigger
+mappet.gui.npcs.health.title=Health
+mappet.gui.npcs.health.max_hp=Max HP
+mappet.gui.npcs.health.hp=Initial HP
+mappet.gui.npcs.health.regen_delay=HP regeneration delay
+mappet.gui.npcs.health.regen_frequency=HP regeneration frequency
+mappet.gui.npcs.damage.title=Damage
+mappet.gui.npcs.damage.damage=Damage
+mappet.gui.npcs.damage.fall=Fall damage
+mappet.gui.npcs.damage.fire=Fire damage
+mappet.gui.npcs.damage.invincible=Invincible
+mappet.gui.npcs.damage.killable=Killable
+mappet.gui.npcs.movement.title=Health
+mappet.gui.npcs.movement.speed=Speed
+mappet.gui.npcs.movement.can_swim=Can swim
+mappet.gui.npcs.movement.has_post=Has a post
+mappet.gui.npcs.movement.post=Post point
+mappet.gui.npcs.movement.patrol_circulate=Circular patrol
+mappet.gui.npcs.movement.patrol_points=Patrol points
+mappet.gui.npcs.movement.follow=Follow target
+mappet.gui.npcs.general.title=General
+mappet.gui.npcs.general.faction=Faction
+mappet.gui.npcs.general.morph=NPC's morph
+mappet.gui.npcs.general.xp=XP drop
+mappet.gui.npcs.drops.title=NPC drops
+mappet.gui.npcs.drops.context.remove=Remove drop
+mappet.gui.npcs.modals.add=Type in a name for a new NPC state:
+mappet.gui.npcs.modals.remove=Are you sure you want to remove this NPC state?
+mappet.gui.npcs.context.add=Add state
+mappet.gui.npcs.context.remove=Remove state
+
+mappet.gui.factions.title=Faction's title
+mappet.gui.factions.color=Display color
+mappet.gui.factions.others_attitude=Default attitude
+mappet.gui.factions.player_attitude=Default attitude toward players
+mappet.gui.factions.visible=Visible expression
+mappet.gui.factions.score=Default score
+mappet.gui.factions.overlay.main=Faction relation editor
+mappet.gui.factions.overlay.title=Threshold title
+mappet.gui.factions.overlay.color=Threshold color
+mappet.gui.factions.overlay.score=Threshold score
+mappet.gui.factions.overlay.attitude=Threshold attitude
+mappet.gui.factions.overlay.context.add=Add a threshold
+mappet.gui.factions.overlay.context.remove=Remove this threshold
+mappet.gui.factions.relations.label=Relations
+mappet.gui.factions.relations.main=Pick a faction...
+mappet.gui.factions.relations.add=Add
+mappet.gui.factions.relations.open=Configure its own relation...
+mappet.gui.factions.relations.context.remove=Remove this relation
+mappet.gui.factions.info.empty=Select or create a faction in the list on the right, to start editing...
+
+# GUI enums
 
 mappet.gui.shapes.box=Куб
 mappet.gui.shapes.sphere=Сфера
@@ -125,6 +295,15 @@ mappet.gui.shapes.cylinder=Цилиндр
 mappet.gui.faction_attitudes.aggressive=Агрессия
 mappet.gui.faction_attitudes.passive=Нейтралитет
 mappet.gui.faction_attitudes.friendly=Дружелюбие
+
+mappet.gui.node_types.reply=Reply
+mappet.gui.node_types.reaction=Reaction
+mappet.gui.node_types.crafting=Crafting
+mappet.gui.node_types.quest=Quest
+mappet.gui.node_types.command=Command
+mappet.gui.node_types.condition=Condition
+mappet.gui.node_types.switch=Switch
+mappet.gui.node_types.timer=Timer
 
 # Keys
 mappet.keys.category=Маппет
