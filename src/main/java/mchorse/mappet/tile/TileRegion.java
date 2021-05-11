@@ -35,6 +35,8 @@ public class TileRegion extends TileEntity implements ITickable
     {
         this.region = new Region();
         this.region.deserializeNBT(tag);
+
+        this.markDirty();
     }
 
     @Override
