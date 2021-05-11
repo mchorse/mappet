@@ -86,7 +86,7 @@ public class GuiItemsElement extends GuiElement
             }
         });
         slot.stack = stack;
-        slot.context(() -> slot.createDefaultSlotContextMenu().action(Icons.REMOVE, IKey.str("Remove item"), () ->
+        slot.context(() -> slot.createDefaultSlotContextMenu().action(Icons.REMOVE, IKey.lang("mappet.gui.items.context.remove"), () ->
         {
             int index = this.stacks.getChildren().indexOf(slot);
 

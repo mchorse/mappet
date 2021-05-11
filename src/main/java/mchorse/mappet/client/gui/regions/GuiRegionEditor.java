@@ -32,11 +32,11 @@ public class GuiRegionEditor extends GuiElement
     {
         super(mc);
 
-        this.passable = new GuiToggleElement(mc, IKey.str("Passable"), (b) -> this.region.passable = b.isToggled());
+        this.passable = new GuiToggleElement(mc, IKey.lang("mappet.gui.region.passable"), (b) -> this.region.passable = b.isToggled());
         this.enabled = new GuiTextElement(mc, 1000, (text) -> this.region.enabled = text);
         this.delay = new GuiTrackpadElement(mc, (value) -> this.region.delay = value.intValue());
-        this.onEnter = new GuiTriggerElement(mc);
-        this.onExit = new GuiTriggerElement(mc);
+        this.onEnter = new GuiTriggerElement(mc).expand();
+        this.onExit = new GuiTriggerElement(mc).expand();
         this.shape = new GuiCirculateElement(mc, this::changeShape);
         this.shape.flex().w(80);
         this.shape.addLabel(IKey.lang("mappet.gui.shapes.box"));
@@ -45,11 +45,11 @@ public class GuiRegionEditor extends GuiElement
         this.shapeEditor = new GuiShapeEditor(mc);
 
         this.add(this.passable);
-        this.add(Elements.label(IKey.str("Enabled expression")).marginTop(6), this.enabled);
-        this.add(Elements.label(IKey.str("Trigger delay")).marginTop(12), this.delay);
-        this.add(Elements.label(IKey.str("On player enter trigger")).background().marginTop(12).marginBottom(5), this.onEnter);
-        this.add(Elements.label(IKey.str("On player exit trigger")).background().marginTop(12).marginBottom(5), this.onExit);
-        this.add(Elements.label(IKey.str("Shape")).background().marginTop(12).marginBottom(5), this.shape);
+        this.add(Elements.label(IKey.lang("mappet.gui.region.enabled")).marginTop(6), this.enabled);
+        this.add(Elements.label(IKey.lang("mappet.gui.region.delay")).marginTop(12), this.delay);
+        this.add(Elements.label(IKey.lang("mappet.gui.region.on_enter")).background().marginTop(12).marginBottom(5), this.onEnter);
+        this.add(Elements.label(IKey.lang("mappet.gui.region.on_exit")).background().marginTop(12).marginBottom(5), this.onExit);
+        this.add(Elements.label(IKey.lang("mappet.gui.region.shape")).background().marginTop(12).marginBottom(5), this.shape);
         this.add(this.shapeEditor);
 
         this.flex().column(5).vertical().stretch();

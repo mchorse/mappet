@@ -11,6 +11,7 @@ import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -25,7 +26,7 @@ public class GuiKillObjective extends GuiObjective<KillObjective>
     {
         super(mc, objective);
 
-        this.entity = new GuiButtonElement(mc, IKey.str("Pick entity..."), (b) -> this.openPickEntityOverlay());
+        this.entity = new GuiButtonElement(mc, IKey.lang("mappet.gui.overlays.entities.main"), (b) -> this.openPickEntityOverlay());
         this.entity.flex().relative(this).y(12).w(0.5F, -3);
 
         this.count = new GuiTrackpadElement(mc, (value) -> this.objective.count = value.intValue());
@@ -67,8 +68,8 @@ public class GuiKillObjective extends GuiObjective<KillObjective>
     {
         super.draw(context);
 
-        this.font.drawStringWithShadow("Entity", this.entity.area.x, this.entity.area.y - 12, 0xffffff);
-        this.font.drawStringWithShadow("Count", this.count.area.x, this.count.area.y - 12, 0xffffff);
-        this.font.drawStringWithShadow("Matching NBT", this.tag.area.x, this.tag.area.y - 12, 0xffffff);
+        this.font.drawStringWithShadow(I18n.format("mappet.gui.quests.objective_kill.entity"), this.entity.area.x, this.entity.area.y - 12, 0xffffff);
+        this.font.drawStringWithShadow(I18n.format("mappet.gui.quests.objective_kill.count"), this.count.area.x, this.count.area.y - 12, 0xffffff);
+        this.font.drawStringWithShadow(I18n.format("mappet.gui.quests.objective_kill.nbt"), this.tag.area.x, this.tag.area.y - 12, 0xffffff);
     }
 }

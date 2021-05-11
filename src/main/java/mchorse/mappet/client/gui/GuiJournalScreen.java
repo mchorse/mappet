@@ -22,6 +22,7 @@ import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.Label;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 
 import java.util.Map;
 
@@ -140,8 +141,8 @@ public class GuiJournalScreen extends GuiBase
     {
         this.drawDefaultBackground();
 
-        this.fontRenderer.drawStringWithShadow("Factions", this.factions.area.x + 10, 10, 0xffffff);
-        this.fontRenderer.drawStringWithShadow("Quests", this.quests.area.x + 4, 10, 0xffffff);
+        this.fontRenderer.drawStringWithShadow(I18n.format("mappet.gui.panels.factions"), this.factions.area.x + 10, 10, 0xffffff);
+        this.fontRenderer.drawStringWithShadow(I18n.format("mappet.gui.panels.quests"), this.quests.area.x + 4, 10, 0xffffff);
         GuiDraw.drawVerticalGradientRect(this.questArea.area.x, this.questArea.area.y(0.75F), this.questArea.area.ex(), this.questArea.area.ey(), 0, 0x44000000);
 
         super.drawScreen(mouseX, mouseY, partialTicks);

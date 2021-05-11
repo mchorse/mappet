@@ -15,6 +15,7 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 
 public class GuiTriggerElement extends GuiElement
 {
@@ -37,7 +38,7 @@ public class GuiTriggerElement extends GuiElement
     {
         super(mc);
 
-        this.soundEvent = new GuiButtonElement(mc, IKey.str("Pick sound event..."), (b) -> this.openPickSoundOverlay());
+        this.soundEvent = new GuiButtonElement(mc, IKey.lang("mappet.gui.overlays.sounds.main"), (b) -> this.openPickSoundOverlay());
         this.soundEvent.flex().relative(this).y(12).w(0.5F, -3);
 
         this.triggerEvent = new GuiTextElement(mc, 1000, (text) -> this.trigger.triggerEvent = text);
@@ -63,6 +64,16 @@ public class GuiTriggerElement extends GuiElement
         this.add(this.soundEvent, this.triggerEvent, this.command, this.dialogue);
 
         this.set(trigger);
+    }
+
+    public GuiTriggerElement expand()
+    {
+        this.soundEvent.flex().reset().relative(this).y(12).w(1F).h(20);
+        this.triggerEvent.flex().reset().relative(this).y(49).w(1F).h(20);
+        this.command.flex().reset().relative(this).y(86).w(1F).h(20);
+        this.flex().h(143);
+
+        return this;
     }
 
     private void editEvent(String text)
@@ -133,9 +144,9 @@ public class GuiTriggerElement extends GuiElement
     {
         super.draw(context);
 
-        this.font.drawStringWithShadow("Sound event", this.soundEvent.area.x, this.soundEvent.area.y - 12, 0xffffff);
-        this.font.drawStringWithShadow("Trigger event", this.triggerEvent.area.x, this.triggerEvent.area.y - 12, 0xffffff);
-        this.font.drawStringWithShadow("Command", this.command.area.x, this.command.area.y - 12, 0xffffff);
-        this.font.drawStringWithShadow("Dialogue", this.dialogue.area.x, this.dialogue.area.y - 12, 0xffffff);
+        this.font.drawStringWithShadow(I18n.format("mappet.gui.trigger.sound"), this.soundEvent.area.x, this.soundEvent.area.y - 12, 0xffffff);
+        this.font.drawStringWithShadow(I18n.format("mappet.gui.trigger.event"), this.triggerEvent.area.x, this.triggerEvent.area.y - 12, 0xffffff);
+        this.font.drawStringWithShadow(I18n.format("mappet.gui.trigger.command"), this.command.area.x, this.command.area.y - 12, 0xffffff);
+        this.font.drawStringWithShadow(I18n.format("mappet.gui.trigger.dialogue"), this.dialogue.area.x, this.dialogue.area.y - 12, 0xffffff);
     }
 }

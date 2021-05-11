@@ -6,7 +6,9 @@ import mchorse.mappet.network.common.npc.PacketNpcList;
 import mchorse.mappet.network.common.npc.PacketNpcTool;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.list.GuiStringListElement;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -78,8 +80,9 @@ public class GuiNpcToolScreen extends GuiBase
     {
         this.drawDefaultBackground();
 
-        this.fontRenderer.drawStringWithShadow("NPCs", this.npcs.area.x, this.npcs.area.y - 12, 0xffffff);
-        this.fontRenderer.drawStringWithShadow("State", this.states.area.x, this.states.area.y - 12, 0xffffff);
+        GuiDraw.drawTextBackground(this.fontRenderer, I18n.format("mappet.gui.npc_tool.title"), this.viewport.mx(), this.viewport.y + 20, 0xffffff, 0x88000000);
+        this.fontRenderer.drawStringWithShadow(I18n.format("mappet.gui.npc_tool.npc"), this.npcs.area.x, this.npcs.area.y - 12, 0xffffff);
+        this.fontRenderer.drawStringWithShadow(I18n.format("mappet.gui.npc_tool.state"), this.states.area.x, this.states.area.y - 12, 0xffffff);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

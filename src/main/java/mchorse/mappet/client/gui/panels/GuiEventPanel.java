@@ -16,6 +16,7 @@ import mchorse.mappet.client.gui.nodes.events.GuiTimerNodePanel;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 
 public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventNode>>
 {
@@ -83,7 +84,7 @@ public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventNode>
     @Override
     public String getTitle()
     {
-        return "Events";
+        return "mappet.gui.panels.events";
     }
 
     @Override
@@ -110,7 +111,7 @@ public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventNode>
             int w = this.editor.area.w / 2;
             int x = this.editor.area.mx() - w / 2;
 
-            GuiDraw.drawMultiText(this.font, "Select or create an event in the list on the right, to start editing...", x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
+            GuiDraw.drawMultiText(this.font, I18n.format("mappet.gui.nodes.info.empty_event"), x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
         }
     }
 }

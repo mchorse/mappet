@@ -5,6 +5,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public interface IObjective extends INBTSerializable<NBTTagCompound>, INBTPartialSerializable
 {
@@ -26,6 +28,7 @@ public interface IObjective extends INBTSerializable<NBTTagCompound>, INBTPartia
 
     public void complete(EntityPlayer player);
 
+    @SideOnly(Side.CLIENT)
     public String stringify(EntityPlayer player);
 
     public String getType();

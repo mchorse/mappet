@@ -23,6 +23,7 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.metamorph.client.gui.creative.GuiCreativeMorphsMenu;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 
 public class GuiDialoguePanel extends GuiMappetDashboardPanel<Dialogue>
 {
@@ -107,7 +108,7 @@ public class GuiDialoguePanel extends GuiMappetDashboardPanel<Dialogue>
     @Override
     public String getTitle()
     {
-        return "Dialogues";
+        return "mappet.gui.panels.dialogues";
     }
 
     @Override
@@ -134,7 +135,7 @@ public class GuiDialoguePanel extends GuiMappetDashboardPanel<Dialogue>
             int w = this.editor.area.w / 2;
             int x = this.editor.area.mx() - w / 2;
 
-            GuiDraw.drawMultiText(this.font, "Select or create a dialogue in the list on the right, to start editing...", x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
+            GuiDraw.drawMultiText(this.font, I18n.format("mappet.gui.nodes.info.empty_dialogue"), x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
         }
     }
 }

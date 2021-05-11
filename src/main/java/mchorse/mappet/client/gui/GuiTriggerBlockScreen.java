@@ -38,11 +38,11 @@ public class GuiTriggerBlockScreen extends GuiBase
         this.right = new GuiTriggerElement(mc);
         this.right.set(right);
 
-        this.collidable = new GuiToggleElement(mc, IKey.lang("mappet.gui.trigger.collidable"), null);
+        this.collidable = new GuiToggleElement(mc, IKey.lang("mappet.gui.trigger_block.collidable"), null);
         this.collidable.toggled(collidable);
 
-        element.add(Elements.label(IKey.lang("mappet.gui.trigger.left")).background().marginBottom(5), this.left);
-        element.add(Elements.label(IKey.lang("mappet.gui.trigger.right")).background().marginTop(12).marginBottom(5), this.right, this.collidable.marginTop(6));
+        element.add(Elements.label(IKey.lang("mappet.gui.trigger_block.left")).background().marginBottom(5), this.left);
+        element.add(Elements.label(IKey.lang("mappet.gui.trigger_block.right")).background().marginTop(12).marginBottom(5), this.right, this.collidable.marginTop(6));
 
         this.root.add(element);
     }

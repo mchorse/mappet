@@ -6,6 +6,7 @@ import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.function.Consumer;
@@ -58,8 +59,7 @@ public class GuiEmitterBlockScreen extends GuiBase
 
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        /* TODO: extract */
-        this.fontRenderer.drawStringWithShadow("Expression", this.expression.area.x, this.expression.area.y - 12, 0xffffff);
-        this.fontRenderer.drawStringWithShadow("Radius", this.radius.area.x, this.radius.area.y - 12, 0xffffff);
+        this.fontRenderer.drawStringWithShadow(I18n.format("mappet.gui.emitter_block.expression"), this.expression.area.x, this.expression.area.y - 12, 0xffffff);
+        this.fontRenderer.drawStringWithShadow(I18n.format("mappet.gui.emitter_block.radius"), this.radius.area.x, this.radius.area.y - 12, 0xffffff);
     }
 }

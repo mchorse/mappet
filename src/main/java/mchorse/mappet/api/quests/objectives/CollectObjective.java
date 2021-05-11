@@ -1,9 +1,12 @@
 package mchorse.mappet.api.quests.objectives;
 
 import mchorse.mappet.utils.InventoryUtils;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class CollectObjective implements IObjective
 {
@@ -35,9 +38,13 @@ public class CollectObjective implements IObjective
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public String stringify(EntityPlayer player)
     {
-        return "Collect " + this.stack.getDisplayName() + " (" + Math.min(this.countItems(player), this.stack.getCount()) + "/" + this.stack.getCount() + ")";
+        String name = this.stack.getDisplayName();
+        int count = Math.min(this.countItems(player), this.stack.getCount());
+
+        return I18n.format( "mappet.gui.quests.objective_collect.string", name, count, this.stack.getCount());
     }
 
     @Override

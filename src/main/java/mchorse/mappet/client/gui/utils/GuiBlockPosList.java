@@ -57,7 +57,7 @@ public class GuiBlockPosList extends GuiElement
         };
         posElement.context(() ->
         {
-            return new GuiSimpleContextMenu(this.mc).action(Icons.REMOVE, IKey.str("Remove block position"), () -> this.removeBlock(posElement));
+            return posElement.createDefaultContextMenu().action(Icons.REMOVE, IKey.lang("mappet.gui.block_pos.context.remove"), () -> this.removeBlock(posElement));
         });
 
         return posElement;

@@ -48,7 +48,7 @@ public class GuiRegionPanel extends GuiDashboardPanel<GuiMappetDashboard>
         this.toggleSidebar = new GuiIconElement(mc, Icons.RIGHTLOAD, (element) -> this.toggleSidebar());
         this.toggleSidebar.flex().relative(this.sidebar).x(-20);
 
-        GuiDrawable drawable = new GuiDrawable((context) -> this.font.drawStringWithShadow(this.getTitle(), this.tiles.area.x, this.area.y + 10, 0xffffff));
+        GuiDrawable drawable = new GuiDrawable((context) -> this.font.drawStringWithShadow(I18n.format(this.getTitle()), this.tiles.area.x, this.area.y + 10, 0xffffff));
 
         this.tiles = new GuiTileRegionListElement(mc, (list) -> this.fill(list.get(0)));
         this.tiles.flex().relative(this.sidebar).xy(10, 25).w(1F, -20).h(1F, -35);
@@ -65,7 +65,7 @@ public class GuiRegionPanel extends GuiDashboardPanel<GuiMappetDashboard>
 
         this.add(this.sidebar, this.editor, this.toggleSidebar);
 
-        this.keys().register(IKey.str("Toggle sidebar"), Keyboard.KEY_N, () -> this.toggleSidebar.clickItself(GuiBase.getCurrent())).category(GuiMappetDashboardPanel.KEYS_CATEGORY);
+        this.keys().register(IKey.lang("mappet.gui.panels.keys.toggle_sidebar"), Keyboard.KEY_N, () -> this.toggleSidebar.clickItself(GuiBase.getCurrent())).category(GuiMappetDashboardPanel.KEYS_CATEGORY);
 
         this.fill(null);
     }
@@ -94,7 +94,7 @@ public class GuiRegionPanel extends GuiDashboardPanel<GuiMappetDashboard>
 
     public String getTitle()
     {
-        return "Regions";
+        return "mappet.gui.panels.regions";
     }
 
     /* Data population */
@@ -194,7 +194,7 @@ public class GuiRegionPanel extends GuiDashboardPanel<GuiMappetDashboard>
             int w = (this.sidebar.isVisible() ? this.sidebar.area.x - this.area.x : this.area.w) / 2;
             int x = this.area.x + w / 2;
 
-            GuiDraw.drawMultiText(this.font, "Select a region block in the list on the right, or interact with any region blocks in the world, to start editing...", x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
+            GuiDraw.drawMultiText(this.font, I18n.format("mappet.gui.region.info.empty"), x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
         }
     }
 

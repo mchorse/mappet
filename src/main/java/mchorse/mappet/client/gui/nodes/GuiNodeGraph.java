@@ -100,9 +100,7 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
                 this.addPaste(menu, x, y);
             }
             catch (Exception e)
-            {
-                e.printStackTrace();
-            }
+            {}
 
             if (!this.selected.isEmpty())
             {

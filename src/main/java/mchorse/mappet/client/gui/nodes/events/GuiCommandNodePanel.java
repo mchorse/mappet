@@ -17,7 +17,7 @@ public class GuiCommandNodePanel extends GuiEventNodePanel<CommandNode>
 
         this.command = new GuiTextElement(mc, 10000, (text) -> this.node.command = text);
 
-        this.add(Elements.label(IKey.str("Command")).marginTop(12), this.command, this.binary);
+        this.add(Elements.label(IKey.lang("mappet.gui.nodes.event.command")).marginTop(12), this.command, this.binary);
     }
 
     @Override

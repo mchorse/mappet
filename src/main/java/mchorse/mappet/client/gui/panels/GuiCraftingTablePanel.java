@@ -14,8 +14,8 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 
-/* TODO: extract strings */
 public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable>
 {
     public GuiTextElement title;
@@ -33,11 +33,11 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
         this.recipes.sorting().context(() ->
         {
             GuiSimpleContextMenu menu = new GuiSimpleContextMenu(this.mc)
-                .action(Icons.ADD, IKey.str("Add a crafting recipe"), this::addRecipe);
+                .action(Icons.ADD, IKey.lang("mappet.gui.crafting.context.add"), this::addRecipe);
 
             if (!this.recipes.isDeselected())
             {
-                menu.action(Icons.REMOVE, IKey.str("Remove current recipe"), this::removeRecipe);
+                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.crafting.context.remove"), this::removeRecipe);
             }
 
             return menu;
@@ -107,7 +107,7 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
     @Override
     public String getTitle()
     {
-        return "Crafting tables";
+        return "mappet.gui.panels.crafting";
     }
 
     @Override
@@ -154,7 +154,7 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
 
         if (this.title.isVisible())
         {
-            this.font.drawStringWithShadow("Crafting table's title", this.title.area.x, this.title.area.y - 12, 0xffffff);
+            this.font.drawStringWithShadow(I18n.format("mappet.gui.crafting.title"), this.title.area.x, this.title.area.y - 12, 0xffffff);
         }
 
         if (!this.editor.isVisible())
@@ -162,7 +162,7 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
             int w = (this.editor.area.ex() - this.area.x) / 2;
             int x = (this.area.x + this.editor.area.ex()) / 2 - w / 2;
 
-            GuiDraw.drawMultiText(this.font, "Select or create a crafting table in the list on the left, to start editing...", x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
+            GuiDraw.drawMultiText(this.font, I18n.format("mappet.gui.crafting.info.empty"), x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
         }
 
         if (this.editor.isVisible() && !this.recipe.isVisible())
@@ -170,7 +170,7 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
             int w = this.editor.area.w / 2;
             int x = this.editor.area.mx(w);
 
-            GuiDraw.drawMultiText(this.font, "Select or create a new crafting recipe in the list on the left...", x, this.editor.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
+            GuiDraw.drawMultiText(this.font, I18n.format("mappet.gui.crafting.info.empty_recipe"), x, this.editor.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
         }
     }
 }

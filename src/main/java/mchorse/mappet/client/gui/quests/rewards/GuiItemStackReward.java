@@ -16,7 +16,7 @@ public class GuiItemStackReward extends GuiReward<ItemStackReward>
     {
         super(mc, reward);
 
-        this.items = new GuiItemsElement(mc, IKey.str("Reward items"), reward.stacks, inventory);
+        this.items = new GuiItemsElement(mc, IKey.lang("mappet.gui.quests.reward_item.title"), reward.stacks, inventory);
         this.items.flex().relative(this).wh(1F, 1F);
         this.flex = this.items.flex();
 

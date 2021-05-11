@@ -5,6 +5,7 @@ import mchorse.mclib.client.gui.framework.elements.buttons.GuiSlotElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 
 import java.util.function.Supplier;
 
@@ -37,6 +38,6 @@ public class GuiCollectObjective extends GuiObjective<CollectObjective>
     {
         super.draw(context);
 
-        this.font.drawStringWithShadow("Item stack to collect", this.area.x, this.area.y, 0xffffff);
+        this.font.drawStringWithShadow(I18n.format("mappet.gui.quests.objective_collect.title"), this.area.x, this.area.y, 0xffffff);
     }
 }

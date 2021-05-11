@@ -11,6 +11,6 @@ public class GuiSoundOverlayPanel extends GuiResourceLocationOverlayPanel
 {
     public GuiSoundOverlayPanel(Minecraft mc, Consumer<ResourceLocation> callback)
     {
-        super(mc, IKey.str("Pick sound event..."), ForgeRegistries.SOUND_EVENTS.getKeys(), callback);
+        super(mc, IKey.lang("mappet.gui.overlays.sounds.main"), ForgeRegistries.SOUND_EVENTS.getKeys(), callback);
     }
 }

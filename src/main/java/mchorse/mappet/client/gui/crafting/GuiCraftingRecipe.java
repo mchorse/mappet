@@ -49,10 +49,10 @@ public class GuiCraftingRecipe extends GuiElement
 
         this.flex().column(5).vertical().stretch().padding(10);
 
-        this.add(Elements.label(IKey.lang("mappet.gui.crafting.title")), this.title, this.input, this.output);
-        this.add(Elements.label(IKey.lang("mappet.gui.crafting.condition")).marginTop(12), this.condition);
-        this.add(Elements.label(IKey.lang("mappet.gui.crafting.hotkey")).marginTop(12), this.hotkey);
-        this.add(Elements.label(IKey.lang("mappet.gui.crafting.trigger")).background().marginTop(12).marginBottom(5), this.trigger);
+        this.add(Elements.label(IKey.lang("mappet.gui.crafting.recipe.title")), this.title, this.input, this.output);
+        this.add(Elements.label(IKey.lang("mappet.gui.crafting.recipe.condition")).marginTop(12), this.condition);
+        this.add(Elements.label(IKey.lang("mappet.gui.crafting.recipe.hotkey")).marginTop(12), this.hotkey);
+        this.add(Elements.label(IKey.lang("mappet.gui.crafting.recipe.trigger")).background().marginTop(12).marginBottom(5), this.trigger);
     }
 
     public void set(CraftingRecipe recipe)

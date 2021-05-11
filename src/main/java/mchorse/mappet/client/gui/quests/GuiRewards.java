@@ -29,7 +29,7 @@ public class GuiRewards extends GuiElement
     public GuiSimpleContextMenu getAdds()
     {
         return new GuiSimpleContextMenu(Minecraft.getMinecraft())
-            .action(Icons.ADD, IKey.str("Add item stack reward"), () -> this.addReward(new ItemStackReward(), true));
+            .action(Icons.ADD, IKey.lang("mappet.gui.quests.rewards.context.add_item"), () -> this.addReward(new ItemStackReward(), true));
     }
 
     private void addReward(IReward reward, boolean add)
@@ -48,7 +48,7 @@ public class GuiRewards extends GuiElement
             final GuiReward finalElement = element;
 
             element.context(() -> new GuiSimpleContextMenu(Minecraft.getMinecraft())
-                .action(Icons.REMOVE, IKey.str("Remove this reward"), () -> this.removeReward(finalElement)));
+                .action(Icons.REMOVE, IKey.lang("mappet.gui.quests.rewards.context.remove"), () -> this.removeReward(finalElement)));
 
             if (add)
             {

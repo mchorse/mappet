@@ -1,5 +1,6 @@
 package mchorse.mappet.api.quests.objectives;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
@@ -7,6 +8,8 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class KillObjective implements IObjective
 {
@@ -65,9 +68,13 @@ public class KillObjective implements IObjective
     {}
 
     @Override
+    @SideOnly(Side.CLIENT)
     public String stringify(EntityPlayer player)
     {
-        return "Kill " + EntityList.getTranslationName(this.entity) + " (" + Math.min(this.killed, this.count) + "/" + this.count + ")";
+        String entity = EntityList.getTranslationName(this.entity);
+        int count = Math.min(this.killed, this.count);
+
+        return I18n.format("mappet.gui.quests.objective_kill.string", entity, count, this.count);
     }
 
     @Override

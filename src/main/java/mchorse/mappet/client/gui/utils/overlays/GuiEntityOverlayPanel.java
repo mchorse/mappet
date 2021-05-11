@@ -11,6 +11,6 @@ public class GuiEntityOverlayPanel extends GuiResourceLocationOverlayPanel
 {
     public GuiEntityOverlayPanel(Minecraft mc, Consumer<ResourceLocation> callback)
     {
-        super(mc, IKey.str("Pick entity ID..."), ForgeRegistries.ENTITIES.getKeys(), callback);
+        super(mc, IKey.lang("mappet.gui.overlays.entities.main"), ForgeRegistries.ENTITIES.getKeys(), callback);
     }
 }

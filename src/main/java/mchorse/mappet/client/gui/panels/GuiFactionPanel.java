@@ -25,6 +25,7 @@ import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,26 +76,26 @@ public class GuiFactionPanel extends GuiMappetDashboardPanel<Faction>
 
         this.playerAttitude = createButton(mc, (a) -> this.data.playerAttitude = a);
         this.othersAttitude = createButton(mc, (a) -> this.data.othersAttitude = a);
-        this.openOwnRelation = new GuiButtonElement(mc, IKey.str("Configure its own relation..."), (b) -> this.openRelation());
+        this.openOwnRelation = new GuiButtonElement(mc, IKey.lang("mappet.gui.factions.relations.open"), (b) -> this.openRelation());
         this.relations = new GuiFactions(mc);
 
         GuiElement a = new GuiElement(mc);
         a.flex().column(4).vertical().stretch();
-        a.add(Elements.label(IKey.str("Faction's title")), this.title);
+        a.add(Elements.label(IKey.lang("mappet.gui.factions.title")), this.title);
 
         GuiElement b = new GuiElement(mc);
         b.flex().w(140).column(4).vertical().stretch();
-        b.add(Elements.label(IKey.str("Display color")), this.color);
+        b.add(Elements.label(IKey.lang("mappet.gui.factions.color")), this.color);
 
         GuiElement c = new GuiElement(mc);
         c.flex().column(4).vertical().stretch();
-        c.add(Elements.label(IKey.str("Default attitude")), this.othersAttitude);
+        c.add(Elements.label(IKey.lang("mappet.gui.factions.others_attitude")), this.othersAttitude);
 
         GuiElement d = new GuiElement(mc);
         d.flex().column(4).vertical().stretch();
-        d.add(Elements.label(IKey.str("Default attitude toward players")), this.playerAttitude);
+        d.add(Elements.label(IKey.lang("mappet.gui.factions.player_attitude")), this.playerAttitude);
 
-        GuiLabel label = Elements.label(IKey.str("Relations")).background();
+        GuiLabel label = Elements.label(IKey.lang("mappet.gui.factions.relations.label")).background();
         GuiIconElement add = new GuiIconElement(mc, Icons.ADD, (button) ->
         {
             List<String> keys = new ArrayList<String>(this.names.list.getList());
@@ -113,8 +114,8 @@ public class GuiFactionPanel extends GuiMappetDashboardPanel<Faction>
 
         this.editor.flex().column(0).padding(10);
         this.editor.add(Elements.row(mc, 5, a, b));
-        this.editor.add(Elements.label(IKey.str("Visible expression")).marginTop(12), this.visible);
-        this.editor.add(Elements.label(IKey.str("Default score")).marginTop(12), this.score);
+        this.editor.add(Elements.label(IKey.lang("mappet.gui.factions.visible")).marginTop(12), this.visible);
+        this.editor.add(Elements.label(IKey.lang("mappet.gui.factions.score")).marginTop(12), this.score);
         this.editor.add(Elements.row(mc, 5, c, d).marginTop(12));
         this.editor.add(label.marginTop(12), this.relations);
         this.editor.add(this.openOwnRelation);
@@ -144,7 +145,7 @@ public class GuiFactionPanel extends GuiMappetDashboardPanel<Faction>
     @Override
     public String getTitle()
     {
-        return "Factions";
+        return "mappet.gui.panels.factions";
     }
 
     @Override
@@ -180,7 +181,7 @@ public class GuiFactionPanel extends GuiMappetDashboardPanel<Faction>
             int w = this.editor.area.w / 2;
             int x = this.editor.area.mx() - w / 2;
 
-            GuiDraw.drawMultiText(this.font, "Select or create a faction in the list on the right, to start editing...", x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
+            GuiDraw.drawMultiText(this.font, I18n.format("mappet.gui.factions.info.empty"), x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
         }
     }
 }

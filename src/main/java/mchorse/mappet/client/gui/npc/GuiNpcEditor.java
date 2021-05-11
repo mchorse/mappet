@@ -22,11 +22,11 @@ public class GuiNpcEditor extends GuiPanelBase<GuiNpcPanel>
     {
         super(mc, Direction.BOTTOM);
 
-        this.registerPanel(new GuiNpcGeneralPanel(mc, inventory, morphs), IKey.str("General"), Icons.GEAR);
-        this.registerPanel(new GuiNpcHealthPanel(mc), IKey.str("Health"), Icons.ADD);
-        this.registerPanel(new GuiNpcDamagePanel(mc), IKey.str("Damage"), Icons.CUT);
-        this.registerPanel(new GuiNpcMovementPanel(mc), IKey.str("Movement"), Icons.REVERSE);
-        this.registerPanel(new GuiNpcBehaviorPanel(mc), IKey.str("Behavior"), Icons.PROCESSOR);
+        this.registerPanel(new GuiNpcGeneralPanel(mc, inventory, morphs), IKey.lang("mappet.gui.npcs.general.title"), Icons.GEAR);
+        this.registerPanel(new GuiNpcHealthPanel(mc), IKey.lang("mappet.gui.npcs.health.title"), Icons.ADD);
+        this.registerPanel(new GuiNpcDamagePanel(mc), IKey.lang("mappet.gui.npcs.damage.title"), Icons.CUT);
+        this.registerPanel(new GuiNpcMovementPanel(mc), IKey.lang("mappet.gui.npcs.movement.title"), Icons.REVERSE);
+        this.registerPanel(new GuiNpcBehaviorPanel(mc), IKey.lang("mappet.gui.npcs.behavior.title"), Icons.PROCESSOR);
     }
 
     public void set(NpcState state)

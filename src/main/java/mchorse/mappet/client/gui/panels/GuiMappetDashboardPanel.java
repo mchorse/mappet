@@ -22,6 +22,7 @@ import mchorse.mclib.client.gui.mclib.GuiDashboardPanel;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 import org.lwjgl.input.Keyboard;
@@ -30,7 +31,7 @@ import java.util.List;
 
 public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends GuiDashboardPanel<GuiMappetDashboard>
 {
-    public static final IKey KEYS_CATEGORY = IKey.str("Mappet panel keybinds");
+    public static final IKey KEYS_CATEGORY = IKey.lang("mappet.gui.panels.keys.category");
 
     public GuiIconElement toggleSidebar;
     public GuiElement sidebar;
@@ -64,10 +65,10 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
         this.rename = new GuiIconElement(mc, Icons.EDIT, this::renameData);
         this.remove = new GuiIconElement(mc, Icons.REMOVE, this::removeData);
 
-        GuiDrawable drawable = new GuiDrawable((context) -> this.font.drawStringWithShadow(this.getTitle(), this.names.area.x, this.area.y + 10, 0xffffff));
+        GuiDrawable drawable = new GuiDrawable((context) -> this.font.drawStringWithShadow(I18n.format(this.getTitle()), this.names.area.x, this.area.y + 10, 0xffffff));
 
         this.names = new GuiStringSearchListElement(mc, (list) -> this.pickData(list.get(0)));
-        this.names.label(IKey.str("Search..."));
+        this.names.label(IKey.lang("mappet.gui.search"));
         this.names.flex().relative(this.sidebar).xy(10, 25).w(1F, -20).h(1F, -35);
         this.sidebar.add(drawable, this.names, buttons);
 
@@ -89,7 +90,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
         this.markContainer();
         this.add(this.sidebar, this.editor, this.toggleSidebar);
 
-        this.keys().register(IKey.str("Toggle sidebar"), Keyboard.KEY_N, () -> this.toggleSidebar.clickItself(GuiBase.getCurrent())).category(KEYS_CATEGORY);
+        this.keys().register(IKey.lang("mappet.gui.panels.keys.toggle_sidebar"), Keyboard.KEY_N, () -> this.toggleSidebar.clickItself(GuiBase.getCurrent())).category(KEYS_CATEGORY);
     }
 
     private void toggleSidebar()
@@ -142,7 +143,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
 
     protected void addNewData(GuiIconElement element)
     {
-        GuiModal.addFullModal(this.sidebar, () -> new GuiPromptModal(this.mc, IKey.str("Type in name:"), this::addNewData).filename());
+        GuiModal.addFullModal(this.sidebar, () -> new GuiPromptModal(this.mc, IKey.lang("mappet.gui.panels.modals.add"), this::addNewData).filename());
     }
 
     protected void addNewData(String name)
@@ -165,7 +166,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
     {
         GuiModal.addFullModal(this.sidebar, () ->
         {
-            GuiPromptModal promptModal = new GuiPromptModal(this.mc, IKey.str("Type in a new name for a duplicate:"), this::dupeData);
+            GuiPromptModal promptModal = new GuiPromptModal(this.mc, IKey.lang("mappet.gui.panels.modals.dupe"), this::dupeData);
 
             return promptModal.setValue(this.id).filename();
         });
@@ -191,7 +192,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
     {
         GuiModal.addFullModal(this.sidebar, () ->
         {
-            GuiPromptModal promptModal = new GuiPromptModal(this.mc, IKey.str("Type in a new name:"), this::renameData);
+            GuiPromptModal promptModal = new GuiPromptModal(this.mc, IKey.lang("mappet.gui.panels.modals.rename"), this::renameData);
 
             return promptModal.setValue(this.id).filename();
         });
@@ -215,7 +216,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
 
     protected void removeData(GuiIconElement element)
     {
-        GuiModal.addFullModal(this.sidebar, () -> new GuiConfirmModal(this.mc, IKey.str("Are you sure you want to remove this?"), this::removeData));
+        GuiModal.addFullModal(this.sidebar, () -> new GuiConfirmModal(this.mc, IKey.lang("mappet.gui.panels.modals.remove"), this::removeData));
     }
 
     protected void removeData(boolean confirm)

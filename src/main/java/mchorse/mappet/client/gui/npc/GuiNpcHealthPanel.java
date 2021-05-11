@@ -22,10 +22,10 @@ public class GuiNpcHealthPanel extends GuiNpcPanel
         this.regenDelay = new GuiTrackpadElement(mc, (v) -> this.state.regenDelay = v.intValue());
         this.regenFrequency = new GuiTrackpadElement(mc, (v) -> this.state.regenFrequency = v.intValue());
 
-        this.scroll.add(Elements.label(IKey.str("Max HP")).background(), this.maxHealth);
-        this.scroll.add(Elements.label(IKey.str("Initial HP")).background().marginTop(12), this.health);
-        this.scroll.add(Elements.label(IKey.str("HP regeneration delay")).background().marginTop(12), this.regenDelay);
-        this.scroll.add(Elements.label(IKey.str("HP regeneration frequency")).background().marginTop(12), this.regenFrequency);
+        this.scroll.add(Elements.label(IKey.lang("mappet.gui.npcs.health.max_hp")).background(), this.maxHealth);
+        this.scroll.add(Elements.label(IKey.lang("mappet.gui.npcs.health.hp")).background().marginTop(12), this.health);
+        this.scroll.add(Elements.label(IKey.lang("mappet.gui.npcs.health.regen_delay")).background().marginTop(12), this.regenDelay);
+        this.scroll.add(Elements.label(IKey.lang("mappet.gui.npcs.health.regen_frequency")).background().marginTop(12), this.regenFrequency);
     }
 
     @Override

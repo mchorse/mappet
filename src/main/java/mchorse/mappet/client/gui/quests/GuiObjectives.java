@@ -31,8 +31,8 @@ public class GuiObjectives extends GuiElement
     public GuiSimpleContextMenu getAdds()
     {
         return new GuiSimpleContextMenu(Minecraft.getMinecraft())
-            .action(Icons.ADD, IKey.str("Add kill objective"), () -> this.addObjective(new KillObjective(), true))
-            .action(Icons.ADD, IKey.str("Add collect objective"), () -> this.addObjective(new CollectObjective(), true));
+            .action(Icons.ADD, IKey.lang("mappet.gui.quests.objectives.context.add_kill"), () -> this.addObjective(new KillObjective(), true))
+            .action(Icons.ADD, IKey.lang("mappet.gui.quests.objectives.context.add_collect"), () -> this.addObjective(new CollectObjective(), true));
     }
 
     private void addObjective(IObjective objective, boolean add)
@@ -55,7 +55,7 @@ public class GuiObjectives extends GuiElement
             final GuiObjective finalElement = element;
 
             element.context(() -> new GuiSimpleContextMenu(Minecraft.getMinecraft())
-                .action(Icons.REMOVE, IKey.str("Remove this objective"), () -> this.removeObjective(finalElement)));
+                .action(Icons.REMOVE, IKey.lang("mappet.gui.quests.objectives.context.remove"), () -> this.removeObjective(finalElement)));
 
             if (add)
             {

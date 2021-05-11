@@ -32,10 +32,10 @@ public class GuiNpcGeneralPanel extends GuiNpcPanel
         this.xp = new GuiTrackpadElement(mc, (v) -> this.state.xp = v.intValue());
         this.xp.limit(0).integer();
 
-        this.scroll.add(Elements.label(IKey.str("Faction")), this.faction);
-        this.scroll.add(Elements.label(IKey.str("NPC's morph")).marginTop(12), this.morph);
+        this.scroll.add(Elements.label(IKey.lang("mappet.gui.npcs.general.faction")), this.faction);
+        this.scroll.add(Elements.label(IKey.lang("mappet.gui.npcs.general.morph")).marginTop(12), this.morph);
         this.scroll.add(this.drops.marginTop(12));
-        this.scroll.add(Elements.label(IKey.str("XP drop")).marginTop(12), this.xp);
+        this.scroll.add(Elements.label(IKey.lang("mappet.gui.npcs.general.xp")).marginTop(12), this.xp);
     }
 
     private void openMorphMenu(boolean editing, Supplier<GuiCreativeMorphsMenu> morphs)

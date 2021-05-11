@@ -30,26 +30,26 @@ public class GuiNpcMovementPanel extends GuiNpcPanel
         super(mc);
 
         this.speed = new GuiTrackpadElement(mc, (v) -> this.state.speed = v.floatValue());
-        this.canSwim = new GuiToggleElement(mc, IKey.str("Can swim"), (b) -> this.state.canSwim = b.isToggled());
-        this.hasPost = new GuiToggleElement(mc, IKey.str("Has a post"), (b) -> this.state.hasPost = b.isToggled());
+        this.canSwim = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.movement.can_swim"), (b) -> this.state.canSwim = b.isToggled());
+        this.hasPost = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.movement.has_post"), (b) -> this.state.hasPost = b.isToggled());
         this.postPosition = new GuiBlockPosElement(mc, (pos) -> this.state.postPosition = pos);
         this.postRadius = new GuiTrackpadElement(mc, (v) -> this.state.postRadius = v.floatValue());
-        this.patrolCirculate = new GuiToggleElement(mc, IKey.str("Circular patrol"), (b) -> this.state.patrolCirculate = b.isToggled());
+        this.patrolCirculate = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.movement.patrol_circulate"), (b) -> this.state.patrolCirculate = b.isToggled());
         this.patrol = new GuiBlockPosList(mc);
         this.follow = new GuiTextElement(mc, 1000, (t) -> this.state.follow = t);
 
-        GuiLabel patrolLabel = Elements.label(IKey.str("Patrol points")).background();
+        GuiLabel patrolLabel = Elements.label(IKey.lang("mappet.gui.npcs.movement.patrol_points")).background();
         patrolLabel.marginTop(12);
         GuiIconElement add = new GuiIconElement(mc, Icons.ADD, (b) -> this.patrol.addBlockPos());
 
-        add.flex().relative(patrolLabel).x(1F, -20);
+        add.flex().relative(patrolLabel).xy(1F, 0.5F).w(10).anchor(1F, 0.5F);
         patrolLabel.add(add);
 
-        this.scroll.add(Elements.label(IKey.str("Speed")).background(), this.speed);
+        this.scroll.add(Elements.label(IKey.lang("mappet.gui.npcs.movement.speed")).background(), this.speed);
         this.scroll.add(this.canSwim);
-        this.scroll.add(Elements.label(IKey.str("Post point")).background().marginTop(12), this.hasPost, this.postPosition, this.postRadius);
+        this.scroll.add(Elements.label(IKey.lang("mappet.gui.npcs.movement.post")).background().marginTop(12), this.hasPost, this.postPosition, this.postRadius);
         this.scroll.add(patrolLabel, this.patrolCirculate, this.patrol);
-        this.scroll.add(Elements.label(IKey.str("Follow target")).background().marginTop(12), this.follow);
+        this.scroll.add(Elements.label(IKey.lang("mappet.gui.npcs.movement.follow")).background().marginTop(12), this.follow);
     }
 
     @Override

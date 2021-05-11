@@ -21,12 +21,12 @@ public class GuiNpcDamagePanel extends GuiNpcPanel
 
         this.damage = new GuiTrackpadElement(mc, (v) -> this.state.damage = v.floatValue());
         this.damage.limit(0);
-        this.canFallDamage = new GuiToggleElement(mc, IKey.str("Fall damage"), (b) -> this.state.canFallDamage = b.isToggled());
-        this.canGetBurned = new GuiToggleElement(mc, IKey.str("Fire damage"), (b) -> this.state.canGetBurned = b.isToggled());
-        this.invincible = new GuiToggleElement(mc, IKey.str("Invincible"), (b) -> this.state.invincible = b.isToggled());
-        this.killable = new GuiToggleElement(mc, IKey.str("Killable"), (b) -> this.state.killable = b.isToggled());
+        this.canFallDamage = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.damage.fall"), (b) -> this.state.canFallDamage = b.isToggled());
+        this.canGetBurned = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.damage.fire"), (b) -> this.state.canGetBurned = b.isToggled());
+        this.invincible = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.damage.invincible"), (b) -> this.state.invincible = b.isToggled());
+        this.killable = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.damage.killable"), (b) -> this.state.killable = b.isToggled());
 
-        this.scroll.add(Elements.label(IKey.str("Damage")).background(), this.damage);
+        this.scroll.add(Elements.label(IKey.lang("mappet.gui.npcs.damage.damage")).background(), this.damage);
         this.scroll.add(this.canFallDamage, this.canGetBurned, this.invincible, this.killable);
     }
 

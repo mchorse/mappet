@@ -18,6 +18,7 @@ import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.metamorph.client.gui.creative.GuiCreativeMorphsMenu;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 
 public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
 {
@@ -30,7 +31,7 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
     {
         super(mc, dashboard);
 
-        this.unique = new GuiToggleElement(mc, IKey.str("Unique"), (b) -> this.data.unique = b.isToggled());
+        this.unique = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.unique"), (b) -> this.data.unique = b.isToggled());
         this.unique.flex().h(20);
 
         this.pathDistance = new GuiTrackpadElement(mc, (v) -> this.data.pathDistance = v);
@@ -40,11 +41,11 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
         {
             GuiSimpleContextMenu menu = new GuiSimpleContextMenu(mc);
 
-            menu.action(Icons.ADD, IKey.str("Add state"), this::addState);
+            menu.action(Icons.ADD, IKey.lang("mappet.gui.npcs.context.add"), this::addState);
 
             if (!this.states.isDeselected())
             {
-                menu.action(Icons.REMOVE, IKey.str("Remove state"), this::removeState);
+                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.npcs.context.remove"), this::removeState);
             }
 
             return menu;
@@ -70,7 +71,7 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
 
     private void addState()
     {
-        GuiModal.addFullModal(this.states, () -> new GuiPromptModal(this.mc, IKey.str("Type in a name for a new NPC state:"), this::addState));
+        GuiModal.addFullModal(this.states, () -> new GuiPromptModal(this.mc, IKey.lang("mappet.gui.npcs.modals.add"), this::addState));
     }
 
     private void addState(String name)
@@ -89,7 +90,7 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
 
     private void removeState()
     {
-        GuiModal.addFullModal(this.states, () -> new GuiConfirmModal(this.mc, IKey.str("Are you sure you want to remove this NPC state?"), this::removeState));
+        GuiModal.addFullModal(this.states, () -> new GuiConfirmModal(this.mc, IKey.lang("mappet.gui.npcs.modals.remove"), this::removeState));
     }
 
     private void removeState(boolean confirm)
@@ -160,7 +161,7 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
     @Override
     public String getTitle()
     {
-        return "NPCs";
+        return "mappet.gui.panels.npcs";
     }
 
     @Override
@@ -173,7 +174,7 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
 
         if (this.pathDistance.isVisible())
         {
-            this.font.drawStringWithShadow("Path finding distance", this.pathDistance.area.x, this.pathDistance.area.y - 12, 0xffffff);
+            this.font.drawStringWithShadow(I18n.format("mappet.gui.npcs.path_distance"), this.pathDistance.area.x, this.pathDistance.area.y - 12, 0xffffff);
         }
 
         super.draw(context);

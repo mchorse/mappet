@@ -21,7 +21,7 @@ public abstract class GuiResourceLocationOverlayPanel extends GuiOverlayPanel
         this.callback = callback;
 
         this.sounds = new GuiStringSearchListElement(mc, (list) -> this.accept(list.get(0)));
-        this.sounds.label = IKey.str("Search...");
+        this.sounds.label = IKey.lang("mappet.gui.search");
         this.sounds.flex().relative(this.content).wh(1F, 1F);
 
         for (ResourceLocation location : keys)

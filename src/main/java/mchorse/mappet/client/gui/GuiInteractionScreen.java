@@ -30,6 +30,7 @@ import mchorse.mclib.utils.ColorUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.TextFormatting;
 import sun.security.x509.AVA;
 
@@ -316,7 +317,7 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
         {
             int w = (int) (this.questArea.area.w / 1.5F);
 
-            GuiDraw.drawMultiText(this.fontRenderer, "There are no more available quests for you here...", this.questArea.area.mx() - w / 2, (this.quest.area.y + this.actionQuest.area.y - 10) / 2, 0xffffff, w, 12, 0.5F, 0.5F);
+            GuiDraw.drawMultiText(this.fontRenderer, I18n.format("mappet.gui.interaction.info.no_quests"), this.questArea.area.mx() - w / 2, (this.quest.area.y + this.actionQuest.area.y - 10) / 2, 0xffffff, w, 12, 0.5F, 0.5F);
         }
 
         this.drawCenteredString(this.fontRenderer, this.fragment.title, this.reaction.area.mx(), 10, 0xffffff);

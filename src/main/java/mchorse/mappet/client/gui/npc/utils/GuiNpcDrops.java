@@ -29,7 +29,7 @@ public class GuiNpcDrops extends GuiElement
 
         this.inventory = inventory;
 
-        GuiLabel label = Elements.label(IKey.str("NPC drops"));
+        GuiLabel label = Elements.label(IKey.lang("mappet.gui.npcs.drops.title"));
         GuiIconElement add = new GuiIconElement(mc, Icons.ADD, (b) -> this.addDrop(new NpcDrop(), true));
         add.flex().wh(10, 8);
 
@@ -68,7 +68,7 @@ public class GuiNpcDrops extends GuiElement
             slot.stack = item;
         });
         slot.stack = drop.stack;
-        row.context(() -> new GuiSimpleContextMenu(this.mc).action(Icons.REMOVE, IKey.str("Remove drop"), () ->
+        row.context(() -> new GuiSimpleContextMenu(this.mc).action(Icons.REMOVE, IKey.lang("mappet.gui.npcs.drops.context.remove"), () ->
         {
             int index = this.element.getChildren().indexOf(row);
 

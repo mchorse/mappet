@@ -18,6 +18,7 @@ import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 
 public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
 {
@@ -38,7 +39,7 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
 
         this.title = new GuiTextElement(mc, 1000, (text) -> this.data.title = text);
         this.story = new GuiTextElement(mc, 1000, (text) -> this.data.story = text);
-        this.cancelable = new GuiToggleElement(mc, IKey.str("Cancelable"), (b) -> this.data.cancelable = b.isToggled());
+        this.cancelable = new GuiToggleElement(mc, IKey.lang("mappet.gui.quests.cancelable"), (b) -> this.data.cancelable = b.isToggled());
 
         this.accept = new GuiTriggerElement(mc);
         this.decline = new GuiTriggerElement(mc);
@@ -50,8 +51,8 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
 
         this.add(this.inventory);
 
-        GuiLabel objectiveLabel = Elements.label(IKey.str("Quest objectives")).background();
-        GuiLabel rewardLabel = Elements.label(IKey.str("Quest rewards")).background();
+        GuiLabel objectiveLabel = Elements.label(IKey.lang("mappet.gui.quests.objectives.title")).background();
+        GuiLabel rewardLabel = Elements.label(IKey.lang("mappet.gui.quests.rewards.title")).background();
         GuiIconElement addObjective = new GuiIconElement(mc, Icons.ADD, (b) -> GuiBase.getCurrent().replaceContextMenu(this.objectives.getAdds()));
         GuiIconElement addReward = new GuiIconElement(mc, Icons.ADD, (b) -> GuiBase.getCurrent().replaceContextMenu(this.rewards.getAdds()));
 
@@ -61,14 +62,14 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
         rewardLabel.marginBottom(5).add(addReward);
 
         this.editor.flex().column(0).padding(10);
-        this.editor.add(Elements.label(IKey.str("Quest's title")), this.title);
-        this.editor.add(Elements.label(IKey.str("Quest's description")).marginTop(12), this.story);
+        this.editor.add(Elements.label(IKey.lang("mappet.gui.quests.title")), this.title);
+        this.editor.add(Elements.label(IKey.lang("mappet.gui.quests.description")).marginTop(12), this.story);
         this.editor.add(this.cancelable.marginTop(6));
         this.editor.add(objectiveLabel, this.objectives);
         this.editor.add(rewardLabel, this.rewards);
-        this.editor.add(Elements.label(IKey.str("Accept quest trigger")).background().marginTop(20).marginBottom(4), this.accept);
-        this.editor.add(Elements.label(IKey.str("Decline quest trigger")).background().marginTop(12).marginBottom(4), this.decline);
-        this.editor.add(Elements.label(IKey.str("Complete quest trigger")).background().marginTop(12).marginBottom(4), this.complete);
+        this.editor.add(Elements.label(IKey.lang("mappet.gui.quests.accept")).background().marginTop(20).marginBottom(4), this.accept);
+        this.editor.add(Elements.label(IKey.lang("mappet.gui.quests.decline")).background().marginTop(12).marginBottom(4), this.decline);
+        this.editor.add(Elements.label(IKey.lang("mappet.gui.quests.complete")).background().marginTop(12).marginBottom(4), this.complete);
         this.editor.scroll.opposite = true;
 
         this.fill("", null);
@@ -83,7 +84,7 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
     @Override
     public String getTitle()
     {
-        return "Quests";
+        return "mappet.gui.panels.quests";
     }
 
     @Override
@@ -125,7 +126,7 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
             int w = this.editor.area.w / 2;
             int x = this.editor.area.mx() - w / 2;
 
-            GuiDraw.drawMultiText(this.font, "Select or create a quest in the list on the right, to start editing...", x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
+            GuiDraw.drawMultiText(this.font, I18n.format("mappet.gui.quests.info.empty"), x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
         }
     }
 }

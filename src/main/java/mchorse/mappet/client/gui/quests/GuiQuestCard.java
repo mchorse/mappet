@@ -24,7 +24,7 @@ public class GuiQuestCard
 
         element.add(Elements.label(IKey.str(quest.title)).background().marginBottom(12));
         element.add(new GuiText(mc).text(DialogueFragment.process(quest.story)).color(0xaaaaaa, true).marginBottom(12));
-        element.add(Elements.label(IKey.lang("mappet.gui.quests.objectives")));
+        element.add(Elements.label(IKey.lang("mappet.gui.quests.objectives.title")));
 
         for (IObjective objective : quest.objectives)
         {
@@ -36,7 +36,7 @@ public class GuiQuestCard
             return;
         }
 
-        element.add(Elements.label(IKey.lang("mappet.gui.quests.rewards")).marginTop(12));
+        element.add(Elements.label(IKey.lang("mappet.gui.quests.rewards.title")).marginTop(12));
 
         for (IReward reward : quest.rewards)
         {

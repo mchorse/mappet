@@ -67,10 +67,10 @@ public class GuiShapeEditor extends GuiElement
 
         this.flex().column(5).vertical().stretch();
 
-        this.bottomLabel = Elements.label(IKey.str("Offset"));
+        this.bottomLabel = Elements.label(IKey.lang(""));
         this.bottomRow = Elements.row(mc, 5, 0, this.sizeX, this.sizeY, this.sizeZ);
 
-        this.add(Elements.label(IKey.str("Offset")));
+        this.add(Elements.label(IKey.lang("mappet.gui.region.offset")));
         this.add(Elements.row(mc, 5, 0, this.x, this.y, this.z));
         this.add(this.bottomLabel, this.bottomRow);
     }
@@ -93,7 +93,7 @@ public class GuiShapeEditor extends GuiElement
             this.sizeY.setValue(size.y);
             this.sizeZ.setValue(size.z);
 
-            this.bottomLabel.label.set("Half size");
+            this.bottomLabel.label.set("mappet.gui.region.box_size");
             this.bottomRow.add(this.sizeZ);
         }
         else if (shape instanceof SphereShape)
@@ -101,7 +101,7 @@ public class GuiShapeEditor extends GuiElement
             this.sizeX.setValue(((SphereShape) shape).horizontal);
             this.sizeY.setValue(((SphereShape) shape).vertical);
 
-            this.bottomLabel.label.set(shape instanceof CylinderShape ? "Ellipsoid radius" : "Radius and height");
+            this.bottomLabel.label.set(shape instanceof CylinderShape ? "mappet.gui.region.ellipse_size" : "mappet.gui.region.sphere_size");
         }
 
         this.getParentContainer().resize();

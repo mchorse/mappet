@@ -33,7 +33,12 @@ public class GuiBlockPosElement extends GuiElement
         this.flex().row(5);
         this.add(this.x, this.y, this.z);
 
-        this.context(() -> new GuiSimpleContextMenu(this.mc).action(Icons.MOVE_TO, IKey.str("Paste your current position"), this::pastePosition));
+        this.context(this::createDefaultContextMenu);
+    }
+
+    public GuiSimpleContextMenu createDefaultContextMenu()
+    {
+        return new GuiSimpleContextMenu(this.mc).action(Icons.MOVE_TO, IKey.lang("mappet.gui.block_pos.context.paste"), this::pastePosition);
     }
 
     private void pastePosition()
