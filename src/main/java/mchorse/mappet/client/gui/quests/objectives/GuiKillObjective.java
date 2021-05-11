@@ -58,9 +58,14 @@ public class GuiKillObjective extends GuiObjective<KillObjective>
 
     private void openPickEntityOverlay()
     {
-        GuiResourceLocationOverlayPanel overlay = new GuiEntityOverlayPanel(this.mc, (rl) -> this.objective.entity = rl).set(this.objective.entity);
+        GuiResourceLocationOverlayPanel overlay = new GuiEntityOverlayPanel(this.mc, this::setEntity).set(this.objective.entity);
 
         GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay, 0.5F, 0.6F);
+    }
+
+    private void setEntity(ResourceLocation location)
+    {
+        this.objective.entity = location == null ? new ResourceLocation("") : location;
     }
 
     @Override

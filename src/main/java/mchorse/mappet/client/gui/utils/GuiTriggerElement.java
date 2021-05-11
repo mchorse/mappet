@@ -16,6 +16,7 @@ import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiTriggerElement extends GuiElement
 {
@@ -117,9 +118,14 @@ public class GuiTriggerElement extends GuiElement
 
     private void openPickSoundOverlay()
     {
-        GuiResourceLocationOverlayPanel overlay = new GuiSoundOverlayPanel(this.mc, (rl) -> this.trigger.soundEvent = rl.toString()).set(this.trigger.soundEvent);
+        GuiResourceLocationOverlayPanel overlay = new GuiSoundOverlayPanel(this.mc, this::setSound).set(this.trigger.soundEvent);
 
         GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay, 0.5F, 0.9F);
+    }
+
+    private void setSound(ResourceLocation location)
+    {
+        this.trigger.soundEvent = location == null ? "" : location.toString();
     }
 
     public Trigger get()
