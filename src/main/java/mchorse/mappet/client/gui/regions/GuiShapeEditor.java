@@ -101,7 +101,7 @@ public class GuiShapeEditor extends GuiElement
             this.sizeX.setValue(((SphereShape) shape).horizontal);
             this.sizeY.setValue(((SphereShape) shape).vertical);
 
-            this.bottomLabel.label.set(shape instanceof CylinderShape ? "mappet.gui.region.ellipse_size" : "mappet.gui.region.sphere_size");
+            this.bottomLabel.label.set(shape instanceof CylinderShape ? "mappet.gui.region.sphere_size" : "mappet.gui.region.ellipse_size");
         }
 
         this.getParentContainer().resize();

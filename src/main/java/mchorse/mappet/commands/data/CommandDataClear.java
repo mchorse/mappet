@@ -4,6 +4,8 @@ import mchorse.mappet.Mappet;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.commands.MappetCommandBase;
+import mchorse.mappet.network.Dispatcher;
+import mchorse.mappet.network.common.quests.PacketQuests;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,13 +14,16 @@ import net.minecraft.server.MinecraftServer;
 
 public class CommandDataClear extends MappetCommandBase
 {
-    public static void clear(EntityPlayer player)
+    public static void clear(EntityPlayerMP player)
     {
         ICharacter character = Character.get(player);
 
         if (character != null)
         {
             character.getStates().values.clear();
+            character.getQuests().quests.clear();
+
+            Dispatcher.sendTo(new PacketQuests(character.getQuests()), player);
         }
 
         player.inventory.clear();
