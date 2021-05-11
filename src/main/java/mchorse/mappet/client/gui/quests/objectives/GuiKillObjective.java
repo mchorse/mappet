@@ -33,7 +33,7 @@ public class GuiKillObjective extends GuiObjective<KillObjective>
         this.count.integer().limit(0).setValue(objective.count);
         this.count.flex().relative(this).x(1F).y(12).w(0.5F, -2).anchorX(1F);
 
-        this.tag = new GuiTextElement(mc, this::parseTag);
+        this.tag = new GuiTextElement(mc, 10000, this::parseTag);
         this.tag.flex().relative(this).y(49).w(1F);
         this.tag.setText(objective.tag == null ? "" : this.tag.toString());
 
