@@ -20,19 +20,14 @@ import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
-import mchorse.mclib.client.gui.framework.elements.list.GuiLabelListElement;
-import mchorse.mclib.client.gui.framework.elements.list.GuiStringListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDrawable;
-import mchorse.mclib.client.gui.utils.Label;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.ColorUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.text.TextFormatting;
-import sun.security.x509.AVA;
 
 import java.util.List;
 
@@ -96,9 +91,11 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
         /* Crafting */
         this.crafting = new GuiCrafting(mc);
         this.crafting.flex().relative(this.area).y(0.45F).w(1F).hTo(this.area.area, 1F);
+        this.crafting.setVisible(false);
 
         /* Quests */
         this.quest = new GuiElement(mc);
+        this.quest.setVisible(false);
         this.quests = new GuiQuestInfoListElement(mc, (l) -> this.pickQuest(l.get(0)));
         this.questArea = new GuiScrollElement(mc);
         this.actionQuest = new GuiButtonElement(mc, IKey.lang("mappet.gui.interaction.accept"), (b) -> this.actionQuest());
@@ -207,7 +204,7 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
         }
         else if (fragment.replies.isEmpty())
         {
-            this.mc.displayGuiScreen(null);
+            Minecraft.getMinecraft().displayGuiScreen(null);
         }
         else
         {
@@ -320,6 +317,9 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
             GuiDraw.drawMultiText(this.fontRenderer, I18n.format("mappet.gui.interaction.info.no_quests"), this.questArea.area.mx() - w / 2, (this.quest.area.y + this.actionQuest.area.y - 10) / 2, 0xffffff, w, 12, 0.5F, 0.5F);
         }
 
-        this.drawCenteredString(this.fontRenderer, this.fragment.title, this.reaction.area.mx(), 10, 0xffffff);
+        if (this.fragment != null)
+        {
+            this.drawCenteredString(this.fontRenderer, this.fragment.title, this.reaction.area.mx(), 10, 0xffffff);
+        }
     }
 }

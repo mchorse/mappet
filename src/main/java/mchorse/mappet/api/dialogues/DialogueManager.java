@@ -60,7 +60,10 @@ public class DialogueManager extends BaseManager<Dialogue>
             character.getStates().readDialogue(dialogue.getId());
             Mappet.dialogues.execute(dialogue, context);
 
-            this.handleContext(player, dialogue, context);
+            if (context.reactionNode != null && !context.replyNodes.isEmpty())
+            {
+                this.handleContext(player, dialogue, context);
+            }
         }
     }
 

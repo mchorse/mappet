@@ -8,7 +8,7 @@ import java.util.List;
 
 public class GuiText extends GuiElement
 {
-    private String temp;
+    private String temp = "";
     private List<String> text;
     private int lineHeight = 12;
     private int color = 0xffffff;
@@ -73,32 +73,35 @@ public class GuiText extends GuiElement
     @Override
     public void draw(GuiContext context)
     {
-        if (this.text == null)
+        if (this.area.w > 0)
         {
-            List<String> text = this.font.listFormattedStringToWidth(this.temp, this.area.w);
-
-            this.lines = text.size();
-            this.getParentContainer().resize();
-
-            this.text = text;
-            this.lines = text.size();
-        }
-
-        int y = 0;
-        int color = this.area.isInside(context) ? this.hoverColor : this.color;
-
-        for (String line : this.text)
-        {
-            if (this.shadow)
+            if (this.text == null)
             {
-                this.font.drawStringWithShadow(line, this.area.x, this.area.y + y, color);
-            }
-            else
-            {
-                this.font.drawString(line, this.area.x, this.area.y + y, color);
+                List<String> text = this.font.listFormattedStringToWidth(this.temp, this.area.w);
+
+                this.lines = text.size();
+                this.getParentContainer().resize();
+
+                this.text = text;
+                this.lines = text.size();
             }
 
-            y += this.lineHeight;
+            int y = 0;
+            int color = this.area.isInside(context) ? this.hoverColor : this.color;
+
+            for (String line : this.text)
+            {
+                if (this.shadow)
+                {
+                    this.font.drawStringWithShadow(line, this.area.x, this.area.y + y, color);
+                }
+                else
+                {
+                    this.font.drawString(line, this.area.x, this.area.y + y, color);
+                }
+
+                y += this.lineHeight;
+            }
         }
 
         super.draw(context);
