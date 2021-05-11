@@ -250,7 +250,7 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
     public void pickQuest(QuestInfo info)
     {
         this.questArea.removeAll();
-        this.actionQuest.label.set(info != null && info.status == QuestStatus.COMPLETED ? "Complete" : "Accept");
+        this.actionQuest.label.set(info != null && info.status == QuestStatus.COMPLETED ? "mappet.gui.interaction.complete" : "mappet.gui.interaction.accept");
 
         if (info != null)
         {

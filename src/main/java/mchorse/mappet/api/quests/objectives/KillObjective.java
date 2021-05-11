@@ -42,13 +42,18 @@ public class KillObjective implements IObjective
 
     private boolean compareTag(Entity mob)
     {
+        if (this.tag == null)
+        {
+            return true;
+        }
+
         NBTTagCompound tag = mob.writeToNBT(new NBTTagCompound());
 
         for (String key : this.tag.getKeySet())
         {
             NBTBase tagBase = tag.getTag(key);
 
-            if (tagBase == null || !this.tag.getTag(key).equals(tagBase))
+            if (!this.tag.getTag(key).equals(tagBase))
             {
                 return false;
             }
@@ -73,6 +78,15 @@ public class KillObjective implements IObjective
     {
         String entity = EntityList.getTranslationName(this.entity);
         int count = Math.min(this.killed, this.count);
+
+        if (entity != null)
+        {
+            entity = I18n.format("entity." + entity + ".name");
+        }
+        else
+        {
+            entity = this.entity.toString();
+        }
 
         return I18n.format("mappet.gui.quests.objective_kill.string", entity, count, this.count);
     }
