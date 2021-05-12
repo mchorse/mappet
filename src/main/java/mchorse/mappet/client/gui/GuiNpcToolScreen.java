@@ -80,7 +80,9 @@ public class GuiNpcToolScreen extends GuiBase
     {
         this.drawDefaultBackground();
 
-        GuiDraw.drawTextBackground(this.fontRenderer, I18n.format("mappet.gui.npc_tool.title"), this.viewport.mx(), this.viewport.y + 20, 0xffffff, 0x88000000);
+        String title = I18n.format("mappet.gui.npc_tool.title");
+
+        GuiDraw.drawTextBackground(this.fontRenderer, title, this.viewport.mx(this.fontRenderer.getStringWidth(title)), this.viewport.y + 20, 0xffffff, 0x88000000);
         this.fontRenderer.drawStringWithShadow(I18n.format("mappet.gui.npc_tool.npc"), this.npcs.area.x, this.npcs.area.y - 12, 0xffffff);
         this.fontRenderer.drawStringWithShadow(I18n.format("mappet.gui.npc_tool.state"), this.states.area.x, this.states.area.y - 12, 0xffffff);
 
