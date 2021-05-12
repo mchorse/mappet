@@ -9,6 +9,7 @@ import mchorse.mappet.api.dialogues.nodes.ReactionNode;
 import mchorse.mappet.api.events.nodes.CommandNode;
 import mchorse.mappet.api.events.nodes.ConditionNode;
 import mchorse.mappet.api.events.nodes.EventNode;
+import mchorse.mappet.api.events.nodes.SwitchNode;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.nodes.events.GuiCommandNodePanel;
@@ -65,6 +66,11 @@ public class GuiDialoguePanel extends GuiMappetDashboardPanel<Dialogue>
             {
                 panel = new GuiConditionNodePanel(this.mc);
                 panel.set(node);
+
+                if (node instanceof SwitchNode)
+                {
+                    panel.binary.removeFromParent();
+                }
             }
             else if (node instanceof ReactionNode)
             {

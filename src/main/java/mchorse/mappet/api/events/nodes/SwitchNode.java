@@ -27,7 +27,7 @@ public class SwitchNode extends ConditionNode
 
         if (value != null && value.isNumber())
         {
-            int result = (int) value.get().doubleValue();
+            int result = 1 + (int) value.get().doubleValue();
 
             context.log("Expression \"" + this.expression + "\" is going to switch to its " + result + " execution branch...");
 
