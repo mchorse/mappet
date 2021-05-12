@@ -167,6 +167,11 @@ public class States implements INBTSerializable<NBTTagCompound>
 
     public void load()
     {
+        if (!this.file.exists())
+        {
+            return;
+        }
+
         try
         {
             String json = FileUtils.readFileToString(this.file, Charset.defaultCharset());
