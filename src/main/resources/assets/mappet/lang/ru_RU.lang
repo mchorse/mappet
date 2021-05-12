@@ -31,7 +31,7 @@ mappet.info.states.true=§fЗаданное выражение установл�
 mappet.info.states.print=§fСостояния §7%s§r:\n\n
 
 mappet.info.factions.clear=§fОчки фракции с ID §7%s§f были удалены.
-mappet.info.factions.clear_all=§fВсе очки фракции были удалены у §7%s§f.
+mappet.info.factions.clear_all=§fВсе очки фракции у §7%s§f были удалены.
 mappet.info.factions.set=§fОчки фракции с ID §7%s§f были установлены на значение §7%s§r.
 mappet.info.factions.changed=§fОчки фракции с ID §7%s§f были §7%s§r, теперь стали §7%s§r.
 
@@ -130,7 +130,7 @@ mappet.gui.panels.regions=Регионы
 mappet.gui.panels.npcs=NPC
 mappet.gui.panels.factions=Фракции
 mappet.gui.panels.chains=Цепочки квестов
-mappet.gui.panels.modals.add=Впишите новое название:
+mappet.gui.panels.modals.add=Впишите название:
 mappet.gui.panels.modals.dupe=Впишите новое название для дубликата:
 mappet.gui.panels.modals.rename=Впишите новое название:
 mappet.gui.panels.modals.remove=Вы уверены, что хотите это удалить?
@@ -154,8 +154,8 @@ mappet.gui.quests.objectives.context.remove=Удалить цель
 mappet.gui.quests.objectives.context.add_kill=Добавить цель убийства
 mappet.gui.quests.objectives.context.add_collect=Добавить цель сбора
 mappet.gui.quests.rewards.title=Награды
-mappet.gui.quests.rewards.context.remove=Добавить эту награду
-mappet.gui.quests.rewards.context.add_item=Добавить награду в заданном кол-во
+mappet.gui.quests.rewards.context.remove=Удалить эту награду
+mappet.gui.quests.rewards.context.add_item=Добавить награду в предметах
 mappet.gui.quests.reward_item.title=Предметы награды
 mappet.gui.quests.info.empty=Чтобы начать редактирование, создайте или выберите квест из списка справа...
 
@@ -166,8 +166,8 @@ mappet.gui.interaction.crafting.recipe_title=Название
 mappet.gui.interaction.info.no_quests=Здесь больше нет доступных вам квестов...
 
 mappet.gui.trigger_block.collidable=Имеет коллизию
-mappet.gui.trigger_block.left=Триггернуть на левом клике
-mappet.gui.trigger_block.right=Триггернуть на правом клике
+mappet.gui.trigger_block.left=Триггер на левом клике
+mappet.gui.trigger_block.right=Триггер на правом клике
 
 mappet.gui.emitter_block.expression=Выражение
 mappet.gui.emitter_block.radius=Радиус
@@ -229,9 +229,9 @@ mappet.gui.nodes.info.empty_chain=Чтобы начать редактирова
 mappet.gui.npcs.unique=Уникальный
 mappet.gui.npcs.path_distance=Дистанция нахождения пути
 mappet.gui.npcs.behavior.title=Поведение
-mappet.gui.npcs.behavior.look_at_player=Смотреть на игрока
-mappet.gui.npcs.behavior.look_around=Осматриваться
-mappet.gui.npcs.behavior.wander=Бродить
+mappet.gui.npcs.behavior.look_at_player=Смотрит на игрока
+mappet.gui.npcs.behavior.look_around=Осматривается
+mappet.gui.npcs.behavior.wander=Бродит
 mappet.gui.npcs.behavior.initialize=Триггер на инициализации NPC
 mappet.gui.npcs.behavior.interact=Триггер на взаимодействии с NPC
 mappet.gui.npcs.behavior.damaged=Триггер на получении урона NPC
@@ -254,7 +254,7 @@ mappet.gui.npcs.movement.speed=Скорость
 mappet.gui.npcs.movement.can_swim=Может плавать
 mappet.gui.npcs.movement.has_post=Имеет пост
 mappet.gui.npcs.movement.post=Точка поста
-mappet.gui.npcs.movement.patrol_circulate=Патрулировать по кругу
+mappet.gui.npcs.movement.patrol_circulate=Патрулирует по кругу
 mappet.gui.npcs.movement.patrol_points=Точки патруля
 mappet.gui.npcs.movement.follow=Следовать за целью
 mappet.gui.npcs.general.title=Общие
@@ -282,7 +282,7 @@ mappet.gui.factions.overlay.attitude=Отношение порога
 mappet.gui.factions.overlay.context.add=Добавить порог
 mappet.gui.factions.overlay.context.remove=Удалить этот порог
 mappet.gui.factions.relations.label=Отношения
-mappet.gui.factions.relations.main=Выбрать фракцию...
+mappet.gui.factions.relations.main=Выберите фракцию...
 mappet.gui.factions.relations.add=Добавить
 mappet.gui.factions.relations.open=Настроить собственное отношение...
 mappet.gui.factions.relations.context.remove=Удалить это отношение
@@ -294,7 +294,7 @@ mappet.gui.shapes.box=Куб
 mappet.gui.shapes.sphere=Сфера
 mappet.gui.shapes.cylinder=Цилиндр
 
-mappet.gui.faction_attitudes.aggressive=Агрессия
+mappet.gui.faction_attitudes.aggressive=Враждебность
 mappet.gui.faction_attitudes.passive=Нейтралитет
 mappet.gui.faction_attitudes.friendly=Дружелюбие
 
@@ -324,3 +324,4 @@ tile.mappet.trigger.name=Блок-триггер
 tile.mappet.trigger.tooltip=Включает заданные события при нажатии на блок игроком ПКМ или ЛКМ
 tile.mappet.region.name=Блок-регион
 tile.mappet.region.tooltip=Включает заданные события когда игрок заходит и/ли выходит в указанный регион
+#Перевод за авторством Дюхи Лавского с Луны Студии
