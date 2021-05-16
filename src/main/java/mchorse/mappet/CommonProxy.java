@@ -1,11 +1,11 @@
 package mchorse.mappet;
 
-import mchorse.mappet.api.events.EventManager;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.CharacterStorage;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.utils.MappetNpcSelector;
+import mchorse.mappet.utils.MetamorphHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -45,5 +45,7 @@ public class CommonProxy
     }
 
     public void init(FMLInitializationEvent event)
-    {}
+    {
+        MinecraftForge.EVENT_BUS.register(new MetamorphHandler());
+    }
 }

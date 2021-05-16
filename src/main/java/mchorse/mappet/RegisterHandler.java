@@ -15,6 +15,7 @@ import mchorse.mappet.items.ItemNpcTool;
 import mchorse.mappet.tile.TileEmitter;
 import mchorse.mappet.tile.TileRegion;
 import mchorse.mappet.tile.TileTrigger;
+import mchorse.metamorph.api.events.RegisterBlacklistEvent;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
