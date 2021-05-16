@@ -28,10 +28,11 @@ public class GuiNpcStateScreen extends GuiBase
         this.inventory.setVisible(false);
 
         this.editor = new GuiNpcEditor(mc, () -> this.inventory, () -> GuiMappetDashboard.get(this.mc).getMorphMenu());
-        this.editor.flex().relative(this.root).x(0.5F).w(0.45F).h(1F).anchorX(0.5F);
-        this.editor.set(state);
+        this.editor.flex().relative(this.root).w(1F).h(1F);
 
         this.root.add(this.editor, this.inventory);
+
+        this.editor.set(state);
     }
 
     @Override

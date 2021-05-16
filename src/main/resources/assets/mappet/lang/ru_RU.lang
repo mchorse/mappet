@@ -268,6 +268,7 @@ mappet.gui.npcs.modals.add=Впишите название для нового �
 mappet.gui.npcs.modals.remove=Уверены, что хотите удалить это состояние NPC?
 mappet.gui.npcs.context.add=Добавить состояние
 mappet.gui.npcs.context.remove=Удалить состояние
+mappet.gui.npcs.info.empty=Select or create an NPC in the list on the right, to start editing...
 
 mappet.gui.factions.title=Название фракции
 mappet.gui.factions.color=Отображаемый цвет
@@ -325,5 +326,7 @@ tile.mappet.trigger.name=Блок-триггер
 tile.mappet.trigger.tooltip=Включает заданные события при нажатии на блок игроком ПКМ или ЛКМ
 tile.mappet.region.name=Блок-регион
 tile.mappet.region.tooltip=Включает заданные события когда игрок заходит и/ли выходит в указанный регион
+
+entity.mappet.npc.name=Mappet NPC
 
 mappet.translation.credit=Перевод за авторством Дюхи Лавского с Луны Студии

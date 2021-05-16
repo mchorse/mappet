@@ -268,6 +268,7 @@ mappet.gui.npcs.modals.add=Type in a name for a new NPC state:
 mappet.gui.npcs.modals.remove=Are you sure you want to remove this NPC state?
 mappet.gui.npcs.context.add=Add state
 mappet.gui.npcs.context.remove=Remove state
+mappet.gui.npcs.info.empty=Select or create an NPC in the list on the right, to start editing...
 
 mappet.gui.factions.title=Faction's title
 mappet.gui.factions.color=Display color
@@ -325,5 +326,7 @@ tile.mappet.trigger.name=Trigger block
 tile.mappet.trigger.tooltip=Trigger events from player right and left clicking the block
 tile.mappet.region.name=Region block
 tile.mappet.region.tooltip=Trigger events when players enter and exit configured region
+
+entity.mappet.npc.name=Mappet NPC
 
 mappet.translation.credit=McHorse extracted these lines

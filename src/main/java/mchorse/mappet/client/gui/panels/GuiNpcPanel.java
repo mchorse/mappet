@@ -14,6 +14,7 @@ import mchorse.mclib.client.gui.framework.elements.modals.GuiConfirmModal;
 import mchorse.mclib.client.gui.framework.elements.modals.GuiModal;
 import mchorse.mclib.client.gui.framework.elements.modals.GuiPromptModal;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.metamorph.client.gui.creative.GuiCreativeMorphsMenu;
@@ -137,6 +138,7 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
         this.unique.setVisible(data != null);
         this.pathDistance.setVisible(data != null);
         this.npcEditor.setVisible(data != null);
+        this.states.setVisible(data != null);
 
         if (data != null)
         {
@@ -169,6 +171,13 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
         if (this.npcEditor.isVisible())
         {
             this.npcEditor.area.draw(0x66000000);
+        }
+        else
+        {
+            int w = (this.editor.area.ex() - this.area.x) / 2;
+            int x = (this.area.x + this.editor.area.ex()) / 2 - w / 2;
+
+            GuiDraw.drawMultiText(this.font, I18n.format("mappet.gui.npcs.info.empty"), x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
         }
 
         if (this.pathDistance.isVisible())

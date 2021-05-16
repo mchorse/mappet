@@ -15,7 +15,6 @@ import mchorse.mappet.items.ItemNpcTool;
 import mchorse.mappet.tile.TileEmitter;
 import mchorse.mappet.tile.TileRegion;
 import mchorse.mappet.tile.TileTrigger;
-import mchorse.metamorph.api.events.RegisterBlacklistEvent;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -96,7 +95,7 @@ public class RegisterHandler
     {
         event.getRegistry().register(EntityEntryBuilder.create()
             .entity(EntityNpc.class)
-            .name("npc")
+            .name(Mappet.MOD_ID + ".npc")
             .id(new ResourceLocation(Mappet.MOD_ID, "npc"), 0)
             .tracker(EntityNpc.RENDER_DISTANCE, 3, false)
             .build());
