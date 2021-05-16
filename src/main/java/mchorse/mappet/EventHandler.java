@@ -6,6 +6,7 @@ import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.CharacterProvider;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.commands.data.CommandDataClear;
+import mchorse.mappet.events.StateChangedEvent;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.quests.PacketQuest;
 import mchorse.mappet.network.common.quests.PacketQuests;
@@ -16,6 +17,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -189,6 +191,30 @@ public class EventHandler
         if (character != null && !event.player.world.isRemote)
         {
             character.getPositionCache().updatePlayer(event.player);
+        }
+    }
+
+    @SubscribeEvent
+    public void onStateChange(StateChangedEvent event)
+    {
+        for (EntityPlayer player : FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers())
+        {
+            ICharacter character = Character.get(player);
+
+            if (character != null)
+            {
+                int i = 0;
+
+                for (Quest quest : character.getQuests().quests.values())
+                {
+                    i += quest.stateWasUpdated(player) ? 1 : 0;
+                }
+
+                if (i > 0)
+                {
+                    this.playersToCheck.add(player);
+                }
+            }
         }
     }
 }

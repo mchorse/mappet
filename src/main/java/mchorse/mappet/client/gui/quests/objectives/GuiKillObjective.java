@@ -27,17 +27,17 @@ public class GuiKillObjective extends GuiObjective<KillObjective>
         super(mc, objective);
 
         this.entity = new GuiButtonElement(mc, IKey.lang("mappet.gui.overlays.entities.main"), (b) -> this.openPickEntityOverlay());
-        this.entity.flex().relative(this).y(49).w(0.5F, -3);
+        this.entity.flex().relative(this).y(12).w(0.5F, -3);
 
         this.count = new GuiTrackpadElement(mc, (value) -> this.objective.count = value.intValue());
         this.count.integer().limit(0).setValue(objective.count);
-        this.count.flex().relative(this).x(1F).y(49).w(0.5F, -2).anchorX(1F);
+        this.count.flex().relative(this).x(1F).y(12).w(0.5F, -2).anchorX(1F);
 
         this.tag = new GuiTextElement(mc, 10000, this::parseTag);
-        this.tag.flex().relative(this).y(86).w(1F);
+        this.tag.flex().relative(this).y(49).w(1F);
         this.tag.setText(objective.tag == null ? "" : objective.tag.toString());
 
-        this.message.flex().relative(this).y(12).w(1F);
+        this.message.flex().relative(this).y(1F).w(1F).anchorY(1F);
 
         this.flex().h(106);
 

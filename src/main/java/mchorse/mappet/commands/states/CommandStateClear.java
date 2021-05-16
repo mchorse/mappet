@@ -42,7 +42,7 @@ public class CommandStateClear extends CommandStateBase
         }
         else
         {
-            CommandState.getStates(server, sender,args[0]).values.clear();
+            CommandState.getStates(server, sender,args[0]).clear();
             this.getL10n().info(sender, "states.clear_all", args[0]);
         }
     }

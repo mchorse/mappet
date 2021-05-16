@@ -47,5 +47,6 @@ public class CommonProxy
     public void init(FMLInitializationEvent event)
     {
         MinecraftForge.EVENT_BUS.register(new MetamorphHandler());
+        Mappet.EVENT_BUS.register(eventHandler);
     }
 }

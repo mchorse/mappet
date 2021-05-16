@@ -42,10 +42,4 @@ public class GuiCollectObjective extends GuiObjective<CollectObjective>
     {
         return IKey.lang("mappet.gui.quests.objective_collect.message_tooltip");
     }
-
-    @Override
-    public void draw(GuiContext context)
-    {
-        super.draw(context);
-    }
 }

@@ -2,6 +2,7 @@ package mchorse.mappet.api.quests;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.quests.objectives.AbstractObjective;
+import mchorse.mappet.api.quests.objectives.StateObjective;
 import mchorse.mappet.api.quests.objectives.KillObjective;
 import mchorse.mappet.api.quests.rewards.IReward;
 import mchorse.mappet.api.utils.AbstractData;
@@ -68,6 +69,21 @@ public class Quest extends AbstractData implements INBTPartialSerializable
                 ((KillObjective) objective).playerKilled(player, entity);
             }
         }
+    }
+
+    public boolean stateWasUpdated(EntityPlayer player)
+    {
+        int i = 0;
+
+        for (AbstractObjective objective : this.objectives)
+        {
+            if (objective instanceof StateObjective)
+            {
+                i += ((StateObjective) objective).updateValue(player) ? 1 : 0;
+            }
+        }
+
+        return i > 0;
     }
 
     /* Rewards */

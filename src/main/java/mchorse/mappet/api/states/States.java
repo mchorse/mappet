@@ -2,6 +2,8 @@ package mchorse.mappet.api.states;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import mchorse.mappet.Mappet;
+import mchorse.mappet.events.StateChangedEvent;
 import mchorse.mclib.utils.JsonUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -35,6 +37,11 @@ public class States implements INBTSerializable<NBTTagCompound>
         this.file = file;
     }
 
+    protected void post(String id, Double previous, Double current)
+    {
+        Mappet.EVENT_BUS.post(new StateChangedEvent(this, id, previous, current));
+    }
+
     /* CRUD */
 
     public void add(String id, double value)
@@ -42,11 +49,15 @@ public class States implements INBTSerializable<NBTTagCompound>
         Double previous = this.values.get(id);
 
         this.values.put(id, (previous == null ? 0 : previous) + value);
+        this.post(id, previous, value);
     }
 
     public void set(String id, double value)
     {
+        Double previous = this.values.get(id);
+
         this.values.put(id, value);
+        this.post(id, previous, value);
     }
 
     public double get(String id)
@@ -56,17 +67,26 @@ public class States implements INBTSerializable<NBTTagCompound>
 
     public boolean reset(String id)
     {
-        boolean existed = this.values.containsKey(id);
+        Double previous = this.values.get(id);
 
         this.values.remove(id);
+        this.post(id, previous, null);
 
-        return !existed;
+        return previous != null;
+    }
+
+    public void clear()
+    {
+        this.values.clear();
+        this.post(null, null, null);
     }
 
     public void copy(States states)
     {
         this.values.clear();
         this.values.putAll(states.values);
+
+        this.post(null, null, null);
     }
 
     /* Quest convenience methods */

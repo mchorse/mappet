@@ -21,7 +21,7 @@ public class CommandDataClear extends MappetCommandBase
 
         if (character != null)
         {
-            character.getStates().values.clear();
+            character.getStates().clear();
             character.getQuests().quests.clear();
 
             Dispatcher.sendTo(new PacketQuests(character.getQuests()), player);
@@ -51,7 +51,7 @@ public class CommandDataClear extends MappetCommandBase
     @Override
     public void executeCommand(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
-        Mappet.states.values.clear();
+        Mappet.states.clear();
         Mappet.data.updateLastClear();
 
         for (EntityPlayerMP player : server.getPlayerList().getPlayers())

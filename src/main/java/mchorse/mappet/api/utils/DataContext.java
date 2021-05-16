@@ -26,6 +26,7 @@ public class DataContext
         this(subject);
 
         this.object = object;
+        this.setup();
     }
 
     public DataContext(EntityLivingBase subject)
@@ -33,6 +34,7 @@ public class DataContext
         this(subject.world);
 
         this.subject = subject;
+        this.setup();
     }
 
     public DataContext(World world)
@@ -46,6 +48,11 @@ public class DataContext
     {
         this.server = server;
 
+        this.setup();
+    }
+
+    private void setup()
+    {
         this.set("subject", this.subject == null ? "" : this.subject.getCachedUniqueIdString());
         this.set("object", this.object == null ? "" : this.object.getCachedUniqueIdString());
     }

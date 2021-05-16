@@ -21,6 +21,10 @@ public abstract class AbstractObjective implements INBTSerializable<NBTTagCompou
         {
             return new KillObjective();
         }
+        else if (type.equals("state"))
+        {
+            return new StateObjective();
+        }
 
         return null;
     }
