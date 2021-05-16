@@ -7,6 +7,7 @@ import mchorse.mappet.network.common.crafting.PacketCraft;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 
@@ -81,5 +82,18 @@ public class GuiCrafting extends GuiElement implements ICraftingScreen
         }
 
         return false;
+    }
+
+    @Override
+    public void draw(GuiContext context)
+    {
+        super.draw(context);
+
+        if (this.mc.player.isCreative() && this.table != null)
+        {
+            int w = this.font.getStringWidth(this.table.getId());
+
+            GuiDraw.drawTextBackground(this.font, this.table.getId(), this.area.mx(w), this.craft.area.my(this.font.FONT_HEIGHT - 2), 0xffffff, 0x88000000);
+        }
     }
 }

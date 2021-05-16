@@ -3,6 +3,7 @@ package mchorse.mappet.client.gui.quests;
 import mchorse.mappet.api.quests.chains.QuestInfo;
 import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.text.TextFormatting;
 
 import java.util.Comparator;
 import java.util.List;
@@ -28,6 +29,13 @@ public class GuiQuestInfoListElement extends GuiListElement<QuestInfo>
     @Override
     protected String elementToString(QuestInfo element)
     {
-        return element.status.formatting + element.quest.title;
+        String string = element.status.formatting + element.quest.title;
+
+        if (this.mc.player.isCreative())
+        {
+            string += TextFormatting.GRAY + " (" + element.quest.getId() + ")";
+        }
+
+        return string;
     }
 }

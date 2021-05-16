@@ -9,6 +9,7 @@ import mchorse.mclib.utils.ColorUtils;
 import mchorse.mclib.utils.Interpolations;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.util.text.TextFormatting;
 
 public class GuiFactionCard extends GuiElement
 {
@@ -30,7 +31,14 @@ public class GuiFactionCard extends GuiElement
     {
         super.draw(context);
 
-        GuiDraw.drawTextBackground(this.font, this.faction.title, this.area.x, this.area.y, this.faction.color, 0);
+        String title = this.faction.title;
+
+        if (this.mc.player.isCreative())
+        {
+            title += TextFormatting.GRAY + " (" + this.faction.getId() + ")";
+        }
+
+        this.font.drawStringWithShadow(title, this.area.x, this.area.y, this.faction.color);
         FactionRelation.Threshold current = this.faction.ownRelation.get((int) this.score);
         FactionRelation.Threshold previous = null;
 

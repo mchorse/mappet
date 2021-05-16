@@ -13,6 +13,7 @@ import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TextFormatting;
 
 import java.util.function.Consumer;
 
@@ -21,8 +22,14 @@ public class GuiQuestCard
     public static void fillQuest(GuiElement element, Quest quest, boolean forceReward)
     {
         Minecraft mc = Minecraft.getMinecraft();
+        String title = quest.title;
 
-        element.add(Elements.label(IKey.str(quest.title)).background().marginBottom(12));
+        if (mc.player.isCreative())
+        {
+            title += TextFormatting.GRAY + " (" + quest.getId() + ")";
+        }
+
+        element.add(Elements.label(IKey.str(title)).background().marginBottom(12));
         element.add(new GuiText(mc).text(DialogueFragment.process(quest.story)).color(0xaaaaaa, true).marginBottom(12));
         element.add(Elements.label(IKey.lang("mappet.gui.quests.objectives.title")));
 
