@@ -12,7 +12,7 @@ public abstract class DialogueNode extends EventNode
     @Override
     protected String getDisplayTitle()
     {
-        return DialogueFragment.process(this.message.text);
+        return this.message.getProcessedText();
     }
 
     @Override

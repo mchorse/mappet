@@ -69,8 +69,10 @@ public class DialogueManager extends BaseManager<Dialogue>
 
     public void handleContext(EntityPlayerMP player, Dialogue dialogue, DialogueContext context)
     {
-        List<DialogueFragment> replies = context.replyNodes.stream().map((r) -> r.message).collect(Collectors.toList());
-        DialogueFragment reaction = context.reactionNode == null ? new DialogueFragment() : context.reactionNode.message;
+        List<DialogueFragment> replies = context.replyNodes.stream().map((r) -> r.message.copy().process(context.data)).collect(Collectors.toList());
+        DialogueFragment reaction = context.reactionNode == null ? new DialogueFragment() : context.reactionNode.message.copy();
+
+        reaction.process(context.data);
 
         PacketDialogueFragment packet = new PacketDialogueFragment(dialogue.title, reaction, replies);
         ICharacter character = Character.get(player);

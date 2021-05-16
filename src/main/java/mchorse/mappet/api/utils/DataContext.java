@@ -83,9 +83,19 @@ public class DataContext
 
     public int execute(String command)
     {
-        command = REWRITER.set(this).rewrite(command);
+        command = this.process(command);
 
         return this.server.getCommandManager().executeCommand(this.getSender(), command);
+    }
+
+    public String process(String text)
+    {
+        if (!text.contains("${"))
+        {
+            return text;
+        }
+
+        return REWRITER.set(this).rewrite(text);
     }
 
     public Set<String> getKeys()
