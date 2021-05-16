@@ -148,7 +148,6 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
             this.states.sort();
 
             this.pickState(data.states.isEmpty() ? null : this.states.getList().get(0), true);
-            this.npcEditor.setPanel(this.npcEditor.panels.get(0));
         }
     }
 

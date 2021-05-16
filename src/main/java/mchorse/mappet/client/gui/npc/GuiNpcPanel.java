@@ -7,18 +7,13 @@ import net.minecraft.client.Minecraft;
 
 public abstract class GuiNpcPanel extends GuiElement
 {
-    protected GuiScrollElement scroll;
-
     protected NpcState state;
 
     public GuiNpcPanel(Minecraft mc)
     {
         super(mc);
 
-        this.scroll = new GuiScrollElement(mc);
-        this.scroll.flex().relative(this).wh(1F, 1F).column(5).stretch().scroll().vertical().padding(10);
-
-        this.add(this.scroll);
+        this.flex().column(5).vertical().stretch();
     }
 
     public void set(NpcState state)

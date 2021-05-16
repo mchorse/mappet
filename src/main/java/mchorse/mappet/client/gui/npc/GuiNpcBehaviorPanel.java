@@ -28,20 +28,20 @@ public class GuiNpcBehaviorPanel extends GuiNpcPanel
         this.lookAround = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.behavior.look_around"), (b) -> this.state.lookAround = b.isToggled());
         this.wander = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.behavior.wander"), (b) -> this.state.wander = b.isToggled());
 
-        this.triggerDied = new GuiTriggerElement(mc);
-        this.triggerDamaged = new GuiTriggerElement(mc);
-        this.triggerInteract = new GuiTriggerElement(mc);
-        this.triggerTick = new GuiTriggerElement(mc);
-        this.triggerTarget = new GuiTriggerElement(mc);
-        this.triggerInitialize = new GuiTriggerElement(mc);
+        this.triggerDied = new GuiTriggerElement(mc).expand();
+        this.triggerDamaged = new GuiTriggerElement(mc).expand();
+        this.triggerInteract = new GuiTriggerElement(mc).expand();
+        this.triggerTick = new GuiTriggerElement(mc).expand();
+        this.triggerTarget = new GuiTriggerElement(mc).expand();
+        this.triggerInitialize = new GuiTriggerElement(mc).expand();
 
-        this.scroll.add(this.lookAtPlayer, this.lookAround, this.wander);
-        this.scroll.add(Elements.label(IKey.lang("mappet.gui.npcs.behavior.initialize")).background().marginTop(12).marginBottom(5), this.triggerInitialize);
-        this.scroll.add(Elements.label(IKey.lang("mappet.gui.npcs.behavior.interact")).background().marginTop(12).marginBottom(5), this.triggerInteract);
-        this.scroll.add(Elements.label(IKey.lang("mappet.gui.npcs.behavior.damaged")).background().marginTop(12).marginBottom(5), this.triggerDamaged);
-        this.scroll.add(Elements.label(IKey.lang("mappet.gui.npcs.behavior.died")).background().marginTop(12).marginBottom(5), this.triggerDied);
-        this.scroll.add(Elements.label(IKey.lang("mappet.gui.npcs.behavior.tick")).background().marginTop(12).marginBottom(5), this.triggerTick);
-        this.scroll.add(Elements.label(IKey.lang("mappet.gui.npcs.behavior.target")).background().marginTop(12).marginBottom(5), this.triggerTarget);
+        this.add(this.lookAtPlayer, this.lookAround, this.wander);
+        this.add(Elements.label(IKey.lang("mappet.gui.npcs.behavior.initialize")).background().marginTop(12).marginBottom(5), this.triggerInitialize);
+        this.add(Elements.label(IKey.lang("mappet.gui.npcs.behavior.interact")).background().marginTop(12).marginBottom(5), this.triggerInteract);
+        this.add(Elements.label(IKey.lang("mappet.gui.npcs.behavior.damaged")).background().marginTop(12).marginBottom(5), this.triggerDamaged);
+        this.add(Elements.label(IKey.lang("mappet.gui.npcs.behavior.died")).background().marginTop(12).marginBottom(5), this.triggerDied);
+        this.add(Elements.label(IKey.lang("mappet.gui.npcs.behavior.tick")).background().marginTop(12).marginBottom(5), this.triggerTick);
+        this.add(Elements.label(IKey.lang("mappet.gui.npcs.behavior.target")).background().marginTop(12).marginBottom(5), this.triggerTarget);
     }
 
     @Override

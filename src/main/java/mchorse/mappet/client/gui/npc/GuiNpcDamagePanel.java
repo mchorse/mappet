@@ -26,8 +26,8 @@ public class GuiNpcDamagePanel extends GuiNpcPanel
         this.invincible = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.damage.invincible"), (b) -> this.state.invincible = b.isToggled());
         this.killable = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.damage.killable"), (b) -> this.state.killable = b.isToggled());
 
-        this.scroll.add(Elements.label(IKey.lang("mappet.gui.npcs.damage.damage")).background(), this.damage);
-        this.scroll.add(this.canFallDamage, this.canGetBurned, this.invincible, this.killable);
+        this.add(Elements.label(IKey.lang("mappet.gui.npcs.damage.damage")), this.damage);
+        this.add(this.canFallDamage.marginTop(12), this.canGetBurned, this.invincible, this.killable);
     }
 
     @Override

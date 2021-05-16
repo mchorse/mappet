@@ -3,6 +3,7 @@ package mchorse.mappet.client.gui.npc;
 import mchorse.mappet.api.npcs.NpcState;
 import mchorse.mappet.client.gui.utils.GuiBlockPosElement;
 import mchorse.mappet.client.gui.utils.GuiBlockPosList;
+import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
@@ -39,17 +40,22 @@ public class GuiNpcMovementPanel extends GuiNpcPanel
         this.follow = new GuiTextElement(mc, 1000, (t) -> this.state.follow = t);
 
         GuiLabel patrolLabel = Elements.label(IKey.lang("mappet.gui.npcs.movement.patrol_points")).background();
-        patrolLabel.marginTop(12);
         GuiIconElement add = new GuiIconElement(mc, Icons.ADD, (b) -> this.patrol.addBlockPos());
 
         add.flex().relative(patrolLabel).xy(1F, 0.5F).w(10).anchor(1F, 0.5F);
         patrolLabel.add(add);
 
-        this.scroll.add(Elements.label(IKey.lang("mappet.gui.npcs.movement.speed")).background(), this.speed);
-        this.scroll.add(this.canSwim);
-        this.scroll.add(Elements.label(IKey.lang("mappet.gui.npcs.movement.post")).background().marginTop(12), this.hasPost, this.postPosition, this.postRadius);
-        this.scroll.add(patrolLabel, this.patrolCirculate, this.patrol);
-        this.scroll.add(Elements.label(IKey.lang("mappet.gui.npcs.movement.follow")).background().marginTop(12), this.follow);
+        this.add(Elements.label(IKey.lang("mappet.gui.npcs.movement.speed")), this.speed);
+        this.add(this.canSwim);
+        this.add(Elements.label(IKey.lang("mappet.gui.npcs.movement.post")).marginTop(12), this.hasPost, this.postPosition, this.postRadius);
+
+        GuiElement patrol = new GuiElement(mc);
+
+        patrol.add(patrolLabel, this.patrol, this.patrolCirculate);
+        patrol.flex().column(5).vertical().stretch();
+
+        this.add(patrol.marginTop(12));
+        this.add(Elements.label(IKey.lang("mappet.gui.npcs.movement.follow")).marginTop(12), this.follow);
     }
 
     @Override
