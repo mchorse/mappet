@@ -63,6 +63,12 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
     private int lastNodeX;
     private int lastNodeY;
 
+    private T output;
+    private T input;
+
+    private Color a = new Color();
+    private Color b = new Color();
+
     private Consumer<T> callback;
 
     public GuiNodeGraph(Minecraft mc, INodeFactory<T> factory, Consumer<T> callback)
@@ -356,6 +362,27 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
         return Area.SHARED;
     }
 
+    public Area getNodeOutletArea(Area nodeArea, boolean output)
+    {
+        int y = output ? 6 : -6;
+
+        int x1 = nodeArea.mx() - 3;
+        int y1 = nodeArea.y(output ? 1F : 0F) - 3 + y;
+        int x2 = nodeArea.mx() + 3;
+        int y2 = nodeArea.y(output ? 1F : 0F) + 3 + y;
+
+        Area area = new Area();
+
+        area.setPoints(x1, y1, x2, y2);
+
+        return area;
+    }
+
+    public boolean isConnecting()
+    {
+        return this.output != null || this.input != null;
+    }
+
     public void set(NodeSystem<T> system)
     {
         this.system = system;
@@ -435,6 +462,25 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
 
                     return true;
                 }
+                else
+                {
+                    Area output = this.getNodeOutletArea(nodeArea, true);
+                    Area input = this.getNodeOutletArea(nodeArea, false);
+
+                    if (output.isInside(context))
+                    {
+                        this.output = node;
+                    }
+                    else if (input.isInside(context))
+                    {
+                        this.input = node;
+                    }
+
+                    if (this.isConnecting())
+                    {
+                        return false;
+                    }
+                }
             }
 
             if (shift)
@@ -454,6 +500,31 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
     public void mouseReleased(GuiContext context)
     {
         super.mouseReleased(context);
+
+        if (this.isConnecting())
+        {
+            boolean output = this.output != null;
+
+            for (T node : this.system.nodes.values())
+            {
+                Area nodeArea = this.getNodeArea(node);
+                Area outlet = this.getNodeOutletArea(nodeArea, !output);
+
+                if (outlet.isInside(context))
+                {
+                    if (output)
+                    {
+                        this.input = node;
+                    }
+                    else
+                    {
+                        this.output = node;
+                    }
+
+                    break;
+                }
+            }
+        }
 
         if (this.selecting)
         {
@@ -477,9 +548,14 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
                 this.setNode(this.selected.get(this.selected.size() - 1));
             }
         }
+        else if (this.output != null && this.input != null && this.input != this.output)
+        {
+            this.system.tie(this.output, this.input);
+        }
 
         this.lastSelected = false;
         this.selecting = false;
+        this.output = this.input = null;
     }
 
     @Override
@@ -541,6 +617,15 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
         for (T node : this.system.nodes.values())
         {
             Area nodeArea = this.getNodeArea(node);
+            Area output = this.getNodeOutletArea(nodeArea, true);
+            Area input = this.getNodeOutletArea(nodeArea, false);
+
+            GuiDraw.drawOutline(output.x, output.y, output.ex(), output.ey(), output.isInside(context) ? 0xffffffff : 0xffaaaaaa);
+
+            if (this.system.main != node)
+            {
+                GuiDraw.drawOutline(input.x, input.y, input.ex(), input.ey(), input.isInside(context) ? 0xffffffff : 0xffaaaaaa);
+            }
 
             boolean hover = Area.SHARED.isInside(context);
             int index = this.selected.indexOf(node);
@@ -609,71 +694,95 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
 
     private void renderConnections(GuiContext context, BufferBuilder builder, List<Vector2d> positions, T lastSelected)
     {
-        float factor = (context.tick + context.partialTicks) / 60F;
-        final float segments = 8F;
-
-        Color a = new Color();
-        Color b = new Color();
-
         for (List<NodeRelation<T>> relations : this.system.relations.values())
         {
             for (int r = 0; r < relations.size(); r++)
             {
                 NodeRelation<T> relation = relations.get(r);
 
-                int x1 = this.toX(relation.input.x);
-                int y1 = this.toY(relation.input.y - 42);
-                int x2 = this.toX(relation.output.x);
-                int y2 = this.toY(relation.output.y + 42);
+                Area output = this.getNodeOutletArea(this.getNodeArea(relation.output), true);
+                Area input = this.getNodeOutletArea(this.getNodeArea(relation.input), false);
 
-                float opacity = this.getNodeActiveColorOpacity(relation.output, r);
-                int c1 = Mappet.nodePulseBackgroundMcLibPrimary.get() ? McLib.primaryColor.get() : Mappet.nodePulseBackgroundColor.get();
-                int c2 = this.getNodeActiveColor(relation.output, r);
+                int x1 = input.mx();
+                int y1 = input.my();
+                int x2 = output.mx();
+                int y2 = output.my();
 
-                for (int i = 0; i < segments; i ++)
-                {
-                    float factor1 = i / segments;
-                    float factor2 = (i + 1) / segments;
-                    float color1 = 1 - MathUtils.clamp(Math.abs((1 - factor1) - (factor % 1)) / 0.2F, 0F, 1F);
-                    float color2 = 1 - MathUtils.clamp(Math.abs((1 - factor2) - (factor % 1)) / 0.2F, 0F, 1F);
-
-                    color1 = Math.max(color1, 1 - MathUtils.clamp(Math.abs(((1 - factor1) + 1) - (factor % 1)) / 0.2F, 0F, 1F));
-                    color2 = Math.max(color2, 1 - MathUtils.clamp(Math.abs(((1 - factor2) + 1) - (factor % 1)) / 0.2F, 0F, 1F));
-
-                    color1 = Math.max(color1, 1 - MathUtils.clamp(Math.abs(((1 - factor1) - 1) - (factor % 1)) / 0.2F, 0F, 1F));
-                    color2 = Math.max(color2, 1 - MathUtils.clamp(Math.abs(((1 - factor2) - 1) - (factor % 1)) / 0.2F, 0F, 1F));
-
-                    ColorUtils.interpolate(a, c1, c2, color1, false);
-                    ColorUtils.interpolate(b, c1, c2, color2, false);
-
-                    a.a = opacity;
-                    b.a = opacity;
-
-                    if (y2 <= y1)
-                    {
-                        builder.pos(Interpolations.lerp(x1, x2, factor1), Interpolations.lerp(y1, y2, factor1), 0).color(a.r, a.g, a.b, a.a).endVertex();
-                        builder.pos(Interpolations.lerp(x1, x2, factor2), Interpolations.lerp(y1, y2, factor2), 0).color(b.r, b.g, b.b, b.a).endVertex();
-                    }
-                    else
-                    {
-                        if (i == segments / 2)
-                        {
-                            builder.pos(Interpolations.lerp(x1, x2, 0.5F), y1, 0).color(a.r, a.g, a.b, a.a).endVertex();
-                            builder.pos(Interpolations.lerp(x1, x2, 0.5F), y2, 0).color(b.r, b.g, b.b, b.a).endVertex();
-                        }
-                        else
-                        {
-                            int y = i < segments / 2 ? y1 : y2;
-
-                            builder.pos(Interpolations.lerp(x1, x2, i == segments / 2 + 1 ? 0.5F : factor1), y, 0).color(a.r, a.g, a.b, a.a).endVertex();
-                            builder.pos(Interpolations.lerp(x1, x2, i == segments / 2 - 1 ? 0.5F : factor2), y, 0).color(b.r, b.g, b.b, b.a).endVertex();
-                        }
-                    }
-                }
+                this.drawConnection(builder, context, relation.output, r, x1, y1, x2, y2, false);
 
                 if (relation.output == lastSelected)
                 {
                     positions.add(new Vector2d((x1 + x2) / 2F, (y1 + y2) / 2F));
+                }
+            }
+        }
+
+        if (this.isConnecting())
+        {
+            T node = this.output == null ? this.input : this.output;
+            Area area = this.getNodeArea(node);
+            Area outlet = this.getNodeOutletArea(area, node == this.output);
+
+            int x1 = context.mouseX;
+            int y1 = context.mouseY;
+            int x2 = outlet.mx();
+            int y2 = outlet.my();
+
+            List<NodeRelation<T>> list = this.system.relations.get(node.getId());
+
+            this.drawConnection(builder, context, node, list == null ? 0 : list.size(), x1, y1, x2, y2, true);
+        }
+    }
+
+    /**
+     * Draw the connection line
+     */
+    private void drawConnection(BufferBuilder builder, GuiContext context, T node, int r, int x1, int y1, int x2, int y2, boolean forceLine)
+    {
+        float factor = (context.tick + context.partialTicks) / 60F;
+        final float segments = 8F;
+
+        float opacity = this.getNodeActiveColorOpacity(node, r);
+        int c1 = Mappet.nodePulseBackgroundMcLibPrimary.get() ? McLib.primaryColor.get() : Mappet.nodePulseBackgroundColor.get();
+        int c2 = this.getNodeActiveColor(node, r);
+
+        for (int i = 0; i < segments; i ++)
+        {
+            float factor1 = i / segments;
+            float factor2 = (i + 1) / segments;
+            float color1 = 1 - MathUtils.clamp(Math.abs((1 - factor1) - (factor % 1)) / 0.2F, 0F, 1F);
+            float color2 = 1 - MathUtils.clamp(Math.abs((1 - factor2) - (factor % 1)) / 0.2F, 0F, 1F);
+
+            color1 = Math.max(color1, 1 - MathUtils.clamp(Math.abs(((1 - factor1) + 1) - (factor % 1)) / 0.2F, 0F, 1F));
+            color2 = Math.max(color2, 1 - MathUtils.clamp(Math.abs(((1 - factor2) + 1) - (factor % 1)) / 0.2F, 0F, 1F));
+
+            color1 = Math.max(color1, 1 - MathUtils.clamp(Math.abs(((1 - factor1) - 1) - (factor % 1)) / 0.2F, 0F, 1F));
+            color2 = Math.max(color2, 1 - MathUtils.clamp(Math.abs(((1 - factor2) - 1) - (factor % 1)) / 0.2F, 0F, 1F));
+
+            ColorUtils.interpolate(this.a, c1, c2, color1, false);
+            ColorUtils.interpolate(this.b, c1, c2, color2, false);
+
+            this.a.a = opacity;
+            this.b.a = opacity;
+
+            if (y2 <= y1 || forceLine)
+            {
+                builder.pos(Interpolations.lerp(x1, x2, factor1), Interpolations.lerp(y1, y2, factor1), 0).color(a.r, a.g, a.b, a.a).endVertex();
+                builder.pos(Interpolations.lerp(x1, x2, factor2), Interpolations.lerp(y1, y2, factor2), 0).color(b.r, b.g, b.b, b.a).endVertex();
+            }
+            else
+            {
+                if (i == segments / 2)
+                {
+                    builder.pos(Interpolations.lerp(x1, x2, 0.5F), y1, 0).color(a.r, a.g, a.b, a.a).endVertex();
+                    builder.pos(Interpolations.lerp(x1, x2, 0.5F), y2, 0).color(b.r, b.g, b.b, b.a).endVertex();
+                }
+                else
+                {
+                    int y = i < segments / 2 ? y1 : y2;
+
+                    builder.pos(Interpolations.lerp(x1, x2, i == segments / 2 + 1 ? 0.5F : factor1), y, 0).color(a.r, a.g, a.b, a.a).endVertex();
+                    builder.pos(Interpolations.lerp(x1, x2, i == segments / 2 - 1 ? 0.5F : factor2), y, 0).color(b.r, b.g, b.b, b.a).endVertex();
                 }
             }
         }

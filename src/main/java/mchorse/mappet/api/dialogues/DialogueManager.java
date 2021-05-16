@@ -63,7 +63,7 @@ public class DialogueManager extends BaseManager<Dialogue>
             {
                 this.handleContext(player, dialogue, context);
             }
-            
+
             character.getStates().readDialogue(dialogue.getId());
         }
     }
