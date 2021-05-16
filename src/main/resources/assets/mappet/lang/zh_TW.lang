@@ -1,0 +1,326 @@
+#PARSE_ESCAPES
+
+# Error
+mappet.error.states.invalid_target=§f全局或玩家狀態 §7%s§f 不存在！
+mappet.error.states.missing=§f狀態鍵 §7%s§f 的值不存在！
+mappet.error.states.false=§f給定的表達式通過給定的狀態鍵 §7%s§r 求值為 §cfalse§f！
+
+mappet.error.quest.missing=§f任務數據庫中不存在 ID 為 §7%s§f 的任務！
+
+mappet.error.crafting.missing=§f不存在 ID 為 §7%s§f 的合成表！
+mappet.error.crafting.empty=§fID 為§7%s§f 的合成表為空（配方為 0 個）！
+mappet.error.crafting.empty_output=§f合成表配方的輸出物品 ID §7%s§f 在索引 §7%s§f 實際上為空!
+
+mappet.error.event.missing=§f不存在 ID 為 §7%s§f 的事件！
+mappet.error.event.empty=§fID 為 §7%s§f 的事件為空（不存在入口節點）!
+
+mappet.error.npc.missing=§f不存在 ID 為 §7%s§f 的 NPC！
+mappet.error.npc.empty=§fID 為 §7%s§f 的 NPC 沒有狀態！
+mappet.error.npc.missing_state=§fID 為 §7%s§f 的 NPC 沒有 §7%s§f 狀態！
+mappet.error.npc.invalid_property=§fNPC 狀態屬性 §7%s§f 不存在！
+mappet.error.npc.cant_edit=§f為屬性 §7%s§f 給定的值: §7%s§f 的格式無效！
+
+mappet.error.data.missing=§fID 為 §7%s§f 的數據不存在！
+
+# Info
+mappet.info.states.clear=§f狀態鍵 §7%s§f 的值已從狀態中移除。
+mappet.info.states.clear_all=§f已移除狀態 §7%s§f 所有的值。
+mappet.info.states.set=§f狀態鍵 §7%s§f 的值已設為 §7%s§r。
+mappet.info.states.changed=§f狀態鍵 §7%s§f 的值為 §7%s§r，現已更改為 §7%s§r。
+mappet.info.states.true=§f給定表達式求給定狀態鍵 §7%s§r 的值為 §atrue§f。
+mappet.info.states.print=§7%s§f 的狀態:\n\n
+
+mappet.info.factions.clear=§f已移除 ID 為 §7%s§f 的陣營積分。
+mappet.info.factions.clear_all=§f已移除 §7%s§f 的所有陣營積分。
+mappet.info.factions.set=§fID 為 §7%s§f 的陣營積分已設為 §7%s§r。
+mappet.info.factions.changed=§fID 為 §7%s§f 的陣營積分為 §7%s§r，現已更改為 §7%s§r。
+
+mappet.info.data.cleared=§f全局狀態、玩家狀態和清單已清除。
+
+# Success
+mappet.success.quest.accepted=§fID 為 §7%s§f 的任務已分配為玩家 §7%s§f。
+mappet.success.quest.completed=§fID 為 §7%s§f 的任務已為玩家 §7%s§f 強制完成。
+mappet.success.quest.declined=§fID 為 §7%s§f 的任務已為玩家 §7%s§f 移除。
+
+mappet.success.data.saved=§f已保存 ID 為 §7%s§f 的數據。
+mappet.success.data.loaded=§f已加載 ID 為 §7%s§f 的數據。
+
+# Commands
+mappet.commands.mp.help=Mappet 主命令，用於給出使用 Mappet 功能的子命令。
+
+mappet.commands.mp.state.help=狀態管理子命令\n\n§7<目標>§r 參數用於確定編輯狀態的對象。你可以指定玩家的名字來編輯玩家的狀態，或輸入 §7~§r 來指定全局狀態。
+mappet.commands.mp.state.add=該命令會將 §7<表達式>§r 計算的值添加至狀態鍵 §7<id>§r 中。若狀態鍵 §7<id>§r 的狀態不存在，則 §7<表達式>§r 將被添加至 0。
+mappet.commands.mp.state.clear=該命令用於移除狀態鍵 §7[id]§r 中的值。若省略 §7[id]§r，則會移除所有的值。
+mappet.commands.mp.state.if=該命令會根據狀態 §7<id>§ 的值對 §7<表達式>§r 進行計算，若 §7<表達式>§r 的結果是一個非零值，則不執行任何操作，但若輸出為零，則該命令將出錯。\n\n適用於可以在錯誤時停止的命令方塊。
+mappet.commands.mp.state.print=該命令用於輸出 §7<目標>§r 擁有的所有狀態。
+mappet.commands.mp.state.set=該命令通過狀態鍵 §7<id>§r 將值賦值給 §7<表達式>§r 求值。
+mappet.commands.mp.state.sub=該命令用於將狀態鍵 §7<id>§r 的值減去 §7<表達式>§r 所計算的值。若狀態 §7<id>§r 不存在，則會以 0 減去 §7<表達式>§r 的值。
+
+mappet.commands.mp.quest.help=任務管理子命令。
+mappet.commands.mp.quest.accept=該命令會從任務數據庫中分配任務 §7<id>§r 給一個或多個 §7<玩家>§r。若 §7<玩家>§r 已經接取該任務，則會忽略本次操作。
+mappet.commands.mp.quest.complete=該命令可以為一個或多個 §7<玩家>§r 完成任務 §7<id>§r （不論玩家是否有需要完成的目標）。
+mappet.commands.mp.quest.decline=該命令可以為一個或多個 §7<玩家>§r 移除任務 §7<id>§r。
+
+mappet.commands.mp.crafting.help=Mappet 的合成表子命令
+mappet.commands.mp.crafting.open=該命令會為一名或多名玩家打開合成表 §7<id>§r。 可以通過 §7[主體 ID]§r 來指定任務鏈的接受對象。
+mappet.commands.mp.crafting.drop=該命令會根據合成表 §7<id>§r 中配方索引的 §7[序號]§r 掉落物品至 §7[x] [y] [z]§r。\n\n§7[x] [y] [z]§r 支持用 §7~§r 表示相對位置，也可以直接省略。§7[序號]§r 可以使用 §7@r§r 來表示隨機選擇配方。填寫 §7[mx] [my] [mz]§r 可用於設置物品實體的初速度。
+
+mappet.commands.mp.event.help=Mappet 事件子命令
+mappet.commands.mp.event.trigger=該命令用於指定 §7<玩家/多個玩家>§r 來觸發事件 §7<id>§r。你也可以使用 §7[data]§r 參數向事件傳遞任意的 NBT 數據。
+
+mappet.commands.mp.dialogue.help=Mappet 對話子命令
+mappet.commands.mp.dialogue.open=該命令會為 §7<玩家/多個玩家>§r 打開對話 §7<id>§r。
+
+mappet.commands.mp.npc.help=NPC 管理子命令。
+mappet.commands.mp.npc.edit=該命令可以將 §7<目標>§r 選擇器找到的 NPC 的單個 §7<屬性>§r 改為給定的 §7<值>§r。
+mappet.commands.mp.npc.state=該命令能夠切換由 §7<目標>§r 選擇器找到的 NPC 的 §7<狀態>§r。\n\n§7<狀態>§r 參數遵循以下格式： §7[npc_id@]狀態[:一或多個屬性]§r，其中 §7npc_id§r 和 §7屬性§r 是可選的。\n\n通過這一格式，你可以改變另一個 NPC 藍圖的狀態，甚至只改變另一個狀態的某些屬性。
+mappet.commands.mp.npc.summon=該命令會在 §7[x] [y] [z]§r 處生成一個帶有 §7<id>§r 的 NPC，且可以選擇指定 §7[狀態]]§r（狀態的默認名稱為 §7default§r）。若 §7[x] [y] [z]§r 被省略，則 NPC 將在命令發送者的位置被生成。支持相對位置 §7~§r。
+
+mappet.commands.mp.faction.help=陣營管理子命令。該命令允許管理單個或多個玩家的陣營積分。
+mappet.commands.mp.faction.add=該命令會將 §7<表達式>§r 計算得到的陣營積分添加至陣營 §7<id>§r 中。若 §7<id>§r不存在，則 §7<表達式>§r 將被添加為 0。
+mappet.commands.mp.faction.clear=該命令會刪除陣營 §7[id]§r 的積分。若 §7[id]§r 被省略，則所有陣營的積分都會被刪除。
+mappet.commands.mp.faction.set=該命令會將 §7<表達式>§r 計算得到的陣營積分分配給陣營 §7<id>§r。
+
+mappet.commands.mp.data.help=數據工具子命令，提供管理玩家背包存和狀態，以及全局狀態的功能。
+mappet.commands.mp.data.clear=清除所有全局和玩家的狀態，以及所有玩家的背包。
+mappet.commands.mp.data.load=根據 §7<id>§r 加載保存的數據。§7[全局]§r 決定是否會同時加載全局狀態（默認為 §7true§r（啟用））。§7[玩家]§r 用於選擇另一個玩家，其中的背包數據和玩家狀態會被加載至該玩家。
+mappet.commands.mp.data.save=保存全局狀態，以及當前玩家的狀態和背包至數據 §7<id>§r 中。
+
+# Config
+
+mappet.config.title=Mappet
+
+mappet.config.events.title=事件
+mappet.config.events.tooltip=與事件相關的模組選項
+
+mappet.config.events.max_executions=最大事件執行量
+mappet.config.comments.events.max_executions=這是每個事件可以執行的最大節點數量（以避免無限遞歸）。
+
+mappet.config.gui.title=GUI
+mappet.config.gui.tooltip=調整 GUI 偏好的選項
+
+mappet.config.gui.pulse_background_color=脈沖式非活躍顏色
+mappet.config.comments.gui.pulse_background_color=該選項決定了節點連接脈沖的顏色，即非活躍的顏色。
+mappet.config.gui.pulse_background_mclib=使用主色調
+mappet.config.comments.gui.pulse_background_mclib=該選項允許使用 McLib 的主色調作為非活躍脈沖的顏色。
+mappet.config.gui.node_thickness=連接粗細
+mappet.config.comments.gui.node_thickness=該選項用於修改節點連接線條的粗細，以像素為單位（在某些硬件上可能對線條寬度有限制）。
+mappet.config.gui.quest_preview_rewards=預覽任務獎勵
+mappet.config.comments.gui.quest_preview_rewards=該選項用於開關任務獎勵的預覽。
+
+# GUI
+
+mappet.gui.none=<無>
+mappet.gui.search=搜索...
+mappet.gui.overlays.entities.main=選取實體 ID...
+mappet.gui.overlays.sounds.main=選取聲音事件...
+mappet.gui.block_pos.context.paste=粘貼你當前的位置
+mappet.gui.block_pos.context.remove=移除方塊位置
+mappet.gui.items.context.remove=移除物品
+mappet.gui.trigger.sound=聲音事件
+mappet.gui.trigger.event=觸發事件
+mappet.gui.trigger.command=命令
+mappet.gui.trigger.dialogue=對話
+
+mappet.gui.panels.quests=任務
+mappet.gui.panels.crafting=合成表
+mappet.gui.panels.events=事件
+mappet.gui.panels.dialogues=對話
+mappet.gui.panels.regions=區域
+mappet.gui.panels.npcs=NPCs
+mappet.gui.panels.factions=陣營
+mappet.gui.panels.chains=任務鏈
+mappet.gui.panels.modals.add=輸入名稱:
+mappet.gui.panels.modals.dupe=為副本輸入名稱：
+mappet.gui.panels.modals.rename=輸入新名稱：
+mappet.gui.panels.modals.remove=您確定要移除它嗎？
+mappet.gui.panels.keys.category=Mappet 面板快捷鍵
+mappet.gui.panels.keys.toggle_sidebar=開關側邊欄
+
+mappet.gui.quests.cancelable=可以取消
+mappet.gui.quests.title=標題
+mappet.gui.quests.description=任務描述
+mappet.gui.quests.accept=接受任務時觸發
+mappet.gui.quests.decline=拒絕任務時觸發
+mappet.gui.quests.complete=完成任務時觸發
+mappet.gui.quests.objectives.title=目標
+mappet.gui.quests.objective_kill.entity=實體
+mappet.gui.quests.objective_kill.count=數量
+mappet.gui.quests.objective_kill.nbt=匹配 NBT
+mappet.gui.quests.objective_kill.string=擊殺 %s (%s/%s)
+mappet.gui.quests.objective_collect.title=收集物品組
+mappet.gui.quests.objective_collect.string=已收集 %s (%s/%s)
+mappet.gui.quests.objectives.context.remove=移除該目標
+mappet.gui.quests.objectives.context.add_kill=添加擊殺目標
+mappet.gui.quests.objectives.context.add_collect=添加收集目標
+mappet.gui.quests.rewards.title=獎勵
+mappet.gui.quests.rewards.context.remove=移除該獎勵
+mappet.gui.quests.rewards.context.add_item=添加物品組獎勵
+mappet.gui.quests.reward_item.title=獎勵物品
+mappet.gui.quests.info.empty=在右側的列表中選擇或創建一則任務以開始編輯...
+
+mappet.gui.interaction.back=返回
+mappet.gui.interaction.accept=接受
+mappet.gui.interaction.complete=完成
+mappet.gui.interaction.crafting.recipe_title=標題
+mappet.gui.interaction.info.no_quests=已經沒有可供你選擇的任務了...
+
+mappet.gui.trigger_block.collidable=碰撞體積
+mappet.gui.trigger_block.left=左鍵觸發事件
+mappet.gui.trigger_block.right=右鍵觸發事件
+
+mappet.gui.emitter_block.expression=表達式
+mappet.gui.emitter_block.radius=半徑
+
+mappet.gui.npc_tool.title=NPC 編輯工具
+mappet.gui.npc_tool.npc=NPC
+mappet.gui.npc_tool.state=狀態
+
+mappet.gui.crafting.title=合成表標題
+mappet.gui.crafting.recipe.title=配方標題
+mappet.gui.crafting.recipe.condition=表達式條件
+mappet.gui.crafting.recipe.hotkey=合成快捷鍵
+mappet.gui.crafting.recipe.trigger=合成時觸發
+mappet.gui.crafting.input=原材料
+mappet.gui.crafting.output=成品
+mappet.gui.crafting.craft=合成
+mappet.gui.crafting.context.add=添加合成配方
+mappet.gui.crafting.context.remove=移除當前配方
+mappet.gui.crafting.info.empty=在右側的列表中選擇或創建一個合成表以開始編輯...
+mappet.gui.crafting.info.empty_recipe=在左側的列表中選擇或創建一條合成配方，右鍵進行管理...
+
+mappet.gui.region.passable=能否通過
+mappet.gui.region.enabled=啟用的表達式
+mappet.gui.region.delay=觸發延遲
+mappet.gui.region.on_enter=當玩家進入時觸發
+mappet.gui.region.on_exit=當玩家離開時觸發
+mappet.gui.region.shape=形狀
+mappet.gui.region.offset=偏移
+mappet.gui.region.box_size=半尺寸
+mappet.gui.region.ellipse_size=橢球半徑
+mappet.gui.region.sphere_size=半徑與高度
+mappet.gui.region.info.empty=在右右側列表中選擇一個區域方塊，或與世界上的任何區域方塊交互，即可以開始編輯...
+
+mappet.gui.nodes.node.title=標題
+mappet.gui.nodes.event.binary=二進制
+mappet.gui.nodes.event.binary_tooltip=啟用後，即可允許將執行限制在前兩個節點，作為 if-else 語句，而非默認的全或無執行。
+mappet.gui.nodes.event.command=命令
+mappet.gui.nodes.event.condition=條件
+mappet.gui.nodes.event.timer=計時器
+mappet.gui.nodes.dialogue.crafting=合成表
+mappet.gui.nodes.dialogue.content=內容
+mappet.gui.nodes.dialogue.quest_chain=任務鏈
+mappet.gui.nodes.dialogue.quest=任務
+mappet.gui.nodes.dialogue.provider=任務提供對象
+mappet.gui.nodes.dialogue.receiver=任務接受對象
+mappet.gui.nodes.context.add=添加節點...
+mappet.gui.nodes.context.add_node=添加 %s 節點
+mappet.gui.nodes.context.copy=拷貝選中節點
+mappet.gui.nodes.context.paste=粘貼節點
+mappet.gui.nodes.context.tie=連接至最後所選節點
+mappet.gui.nodes.context.untie=斷開節點連接
+mappet.gui.nodes.context.remove=移除所選節點
+mappet.gui.nodes.keys.editor=節點編輯器
+mappet.gui.nodes.keys.add=添加節點
+mappet.gui.nodes.info.empty_event=在右側的列表中選擇或創建一則事件以開始編輯...
+mappet.gui.nodes.info.empty_dialogue=在右側的列表中選擇或創建一組對話以開始編輯...
+mappet.gui.nodes.info.empty_chain=在右側的列表中選擇或創建一個合成表以開始編輯...
+
+mappet.gui.npcs.unique=唯一的
+mappet.gui.npcs.path_distance=尋路距離
+mappet.gui.npcs.behavior.title=行為
+mappet.gui.npcs.behavior.look_at_player=看向玩家
+mappet.gui.npcs.behavior.look_around=環顧四周
+mappet.gui.npcs.behavior.wander=徘徊
+mappet.gui.npcs.behavior.initialize=初始化 NPC 時觸發
+mappet.gui.npcs.behavior.interact=與 NPC 交互時觸發
+mappet.gui.npcs.behavior.damaged=NPC 受到傷害時觸發
+mappet.gui.npcs.behavior.died=NPC 死亡時觸發
+mappet.gui.npcs.behavior.tick=NPC 每 Tick 進行觸發
+mappet.gui.npcs.behavior.target=NPC 鎖定目標時觸發
+mappet.gui.npcs.health.title=生命值
+mappet.gui.npcs.health.max_hp=最大 HP
+mappet.gui.npcs.health.hp=初始 HP
+mappet.gui.npcs.health.regen_delay=HP 恢復延遲
+mappet.gui.npcs.health.regen_frequency=HP 恢復頻率
+mappet.gui.npcs.damage.title=傷害
+mappet.gui.npcs.damage.damage=傷害
+mappet.gui.npcs.damage.fall=摔落傷害
+mappet.gui.npcs.damage.fire=火焰傷害
+mappet.gui.npcs.damage.invincible=無敵
+mappet.gui.npcs.damage.killable=可擊殺
+mappet.gui.npcs.movement.title=運動
+mappet.gui.npcs.movement.speed=速度
+mappet.gui.npcs.movement.can_swim=是否會遊泳
+mappet.gui.npcs.movement.has_post=啟用標定
+mappet.gui.npcs.movement.post=標定點
+mappet.gui.npcs.movement.patrol_circulate=循環巡邏
+mappet.gui.npcs.movement.patrol_points=巡邏點
+mappet.gui.npcs.movement.follow=跟隨目標
+mappet.gui.npcs.general.title=常規
+mappet.gui.npcs.general.faction=陣營
+mappet.gui.npcs.general.morph=NPC 偽裝
+mappet.gui.npcs.general.xp=XP 掉落
+mappet.gui.npcs.drops.title=NPC 掉落
+mappet.gui.npcs.drops.context.remove=移除掉落
+mappet.gui.npcs.modals.add=輸入新 NPC 狀態的名稱：
+mappet.gui.npcs.modals.remove=您確定要移除該 NPC 狀態嗎？
+mappet.gui.npcs.context.add=添加狀態
+mappet.gui.npcs.context.remove=移除狀態
+
+mappet.gui.factions.title=陣營標題
+mappet.gui.factions.color=顯示顏色
+mappet.gui.factions.others_attitude=默認態度
+mappet.gui.factions.player_attitude=對玩家的默認態度
+mappet.gui.factions.visible=可見性表達式
+mappet.gui.factions.score=默認積分
+mappet.gui.factions.overlay.main=陣營關系編輯器
+mappet.gui.factions.overlay.title=閾值標題
+mappet.gui.factions.overlay.color=閾值顏色
+mappet.gui.factions.overlay.score=閾值積分
+mappet.gui.factions.overlay.attitude=閾值對應態度
+mappet.gui.factions.overlay.context.add=添加閾值
+mappet.gui.factions.overlay.context.remove=移除閾值
+mappet.gui.factions.relations.label=關系
+mappet.gui.factions.relations.main=選擇一個陣營...
+mappet.gui.factions.relations.add=添加
+mappet.gui.factions.relations.open=配置該陣營的關系...
+mappet.gui.factions.relations.context.remove=移除該關系
+mappet.gui.factions.info.empty=在右側的列表中選擇或創建一個陣營以開始編輯...
+
+# GUI enums
+
+mappet.gui.shapes.box=立方體
+mappet.gui.shapes.sphere=球體
+mappet.gui.shapes.cylinder=圓柱體
+
+mappet.gui.faction_attitudes.aggressive=敵對
+mappet.gui.faction_attitudes.passive=中立
+mappet.gui.faction_attitudes.friendly=友好
+
+mappet.gui.node_types.reply=回復
+mappet.gui.node_types.reaction=反應
+mappet.gui.node_types.crafting=合成表
+mappet.gui.node_types.quest=任務
+mappet.gui.node_types.command=命令
+mappet.gui.node_types.condition=條件
+mappet.gui.node_types.switch=開關
+mappet.gui.node_types.timer=計時器
+
+# Keys
+mappet.keys.category=Mappet
+mappet.keys.dashboard=創造模式儀表盤
+mappet.keys.journal=玩家記錄表
+
+# Items, blocks and entities
+itemGroup.mappet=Mappet
+
+item.mappet.npc_tool.name=NPC 工具
+item.mappet.npc_tool.tooltip=該工具用於召喚和編輯 NPC。
+
+tile.mappet.emitter.name=發射器方塊
+tile.mappet.emitter.tooltip=檢查表達式條件並在非零值時發出紅石信號
+tile.mappet.trigger.name=觸發方塊
+tile.mappet.trigger.tooltip=玩家通過左右點擊該方塊觸發事件
+tile.mappet.region.name=區域方塊
+tile.mappet.region.tooltip=當玩家進入或離開設置的區域時觸發事件
