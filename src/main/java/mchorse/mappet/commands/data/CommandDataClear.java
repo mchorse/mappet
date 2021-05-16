@@ -8,9 +8,10 @@ import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.quests.PacketQuests;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+
+import java.time.Instant;
 
 public class CommandDataClear extends MappetCommandBase
 {
@@ -51,13 +52,20 @@ public class CommandDataClear extends MappetCommandBase
     public void executeCommand(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         Mappet.states.values.clear();
+        Mappet.data.updateLastClear();
 
         for (EntityPlayerMP player : server.getPlayerList().getPlayers())
         {
             clear(player);
+
+            ICharacter character = Character.get(player);
+
+            if (character != null)
+            {
+                character.updateLastClear(Instant.now());
+            }
         }
 
-        Mappet.data.updateLastClear();
 
         this.getL10n().info(sender, "data.cleared");
     }
