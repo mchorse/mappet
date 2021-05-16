@@ -217,6 +217,7 @@ mappet.gui.nodes.context.add=Добавьте нод...
 mappet.gui.nodes.context.add_node=Добавить нод %s
 mappet.gui.nodes.context.copy=Скопировать выбранные ноды
 mappet.gui.nodes.context.paste=Вставить выбранные ноды
+mappet.gui.nodes.context.main=Mark entry node
 mappet.gui.nodes.context.tie=Привязать к последнему выбранному
 mappet.gui.nodes.context.untie=Отвязать выбранные
 mappet.gui.nodes.context.remove=Удалить выбранные ноды
@@ -324,4 +325,5 @@ tile.mappet.trigger.name=Блок-триггер
 tile.mappet.trigger.tooltip=Включает заданные события при нажатии на блок игроком ПКМ или ЛКМ
 tile.mappet.region.name=Блок-регион
 tile.mappet.region.tooltip=Включает заданные события когда игрок заходит и/ли выходит в указанный регион
-#Перевод за авторством Дюхи Лавского с Луны Студии
+
+mappet.translation.credit=Перевод за авторством Дюхи Лавского с Луны Студии

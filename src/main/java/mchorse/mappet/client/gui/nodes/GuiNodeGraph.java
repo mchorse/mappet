@@ -104,6 +104,7 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
 
             if (!this.selected.isEmpty())
             {
+                menu.action(Icons.DOWNLOAD, IKey.lang("mappet.gui.nodes.context.main"), this::markMain);
                 menu.action(Icons.MINIMIZE, IKey.lang("mappet.gui.nodes.context.tie"), this::tieSelected);
                 menu.action(Icons.MAXIMIZE, IKey.lang("mappet.gui.nodes.context.untie"), this::untieSelected);
                 menu.action(Icons.REMOVE, IKey.lang("mappet.gui.nodes.context.remove"), this::removeSelected);
@@ -114,7 +115,7 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
 
         this.keys().register(IKey.lang("mappet.gui.nodes.context.tie"), Keyboard.KEY_F, this::tieSelected).inside().category(KEYS_CATEGORY);
         this.keys().register(IKey.lang("mappet.gui.nodes.context.untie"), Keyboard.KEY_U, this::untieSelected).inside().category(KEYS_CATEGORY);
-        this.keys().register(IKey.lang("mappet.gui.nodes.context.remove"), Keyboard.KEY_M, this::markMain).inside().category(KEYS_CATEGORY);
+        this.keys().register(IKey.lang("mappet.gui.nodes.context.main"), Keyboard.KEY_M, this::markMain).inside().category(KEYS_CATEGORY);
 
         int keycode = Keyboard.KEY_1;
 

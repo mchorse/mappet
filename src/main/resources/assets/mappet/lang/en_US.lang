@@ -217,6 +217,7 @@ mappet.gui.nodes.context.add=Add a node...
 mappet.gui.nodes.context.add_node=Add %s node
 mappet.gui.nodes.context.copy=Copy selected node(s)
 mappet.gui.nodes.context.paste=Paste copied node(s)
+mappet.gui.nodes.context.main=Mark entry node
 mappet.gui.nodes.context.tie=Tie to last selected
 mappet.gui.nodes.context.untie=Untie selected
 mappet.gui.nodes.context.remove=Remove selected nodes
@@ -324,3 +325,5 @@ tile.mappet.trigger.name=Trigger block
 tile.mappet.trigger.tooltip=Trigger events from player right and left clicking the block
 tile.mappet.region.name=Region block
 tile.mappet.region.tooltip=Trigger events when players enter and exit configured region
+
+mappet.translation.credit=McHorse extracted these lines
