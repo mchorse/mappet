@@ -11,7 +11,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class KillObjective implements IObjective
+public class KillObjective extends AbstractObjective
 {
     public ResourceLocation entity = new ResourceLocation("");
     public NBTTagCompound tag;
@@ -88,6 +88,13 @@ public class KillObjective implements IObjective
             entity = this.entity.toString();
         }
 
+        if (!this.message.isEmpty())
+        {
+            return this.message.replace("${entity}", entity)
+                .replace("${count}", String.valueOf(count))
+                .replace("${total}", String.valueOf(this.count));
+        }
+
         return I18n.format("mappet.gui.quests.objective_kill.string", entity, count, this.count);
     }
 
@@ -119,7 +126,7 @@ public class KillObjective implements IObjective
     @Override
     public NBTTagCompound serializeNBT()
     {
-        NBTTagCompound tag = new NBTTagCompound();
+        NBTTagCompound tag = super.serializeNBT();
 
         tag.setString("Entity", this.entity.toString());
 
@@ -137,6 +144,8 @@ public class KillObjective implements IObjective
     @Override
     public void deserializeNBT(NBTTagCompound tag)
     {
+        super.deserializeNBT(tag);
+
         this.entity = new ResourceLocation(tag.getString("Entity"));
 
         if (tag.hasKey("Tag", Constants.NBT.TAG_COMPOUND))

@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class CollectObjective implements IObjective
+public class CollectObjective extends AbstractObjective
 {
     public ItemStack stack = ItemStack.EMPTY;
 
@@ -44,6 +44,13 @@ public class CollectObjective implements IObjective
         String name = this.stack.getDisplayName();
         int count = Math.min(this.countItems(player), this.stack.getCount());
 
+        if (!this.message.isEmpty())
+        {
+            return this.message.replace("${name}", name)
+                .replace("${count}", String.valueOf(count))
+                .replace("${total}", String.valueOf(this.stack.getCount()));
+        }
+
         return I18n.format( "mappet.gui.quests.objective_collect.string", name, count, this.stack.getCount());
     }
 
@@ -66,7 +73,7 @@ public class CollectObjective implements IObjective
     @Override
     public NBTTagCompound serializeNBT()
     {
-        NBTTagCompound tag = new NBTTagCompound();
+        NBTTagCompound tag = super.serializeNBT();
 
         if (!this.stack.isEmpty())
         {
@@ -79,6 +86,8 @@ public class CollectObjective implements IObjective
     @Override
     public void deserializeNBT(NBTTagCompound tag)
     {
+        super.deserializeNBT(tag);
+
         if (tag.hasKey("Item"))
         {
             this.stack = new ItemStack(tag.getCompoundTag("Item"));

@@ -4,6 +4,7 @@ import mchorse.mappet.api.quests.objectives.CollectObjective;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiSlotElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
+import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 
@@ -26,18 +27,25 @@ public class GuiCollectObjective extends GuiObjective<CollectObjective>
         });
 
         this.stack.stack = objective.stack;
-        this.stack.flex().relative(this).y(1F).anchorY(1F);
+        this.stack.flex().relative(this).x(1F, -24).y(1F).anchorY(1F);
+        this.stack.tooltip(IKey.lang("mappet.gui.quests.objective_collect.title"));
+
+        this.message.flex().relative(this).y(1F).w(1F, -29).h(24).anchorY(1F);
 
         this.flex().h(36);
 
-        this.add(this.stack);
+        this.add(this.stack, this.message);
+    }
+
+    @Override
+    public IKey getMessageTooltip()
+    {
+        return IKey.lang("mappet.gui.quests.objective_collect.message_tooltip");
     }
 
     @Override
     public void draw(GuiContext context)
     {
         super.draw(context);
-
-        this.font.drawStringWithShadow(I18n.format("mappet.gui.quests.objective_collect.title"), this.area.x, this.area.y, 0xffffff);
     }
 }

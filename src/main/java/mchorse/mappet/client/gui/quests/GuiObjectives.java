@@ -1,7 +1,7 @@
 package mchorse.mappet.client.gui.quests;
 
 import mchorse.mappet.api.quests.objectives.CollectObjective;
-import mchorse.mappet.api.quests.objectives.IObjective;
+import mchorse.mappet.api.quests.objectives.AbstractObjective;
 import mchorse.mappet.api.quests.objectives.KillObjective;
 import mchorse.mappet.client.gui.quests.objectives.GuiCollectObjective;
 import mchorse.mappet.client.gui.quests.objectives.GuiKillObjective;
@@ -18,7 +18,7 @@ import java.util.function.Supplier;
 
 public class GuiObjectives extends GuiElement
 {
-    public List<IObjective> objectives;
+    public List<AbstractObjective> objectives;
     public Supplier<GuiInventoryElement> inventory;
 
     public GuiObjectives(Minecraft mc)
@@ -35,7 +35,7 @@ public class GuiObjectives extends GuiElement
             .action(Icons.ADD, IKey.lang("mappet.gui.quests.objectives.context.add_collect"), () -> this.addObjective(new CollectObjective(), true));
     }
 
-    private void addObjective(IObjective objective, boolean add)
+    private void addObjective(AbstractObjective objective, boolean add)
     {
         GuiObjective element = null;
 
@@ -74,14 +74,14 @@ public class GuiObjectives extends GuiElement
         }
     }
 
-    public void set(List<IObjective> objectives, Supplier<GuiInventoryElement> inventory)
+    public void set(List<AbstractObjective> objectives, Supplier<GuiInventoryElement> inventory)
     {
         this.objectives = objectives;
         this.inventory = inventory;
 
         this.removeAll();
 
-        for (IObjective objective : this.objectives)
+        for (AbstractObjective objective : this.objectives)
         {
             this.addObjective(objective, false);
         }

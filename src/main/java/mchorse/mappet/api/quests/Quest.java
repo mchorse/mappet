@@ -1,7 +1,7 @@
 package mchorse.mappet.api.quests;
 
 import mchorse.mappet.Mappet;
-import mchorse.mappet.api.quests.objectives.IObjective;
+import mchorse.mappet.api.quests.objectives.AbstractObjective;
 import mchorse.mappet.api.quests.objectives.KillObjective;
 import mchorse.mappet.api.quests.rewards.IReward;
 import mchorse.mappet.api.utils.AbstractData;
@@ -27,7 +27,7 @@ public class Quest extends AbstractData implements INBTPartialSerializable
     public Trigger decline = new Trigger();
     public Trigger complete = new Trigger();
 
-    public final List<IObjective> objectives = new ArrayList<IObjective>();
+    public final List<AbstractObjective> objectives = new ArrayList<AbstractObjective>();
     public final List<IReward> rewards = new ArrayList<IReward>();
 
     public Quest()
@@ -43,7 +43,7 @@ public class Quest extends AbstractData implements INBTPartialSerializable
         return this;
     }
 
-    public Quest addObjective(IObjective objective)
+    public Quest addObjective(AbstractObjective objective)
     {
         this.objectives.add(objective);
 
@@ -61,7 +61,7 @@ public class Quest extends AbstractData implements INBTPartialSerializable
 
     public void mobWasKilled(EntityPlayer player, Entity entity)
     {
-        for (IObjective objective : this.objectives)
+        for (AbstractObjective objective : this.objectives)
         {
             if (objective instanceof KillObjective)
             {
@@ -76,7 +76,7 @@ public class Quest extends AbstractData implements INBTPartialSerializable
     {
         boolean result = true;
 
-        for (IObjective objective : this.objectives)
+        for (AbstractObjective objective : this.objectives)
         {
             result = result && objective.isComplete(player);
         }
@@ -86,7 +86,7 @@ public class Quest extends AbstractData implements INBTPartialSerializable
 
     public void reward(EntityPlayer player)
     {
-        for (IObjective objective : this.objectives)
+        for (AbstractObjective objective : this.objectives)
         {
             objective.complete(player);
         }
@@ -131,7 +131,7 @@ public class Quest extends AbstractData implements INBTPartialSerializable
 
         tag.setTag("Objectives", objectives);
 
-        for (IObjective objective : this.objectives)
+        for (AbstractObjective objective : this.objectives)
         {
             objectives.appendTag(objective.partialSerializeNBT());
         }
@@ -179,7 +179,7 @@ public class Quest extends AbstractData implements INBTPartialSerializable
         tag.setTag("Objectives", objectives);
         tag.setTag("Rewards", rewards);
 
-        for (IObjective objective : this.objectives)
+        for (AbstractObjective objective : this.objectives)
         {
             NBTTagCompound item = objective.serializeNBT();
 
@@ -231,7 +231,7 @@ public class Quest extends AbstractData implements INBTPartialSerializable
             for (int i = 0; i < list.tagCount(); i ++)
             {
                 NBTTagCompound tagCompound = list.getCompoundTagAt(i);
-                IObjective objective = IObjective.fromType(tagCompound.getString("Type"));
+                AbstractObjective objective = AbstractObjective.fromType(tagCompound.getString("Type"));
 
                 if (objective != null)
                 {

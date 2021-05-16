@@ -2,7 +2,7 @@ package mchorse.mappet.client.gui;
 
 import mchorse.mappet.api.quests.Quest;
 import mchorse.mappet.api.quests.Quests;
-import mchorse.mappet.api.quests.objectives.IObjective;
+import mchorse.mappet.api.quests.objectives.AbstractObjective;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
@@ -66,7 +66,7 @@ public class GuiQuestTracker extends Gui
 
         y += 16;
 
-        for (IObjective objective : value.objectives)
+        for (AbstractObjective objective : value.objectives)
         {
             String description = "- " + objective.stringify(mc.player);
             List<String> lines = mc.fontRenderer.listFormattedStringToWidth(description, w - 6);

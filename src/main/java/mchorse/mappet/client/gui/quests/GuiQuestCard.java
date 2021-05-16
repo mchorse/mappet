@@ -3,7 +3,7 @@ package mchorse.mappet.client.gui.quests;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.dialogues.DialogueFragment;
 import mchorse.mappet.api.quests.Quest;
-import mchorse.mappet.api.quests.objectives.IObjective;
+import mchorse.mappet.api.quests.objectives.AbstractObjective;
 import mchorse.mappet.api.quests.rewards.IReward;
 import mchorse.mappet.api.quests.rewards.ItemStackReward;
 import mchorse.mappet.client.gui.utils.GuiText;
@@ -33,7 +33,7 @@ public class GuiQuestCard
         element.add(new GuiText(mc).text(DialogueFragment.process(quest.story)).color(0xaaaaaa, true).marginBottom(12));
         element.add(Elements.label(IKey.lang("mappet.gui.quests.objectives.title")));
 
-        for (IObjective objective : quest.objectives)
+        for (AbstractObjective objective : quest.objectives)
         {
             element.add(Elements.label(IKey.str("- " + objective.stringify(mc.player))).color(0xaaaaaa));
         }
