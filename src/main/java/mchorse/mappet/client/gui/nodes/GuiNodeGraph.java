@@ -286,11 +286,23 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
             return;
         }
 
-        T last = this.selected.get(this.selected.size() - 1);
-
-        for (int i = 0; i < this.selected.size() - 1; i++)
+        if (this.selected.size() == 2)
         {
-            this.system.untie(last, this.selected.get(i));
+            /* Untying from both sides */
+            T a = this.selected.get(0);
+            T b = this.selected.get(1);
+
+            this.system.untie(a, b);
+            this.system.untie(b, a);
+        }
+        else
+        {
+            T last = this.selected.get(this.selected.size() - 1);
+
+            for (int i = 0; i < this.selected.size() - 1; i++)
+            {
+                this.system.untie(last, this.selected.get(i));
+            }
         }
     }
 
