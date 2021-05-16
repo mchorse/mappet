@@ -111,6 +111,7 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
             if (!this.selected.isEmpty())
             {
                 menu.action(Icons.DOWNLOAD, IKey.lang("mappet.gui.nodes.context.main"), this::markMain);
+                menu.action(Icons.REVERSE, IKey.lang("mappet.gui.nodes.context.sort"), this::sortInputs);
                 menu.action(Icons.MINIMIZE, IKey.lang("mappet.gui.nodes.context.tie"), this::tieSelected);
                 menu.action(Icons.MAXIMIZE, IKey.lang("mappet.gui.nodes.context.untie"), this::untieSelected);
                 menu.action(Icons.REMOVE, IKey.lang("mappet.gui.nodes.context.remove"), this::removeSelected);
@@ -122,6 +123,7 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
         this.keys().register(IKey.lang("mappet.gui.nodes.context.tie"), Keyboard.KEY_F, this::tieSelected).inside().category(KEYS_CATEGORY);
         this.keys().register(IKey.lang("mappet.gui.nodes.context.untie"), Keyboard.KEY_U, this::untieSelected).inside().category(KEYS_CATEGORY);
         this.keys().register(IKey.lang("mappet.gui.nodes.context.main"), Keyboard.KEY_M, this::markMain).inside().category(KEYS_CATEGORY);
+        this.keys().register(IKey.lang("mappet.gui.nodes.context.sort"), Keyboard.KEY_C, this::sortInputs).inside().category(KEYS_CATEGORY);
 
         int keycode = Keyboard.KEY_1;
 
@@ -287,12 +289,16 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
 
     private void untieSelected()
     {
-        if (this.selected.size() <= 1)
+        if (this.selected.isEmpty())
         {
             return;
         }
 
-        if (this.selected.size() == 2)
+        if (this.selected.size() == 1)
+        {
+            this.system.relations.remove(this.selected.get(0).getId());
+        }
+        else if (this.selected.size() == 2)
         {
             /* Untying from both sides */
             T a = this.selected.get(0);
@@ -320,6 +326,22 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
         }
 
         this.system.main = this.selected.get(this.selected.size() - 1);
+    }
+
+    private void sortInputs()
+    {
+        if (this.selected.size() != 1)
+        {
+            return;
+        }
+
+        T node = this.selected.get(0);
+        List<NodeRelation<T>> relations = this.system.relations.get(node.getId());
+
+        if (relations != null)
+        {
+            relations.sort(Comparator.comparingInt(a -> a.input.x));
+        }
     }
 
     public void setNode(T node)

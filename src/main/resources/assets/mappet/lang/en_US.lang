@@ -226,6 +226,7 @@ mappet.gui.nodes.context.add_node=Add %s node
 mappet.gui.nodes.context.copy=Copy selected node(s)
 mappet.gui.nodes.context.paste=Paste copied node(s)
 mappet.gui.nodes.context.main=Mark entry node
+mappet.gui.nodes.context.sort=Sort input nodes left-to-right
 mappet.gui.nodes.context.tie=Tie to last selected
 mappet.gui.nodes.context.untie=Untie selected
 mappet.gui.nodes.context.remove=Remove selected nodes

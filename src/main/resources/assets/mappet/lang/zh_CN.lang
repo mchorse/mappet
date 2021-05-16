@@ -226,6 +226,7 @@ mappet.gui.nodes.context.add_node=添加 %s 节点
 mappet.gui.nodes.context.copy=拷贝选中节点
 mappet.gui.nodes.context.paste=粘贴节点
 mappet.gui.nodes.context.main=Mark entry node
+mappet.gui.nodes.context.sort=Sort input nodes left-to-right
 mappet.gui.nodes.context.tie=连接至最后所选节点
 mappet.gui.nodes.context.untie=断开节点连接
 mappet.gui.nodes.context.remove=移除所选节点
