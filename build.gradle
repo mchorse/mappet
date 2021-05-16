@@ -182,25 +182,33 @@ task copyLangStrings {
         
         def help = file("src/main/resources/assets/${project.archivesBaseName}/lang/")
         def en = file("${help.getAbsolutePath()}/en_US.lang")
-        def ru = file("${help.getAbsolutePath()}/ru_RU.lang")
-        def ruStrings = parse(ru)
-        def splits = en.text.split("\n")
 
-        for (def i = 0; i < splits.length; i++) {
-            def str = splits[i];
+        for (file in help.listFiles())
+        {
+            if (file.name.endsWith(".lang") && !file.name.startsWith("en_"))
+            {
+                def strings = parse(file)
+                def splits = en.text.split("\n")
 
-            if (str.contains("=")) {
-                def index = str.indexOf("=")
-                def key = str.substring(0, index)
-                def value = str.substring(index)
+                for (def i = 0; i < splits.length; i++) {
+                    def str = splits[i];
 
-                if (ruStrings.containsKey(key)) {
-                    splits[i] = key + "=" + ruStrings.get(key)
+                    if (str.contains("=")) {
+                        def index = str.indexOf("=")
+                        def key = str.substring(0, index)
+                        def value = str.substring(index)
+
+                        if (strings.containsKey(key)) {
+                            splits[i] = key + "=" + strings.get(key)
+                        }
+                    }
                 }
+
+                file.write(splits.join("\n"))
+
+                print("Wrote to ${file.name}...")
             }
         }
-
-        ru.write(splits.join("\n"))
 
         print("Done!")
     }
