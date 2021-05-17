@@ -28,12 +28,12 @@ public class GuiNpcBehaviorPanel extends GuiNpcPanel
         this.lookAround = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.behavior.look_around"), (b) -> this.state.lookAround = b.isToggled());
         this.wander = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.behavior.wander"), (b) -> this.state.wander = b.isToggled());
 
-        this.triggerDied = new GuiTriggerElement(mc).expand();
-        this.triggerDamaged = new GuiTriggerElement(mc).expand();
-        this.triggerInteract = new GuiTriggerElement(mc).expand();
-        this.triggerTick = new GuiTriggerElement(mc).expand();
-        this.triggerTarget = new GuiTriggerElement(mc).expand();
-        this.triggerInitialize = new GuiTriggerElement(mc).expand();
+        this.triggerDied = new GuiTriggerElement(mc);
+        this.triggerDamaged = new GuiTriggerElement(mc);
+        this.triggerInteract = new GuiTriggerElement(mc);
+        this.triggerTick = new GuiTriggerElement(mc);
+        this.triggerTarget = new GuiTriggerElement(mc);
+        this.triggerInitialize = new GuiTriggerElement(mc);
 
         this.add(this.lookAtPlayer, this.lookAround, this.wander);
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.behavior.initialize")).background().marginTop(12).marginBottom(5), this.triggerInitialize);

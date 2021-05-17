@@ -6,6 +6,7 @@ import mchorse.mappet.api.utils.Trigger;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.panels.GuiMappetDashboardPanel;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
+import mchorse.mappet.client.gui.utils.overlays.GuiOverlayPanel;
 import mchorse.mappet.client.gui.utils.overlays.GuiResourceLocationOverlayPanel;
 import mchorse.mappet.client.gui.utils.overlays.GuiSoundOverlayPanel;
 import mchorse.mappet.client.gui.utils.overlays.GuiStringOverlayPanel;
@@ -23,13 +24,10 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiTriggerElement extends GuiElement
 {
-    public GuiButtonElement soundEvent;
-    public GuiButtonElement triggerEvent;
     public GuiTextElement command;
-    public GuiButtonElement dialogue;
-
-    public GuiIconElement editEvent;
-    public GuiIconElement editDialogue;
+    public GuiIconElement soundEvent;
+    public GuiIconElement triggerEvent;
+    public GuiIconElement dialogue;
 
     private Trigger trigger;
 
@@ -42,53 +40,38 @@ public class GuiTriggerElement extends GuiElement
     {
         super(mc);
 
-        this.soundEvent = new GuiButtonElement(mc, IKey.lang("mappet.gui.overlays.sounds.main"), (b) -> this.openPickSoundOverlay());
-        this.soundEvent.flex().relative(this).y(12).w(0.5F, -3);
-
-        this.triggerEvent = new GuiButtonElement(mc, IKey.str("mappet.gui.overlays.event"), (text) -> this.openEventsOverlay());
-        this.triggerEvent.flex().relative(this).x(1F).y(12).w(0.5F, -2).anchorX(1F);
-
         this.command = new GuiTextElement(mc, 10000, (text) -> this.trigger.command = text);
-        this.command.flex().relative(this).y(49).w(1F);
+        this.soundEvent = new GuiIconElement(mc, Icons.SOUND, (b) -> this.openPickSoundOverlay());
+        this.soundEvent.tooltip(IKey.lang("mappet.gui.trigger.sound"));
+        this.triggerEvent = new GuiIconElement(mc, Icons.FILE, (text) -> this.openEventsOverlay());
+        this.triggerEvent.tooltip(IKey.lang("mappet.gui.trigger.event"));
+        this.dialogue = new GuiIconElement(mc, Icons.BUBBLE, (b) -> this.openDialoguesOverlay());
+        this.dialogue.tooltip(IKey.lang("mappet.gui.trigger.dialogue"));
 
-        this.dialogue = new GuiButtonElement(mc, IKey.str("mappet.gui.overlays.dialogue"), (b) -> this.openDialoguesOverlay());
-        this.dialogue.flex().relative(this).y(1F, -20).w(1F);
-        
-        this.editEvent = new GuiIconElement(mc, Icons.EDIT, (b) -> this.editEvent(this.trigger.triggerEvent));
-        this.editDialogue = new GuiIconElement(mc, Icons.EDIT, (b) -> this.editDialogue(this.trigger.dialogue));
+        this.flex().h(32);
 
-        this.editEvent.flex().relative(this.triggerEvent).x(1F, -18).y(2).wh(16, 16);
-        this.editDialogue.flex().relative(this.dialogue).x(1F, -18).y(2).wh(16, 16);
+        GuiElement element = new GuiElement(mc);
 
-        this.triggerEvent.add(this.editEvent);
-        this.dialogue.add(this.editDialogue);
-
-        this.flex().h(106);
-
-        this.add(this.soundEvent, this.triggerEvent, this.command, this.dialogue);
+        element.flex().relative(this).y(12).w(1F).h(20).row(0).preferred(0);
+        element.add(this.command, this.soundEvent, this.triggerEvent, this.dialogue);
+        this.add(element);
 
         this.set(trigger);
     }
 
-    public GuiTriggerElement expand()
+    private void editEvent(GuiOverlayPanel panel, String text)
     {
-        this.soundEvent.flex().reset().relative(this).y(12).w(1F).h(20);
-        this.triggerEvent.flex().reset().relative(this).y(49).w(1F).h(20);
-        this.command.flex().reset().relative(this).y(86).w(1F).h(20);
-        this.flex().h(143);
+        panel.close();
 
-        return this;
-    }
-
-    private void editEvent(String text)
-    {
         GuiMappetDashboard dashboard = GuiMappetDashboard.get(this.mc);
 
         this.openPanel(text, dashboard, dashboard.event);
     }
 
-    private void editDialogue(String text)
+    private void editDialogue(GuiOverlayPanel panel, String text)
     {
+        panel.close();
+
         GuiMappetDashboard dashboard = GuiMappetDashboard.get(this.mc);
 
         this.openPanel(text, dashboard, dashboard.dialogue);
@@ -96,12 +79,7 @@ public class GuiTriggerElement extends GuiElement
 
     private void openPanel(String text, GuiMappetDashboard dashboard, GuiMappetDashboardPanel panel)
     {
-        if (panel.names.list.getList().isEmpty())
-        {
-            panel.requestDataNames();
-        }
-
-        if (panel.names.list.getList().contains(text))
+        if (!text.isEmpty())
         {
             this.openDashboard(dashboard);
 
@@ -130,8 +108,12 @@ public class GuiTriggerElement extends GuiElement
     {
         ClientProxy.requestNames(ContentType.EVENT, (names) ->
         {
-            GuiStringOverlayPanel overlay = new GuiStringOverlayPanel(Minecraft.getMinecraft(), IKey.lang("mappet.gui.overlays.event"), names, (name) -> this.trigger.triggerEvent = name);
+            Minecraft mc = Minecraft.getMinecraft();
+            GuiStringOverlayPanel overlay = new GuiStringOverlayPanel(mc, IKey.lang("mappet.gui.overlays.event"), names, (name) -> this.trigger.triggerEvent = name);
+            GuiIconElement edit = new GuiIconElement(mc, Icons.EDIT, (b) -> this.editEvent(overlay, this.trigger.triggerEvent));
 
+            edit.flex().relative(overlay.close).x(-3).w(16).h(1F).anchorX(1F);
+            overlay.close.add(edit);
             overlay.set(this.trigger.triggerEvent);
             GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay, 0.5F, 0.7F);
         });
@@ -142,7 +124,10 @@ public class GuiTriggerElement extends GuiElement
         ClientProxy.requestNames(ContentType.DIALOGUE, (names) ->
         {
             GuiStringOverlayPanel overlay = new GuiStringOverlayPanel(Minecraft.getMinecraft(), IKey.lang("mappet.gui.overlays.dialogue"), names, (name) -> this.trigger.dialogue = name);
+            GuiIconElement edit = new GuiIconElement(mc, Icons.EDIT, (b) -> this.editDialogue(overlay, this.trigger.dialogue));
 
+            edit.flex().relative(overlay.close).x(-3).w(16).h(1F).anchorX(1F);
+            overlay.close.add(edit);
             overlay.set(this.trigger.dialogue);
             GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay, 0.5F, 0.7F);
         });
@@ -173,9 +158,6 @@ public class GuiTriggerElement extends GuiElement
     {
         super.draw(context);
 
-        this.font.drawStringWithShadow(I18n.format("mappet.gui.trigger.sound"), this.soundEvent.area.x, this.soundEvent.area.y - 12, 0xffffff);
-        this.font.drawStringWithShadow(I18n.format("mappet.gui.trigger.event"), this.triggerEvent.area.x, this.triggerEvent.area.y - 12, 0xffffff);
         this.font.drawStringWithShadow(I18n.format("mappet.gui.trigger.command"), this.command.area.x, this.command.area.y - 12, 0xffffff);
-        this.font.drawStringWithShadow(I18n.format("mappet.gui.trigger.dialogue"), this.dialogue.area.x, this.dialogue.area.y - 12, 0xffffff);
     }
 }

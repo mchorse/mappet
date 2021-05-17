@@ -35,8 +35,8 @@ public class GuiRegionEditor extends GuiElement
         this.passable = new GuiToggleElement(mc, IKey.lang("mappet.gui.region.passable"), (b) -> this.region.passable = b.isToggled());
         this.enabled = new GuiTextElement(mc, 1000, (text) -> this.region.enabled = text);
         this.delay = new GuiTrackpadElement(mc, (value) -> this.region.delay = value.intValue());
-        this.onEnter = new GuiTriggerElement(mc).expand();
-        this.onExit = new GuiTriggerElement(mc).expand();
+        this.onEnter = new GuiTriggerElement(mc);
+        this.onExit = new GuiTriggerElement(mc);
         this.shape = new GuiCirculateElement(mc, this::changeShape);
         this.shape.flex().w(80);
         this.shape.addLabel(IKey.lang("mappet.gui.shapes.box"));
