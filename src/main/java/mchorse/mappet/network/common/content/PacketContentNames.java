@@ -23,6 +23,13 @@ public class PacketContentNames extends PacketContentBase
         this.names.addAll(names);
     }
 
+    public PacketContentNames(ContentType type, List<String> names, int requestId)
+    {
+        super(type, requestId);
+
+        this.names.addAll(names);
+    }
+
     @Override
     public void fromBytes(ByteBuf buf)
     {

@@ -31,8 +31,6 @@ public class GuiDialoguePanel extends GuiMappetDashboardPanel<Dialogue>
     public GuiEventNodeGraph graph;
     public GuiEventNodePanel panel;
 
-    public GuiCreativeMorphsMenu morphs;
-
     public GuiDialoguePanel(Minecraft mc, GuiMappetDashboard dashboard)
     {
         super(mc, dashboard);

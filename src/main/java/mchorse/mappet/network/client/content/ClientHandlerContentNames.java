@@ -1,5 +1,6 @@
 package mchorse.mappet.network.client.content;
 
+import mchorse.mappet.ClientProxy;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.panels.GuiMappetDashboardPanel;
 import mchorse.mappet.network.common.content.PacketContentNames;
@@ -15,6 +16,13 @@ public class ClientHandlerContentNames extends ClientMessageHandler<PacketConten
     @SideOnly(Side.CLIENT)
     public void run(EntityPlayerSP player, PacketContentNames message)
     {
+        if (message.requestId >= 0)
+        {
+            ClientProxy.process(message.names, message.requestId);
+
+            return;
+        }
+
         GuiMappetDashboard dashboard = GuiMappetDashboard.get(Minecraft.getMinecraft());
         GuiMappetDashboardPanel panel = message.type.get(dashboard);
 

@@ -1,11 +1,14 @@
 package mchorse.mappet.client.gui.utils;
 
+import mchorse.mappet.ClientProxy;
+import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.api.utils.Trigger;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.panels.GuiMappetDashboardPanel;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
 import mchorse.mappet.client.gui.utils.overlays.GuiResourceLocationOverlayPanel;
 import mchorse.mappet.client.gui.utils.overlays.GuiSoundOverlayPanel;
+import mchorse.mappet.client.gui.utils.overlays.GuiStringOverlayPanel;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
@@ -21,9 +24,9 @@ import net.minecraft.util.ResourceLocation;
 public class GuiTriggerElement extends GuiElement
 {
     public GuiButtonElement soundEvent;
-    public GuiTextElement triggerEvent;
+    public GuiButtonElement triggerEvent;
     public GuiTextElement command;
-    public GuiTextElement dialogue;
+    public GuiButtonElement dialogue;
 
     public GuiIconElement editEvent;
     public GuiIconElement editDialogue;
@@ -42,17 +45,17 @@ public class GuiTriggerElement extends GuiElement
         this.soundEvent = new GuiButtonElement(mc, IKey.lang("mappet.gui.overlays.sounds.main"), (b) -> this.openPickSoundOverlay());
         this.soundEvent.flex().relative(this).y(12).w(0.5F, -3);
 
-        this.triggerEvent = new GuiTextElement(mc, 1000, (text) -> this.trigger.triggerEvent = text);
+        this.triggerEvent = new GuiButtonElement(mc, IKey.str("mappet.gui.overlays.event"), (text) -> this.openEventsOverlay());
         this.triggerEvent.flex().relative(this).x(1F).y(12).w(0.5F, -2).anchorX(1F);
 
         this.command = new GuiTextElement(mc, 10000, (text) -> this.trigger.command = text);
         this.command.flex().relative(this).y(49).w(1F);
 
-        this.dialogue = new GuiTextElement(mc, 10000, (text) -> this.trigger.dialogue = text);
+        this.dialogue = new GuiButtonElement(mc, IKey.str("mappet.gui.overlays.dialogue"), (b) -> this.openDialoguesOverlay());
         this.dialogue.flex().relative(this).y(1F, -20).w(1F);
         
-        this.editEvent = new GuiIconElement(mc, Icons.EDIT, (b) -> this.editEvent(this.triggerEvent.field.getText()));
-        this.editDialogue = new GuiIconElement(mc, Icons.EDIT, (b) -> this.editDialogue(this.dialogue.field.getText()));
+        this.editEvent = new GuiIconElement(mc, Icons.EDIT, (b) -> this.editEvent(this.trigger.triggerEvent));
+        this.editDialogue = new GuiIconElement(mc, Icons.EDIT, (b) -> this.editDialogue(this.trigger.dialogue));
 
         this.editEvent.flex().relative(this.triggerEvent).x(1F, -18).y(2).wh(16, 16);
         this.editDialogue.flex().relative(this.dialogue).x(1F, -18).y(2).wh(16, 16);
@@ -123,6 +126,28 @@ public class GuiTriggerElement extends GuiElement
         GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay, 0.5F, 0.9F);
     }
 
+    private void openEventsOverlay()
+    {
+        ClientProxy.requestNames(ContentType.EVENT, (names) ->
+        {
+            GuiStringOverlayPanel overlay = new GuiStringOverlayPanel(Minecraft.getMinecraft(), IKey.lang("mappet.gui.overlays.event"), names, (name) -> this.trigger.triggerEvent = name);
+
+            overlay.set(this.trigger.triggerEvent);
+            GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay, 0.5F, 0.7F);
+        });
+    }
+
+    private void openDialoguesOverlay()
+    {
+        ClientProxy.requestNames(ContentType.DIALOGUE, (names) ->
+        {
+            GuiStringOverlayPanel overlay = new GuiStringOverlayPanel(Minecraft.getMinecraft(), IKey.lang("mappet.gui.overlays.dialogue"), names, (name) -> this.trigger.dialogue = name);
+
+            overlay.set(this.trigger.dialogue);
+            GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay, 0.5F, 0.7F);
+        });
+    }
+
     private void setSound(ResourceLocation location)
     {
         this.trigger.soundEvent = location == null ? "" : location.toString();
@@ -139,9 +164,7 @@ public class GuiTriggerElement extends GuiElement
 
         if (trigger != null)
         {
-            this.triggerEvent.setText(trigger.triggerEvent);
             this.command.setText(trigger.command);
-            this.dialogue.setText(trigger.dialogue);
         }
     }
 

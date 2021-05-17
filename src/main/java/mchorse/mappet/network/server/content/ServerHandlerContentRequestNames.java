@@ -16,6 +16,6 @@ public class ServerHandlerContentRequestNames extends ServerMessageHandler<Packe
     {
         List<String> names = new ArrayList<String>(message.type.getManager().getKeys());
 
-        Dispatcher.sendTo(new PacketContentNames(message.type, names), player);
+        Dispatcher.sendTo(new PacketContentNames(message.type, names, message.requestId), player);
     }
 }

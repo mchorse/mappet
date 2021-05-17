@@ -49,7 +49,7 @@ public class GuiNpcGeneralPanel extends GuiNpcPanel
 
         GuiBase.getCurrent().unfocus();
 
-        GuiElement parent = this.getParentContainer();
+        GuiElement parent = this.morph.getParentContainer();
 
         menu.callback = (morph) ->
         {

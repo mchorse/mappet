@@ -13,4 +13,9 @@ public class PacketContentRequestNames extends PacketContentBase
     {
         super(type);
     }
+
+    public PacketContentRequestNames(ContentType type, int requestId)
+    {
+        super(type, requestId);
+    }
 }
