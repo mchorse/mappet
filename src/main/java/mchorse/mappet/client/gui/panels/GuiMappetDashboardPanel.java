@@ -35,6 +35,8 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
 
     public GuiIconElement toggleSidebar;
     public GuiElement sidebar;
+
+    public GuiElement buttons;
     public GuiIconElement add;
     public GuiIconElement dupe;
     public GuiIconElement rename;
@@ -52,7 +54,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
     {
         super(mc, dashboard);
 
-        GuiElement buttons = new GuiElement(mc);
+        this.buttons = new GuiElement(mc);
 
         this.sidebar = new GuiElement(mc);
         this.sidebar.flex().relative(this).x(1F).w(200).h(1F).anchorX(1F);
@@ -70,7 +72,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
         this.names = new GuiStringSearchListElement(mc, (list) -> this.pickData(list.get(0)));
         this.names.label(IKey.lang("mappet.gui.search"));
         this.names.flex().relative(this.sidebar).xy(10, 25).w(1F, -20).h(1F, -35);
-        this.sidebar.add(drawable, this.names, buttons);
+        this.sidebar.add(drawable, this.names, this.buttons);
 
         this.editor = new GuiScrollElement(mc);
         this.editor.markContainer();
@@ -84,8 +86,8 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
         this.inventory.flex().relative(this.editor).xy(0.5F, 0.5F).anchor(0.5F, 0.5F);
         this.inventory.setVisible(false);
 
-        buttons.flex().relative(this.names).x(1F).y(-20).anchorX(1F).row(0).resize();
-        buttons.add(this.add, this.dupe, this.rename, this.remove);
+        this.buttons.flex().relative(this.names).x(1F).y(-20).anchorX(1F).row(0).resize();
+        this.buttons.add(this.add, this.dupe, this.rename, this.remove);
 
         this.markContainer();
         this.add(this.sidebar, this.editor, this.toggleSidebar);

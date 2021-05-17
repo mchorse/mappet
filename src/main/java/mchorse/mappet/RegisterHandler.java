@@ -10,6 +10,7 @@ import mchorse.mappet.api.quests.chains.QuestChainManager;
 import mchorse.mappet.blocks.BlockEmitter;
 import mchorse.mappet.blocks.BlockRegion;
 import mchorse.mappet.blocks.BlockTrigger;
+import mchorse.mappet.client.KeyboardHandler;
 import mchorse.mappet.entities.EntityNpc;
 import mchorse.mappet.items.ItemNpcTool;
 import mchorse.mappet.tile.TileEmitter;
@@ -60,6 +61,8 @@ public class RegisterHandler
         Mappet.npcs = null;
         Mappet.factions = null;
         Mappet.chains = null;
+
+        KeyboardHandler.hotkeys.clear();
     }
 
     @SubscribeEvent

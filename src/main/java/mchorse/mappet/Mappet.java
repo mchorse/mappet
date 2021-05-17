@@ -151,6 +151,7 @@ public final class Mappet
         quests = new QuestManager(new File(mappetWorldFolder, "quests"));
         crafting = new CraftingManager(new File(mappetWorldFolder, "crafting"));
         events = new EventManager(new File(mappetWorldFolder, "events"));
+        events.hotkeys.load(new File(mappetWorldFolder, "hotkeys.json"));
         dialogues = new DialogueManager(new File(mappetWorldFolder, "dialogues"));
         expressions = new ExpressionManager();
         npcs = new NpcManager(new File(mappetWorldFolder, "npcs"));

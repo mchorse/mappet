@@ -10,6 +10,7 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
+import org.lwjgl.input.Keyboard;
 
 import java.util.function.Supplier;
 
@@ -36,7 +37,7 @@ public class GuiCraftingRecipe extends GuiElement
         this.trigger = new GuiTriggerElement(mc);
         this.hotkey = new GuiKeybindElement(mc, (key) ->
         {
-            if (key == 1)
+            if (key == Keyboard.KEY_ESCAPE)
             {
                 this.recipe.hotkey = 0;
                 this.hotkey.setKeybind(0);

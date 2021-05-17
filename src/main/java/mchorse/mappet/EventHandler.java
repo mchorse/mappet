@@ -8,6 +8,7 @@ import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.commands.data.CommandDataClear;
 import mchorse.mappet.events.StateChangedEvent;
 import mchorse.mappet.network.Dispatcher;
+import mchorse.mappet.network.common.events.PacketEventPlayerHotkeys;
 import mchorse.mappet.network.common.quests.PacketQuest;
 import mchorse.mappet.network.common.quests.PacketQuests;
 import net.minecraft.entity.Entity;
@@ -87,6 +88,11 @@ public class EventHandler
             if (!character.getQuests().quests.isEmpty())
             {
                 Dispatcher.sendTo(new PacketQuests(character.getQuests()), player);
+            }
+
+            if (!Mappet.events.hotkeys.hotkeys.isEmpty())
+            {
+                Dispatcher.sendTo(new PacketEventPlayerHotkeys(Mappet.events.hotkeys), player);
             }
         }
     }

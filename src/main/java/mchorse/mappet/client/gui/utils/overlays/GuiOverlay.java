@@ -1,6 +1,7 @@
 package mchorse.mappet.client.gui.utils.overlays;
 
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
+import mchorse.mclib.client.gui.framework.elements.IGuiElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.utils.GuiUtils;
 import mchorse.mclib.utils.ColorUtils;
@@ -53,6 +54,20 @@ public class GuiOverlay extends GuiElement
         overlay.flex().wh(w, h);
     }
 
+    public void closeItself()
+    {
+        this.removeFromParent();
+        GuiUtils.playClick();
+
+        for (IGuiElement element : this.getChildren())
+        {
+            if (element instanceof GuiOverlayPanel)
+            {
+                ((GuiOverlayPanel) element).onClose();
+            }
+        }
+    }
+
     /* Don't pass user input down the line... */
 
     @Override
@@ -63,8 +78,7 @@ public class GuiOverlay extends GuiElement
             return true;
         }
 
-        this.removeFromParent();
-        GuiUtils.playClick();
+        this.closeItself();
 
         return true;
     }
@@ -87,8 +101,7 @@ public class GuiOverlay extends GuiElement
 
         if (context.keyCode == Keyboard.KEY_ESCAPE)
         {
-            this.removeFromParent();
-            GuiUtils.playClick();
+            this.closeItself();
         }
 
         return true;

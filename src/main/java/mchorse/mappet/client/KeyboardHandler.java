@@ -2,6 +2,8 @@ package mchorse.mappet.client;
 
 import mchorse.mappet.client.gui.GuiJournalScreen;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
+import mchorse.mappet.network.Dispatcher;
+import mchorse.mappet.network.common.events.PacketEventHotkey;
 import mchorse.mclib.utils.OpHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
@@ -12,6 +14,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Keyboard handler
  * 
@@ -21,6 +26,8 @@ import org.lwjgl.input.Keyboard;
 @SideOnly(Side.CLIENT)
 public class KeyboardHandler
 {
+    public static final Set<Integer> hotkeys = new HashSet<Integer>();
+
     public KeyBinding openMappetDashboard;
     public KeyBinding openJournal;
 
@@ -48,6 +55,16 @@ public class KeyboardHandler
         if (this.openJournal.isPressed())
         {
             mc.displayGuiScreen(new GuiJournalScreen(mc));
+        }
+
+        if (Keyboard.getEventKeyState())
+        {
+            int key = Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey();
+
+            if (hotkeys.contains(key))
+            {
+                Dispatcher.sendToServer(new PacketEventHotkey(key));
+            }
         }
     }
 }

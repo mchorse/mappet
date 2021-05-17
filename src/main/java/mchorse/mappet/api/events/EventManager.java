@@ -1,6 +1,7 @@
 package mchorse.mappet.api.events;
 
 import mchorse.mappet.Mappet;
+import mchorse.mappet.api.events.hotkeys.EventHotkeys;
 import mchorse.mappet.api.events.nodes.CommandNode;
 import mchorse.mappet.api.events.nodes.ConditionNode;
 import mchorse.mappet.api.events.nodes.EventNode;
@@ -21,6 +22,8 @@ public class EventManager extends BaseManager<NodeSystem<EventNode>>
         .register("condition", ConditionNode.class)
         .register("switch", SwitchNode.class)
         .register("timer", TimerNode.class);
+
+    public EventHotkeys hotkeys = new EventHotkeys();
 
     public EventManager(File folder)
     {

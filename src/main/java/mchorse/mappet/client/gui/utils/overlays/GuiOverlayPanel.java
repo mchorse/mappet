@@ -22,7 +22,7 @@ public class GuiOverlayPanel extends GuiElement
         super(mc);
 
         this.title = Elements.label(title);
-        this.close = new GuiIconElement(mc, Icons.CLOSE, (b) -> this.parent.removeFromParent());
+        this.close = new GuiIconElement(mc, Icons.CLOSE, (b) -> this.close());
         this.content = new GuiElement(mc);
 
         this.title.flex().relative(this).xy(10, 10).w(0.5F);
@@ -34,7 +34,12 @@ public class GuiOverlayPanel extends GuiElement
 
     public void close()
     {
-        this.getParent().removeFromParent();
+        GuiElement parent = this.getParent();
+
+        if (parent instanceof GuiOverlay)
+        {
+            ((GuiOverlay) parent).closeItself();
+        }
     }
 
     @Override
@@ -53,4 +58,7 @@ public class GuiOverlayPanel extends GuiElement
 
         super.draw(context);
     }
+
+    public void onClose()
+    {}
 }

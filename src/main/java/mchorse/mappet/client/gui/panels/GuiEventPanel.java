@@ -1,6 +1,7 @@
 package mchorse.mappet.client.gui.panels;
 
 import mchorse.mappet.api.events.EventManager;
+import mchorse.mappet.api.events.hotkeys.EventHotkeys;
 import mchorse.mappet.api.events.nodes.CommandNode;
 import mchorse.mappet.api.events.nodes.ConditionNode;
 import mchorse.mappet.api.events.nodes.EventNode;
@@ -9,13 +10,21 @@ import mchorse.mappet.api.events.nodes.TimerNode;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
+import mchorse.mappet.client.gui.events.GuiEventHotkeysOverlayPanel;
+import mchorse.mappet.client.gui.factions.GuiFactionRelationOverlay;
 import mchorse.mappet.client.gui.nodes.GuiEventNodeGraph;
 import mchorse.mappet.client.gui.nodes.GuiEventNodePanel;
 import mchorse.mappet.client.gui.nodes.events.GuiCommandNodePanel;
 import mchorse.mappet.client.gui.nodes.events.GuiConditionNodePanel;
 import mchorse.mappet.client.gui.nodes.events.GuiTimerNodePanel;
+import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
+import mchorse.mappet.network.Dispatcher;
+import mchorse.mappet.network.common.events.PacketEventRequestHotkeys;
+import mchorse.mclib.client.gui.framework.GuiBase;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
+import mchorse.mclib.client.gui.utils.Icons;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 
@@ -23,6 +32,7 @@ public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventNode>
 {
     public GuiEventNodeGraph graph;
     public GuiEventNodePanel panel;
+    public GuiIconElement hotkeys;
 
     public GuiEventPanel(Minecraft mc, GuiMappetDashboard dashboard)
     {
@@ -30,6 +40,9 @@ public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventNode>
 
         this.graph = new GuiEventNodeGraph(mc, EventManager.FACTORY, this::pickNode);
         this.graph.flex().relative(this.editor).wh(1F, 1F);
+
+        this.hotkeys = new GuiIconElement(mc, Icons.DOWNLOAD, (b) -> Dispatcher.sendToServer(new PacketEventRequestHotkeys()));
+        this.buttons.prepend(this.hotkeys);
 
         this.add(this.graph, this.panel);
 
@@ -119,5 +132,12 @@ public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventNode>
 
             GuiDraw.drawMultiText(this.font, I18n.format("mappet.gui.nodes.info.empty_event"), x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
         }
+    }
+
+    public void openHotkeysEditor(EventHotkeys hotkeys)
+    {
+        GuiEventHotkeysOverlayPanel overlay = new GuiEventHotkeysOverlayPanel(this.mc, hotkeys);
+
+        GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay, 0.5F, 0.7F);
     }
 }
