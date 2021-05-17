@@ -2,6 +2,7 @@ package mchorse.mappet.client;
 
 import mchorse.mappet.client.gui.GuiJournalScreen;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
+import mchorse.mclib.utils.OpHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -39,7 +40,7 @@ public class KeyboardHandler
     {
         Minecraft mc = Minecraft.getMinecraft();
 
-        if (this.openMappetDashboard.isPressed())
+        if (this.openMappetDashboard.isPressed() && OpHelper.isPlayerOp())
         {
             mc.displayGuiScreen(GuiMappetDashboard.get(mc));
         }
