@@ -38,7 +38,7 @@ public class GuiDialoguePanel extends GuiMappetDashboardPanel<Dialogue>
         super(mc, dashboard);
 
         this.graph = new GuiEventNodeGraph(mc, DialogueManager.FACTORY, this::pickNode);
-        this.graph.flex().relative(this.editor).wh(1F, 1F);
+        this.graph.notifyAboutMain().flex().relative(this.editor).wh(1F, 1F);
 
         this.add(this.graph, this.panel);
 

@@ -241,6 +241,8 @@ mappet.gui.nodes.keys.add=Добавить ноды
 mappet.gui.nodes.info.empty_event=Чтобы начать редактировать, создайте или выберите событие из списка справа...
 mappet.gui.nodes.info.empty_dialogue=Чтобы начать редактировать, создайте или выберите диалог из списка справа...
 mappet.gui.nodes.info.empty_chain=Чтобы начать редактировать, создайте или выберите цепочку квестов из списка справа
+mappet.gui.nodes.info.empty_main=You have to mark the entry node!
+mappet.gui.nodes.info.empty_nodes=Right click here, and add a node, to start working with nodes!
 
 mappet.gui.npcs.unique=Уникальный
 mappet.gui.npcs.path_distance=Расстояние нахождения пути

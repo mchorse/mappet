@@ -39,7 +39,7 @@ public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventNode>
         super(mc, dashboard);
 
         this.graph = new GuiEventNodeGraph(mc, EventManager.FACTORY, this::pickNode);
-        this.graph.flex().relative(this.editor).wh(1F, 1F);
+        this.graph.notifyAboutMain().flex().relative(this.editor).wh(1F, 1F);
 
         this.hotkeys = new GuiIconElement(mc, Icons.DOWNLOAD, (b) -> Dispatcher.sendToServer(new PacketEventRequestHotkeys()));
         this.buttons.prepend(this.hotkeys);

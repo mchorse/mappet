@@ -26,6 +26,7 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTException;
@@ -68,6 +69,8 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
 
     private Color a = new Color();
     private Color b = new Color();
+
+    private boolean notifyAboutMain;
 
     private Consumer<T> callback;
 
@@ -139,6 +142,13 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
             keybind.inside().held(Keyboard.KEY_LCONTROL).category(ADD_CATEGORY);
             keycode += 1;
         }
+    }
+
+    public GuiNodeGraph<T> notifyAboutMain()
+    {
+        this.notifyAboutMain = true;
+
+        return this;
     }
 
     /* Copy/paste */
@@ -265,6 +275,11 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
             this.system.remove(selected);
         }
 
+        if (this.system.main != null && this.selected.contains(this.system.main))
+        {
+            this.system.main = null;
+        }
+
         this.select(null);
     }
 
@@ -386,12 +401,12 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
 
     public Area getNodeOutletArea(Area nodeArea, boolean output)
     {
-        int y = output ? 6 : -6;
+        int y = output ? 7 : -7;
 
-        int x1 = nodeArea.mx() - 3;
-        int y1 = nodeArea.y(output ? 1F : 0F) - 3 + y;
-        int x2 = nodeArea.mx() + 3;
-        int y2 = nodeArea.y(output ? 1F : 0F) + 3 + y;
+        int x1 = nodeArea.mx() - 4;
+        int y1 = nodeArea.y(output ? 1F : 0F) - 4 + y;
+        int x2 = nodeArea.mx() + 4;
+        int y2 = nodeArea.y(output ? 1F : 0F) + 4 + y;
 
         Area area = new Area();
 
@@ -493,7 +508,7 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
                     {
                         this.output = node;
                     }
-                    else if (input.isInside(context))
+                    else if (input.isInside(context) && this.system.main != node)
                     {
                         this.input = node;
                     }
@@ -602,6 +617,30 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
     }
 
     @Override
+    public void draw(GuiContext context)
+    {
+        super.draw(context);
+
+        if (this.system.nodes.isEmpty())
+        {
+            int w = this.area.w / 2;
+
+            GlStateManager.enableTexture2D();
+            GuiDraw.drawMultiText(this.font, I18n.format("mappet.gui.nodes.info.empty_nodes"), this.area.mx(w), this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
+        }
+        else if (this.notifyAboutMain && this.system.main == null)
+        {
+            String label = I18n.format("mappet.gui.nodes.info.empty_main");
+            int w = this.font.getStringWidth(label);
+
+            Gui.drawRect(this.area.x + 4, this.area.y + 4, this.area.x + 24 + w, this.area.y + 20, ColorUtils.HALF_BLACK);
+            GlStateManager.color(1F, 0F, 0.1F, 1F);
+            Icons.EXCLAMATION.render(this.area.x + 4, this.area.y + 4);
+            this.font.drawStringWithShadow(label, this.area.x + 20, this.area.y + 8, 0xff0010);
+        }
+    }
+
+    @Override
     protected void drawCanvas(GuiContext context)
     {
         super.drawCanvas(context);
@@ -642,11 +681,59 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
             Area output = this.getNodeOutletArea(nodeArea, true);
             Area input = this.getNodeOutletArea(nodeArea, false);
 
-            GuiDraw.drawOutline(output.x, output.y, output.ex(), output.ey(), output.isInside(context) ? 0xffffffff : 0xffaaaaaa);
+            boolean insideO = output.isInside(context);
+            boolean insideI = input.isInside(context);
+
+            int colorO = ColorUtils.multiplyColor(0xffffff, insideO ? 1F : 0.6F);
+            int colorI = ColorUtils.multiplyColor(0xffffff, insideI ? 1F : 0.6F);
+
+            if (this.output == node)
+            {
+                colorO = ACTIVE;
+
+                if (insideI)
+                {
+                    colorI = ELSE;
+                }
+            }
+            else if (this.output != null)
+            {
+                if (insideO)
+                {
+                    colorO = ELSE;
+                }
+                else if (insideI)
+                {
+                    colorI = IF;
+                }
+            }
+
+            if (this.input == node)
+            {
+                colorI = ACTIVE;
+
+                if (insideO)
+                {
+                    colorO = ELSE;
+                }
+            }
+            else if (this.input != null)
+            {
+                if (insideI)
+                {
+                    colorI = ELSE;
+                }
+                else if (insideO)
+                {
+                    colorO = IF;
+                }
+            }
+
+            GuiDraw.drawOutline(output.x, output.y, output.ex(), output.ey(), 0xff000000 + colorO);
 
             if (this.system.main != node)
             {
-                GuiDraw.drawOutline(input.x, input.y, input.ex(), input.ey(), input.isInside(context) ? 0xffffffff : 0xffaaaaaa);
+                GuiDraw.drawOutline(input.x, input.y, input.ex(), input.ey(), 0xff000000 + colorI);
             }
 
             boolean hover = Area.SHARED.isInside(context);
