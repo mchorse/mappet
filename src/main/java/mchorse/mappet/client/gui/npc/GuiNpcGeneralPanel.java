@@ -1,10 +1,14 @@
 package mchorse.mappet.client.gui.npc;
 
+import mchorse.mappet.ClientProxy;
 import mchorse.mappet.api.npcs.NpcState;
+import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.npc.utils.GuiNpcDrops;
+import mchorse.mappet.client.gui.utils.overlays.GuiContentNamesOverlayPanel;
+import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
-import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.utils.Elements;
@@ -17,7 +21,7 @@ import java.util.function.Supplier;
 
 public class GuiNpcGeneralPanel extends GuiNpcPanel
 {
-    public GuiTextElement faction;
+    public GuiButtonElement faction;
     public GuiNestedEdit morph;
     public GuiNpcDrops drops;
     public GuiTrackpadElement xp;
@@ -26,7 +30,7 @@ public class GuiNpcGeneralPanel extends GuiNpcPanel
     {
         super(mc);
 
-        this.faction = new GuiTextElement(mc, (t) -> this.state.faction = t);
+        this.faction = new GuiButtonElement(mc, IKey.lang("mappet.gui.overlays.faction"), (t) -> this.openFactions());
         this.morph = new GuiNestedEdit(mc, (b) -> this.openMorphMenu(b, morphs));
         this.drops = new GuiNpcDrops(mc, inventory);
         this.xp = new GuiTrackpadElement(mc, (v) -> this.state.xp = v.intValue());
@@ -36,6 +40,18 @@ public class GuiNpcGeneralPanel extends GuiNpcPanel
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.general.morph")).marginTop(12), this.morph);
         this.add(this.drops.marginTop(12));
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.general.xp")).marginTop(12), this.xp);
+    }
+
+    private void openFactions()
+    {
+        ClientProxy.requestNames(ContentType.FACTION, (names) ->
+        {
+            Minecraft mc = Minecraft.getMinecraft();
+            GuiContentNamesOverlayPanel overlay = new GuiContentNamesOverlayPanel(mc, IKey.lang("mappet.gui.overlays.faction"), ContentType.FACTION, names, (name) -> this.state.faction = name);
+
+            overlay.set(this.state.faction);
+            GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay, 0.5F, 0.7F);
+        });
     }
 
     private void openMorphMenu(boolean editing, Supplier<GuiCreativeMorphsMenu> morphs)
@@ -73,7 +89,6 @@ public class GuiNpcGeneralPanel extends GuiNpcPanel
     {
         super.set(state);
 
-        this.faction.setText(state.faction);
         this.morph.setMorph(state.morph);
         this.drops.set(state.drops);
         this.xp.setValue(state.xp);

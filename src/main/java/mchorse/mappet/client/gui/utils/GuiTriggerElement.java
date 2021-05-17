@@ -3,16 +3,12 @@ package mchorse.mappet.client.gui.utils;
 import mchorse.mappet.ClientProxy;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.api.utils.Trigger;
-import mchorse.mappet.client.gui.GuiMappetDashboard;
-import mchorse.mappet.client.gui.panels.GuiMappetDashboardPanel;
+import mchorse.mappet.client.gui.utils.overlays.GuiContentNamesOverlayPanel;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
-import mchorse.mappet.client.gui.utils.overlays.GuiOverlayPanel;
 import mchorse.mappet.client.gui.utils.overlays.GuiResourceLocationOverlayPanel;
 import mchorse.mappet.client.gui.utils.overlays.GuiSoundOverlayPanel;
-import mchorse.mappet.client.gui.utils.overlays.GuiStringOverlayPanel;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
-import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
@@ -59,44 +55,6 @@ public class GuiTriggerElement extends GuiElement
         this.set(trigger);
     }
 
-    private void editEvent(GuiOverlayPanel panel, String text)
-    {
-        panel.close();
-
-        GuiMappetDashboard dashboard = GuiMappetDashboard.get(this.mc);
-
-        this.openPanel(text, dashboard, dashboard.event);
-    }
-
-    private void editDialogue(GuiOverlayPanel panel, String text)
-    {
-        panel.close();
-
-        GuiMappetDashboard dashboard = GuiMappetDashboard.get(this.mc);
-
-        this.openPanel(text, dashboard, dashboard.dialogue);
-    }
-
-    private void openPanel(String text, GuiMappetDashboard dashboard, GuiMappetDashboardPanel panel)
-    {
-        if (!text.isEmpty())
-        {
-            this.openDashboard(dashboard);
-
-            dashboard.panels.setPanel(panel);
-            panel.pickData(text);
-            panel.names.list.setCurrentScroll(text);
-        }
-    }
-
-    private void openDashboard(GuiMappetDashboard dashboard)
-    {
-        if (!(this.mc.currentScreen instanceof GuiMappetDashboard))
-        {
-            this.mc.displayGuiScreen(dashboard);
-        }
-    }
-
     private void openPickSoundOverlay()
     {
         GuiResourceLocationOverlayPanel overlay = new GuiSoundOverlayPanel(this.mc, this::setSound).set(this.trigger.soundEvent);
@@ -109,11 +67,8 @@ public class GuiTriggerElement extends GuiElement
         ClientProxy.requestNames(ContentType.EVENT, (names) ->
         {
             Minecraft mc = Minecraft.getMinecraft();
-            GuiStringOverlayPanel overlay = new GuiStringOverlayPanel(mc, IKey.lang("mappet.gui.overlays.event"), names, (name) -> this.trigger.triggerEvent = name);
-            GuiIconElement edit = new GuiIconElement(mc, Icons.EDIT, (b) -> this.editEvent(overlay, this.trigger.triggerEvent));
+            GuiContentNamesOverlayPanel overlay = new GuiContentNamesOverlayPanel(mc, IKey.lang("mappet.gui.overlays.event"), ContentType.EVENT, names, (name) -> this.trigger.triggerEvent = name);
 
-            edit.flex().relative(overlay.close).x(-3).w(16).h(1F).anchorX(1F);
-            overlay.close.add(edit);
             overlay.set(this.trigger.triggerEvent);
             GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay, 0.5F, 0.7F);
         });
@@ -123,11 +78,9 @@ public class GuiTriggerElement extends GuiElement
     {
         ClientProxy.requestNames(ContentType.DIALOGUE, (names) ->
         {
-            GuiStringOverlayPanel overlay = new GuiStringOverlayPanel(Minecraft.getMinecraft(), IKey.lang("mappet.gui.overlays.dialogue"), names, (name) -> this.trigger.dialogue = name);
-            GuiIconElement edit = new GuiIconElement(mc, Icons.EDIT, (b) -> this.editDialogue(overlay, this.trigger.dialogue));
+            Minecraft mc = Minecraft.getMinecraft();
+            GuiContentNamesOverlayPanel overlay = new GuiContentNamesOverlayPanel(mc, IKey.lang("mappet.gui.overlays.dialogue"), ContentType.DIALOGUE, names, (name) -> this.trigger.dialogue = name);
 
-            edit.flex().relative(overlay.close).x(-3).w(16).h(1F).anchorX(1F);
-            overlay.close.add(edit);
             overlay.set(this.trigger.dialogue);
             GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay, 0.5F, 0.7F);
         });

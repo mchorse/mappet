@@ -32,7 +32,7 @@ public class GuiNpcMovementPanel extends GuiNpcPanel
 
         this.speed = new GuiTrackpadElement(mc, (v) -> this.state.speed = v.floatValue());
         this.canSwim = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.movement.can_swim"), (b) -> this.state.canSwim = b.isToggled());
-        this.hasPost = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.movement.has_post"), (b) -> this.state.hasPost = b.isToggled());
+        this.hasPost = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.movement.post"), (b) -> this.state.hasPost = b.isToggled());
         this.postPosition = new GuiBlockPosElement(mc, (pos) -> this.state.postPosition = pos);
         this.postRadius = new GuiTrackpadElement(mc, (v) -> this.state.postRadius = v.floatValue());
         this.patrolCirculate = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.movement.patrol_circulate"), (b) -> this.state.patrolCirculate = b.isToggled());
@@ -47,7 +47,7 @@ public class GuiNpcMovementPanel extends GuiNpcPanel
 
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.movement.speed")), this.speed);
         this.add(this.canSwim);
-        this.add(Elements.label(IKey.lang("mappet.gui.npcs.movement.post")).marginTop(12), this.hasPost, this.postPosition, this.postRadius);
+        this.add(this.hasPost.marginTop(12), this.postPosition, this.postRadius);
 
         GuiElement patrol = new GuiElement(mc);
 

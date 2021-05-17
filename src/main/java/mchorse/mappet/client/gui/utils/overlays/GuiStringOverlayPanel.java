@@ -51,7 +51,17 @@ public class GuiStringOverlayPanel extends GuiOverlayPanel
     {
         if (this.callback != null)
         {
-            this.callback.accept(this.strings.list.getIndex() == 0 ? "" : string);
+            this.callback.accept(this.getValue(string));
         }
+    }
+
+    protected String getValue()
+    {
+        return this.getValue(this.strings.list.getCurrentFirst());
+    }
+
+    protected String getValue(String string)
+    {
+        return this.strings.list.getIndex() == 0 ? "" : string;
     }
 }
