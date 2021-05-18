@@ -36,7 +36,10 @@ public class GuiTriggerElement extends GuiElement
     {
         super(mc);
 
-        this.command = new GuiTextElement(mc, 10000, (text) -> this.trigger.command = text);
+        this.command = GuiMappetUtils.fullWindowContext(
+            new GuiTextElement(mc, 10000, (text) -> this.trigger.command = text),
+            IKey.lang("mappet.gui.trigger.command")
+        );
         this.soundEvent = new GuiIconElement(mc, Icons.SOUND, (b) -> this.openPickSoundOverlay());
         this.soundEvent.tooltip(IKey.lang("mappet.gui.trigger.sound"));
         this.triggerEvent = new GuiIconElement(mc, Icons.FILE, (text) -> this.openEventsOverlay());

@@ -5,6 +5,7 @@ import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.quests.GuiObjectives;
 import mchorse.mappet.client.gui.quests.GuiRewards;
+import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mappet.client.gui.utils.GuiTriggerElement;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
@@ -38,7 +39,10 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
         super(mc, dashboard);
 
         this.title = new GuiTextElement(mc, 1000, (text) -> this.data.title = text);
-        this.story = new GuiTextElement(mc, 1000, (text) -> this.data.story = text);
+        this.story = GuiMappetUtils.fullWindowContext(
+            new GuiTextElement(mc, 1000, (text) -> this.data.story = text),
+            IKey.lang("mappet.gui.quests.description")
+        );
         this.cancelable = new GuiToggleElement(mc, IKey.lang("mappet.gui.quests.cancelable"), (b) -> this.data.cancelable = b.isToggled());
 
         this.accept = new GuiTriggerElement(mc);

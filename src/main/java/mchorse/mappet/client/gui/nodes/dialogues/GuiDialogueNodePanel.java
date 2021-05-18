@@ -2,6 +2,7 @@ package mchorse.mappet.client.gui.nodes.dialogues;
 
 import mchorse.mappet.api.dialogues.nodes.DialogueNode;
 import mchorse.mappet.client.gui.nodes.GuiEventNodePanel;
+import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mclib.client.gui.framework.elements.input.GuiColorElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.utils.Elements;
@@ -17,7 +18,10 @@ public class GuiDialogueNodePanel extends GuiEventNodePanel<DialogueNode>
     {
         super(mc);
 
-        this.text = new GuiTextElement(mc, 10000, (text) -> this.node.message.text = text);
+        this.text = GuiMappetUtils.fullWindowContext(
+            new GuiTextElement(mc, 10000, (text) -> this.node.message.text = text),
+            IKey.lang("mappet.gui.nodes.dialogue.content")
+        );
         this.color = new GuiColorElement(mc, (c) -> this.node.message.color = c);
 
         this.add(Elements.label(IKey.lang("mappet.gui.nodes.dialogue.content")).marginTop(12), this.text, this.color);
