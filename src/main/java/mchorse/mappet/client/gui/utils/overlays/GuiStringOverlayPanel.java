@@ -27,6 +27,7 @@ public class GuiStringOverlayPanel extends GuiOverlayPanel
 
         this.strings.list.add(strings);
         this.strings.list.sort();
+        this.strings.list.scroll.scrollSpeed *= 2;
 
         this.strings.list.getList().add(0, I18n.format("mappet.gui.none"));
         this.strings.list.update();

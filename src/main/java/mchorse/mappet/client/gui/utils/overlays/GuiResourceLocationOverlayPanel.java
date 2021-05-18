@@ -34,6 +34,7 @@ public abstract class GuiResourceLocationOverlayPanel extends GuiOverlayPanel
 
         this.rls.list.getList().add(0, I18n.format("mappet.gui.none"));
         this.rls.list.update();
+        this.rls.list.scroll.scrollSpeed *= 3;
 
         this.content.add(this.rls);
     }
