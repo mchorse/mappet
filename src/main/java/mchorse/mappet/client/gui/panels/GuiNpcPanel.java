@@ -5,106 +5,55 @@ import mchorse.mappet.api.npcs.NpcState;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.npc.GuiNpcEditor;
-import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
-import mchorse.mclib.client.gui.framework.elements.list.GuiStringListElement;
-import mchorse.mclib.client.gui.framework.elements.modals.GuiConfirmModal;
-import mchorse.mclib.client.gui.framework.elements.modals.GuiModal;
-import mchorse.mclib.client.gui.framework.elements.modals.GuiPromptModal;
+import mchorse.mappet.client.gui.npc.utils.GuiNpcStatesOverlayPanel;
+import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
+import mchorse.mclib.client.gui.framework.GuiBase;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.Icons;
-import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.mclib.utils.ColorUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 
 public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
 {
-    public GuiStringListElement states;
+    public GuiIconElement states;
     public GuiNpcEditor npcEditor;
+
+    private String state = "";
 
     public GuiNpcPanel(Minecraft mc, GuiMappetDashboard dashboard)
     {
         super(mc, dashboard);
 
-        this.states = new GuiStringListElement(mc, (list) -> this.pickState(list.get(0), false));
-        this.states.context(() ->
-        {
-            GuiSimpleContextMenu menu = new GuiSimpleContextMenu(mc);
-
-            menu.action(Icons.ADD, IKey.lang("mappet.gui.npcs.context.add"), this::addState);
-
-            if (!this.states.isDeselected())
-            {
-                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.npcs.context.remove"), this::removeState);
-            }
-
-            return menu;
-        });
-        this.states.flex().relative(this).w(120).h(1F);
+        this.states = new GuiIconElement(mc, Icons.MORE, (b) -> this.openNpcStates());
+        this.states.flex().relative(this);
 
         this.npcEditor = new GuiNpcEditor(mc, false, () -> this.inventory, this.dashboard::getMorphMenu);
-        this.npcEditor.flex().relative(this).x(120).wTo(this.editor.area, 1F).h(1F);
+        this.npcEditor.flex().relative(this).y(10).wTo(this.editor.area, 1F).h(1F, -10);
         this.npcEditor.setVisible(false);
 
         this.toggleSidebar.removeFromParent();
-        this.add(this.states, this.npcEditor, this.toggleSidebar, this.inventory);
+        this.add(this.npcEditor, this.states, this.toggleSidebar, this.inventory);
 
         this.fill("", null);
     }
 
-    /* Context menu modals */
-
-    private void addState()
+    private void openNpcStates()
     {
-        GuiModal.addFullModal(this.states, () -> new GuiPromptModal(this.mc, IKey.lang("mappet.gui.npcs.modals.add"), this::addState));
+        GuiNpcStatesOverlayPanel overlay = new GuiNpcStatesOverlayPanel(this.mc, this.data, this::pickState);
+
+        GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay.set(this.state), 0.4F, 0.6F);
     }
 
-    private void addState(String name)
+    private void pickState(String name)
     {
-        if (!this.data.states.containsKey(name))
-        {
-            NpcState state = new NpcState();
+        this.state = name;
 
-            this.data.states.put(name, state);
-            this.states.add(name);
-            this.states.sort();
-
-            this.pickState(name, true);
-        }
-    }
-
-    private void removeState()
-    {
-        GuiModal.addFullModal(this.states, () -> new GuiConfirmModal(this.mc, IKey.lang("mappet.gui.npcs.modals.remove"), this::removeState));
-    }
-
-    private void removeState(boolean confirm)
-    {
-        if (confirm)
-        {
-            int index = this.states.getIndex();
-            String key = this.states.getCurrentFirst();
-
-            this.states.remove(key);
-            this.data.states.remove(key);
-            this.states.setIndex(Math.max(index - 1, 0));
-
-            String state = this.states.isDeselected() ? null : this.states.getList().get(this.states.getIndex());
-
-            this.pickState(state, true);
-        }
-    }
-
-    private void pickState(String name, boolean select)
-    {
         NpcState state = this.data.states.get(name);
 
         this.npcEditor.setVisible(state != null);
-
-        if (select)
-        {
-            this.states.setCurrentScroll(name);
-        }
 
         if (state != null)
         {
@@ -124,11 +73,14 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
 
         if (data != null)
         {
-            this.states.clear();
-            this.states.add(data.states.keySet());
-            this.states.sort();
+            String key = "default";
 
-            this.pickState(data.states.isEmpty() ? null : this.states.getList().get(0), true);
+            if (!data.states.containsKey(key) && !data.states.isEmpty())
+            {
+                key = data.states.keySet().iterator().next();
+            }
+
+            this.pickState(key);
         }
     }
 
@@ -149,7 +101,7 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
     {
         if (this.npcEditor.isVisible())
         {
-            this.npcEditor.area.draw(0x66000000);
+            GuiDraw.drawTextBackground(this.font, this.state, this.states.area.ex() + 3, this.states.area.my() - 4, 0xffffff, ColorUtils.HALF_BLACK, 2);
         }
         else
         {

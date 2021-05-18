@@ -291,6 +291,7 @@ mappet.gui.npcs.drops.title=NPC drops
 mappet.gui.npcs.drops.context.remove=Remove drop
 mappet.gui.npcs.modals.add=Type in a name for a new NPC state:
 mappet.gui.npcs.modals.remove=Are you sure you want to remove this NPC state?
+mappet.gui.npcs.overlay.title=NPC states
 mappet.gui.npcs.context.add=Add state
 mappet.gui.npcs.context.remove=Remove state
 mappet.gui.npcs.info.empty=Select or create an NPC in the list on the right, to start editing...

@@ -291,6 +291,7 @@ mappet.gui.npcs.drops.title=Дропы NPC
 mappet.gui.npcs.drops.context.remove=Удалить дроп
 mappet.gui.npcs.modals.add=Впишите название для нового состояния NPC:
 mappet.gui.npcs.modals.remove=Уверены, что хотите удалить это состояние NPC?
+mappet.gui.npcs.overlay.title=NPC states
 mappet.gui.npcs.context.add=Добавить состояние
 mappet.gui.npcs.context.remove=Удалить состояние
 mappet.gui.npcs.info.empty=Select or create an NPC in the list on the right, to start editing...

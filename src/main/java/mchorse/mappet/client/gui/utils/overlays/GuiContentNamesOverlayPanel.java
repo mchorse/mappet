@@ -24,9 +24,9 @@ public class GuiContentNamesOverlayPanel extends GuiStringOverlayPanel
         this.type = type;
 
         this.edit = new GuiIconElement(mc, Icons.EDIT, (b) -> this.edit(this.getValue()));
-        this.edit.flex().relative(this.close).x(-3).w(16).h(1F).anchorX(1F);
+        this.edit.flex().wh(16, 16);
 
-        this.close.add(this.edit);
+        this.icons.add(this.edit);
     }
 
     private void edit(String text)

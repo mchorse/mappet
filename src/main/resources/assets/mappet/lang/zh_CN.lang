@@ -291,6 +291,7 @@ mappet.gui.npcs.drops.title=NPC 掉落
 mappet.gui.npcs.drops.context.remove=移除掉落
 mappet.gui.npcs.modals.add=输入新 NPC 状态的名称：
 mappet.gui.npcs.modals.remove=您确定要移除该 NPC 状态吗？
+mappet.gui.npcs.overlay.title=NPC states
 mappet.gui.npcs.context.add=添加状态
 mappet.gui.npcs.context.remove=移除状态
 mappet.gui.npcs.info.empty=在右侧的列表中选择或创建一个 NPC 以开始编辑...

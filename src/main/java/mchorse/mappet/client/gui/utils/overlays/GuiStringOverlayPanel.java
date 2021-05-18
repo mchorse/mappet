@@ -14,11 +14,18 @@ public class GuiStringOverlayPanel extends GuiOverlayPanel
     public GuiStringSearchListElement strings;
 
     private Consumer<String> callback;
+    private boolean none;
 
     public GuiStringOverlayPanel(Minecraft mc, IKey title, Collection<String> strings, Consumer<String> callback)
     {
+        this(mc, title, true, strings, callback);
+    }
+
+    public GuiStringOverlayPanel(Minecraft mc, IKey title, boolean none, Collection<String> strings, Consumer<String> callback)
+    {
         super(mc, title);
 
+        this.none = none;
         this.callback = callback;
 
         this.strings = new GuiStringSearchListElement(mc, (list) -> this.accept(list.get(0)));
@@ -29,8 +36,11 @@ public class GuiStringOverlayPanel extends GuiOverlayPanel
         this.strings.list.sort();
         this.strings.list.scroll.scrollSpeed *= 2;
 
-        this.strings.list.getList().add(0, I18n.format("mappet.gui.none"));
-        this.strings.list.update();
+        if (this.none)
+        {
+            this.strings.list.getList().add(0, I18n.format("mappet.gui.none"));
+            this.strings.list.update();
+        }
 
         this.content.add(this.strings);
     }
@@ -40,7 +50,7 @@ public class GuiStringOverlayPanel extends GuiOverlayPanel
         this.strings.filter("", true);
         this.strings.list.setCurrentScroll(string);
 
-        if (this.strings.list.isDeselected())
+        if (this.none && this.strings.list.isDeselected())
         {
             this.strings.list.setIndex(0);
         }
@@ -48,7 +58,7 @@ public class GuiStringOverlayPanel extends GuiOverlayPanel
         return this;
     }
 
-    private void accept(String string)
+    protected void accept(String string)
     {
         if (this.callback != null)
         {
@@ -63,6 +73,11 @@ public class GuiStringOverlayPanel extends GuiOverlayPanel
 
     protected String getValue(String string)
     {
+        if (!this.none)
+        {
+            return string;
+        }
+
         return this.strings.list.getIndex() == 0 ? "" : string;
     }
 }

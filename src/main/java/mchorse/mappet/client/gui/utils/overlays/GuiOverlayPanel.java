@@ -14,6 +14,7 @@ import net.minecraft.client.Minecraft;
 public class GuiOverlayPanel extends GuiElement
 {
     public GuiLabel title;
+    public GuiElement icons;
     public GuiIconElement close;
     public GuiElement content;
 
@@ -24,12 +25,16 @@ public class GuiOverlayPanel extends GuiElement
         this.title = Elements.label(title);
         this.close = new GuiIconElement(mc, Icons.CLOSE, (b) -> this.close());
         this.content = new GuiElement(mc);
+        this.icons = new GuiElement(mc);
 
         this.title.flex().relative(this).xy(10, 10).w(0.5F);
-        this.close.flex().relative(this).x(1F, -10).y(10).wh(10, 8).anchorX(1F);
+        this.close.flex().wh(16, 16);
+        this.icons.flex().relative(this).x(1F, -7).y(6).anchorX(1F).row(0).reverse().resize().width(16).height(16);
         this.content.flex().relative(this).xy(10, 28).w(1F, -20).h(1F, -28);
 
-        this.add(this.title, this.close, this.content);
+        this.icons.add(this.close);
+
+        this.add(this.title, this.icons, this.content);
     }
 
     public void close()

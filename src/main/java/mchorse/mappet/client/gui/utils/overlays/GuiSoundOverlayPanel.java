@@ -22,8 +22,8 @@ public class GuiSoundOverlayPanel extends GuiResourceLocationOverlayPanel
 
         GuiIconElement edit = new GuiIconElement(mc, Icons.SOUND, (b) -> this.playSound());
 
-        edit.flex().relative(this.close).x(-3).w(16).h(1F).anchorX(1F);
-        this.close.add(edit);
+        edit.flex().wh(16, 16);
+        this.icons.add(edit);
     }
 
     private void playSound()
