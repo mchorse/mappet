@@ -66,8 +66,7 @@ public class GuiTriggerElement extends GuiElement
     {
         ClientProxy.requestNames(ContentType.EVENT, (names) ->
         {
-            Minecraft mc = Minecraft.getMinecraft();
-            GuiContentNamesOverlayPanel overlay = new GuiContentNamesOverlayPanel(mc, IKey.lang("mappet.gui.overlays.event"), ContentType.EVENT, names, (name) -> this.trigger.triggerEvent = name);
+            GuiContentNamesOverlayPanel overlay = new GuiContentNamesOverlayPanel(this.mc, IKey.lang("mappet.gui.overlays.event"), ContentType.EVENT, names, this::setEvent);
 
             overlay.set(this.trigger.triggerEvent);
             GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay, 0.5F, 0.7F);
@@ -78,8 +77,7 @@ public class GuiTriggerElement extends GuiElement
     {
         ClientProxy.requestNames(ContentType.DIALOGUE, (names) ->
         {
-            Minecraft mc = Minecraft.getMinecraft();
-            GuiContentNamesOverlayPanel overlay = new GuiContentNamesOverlayPanel(mc, IKey.lang("mappet.gui.overlays.dialogue"), ContentType.DIALOGUE, names, (name) -> this.trigger.dialogue = name);
+            GuiContentNamesOverlayPanel overlay = new GuiContentNamesOverlayPanel(this.mc, IKey.lang("mappet.gui.overlays.dialogue"), ContentType.DIALOGUE, names, this::setDialogue);
 
             overlay.set(this.trigger.dialogue);
             GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay, 0.5F, 0.7F);
@@ -89,6 +87,19 @@ public class GuiTriggerElement extends GuiElement
     private void setSound(ResourceLocation location)
     {
         this.trigger.soundEvent = location == null ? "" : location.toString();
+        this.updateColors();
+    }
+
+    private void setEvent(String name)
+    {
+        this.trigger.triggerEvent = name;
+        this.updateColors();
+    }
+
+    private void setDialogue(String name)
+    {
+        this.trigger.dialogue = name;
+        this.updateColors();
     }
 
     public Trigger get()
@@ -103,7 +114,18 @@ public class GuiTriggerElement extends GuiElement
         if (trigger != null)
         {
             this.command.setText(trigger.command);
+            this.updateColors();
         }
+    }
+
+    private void updateColors()
+    {
+        int active = 0xffffffff;
+        int inactive = 0xaa888888;
+
+        this.soundEvent.iconColor(trigger.soundEvent.isEmpty() ? inactive : active);
+        this.triggerEvent.iconColor(trigger.triggerEvent.isEmpty() ? inactive : active);
+        this.dialogue.iconColor(trigger.dialogue.isEmpty() ? inactive : active);
     }
 
     @Override
