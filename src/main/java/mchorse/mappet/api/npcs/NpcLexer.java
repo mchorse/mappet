@@ -18,6 +18,7 @@ import java.util.Set;
 public class NpcLexer
 {
     public static final List<String> PROPERTIES = ImmutableList.of(
+        "id", "unique", "path_distance",
         "max_health", "health", "regen_delay", "regen_frequency",
         "damage", "can_ranged", "can_fall_damage", "can_get_burned", "invincible", "killable",
         "speed", "can_walk", "can_swim", "can_fly", "has_post", "post", "post_radius", "fallback", "patrol_circulate", "patrol", "follow",

@@ -25,16 +25,18 @@ public class GuiNpcEditor extends GuiScrollElement
 {
     private NpcState state;
 
+    private GuiNpcMetaPanel meta;
     private GuiNpcGeneralPanel general;
     private GuiNpcHealthPanel health;
     private GuiNpcDamagePanel damage;
     private GuiNpcMovementPanel movement;
     private GuiNpcBehaviorPanel behavior;
 
-    public GuiNpcEditor(Minecraft mc, Supplier<GuiInventoryElement> inventory, Supplier<GuiCreativeMorphsMenu> morphs)
+    public GuiNpcEditor(Minecraft mc, boolean id, Supplier<GuiInventoryElement> inventory, Supplier<GuiCreativeMorphsMenu> morphs)
     {
         super(mc, ScrollDirection.HORIZONTAL);
 
+        this.meta = new GuiNpcMetaPanel(mc, id);
         this.general = new GuiNpcGeneralPanel(mc, inventory, morphs);
         this.health = new GuiNpcHealthPanel(mc);
         this.damage = new GuiNpcDamagePanel(mc);
@@ -42,7 +44,9 @@ public class GuiNpcEditor extends GuiScrollElement
         this.behavior = new GuiNpcBehaviorPanel(mc);
 
         this.flex().column(5).scroll().width(180).padding(15);
-        this.add(Elements.label(IKey.lang("mappet.gui.npcs.general.title")).background().marginBottom(6));
+        this.add(Elements.label(IKey.lang("mappet.gui.npcs.meta.title")).background().marginBottom(6));
+        this.addChildren(this.meta);
+        this.add(Elements.label(IKey.lang("mappet.gui.npcs.general.title")).background().marginBottom(6).marginTop(24));
         this.addChildren(this.general);
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.health.title")).background().marginBottom(6).marginTop(24));
         this.addChildren(this.health);
@@ -73,6 +77,7 @@ public class GuiNpcEditor extends GuiScrollElement
     {
         this.state = state;
 
+        this.meta.set(state);
         this.general.set(state);
         this.health.set(state);
         this.damage.set(state);

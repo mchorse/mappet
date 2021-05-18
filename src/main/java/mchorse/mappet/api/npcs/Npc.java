@@ -9,8 +9,6 @@ import java.util.Map;
 
 public class Npc extends AbstractData
 {
-    public boolean unique;
-    public double pathDistance = 64;
     public Map<String, NpcState> states = new HashMap<String, NpcState>();
 
     @Override
@@ -18,16 +16,6 @@ public class Npc extends AbstractData
     {
         NBTTagCompound tag = new NBTTagCompound();
         NBTTagCompound states = new NBTTagCompound();
-
-        if (this.unique)
-        {
-            tag.setBoolean("Unique", this.unique);
-        }
-
-        if (this.pathDistance > 0 && this.pathDistance != 64)
-        {
-            tag.setDouble("PathDistance", this.pathDistance);
-        }
 
         for (Map.Entry<String, NpcState> entry : this.states.entrySet())
         {
@@ -50,16 +38,6 @@ public class Npc extends AbstractData
     @Override
     public void deserializeNBT(NBTTagCompound tag)
     {
-        if (tag.hasKey("Unique"))
-        {
-            this.unique = tag.getBoolean("Unique");
-        }
-
-        if (tag.hasKey("PathDistance"))
-        {
-            this.pathDistance = tag.getDouble("PathDistance");
-        }
-
         if (tag.hasKey("States", Constants.NBT.TAG_COMPOUND))
         {
             NBTTagCompound states = tag.getCompoundTag("States");

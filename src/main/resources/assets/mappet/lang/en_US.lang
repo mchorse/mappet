@@ -251,8 +251,10 @@ mappet.gui.nodes.info.empty_chain=Select or create a quest chain in the list on 
 mappet.gui.nodes.info.empty_main=You have to mark the entry node!
 mappet.gui.nodes.info.empty_nodes=Right click here, and add a node, to start working with nodes!
 
-mappet.gui.npcs.unique=Unique
-mappet.gui.npcs.path_distance=Path finding distance
+mappet.gui.npcs.meta.title=Meta
+mappet.gui.npcs.meta.id=NPC ID
+mappet.gui.npcs.meta.unique=Unique
+mappet.gui.npcs.meta.path_distance=Path finding distance
 mappet.gui.npcs.behavior.title=Behavior
 mappet.gui.npcs.behavior.look_at_player=Look at player
 mappet.gui.npcs.behavior.look_around=Look around

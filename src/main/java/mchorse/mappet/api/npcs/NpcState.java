@@ -16,6 +16,20 @@ import java.util.List;
 
 public class NpcState implements INBTSerializable<NBTTagCompound>
 {
+    /* Meta */
+
+    public String id = "";
+
+    /**
+     * Unique
+     */
+    public boolean unique;
+
+    /**
+     * Path distance
+     */
+    public float pathDistance = 32;
+
     /* Health */
 
     /**
@@ -205,8 +219,21 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
      */
     public boolean edit(String property, String value)
     {
+        /* Meta */
+        if (property.equals("id"))
+        {
+            this.id = value;
+        }
+        else if (property.equals("unique"))
+        {
+            this.unique = Boolean.parseBoolean(value);
+        }
+        else if (property.equals("path_distance"))
+        {
+            this.pathDistance = Float.parseFloat(value);
+        }
         /* Health */
-        if (property.equals("max_health"))
+        else if (property.equals("max_health"))
         {
             this.maxHealth = Float.parseFloat(value);
         }
@@ -355,6 +382,11 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
             return tag;
         }
 
+        /* Meta */
+        if (all || options.contains("id")) tag.setString("Id", this.id);
+        if (all || options.contains("unique")) tag.setBoolean("Unique", this.unique);
+        if (all || options.contains("path_distance")) tag.setFloat("PathDistance", this.pathDistance);
+
         /* Health */
         if (all || options.contains("max_health")) tag.setFloat("MaxHealth", this.maxHealth);
         if (all || options.contains("health")) tag.setFloat("Health", this.health);
@@ -433,6 +465,11 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     @Override
     public void deserializeNBT(NBTTagCompound tag)
     {
+        /* Meta */
+        if (tag.hasKey("Id")) this.id = tag.getString("Id");
+        if (tag.hasKey("Unique")) this.unique = tag.getBoolean("Unique");
+        if (tag.hasKey("PathDistance")) this.pathDistance = tag.getFloat("PathDistance");
+
         /* Health */
         if (tag.hasKey("MaxHealth")) this.maxHealth = tag.getFloat("MaxHealth");
         if (tag.hasKey("Health")) this.health = tag.getFloat("Health");

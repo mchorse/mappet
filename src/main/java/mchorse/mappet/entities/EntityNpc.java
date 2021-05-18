@@ -53,9 +53,6 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
     private Morph morph = new Morph();
     private NpcState state = new NpcState();
-    private String npcId = "";
-    private boolean unique;
-    private double pathDistance = 16;
 
     private int lastDamageTime;
     private boolean unkillableFailsafe = true;
@@ -174,19 +171,17 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
     public void setNpc(Npc npc, NpcState state)
     {
-        this.npcId = npc.getId();
-        this.unique = npc.unique;
-        this.pathDistance = npc.pathDistance;
-
-        this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(this.pathDistance);
-        this.navigator = this.createNavigator(this.world);
-
         this.setState(state, false);
+
+        if (this.state.id.isEmpty())
+        {
+            this.state.id = npc.getId();
+        }
     }
 
     public String getId()
     {
-        return this.npcId;
+        return this.state.id;
     }
 
     public NpcState getState()
@@ -198,6 +193,10 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     {
         this.state = new NpcState();
         this.state.deserializeNBT(state.serializeNBT());
+
+        /* Set */
+        this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(this.state.pathDistance);
+        this.navigator = this.createNavigator(this.world);
 
         /* Set health */
         double max = this.getMaxHealth();
@@ -387,7 +386,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     @Override
     protected boolean canDespawn()
     {
-        return this.unique;
+        return this.state.unique;
     }
 
     public void healthFailsafe()
@@ -433,15 +432,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     {
         super.writeEntityToNBT(tag);
 
-        if (!this.morph.isEmpty())
-        {
-            tag.setTag("Morph", this.morph.get().toNBT());
-        }
-
-        tag.setString("NpcId", this.npcId);
         tag.setTag("State", this.state.serializeNBT());
-        tag.setBoolean("Unique", this.unique);
-        tag.setDouble("PathDistance", this.pathDistance);
     }
 
     @Override
@@ -449,23 +440,10 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     {
         super.readEntityFromNBT(tag);
 
-        if (tag.hasKey("Morph"))
-        {
-            this.morph.fromNBT(tag.getCompoundTag("Morph"));
-        }
-
         NpcState state = new NpcState();
 
         state.deserializeNBT(tag.getCompoundTag("State"));
-
-        this.npcId = tag.getString("NpcId");
         this.setState(state, false);
-        this.unique = tag.getBoolean("Unique");
-
-        if (tag.hasKey("PathDistance"))
-        {
-            this.pathDistance = tag.getDouble("PathDistance");
-        }
     }
 
     /* Network (de)serialization */
