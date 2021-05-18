@@ -2,6 +2,7 @@ package mchorse.mappet.api.crafting;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.expressions.ExpressionManager;
+import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.Trigger;
 import mchorse.mappet.utils.InventoryUtils;
 import net.minecraft.entity.item.EntityItem;
@@ -36,6 +37,16 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
 
     public boolean craft(EntityPlayer player)
     {
+        return this.craft(player, null);
+    }
+
+    public boolean craft(EntityPlayer player, DataContext context)
+    {
+        if (context == null)
+        {
+            context = new DataContext(player);
+        }
+
         if (!this.isPlayerHasAllItems(player))
         {
             return false;
@@ -51,7 +62,7 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
             this.addOrDrop(player, stack.copy());
         }
 
-        this.trigger.trigger(player);
+        this.trigger.trigger(context);
 
         return true;
     }

@@ -1,5 +1,6 @@
 package mchorse.mappet.network.server.crafting;
 
+import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.network.Dispatcher;
@@ -16,7 +17,14 @@ public class ServerHandlerCraft extends ServerMessageHandler<PacketCraft>
 
         if (character != null && character.getCraftingTable() != null)
         {
-            character.getCraftingTable().recipes.get(message.index).craft(player);
+            DataContext context = null;
+
+            if (character.getDialogueContext() != null)
+            {
+                context = character.getDialogueContext().data;
+            }
+
+            character.getCraftingTable().recipes.get(message.index).craft(player, context);
 
             Dispatcher.sendTo(message, player);
         }
