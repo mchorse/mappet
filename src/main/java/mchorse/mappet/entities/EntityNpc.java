@@ -405,18 +405,23 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
             {
                 if (player.getHeldItem(hand).getItem() == Mappet.npcTool)
                 {
-                    Dispatcher.sendTo(new PacketNpcState(this.getEntityId(), this.state.serializeNBT()), (EntityPlayerMP) player);
+                    if (player.isSneaking())
+                    {
+                        this.setDead();
+                    }
+                    else
+                    {
+                        Dispatcher.sendTo(new PacketNpcState(this.getEntityId(), this.state.serializeNBT()), (EntityPlayerMP) player);
+                    }
 
                     return true;
                 }
 
                 this.state.triggerInteract.trigger(new DataContext(this, player));
             }
-
-            return !this.state.triggerInteract.isEmpty();
         }
 
-        return false;
+        return true;
     }
 
     /* NBT (de)serialization */
