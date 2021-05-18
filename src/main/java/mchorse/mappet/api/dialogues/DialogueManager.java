@@ -59,7 +59,7 @@ public class DialogueManager extends BaseManager<Dialogue>
             character.setDialogue(dialogue, context);
             Mappet.dialogues.execute(dialogue, context);
 
-            if (context.reactionNode != null && (!context.replyNodes.isEmpty() || context.quest != null || context.crafting != null))
+            if (context.reactionNode != null)
             {
                 this.handleContext(player, dialogue, context);
             }

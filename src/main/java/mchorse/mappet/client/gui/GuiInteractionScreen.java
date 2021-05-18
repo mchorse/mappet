@@ -192,23 +192,15 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
 
     public void pickReply(PacketDialogueFragment fragment)
     {
+        this.setFragment(fragment);
+
         if (fragment.hasQuests)
         {
-            this.setFragment(fragment);
             this.setQuests(fragment.quests);
         }
         else if (fragment.table != null)
         {
-            this.setFragment(fragment);
             this.setCraftingTable(fragment.table);
-        }
-        else if (fragment.replies.isEmpty())
-        {
-            Minecraft.getMinecraft().displayGuiScreen(null);
-        }
-        else
-        {
-            this.setFragment(fragment);
         }
     }
 
@@ -304,11 +296,18 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
 
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        int y = this.table != null ? this.crafting.area.y - 1 : (this.questInfos != null ? this.quest.area.y - 1 : this.replies.area.y - 1);
+        if (this.questInfos != null || this.table != null || !this.replies.getChildren().isEmpty())
+        {
+            int y = this.table != null ? this.crafting.area.y - 1 : (this.questInfos != null ? this.quest.area.y - 1 : this.replies.area.y - 1);
 
-        GlStateManager.color(1F, 1F, 1F, 1F);
-        GuiDraw.drawHorizontalGradientRect(this.replies.area.x - 20, y, this.replies.area.mx(), y + 1, 0, 0x88ffffff);
-        GuiDraw.drawHorizontalGradientRect(this.replies.area.mx(), y, this.replies.area.ex() + 20, y + 1, 0x88ffffff, 0);
+            GlStateManager.color(1F, 1F, 1F, 1F);
+            GuiDraw.drawHorizontalGradientRect(this.replies.area.x - 20, y, this.replies.area.mx(), y + 1, 0, 0x88ffffff);
+            GuiDraw.drawHorizontalGradientRect(this.replies.area.mx(), y, this.replies.area.ex() + 20, y + 1, 0x88ffffff, 0);
+        }
+        else
+        {
+            this.drawCenteredString(this.fontRenderer, I18n.format("mappet.gui.interaction.info.no_replies"), this.replies.area.mx(), this.replies.area.my(), 0x333333);
+        }
 
         if (this.questInfos != null && this.quests.getList().isEmpty())
         {
