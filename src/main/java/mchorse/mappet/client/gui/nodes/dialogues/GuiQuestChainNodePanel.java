@@ -1,30 +1,37 @@
 package mchorse.mappet.client.gui.nodes.dialogues;
 
+import mchorse.mappet.ClientProxy;
 import mchorse.mappet.api.dialogues.nodes.QuestChainNode;
+import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.nodes.GuiEventNodePanel;
-import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
-import mchorse.mclib.client.gui.utils.Elements;
+import mchorse.mappet.client.gui.utils.overlays.GuiContentNamesOverlayPanel;
+import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
+import mchorse.mclib.client.gui.framework.GuiBase;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 
 public class GuiQuestChainNodePanel extends GuiEventNodePanel<QuestChainNode>
 {
-    public GuiTextElement questChain;
+    public GuiButtonElement questChain;
 
     public GuiQuestChainNodePanel(Minecraft mc)
     {
         super(mc);
 
-        this.questChain = new GuiTextElement(mc, 10000, (text) -> this.node.chain = text);
+        this.questChain = new GuiButtonElement(mc, IKey.lang("mappet.gui.overlays.chain"), (b) -> this.openQuestChains());
 
-        this.add(Elements.label(IKey.lang("mappet.gui.nodes.dialogue.quest_chain")).marginTop(12), this.questChain);
+        this.add(this.questChain);
     }
 
-    @Override
-    public void set(QuestChainNode node)
+    private void openQuestChains()
     {
-        super.set(node);
+        ClientProxy.requestNames(ContentType.CHAINS, (names) ->
+        {
+            GuiContentNamesOverlayPanel overlay = new GuiContentNamesOverlayPanel(this.mc, IKey.lang("mappet.gui.overlays.chain"), ContentType.CHAINS, names, (name) -> this.node.chain = name);
 
-        this.questChain.setText(node.chain);
+            overlay.set(this.node.chain);
+            GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay, 0.5F, 0.7F);
+        });
     }
 }

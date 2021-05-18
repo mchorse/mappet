@@ -46,8 +46,7 @@ public class GuiNpcGeneralPanel extends GuiNpcPanel
     {
         ClientProxy.requestNames(ContentType.FACTION, (names) ->
         {
-            Minecraft mc = Minecraft.getMinecraft();
-            GuiContentNamesOverlayPanel overlay = new GuiContentNamesOverlayPanel(mc, IKey.lang("mappet.gui.overlays.faction"), ContentType.FACTION, names, (name) -> this.state.faction = name);
+            GuiContentNamesOverlayPanel overlay = new GuiContentNamesOverlayPanel(this.mc, IKey.lang("mappet.gui.overlays.faction"), ContentType.FACTION, names, (name) -> this.state.faction = name);
 
             overlay.set(this.state.faction);
             GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay, 0.5F, 0.7F);
