@@ -246,7 +246,9 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         {
             try
             {
-                return this.world.getPlayerEntityByUUID(UUID.fromString(this.state.follow));
+                EntityPlayer player = this.world.getPlayerEntityByName(this.state.follow);
+
+                return player == null ? this.world.getPlayerEntityByUUID(UUID.fromString(this.state.follow)) : player;
             }
             catch (Exception e)
             {}
