@@ -6,6 +6,7 @@ import mchorse.mappet.api.npcs.NpcState;
 import mchorse.mappet.entities.EntityNpc;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.npc.PacketNpcList;
+import mchorse.mappet.network.common.npc.PacketNpcState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -44,7 +45,7 @@ public class ItemNpcTool extends Item
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
-        if (!worldIn.isRemote && playerIn.isSneaking() && this.openNpcTool(playerIn, playerIn.getHeldItem(handIn)))
+        if (!worldIn.isRemote && this.openNpcTool(playerIn, playerIn.getHeldItem(handIn)))
         {
             return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
         }
@@ -59,11 +60,6 @@ public class ItemNpcTool extends Item
 
         if (!worldIn.isRemote)
         {
-            if (player.isSneaking() && this.openNpcTool(player, stack))
-            {
-                return EnumActionResult.SUCCESS;
-            }
-
             NBTTagCompound tag = stack.getTagCompound();
 
             if (tag != null)
@@ -89,6 +85,11 @@ public class ItemNpcTool extends Item
 
                     entity.world.spawnEntity(entity);
                     entity.initialize();
+
+                    if (!player.isSneaking())
+                    {
+                        Dispatcher.sendTo(new PacketNpcState(entity.getEntityId(), entity.getState().serializeNBT()), (EntityPlayerMP) player);
+                    }
                 }
             }
         }
