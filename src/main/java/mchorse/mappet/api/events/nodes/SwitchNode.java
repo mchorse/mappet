@@ -3,21 +3,25 @@ package mchorse.mappet.api.events.nodes;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.events.EventContext;
 import mchorse.mclib.math.IValue;
+import net.minecraft.nbt.NBTTagCompound;
 
-public class SwitchNode extends ConditionNode
+public class SwitchNode extends EventNode
 {
+    public String expression = "";
+
     public SwitchNode()
     {}
-
-    public SwitchNode(String expression)
-    {
-        super(expression);
-    }
 
     @Override
     public int getColor()
     {
         return 0xf1c40f;
+    }
+
+    @Override
+    protected String getDisplayTitle()
+    {
+        return this.expression;
     }
 
     @Override
@@ -37,5 +41,29 @@ public class SwitchNode extends ConditionNode
         context.log("Switching \"" + this.expression + "\" could not be executed!");
 
         return this.booleanToExecutionCode(false);
+    }
+
+    @Override
+    public NBTTagCompound serializeNBT()
+    {
+        NBTTagCompound tag = super.serializeNBT();
+
+        if (!this.expression.isEmpty())
+        {
+            tag.setString("Expression", this.expression);
+        }
+
+        return tag;
+    }
+
+    @Override
+    public void deserializeNBT(NBTTagCompound tag)
+    {
+        super.deserializeNBT(tag);
+
+        if (tag.hasKey("Expression"))
+        {
+            this.expression = tag.getString("Expression");
+        }
     }
 }
