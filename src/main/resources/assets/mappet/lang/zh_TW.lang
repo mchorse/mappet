@@ -128,6 +128,9 @@ mappet.gui.trigger.sound=聲音事件
 mappet.gui.trigger.event=觸發事件
 mappet.gui.trigger.command=命令
 mappet.gui.trigger.dialogue=對話
+mappet.gui.checker.edit=Edit condition...
+mappet.gui.checker.expression=Expression
+mappet.gui.checker.toggle=Toggle between expression and condition editor
 
 mappet.gui.panels.quests=任務
 mappet.gui.panels.crafting=合成表
@@ -222,7 +225,6 @@ mappet.gui.nodes.event.binary=二進制
 mappet.gui.nodes.event.binary_tooltip=啟用後，即可允許將執行限制在前兩個節點，作為 if-else 語句，而非默認的全或無執行。
 mappet.gui.nodes.event.command=命令
 mappet.gui.nodes.event.condition=條件
-mappet.gui.nodes.event.edit_condition=Edit condition...
 mappet.gui.nodes.event.timer=計時器
 mappet.gui.nodes.event,hotkeys.title=Event hotkey editor
 mappet.gui.nodes.event,hotkeys.key=Keybind
@@ -320,12 +322,20 @@ mappet.gui.factions.info.empty=在右側的列表中選擇或創建一個陣營�
 
 mappet.gui.conditions.title=Condition editor
 mappet.gui.conditions.context.add=Add a condition
+mappet.gui.conditions.context.add_condition=Add %s condition
 mappet.gui.conditions.context.remove=Remove condition
+mappet.gui.conditions.state.id=State key
+mappet.gui.conditions.target=Target
+mappet.gui.conditions.comparison=Comparison
+mappet.gui.conditions.value=Value
 mappet.gui.conditions.world_time.check=Time condition
 mappet.gui.conditions.world_time.range=Range
 mappet.gui.conditions.world_time.types.day=Is day?
 mappet.gui.conditions.world_time.types.night=Is night?
 mappet.gui.conditions.world_time.types.range=In between...
+mappet.gui.conditions.targets.global=Global
+mappet.gui.conditions.targets.subject=Subject
+mappet.gui.conditions.targets.object=Object
 
 # GUI enums
 

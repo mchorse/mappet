@@ -10,6 +10,7 @@ import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.mclib.utils.Direction;
 import net.minecraft.client.Minecraft;
 
 public class GuiCheckerElement extends GuiElement
@@ -31,10 +32,11 @@ public class GuiCheckerElement extends GuiElement
 
         this.expression = GuiMappetUtils.fullWindowContext(
             new GuiTextElement(mc, 10000, (text) -> this.checker.expression = text),
-            IKey.lang("mappet.gui.nodes.event.condition")
+            IKey.lang("mappet.gui.checker.expression")
         );
-        this.toggle = new GuiIconElement(mc, Icons.REVERSE, this::toggleMode);
-        this.condition = new GuiButtonElement(mc, IKey.lang("mappet.gui.nodes.event.edit_condition"), this::openConditionEditor);
+        this.toggle = new GuiIconElement(mc, Icons.REFRESH, this::toggleMode);
+        this.toggle.tooltip(IKey.lang("mappet.gui.checker.toggle"), 300, Direction.BOTTOM);
+        this.condition = new GuiButtonElement(mc, IKey.lang("mappet.gui.checker.edit"), this::openConditionEditor);
 
         this.flex().h(20).row(0);
 
@@ -53,9 +55,11 @@ public class GuiCheckerElement extends GuiElement
         this.removeAll();
         this.add(this.checker.mode == Checker.Mode.CONDITION ? this.condition : this.expression, this.toggle);
 
-        if (this.hasParent())
+        GuiElement element = this.getParentContainer();
+
+        if (element != null)
         {
-            this.getParent().resize();
+            element.resize();
         }
     }
 

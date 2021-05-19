@@ -128,6 +128,9 @@ mappet.gui.trigger.sound=Sound event
 mappet.gui.trigger.event=Trigger event
 mappet.gui.trigger.command=Command
 mappet.gui.trigger.dialogue=Dialogue
+mappet.gui.checker.edit=Edit condition...
+mappet.gui.checker.expression=Expression
+mappet.gui.checker.toggle=Toggle between expression and condition editor
 
 mappet.gui.panels.quests=Quests
 mappet.gui.panels.crafting=Crafting tables
@@ -222,7 +225,6 @@ mappet.gui.nodes.event.binary=Binary
 mappet.gui.nodes.event.binary_tooltip=When enabled, it allows to limit execution to first two nodes as an if-else statement, instead of default all-or-none execution.
 mappet.gui.nodes.event.command=Command
 mappet.gui.nodes.event.condition=Condition
-mappet.gui.nodes.event.edit_condition=Edit condition...
 mappet.gui.nodes.event.timer=Timer
 mappet.gui.nodes.event,hotkeys.title=Event hotkey editor
 mappet.gui.nodes.event,hotkeys.key=Keybind
