@@ -4,7 +4,7 @@ import mchorse.mappet.Mappet;
 import mchorse.mappet.api.utils.nodes.Node;
 import mchorse.mappet.api.utils.nodes.NodeRelation;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
-import mchorse.mappet.api.utils.nodes.factory.INodeFactory;
+import mchorse.mappet.api.utils.factory.IFactory;
 import mchorse.mclib.McLib;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
@@ -74,7 +74,7 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
 
     private Consumer<T> callback;
 
-    public GuiNodeGraph(Minecraft mc, INodeFactory<T> factory, Consumer<T> callback)
+    public GuiNodeGraph(Minecraft mc, IFactory<T> factory, Consumer<T> callback)
     {
         super(mc);
 

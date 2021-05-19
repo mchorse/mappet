@@ -9,7 +9,7 @@ import mchorse.mappet.api.events.nodes.SwitchNode;
 import mchorse.mappet.api.events.nodes.TimerNode;
 import mchorse.mappet.api.utils.BaseManager;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
-import mchorse.mappet.api.utils.nodes.factory.MapNodeFactory;
+import mchorse.mappet.api.utils.factory.MapFactory;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.io.File;
@@ -17,7 +17,7 @@ import java.util.List;
 
 public class EventManager extends BaseManager<NodeSystem<EventNode>>
 {
-    public static final MapNodeFactory FACTORY = new MapNodeFactory()
+    public static final MapFactory<EventNode> FACTORY = new MapFactory<EventNode>()
         .register("command", CommandNode.class)
         .register("condition", ConditionNode.class)
         .register("switch", SwitchNode.class)

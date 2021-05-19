@@ -1,25 +1,24 @@
-package mchorse.mappet.api.utils.nodes.factory;
+package mchorse.mappet.api.utils.factory;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import mchorse.mappet.api.utils.nodes.Node;
 
 import java.util.Collection;
 import java.util.Map;
 
 /**
- * Basic implementation of node factory based on a map of
+ * Basic implementation of factory based on a map of
  * String key and Class value
  */
-public class MapNodeFactory implements INodeFactory
+public class MapFactory <T> implements IFactory<T>
 {
-    private BiMap<String, Class<? extends Node>> factory = HashBiMap.create();
+    private BiMap<String, Class<? extends T>> factory = HashBiMap.create();
 
-    public MapNodeFactory copy()
+    public MapFactory<T> copy()
     {
-        MapNodeFactory factory = new MapNodeFactory();
+        MapFactory<T> factory = new MapFactory<T>();
 
-        for (Map.Entry<String, Class<? extends Node>> entry : this.factory.entrySet())
+        for (Map.Entry<String, Class<? extends T>> entry : this.factory.entrySet())
         {
             factory.register(entry.getKey(), entry.getValue());
         }
@@ -27,14 +26,14 @@ public class MapNodeFactory implements INodeFactory
         return factory;
     }
 
-    public MapNodeFactory register(String type, Class<? extends Node> clazz)
+    public MapFactory<T> register(String type, Class<? extends T> clazz)
     {
         this.factory.put(type, clazz);
 
         return this;
     }
 
-    public MapNodeFactory unregister(String key)
+    public MapFactory<T> unregister(String key)
     {
         this.factory.remove(key);
 
@@ -42,7 +41,7 @@ public class MapNodeFactory implements INodeFactory
     }
 
     @Override
-    public String getType(Node node)
+    public String getType(T node)
     {
         String type = this.factory.inverse().get(node.getClass());
 
@@ -55,9 +54,9 @@ public class MapNodeFactory implements INodeFactory
     }
 
     @Override
-    public Node create(String type)
+    public T create(String type)
     {
-        Class<? extends Node> clazz = this.factory.get(type);
+        Class<? extends T> clazz = this.factory.get(type);
 
         if (clazz != null)
         {

@@ -25,7 +25,7 @@ public class GuiAbstractBlockPanel <T extends AbstractBlock> extends GuiElement
 
         this.block = block;
 
-        GuiLabel label = Elements.label(IKey.lang("mappet.gui.condition_types." + block.getType()));
+        GuiLabel label = Elements.label(IKey.lang("mappet.gui.condition_types." + AbstractBlock.FACTORY.getType(block)));
 
         this.not = new GuiIconElement(mc, Icons.EXCLAMATION, (b) -> this.block.not = !this.block.not);
         this.not.flex().wh(16, 16);

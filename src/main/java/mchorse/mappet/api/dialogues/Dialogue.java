@@ -2,14 +2,14 @@ package mchorse.mappet.api.dialogues;
 
 import mchorse.mappet.api.events.nodes.EventNode;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
-import mchorse.mappet.api.utils.nodes.factory.INodeFactory;
+import mchorse.mappet.api.utils.factory.IFactory;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class Dialogue extends NodeSystem<EventNode>
 {
     public String title = "";
 
-    public Dialogue(INodeFactory<EventNode> factory)
+    public Dialogue(IFactory<EventNode> factory)
     {
         super(factory);
     }

@@ -2,7 +2,6 @@ package mchorse.mappet.api.conditions.blocks;
 
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.utils.EnumUtils;
-import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
@@ -21,12 +20,6 @@ public class WorldTimeBlock extends AbstractBlock
     public int getColor()
     {
         return 0x0088ff;
-    }
-
-    @Override
-    public String getType()
-    {
-        return "world_time";
     }
 
     @Override

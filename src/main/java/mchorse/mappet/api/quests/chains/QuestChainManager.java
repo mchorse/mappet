@@ -3,7 +3,7 @@ package mchorse.mappet.api.quests.chains;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.quests.Quest;
 import mchorse.mappet.api.utils.BaseManager;
-import mchorse.mappet.api.utils.nodes.factory.MapNodeFactory;
+import mchorse.mappet.api.utils.factory.MapFactory;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,7 +13,7 @@ import java.io.File;
 
 public class QuestChainManager extends BaseManager<QuestChain>
 {
-    public static final MapNodeFactory FACTORY = new MapNodeFactory().register("quest", QuestNode.class);
+    public static final MapFactory FACTORY = new MapFactory().register("quest", QuestNode.class);
 
     public QuestChainManager(File folder)
     {

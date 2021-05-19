@@ -63,7 +63,7 @@ public class Condition implements INBTSerializable<NBTTagCompound>
         {
             NBTTagCompound blockTag = block.serializeNBT();
 
-            blockTag.setString("Type", block.getType());
+            blockTag.setString("Type", AbstractBlock.FACTORY.getType(block));
             blocks.appendTag(blockTag);
         }
 
@@ -90,7 +90,7 @@ public class Condition implements INBTSerializable<NBTTagCompound>
         for (int i = 0; i < blocks.tagCount(); i++)
         {
             NBTTagCompound blockTag = blocks.getCompoundTagAt(i);
-            AbstractBlock block = AbstractBlock.create(blockTag.getString("Type"));
+            AbstractBlock block = AbstractBlock.FACTORY.create(blockTag.getString("Type"));
 
             if (block != null)
             {

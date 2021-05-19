@@ -1,14 +1,14 @@
 package mchorse.mappet.client.gui.nodes;
 
 import mchorse.mappet.api.events.nodes.EventNode;
-import mchorse.mappet.api.utils.nodes.factory.INodeFactory;
+import mchorse.mappet.api.utils.factory.IFactory;
 import net.minecraft.client.Minecraft;
 
 import java.util.function.Consumer;
 
 public class GuiEventNodeGraph extends GuiNodeGraph<EventNode>
 {
-    public GuiEventNodeGraph(Minecraft mc, INodeFactory<EventNode> factory, Consumer<EventNode> callback)
+    public GuiEventNodeGraph(Minecraft mc, IFactory<EventNode> factory, Consumer<EventNode> callback)
     {
         super(mc, factory, callback);
     }

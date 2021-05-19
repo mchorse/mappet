@@ -8,10 +8,8 @@ import mchorse.mappet.api.dialogues.nodes.ReactionNode;
 import mchorse.mappet.api.dialogues.nodes.ReplyNode;
 import mchorse.mappet.api.events.EventManager;
 import mchorse.mappet.api.events.nodes.EventNode;
-import mchorse.mappet.api.quests.chains.QuestContext;
 import mchorse.mappet.api.utils.BaseManager;
-import mchorse.mappet.api.utils.TriggerSender;
-import mchorse.mappet.api.utils.nodes.factory.MapNodeFactory;
+import mchorse.mappet.api.utils.factory.MapFactory;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.network.Dispatcher;
@@ -25,7 +23,7 @@ import java.util.stream.Collectors;
 
 public class DialogueManager extends BaseManager<Dialogue>
 {
-    public static final MapNodeFactory FACTORY = EventManager.FACTORY.copy()
+    public static final MapFactory<EventNode> FACTORY = EventManager.FACTORY.copy()
         .register("reply", ReplyNode.class)
         .register("reaction", ReactionNode.class)
         .register("crafting", CraftingNode.class)

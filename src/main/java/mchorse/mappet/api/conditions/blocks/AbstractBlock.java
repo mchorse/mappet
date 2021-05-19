@@ -1,39 +1,28 @@
 package mchorse.mappet.api.conditions.blocks;
 
-import com.google.common.collect.ImmutableSet;
 import mchorse.mappet.api.utils.DataContext;
+import mchorse.mappet.api.utils.factory.IFactory;
+import mchorse.mappet.api.utils.factory.MapFactory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
-
-import java.util.Set;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class AbstractBlock implements INBTSerializable<NBTTagCompound>
 {
-    public static final Set<String> BLOCKS = ImmutableSet.of("state", "world_time");
+    public static final IFactory<AbstractBlock> FACTORY = new MapFactory<AbstractBlock>()
+        .register("state", StateBlock.class)
+        .register("faction", FactionBlock.class)
+        .register("world_time", WorldTimeBlock.class);
 
     public boolean not;
     public boolean or;
 
-    public static AbstractBlock create(String type)
-    {
-        if (type.equals("state"))
-        {
-            return new StateBlock();
-        }
-        else if (type.equals("world_time"))
-        {
-            return new WorldTimeBlock();
-        }
-
-        return null;
-    }
-
     public abstract int getColor();
-
-    public abstract String getType();
 
     public abstract boolean evaluate(DataContext context);
 
+    @SideOnly(Side.CLIENT)
     public abstract String stringify();
 
     @Override

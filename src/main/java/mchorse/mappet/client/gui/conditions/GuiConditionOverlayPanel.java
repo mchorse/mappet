@@ -2,6 +2,7 @@ package mchorse.mappet.client.gui.conditions;
 
 import mchorse.mappet.api.conditions.Condition;
 import mchorse.mappet.api.conditions.blocks.AbstractBlock;
+import mchorse.mappet.api.conditions.blocks.FactionBlock;
 import mchorse.mappet.api.conditions.blocks.StateBlock;
 import mchorse.mappet.api.conditions.blocks.WorldTimeBlock;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlayPanel;
@@ -40,6 +41,7 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
     static
     {
         PANELS.put(StateBlock.class, GuiStateBlockPanel.class);
+        PANELS.put(FactionBlock.class, GuiFactionBlockPanel.class);
         PANELS.put(WorldTimeBlock.class, GuiWorldTimeBlockPanel.class);
     }
 
@@ -59,7 +61,7 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
             {
                 GuiSimpleContextMenu adds = new GuiSimpleContextMenu(this.mc);
 
-                for (String key : AbstractBlock.BLOCKS)
+                for (String key : AbstractBlock.FACTORY.getKeys())
                 {
                     adds.action(Icons.ADD, IKey.format("mappet.gui.conditions.context.add_condition", IKey.lang("mappet.gui.condition_types." + key)), () -> this.addBlock(key));
                 }
@@ -83,7 +85,7 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
 
     private void addBlock(String type)
     {
-        AbstractBlock block = AbstractBlock.create(type);
+        AbstractBlock block = AbstractBlock.FACTORY.create(type);
 
         this.condition.blocks.add(block);
         this.pickBlock(block, true);
