@@ -21,7 +21,7 @@ import net.minecraft.client.gui.Gui;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class GuiFactionRelationOverlay extends GuiOverlayPanel
+public class GuiFactionRelationOverlayPanel extends GuiOverlayPanel
 {
     public GuiThresholdListElement list;
 
@@ -34,7 +34,7 @@ public class GuiFactionRelationOverlay extends GuiOverlayPanel
     private FactionRelation relation;
     private FactionRelation.Threshold threshold;
 
-    public GuiFactionRelationOverlay(Minecraft mc, FactionRelation relation)
+    public GuiFactionRelationOverlayPanel(Minecraft mc, FactionRelation relation)
     {
         super(mc, IKey.lang("mappet.gui.factions.overlay.main"));
 
@@ -69,7 +69,7 @@ public class GuiFactionRelationOverlay extends GuiOverlayPanel
         this.editor.add(Elements.label(IKey.lang("mappet.gui.factions.overlay.score")).marginTop(12), this.score);
         this.editor.add(Elements.label(IKey.lang("mappet.gui.factions.overlay.attitude")).marginTop(12), this.attitude);
 
-        this.content.add(this.list, this.editor);
+        this.content.add(this.editor, this.list);
 
         this.pickThreshold(relation.thresholds.isEmpty() ? null : relation.thresholds.get(0), true);
     }

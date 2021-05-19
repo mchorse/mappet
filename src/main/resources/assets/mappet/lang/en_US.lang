@@ -222,6 +222,7 @@ mappet.gui.nodes.event.binary=Binary
 mappet.gui.nodes.event.binary_tooltip=When enabled, it allows to limit execution to first two nodes as an if-else statement, instead of default all-or-none execution.
 mappet.gui.nodes.event.command=Command
 mappet.gui.nodes.event.condition=Condition
+mappet.gui.nodes.event.edit_condition=Edit condition...
 mappet.gui.nodes.event.timer=Timer
 mappet.gui.nodes.event,hotkeys.title=Event hotkey editor
 mappet.gui.nodes.event,hotkeys.key=Keybind
@@ -317,6 +318,15 @@ mappet.gui.factions.relations.open=Configure its own relation...
 mappet.gui.factions.relations.context.remove=Remove this relation
 mappet.gui.factions.info.empty=Select or create a faction in the list on the right, to start editing...
 
+mappet.gui.conditions.title=Condition editor
+mappet.gui.conditions.context.add=Add a condition
+mappet.gui.conditions.context.remove=Remove condition
+mappet.gui.conditions.world_time.check=Time condition
+mappet.gui.conditions.world_time.range=Range
+mappet.gui.conditions.world_time.types.day=Is day?
+mappet.gui.conditions.world_time.types.night=Is night?
+mappet.gui.conditions.world_time.types.range=In between...
+
 # GUI enums
 
 mappet.gui.shapes.box=Box
@@ -335,6 +345,14 @@ mappet.gui.node_types.command=Command
 mappet.gui.node_types.condition=Condition
 mappet.gui.node_types.switch=Switch
 mappet.gui.node_types.timer=Timer
+
+mappet.gui.condition_types.quest=Quest
+mappet.gui.condition_types.dialogue=Dialogue
+mappet.gui.condition_types.state=State
+mappet.gui.condition_types.faction=Faction
+mappet.gui.condition_types.item=Item
+mappet.gui.condition_types.entity=Entity
+mappet.gui.condition_types.world_time=World time
 
 # Keys
 mappet.keys.category=Mappet

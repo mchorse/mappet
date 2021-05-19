@@ -4,12 +4,10 @@ import mchorse.mappet.api.factions.Faction;
 import mchorse.mappet.api.factions.FactionAttitude;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
-import mchorse.mappet.client.gui.factions.GuiFactionRelationOverlay;
+import mchorse.mappet.client.gui.factions.GuiFactionRelationOverlayPanel;
 import mchorse.mappet.client.gui.factions.GuiFactions;
-import mchorse.mappet.client.gui.factions.GuiFactionsOverlay;
+import mchorse.mappet.client.gui.factions.GuiFactionsOverlayPanel;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
-import mchorse.mappet.client.gui.utils.overlays.GuiResourceLocationOverlayPanel;
-import mchorse.mappet.client.gui.utils.overlays.GuiSoundOverlayPanel;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
@@ -105,7 +103,7 @@ public class GuiFactionPanel extends GuiMappetDashboardPanel<Faction>
 
             if (!keys.isEmpty())
             {
-                GuiOverlay.addOverlay(GuiBase.getCurrent(), new GuiFactionsOverlay(this.mc, keys, this::addRelation), 200, 140);
+                GuiOverlay.addOverlay(GuiBase.getCurrent(), new GuiFactionsOverlayPanel(this.mc, keys, this::addRelation), 200, 140);
             }
         });
 
@@ -131,7 +129,7 @@ public class GuiFactionPanel extends GuiMappetDashboardPanel<Faction>
 
     private void openRelation()
     {
-        GuiFactionRelationOverlay overlay = new GuiFactionRelationOverlay(this.mc, this.data.ownRelation);
+        GuiFactionRelationOverlayPanel overlay = new GuiFactionRelationOverlayPanel(this.mc, this.data.ownRelation);
 
         GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay, 0.5F, 0.7F);
     }

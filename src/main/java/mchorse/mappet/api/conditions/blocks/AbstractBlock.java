@@ -25,6 +25,8 @@ public abstract class AbstractBlock implements INBTSerializable<NBTTagCompound>
 
     public abstract boolean evaluate(DataContext context);
 
+    public abstract String stringify();
+
     @Override
     public NBTTagCompound serializeNBT()
     {

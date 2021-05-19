@@ -222,6 +222,7 @@ mappet.gui.nodes.event.binary=Бинарный
 mappet.gui.nodes.event.binary_tooltip=Эта опция позволяет ограничить выполнение до первых двух нодов в качестве аргумента типа if-else, вместо выполнения аргумента типа all-or-none по умолчанию.
 mappet.gui.nodes.event.command=Команда
 mappet.gui.nodes.event.condition=Условие
+mappet.gui.nodes.event.edit_condition=Edit condition...
 mappet.gui.nodes.event.timer=Таймер
 mappet.gui.nodes.event,hotkeys.title=Event hotkey editor
 mappet.gui.nodes.event,hotkeys.key=Keybind
@@ -317,6 +318,15 @@ mappet.gui.factions.relations.open=Настроить собственное о�
 mappet.gui.factions.relations.context.remove=Удалить это отношение
 mappet.gui.factions.info.empty=Чтобы начать редактирование, создайте или выберите фракцию из списка справа...
 
+mappet.gui.conditions.title=Condition editor
+mappet.gui.conditions.context.add=Add a condition
+mappet.gui.conditions.context.remove=Remove condition
+mappet.gui.conditions.world_time.check=Time condition
+mappet.gui.conditions.world_time.range=Range
+mappet.gui.conditions.world_time.types.day=Is day?
+mappet.gui.conditions.world_time.types.night=Is night?
+mappet.gui.conditions.world_time.types.range=In between...
+
 # GUI enums
 
 mappet.gui.shapes.box=Куб
@@ -335,6 +345,14 @@ mappet.gui.node_types.command=Команда
 mappet.gui.node_types.condition=Условие
 mappet.gui.node_types.switch=Переключатель
 mappet.gui.node_types.timer=Таймер
+
+mappet.gui.condition_types.quest=Quest
+mappet.gui.condition_types.dialogue=Dialogue
+mappet.gui.condition_types.state=State
+mappet.gui.condition_types.faction=Faction
+mappet.gui.condition_types.item=Item
+mappet.gui.condition_types.entity=Entity
+mappet.gui.condition_types.world_time=World time
 
 # Keys
 mappet.keys.category=Маппет

@@ -2,7 +2,11 @@ package mchorse.mappet.api.conditions.blocks;
 
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.utils.EnumUtils;
+import mchorse.mclib.client.gui.utils.keys.IKey;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class WorldTimeBlock extends AbstractBlock
 {
@@ -47,6 +51,20 @@ public class WorldTimeBlock extends AbstractBlock
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    public String stringify()
+    {
+        String label = this.check.stringify();
+
+        if (this.check == TimeCheck.RANGE)
+        {
+            label += " " + this.min + "-" + this.max;
+        }
+
+        return label;
+    }
+
+    @Override
     public void serializeNBT(NBTTagCompound tag)
     {
         tag.setInteger("Check", this.check.ordinal());
@@ -66,6 +84,17 @@ public class WorldTimeBlock extends AbstractBlock
 
     public static enum TimeCheck
     {
-        DAY, NIGHT, RANGE
+        DAY, NIGHT, RANGE;
+
+        @SideOnly(Side.CLIENT)
+        public String stringify()
+        {
+            return I18n.format(this.getKey());
+        }
+
+        public String getKey()
+        {
+            return "mappet.gui.conditions.world_time.types." + this.name().toLowerCase();
+        }
     }
 }

@@ -222,6 +222,7 @@ mappet.gui.nodes.event.binary=二進制
 mappet.gui.nodes.event.binary_tooltip=啟用後，即可允許將執行限制在前兩個節點，作為 if-else 語句，而非默認的全或無執行。
 mappet.gui.nodes.event.command=命令
 mappet.gui.nodes.event.condition=條件
+mappet.gui.nodes.event.edit_condition=Edit condition...
 mappet.gui.nodes.event.timer=計時器
 mappet.gui.nodes.event,hotkeys.title=Event hotkey editor
 mappet.gui.nodes.event,hotkeys.key=Keybind
@@ -317,6 +318,15 @@ mappet.gui.factions.relations.open=配置該陣營的關系...
 mappet.gui.factions.relations.context.remove=移除該關系
 mappet.gui.factions.info.empty=在右側的列表中選擇或創建一個陣營以開始編輯...
 
+mappet.gui.conditions.title=Condition editor
+mappet.gui.conditions.context.add=Add a condition
+mappet.gui.conditions.context.remove=Remove condition
+mappet.gui.conditions.world_time.check=Time condition
+mappet.gui.conditions.world_time.range=Range
+mappet.gui.conditions.world_time.types.day=Is day?
+mappet.gui.conditions.world_time.types.night=Is night?
+mappet.gui.conditions.world_time.types.range=In between...
+
 # GUI enums
 
 mappet.gui.shapes.box=立方體
@@ -335,6 +345,14 @@ mappet.gui.node_types.command=命令
 mappet.gui.node_types.condition=條件
 mappet.gui.node_types.switch=開關
 mappet.gui.node_types.timer=計時器
+
+mappet.gui.condition_types.quest=Quest
+mappet.gui.condition_types.dialogue=Dialogue
+mappet.gui.condition_types.state=State
+mappet.gui.condition_types.faction=Faction
+mappet.gui.condition_types.item=Item
+mappet.gui.condition_types.entity=Entity
+mappet.gui.condition_types.world_time=World time
 
 # Keys
 mappet.keys.category=Mappet

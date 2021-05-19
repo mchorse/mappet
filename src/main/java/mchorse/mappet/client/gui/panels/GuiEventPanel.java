@@ -11,7 +11,6 @@ import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.events.GuiEventHotkeysOverlayPanel;
-import mchorse.mappet.client.gui.factions.GuiFactionRelationOverlay;
 import mchorse.mappet.client.gui.nodes.GuiEventNodeGraph;
 import mchorse.mappet.client.gui.nodes.GuiEventNodePanel;
 import mchorse.mappet.client.gui.nodes.events.GuiCommandNodePanel;

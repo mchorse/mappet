@@ -9,9 +9,9 @@ import net.minecraft.client.Minecraft;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class GuiFactionsOverlay extends GuiOverlayPanel
+public class GuiFactionsOverlayPanel extends GuiOverlayPanel
 {
-    public GuiFactionsOverlay(Minecraft mc, List<String> keys, Consumer<String> callback)
+    public GuiFactionsOverlayPanel(Minecraft mc, List<String> keys, Consumer<String> callback)
     {
         super(mc, IKey.lang("mappet.gui.factions.relations.main"));
 
