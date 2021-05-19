@@ -1,11 +1,10 @@
 package mchorse.mappet.api.regions;
 
-import mchorse.mappet.Mappet;
-import mchorse.mappet.api.expressions.ExpressionManager;
 import mchorse.mappet.api.regions.shapes.AbstractShape;
 import mchorse.mappet.api.regions.shapes.BoxShape;
+import mchorse.mappet.api.utils.Checker;
+import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.Trigger;
-import mchorse.mclib.math.IValue;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -14,29 +13,15 @@ import net.minecraftforge.common.util.INBTSerializable;
 public class Region implements INBTSerializable<NBTTagCompound>
 {
     public boolean passable = true;
-    public String enabled = "";
+    public Checker enabled = new Checker(true);
     public int delay;
     public Trigger onEnter = new Trigger();
     public Trigger onExit = new Trigger();
     public AbstractShape shape = new BoxShape();
 
-    private IValue value;
-
     public boolean isEnabled(World world)
     {
-        if (this.enabled == null || this.enabled.isEmpty())
-        {
-            return true;
-        }
-
-        if (this.value == null)
-        {
-            this.value = Mappet.expressions.evaluate(this.enabled, ExpressionManager.ONE);
-        }
-
-        Mappet.expressions.set(world);
-
-        return this.value.booleanValue();
+        return this.enabled.check(new DataContext(world));
     }
 
     @Override
@@ -49,10 +34,7 @@ public class Region implements INBTSerializable<NBTTagCompound>
             tag.setBoolean("Passable", this.passable);
         }
 
-        if (!this.enabled.isEmpty())
-        {
-            tag.setString("Enabled", this.enabled);
-        }
+        tag.setTag("Enabled", this.enabled.serializeNBT());
 
         if (this.delay > 0)
         {
@@ -78,9 +60,9 @@ public class Region implements INBTSerializable<NBTTagCompound>
             this.passable = tag.getBoolean("Passable");
         }
 
-        if (tag.hasKey("Enabled", Constants.NBT.TAG_STRING))
+        if (tag.hasKey("Enabled", Constants.NBT.TAG_COMPOUND))
         {
-            this.enabled = tag.getString("Enabled");
+            this.enabled.deserializeNBT(tag.getCompoundTag("Enabled"));
         }
 
         if (tag.hasKey("Delay", Constants.NBT.TAG_ANY_NUMERIC))

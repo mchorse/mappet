@@ -1,5 +1,7 @@
 package mchorse.mappet.client.gui;
 
+import mchorse.mappet.api.utils.Checker;
+import mchorse.mappet.client.gui.utils.GuiCheckerElement;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.blocks.PacketEditEmitter;
 import mchorse.mclib.client.gui.framework.GuiBase;
@@ -13,12 +15,12 @@ import java.util.function.Consumer;
 
 public class GuiEmitterBlockScreen extends GuiBase
 {
-    public GuiTextElement expression;
+    public GuiCheckerElement checker;
     public GuiTrackpadElement radius;
 
     private BlockPos pos;
 
-    public GuiEmitterBlockScreen(BlockPos pos, String expression, float radius)
+    public GuiEmitterBlockScreen(BlockPos pos, Checker checker, float radius)
     {
         super();
 
@@ -27,15 +29,14 @@ public class GuiEmitterBlockScreen extends GuiBase
         Minecraft mc = Minecraft.getMinecraft();
 
         /* TODO: tooltips */
-        this.expression = new GuiTextElement(mc, 10000, null);
-        this.expression.flex().relative(this.viewport).x(0.5F).y(0.5F).w(0.5F).anchor(0.5F, 0.5F);
-        this.expression.setText(expression);
+        this.checker = new GuiCheckerElement(mc, checker);
+        this.checker.flex().relative(this.viewport).x(0.5F).y(0.5F).w(0.5F).anchor(0.5F, 0.5F);
 
         this.radius = new GuiTrackpadElement(mc, (Consumer<Double>) null);
-        this.radius.flex().relative(this.expression).y(1F, 20).w(1F);
+        this.radius.flex().relative(this.checker).y(1F, 20).w(1F);
         this.radius.limit(0).setValue(radius);
 
-        this.root.add(this.expression, this.radius);
+        this.root.add(this.checker, this.radius);
     }
 
     @Override
@@ -49,7 +50,7 @@ public class GuiEmitterBlockScreen extends GuiBase
     {
         super.closeScreen();
 
-        Dispatcher.sendToServer(new PacketEditEmitter(this.pos, this.expression.field.getText(), (float) this.radius.value));
+        Dispatcher.sendToServer(new PacketEditEmitter(this.pos, this.checker.get().serializeNBT(), (float) this.radius.value));
     }
 
     @Override
@@ -57,9 +58,9 @@ public class GuiEmitterBlockScreen extends GuiBase
     {
         this.drawDefaultBackground();
 
-        super.drawScreen(mouseX, mouseY, partialTicks);
-
-        this.fontRenderer.drawStringWithShadow(I18n.format("mappet.gui.emitter_block.expression"), this.expression.area.x, this.expression.area.y - 12, 0xffffff);
+        this.fontRenderer.drawStringWithShadow(I18n.format("mappet.gui.emitter_block.expression"), this.checker.area.x, this.checker.area.y - 12, 0xffffff);
         this.fontRenderer.drawStringWithShadow(I18n.format("mappet.gui.emitter_block.radius"), this.radius.area.x, this.radius.area.y - 12, 0xffffff);
+
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 }

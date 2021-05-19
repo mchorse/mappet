@@ -8,7 +8,6 @@ import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.factions.PacketFactions;
 import mchorse.mappet.network.common.factions.PacketRequestFactions;
-import mchorse.mclib.math.IValue;
 import mchorse.mclib.network.ServerMessageHandler;
 import net.minecraft.entity.player.EntityPlayerMP;
 
@@ -38,7 +37,7 @@ public class ServerHandlerRequestFactions extends ServerMessageHandler<PacketReq
             {
                 Faction faction = Mappet.factions.load(key);
 
-                if (faction != null && faction.isVisible())
+                if (faction != null && faction.isVisible(player))
                 {
                     factions.put(key, faction);
                 }

@@ -143,12 +143,12 @@ public class ExpressionManager
         return this;
     }
 
-    public IValue evaluate(String expression)
+    public IValue parse(String expression)
     {
-        return this.evaluate(expression, ZERO);
+        return this.parse(expression, ZERO);
     }
 
-    public IValue evaluate(String expression, IValue defaultValue)
+    public IValue parse(String expression, IValue defaultValue)
     {
         try
         {

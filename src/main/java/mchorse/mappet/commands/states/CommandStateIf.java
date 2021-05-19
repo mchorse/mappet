@@ -57,7 +57,7 @@ public class CommandStateIf extends CommandStateBase
 
         context.set("value", previous);
 
-        IValue result = Mappet.expressions.set(context).evaluate(expression);
+        IValue result = Mappet.expressions.set(context).parse(expression);
 
         if (!result.booleanValue())
         {

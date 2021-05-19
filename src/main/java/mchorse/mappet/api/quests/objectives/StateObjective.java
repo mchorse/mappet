@@ -1,15 +1,13 @@
 package mchorse.mappet.api.quests.objectives;
 
-import mchorse.mappet.Mappet;
-import mchorse.mappet.api.expressions.ExpressionManager;
-import mchorse.mclib.math.IValue;
+import mchorse.mappet.api.utils.Checker;
+import mchorse.mappet.api.utils.DataContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class StateObjective extends AbstractObjective
 {
-    public String expression = "";
-    private IValue value;
+    public Checker expression = new Checker();
     private boolean result;
 
     @Override
@@ -20,20 +18,9 @@ public class StateObjective extends AbstractObjective
 
     public boolean updateValue(EntityPlayer player)
     {
-        if (this.expression.isEmpty())
-        {
-            return false;
-        }
-
-        if (this.value == null)
-        {
-            this.value = Mappet.expressions.evaluate(this.expression, ExpressionManager.ZERO);
-        }
-
-        Mappet.expressions.set(player);
         boolean result = this.result;
 
-        this.result = this.value.booleanValue();
+        this.result = this.expression.check(new DataContext(player));
 
         return this.result != result;
     }
@@ -81,7 +68,7 @@ public class StateObjective extends AbstractObjective
     {
         NBTTagCompound tag = super.serializeNBT();
 
-        tag.setString("Expression", this.expression);
+        tag.setTag("Expression", this.expression.serializeNBT());
         tag.setBoolean("Result", this.result);
 
         return tag;
@@ -92,7 +79,7 @@ public class StateObjective extends AbstractObjective
     {
         super.deserializeNBT(tag);
 
-        this.expression = tag.getString("Expression");
+        this.expression.deserializeNBT(tag.getCompoundTag("Expression"));
         this.result = tag.getBoolean("Result");
     }
 }

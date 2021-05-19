@@ -1,8 +1,8 @@
 package mchorse.mappet.tile;
 
-import mchorse.mappet.Mappet;
+import mchorse.mappet.api.utils.Checker;
+import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.blocks.BlockEmitter;
-import mchorse.mclib.math.IValue;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,18 +13,17 @@ import net.minecraft.world.World;
 
 public class TileEmitter extends TileEntity implements ITickable
 {
-    private String expression = "";
+    private Checker checker = new Checker();
     private float radius;
 
     private int tick = 0;
-    private IValue value;
 
     public TileEmitter()
     {}
 
-    public String getExpression()
+    public Checker getChecker()
     {
-        return this.expression;
+        return this.checker;
     }
 
     public float getRadius()
@@ -32,10 +31,9 @@ public class TileEmitter extends TileEntity implements ITickable
         return this.radius;
     }
 
-    public void setExpression(String expression, float radius)
+    public void setExpression(NBTTagCompound tag, float radius)
     {
-        this.value = null;
-        this.expression = expression;
+        this.checker.deserializeNBT(tag);
         this.radius = radius;
         this.updateExpression();
         this.markDirty();
@@ -56,7 +54,7 @@ public class TileEmitter extends TileEntity implements ITickable
         }
 
         /* TODO: add an option to change frequency */
-        if (this.tick % 5 == 0 && !this.expression.isEmpty())
+        if (this.tick % 5 == 0 && !this.checker.isEmpty())
         {
             this.updateExpression();
         }
@@ -87,15 +85,8 @@ public class TileEmitter extends TileEntity implements ITickable
             }
         }
 
-        if (this.value == null)
-        {
-            this.value = Mappet.expressions.evaluate(this.expression);
-        }
-
-        Mappet.expressions.set(this.world);
-
         IBlockState state = this.world.getBlockState(this.pos);
-        boolean result = this.value.booleanValue();
+        boolean result = this.checker.check(new DataContext(this.world));
 
         if (state.getValue(BlockEmitter.POWERED) != result)
         {
@@ -106,10 +97,7 @@ public class TileEmitter extends TileEntity implements ITickable
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag)
     {
-        if (!this.expression.isEmpty())
-        {
-            tag.setString("Expression", this.expression);
-        }
+        tag.setTag("Checker", this.checker.serializeNBT());
 
         if (this.radius > 0)
         {
@@ -124,9 +112,9 @@ public class TileEmitter extends TileEntity implements ITickable
     {
         super.readFromNBT(tag);
 
-        if (tag.hasKey("Expression"))
+        if (tag.hasKey("Checker"))
         {
-            this.expression = tag.getString("Expression");
+            this.checker.deserializeNBT(tag.getCompoundTag("Checker"));
         }
 
         if (tag.hasKey("Radius"))

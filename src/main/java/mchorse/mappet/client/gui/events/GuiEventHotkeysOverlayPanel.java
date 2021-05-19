@@ -2,6 +2,7 @@ package mchorse.mappet.client.gui.events;
 
 import mchorse.mappet.api.events.hotkeys.EventHotkey;
 import mchorse.mappet.api.events.hotkeys.EventHotkeys;
+import mchorse.mappet.client.gui.utils.GuiCheckerElement;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlayPanel;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.events.PacketEventHotkeys;
@@ -27,7 +28,7 @@ public class GuiEventHotkeysOverlayPanel extends GuiOverlayPanel
     public GuiScrollElement editor;
     public GuiKeybindElement key;
     public GuiTextElement event;
-    public GuiTextElement enabled;
+    public GuiCheckerElement enabled;
 
     private EventHotkeys hotkeys;
     private EventHotkey hotkey;
@@ -66,7 +67,7 @@ public class GuiEventHotkeysOverlayPanel extends GuiOverlayPanel
             }
         });
         this.event = new GuiTextElement(mc, 1000, (t) -> this.hotkey.event = t);
-        this.enabled = new GuiTextElement(mc, 1000, (t) -> this.hotkey.enabled = t);
+        this.enabled = new GuiCheckerElement(mc);
 
         this.list.flex().relative(this.content).w(120).h(1F);
         this.editor.flex().relative(this.content).x(120).w(1F, -120).h(1F).column(5).vertical().stretch().scroll().padding(10);
@@ -108,7 +109,7 @@ public class GuiEventHotkeysOverlayPanel extends GuiOverlayPanel
         {
             this.key.setKeybind(hotkey.keycode);
             this.event.setText(hotkey.event);
-            this.enabled.setText(hotkey.enabled);
+            this.enabled.set(hotkey.enabled);
 
             if (select)
             {

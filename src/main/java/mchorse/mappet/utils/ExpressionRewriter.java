@@ -34,7 +34,7 @@ public class ExpressionRewriter extends Rewriter
 
         if (value == null)
         {
-            IValue v = Mappet.expressions.set(this.context).evaluate(string, null);
+            IValue v = Mappet.expressions.set(this.context).parse(string, null);
 
             if (v != null)
             {

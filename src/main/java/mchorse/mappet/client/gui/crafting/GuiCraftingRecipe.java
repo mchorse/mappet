@@ -1,6 +1,7 @@
 package mchorse.mappet.client.gui.crafting;
 
 import mchorse.mappet.api.crafting.CraftingRecipe;
+import mchorse.mappet.client.gui.utils.GuiCheckerElement;
 import mchorse.mappet.client.gui.utils.GuiItemsElement;
 import mchorse.mappet.client.gui.utils.GuiTriggerElement;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
@@ -19,7 +20,7 @@ public class GuiCraftingRecipe extends GuiElement
     public GuiTextElement title;
     public GuiItemsElement input;
     public GuiItemsElement output;
-    public GuiTextElement condition;
+    public GuiCheckerElement checker;
     public GuiTriggerElement trigger;
     public GuiKeybindElement hotkey;
 
@@ -33,7 +34,7 @@ public class GuiCraftingRecipe extends GuiElement
         this.input = new GuiItemsElement(mc, IKey.lang("mappet.gui.crafting.input"), null, inventory);
         this.input.marginTop(12);
         this.output = new GuiItemsElement(mc, IKey.lang("mappet.gui.crafting.output"), null, inventory);
-        this.condition = new GuiTextElement(mc, 1000, (text) -> this.recipe.condition = text);
+        this.checker = new GuiCheckerElement(mc);
         this.trigger = new GuiTriggerElement(mc);
         this.hotkey = new GuiKeybindElement(mc, (key) ->
         {
@@ -51,7 +52,7 @@ public class GuiCraftingRecipe extends GuiElement
         this.flex().column(5).vertical().stretch().padding(10);
 
         this.add(Elements.label(IKey.lang("mappet.gui.crafting.recipe.title")), this.title, this.input, this.output);
-        this.add(Elements.label(IKey.lang("mappet.gui.crafting.recipe.condition")).marginTop(12), this.condition);
+        this.add(Elements.label(IKey.lang("mappet.gui.crafting.recipe.condition")).marginTop(12), this.checker);
         this.add(Elements.label(IKey.lang("mappet.gui.crafting.recipe.hotkey")).marginTop(12), this.hotkey);
         this.add(Elements.label(IKey.lang("mappet.gui.crafting.recipe.trigger")).background().marginTop(12).marginBottom(5), this.trigger);
     }
@@ -63,7 +64,7 @@ public class GuiCraftingRecipe extends GuiElement
         this.title.setText(recipe.title);
         this.input.set(recipe.input);
         this.output.set(recipe.output);
-        this.condition.setText(recipe.condition);
+        this.checker.set(recipe.condition);
         this.trigger.set(recipe.trigger);
         this.hotkey.setKeybind(recipe.hotkey);
     }

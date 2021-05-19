@@ -1,7 +1,6 @@
 package mchorse.mappet.api.crafting;
 
-import mchorse.mappet.Mappet;
-import mchorse.mappet.api.expressions.ExpressionManager;
+import mchorse.mappet.api.utils.Checker;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.Trigger;
 import mchorse.mappet.utils.InventoryUtils;
@@ -21,18 +20,13 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
     public String title = "";
     public NonNullList<ItemStack> input = NonNullList.create();
     public NonNullList<ItemStack> output = NonNullList.create();
-    public String condition = "";
+    public Checker condition = new Checker(true);
     public int hotkey = -1;
     public Trigger trigger = new Trigger();
 
     public boolean isAvailable(EntityPlayer player)
     {
-        if (!this.condition.isEmpty())
-        {
-            return Mappet.expressions.set(player).evaluate(this.condition, ExpressionManager.ONE).booleanValue();
-        }
-
-        return true;
+        return this.condition.check(new DataContext(player));
     }
 
     public boolean craft(EntityPlayer player)
@@ -123,10 +117,7 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
             tag.setTag("Output", output);
         }
 
-        if (!this.condition.isEmpty())
-        {
-            tag.setString("Condition", this.condition);
-        }
+        tag.setTag("Condition", this.condition.serializeNBT());
 
         NBTTagCompound trigger = this.trigger.serializeNBT();
 
@@ -178,7 +169,7 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
 
         if (tag.hasKey("Condition"))
         {
-            this.condition = tag.getString("Condition");
+            this.condition.deserializeNBT(tag.getCompoundTag("Condition"));
         }
 
         if (tag.hasKey("Trigger"))

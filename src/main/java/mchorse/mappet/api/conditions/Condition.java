@@ -14,11 +14,18 @@ public class Condition implements INBTSerializable<NBTTagCompound>
 {
     public List<AbstractBlock> blocks = new ArrayList<AbstractBlock>();
 
+    private boolean defaultValue;
+
+    public Condition(boolean defaultValue)
+    {
+        this.defaultValue = defaultValue;
+    }
+
     public boolean execute(DataContext context)
     {
         if (this.blocks.isEmpty())
         {
-            return true;
+            return this.defaultValue;
         }
 
         boolean result = this.blocks.get(0).evaluate(context);
@@ -77,6 +84,8 @@ public class Condition implements INBTSerializable<NBTTagCompound>
         }
 
         NBTTagList blocks = tag.getTagList("Blocks", Constants.NBT.TAG_COMPOUND);
+
+        this.blocks.clear();
 
         for (int i = 0; i < blocks.tagCount(); i++)
         {

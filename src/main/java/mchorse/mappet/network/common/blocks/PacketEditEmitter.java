@@ -2,6 +2,7 @@ package mchorse.mappet.network.common.blocks;
 
 import io.netty.buffer.ByteBuf;
 import mchorse.mappet.tile.TileEmitter;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -9,7 +10,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 public class PacketEditEmitter implements IMessage
 {
     public BlockPos pos;
-    public String expression = "";
+    public NBTTagCompound checker;
     public float radius;
 
     public PacketEditEmitter()
@@ -17,13 +18,13 @@ public class PacketEditEmitter implements IMessage
 
     public PacketEditEmitter(TileEmitter tile)
     {
-        this(tile.getPos(), tile.getExpression(), tile.getRadius());
+        this(tile.getPos(), tile.getChecker().serializeNBT(), tile.getRadius());
     }
 
-    public PacketEditEmitter(BlockPos pos, String expression, float radius)
+    public PacketEditEmitter(BlockPos pos, NBTTagCompound checker, float radius)
     {
         this.pos = pos;
-        this.expression = expression;
+        this.checker = checker;
         this.radius = radius;
     }
 
@@ -31,7 +32,7 @@ public class PacketEditEmitter implements IMessage
     public void fromBytes(ByteBuf buf)
     {
         this.pos = new BlockPos(buf.readInt(), buf.readInt(), buf.readInt());
-        this.expression = ByteBufUtils.readUTF8String(buf);
+        this.checker = ByteBufUtils.readTag(buf);
         this.radius = buf.readFloat();
     }
 
@@ -41,7 +42,7 @@ public class PacketEditEmitter implements IMessage
         buf.writeInt(this.pos.getX());
         buf.writeInt(this.pos.getY());
         buf.writeInt(this.pos.getZ());
-        ByteBufUtils.writeUTF8String(buf, this.expression);
+        ByteBufUtils.writeTag(buf, this.checker);
         buf.writeFloat(this.radius);
     }
 }

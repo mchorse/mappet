@@ -7,6 +7,7 @@ import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.factions.GuiFactionRelationOverlayPanel;
 import mchorse.mappet.client.gui.factions.GuiFactions;
 import mchorse.mappet.client.gui.factions.GuiFactionsOverlayPanel;
+import mchorse.mappet.client.gui.utils.GuiCheckerElement;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
@@ -32,7 +33,7 @@ import java.util.function.Consumer;
 public class GuiFactionPanel extends GuiMappetDashboardPanel<Faction>
 {
     public GuiTextElement title;
-    public GuiTextElement visible;
+    public GuiCheckerElement visible;
     public GuiColorElement color;
     public GuiTrackpadElement score;
 
@@ -67,7 +68,7 @@ public class GuiFactionPanel extends GuiMappetDashboardPanel<Faction>
         super(mc, dashboard);
 
         this.title = new GuiTextElement(mc, 1000, (t) -> this.data.title = t);
-        this.visible = new GuiTextElement(mc, 1000, (t) -> this.data.visible = t);
+        this.visible = new GuiCheckerElement(mc);
         this.color = new GuiColorElement(mc, (c) -> this.data.color = c);
         this.score = new GuiTrackpadElement(mc, (v) -> this.data.score = v.intValue());
         this.score.limit(0).integer();
@@ -156,7 +157,7 @@ public class GuiFactionPanel extends GuiMappetDashboardPanel<Faction>
         if (data != null)
         {
             this.title.setText(data.title);
-            this.visible.setText(data.visible);
+            this.visible.set(data.visible);
             this.color.picker.setColor(data.color);
             this.score.setValue(data.score);
 

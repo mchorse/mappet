@@ -1,5 +1,6 @@
 package mchorse.mappet.network.client.blocks;
 
+import mchorse.mappet.api.utils.Checker;
 import mchorse.mappet.client.gui.GuiEmitterBlockScreen;
 import mchorse.mappet.network.common.blocks.PacketEditEmitter;
 import mchorse.mclib.network.ClientMessageHandler;
@@ -14,6 +15,9 @@ public class ClientHandlerEditEmitter extends ClientMessageHandler<PacketEditEmi
     @SideOnly(Side.CLIENT)
     public void run(EntityPlayerSP player, PacketEditEmitter message)
     {
-        Minecraft.getMinecraft().displayGuiScreen(new GuiEmitterBlockScreen(message.pos, message.expression, message.radius));
+        Checker checker = new Checker();
+
+        checker.deserializeNBT(message.checker);
+        Minecraft.getMinecraft().displayGuiScreen(new GuiEmitterBlockScreen(message.pos, checker, message.radius));
     }
 }

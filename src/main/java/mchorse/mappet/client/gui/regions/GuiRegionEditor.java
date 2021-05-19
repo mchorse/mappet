@@ -5,6 +5,7 @@ import mchorse.mappet.api.regions.shapes.AbstractShape;
 import mchorse.mappet.api.regions.shapes.BoxShape;
 import mchorse.mappet.api.regions.shapes.CylinderShape;
 import mchorse.mappet.api.regions.shapes.SphereShape;
+import mchorse.mappet.client.gui.utils.GuiCheckerElement;
 import mchorse.mappet.client.gui.utils.GuiTriggerElement;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
@@ -19,7 +20,7 @@ import net.minecraft.client.Minecraft;
 public class GuiRegionEditor extends GuiElement
 {
     public GuiToggleElement passable;
-    public GuiTextElement enabled;
+    public GuiCheckerElement enabled;
     public GuiTrackpadElement delay;
     public GuiTriggerElement onEnter;
     public GuiTriggerElement onExit;
@@ -33,7 +34,7 @@ public class GuiRegionEditor extends GuiElement
         super(mc);
 
         this.passable = new GuiToggleElement(mc, IKey.lang("mappet.gui.region.passable"), (b) -> this.region.passable = b.isToggled());
-        this.enabled = new GuiTextElement(mc, 1000, (text) -> this.region.enabled = text);
+        this.enabled = new GuiCheckerElement(mc);
         this.delay = new GuiTrackpadElement(mc, (value) -> this.region.delay = value.intValue());
         this.onEnter = new GuiTriggerElement(mc);
         this.onExit = new GuiTriggerElement(mc);
@@ -89,7 +90,7 @@ public class GuiRegionEditor extends GuiElement
         if (region != null)
         {
             this.passable.toggled(region.passable);
-            this.enabled.setText(region.enabled);
+            this.enabled.set(region.enabled);
             this.delay.setValue(region.delay);
             this.onEnter.set(region.onEnter);
             this.onExit.set(region.onExit);
