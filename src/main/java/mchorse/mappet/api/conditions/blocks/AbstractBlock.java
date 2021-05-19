@@ -1,17 +1,26 @@
 package mchorse.mappet.api.conditions.blocks;
 
+import com.google.common.collect.ImmutableSet;
 import mchorse.mappet.api.utils.DataContext;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 
+import java.util.Set;
+
 public abstract class AbstractBlock implements INBTSerializable<NBTTagCompound>
 {
+    public static final Set<String> BLOCKS = ImmutableSet.of("state", "world_time");
+
     public boolean not;
     public boolean or;
 
     public static AbstractBlock create(String type)
     {
-        if (type.equals("world_time"))
+        if (type.equals("state"))
+        {
+            return new StateBlock();
+        }
+        else if (type.equals("world_time"))
         {
             return new WorldTimeBlock();
         }

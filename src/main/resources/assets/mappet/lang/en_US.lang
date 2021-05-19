@@ -319,13 +319,21 @@ mappet.gui.factions.relations.context.remove=Remove this relation
 mappet.gui.factions.info.empty=Select or create a faction in the list on the right, to start editing...
 
 mappet.gui.conditions.title=Condition editor
-mappet.gui.conditions.context.add=Add a condition
+mappet.gui.conditions.context.add=Add a condition...
+mappet.gui.conditions.context.add_condition=Add %s condition
 mappet.gui.conditions.context.remove=Remove condition
+mappet.gui.conditions.state.id=State key
+mappet.gui.conditions.target=Target
+mappet.gui.conditions.comparison=Comparison
+mappet.gui.conditions.value=Value
 mappet.gui.conditions.world_time.check=Time condition
 mappet.gui.conditions.world_time.range=Range
 mappet.gui.conditions.world_time.types.day=Is day?
 mappet.gui.conditions.world_time.types.night=Is night?
 mappet.gui.conditions.world_time.types.range=In between...
+mappet.gui.conditions.targets.global=Global
+mappet.gui.conditions.targets.subject=Subject
+mappet.gui.conditions.targets.object=Object
 
 # GUI enums
 

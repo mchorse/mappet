@@ -2,8 +2,10 @@ package mchorse.mappet.client.gui.conditions;
 
 import mchorse.mappet.api.conditions.Condition;
 import mchorse.mappet.api.conditions.blocks.AbstractBlock;
+import mchorse.mappet.api.conditions.blocks.StateBlock;
 import mchorse.mappet.api.conditions.blocks.WorldTimeBlock;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlayPanel;
+import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
@@ -37,6 +39,7 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
 
     static
     {
+        PANELS.put(StateBlock.class, GuiStateBlockPanel.class);
         PANELS.put(WorldTimeBlock.class, GuiWorldTimeBlockPanel.class);
     }
 
@@ -52,7 +55,17 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
         {
             GuiSimpleContextMenu menu = new GuiSimpleContextMenu(this.mc);
 
-            menu.action(Icons.ADD, IKey.lang("mappet.gui.conditions.context.add"), () -> this.addBlock("world_time"));
+            menu.action(Icons.ADD, IKey.lang("mappet.gui.conditions.context.add"), () ->
+            {
+                GuiSimpleContextMenu adds = new GuiSimpleContextMenu(this.mc);
+
+                for (String key : AbstractBlock.BLOCKS)
+                {
+                    adds.action(Icons.ADD, IKey.format("mappet.gui.conditions.context.add_condition", IKey.lang("mappet.gui.condition_types." + key)), () -> this.addBlock(key));
+                }
+
+                GuiBase.getCurrent().replaceContextMenu(adds);
+            });
             menu.action(Icons.REMOVE, IKey.lang("mappet.gui.conditions.context.remove"), this::removeBlock);
 
             return menu;
