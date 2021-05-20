@@ -17,32 +17,32 @@ public abstract class TargetBlock extends AbstractBlock
     public Target target = this.getDefaultTarget();
     public String selector = "";
 
-    protected ICharacter getCharacter(DataContext context)
+    protected EntityPlayer getPlayer(DataContext context)
     {
         if (this.target == Target.SUBJECT && context.subject instanceof EntityPlayer)
         {
-            return Character.get((EntityPlayer) context.subject);
+            return (EntityPlayer) context.subject;
         }
         else if (this.target == Target.OBJECT && context.object instanceof EntityPlayer)
         {
-            return Character.get((EntityPlayer) context.object);
+            return (EntityPlayer) context.object;
         }
         else if (this.target == Target.SELECTOR)
         {
             try
             {
-                EntityPlayer player = EntitySelector.matchOnePlayer(context.getSender(), this.selector);
-
-                if (player != null)
-                {
-                    return Character.get(player);
-                }
+                return EntitySelector.matchOnePlayer(context.getSender(), this.selector);
             }
             catch (Exception e)
             {}
         }
 
         return null;
+    }
+
+    protected ICharacter getCharacter(DataContext context)
+    {
+        return Character.get(this.getPlayer(context));
     }
 
     protected States getStates(DataContext context)

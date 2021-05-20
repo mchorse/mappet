@@ -51,7 +51,7 @@ public class GuiFactionRelationOverlayPanel extends GuiOverlayPanel
                 menu.action(Icons.REMOVE, IKey.lang("mappet.gui.factions.overlay.context.remove"), this::removeThreshold);
             }
 
-            return menu;
+            return menu.shadow();
         });
 
         this.editor = new GuiScrollElement(mc);

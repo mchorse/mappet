@@ -45,12 +45,12 @@ public class GuiEventHotkeysOverlayPanel extends GuiOverlayPanel
         {
             GuiSimpleContextMenu menu = new GuiSimpleContextMenu(this.mc).action(Icons.ADD, IKey.lang("mappet.gui.nodes.event,hotkeys.context.add"), this::addHotkey);
 
-            if (this.hotkeys.hotkeys.size() > 0)
+            if (!this.hotkeys.hotkeys.isEmpty())
             {
                 menu.action(Icons.REMOVE, IKey.lang("mappet.gui.nodes.event,hotkeys.context.remove"), this::removeHotkey);
             }
 
-            return menu;
+            return menu.shadow();
         });
 
         this.editor = new GuiScrollElement(mc);

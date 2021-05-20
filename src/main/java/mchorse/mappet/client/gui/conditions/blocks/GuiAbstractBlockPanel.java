@@ -1,6 +1,7 @@
-package mchorse.mappet.client.gui.conditions;
+package mchorse.mappet.client.gui.conditions.blocks;
 
 import mchorse.mappet.api.conditions.blocks.AbstractBlock;
+import mchorse.mappet.client.gui.conditions.GuiConditionOverlayPanel;
 import mchorse.mclib.McLib;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
@@ -17,12 +18,14 @@ public class GuiAbstractBlockPanel <T extends AbstractBlock> extends GuiElement
     public GuiIconElement not;
     public GuiIconElement or;
 
+    protected GuiConditionOverlayPanel overlay;
     protected T block;
 
-    public GuiAbstractBlockPanel(Minecraft mc, T block)
+    public GuiAbstractBlockPanel(Minecraft mc, GuiConditionOverlayPanel overlay, T block)
     {
         super(mc);
 
+        this.overlay = overlay;
         this.block = block;
 
         GuiLabel label = Elements.label(IKey.lang("mappet.gui.condition_types." + AbstractBlock.FACTORY.getType(block)));

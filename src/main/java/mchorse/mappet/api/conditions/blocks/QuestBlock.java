@@ -6,6 +6,7 @@ import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.utils.EnumUtils;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
@@ -76,7 +77,16 @@ public class QuestBlock extends TargetBlock
     @SideOnly(Side.CLIENT)
     public String stringify()
     {
-        return this.id;
+        if (this.quest == QuestCheck.ABSENT)
+        {
+            return I18n.format("mappet.gui.conditions.quest.is_absent", this.id);
+        }
+        else if (this.quest == QuestCheck.PRESENT)
+        {
+            return I18n.format("mappet.gui.conditions.quest.is_present", this.id);
+        }
+
+        return I18n.format("mappet.gui.conditions.quest.is_completed", this.id);
     }
 
     @Override

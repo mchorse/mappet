@@ -4,9 +4,17 @@ import mchorse.mappet.api.conditions.Condition;
 import mchorse.mappet.api.conditions.blocks.AbstractBlock;
 import mchorse.mappet.api.conditions.blocks.DialogueBlock;
 import mchorse.mappet.api.conditions.blocks.FactionBlock;
+import mchorse.mappet.api.conditions.blocks.ItemBlock;
 import mchorse.mappet.api.conditions.blocks.QuestBlock;
 import mchorse.mappet.api.conditions.blocks.StateBlock;
 import mchorse.mappet.api.conditions.blocks.WorldTimeBlock;
+import mchorse.mappet.client.gui.conditions.blocks.GuiAbstractBlockPanel;
+import mchorse.mappet.client.gui.conditions.blocks.GuiDialogueBlockPanel;
+import mchorse.mappet.client.gui.conditions.blocks.GuiFactionBlockPanel;
+import mchorse.mappet.client.gui.conditions.blocks.GuiItemBlockPanel;
+import mchorse.mappet.client.gui.conditions.blocks.GuiQuestBlockPanel;
+import mchorse.mappet.client.gui.conditions.blocks.GuiStateBlockPanel;
+import mchorse.mappet.client.gui.conditions.blocks.GuiWorldTimeBlockPanel;
 import mchorse.mappet.client.gui.utils.ColorfulAction;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlayPanel;
 import mchorse.mclib.client.gui.framework.GuiBase;
@@ -14,6 +22,7 @@ import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
@@ -34,8 +43,8 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
             Class<? extends GuiAbstractBlockPanel<? extends AbstractBlock>>>();
 
     public GuiAbstractBlockListElement list;
-
     public GuiScrollElement editor;
+    public GuiInventoryElement inventory;
 
     private Condition condition;
     private AbstractBlock block;
@@ -46,6 +55,7 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
         PANELS.put(StateBlock.class, GuiStateBlockPanel.class);
         PANELS.put(DialogueBlock.class, GuiDialogueBlockPanel.class);
         PANELS.put(FactionBlock.class, GuiFactionBlockPanel.class);
+        PANELS.put(ItemBlock.class, GuiItemBlockPanel.class);
         PANELS.put(WorldTimeBlock.class, GuiWorldTimeBlockPanel.class);
     }
 
@@ -83,13 +93,19 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
 
             return menu;
         });
-
         this.editor = new GuiScrollElement(mc);
+        this.inventory = new GuiInventoryElement(mc, (stack) ->
+        {
+            this.inventory.linked.acceptStack(stack);
+            this.inventory.unlink();
+        });
+        this.inventory.flex().relative(this).xy(0.5F, 0.5F).anchor(0.5F, 0.5F);
+        this.inventory.setVisible(false);
 
         this.list.flex().relative(this.content).w(120).h(1F);
         this.editor.flex().relative(this.content).x(120).w(1F, -120).h(1F).column(5).vertical().stretch().scroll().padding(10);
 
-        this.content.add(this.editor, this.list);
+        this.content.add(this.editor, this.list, this.inventory);
 
         this.pickBlock(this.condition.blocks.isEmpty() ? null : this.condition.blocks.get(0), true);
     }
@@ -127,7 +143,7 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
 
             try
             {
-                GuiAbstractBlockPanel panel = (GuiAbstractBlockPanel) PANELS.get(block.getClass()).getConstructors()[0].newInstance(this.mc, block);
+                GuiAbstractBlockPanel panel = (GuiAbstractBlockPanel) PANELS.get(block.getClass()).getConstructors()[0].newInstance(this.mc, this, block);
 
                 this.editor.add(panel);
             }

@@ -1,10 +1,10 @@
-package mchorse.mappet.client.gui.conditions;
+package mchorse.mappet.client.gui.conditions.blocks;
 
 import mchorse.mappet.ClientProxy;
 import mchorse.mappet.api.conditions.blocks.QuestBlock;
 import mchorse.mappet.api.conditions.blocks.TargetBlock;
 import mchorse.mappet.api.utils.ContentType;
-import mchorse.mappet.client.gui.conditions.utils.GuiPropertyBlockElement;
+import mchorse.mappet.client.gui.conditions.GuiConditionOverlayPanel;
 import mchorse.mappet.client.gui.conditions.utils.GuiTargetBlockElement;
 import mchorse.mappet.client.gui.utils.overlays.GuiContentNamesOverlayPanel;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
@@ -21,9 +21,9 @@ public class GuiQuestBlockPanel extends GuiAbstractBlockPanel<QuestBlock>
     public GuiTargetBlockElement<TargetBlock> property;
     public GuiCirculateElement quest;
 
-    public GuiQuestBlockPanel(Minecraft mc, QuestBlock block)
+    public GuiQuestBlockPanel(Minecraft mc, GuiConditionOverlayPanel overlay, QuestBlock block)
     {
-        super(mc, block);
+        super(mc, overlay, block);
 
         this.id = new GuiButtonElement(mc, IKey.lang("mappet.gui.overlays.quest"), (t) -> this.openQuests());
         this.property = new GuiTargetBlockElement<TargetBlock>(mc, block);

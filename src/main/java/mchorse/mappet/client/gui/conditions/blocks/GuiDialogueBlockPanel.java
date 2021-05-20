@@ -1,9 +1,10 @@
-package mchorse.mappet.client.gui.conditions;
+package mchorse.mappet.client.gui.conditions.blocks;
 
 import mchorse.mappet.ClientProxy;
 import mchorse.mappet.api.conditions.blocks.DialogueBlock;
 import mchorse.mappet.api.conditions.blocks.TargetBlock;
 import mchorse.mappet.api.utils.ContentType;
+import mchorse.mappet.client.gui.conditions.GuiConditionOverlayPanel;
 import mchorse.mappet.client.gui.conditions.utils.GuiTargetBlockElement;
 import mchorse.mappet.client.gui.utils.overlays.GuiContentNamesOverlayPanel;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
@@ -18,9 +19,9 @@ public class GuiDialogueBlockPanel extends GuiAbstractBlockPanel<DialogueBlock>
     public GuiButtonElement id;
     public GuiTargetBlockElement<TargetBlock> property;
 
-    public GuiDialogueBlockPanel(Minecraft mc, DialogueBlock block)
+    public GuiDialogueBlockPanel(Minecraft mc, GuiConditionOverlayPanel overlay, DialogueBlock block)
     {
-        super(mc, block);
+        super(mc, overlay, block);
 
         this.id = new GuiButtonElement(mc, IKey.lang("mappet.gui.overlays.dialogue"), (t) -> this.openDialogues());
         this.property = new GuiTargetBlockElement<TargetBlock>(mc, block);

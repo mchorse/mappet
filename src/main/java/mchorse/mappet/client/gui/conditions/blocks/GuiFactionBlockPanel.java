@@ -1,19 +1,15 @@
-package mchorse.mappet.client.gui.conditions;
+package mchorse.mappet.client.gui.conditions.blocks;
 
 import mchorse.mappet.ClientProxy;
 import mchorse.mappet.api.conditions.blocks.FactionBlock;
-import mchorse.mappet.api.conditions.blocks.StateBlock;
-import mchorse.mappet.api.conditions.utils.Comparison;
-import mchorse.mappet.api.conditions.utils.Target;
 import mchorse.mappet.api.utils.ContentType;
+import mchorse.mappet.client.gui.conditions.GuiConditionOverlayPanel;
 import mchorse.mappet.client.gui.conditions.utils.GuiPropertyBlockElement;
 import mchorse.mappet.client.gui.utils.overlays.GuiContentNamesOverlayPanel;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiCirculateElement;
-import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
-import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
@@ -24,9 +20,9 @@ public class GuiFactionBlockPanel extends GuiAbstractBlockPanel<FactionBlock>
     public GuiPropertyBlockElement property;
     public GuiCirculateElement faction;
 
-    public GuiFactionBlockPanel(Minecraft mc, FactionBlock block)
+    public GuiFactionBlockPanel(Minecraft mc, GuiConditionOverlayPanel overlay, FactionBlock block)
     {
-        super(mc, block);
+        super(mc, overlay, block);
 
         this.id = new GuiButtonElement(mc, IKey.lang("mappet.gui.overlays.faction"), (t) -> this.openFactions());
         this.property = new GuiPropertyBlockElement(mc, block);

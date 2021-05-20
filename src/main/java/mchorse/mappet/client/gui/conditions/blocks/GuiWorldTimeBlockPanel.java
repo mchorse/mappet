@@ -1,6 +1,7 @@
-package mchorse.mappet.client.gui.conditions;
+package mchorse.mappet.client.gui.conditions.blocks;
 
 import mchorse.mappet.api.conditions.blocks.WorldTimeBlock;
+import mchorse.mappet.client.gui.conditions.GuiConditionOverlayPanel;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiCirculateElement;
@@ -17,9 +18,9 @@ public class GuiWorldTimeBlockPanel extends GuiAbstractBlockPanel<WorldTimeBlock
 
     private GuiElement[] elements;
 
-    public GuiWorldTimeBlockPanel(Minecraft mc, WorldTimeBlock block)
+    public GuiWorldTimeBlockPanel(Minecraft mc, GuiConditionOverlayPanel overlay, WorldTimeBlock block)
     {
-        super(mc, block);
+        super(mc, overlay, block);
 
         this.type = new GuiCirculateElement(mc, this::toggleMode);
 
