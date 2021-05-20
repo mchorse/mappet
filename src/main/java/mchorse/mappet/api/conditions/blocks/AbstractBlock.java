@@ -13,6 +13,7 @@ public abstract class AbstractBlock implements INBTSerializable<NBTTagCompound>
     public static final IFactory<AbstractBlock> FACTORY = new MapFactory<AbstractBlock>()
         .register("quest", QuestBlock.class)
         .register("state", StateBlock.class)
+        .register("dialogue", DialogueBlock.class)
         .register("faction", FactionBlock.class)
         .register("world_time", WorldTimeBlock.class);
 

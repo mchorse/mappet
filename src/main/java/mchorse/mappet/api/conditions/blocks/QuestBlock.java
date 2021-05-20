@@ -8,6 +8,8 @@ import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.utils.EnumUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class QuestBlock extends TargetBlock
 {
@@ -28,25 +30,11 @@ public class QuestBlock extends TargetBlock
 
             if (this.quest == QuestCheck.ABSENT)
             {
-                for (EntityPlayer player : context.server.getPlayerList().getPlayers())
-                {
-                    if (Character.get(player).getQuests().has(this.id))
-                    {
-                        return false;
-                    }
-                }
-
-                return !states.wasQuestCompleted(this.id);
+                return !states.wasQuestCompleted(this.id) && this.hasServerInProgress(context);
             }
             else if (this.quest == QuestCheck.PRESENT)
             {
-                for (EntityPlayer player : context.server.getPlayerList().getPlayers())
-                {
-                    if (Character.get(player).getQuests().has(this.id))
-                    {
-                        return true;
-                    }
-                }
+                return this.hasServerInProgress(context);
             }
             else
             {
@@ -59,26 +47,42 @@ public class QuestBlock extends TargetBlock
 
             if (character != null)
             {
-                boolean result = false;
-
                 if (this.quest == QuestCheck.ABSENT)
                 {
-                    result = !character.getStates().wasQuestCompleted(this.id) && !character.getQuests().has(this.id);
+                    return !character.getStates().wasQuestCompleted(this.id) && !character.getQuests().has(this.id);
                 }
                 else if (this.quest == QuestCheck.PRESENT)
                 {
-                    result = character.getQuests().has(this.id);
+                    return character.getQuests().has(this.id);
                 }
                 else
                 {
-                    result = character.getStates().wasQuestCompleted(this.id);
+                    return character.getStates().wasQuestCompleted(this.id);
                 }
-
-                return result;
             }
         }
 
         return false;
+    }
+
+    private boolean hasServerInProgress(DataContext context)
+    {
+        for (EntityPlayer player : context.server.getPlayerList().getPlayers())
+        {
+            if (Character.get(player).getQuests().has(this.id))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public String stringify()
+    {
+        return this.id;
     }
 
     @Override
@@ -95,12 +99,6 @@ public class QuestBlock extends TargetBlock
         super.deserializeNBT(tag);
 
         this.quest = EnumUtils.getValue(tag.getInteger("Quest"), QuestCheck.values(), QuestCheck.COMPLETED);
-    }
-
-    @Override
-    public String stringify()
-    {
-        return this.id;
     }
 
     public static enum QuestCheck

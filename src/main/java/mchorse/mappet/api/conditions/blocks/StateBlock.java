@@ -21,6 +21,11 @@ public class StateBlock extends PropertyBlock
     {
         States states = this.getStates(context);
 
+        if (states == null)
+        {
+            return false;
+        }
+
         double a = states.get(this.id);
         double b = this.value;
 

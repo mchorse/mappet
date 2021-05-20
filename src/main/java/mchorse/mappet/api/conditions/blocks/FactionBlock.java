@@ -7,6 +7,7 @@ import mchorse.mappet.api.factions.FactionAttitude;
 import mchorse.mappet.api.states.States;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.utils.EnumUtils;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -78,8 +79,16 @@ public class FactionBlock extends PropertyBlock
         {
             return this.id + " " + this.comparison.operation.sign + " " + this.value;
         }
+        else if (this.faction == FactionCheck.AGGRESSIVE)
+        {
+            return I18n.format("mappet.gui.conditions.faction.is_aggressive", this.id);
+        }
+        else if (this.faction == FactionCheck.PASSIVE)
+        {
+            return I18n.format("mappet.gui.conditions.faction.is_passive", this.id);
+        }
 
-        return this.id;
+        return I18n.format("mappet.gui.conditions.faction.is_friendly", this.id);
     }
 
     @Override
