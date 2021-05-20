@@ -16,12 +16,6 @@ public class QuestBlock extends TargetBlock
     public QuestCheck quest = QuestCheck.COMPLETED;
 
     @Override
-    public int getColor()
-    {
-        return 0xffaa00;
-    }
-
-    @Override
     public boolean evaluate(DataContext context)
     {
         if (this.target == Target.GLOBAL)

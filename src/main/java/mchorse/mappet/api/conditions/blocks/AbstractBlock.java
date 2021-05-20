@@ -11,16 +11,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public abstract class AbstractBlock implements INBTSerializable<NBTTagCompound>
 {
     public static final IFactory<AbstractBlock> FACTORY = new MapFactory<AbstractBlock>()
-        .register("quest", QuestBlock.class)
-        .register("state", StateBlock.class)
-        .register("dialogue", DialogueBlock.class)
-        .register("faction", FactionBlock.class)
-        .register("world_time", WorldTimeBlock.class);
+        .register("quest", QuestBlock.class, 0xffaa00)
+        .register("state", StateBlock.class, 0xff0022)
+        .register("dialogue", DialogueBlock.class, 0x00ff33)
+        .register("faction", FactionBlock.class, 0x942aff)
+        .register("world_time", WorldTimeBlock.class, 0x0088ff);
 
     public boolean not;
     public boolean or;
-
-    public abstract int getColor();
 
     public abstract boolean evaluate(DataContext context);
 

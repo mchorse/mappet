@@ -11,12 +11,6 @@ public class StateBlock extends PropertyBlock
     {}
 
     @Override
-    public int getColor()
-    {
-        return 0xff0022;
-    }
-
-    @Override
     public boolean evaluate(DataContext context)
     {
         States states = this.getStates(context);

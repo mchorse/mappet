@@ -13,12 +13,6 @@ public class SwitchNode extends EventNode
     {}
 
     @Override
-    public int getColor()
-    {
-        return 0xf1c40f;
-    }
-
-    @Override
     protected String getDisplayTitle()
     {
         return this.expression;

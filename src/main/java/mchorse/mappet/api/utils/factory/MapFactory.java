@@ -4,6 +4,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -13,6 +14,7 @@ import java.util.Map;
 public class MapFactory <T> implements IFactory<T>
 {
     private BiMap<String, Class<? extends T>> factory = HashBiMap.create();
+    private Map<Class<? extends T>, Integer> colors = new HashMap<Class<? extends T>, Integer>();
 
     public MapFactory<T> copy()
     {
@@ -20,22 +22,25 @@ public class MapFactory <T> implements IFactory<T>
 
         for (Map.Entry<String, Class<? extends T>> entry : this.factory.entrySet())
         {
-            factory.register(entry.getKey(), entry.getValue());
+            factory.register(entry.getKey(), entry.getValue(), this.colors.get(entry.getValue()));
         }
 
         return factory;
     }
 
-    public MapFactory<T> register(String type, Class<? extends T> clazz)
+    public MapFactory<T> register(String type, Class<? extends T> clazz, int color)
     {
         this.factory.put(type, clazz);
+        this.colors.put(clazz, color);
 
         return this;
     }
 
     public MapFactory<T> unregister(String key)
     {
-        this.factory.remove(key);
+        Class<? extends T> clazz = this.factory.remove(key);
+
+        this.colors.remove(clazz);
 
         return this;
     }
@@ -69,6 +74,14 @@ public class MapFactory <T> implements IFactory<T>
         }
 
         throw new IllegalStateException("Node type " + type + " is not part of event node system!");
+    }
+
+    @Override
+    public int getColor(T object)
+    {
+        Integer color = this.colors.get(object.getClass());
+
+        return color == null ? 0 : color;
     }
 
     @Override

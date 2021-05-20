@@ -28,12 +28,6 @@ public class FactionBlock extends PropertyBlock
     }
 
     @Override
-    public int getColor()
-    {
-        return 0x942aff;
-    }
-
-    @Override
     public boolean evaluate(DataContext context)
     {
         if (this.target != Target.GLOBAL)

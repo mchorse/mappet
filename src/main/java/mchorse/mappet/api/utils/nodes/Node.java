@@ -28,8 +28,6 @@ public abstract class Node implements INBTSerializable<NBTTagCompound>
         }
     }
 
-    public abstract int getColor();
-
     public String getTitle()
     {
         if (this.title.isEmpty())

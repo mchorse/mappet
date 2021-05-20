@@ -10,12 +10,6 @@ public class QuestNode extends Node
     public String receiver = "";
 
     @Override
-    public int getColor()
-    {
-        return 0xffff00;
-    }
-
-    @Override
     protected String getDisplayTitle()
     {
         return this.quest;

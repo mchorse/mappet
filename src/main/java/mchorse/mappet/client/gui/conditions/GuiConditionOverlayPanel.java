@@ -147,7 +147,7 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
         @Override
         protected void drawElementPart(AbstractBlock element, int i, int x, int y, boolean hover, boolean selected)
         {
-            int color = element.getColor();
+            int color = AbstractBlock.FACTORY.getColor(element);
 
             Gui.drawRect(x, y, x + 4, y + this.scroll.scrollItemSize, 0xff000000 + color);
             GuiDraw.drawHorizontalGradientRect(x + 4, y, x + 24, y + this.scroll.scrollItemSize, 0x44000000 + color, color);

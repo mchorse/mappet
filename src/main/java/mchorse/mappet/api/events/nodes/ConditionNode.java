@@ -14,12 +14,6 @@ public class ConditionNode extends EventNode
     {}
 
     @Override
-    public int getColor()
-    {
-        return 0xff1493;
-    }
-
-    @Override
     protected String getDisplayTitle()
     {
         return this.condition.mode == Checker.Mode.CONDITION ? "" : this.condition.expression;

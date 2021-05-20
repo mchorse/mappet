@@ -16,12 +16,6 @@ public class CommandNode extends EventNode
     }
 
     @Override
-    public int getColor()
-    {
-        return 0x942aff;
-    }
-
-    @Override
     protected String getDisplayTitle()
     {
         return this.command;

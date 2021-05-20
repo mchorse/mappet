@@ -678,69 +678,73 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
         for (T node : this.system.nodes.values())
         {
             Area nodeArea = this.getNodeArea(node);
-            Area output = this.getNodeOutletArea(nodeArea, true);
-            Area input = this.getNodeOutletArea(nodeArea, false);
 
-            boolean insideO = output.isInside(context);
-            boolean insideI = input.isInside(context);
-
-            int colorO = ColorUtils.multiplyColor(0xffffff, insideO ? 1F : 0.6F);
-            int colorI = ColorUtils.multiplyColor(0xffffff, insideI ? 1F : 0.6F);
-
-            if (this.output == node)
+            if (nodeArea.w > 25)
             {
-                colorO = ACTIVE;
+                Area output = this.getNodeOutletArea(nodeArea, true);
+                Area input = this.getNodeOutletArea(nodeArea, false);
 
-                if (insideI)
-                {
-                    colorI = ELSE;
-                }
-            }
-            else if (this.output != null)
-            {
-                if (insideO)
-                {
-                    colorO = ELSE;
-                }
-                else if (insideI)
-                {
-                    colorI = IF;
-                }
-            }
+                boolean insideO = output.isInside(context);
+                boolean insideI = input.isInside(context);
 
-            if (this.input == node)
-            {
-                colorI = ACTIVE;
+                int colorO = ColorUtils.multiplyColor(0xffffff, insideO ? 1F : 0.6F);
+                int colorI = ColorUtils.multiplyColor(0xffffff, insideI ? 1F : 0.6F);
 
-                if (insideO)
+                if (this.output == node)
                 {
-                    colorO = ELSE;
-                }
-            }
-            else if (this.input != null)
-            {
-                if (insideI)
-                {
-                    colorI = ELSE;
-                }
-                else if (insideO)
-                {
-                    colorO = IF;
-                }
-            }
+                    colorO = ACTIVE;
 
-            GuiDraw.drawOutline(output.x, output.y, output.ex(), output.ey(), 0xff000000 + colorO);
+                    if (insideI)
+                    {
+                        colorI = ELSE;
+                    }
+                }
+                else if (this.output != null)
+                {
+                    if (insideO)
+                    {
+                        colorO = ELSE;
+                    }
+                    else if (insideI)
+                    {
+                        colorI = IF;
+                    }
+                }
 
-            if (this.system.main != node)
-            {
-                GuiDraw.drawOutline(input.x, input.y, input.ex(), input.ey(), 0xff000000 + colorI);
+                if (this.input == node)
+                {
+                    colorI = ACTIVE;
+
+                    if (insideO)
+                    {
+                        colorO = ELSE;
+                    }
+                }
+                else if (this.input != null)
+                {
+                    if (insideI)
+                    {
+                        colorI = ELSE;
+                    }
+                    else if (insideO)
+                    {
+                        colorO = IF;
+                    }
+                }
+
+                GuiDraw.drawOutline(output.x, output.y, output.ex(), output.ey(), 0xff000000 + colorO);
+
+                if (this.system.main != node)
+                {
+                    GuiDraw.drawOutline(input.x, input.y, input.ex(), input.ey(), 0xff000000 + colorI);
+                }
             }
 
             boolean hover = Area.SHARED.isInside(context);
             int index = this.selected.indexOf(node);
 
             int colorBg = hover ? 0xff080808 : 0xff000000;
-            int colorFg = 0xaa000000 + node.getColor();
+            int colorFg = 0xaa000000 + this.system.getFactory().getColor(node);
 
             if (index >= 0)
             {

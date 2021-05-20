@@ -18,10 +18,10 @@ import java.util.List;
 public class EventManager extends BaseManager<NodeSystem<EventNode>>
 {
     public static final MapFactory<EventNode> FACTORY = new MapFactory<EventNode>()
-        .register("command", CommandNode.class)
-        .register("condition", ConditionNode.class)
-        .register("switch", SwitchNode.class)
-        .register("timer", TimerNode.class);
+        .register("command", CommandNode.class, 0x942aff)
+        .register("condition", ConditionNode.class, 0xff1493)
+        .register("switch", SwitchNode.class, 0xf1c40f)
+        .register("timer", TimerNode.class, 0x11ff33);
 
     public EventHotkeys hotkeys = new EventHotkeys();
 

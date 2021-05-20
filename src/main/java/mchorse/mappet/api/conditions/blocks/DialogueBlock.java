@@ -10,12 +10,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class DialogueBlock extends TargetBlock
 {
     @Override
-    public int getColor()
-    {
-        return 0x00ff33;
-    }
-
-    @Override
     public boolean evaluate(DataContext context)
     {
         if (this.target != Target.GLOBAL)

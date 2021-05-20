@@ -8,5 +8,7 @@ public interface IFactory <T>
 
     public T create(String type);
 
+    public int getColor(T object);
+
     public Collection<String> getKeys();
 }

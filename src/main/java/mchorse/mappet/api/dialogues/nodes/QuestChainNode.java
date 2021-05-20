@@ -18,12 +18,6 @@ public class QuestChainNode extends EventNode
     }
 
     @Override
-    public int getColor()
-    {
-        return 0xffff00;
-    }
-
-    @Override
     protected String getDisplayTitle()
     {
         return this.chain;

@@ -21,12 +21,6 @@ public class TimerNode extends EventNode
     }
 
     @Override
-    public int getColor()
-    {
-        return 0x11ff33;
-    }
-
-    @Override
     protected String getDisplayTitle()
     {
         return this.timer + " ticks";

@@ -17,12 +17,6 @@ public class WorldTimeBlock extends AbstractBlock
     {}
 
     @Override
-    public int getColor()
-    {
-        return 0x0088ff;
-    }
-
-    @Override
     public boolean evaluate(DataContext context)
     {
         long time = context.world.getWorldTime();

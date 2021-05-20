@@ -18,12 +18,6 @@ public class CraftingNode extends EventNode
     }
 
     @Override
-    public int getColor()
-    {
-        return 0xff6600;
-    }
-
-    @Override
     protected String getDisplayTitle()
     {
         return this.table;

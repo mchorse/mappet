@@ -24,10 +24,10 @@ import java.util.stream.Collectors;
 public class DialogueManager extends BaseManager<Dialogue>
 {
     public static final MapFactory<EventNode> FACTORY = EventManager.FACTORY.copy()
-        .register("reply", ReplyNode.class)
-        .register("reaction", ReactionNode.class)
-        .register("crafting", CraftingNode.class)
-        .register("quest", QuestChainNode.class)
+        .register("reply", ReplyNode.class, 0x00a0ff)
+        .register("reaction", ReactionNode.class, 0xff2200)
+        .register("crafting", CraftingNode.class, 0xff6600)
+        .register("quest", QuestChainNode.class, 0xffff00)
         .unregister("timer");
 
     public DialogueManager(File folder)
