@@ -67,7 +67,7 @@ public class GuiCheckerElement extends GuiElement
     {
         GuiConditionOverlayPanel panel = new GuiConditionOverlayPanel(this.mc, this.checker.condition);
 
-        GuiOverlay.addOverlay(GuiBase.getCurrent(), panel, 0.6F, 0.6F);
+        GuiOverlay.addOverlay(GuiBase.getCurrent(), panel, 0.6F, 0.8F);
     }
 
     public Checker get()

@@ -1,6 +1,7 @@
 package mchorse.mappet.api.conditions.blocks;
 
 import mchorse.mappet.Mappet;
+import mchorse.mappet.api.conditions.utils.Target;
 import mchorse.mappet.api.factions.Faction;
 import mchorse.mappet.api.factions.FactionAttitude;
 import mchorse.mappet.api.states.States;
@@ -17,8 +18,12 @@ public class FactionBlock extends PropertyBlock
     public FactionBlock()
     {
         super();
+    }
 
-        this.target = 1;
+    @Override
+    protected Target getDefaultTarget()
+    {
+        return Target.SUBJECT;
     }
 
     @Override
@@ -30,9 +35,14 @@ public class FactionBlock extends PropertyBlock
     @Override
     public boolean evaluate(DataContext context)
     {
-        if (this.target == 1 || this.target == 2)
+        if (this.target != Target.GLOBAL)
         {
             States states = this.getStates(context);
+
+            if (states == null)
+            {
+                return false;
+            }
 
             if (this.faction == FactionCheck.SCORE)
             {

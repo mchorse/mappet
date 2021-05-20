@@ -326,6 +326,7 @@ mappet.gui.conditions.context.add_condition=Add %s condition
 mappet.gui.conditions.context.remove=Remove condition
 mappet.gui.conditions.target=Target
 mappet.gui.conditions.comparison=Comparison
+mappet.gui.conditions.selector=Target selector
 mappet.gui.conditions.value=Value
 mappet.gui.conditions.state.id=State key
 mappet.gui.conditions.faction.id=Faction ID
@@ -335,10 +336,11 @@ mappet.gui.conditions.world_time.check=Time condition
 mappet.gui.conditions.world_time.range=Range
 mappet.gui.conditions.world_time.types.day=Is day?
 mappet.gui.conditions.world_time.types.night=Is night?
-mappet.gui.conditions.world_time.types.range=In between...
+mappet.gui.conditions.world_time.types.range=In between
 mappet.gui.conditions.targets.global=Global
 mappet.gui.conditions.targets.subject=Subject
 mappet.gui.conditions.targets.object=Object
+mappet.gui.conditions.targets.selector=Selector
 
 # GUI enums
 

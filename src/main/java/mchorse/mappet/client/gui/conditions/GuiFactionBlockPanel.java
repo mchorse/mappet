@@ -1,8 +1,15 @@
 package mchorse.mappet.client.gui.conditions;
 
+import mchorse.mappet.ClientProxy;
 import mchorse.mappet.api.conditions.blocks.FactionBlock;
 import mchorse.mappet.api.conditions.blocks.StateBlock;
 import mchorse.mappet.api.conditions.utils.Comparison;
+import mchorse.mappet.api.conditions.utils.Target;
+import mchorse.mappet.api.utils.ContentType;
+import mchorse.mappet.client.gui.conditions.utils.GuiPropertyBlockElement;
+import mchorse.mappet.client.gui.utils.overlays.GuiContentNamesOverlayPanel;
+import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
+import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiCirculateElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
@@ -13,19 +20,16 @@ import net.minecraft.client.Minecraft;
 
 public class GuiFactionBlockPanel extends GuiAbstractBlockPanel<FactionBlock>
 {
-    public GuiTextElement id;
+    public GuiButtonElement id;
+    public GuiPropertyBlockElement property;
     public GuiCirculateElement faction;
-    public GuiCirculateElement target;
-    public GuiCirculateElement comparison;
-    public GuiTrackpadElement value;
 
     public GuiFactionBlockPanel(Minecraft mc, FactionBlock block)
     {
         super(mc, block);
 
-        this.id = new GuiTextElement(mc, 1000, (t) -> this.block.id = t);
-        this.id.setText(block.id);
-
+        this.id = new GuiButtonElement(mc, IKey.lang("mappet.gui.overlays.faction"), (t) -> this.openFactions());
+        this.property = new GuiPropertyBlockElement(mc, block);
         this.faction = new GuiCirculateElement(mc, this::toggleFaction);
         this.faction.addLabel(IKey.lang("mappet.gui.faction_attitudes.aggressive"));
         this.faction.addLabel(IKey.lang("mappet.gui.faction_attitudes.passive"));
@@ -33,42 +37,30 @@ public class GuiFactionBlockPanel extends GuiAbstractBlockPanel<FactionBlock>
         this.faction.addLabel(IKey.lang("mappet.gui.conditions.faction.score"));
         this.faction.setValue(block.faction.ordinal());
 
-        this.target = new GuiCirculateElement(mc, this::toggleTarget);
-        this.target.addLabel(IKey.lang("mappet.gui.conditions.targets.subject"));
-        this.target.addLabel(IKey.lang("mappet.gui.conditions.targets.object"));
-        this.target.setValue(block.target - 1);
+        this.add(Elements.row(mc, 5,
+            Elements.column(mc, 5, Elements.label(IKey.lang("mappet.gui.conditions.faction.id")).marginTop(12), this.id),
+            Elements.column(mc, 5, Elements.label(IKey.lang("mappet.gui.conditions.faction.check")).marginTop(12), this.faction)
+        ));
+        this.add(this.property.targeter.marginTop(12));
+        this.add(Elements.row(mc, 5,
+            Elements.column(mc, 5, Elements.label(IKey.lang("mappet.gui.conditions.comparison")), this.property.comparison),
+            Elements.column(mc, 5, Elements.label(IKey.lang("mappet.gui.conditions.value")), this.property.value)
+        ).marginTop(12));
+    }
 
-        this.comparison = new GuiCirculateElement(mc, this::toggleComparison);
-
-        for (Comparison comparison : Comparison.values())
+    private void openFactions()
+    {
+        ClientProxy.requestNames(ContentType.FACTION, (names) ->
         {
-            this.comparison.addLabel(IKey.str(comparison.operation.sign));
-        }
+            GuiContentNamesOverlayPanel overlay = new GuiContentNamesOverlayPanel(this.mc, IKey.lang("mappet.gui.overlays.faction"), ContentType.FACTION, names, (name) -> this.block.id = name);
 
-        this.comparison.setValue(block.comparison.ordinal());
-
-        this.value = new GuiTrackpadElement(mc, (v) -> this.block.value = v.intValue());
-        this.value.setValue(block.value);
-
-        this.add(Elements.label(IKey.lang("mappet.gui.conditions.faction.id")).marginTop(12), this.id);
-        this.add(Elements.label(IKey.lang("mappet.gui.conditions.faction.check")).marginTop(12), this.faction);
-        this.add(Elements.label(IKey.lang("mappet.gui.conditions.target")).marginTop(12), this.target);
-        this.add(Elements.label(IKey.lang("mappet.gui.conditions.comparison")).marginTop(12), this.comparison);
-        this.add(Elements.label(IKey.lang("mappet.gui.conditions.value")).marginTop(12), this.value);
+            overlay.set(this.block.id);
+            GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay, 0.5F, 0.7F);
+        });
     }
 
     private void toggleFaction(GuiButtonElement b)
     {
         this.block.faction = FactionBlock.FactionCheck.values()[this.faction.getValue()];
-    }
-
-    private void toggleTarget(GuiButtonElement b)
-    {
-        this.block.target = this.target.getValue() + 1;
-    }
-
-    private void toggleComparison(GuiButtonElement b)
-    {
-        this.block.comparison = Comparison.values()[this.comparison.getValue()];
     }
 }

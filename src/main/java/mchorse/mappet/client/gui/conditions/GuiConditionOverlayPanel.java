@@ -121,7 +121,9 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
                 this.editor.add(panel);
             }
             catch (Exception e)
-            {}
+            {
+                e.printStackTrace();
+            }
 
             if (select)
             {
