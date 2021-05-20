@@ -48,7 +48,7 @@ public class GuiFactionRelationOverlayPanel extends GuiOverlayPanel
 
             if (this.relation.thresholds.size() > 1)
             {
-                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.factions.overlay.context.remove"), this::removeThreshold);
+                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.factions.overlay.context.remove"), this::removeThreshold, 0xff0022);
             }
 
             return menu.shadow();

@@ -17,7 +17,6 @@ import mchorse.mappet.client.gui.conditions.blocks.GuiItemBlockPanel;
 import mchorse.mappet.client.gui.conditions.blocks.GuiQuestBlockPanel;
 import mchorse.mappet.client.gui.conditions.blocks.GuiStateBlockPanel;
 import mchorse.mappet.client.gui.conditions.blocks.GuiWorldTimeBlockPanel;
-import mchorse.mappet.client.gui.utils.ColorfulAction;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlayPanel;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
@@ -29,6 +28,9 @@ import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.HashMap;
 import java.util.List;
@@ -83,7 +85,7 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
                     IKey label = IKey.format("mappet.gui.conditions.context.add_condition", IKey.lang("mappet.gui.condition_types." + key));
                     int color = AbstractBlock.FACTORY.getColor(key);
 
-                    adds.action(new ColorfulAction(Icons.ADD, label, () -> this.addBlock(key), color));
+                    adds.action(Icons.ADD, label, () -> this.addBlock(key), color);
                 }
 
                 GuiBase.getCurrent().replaceContextMenu(adds);
@@ -91,7 +93,21 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
 
             if (!this.list.isDeselected())
             {
-                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.conditions.context.remove"), this::removeBlock);
+                menu.action(Icons.COPY, IKey.lang("mappet.gui.conditions.context.copy"), this::copyCondition);
+            }
+
+            try
+            {
+                NBTTagCompound tag = JsonToNBT.getTagFromJson(GuiScreen.getClipboardString());
+
+                menu.action(Icons.PASTE, IKey.lang("mappet.gui.conditions.context.paste"), () -> this.pasteCondition(tag));
+            }
+            catch (Exception e)
+            {}
+
+            if (!this.list.isDeselected())
+            {
+                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.conditions.context.remove"), this::removeBlock, 0xff0022);
             }
 
             return menu;
@@ -120,6 +136,26 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
         this.condition.blocks.add(block);
         this.pickBlock(block, true);
         this.list.update();
+    }
+
+    private void copyCondition()
+    {
+        AbstractBlock block = this.list.getCurrentFirst();
+        NBTTagCompound tag = block.serializeNBT();
+
+        tag.setString("Type", AbstractBlock.FACTORY.getType(block));
+        GuiScreen.setClipboardString(tag.toString());
+    }
+
+    private void pasteCondition(NBTTagCompound tag)
+    {
+        AbstractBlock block = AbstractBlock.FACTORY.create(tag.getString("Type"));
+
+        block.deserializeNBT(tag);
+        this.condition.blocks.add(block);
+        this.list.update();
+
+        this.pickBlock(block, true);
     }
 
     private void removeBlock()

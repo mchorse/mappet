@@ -96,7 +96,7 @@ public class GuiItemsElement extends GuiElement
                 slot.removeFromParent();
                 this.getParentContainer().resize();
             }
-        }));
+        }, 0xff0022));
 
         this.stacks.add(slot);
     }

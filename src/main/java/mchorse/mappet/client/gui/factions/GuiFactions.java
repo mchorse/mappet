@@ -40,7 +40,7 @@ public class GuiFactions extends GuiElement
             row.removeFromParent();
             this.relations.remove(faction);
             this.getParentContainer().resize();
-        }));
+        }, 0xff0022));
 
         this.add(row);
 

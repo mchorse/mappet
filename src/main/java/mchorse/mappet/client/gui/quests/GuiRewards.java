@@ -48,7 +48,7 @@ public class GuiRewards extends GuiElement
             final GuiReward finalElement = element;
 
             element.context(() -> new GuiSimpleContextMenu(Minecraft.getMinecraft())
-                .action(Icons.REMOVE, IKey.lang("mappet.gui.quests.rewards.context.remove"), () -> this.removeReward(finalElement)));
+                .action(Icons.REMOVE, IKey.lang("mappet.gui.quests.rewards.context.remove"), () -> this.removeReward(finalElement), 0xff0022));
 
             if (add)
             {

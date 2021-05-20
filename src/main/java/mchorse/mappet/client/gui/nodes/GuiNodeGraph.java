@@ -1,11 +1,10 @@
 package mchorse.mappet.client.gui.nodes;
 
 import mchorse.mappet.Mappet;
+import mchorse.mappet.api.utils.factory.IFactory;
 import mchorse.mappet.api.utils.nodes.Node;
 import mchorse.mappet.api.utils.nodes.NodeRelation;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
-import mchorse.mappet.api.utils.factory.IFactory;
-import mchorse.mappet.client.gui.utils.ColorfulAction;
 import mchorse.mclib.McLib;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
@@ -97,7 +96,7 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
                     IKey label = IKey.format("mappet.gui.nodes.context.add_node", IKey.lang("mappet.gui.node_types." + key));
                     int color = this.system.getFactory().getColor(key);
 
-                    adds.action(new ColorfulAction(Icons.ADD, label, () -> this.addNode(key, x, y), color));
+                    adds.action(Icons.ADD, label, () -> this.addNode(key, x, y), color);
                 }
 
                 GuiBase.getCurrent().replaceContextMenu(adds);
@@ -121,7 +120,7 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
                 menu.action(Icons.REVERSE, IKey.lang("mappet.gui.nodes.context.sort"), this::sortInputs);
                 menu.action(Icons.MINIMIZE, IKey.lang("mappet.gui.nodes.context.tie"), this::tieSelected);
                 menu.action(Icons.MAXIMIZE, IKey.lang("mappet.gui.nodes.context.untie"), this::untieSelected);
-                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.nodes.context.remove"), this::removeSelected);
+                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.nodes.context.remove"), this::removeSelected, 0xff0022);
             }
 
             return menu;

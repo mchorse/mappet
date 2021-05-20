@@ -78,7 +78,7 @@ public class GuiNpcDrops extends GuiElement
                 row.removeFromParent();
                 this.getParentContainer().resize();
             }
-        }));
+        }, 0xff0022));
 
         row.add(slot, chance);
         this.element.add(row);

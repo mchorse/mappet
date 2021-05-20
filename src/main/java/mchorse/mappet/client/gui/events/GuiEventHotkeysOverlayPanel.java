@@ -47,7 +47,7 @@ public class GuiEventHotkeysOverlayPanel extends GuiOverlayPanel
 
             if (!this.hotkeys.hotkeys.isEmpty())
             {
-                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.nodes.event,hotkeys.context.remove"), this::removeHotkey);
+                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.nodes.event,hotkeys.context.remove"), this::removeHotkey, 0xff0022);
             }
 
             return menu.shadow();

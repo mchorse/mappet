@@ -37,7 +37,7 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
 
             if (!this.recipes.isDeselected())
             {
-                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.crafting.context.remove"), this::removeRecipe);
+                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.crafting.context.remove"), this::removeRecipe, 0xff0022);
             }
 
             return menu;
