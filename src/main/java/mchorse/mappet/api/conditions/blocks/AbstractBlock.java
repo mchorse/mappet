@@ -16,7 +16,8 @@ public abstract class AbstractBlock implements INBTSerializable<NBTTagCompound>
         .register("dialogue", DialogueBlock.class, 0x00ff33)
         .register("faction", FactionBlock.class, 0x942aff)
         .register("item", ItemBlock.class, 0xff7700)
-        .register("world_time", WorldTimeBlock.class, 0x0088ff);
+        .register("world_time", WorldTimeBlock.class, 0x0088ff)
+        .register("condition", ConditionBlock.class, 0xff1493);
 
     public boolean not;
     public boolean or;

@@ -357,6 +357,7 @@ mappet.gui.conditions.world_time.range=Range
 mappet.gui.conditions.world_time.types.day=Is day?
 mappet.gui.conditions.world_time.types.night=Is night?
 mappet.gui.conditions.world_time.types.range=In between
+mappet.gui.conditions.condition.string=Nested %s block(s)
 mappet.gui.conditions.targets.global=Global
 mappet.gui.conditions.targets.subject=Subject
 mappet.gui.conditions.targets.object=Object
@@ -388,6 +389,7 @@ mappet.gui.condition_types.faction=Faction
 mappet.gui.condition_types.item=Item
 mappet.gui.condition_types.entity=Entity
 mappet.gui.condition_types.world_time=World time
+mappet.gui.condition_types.condition=Condition
 
 # Keys
 mappet.keys.category=Mappet

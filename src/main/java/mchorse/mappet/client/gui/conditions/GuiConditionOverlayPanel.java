@@ -2,6 +2,7 @@ package mchorse.mappet.client.gui.conditions;
 
 import mchorse.mappet.api.conditions.Condition;
 import mchorse.mappet.api.conditions.blocks.AbstractBlock;
+import mchorse.mappet.api.conditions.blocks.ConditionBlock;
 import mchorse.mappet.api.conditions.blocks.DialogueBlock;
 import mchorse.mappet.api.conditions.blocks.FactionBlock;
 import mchorse.mappet.api.conditions.blocks.ItemBlock;
@@ -9,6 +10,7 @@ import mchorse.mappet.api.conditions.blocks.QuestBlock;
 import mchorse.mappet.api.conditions.blocks.StateBlock;
 import mchorse.mappet.api.conditions.blocks.WorldTimeBlock;
 import mchorse.mappet.client.gui.conditions.blocks.GuiAbstractBlockPanel;
+import mchorse.mappet.client.gui.conditions.blocks.GuiConditionBlockPanel;
 import mchorse.mappet.client.gui.conditions.blocks.GuiDialogueBlockPanel;
 import mchorse.mappet.client.gui.conditions.blocks.GuiFactionBlockPanel;
 import mchorse.mappet.client.gui.conditions.blocks.GuiItemBlockPanel;
@@ -57,6 +59,7 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
         PANELS.put(FactionBlock.class, GuiFactionBlockPanel.class);
         PANELS.put(ItemBlock.class, GuiItemBlockPanel.class);
         PANELS.put(WorldTimeBlock.class, GuiWorldTimeBlockPanel.class);
+        PANELS.put(ConditionBlock.class, GuiConditionBlockPanel.class);
     }
 
     public GuiConditionOverlayPanel(Minecraft mc, Condition condition)
