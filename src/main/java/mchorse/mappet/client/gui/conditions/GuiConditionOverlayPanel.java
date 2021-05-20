@@ -3,6 +3,7 @@ package mchorse.mappet.client.gui.conditions;
 import mchorse.mappet.api.conditions.Condition;
 import mchorse.mappet.api.conditions.blocks.AbstractBlock;
 import mchorse.mappet.api.conditions.blocks.FactionBlock;
+import mchorse.mappet.api.conditions.blocks.QuestBlock;
 import mchorse.mappet.api.conditions.blocks.StateBlock;
 import mchorse.mappet.api.conditions.blocks.WorldTimeBlock;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlayPanel;
@@ -25,11 +26,10 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
 {
     public static final Map<
             Class<? extends AbstractBlock>,
-            Class<? extends GuiAbstractBlockPanel<? extends AbstractBlock>>
-        > PANELS = new HashMap<
+            Class<? extends GuiAbstractBlockPanel<? extends AbstractBlock>>>
+        PANELS = new HashMap<
             Class<? extends AbstractBlock>,
-            Class<? extends GuiAbstractBlockPanel<? extends AbstractBlock>>
-        >();
+            Class<? extends GuiAbstractBlockPanel<? extends AbstractBlock>>>();
 
     public GuiAbstractBlockListElement list;
 
@@ -40,6 +40,7 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
 
     static
     {
+        PANELS.put(QuestBlock.class, GuiQuestBlockPanel.class);
         PANELS.put(StateBlock.class, GuiStateBlockPanel.class);
         PANELS.put(FactionBlock.class, GuiFactionBlockPanel.class);
         PANELS.put(WorldTimeBlock.class, GuiWorldTimeBlockPanel.class);
