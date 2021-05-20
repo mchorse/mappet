@@ -85,6 +85,14 @@ public class MapFactory <T> implements IFactory<T>
     }
 
     @Override
+    public int getColor(String type)
+    {
+        Integer color = this.colors.get(this.factory.get(type));
+
+        return color == null ? 0 : color;
+    }
+
+    @Override
     public Collection<String> getKeys()
     {
         return this.factory.keySet();

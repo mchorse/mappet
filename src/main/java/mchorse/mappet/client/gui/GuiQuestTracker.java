@@ -6,6 +6,7 @@ import mchorse.mappet.api.quests.objectives.AbstractObjective;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
+import mchorse.mclib.utils.ColorUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
@@ -61,6 +62,13 @@ public class GuiQuestTracker extends Gui
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         GuiDraw.drawHorizontalGradientRect(x, y, x + w, y + 16, 0x11000000, 0xaa000000);
         mc.fontRenderer.drawStringWithShadow(title, x + 4, y + 4, 0xffffff);
+
+        if (mc.player.isCreative())
+        {
+            int lw = mc.fontRenderer.getStringWidth(value.getId());
+
+            GuiDraw.drawTextBackground(mc.fontRenderer, value.getId(), x - 4 - lw, y + 4, 0xaaaaaa, ColorUtils.HALF_BLACK, 2);
+        }
 
         int original = y;
 

@@ -10,5 +10,7 @@ public interface IFactory <T>
 
     public int getColor(T object);
 
+    public int getColor(String type);
+
     public Collection<String> getKeys();
 }

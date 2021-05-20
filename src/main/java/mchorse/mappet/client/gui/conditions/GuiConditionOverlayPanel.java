@@ -7,6 +7,7 @@ import mchorse.mappet.api.conditions.blocks.FactionBlock;
 import mchorse.mappet.api.conditions.blocks.QuestBlock;
 import mchorse.mappet.api.conditions.blocks.StateBlock;
 import mchorse.mappet.api.conditions.blocks.WorldTimeBlock;
+import mchorse.mappet.client.gui.utils.ColorfulAction;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlayPanel;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
@@ -58,20 +59,27 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
         this.list.sorting().setList(condition.blocks);
         this.list.context(() ->
         {
-            GuiSimpleContextMenu menu = new GuiSimpleContextMenu(this.mc);
+            GuiSimpleContextMenu menu = new GuiSimpleContextMenu(this.mc).shadow();
 
             menu.action(Icons.ADD, IKey.lang("mappet.gui.conditions.context.add"), () ->
             {
-                GuiSimpleContextMenu adds = new GuiSimpleContextMenu(this.mc);
+                GuiSimpleContextMenu adds = new GuiSimpleContextMenu(this.mc).shadow();
 
                 for (String key : AbstractBlock.FACTORY.getKeys())
                 {
-                    adds.action(Icons.ADD, IKey.format("mappet.gui.conditions.context.add_condition", IKey.lang("mappet.gui.condition_types." + key)), () -> this.addBlock(key));
+                    IKey label = IKey.format("mappet.gui.conditions.context.add_condition", IKey.lang("mappet.gui.condition_types." + key));
+                    int color = AbstractBlock.FACTORY.getColor(key);
+
+                    adds.action(new ColorfulAction(Icons.ADD, label, () -> this.addBlock(key), color));
                 }
 
                 GuiBase.getCurrent().replaceContextMenu(adds);
             });
-            menu.action(Icons.REMOVE, IKey.lang("mappet.gui.conditions.context.remove"), this::removeBlock);
+
+            if (!this.list.isDeselected())
+            {
+                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.conditions.context.remove"), this::removeBlock);
+            }
 
             return menu;
         });

@@ -5,6 +5,7 @@ import mchorse.mappet.api.utils.nodes.Node;
 import mchorse.mappet.api.utils.nodes.NodeRelation;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
 import mchorse.mappet.api.utils.factory.IFactory;
+import mchorse.mappet.client.gui.utils.ColorfulAction;
 import mchorse.mclib.McLib;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
@@ -93,7 +94,10 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
 
                 for (String key : this.system.getFactory().getKeys())
                 {
-                    adds.action(Icons.ADD, IKey.format("mappet.gui.nodes.context.add_node", IKey.lang("mappet.gui.node_types." + key)), () -> this.addNode(key, x, y));
+                    IKey label = IKey.format("mappet.gui.nodes.context.add_node", IKey.lang("mappet.gui.node_types." + key));
+                    int color = this.system.getFactory().getColor(key);
+
+                    adds.action(new ColorfulAction(Icons.ADD, label, () -> this.addNode(key, x, y), color));
                 }
 
                 GuiBase.getCurrent().replaceContextMenu(adds);
@@ -681,63 +685,7 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
 
             if (nodeArea.w > 25)
             {
-                Area output = this.getNodeOutletArea(nodeArea, true);
-                Area input = this.getNodeOutletArea(nodeArea, false);
-
-                boolean insideO = output.isInside(context);
-                boolean insideI = input.isInside(context);
-
-                int colorO = ColorUtils.multiplyColor(0xffffff, insideO ? 1F : 0.6F);
-                int colorI = ColorUtils.multiplyColor(0xffffff, insideI ? 1F : 0.6F);
-
-                if (this.output == node)
-                {
-                    colorO = ACTIVE;
-
-                    if (insideI)
-                    {
-                        colorI = ELSE;
-                    }
-                }
-                else if (this.output != null)
-                {
-                    if (insideO)
-                    {
-                        colorO = ELSE;
-                    }
-                    else if (insideI)
-                    {
-                        colorI = IF;
-                    }
-                }
-
-                if (this.input == node)
-                {
-                    colorI = ACTIVE;
-
-                    if (insideO)
-                    {
-                        colorO = ELSE;
-                    }
-                }
-                else if (this.input != null)
-                {
-                    if (insideI)
-                    {
-                        colorI = ELSE;
-                    }
-                    else if (insideO)
-                    {
-                        colorO = IF;
-                    }
-                }
-
-                GuiDraw.drawOutline(output.x, output.y, output.ex(), output.ey(), 0xff000000 + colorO);
-
-                if (this.system.main != node)
-                {
-                    GuiDraw.drawOutline(input.x, input.y, input.ex(), input.ey(), 0xff000000 + colorI);
-                }
+                this.renderOutlets(context, node, nodeArea);
             }
 
             boolean hover = Area.SHARED.isInside(context);
@@ -802,6 +750,67 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
         if (this.selecting)
         {
             Gui.drawRect(this.lastX, this.lastY, context.mouseX, context.mouseY, 0x440088ff);
+        }
+    }
+
+    private void renderOutlets(GuiContext context, T node, Area nodeArea)
+    {
+        Area output = this.getNodeOutletArea(nodeArea, true);
+        Area input = this.getNodeOutletArea(nodeArea, false);
+
+        boolean insideO = output.isInside(context);
+        boolean insideI = input.isInside(context);
+
+        int colorO = ColorUtils.multiplyColor(0xffffff, insideO ? 1F : 0.6F);
+        int colorI = ColorUtils.multiplyColor(0xffffff, insideI ? 1F : 0.6F);
+
+        if (this.output == node)
+        {
+            colorO = ACTIVE;
+
+            if (insideI)
+            {
+                colorI = ELSE;
+            }
+        }
+        else if (this.output != null)
+        {
+            if (insideO)
+            {
+                colorO = ELSE;
+            }
+            else if (insideI)
+            {
+                colorI = IF;
+            }
+        }
+
+        if (this.input == node)
+        {
+            colorI = ACTIVE;
+
+            if (insideO)
+            {
+                colorO = ELSE;
+            }
+        }
+        else if (this.input != null)
+        {
+            if (insideI)
+            {
+                colorI = ELSE;
+            }
+            else if (insideO)
+            {
+                colorO = IF;
+            }
+        }
+
+        GuiDraw.drawOutline(output.x, output.y, output.ex(), output.ey(), 0xff000000 + colorO);
+
+        if (this.system.main != node)
+        {
+            GuiDraw.drawOutline(input.x, input.y, input.ex(), input.ey(), 0xff000000 + colorI);
         }
     }
 
