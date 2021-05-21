@@ -169,7 +169,7 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
 
         if (tag.hasKey("Condition"))
         {
-            this.condition.deserializeNBT(tag.getCompoundTag("Condition"));
+            this.condition.deserializeNBT(tag.getTag("Condition"));
         }
 
         if (tag.hasKey("Trigger"))

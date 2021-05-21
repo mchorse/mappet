@@ -120,7 +120,7 @@ public class Faction extends AbstractData
     public void deserializeNBT(NBTTagCompound tag)
     {
         if (tag.hasKey("Title")) this.title = tag.getString("Title");
-        if (tag.hasKey("Visible")) this.visible.deserializeNBT(tag.getCompoundTag("Visible"));
+        if (tag.hasKey("Visible")) this.visible.deserializeNBT(tag.getTag("Visible"));
         if (tag.hasKey("Color")) this.color = tag.getInteger("Color");
         if (tag.hasKey("DefaultScore")) this.score = tag.getInteger("DefaultScore");
         if (tag.hasKey("PlayerAttitude")) this.playerAttitude = FactionAttitude.get(tag.getString("PlayerAttitude"));

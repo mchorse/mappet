@@ -50,7 +50,7 @@ public class GuiEmitterBlockScreen extends GuiBase
     {
         super.closeScreen();
 
-        Dispatcher.sendToServer(new PacketEditEmitter(this.pos, this.checker.get().serializeNBT(), (float) this.radius.value));
+        Dispatcher.sendToServer(new PacketEditEmitter(this.pos, this.checker.get().toNBT(), (float) this.radius.value));
     }
 
     @Override

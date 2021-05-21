@@ -444,6 +444,11 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
         state.deserializeNBT(tag.getCompoundTag("State"));
         this.setState(state, false);
+
+        if (tag.hasKey("NpcId"))
+        {
+            state.id = tag.getString("NpcId");
+        }
     }
 
     /* Network (de)serialization */

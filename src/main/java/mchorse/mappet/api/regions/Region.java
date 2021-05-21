@@ -62,7 +62,7 @@ public class Region implements INBTSerializable<NBTTagCompound>
 
         if (tag.hasKey("Enabled", Constants.NBT.TAG_COMPOUND))
         {
-            this.enabled.deserializeNBT(tag.getCompoundTag("Enabled"));
+            this.enabled.deserializeNBT(tag.getTag("Enabled"));
         }
 
         if (tag.hasKey("Delay", Constants.NBT.TAG_ANY_NUMERIC))

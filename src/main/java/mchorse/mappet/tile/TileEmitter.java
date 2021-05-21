@@ -114,7 +114,7 @@ public class TileEmitter extends TileEntity implements ITickable
 
         if (tag.hasKey("Checker"))
         {
-            this.checker.deserializeNBT(tag.getCompoundTag("Checker"));
+            this.checker.deserializeNBT(tag.getTag("Checker"));
         }
 
         if (tag.hasKey("Radius"))

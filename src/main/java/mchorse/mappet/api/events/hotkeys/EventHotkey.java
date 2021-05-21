@@ -44,6 +44,6 @@ public class EventHotkey implements INBTSerializable<NBTTagCompound>
     {
         this.keycode = tag.getInteger("Keycode");
         this.event = tag.getString("Event");
-        this.enabled.deserializeNBT(tag.getCompoundTag("Enabled"));
+        this.enabled.deserializeNBT(tag.getTag("Enabled"));
     }
 }

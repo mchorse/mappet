@@ -720,7 +720,7 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
             {
                 if (title.length() > 37)
                 {
-                    title = title.substring(0, 37) + "...";
+                    title = title.substring(0, 37) + "§r...";
                 }
 
                 GuiDraw.drawTextBackground(this.font, title, nodeArea.mx() - this.font.getStringWidth(title) / 2, nodeArea.my() - 4, 0xffffff, 0x88000000);

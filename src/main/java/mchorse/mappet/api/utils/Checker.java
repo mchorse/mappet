@@ -5,11 +5,13 @@ import mchorse.mappet.api.conditions.Condition;
 import mchorse.mappet.api.expressions.ExpressionManager;
 import mchorse.mappet.utils.EnumUtils;
 import mchorse.mclib.math.IValue;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 
-public class Checker implements INBTSerializable<NBTTagCompound>
+public class Checker implements INBTSerializable<NBTBase>
 {
     public String expression = "";
     public Condition condition;
@@ -61,8 +63,13 @@ public class Checker implements INBTSerializable<NBTTagCompound>
         return this.expression.isEmpty();
     }
 
+    public NBTTagCompound toNBT()
+    {
+        return (NBTTagCompound) this.serializeNBT();
+    }
+
     @Override
-    public NBTTagCompound serializeNBT()
+    public NBTBase serializeNBT()
     {
         NBTTagCompound tag = new NBTTagCompound();
 
@@ -79,23 +86,33 @@ public class Checker implements INBTSerializable<NBTTagCompound>
     }
 
     @Override
-    public void deserializeNBT(NBTTagCompound tag)
+    public void deserializeNBT(NBTBase base)
     {
-        this.value = null;
-
-        if (tag.hasKey("Mode", Constants.NBT.TAG_ANY_NUMERIC))
+        if (base instanceof NBTTagCompound)
         {
-            this.mode = EnumUtils.getValue(tag.getInteger("Mode"), Mode.values(), Mode.CONDITION);
+            NBTTagCompound tag = (NBTTagCompound) base;
+
+            this.value = null;
+
+            if (tag.hasKey("Mode", Constants.NBT.TAG_ANY_NUMERIC))
+            {
+                this.mode = EnumUtils.getValue(tag.getInteger("Mode"), Mode.values(), Mode.CONDITION);
+            }
+
+            if (tag.hasKey("Expression"))
+            {
+                this.expression = tag.getString("Expression");
+            }
+
+            if (tag.hasKey("Condition"))
+            {
+                this.condition.deserializeNBT(tag.getCompoundTag("Condition"));
+            }
         }
-
-        if (tag.hasKey("Expression"))
+        else if (base instanceof NBTTagString)
         {
-            this.expression = tag.getString("Expression");
-        }
-
-        if (tag.hasKey("Condition"))
-        {
-            this.condition.deserializeNBT(tag.getCompoundTag("Condition"));
+            this.expression = ((NBTTagString) base).getString();
+            this.mode = Mode.EXPRESSION;
         }
     }
 

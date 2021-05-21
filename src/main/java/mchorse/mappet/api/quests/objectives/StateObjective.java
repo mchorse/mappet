@@ -79,7 +79,7 @@ public class StateObjective extends AbstractObjective
     {
         super.deserializeNBT(tag);
 
-        this.expression.deserializeNBT(tag.getCompoundTag("Expression"));
+        this.expression.deserializeNBT(tag.getTag("Expression"));
         this.result = tag.getBoolean("Result");
     }
 }

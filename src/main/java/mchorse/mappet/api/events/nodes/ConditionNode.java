@@ -65,7 +65,7 @@ public class ConditionNode extends EventNode
 
         if (tag.hasKey("Condition"))
         {
-            this.condition.deserializeNBT(tag.getCompoundTag("Condition"));
+            this.condition.deserializeNBT(tag.getTag("Condition"));
         }
     }
 }

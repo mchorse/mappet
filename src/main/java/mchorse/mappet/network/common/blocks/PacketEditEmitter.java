@@ -18,7 +18,7 @@ public class PacketEditEmitter implements IMessage
 
     public PacketEditEmitter(TileEmitter tile)
     {
-        this(tile.getPos(), tile.getChecker().serializeNBT(), tile.getRadius());
+        this(tile.getPos(), tile.getChecker().toNBT(), tile.getRadius());
     }
 
     public PacketEditEmitter(BlockPos pos, NBTTagCompound checker, float radius)
