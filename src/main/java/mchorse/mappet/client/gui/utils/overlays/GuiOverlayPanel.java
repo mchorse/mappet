@@ -56,12 +56,17 @@ public class GuiOverlayPanel extends GuiElement
     @Override
     public void draw(GuiContext context)
     {
+        this.drawBackground(context);
+
+        super.draw(context);
+    }
+
+    protected void drawBackground(GuiContext context)
+    {
         int color = McLib.primaryColor.get();
 
         GuiDraw.drawDropShadow(this.area.x, this.area.y, this.area.ex(), this.area.ey(), 10, 0x44000000 + color, color);
         this.area.draw(0xff000000);
-
-        super.draw(context);
     }
 
     public void onClose()

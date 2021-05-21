@@ -2,11 +2,14 @@ package mchorse.mappet.client.gui.npc.utils;
 
 import mchorse.mappet.api.npcs.Npc;
 import mchorse.mappet.api.npcs.NpcState;
+import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mappet.client.gui.utils.overlays.GuiStringOverlayPanel;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
+import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.modals.GuiConfirmModal;
 import mchorse.mclib.client.gui.framework.elements.modals.GuiModal;
 import mchorse.mclib.client.gui.framework.elements.modals.GuiPromptModal;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
@@ -15,9 +18,6 @@ import java.util.function.Consumer;
 
 public class GuiNpcStatesOverlayPanel extends GuiStringOverlayPanel
 {
-    public GuiIconElement add;
-    public GuiIconElement remove;
-
     private Npc npc;
 
     public GuiNpcStatesOverlayPanel(Minecraft mc, Npc npc, Consumer<String> callback)
@@ -26,13 +26,19 @@ public class GuiNpcStatesOverlayPanel extends GuiStringOverlayPanel
 
         this.npc = npc;
 
-        this.add = new GuiIconElement(mc, Icons.ADD, (b) -> this.addState());
-        this.add.tooltip(IKey.lang("mappet.gui.npcs.context.add")).flex().wh(16, 16);
+        this.content.context(() ->
+        {
+            GuiSimpleContextMenu menu = new GuiSimpleContextMenu(mc);
 
-        this.remove = new GuiIconElement(mc, Icons.REMOVE, (b) -> this.removeState());
-        this.remove.tooltip(IKey.lang("mappet.gui.npcs.context.remove")).flex().wh(16, 16);
+            menu.action(Icons.ADD, IKey.lang("mappet.gui.npcs.context.add"), this::addState);
 
-        this.icons.add(this.remove.marginRight(4), this.add);
+            if (!this.strings.list.isDeselected())
+            {
+                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.npcs.context.remove"), this::removeState, 0xff0022);
+            }
+
+            return menu.shadow();
+        });
     }
 
     /* Context menu modals */
@@ -77,6 +83,17 @@ public class GuiNpcStatesOverlayPanel extends GuiStringOverlayPanel
 
             this.set(name);
             this.accept(name);
+        }
+    }
+
+    @Override
+    protected void drawBackground(GuiContext context)
+    {
+        super.drawBackground(context);
+
+        if (this.npc.states.size() <= 1)
+        {
+            GuiMappetUtils.drawRightClickHere(context, this.area);
         }
     }
 }
