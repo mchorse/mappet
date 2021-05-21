@@ -49,17 +49,30 @@ public class KillObjective extends AbstractObjective
 
         NBTTagCompound tag = mob.writeToNBT(new NBTTagCompound());
 
-        for (String key : this.tag.getKeySet())
-        {
-            NBTBase tagBase = tag.getTag(key);
+        return this.compareTagPartial(this.tag, tag);
+    }
 
-            if (!this.tag.getTag(key).equals(tagBase))
+    private boolean compareTagPartial(NBTBase a, NBTBase b)
+    {
+        if (a instanceof NBTTagCompound && b instanceof NBTTagCompound)
+        {
+            NBTTagCompound tagA = (NBTTagCompound) a;
+            NBTTagCompound tagB = (NBTTagCompound) b;
+
+            for (String key : tagA.getKeySet())
             {
-                return false;
+                NBTBase tagBase = tagB.getTag(key);
+
+                if (!this.compareTagPartial(tagA.getTag(key), tagBase))
+                {
+                    return false;
+                }
             }
+
+            return true;
         }
 
-        return true;
+        return a.equals(b);
     }
 
     @Override
