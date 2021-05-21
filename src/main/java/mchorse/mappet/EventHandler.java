@@ -25,9 +25,11 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class EventHandler
 {
@@ -39,7 +41,7 @@ public class EventHandler
     /**
      * Players that must be checked
      */
-    private List<EntityPlayer> playersToCheck = new ArrayList<EntityPlayer>();
+    private Set<EntityPlayer> playersToCheck = new HashSet<EntityPlayer>();
 
     /**
      * Delayed event executions
