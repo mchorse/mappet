@@ -49,6 +49,12 @@ public class ItemBlock extends TargetBlock
     }
 
     @Override
+    protected Target getDefaultTarget()
+    {
+        return Target.SUBJECT;
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public String stringify()
     {

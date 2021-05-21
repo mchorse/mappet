@@ -31,9 +31,9 @@ public class GuiAbstractBlockPanel <T extends AbstractBlock> extends GuiElement
         GuiLabel label = Elements.label(IKey.lang("mappet.gui.condition_types." + AbstractBlock.FACTORY.getType(block)));
 
         this.not = new GuiIconElement(mc, Icons.EXCLAMATION, (b) -> this.block.not = !this.block.not);
-        this.not.flex().wh(16, 16);
+        this.not.tooltip(IKey.lang("mappet.gui.conditions.not")).flex().wh(16, 16);
         this.or = new GuiIconElement(mc, Icons.REVERSE, (b) -> this.block.or = !this.block.or);
-        this.or.flex().wh(16, 16);
+        this.or.tooltip(IKey.lang("mappet.gui.conditions.or")).flex().wh(16, 16);
         this.icons = new GuiElement(mc);
         this.icons.flex().relative(label).x(1F).y(-4).anchorX(1F).row(0).resize().reverse();
         this.icons.add(this.or, this.not);

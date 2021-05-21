@@ -22,7 +22,7 @@ public class GuiItemBlockPanel extends GuiAbstractBlockPanel<ItemBlock>
     {
         super(mc, overlay, block);
 
-        this.property = new GuiTargetBlockElement<TargetBlock>(mc, block);
+        this.property = new GuiTargetBlockElement<TargetBlock>(mc, block).skipGlobal();
         this.check = new GuiCirculateElement(mc, this::toggleItemCheck);
 
         for (ItemBlock.ItemCheck check : ItemBlock.ItemCheck.values())

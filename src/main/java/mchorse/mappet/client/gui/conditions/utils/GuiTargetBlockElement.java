@@ -18,6 +18,8 @@ public class GuiTargetBlockElement <T extends TargetBlock> extends GuiElement
     private GuiCirculateElement target;
     private GuiTextElement selector;
 
+    private boolean skipGlobal;
+
     public GuiTargetBlockElement(Minecraft mc, T block)
     {
         super(mc);
@@ -41,9 +43,25 @@ public class GuiTargetBlockElement <T extends TargetBlock> extends GuiElement
         this.updateTarget();
     }
 
+    public GuiTargetBlockElement<T> skipGlobal()
+    {
+        this.skipGlobal = true;
+
+        return this;
+    }
+
     private void toggleTarget(GuiButtonElement b)
     {
-        this.block.target = Target.values()[this.target.getValue()];
+        Target target = Target.values()[this.target.getValue()];
+
+        /* Some blocks don't support  */
+        if (this.skipGlobal && target == Target.GLOBAL)
+        {
+            target = this.block.target == Target.SUBJECT ? Target.SELECTOR : Target.SUBJECT;
+            this.target.setValue(target.ordinal());
+        }
+
+        this.block.target = target;
 
         this.updateTarget();
     }

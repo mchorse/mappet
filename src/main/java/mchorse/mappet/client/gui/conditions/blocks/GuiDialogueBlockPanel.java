@@ -24,7 +24,7 @@ public class GuiDialogueBlockPanel extends GuiAbstractBlockPanel<DialogueBlock>
         super(mc, overlay, block);
 
         this.id = new GuiButtonElement(mc, IKey.lang("mappet.gui.overlays.dialogue"), (t) -> this.openDialogues());
-        this.property = new GuiTargetBlockElement<TargetBlock>(mc, block);
+        this.property = new GuiTargetBlockElement<TargetBlock>(mc, block).skipGlobal();
 
         this.add(Elements.column(mc, 5, Elements.label(IKey.lang("mappet.gui.conditions.dialogue.id")).marginTop(12), this.id));
         this.add(this.property.targeter.marginTop(12));

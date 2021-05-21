@@ -26,6 +26,7 @@ public class GuiFactionBlockPanel extends GuiAbstractBlockPanel<FactionBlock>
 
         this.id = new GuiButtonElement(mc, IKey.lang("mappet.gui.overlays.faction"), (t) -> this.openFactions());
         this.property = new GuiPropertyBlockElement(mc, block);
+        this.property.skipGlobal();
         this.faction = new GuiCirculateElement(mc, this::toggleFaction);
         this.faction.addLabel(IKey.lang("mappet.gui.faction_attitudes.aggressive"));
         this.faction.addLabel(IKey.lang("mappet.gui.faction_attitudes.passive"));

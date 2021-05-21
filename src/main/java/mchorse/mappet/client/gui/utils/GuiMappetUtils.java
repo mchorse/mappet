@@ -2,6 +2,7 @@ package mchorse.mappet.client.gui.utils;
 
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
 import mchorse.mappet.client.gui.utils.overlays.GuiPromptOverlayPanel;
+import mchorse.mclib.McLib;
 import mchorse.mclib.client.InputRenderer;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
@@ -38,6 +39,7 @@ public class GuiMappetUtils
 
     public static void drawRightClickHere(GuiContext context, Area area)
     {
+        int primary = McLib.primaryColor.get();
         double ticks = (context.tick + context.partialTicks) % 80D;
         double factor = Math.abs(ticks / 80D * 2 - 1F);
 
@@ -47,7 +49,10 @@ public class GuiMappetUtils
 
         factor2 = Interpolation.CUBIC_OUT.interpolate(0, 1, factor2);
 
-        InputRenderer.renderMouseButtons(area.mx() - 6, area.my() - 8 + (int) (factor * 70) + (int) (factor2 * 2), 0, false, factor2 > 0, false, false);
+        int offset = (int) (factor * 70 + factor2 * 2);
+
+        GuiDraw.drawDropCircleShadow(area.mx(), area.my() + (int) (factor * 70), 16, 0, 16, 0x88000000 + primary, primary);
+        InputRenderer.renderMouseButtons(area.mx() - 6, area.my() - 8 + offset, 0, false, factor2 > 0, false, false);
 
         String label = I18n.format("mappet.gui.right_click");
         int w = context.font.getStringWidth(label);
