@@ -17,7 +17,7 @@ public class Character implements ICharacter
 {
     public static ICharacter get(EntityPlayer player)
     {
-        return player.getCapability(CharacterProvider.CHARACTER, null);
+        return player == null ? null : player.getCapability(CharacterProvider.CHARACTER, null);
     }
 
     private Quests quests = new Quests();

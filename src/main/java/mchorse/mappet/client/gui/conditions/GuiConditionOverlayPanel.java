@@ -17,18 +17,25 @@ import mchorse.mappet.client.gui.conditions.blocks.GuiItemBlockPanel;
 import mchorse.mappet.client.gui.conditions.blocks.GuiQuestBlockPanel;
 import mchorse.mappet.client.gui.conditions.blocks.GuiStateBlockPanel;
 import mchorse.mappet.client.gui.conditions.blocks.GuiWorldTimeBlockPanel;
+import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlayPanel;
+import mchorse.mclib.client.InputRenderer;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.mclib.utils.ColorUtils;
+import mchorse.mclib.utils.Interpolation;
+import mchorse.mclib.utils.Interpolations;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -198,6 +205,17 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
         }
 
         this.resize();
+    }
+
+    @Override
+    public void draw(GuiContext context)
+    {
+        super.draw(context);
+
+        if (this.condition.blocks.isEmpty())
+        {
+            GuiMappetUtils.drawRightClickHere(context, this.list.area);
+        }
     }
 
     public static class GuiAbstractBlockListElement extends GuiListElement<AbstractBlock>

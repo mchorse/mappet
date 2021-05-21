@@ -112,6 +112,7 @@ mappet.config.comments.gui.quest_preview_rewards=Эта настройка по�
 
 mappet.gui.none=<none>
 mappet.gui.search=Искать...
+mappet.gui.right_click=Right click here...
 mappet.gui.overlays.entities.main=Выберите ID сущности...
 mappet.gui.overlays.sounds.main=Выберите звуковое событие...
 mappet.gui.overlays.event=Pick an event...
@@ -323,19 +324,47 @@ mappet.gui.factions.info.empty=Чтобы начать редактирован�
 mappet.gui.conditions.title=Condition editor
 mappet.gui.conditions.context.add=Add a condition
 mappet.gui.conditions.context.add_condition=Add %s condition
+mappet.gui.conditions.context.copy=Copy this condition
+mappet.gui.conditions.context.paste=Paste copied condition
 mappet.gui.conditions.context.remove=Remove condition
-mappet.gui.conditions.state.id=State key
 mappet.gui.conditions.target=Target
 mappet.gui.conditions.comparison=Comparison
+mappet.gui.conditions.selector=Target selector
 mappet.gui.conditions.value=Value
+mappet.gui.conditions.quest.id=Quest ID
+mappet.gui.conditions.quest.check=Completion
+mappet.gui.conditions.quest.is_absent=%s is absent
+mappet.gui.conditions.quest.is_present=%s is present
+mappet.gui.conditions.quest.is_completed=%s is completed
+mappet.gui.conditions.quest.types.absent=Absent
+mappet.gui.conditions.quest.types.present=Present
+mappet.gui.conditions.quest.types.completed=Completed
+mappet.gui.conditions.state.id=State key
+mappet.gui.conditions.dialogue.id=Dialogue ID
+mappet.gui.conditions.dialogue.was_read=%s was read
+mappet.gui.conditions.dialogue.wasnt_read=%s wasn't read
+mappet.gui.conditions.faction.id=Faction ID
+mappet.gui.conditions.faction.check=Faction comparison
+mappet.gui.conditions.faction.score=Score
+mappet.gui.conditions.faction.is_aggressive=%s is aggressive
+mappet.gui.conditions.faction.is_passive=%s is passive
+mappet.gui.conditions.faction.is_friendly=%s is friendly
+mappet.gui.conditions.item.holds=Holds %s
+mappet.gui.conditions.item.equipment=Wears %s
+mappet.gui.conditions.item.inventory=Has %s
+mappet.gui.conditions.item.types.held=Held (hands)
+mappet.gui.conditions.item.types.equipment=Equipment (armor)
+mappet.gui.conditions.item.types.inventory=Inventory
 mappet.gui.conditions.world_time.check=Time condition
 mappet.gui.conditions.world_time.range=Range
 mappet.gui.conditions.world_time.types.day=Is day?
 mappet.gui.conditions.world_time.types.night=Is night?
 mappet.gui.conditions.world_time.types.range=In between...
+mappet.gui.conditions.condition.string=Nested %s block(s)
 mappet.gui.conditions.targets.global=Global
 mappet.gui.conditions.targets.subject=Subject
 mappet.gui.conditions.targets.object=Object
+mappet.gui.conditions.targets.selector=Selector
 
 # GUI enums
 
@@ -363,6 +392,7 @@ mappet.gui.condition_types.faction=Faction
 mappet.gui.condition_types.item=Item
 mappet.gui.condition_types.entity=Entity
 mappet.gui.condition_types.world_time=World time
+mappet.gui.condition_types.condition=Condition
 
 # Keys
 mappet.keys.category=Маппет

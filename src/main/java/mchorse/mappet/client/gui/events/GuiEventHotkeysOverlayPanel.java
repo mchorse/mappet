@@ -3,6 +3,7 @@ package mchorse.mappet.client.gui.events;
 import mchorse.mappet.api.events.hotkeys.EventHotkey;
 import mchorse.mappet.api.events.hotkeys.EventHotkeys;
 import mchorse.mappet.client.gui.utils.GuiCheckerElement;
+import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlayPanel;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.events.PacketEventHotkeys;
@@ -11,6 +12,7 @@ import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.input.GuiKeybindElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
@@ -122,6 +124,17 @@ public class GuiEventHotkeysOverlayPanel extends GuiOverlayPanel
     public void onClose()
     {
         Dispatcher.sendToServer(new PacketEventHotkeys(this.hotkeys.serializeNBT()));
+    }
+
+    @Override
+    public void draw(GuiContext context)
+    {
+        super.draw(context);
+
+        if (this.hotkeys.hotkeys.isEmpty())
+        {
+            GuiMappetUtils.drawRightClickHere(context, this.list.area);
+        }
     }
 
     public static class GuiEventHotkeyList extends GuiListElement<EventHotkey>
