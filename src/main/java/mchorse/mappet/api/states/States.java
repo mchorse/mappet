@@ -142,19 +142,31 @@ public class States implements INBTSerializable<NBTTagCompound>
 
     /* Dialogues convenience methods */
 
-    public void readDialogue(String id)
+    public void readDialogue(String id, String marker)
     {
-        this.add(DIALOGUE_PREFIX + id, 1);
+        this.add(this.getDialogueId(id, marker), 1);
     }
 
-    public boolean hasReadDialogue(String id)
+    public boolean hasReadDialogue(String id, String marker)
     {
-        return this.getReadDialogueTimes(id) > 0;
+        return this.getReadDialogueTimes(id, marker) > 0;
     }
 
-    public int getReadDialogueTimes(String id)
+    public int getReadDialogueTimes(String id, String marker)
     {
-        return (int) this.get(DIALOGUE_PREFIX + id);
+        return (int) this.get(this.getDialogueId(id, marker));
+    }
+
+    private String getDialogueId(String id, String marker)
+    {
+        id = DIALOGUE_PREFIX + id;
+
+        if (marker != null && !marker.isEmpty())
+        {
+            id += ":" + marker;
+        }
+
+        return id;
     }
 
     /* NBT */

@@ -14,6 +14,6 @@ public class DialogueRead extends FactionFunction
     @Override
     protected double apply(String id, ICharacter character)
     {
-        return character.getStates().hasReadDialogue(id) ? 1 : 0;
+        return character.getStates().hasReadDialogue(id, "") ? 1 : 0;
     }
 }

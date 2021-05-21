@@ -3,13 +3,14 @@ package mchorse.mappet.api.dialogues.nodes;
 import mchorse.mappet.api.dialogues.DialogueContext;
 import mchorse.mappet.api.events.EventContext;
 import mchorse.metamorph.api.MorphManager;
-import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class ReactionNode extends DialogueNode
 {
     public AbstractMorph morph;
+    public boolean read;
+    public String marker = "";
 
     public ReactionNode()
     {}
@@ -40,6 +41,9 @@ public class ReactionNode extends DialogueNode
             tag.setTag("Morph", this.morph.toNBT());
         }
 
+        tag.setBoolean("Read", this.read);
+        tag.setString("Marker", this.marker);
+
         return tag;
     }
 
@@ -52,5 +56,8 @@ public class ReactionNode extends DialogueNode
         {
             this.morph = MorphManager.INSTANCE.morphFromNBT(tag.getCompoundTag("Morph"));
         }
+
+        this.read = tag.getBoolean("Read");
+        this.marker = tag.getString("Marker");
     }
 }

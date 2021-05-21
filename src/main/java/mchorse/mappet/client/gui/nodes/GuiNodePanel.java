@@ -35,6 +35,12 @@ public abstract class GuiNodePanel <T extends Node> extends GuiElement
     }
 
     @Override
+    public boolean mouseClicked(GuiContext context)
+    {
+        return super.mouseClicked(context) || this.area.isInside(context);
+    }
+
+    @Override
     public void draw(GuiContext context)
     {
         Gui.drawRect(this.area.x, this.area.ey() - 40, this.area.ex(), this.area.ey(), ColorUtils.HALF_BLACK);

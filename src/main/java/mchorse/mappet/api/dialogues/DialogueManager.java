@@ -61,8 +61,6 @@ public class DialogueManager extends BaseManager<Dialogue>
             {
                 this.handleContext(player, dialogue, context);
             }
-
-            character.getStates().readDialogue(dialogue.getId());
         }
     }
 
@@ -100,6 +98,11 @@ public class DialogueManager extends BaseManager<Dialogue>
         else
         {
             character.setCraftingTable(null);
+        }
+
+        if (context.reactionNode != null && context.reactionNode.read)
+        {
+            character.getStates().readDialogue(dialogue.getId(), context.reactionNode.marker);
         }
 
         Dispatcher.sendTo(packet, player);
