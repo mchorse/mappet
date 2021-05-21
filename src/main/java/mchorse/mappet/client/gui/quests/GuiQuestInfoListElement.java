@@ -29,7 +29,7 @@ public class GuiQuestInfoListElement extends GuiListElement<QuestInfo>
     @Override
     protected String elementToString(QuestInfo element)
     {
-        String string = element.status.formatting + element.quest.title;
+        String string = element.status.formatting + element.quest.getProcessedTitle();
 
         if (this.mc.player.isCreative())
         {

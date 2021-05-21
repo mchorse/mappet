@@ -51,7 +51,7 @@ public class GuiJournalScreen extends GuiBase
 
         for (Map.Entry<String, Quest> entry : quests.quests.entrySet())
         {
-            this.questList.add(IKey.str(entry.getValue().title), entry.getValue());
+            this.questList.add(IKey.str(entry.getValue().getProcessedTitle()), entry.getValue());
         }
 
         this.questList.background().sort();

@@ -22,7 +22,7 @@ public class GuiQuestCard
     public static void fillQuest(GuiElement element, Quest quest, boolean forceReward)
     {
         Minecraft mc = Minecraft.getMinecraft();
-        String title = quest.title;
+        String title = quest.getProcessedTitle();
 
         if (mc.player.isCreative())
         {

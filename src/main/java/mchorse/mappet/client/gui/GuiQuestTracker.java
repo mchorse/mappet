@@ -50,7 +50,7 @@ public class GuiQuestTracker extends Gui
     {
         /* TODO: optimize */
         boolean questComplete = value.isComplete(mc.player);
-        String title = value.title;
+        String title = value.getProcessedTitle();
 
         if (questComplete)
         {

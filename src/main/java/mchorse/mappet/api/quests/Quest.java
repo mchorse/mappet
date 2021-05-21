@@ -9,6 +9,7 @@ import mchorse.mappet.api.utils.AbstractData;
 import mchorse.mappet.api.utils.Trigger;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
+import mchorse.mclib.utils.TextUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,6 +34,11 @@ public class Quest extends AbstractData implements INBTPartialSerializable
 
     public Quest()
     {}
+
+    public String getProcessedTitle()
+    {
+        return TextUtils.processColoredText(this.title);
+    }
 
     /* Quest building */
 
