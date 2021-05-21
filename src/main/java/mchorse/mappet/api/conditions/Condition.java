@@ -78,11 +78,6 @@ public class Condition implements INBTSerializable<NBTTagCompound>
     @Override
     public void deserializeNBT(NBTTagCompound tag)
     {
-        if (!tag.hasKey("Blocks", Constants.NBT.TAG_LIST))
-        {
-            return;
-        }
-
         NBTTagList blocks = tag.getTagList("Blocks", Constants.NBT.TAG_COMPOUND);
 
         this.blocks.clear();
