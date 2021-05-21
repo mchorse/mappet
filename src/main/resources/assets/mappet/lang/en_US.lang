@@ -145,6 +145,8 @@ mappet.gui.panels.modals.add=Type in a name:
 mappet.gui.panels.modals.dupe=Type in a new name for a duplicate:
 mappet.gui.panels.modals.rename=Type in a new name:
 mappet.gui.panels.modals.remove=Are you sure you want to remove this?
+mappet.gui.panels.context.copy=Copy
+mappet.gui.panels.context.paste=Paste...
 mappet.gui.panels.keys.category=Mappet panel keybinds
 mappet.gui.panels.keys.toggle_sidebar=Toggle sidebar
 

@@ -11,6 +11,7 @@ import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
+import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.list.GuiStringSearchListElement;
 import mchorse.mclib.client.gui.framework.elements.modals.GuiConfirmModal;
 import mchorse.mclib.client.gui.framework.elements.modals.GuiModal;
@@ -22,7 +23,9 @@ import mchorse.mclib.client.gui.mclib.GuiDashboardPanel;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 import org.lwjgl.input.Keyboard;
@@ -72,6 +75,29 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
         this.names = new GuiStringSearchListElement(mc, (list) -> this.pickData(list.get(0)));
         this.names.label(IKey.lang("mappet.gui.search"));
         this.names.flex().relative(this.sidebar).xy(10, 25).w(1F, -20).h(1F, -35);
+        this.names.list.context(() ->
+        {
+            GuiSimpleContextMenu menu = new GuiSimpleContextMenu(mc);
+
+            if (this.data != null)
+            {
+                menu.action(Icons.COPY, IKey.lang("mappet.gui.panels.context.copy"), this::copy);
+            }
+
+            try
+            {
+                NBTTagCompound tag = JsonToNBT.getTagFromJson(GuiScreen.getClipboardString());
+
+                if (tag.getInteger("ContentType") == this.getType().ordinal())
+                {
+                    menu.action(Icons.PASTE, IKey.lang("mappet.gui.panels.context.paste"), () -> this.paste(tag));
+                }
+            }
+            catch (Exception e)
+            {}
+
+            return menu.actions.getList().isEmpty() ? null : menu.shadow();
+        });
         this.sidebar.add(drawable, this.names, this.buttons);
 
         this.editor = new GuiScrollElement(mc);
@@ -93,6 +119,21 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
         this.add(this.sidebar, this.editor, this.toggleSidebar);
 
         this.keys().register(IKey.lang("mappet.gui.panels.keys.toggle_sidebar"), Keyboard.KEY_N, () -> this.toggleSidebar.clickItself(GuiBase.getCurrent())).category(KEYS_CATEGORY);
+    }
+
+    private void copy()
+    {
+        NBTTagCompound tag = this.data.serializeNBT();
+
+        tag.setInteger("ContentType", this.getType().ordinal());
+        GuiScreen.setClipboardString(tag.toString());
+    }
+
+    private void paste(NBTTagCompound tag)
+    {
+        T data = (T) this.getType().getManager().create("", tag);
+
+        this.addNewData(this.add, data);
     }
 
     private void toggleSidebar()
@@ -145,20 +186,32 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
 
     protected void addNewData(GuiIconElement element)
     {
-        GuiModal.addFullModal(this.sidebar, () -> new GuiPromptModal(this.mc, IKey.lang("mappet.gui.panels.modals.add"), this::addNewData).filename());
+        this.addNewData(element, null);
     }
 
-    protected void addNewData(String name)
+    protected void addNewData(GuiIconElement element, T data)
+    {
+        GuiModal.addFullModal(this.sidebar, () -> new GuiPromptModal(this.mc, IKey.lang("mappet.gui.panels.modals.add"), (name) -> this.addNewData(name, data)).filename());
+    }
+
+    protected void addNewData(String name, T data)
     {
         if (!this.names.list.getList().contains(name))
         {
-            Dispatcher.sendToServer(new PacketContentData(this.getType(), name, null));
+            Dispatcher.sendToServer(new PacketContentData(this.getType(), name, data == null ? null : data.serializeNBT()));
 
             this.names.list.add(name);
             this.names.list.sort();
             this.names.list.setCurrentScroll(name);
 
-            T data = (T) this.getType().getManager().create(name);
+            if (data == null)
+            {
+                data = (T) this.getType().getManager().create(name);
+            }
+            else
+            {
+                data.setId(name);
+            }
 
             this.fill(name, data);
         }
