@@ -30,7 +30,7 @@ public class GuiReactionNodePanel extends GuiDialogueNodePanel
         this.read = new GuiToggleElement(mc, IKey.lang("mappet.gui.nodes.dialogue.read"), (b) -> this.get().read = b.isToggled());
         this.read.flex().h(20);
         this.marker = new GuiTextElement(mc, (t) -> this.get().marker = t);
-        this.marker.tooltip(IKey.lang("mappet.gui.nodes.dialogue.marker_tooltip"), Direction.TOP);
+        this.marker.filename().tooltip(IKey.lang("mappet.gui.nodes.dialogue.marker_tooltip"), Direction.TOP);
 
         this.add(this.morph);
         this.add(
