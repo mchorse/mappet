@@ -73,7 +73,7 @@ public class DialogueManager extends BaseManager<Dialogue>
 
         reaction.process(context.data);
 
-        PacketDialogueFragment packet = new PacketDialogueFragment(dialogue.title, reaction, replies);
+        PacketDialogueFragment packet = new PacketDialogueFragment(dialogue.closable, reaction, replies);
         ICharacter character = Character.get(player);
 
         if (context.reactionNode != null)

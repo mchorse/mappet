@@ -7,7 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class Dialogue extends NodeSystem<EventNode>
 {
-    public String title = "";
+    public boolean closable = true;
 
     public Dialogue(IFactory<EventNode> factory)
     {
@@ -19,7 +19,7 @@ public class Dialogue extends NodeSystem<EventNode>
     {
         NBTTagCompound tag = super.serializeNBT();
 
-        tag.setString("Title", this.title);
+        tag.setBoolean("Closable", this.closable);
 
         return tag;
     }
@@ -29,9 +29,9 @@ public class Dialogue extends NodeSystem<EventNode>
     {
         super.deserializeNBT(tag);
 
-        if (tag.hasKey("Title"))
+        if (tag.hasKey("Closable"))
         {
-            this.title = tag.getString("Title");
+            this.closable = tag.getBoolean("Closable");
         }
     }
 }

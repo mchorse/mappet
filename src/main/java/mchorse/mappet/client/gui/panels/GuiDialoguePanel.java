@@ -20,8 +20,10 @@ import mchorse.mappet.client.gui.nodes.GuiEventNodeGraph;
 import mchorse.mappet.client.gui.nodes.GuiEventNodePanel;
 import mchorse.mappet.client.gui.nodes.dialogues.GuiQuestChainNodePanel;
 import mchorse.mappet.client.gui.nodes.dialogues.GuiReactionNodePanel;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
+import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.metamorph.client.gui.creative.GuiCreativeMorphsMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
@@ -30,6 +32,7 @@ public class GuiDialoguePanel extends GuiMappetDashboardPanel<Dialogue>
 {
     public GuiEventNodeGraph graph;
     public GuiEventNodePanel panel;
+    public GuiToggleElement closable;
 
     public GuiDialoguePanel(Minecraft mc, GuiMappetDashboard dashboard)
     {
@@ -38,7 +41,13 @@ public class GuiDialoguePanel extends GuiMappetDashboardPanel<Dialogue>
         this.graph = new GuiEventNodeGraph(mc, DialogueManager.FACTORY, this::pickNode);
         this.graph.notifyAboutMain().flex().relative(this.editor).wh(1F, 1F);
 
-        this.add(this.graph, this.panel);
+        this.closable = new GuiToggleElement(mc, IKey.lang("mappet.gui.nodes.dialogue.closable"), (b) -> this.data.closable = b.isToggled());
+        this.closable.flex().relative(this.sidebar).x(10).y(1F, -10).w(1F, -20).anchorY(1F);
+
+        this.names.flex().hTo(this.closable.area, -5);
+
+        this.add(this.graph);
+        this.sidebar.prepend(this.closable);
 
         this.fill("", null);
     }
@@ -121,11 +130,13 @@ public class GuiDialoguePanel extends GuiMappetDashboardPanel<Dialogue>
         super.fill(id, data);
 
         this.graph.setVisible(data != null);
+        this.closable.setVisible(data != null);
         this.pickNode(null);
 
         if (data != null)
         {
             this.graph.set(data);
+            this.closable.toggled(data.closable);
         }
     }
 

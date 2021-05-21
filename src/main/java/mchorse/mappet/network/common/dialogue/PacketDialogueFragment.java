@@ -17,6 +17,7 @@ import java.util.List;
 public class PacketDialogueFragment implements IMessage
 {
     public String title = "";
+    public boolean closable;
     public AbstractMorph morph;
     public DialogueFragment reaction = new DialogueFragment();
     public List<DialogueFragment> replies = new ArrayList<DialogueFragment>();
@@ -27,9 +28,9 @@ public class PacketDialogueFragment implements IMessage
     public PacketDialogueFragment()
     {}
 
-    public PacketDialogueFragment(String title, DialogueFragment reaction, List<DialogueFragment> replies)
+    public PacketDialogueFragment(boolean closable, DialogueFragment reaction, List<DialogueFragment> replies)
     {
-        this.title = title;
+        this.closable = closable;
         this.reaction = reaction;
         this.replies = replies;
     }
@@ -54,6 +55,7 @@ public class PacketDialogueFragment implements IMessage
     public void fromBytes(ByteBuf buf)
     {
         this.title = ByteBufUtils.readUTF8String(buf);
+        this.closable = buf.readBoolean();
         this.morph = MorphUtils.morphFromBuf(buf);
         this.reaction.deserializeNBT(ByteBufUtils.readTag(buf));
 
@@ -87,6 +89,7 @@ public class PacketDialogueFragment implements IMessage
     public void toBytes(ByteBuf buf)
     {
         ByteBufUtils.writeUTF8String(buf, this.title);
+        buf.writeBoolean(this.closable);
         MorphUtils.morphToBuf(buf, this.morph);
         ByteBufUtils.writeTag(buf, this.reaction.serializeNBT());
 
@@ -112,5 +115,10 @@ public class PacketDialogueFragment implements IMessage
         {
             info.toBytes(buf);
         }
+    }
+
+    public boolean isEmpty()
+    {
+        return this.replies.isEmpty() && !this.hasQuests && this.table == null;
     }
 }

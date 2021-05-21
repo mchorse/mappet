@@ -194,6 +194,13 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
     {
         this.setFragment(fragment);
 
+        if (fragment.reaction.text.isEmpty() && fragment.isEmpty())
+        {
+            this.closeScreen();
+
+            return;
+        }
+
         if (fragment.hasQuests)
         {
             this.setQuests(fragment.quests);
@@ -281,11 +288,14 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
     @Override
     protected void closeScreen()
     {
-        super.closeScreen();
-
-        if (this.table != null)
+        if (this.fragment.closable || this.fragment.isEmpty())
         {
-            Dispatcher.sendToServer(new PacketCraftingTable(null));
+            super.closeScreen();
+
+            if (this.table != null)
+            {
+                Dispatcher.sendToServer(new PacketCraftingTable(null));
+            }
         }
     }
 
@@ -296,7 +306,7 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
 
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        if (this.questInfos != null || this.table != null || !this.replies.getChildren().isEmpty())
+        if (!this.fragment.isEmpty())
         {
             int y = this.table != null ? this.crafting.area.y - 1 : (this.questInfos != null ? this.quest.area.y - 1 : this.replies.area.y - 1);
 
