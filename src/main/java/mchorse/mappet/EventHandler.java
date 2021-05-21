@@ -209,7 +209,7 @@ public class EventHandler
         {
             ICharacter character = Character.get(player);
 
-            if (character != null)
+            if (character != null && (event.isGlobal() || character.getStates() == event.states))
             {
                 int i = 0;
 
