@@ -200,7 +200,7 @@ mappet.gui.npc_tool.state=State
 
 mappet.gui.crafting.title=Crafting table's title
 mappet.gui.crafting.recipe.title=Recipe's title
-mappet.gui.crafting.recipe.condition=Condition
+mappet.gui.crafting.recipe.visible=Visible
 mappet.gui.crafting.recipe.hotkey=Crafting hotkey
 mappet.gui.crafting.recipe.trigger=Crafting trigger
 mappet.gui.crafting.input=Ingredients

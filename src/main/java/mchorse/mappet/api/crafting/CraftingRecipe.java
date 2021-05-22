@@ -20,13 +20,13 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
     public String title = "";
     public NonNullList<ItemStack> input = NonNullList.create();
     public NonNullList<ItemStack> output = NonNullList.create();
-    public Checker condition = new Checker(true);
+    public Checker visible = new Checker(true);
     public int hotkey = -1;
     public Trigger trigger = new Trigger();
 
     public boolean isAvailable(EntityPlayer player)
     {
-        return this.condition.check(new DataContext(player));
+        return this.visible.check(new DataContext(player));
     }
 
     public boolean craft(EntityPlayer player)
@@ -117,7 +117,7 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
             tag.setTag("Output", output);
         }
 
-        tag.setTag("Condition", this.condition.serializeNBT());
+        tag.setTag("Visible", this.visible.serializeNBT());
 
         NBTTagCompound trigger = this.trigger.serializeNBT();
 
@@ -167,9 +167,9 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
             this.deserializeList(this.output, tag.getTagList("Output", Constants.NBT.TAG_COMPOUND));
         }
 
-        if (tag.hasKey("Condition"))
+        if (tag.hasKey("Visible"))
         {
-            this.condition.deserializeNBT(tag.getTag("Condition"));
+            this.visible.deserializeNBT(tag.getTag("Condition"));
         }
 
         if (tag.hasKey("Trigger"))

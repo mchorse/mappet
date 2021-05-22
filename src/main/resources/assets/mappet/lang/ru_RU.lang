@@ -200,7 +200,7 @@ mappet.gui.npc_tool.state=Состояние
 
 mappet.gui.crafting.title=Название таблицы рецептов
 mappet.gui.crafting.recipe.title=Название рецепта
-mappet.gui.crafting.recipe.condition=Условие выражения
+mappet.gui.crafting.recipe.visible=Visible
 mappet.gui.crafting.recipe.hotkey=Горячая клавиша крафта
 mappet.gui.crafting.recipe.trigger=Триггер крафта
 mappet.gui.crafting.input=Ингридиенты
@@ -229,6 +229,7 @@ mappet.gui.nodes.event.binary_tooltip=Эта опция позволяет ог�
 mappet.gui.nodes.event.command=Команда
 mappet.gui.nodes.event.condition=Условие
 mappet.gui.nodes.event.timer=Таймер
+mappet.gui.nodes.event.subject=Subject
 mappet.gui.nodes.event.hotkeys.title=Event hotkey editor
 mappet.gui.nodes.event.hotkeys.key=Keybind
 mappet.gui.nodes.event.hotkeys.event=Event
