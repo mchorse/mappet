@@ -62,7 +62,7 @@ mappet.commands.mp.quest.complete=This command completes the quest (regardless w
 mappet.commands.mp.quest.decline=This command removes the quest by §7<id>§r from one or multiple §7<player>§r(s).
 
 mappet.commands.mp.crafting.help=Mappet's crafting table subcommand.
-mappet.commands.mp.crafting.open=This command opens a crafting table by §7<id>§r for §7<player>§r(s). §7[subject_id]§r can be used, which is used for quest chains to determine the receiver.
+mappet.commands.mp.crafting.open=This command opens a crafting table by §7<id>§r for §7<player>§r(s). 
 mappet.commands.mp.crafting.drop=This command drops an output item stacks from a crafting table by §7<id>§r from its recipe at index §7[index]§r at §7[x] [y] [z]§r.\n\n§7[x] [y] [z]§r support relative position using §7~§r and can be omitted. §7[index]§r can be also §7@r§r which means it will use a random recipe. §7[mx] [my] [mz]§r can be provided to setup initial velocity of item entities.
 
 mappet.commands.mp.event.help=Mappet's event subcommand.
@@ -200,7 +200,7 @@ mappet.gui.npc_tool.state=State
 
 mappet.gui.crafting.title=Crafting table's title
 mappet.gui.crafting.recipe.title=Recipe's title
-mappet.gui.crafting.recipe.condition=Expression condition
+mappet.gui.crafting.recipe.condition=Condition
 mappet.gui.crafting.recipe.hotkey=Crafting hotkey
 mappet.gui.crafting.recipe.trigger=Crafting trigger
 mappet.gui.crafting.input=Ingredients
@@ -229,6 +229,7 @@ mappet.gui.nodes.event.binary_tooltip=When enabled, it allows to limit execution
 mappet.gui.nodes.event.command=Command
 mappet.gui.nodes.event.condition=Condition
 mappet.gui.nodes.event.timer=Timer
+mappet.gui.nodes.event.subject=Subject
 mappet.gui.nodes.event.hotkeys.title=Event hotkey editor
 mappet.gui.nodes.event.hotkeys.key=Keybind
 mappet.gui.nodes.event.hotkeys.event=Event
@@ -308,7 +309,7 @@ mappet.gui.factions.title=Faction's title
 mappet.gui.factions.color=Display color
 mappet.gui.factions.others_attitude=Default attitude
 mappet.gui.factions.player_attitude=Default attitude toward players
-mappet.gui.factions.visible=Visible expression
+mappet.gui.factions.visible=Visible
 mappet.gui.factions.score=Default score
 mappet.gui.factions.overlay.main=Faction relation editor
 mappet.gui.factions.overlay.title=Threshold title

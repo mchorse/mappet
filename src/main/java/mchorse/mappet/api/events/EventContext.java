@@ -36,33 +36,6 @@ public class EventContext
         return this;
     }
 
-    public String getSubjectId()
-    {
-        return this.getId(this.data.subject, "subject_id");
-    }
-
-    public String getObjectId()
-    {
-        return this.getId(this.data.object, "object_id");
-    }
-
-    private String getId(EntityLivingBase entity, String variable)
-    {
-        Object id = this.data.getValue(variable);
-
-        if (id instanceof String)
-        {
-            return (String) id;
-        }
-
-        if (entity instanceof EntityNpc)
-        {
-            return ((EntityNpc) entity).getId();
-        }
-
-        return "";
-    }
-
     public void addExecutionFork(EventNode node, int timer)
     {
         if (this.system != null && timer > 0)

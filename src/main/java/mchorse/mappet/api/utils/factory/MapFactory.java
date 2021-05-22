@@ -14,6 +14,7 @@ import java.util.Map;
 public class MapFactory <T> implements IFactory<T>
 {
     private BiMap<String, Class<? extends T>> factory = HashBiMap.create();
+    private Map<String, String> aliases = new HashMap<String, String>();
     private Map<Class<? extends T>, Integer> colors = new HashMap<Class<? extends T>, Integer>();
 
     public MapFactory<T> copy()
@@ -25,6 +26,8 @@ public class MapFactory <T> implements IFactory<T>
             factory.register(entry.getKey(), entry.getValue(), this.colors.get(entry.getValue()));
         }
 
+        factory.aliases.putAll(this.aliases);
+
         return factory;
     }
 
@@ -32,6 +35,13 @@ public class MapFactory <T> implements IFactory<T>
     {
         this.factory.put(type, clazz);
         this.colors.put(clazz, color);
+
+        return this;
+    }
+
+    public MapFactory<T> alias(String type, String alias)
+    {
+        this.aliases.put(alias, type);
 
         return this;
     }
@@ -62,6 +72,11 @@ public class MapFactory <T> implements IFactory<T>
     public T create(String type)
     {
         Class<? extends T> clazz = this.factory.get(type);
+
+        if (clazz == null)
+        {
+            clazz = this.factory.get(this.aliases.get(type));
+        }
 
         if (clazz != null)
         {

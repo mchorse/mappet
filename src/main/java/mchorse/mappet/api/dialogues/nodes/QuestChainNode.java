@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public class QuestChainNode extends EventNode
 {
     public String chain = "";
+    public String subject = "";
 
     @Override
     public int execute(EventContext context)
@@ -29,6 +30,7 @@ public class QuestChainNode extends EventNode
         NBTTagCompound tag = super.serializeNBT();
 
         tag.setString("Chain", this.chain);
+        tag.setString("Subject", this.subject);
 
         return tag;
     }
@@ -41,6 +43,11 @@ public class QuestChainNode extends EventNode
         if (tag.hasKey("Chain"))
         {
             this.chain = tag.getString("Chain");
+        }
+
+        if (tag.hasKey("Subject"))
+        {
+            this.subject = tag.getString("Subject");
         }
     }
 }

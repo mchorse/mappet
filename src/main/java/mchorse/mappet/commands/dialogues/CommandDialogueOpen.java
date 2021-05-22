@@ -26,7 +26,7 @@ public class CommandDialogueOpen extends CommandDialogueBase
     @Override
     public String getSyntax()
     {
-        return "{l}{6}/{r}mp {8}dialogue open{r} {7}<player> <id> [subject_id]{r}";
+        return "{l}{6}/{r}mp {8}dialogue open{r} {7}<player> <id>{r}";
     }
 
     @Override
@@ -47,13 +47,6 @@ public class CommandDialogueOpen extends CommandDialogueBase
             throw new CommandException("dialogue.empty", id);
         }
 
-        DialogueContext context = new DialogueContext(new DataContext(player));
-
-        if (args.length > 2)
-        {
-            context.data.set("subject_id", args[2]);
-        }
-
-        Mappet.dialogues.open(player, dialogue, context);
+        Mappet.dialogues.open(player, dialogue, new DialogueContext(new DataContext(player)));
     }
 }

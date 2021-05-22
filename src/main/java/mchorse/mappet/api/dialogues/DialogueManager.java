@@ -27,7 +27,7 @@ public class DialogueManager extends BaseManager<Dialogue>
         .register("reply", ReplyNode.class, 0x00a0ff)
         .register("reaction", ReactionNode.class, 0xff2200)
         .register("crafting", CraftingNode.class, 0xff6600)
-        .register("quest", QuestChainNode.class, 0xffff00)
+        .register("quest_chain", QuestChainNode.class, 0xffff00).alias("quest_chain", "quest")
         .unregister("timer");
 
     public DialogueManager(File folder)
@@ -81,7 +81,7 @@ public class DialogueManager extends BaseManager<Dialogue>
 
         if (context.quest != null)
         {
-            packet.addQuests(Mappet.chains.evaluate(context.quest.chain, player, context.getSubjectId()));
+            packet.addQuests(Mappet.chains.evaluate(context.quest.chain, player, context.data.process(context.quest.subject)));
         }
         else if (context.crafting != null)
         {
