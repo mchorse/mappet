@@ -59,35 +59,9 @@ public class CommandEventTrigger extends CommandEventBase
 
         if (args.length > 2)
         {
-            String nbt = String.join(" ", SubCommandBase.dropFirstArguments(args, 2));
-
-            try
-            {
-                this.apply(nbt, context);
-            }
-            catch (Exception e)
-            {}
+            context.parse(String.join(" ", SubCommandBase.dropFirstArguments(args, 2)));
         }
 
         Mappet.events.execute(event, new EventContext(context));
-    }
-
-    private void apply(String nbt, DataContext context) throws NBTException
-    {
-        NBTTagCompound tag = JsonToNBT.getTagFromJson(nbt);
-
-        for (String key : tag.getKeySet())
-        {
-            NBTBase value = tag.getTag(key);
-
-            if (value instanceof NBTPrimitive)
-            {
-                context.set(key, ((NBTPrimitive) value).getDouble());
-            }
-            else if (value instanceof NBTTagString)
-            {
-                context.set(key, ((NBTTagString) value).getString());
-            }
-        }
     }
 }

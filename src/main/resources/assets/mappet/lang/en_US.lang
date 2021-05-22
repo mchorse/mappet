@@ -69,7 +69,7 @@ mappet.commands.mp.event.help=Mappet's event subcommand.
 mappet.commands.mp.event.trigger=This command triggers an event by §7<id>§r using §7<player>§r(s) as context. You can also pass arbitrary NBT data to the event using §7[data]§r argument.
 
 mappet.commands.mp.dialogue.help=Mappet's dialogue subcommand.
-mappet.commands.mp.dialogue.open=This command opens a dialogue by §7<id>§r for §7<player>§r(s).
+mappet.commands.mp.dialogue.open=This command opens a dialogue by §7<id>§r for §7<player>§r(s). You can also pass arbitrary NBT data to the event using §7[data]§r argument.
 
 mappet.commands.mp.npc.help=NPC management subcommand.
 mappet.commands.mp.npc.edit=This command allows to change an individual §7<property>§r to given §7<value>§r of NPC(s) found by §7<target>§r selector.

@@ -2,6 +2,11 @@ package mchorse.mappet.api.utils;
 
 import mchorse.mappet.utils.ExpressionRewriter;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTPrimitive;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 
@@ -67,6 +72,32 @@ public class DataContext
     public DataContext set(String key, String value)
     {
         this.values.put(key, value);
+
+        return this;
+    }
+
+    public DataContext parse(String nbt)
+    {
+        try
+        {
+            NBTTagCompound tag = JsonToNBT.getTagFromJson(nbt);
+
+            for (String key : tag.getKeySet())
+            {
+                NBTBase value = tag.getTag(key);
+
+                if (value instanceof NBTPrimitive)
+                {
+                    this.set(key, ((NBTPrimitive) value).getDouble());
+                }
+                else if (value instanceof NBTTagString)
+                {
+                    this.set(key, ((NBTTagString) value).getString());
+                }
+            }
+        }
+        catch (Exception e)
+        {}
 
         return this;
     }
