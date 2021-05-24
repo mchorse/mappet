@@ -228,7 +228,9 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
     {
         if (this.data != null && !this.names.list.getList().contains(name))
         {
-            Dispatcher.sendToServer(new PacketContentData(this.getType(), this.data.getId(), this.data.serializeNBT()));
+            this.save();
+
+            Dispatcher.sendToServer(new PacketContentData(this.getType(), name, this.data.serializeNBT()));
 
             this.names.list.add(name);
             this.names.list.sort();
@@ -254,7 +256,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
     {
         if (this.data != null && !this.names.list.getList().contains(name))
         {
-            Dispatcher.sendToServer(new PacketContentData(this.getType(), this.data.getId()).rename(name));
+            Dispatcher.sendToServer(new PacketContentData(this.getType(), this.data.getId(), this.data.serializeNBT()).rename(name));
 
             this.names.list.remove(this.data.getId());
             this.names.list.add(name);

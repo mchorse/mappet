@@ -15,6 +15,11 @@ public class ServerHandlerContentData extends ServerMessageHandler<PacketContent
         if (message.rename != null)
         {
             manager.rename(message.name, message.rename);
+
+            if (message.data != null)
+            {
+                manager.save(message.rename, message.data);
+            }
         }
         else if (message.data == null)
         {

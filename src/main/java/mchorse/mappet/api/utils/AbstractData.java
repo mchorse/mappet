@@ -16,9 +16,6 @@ public abstract class AbstractData implements INBTSerializable<NBTTagCompound>, 
     @Override
     public void setId(String id)
     {
-        if (this.id == null)
-        {
-            this.id = id;
-        }
+        this.id = id;
     }
 }
