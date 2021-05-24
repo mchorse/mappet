@@ -30,7 +30,7 @@ public class QuestChainNode extends EventNode
         NBTTagCompound tag = super.serializeNBT();
 
         tag.setString("Chain", this.chain);
-        tag.setString("Subject", this.subject);
+        tag.setString("Subject", this.subject.trim());
 
         return tag;
     }

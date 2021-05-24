@@ -65,7 +65,7 @@ public abstract class TargetBlock extends AbstractBlock
     @Override
     public void serializeNBT(NBTTagCompound tag)
     {
-        tag.setString("Id", this.id);
+        tag.setString("Id", this.id.trim());
         tag.setInteger("Target", this.target.ordinal());
         tag.setString("Selector", this.selector);
     }
