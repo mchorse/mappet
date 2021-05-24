@@ -193,6 +193,8 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
     {
         if (!this.names.list.getList().contains(name))
         {
+            this.save();
+
             Dispatcher.sendToServer(new PacketContentData(this.getType(), name, data == null ? null : data.serializeNBT()));
 
             this.names.list.add(name);
