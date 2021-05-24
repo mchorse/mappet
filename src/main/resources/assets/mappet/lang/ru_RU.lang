@@ -387,6 +387,7 @@ mappet.gui.node_types.reply=Ответ
 mappet.gui.node_types.reaction=Реакция
 mappet.gui.node_types.crafting=Крафт
 mappet.gui.node_types.quest=Квест
+mappet.gui.node_types.quest_chain=Цепочка квестов
 mappet.gui.node_types.command=Команда
 mappet.gui.node_types.condition=Условие
 mappet.gui.node_types.switch=Переключатель

@@ -387,6 +387,7 @@ mappet.gui.node_types.reply=Reply
 mappet.gui.node_types.reaction=Reaction
 mappet.gui.node_types.crafting=Crafting
 mappet.gui.node_types.quest=Quest
+mappet.gui.node_types.quest_chain=Quest chain
 mappet.gui.node_types.command=Command
 mappet.gui.node_types.condition=Condition
 mappet.gui.node_types.switch=Switch

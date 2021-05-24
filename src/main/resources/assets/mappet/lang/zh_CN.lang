@@ -387,6 +387,7 @@ mappet.gui.node_types.reply=回复
 mappet.gui.node_types.reaction=反应
 mappet.gui.node_types.crafting=合成表
 mappet.gui.node_types.quest=任务
+mappet.gui.node_types.quest_chain=Quest chain
 mappet.gui.node_types.command=命令
 mappet.gui.node_types.condition=条件
 mappet.gui.node_types.switch=开关
