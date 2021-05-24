@@ -10,7 +10,6 @@ import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
-import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
@@ -52,7 +51,7 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
         this.add(this.title, this.recipes, this.inventory);
         this.editor.add(this.recipe);
 
-        this.fill("", null);
+        this.fill(null);
     }
 
     private void pickRecipe(CraftingRecipe recipe, boolean select)
@@ -111,9 +110,9 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
     }
 
     @Override
-    public void fill(String id, CraftingTable data)
+    public void fill(CraftingTable data)
     {
-        super.fill(id, data);
+        super.fill(data);
 
         this.title.setVisible(data != null);
         this.editor.setVisible(data != null);

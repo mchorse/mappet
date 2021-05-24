@@ -27,7 +27,7 @@ public class GuiQuestChainPanel extends GuiMappetDashboardPanel<QuestChain>
 
         this.add(this.graph, this.panel);
 
-        this.fill("", null);
+        this.fill(null);
     }
 
     private void pickNode(QuestNode node)
@@ -73,9 +73,9 @@ public class GuiQuestChainPanel extends GuiMappetDashboardPanel<QuestChain>
     }
 
     @Override
-    public void fill(String id, QuestChain data)
+    public void fill(QuestChain data)
     {
-        super.fill(id, data);
+        super.fill(data);
 
         this.graph.setVisible(data != null);
         this.pickNode(null);

@@ -49,7 +49,6 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
     public GuiInventoryElement inventory;
 
     protected boolean update;
-    protected String id;
     protected T data;
 
     public GuiMappetDashboardPanel(Minecraft mc, GuiMappetDashboard dashboard)
@@ -173,10 +172,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
 
     public void pickData(String id)
     {
-        if (this.data != null && this.id != null)
-        {
-            Dispatcher.sendToServer(new PacketContentData(this.getType(), this.id, this.data.serializeNBT()));
-        }
+        this.save();
 
         Dispatcher.sendToServer(new PacketContentRequestData(this.getType(), id));
     }
@@ -212,7 +208,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
                 data.setId(name);
             }
 
-            this.fill(name, data);
+            this.fill(data);
         }
     }
 
@@ -222,7 +218,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
         {
             GuiPromptModal promptModal = new GuiPromptModal(this.mc, IKey.lang("mappet.gui.panels.modals.dupe"), this::dupeData);
 
-            return promptModal.setValue(this.id).filename();
+            return promptModal.setValue(this.data.getId()).filename();
         });
     }
 
@@ -230,7 +226,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
     {
         if (this.data != null && !this.names.list.getList().contains(name))
         {
-            Dispatcher.sendToServer(new PacketContentData(this.getType(), this.id, this.data.serializeNBT()));
+            Dispatcher.sendToServer(new PacketContentData(this.getType(), this.data.getId(), this.data.serializeNBT()));
 
             this.names.list.add(name);
             this.names.list.sort();
@@ -238,7 +234,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
 
             T data = (T) this.getType().getManager().create(name, this.data.serializeNBT());
 
-            this.fill(name, data);
+            this.fill(data);
         }
     }
 
@@ -248,22 +244,21 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
         {
             GuiPromptModal promptModal = new GuiPromptModal(this.mc, IKey.lang("mappet.gui.panels.modals.rename"), this::renameData);
 
-            return promptModal.setValue(this.id).filename();
+            return promptModal.setValue(this.data.getId()).filename();
         });
     }
 
     protected void renameData(String name)
     {
-        if (this.id != null && !this.names.list.getList().contains(name))
+        if (this.data != null && !this.names.list.getList().contains(name))
         {
-            Dispatcher.sendToServer(new PacketContentData(this.getType(), this.id).rename(name));
+            Dispatcher.sendToServer(new PacketContentData(this.getType(), this.data.getId()).rename(name));
 
-            this.names.list.remove(this.id);
+            this.names.list.remove(this.data.getId());
             this.names.list.add(name);
             this.names.list.sort();
             this.names.list.setCurrentScroll(name);
 
-            this.id = name;
             this.data.setId(name);
         }
     }
@@ -275,22 +270,21 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
 
     protected void removeData(boolean confirm)
     {
-        if (this.id != null && confirm)
+        if (this.data != null && confirm)
         {
-            Dispatcher.sendToServer(new PacketContentData(this.getType(), this.id, null));
+            Dispatcher.sendToServer(new PacketContentData(this.getType(), this.data.getId(), null));
 
-            this.names.list.remove(this.id);
+            this.names.list.remove(this.data.getId());
             this.names.list.sort();
             this.names.list.setCurrentScroll("");
-            this.fill("", null);
+            this.fill(null);
         }
     }
 
     /* Data population */
 
-    public void fill(String id, T data)
+    public void fill(T data)
     {
-        this.id = id;
         this.data = data;
     }
 
@@ -350,7 +344,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
     {
         if (!this.update && this.data != null)
         {
-            Dispatcher.sendToServer(new PacketContentData(this.getType(), this.id, this.data.serializeNBT()));
+            Dispatcher.sendToServer(new PacketContentData(this.getType(), this.data.getId(), this.data.serializeNBT()));
         }
     }
 

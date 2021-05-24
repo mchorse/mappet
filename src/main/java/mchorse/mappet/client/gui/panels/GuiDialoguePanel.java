@@ -1,7 +1,7 @@
 package mchorse.mappet.client.gui.panels;
 
-import mchorse.mappet.api.dialogues.DialogueManager;
 import mchorse.mappet.api.dialogues.Dialogue;
+import mchorse.mappet.api.dialogues.DialogueManager;
 import mchorse.mappet.api.dialogues.nodes.CraftingNode;
 import mchorse.mappet.api.dialogues.nodes.DialogueNode;
 import mchorse.mappet.api.dialogues.nodes.QuestChainNode;
@@ -12,19 +12,18 @@ import mchorse.mappet.api.events.nodes.EventNode;
 import mchorse.mappet.api.events.nodes.SwitchNode;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
-import mchorse.mappet.client.gui.nodes.events.GuiCommandNodePanel;
-import mchorse.mappet.client.gui.nodes.events.GuiConditionNodePanel;
-import mchorse.mappet.client.gui.nodes.dialogues.GuiCraftingNodePanel;
-import mchorse.mappet.client.gui.nodes.dialogues.GuiDialogueNodePanel;
 import mchorse.mappet.client.gui.nodes.GuiEventNodeGraph;
 import mchorse.mappet.client.gui.nodes.GuiEventNodePanel;
+import mchorse.mappet.client.gui.nodes.dialogues.GuiCraftingNodePanel;
+import mchorse.mappet.client.gui.nodes.dialogues.GuiDialogueNodePanel;
 import mchorse.mappet.client.gui.nodes.dialogues.GuiQuestChainNodePanel;
 import mchorse.mappet.client.gui.nodes.dialogues.GuiReactionNodePanel;
+import mchorse.mappet.client.gui.nodes.events.GuiCommandNodePanel;
+import mchorse.mappet.client.gui.nodes.events.GuiConditionNodePanel;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.keys.IKey;
-import mchorse.metamorph.client.gui.creative.GuiCreativeMorphsMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 
@@ -49,7 +48,7 @@ public class GuiDialoguePanel extends GuiMappetDashboardPanel<Dialogue>
         this.add(this.graph);
         this.sidebar.prepend(this.closable);
 
-        this.fill("", null);
+        this.fill(null);
     }
 
     private void pickNode(EventNode node)
@@ -125,9 +124,9 @@ public class GuiDialoguePanel extends GuiMappetDashboardPanel<Dialogue>
     }
 
     @Override
-    public void fill(String id, Dialogue data)
+    public void fill(Dialogue data)
     {
-        super.fill(id, data);
+        super.fill(data);
 
         this.graph.setVisible(data != null);
         this.closable.setVisible(data != null);

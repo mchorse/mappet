@@ -45,7 +45,7 @@ public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventNode>
 
         this.add(this.graph, this.panel);
 
-        this.fill("", null);
+        this.fill(null);
     }
 
     private void pickNode(EventNode node)
@@ -106,9 +106,9 @@ public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventNode>
     }
 
     @Override
-    public void fill(String id, NodeSystem<EventNode> data)
+    public void fill(NodeSystem<EventNode> data)
     {
-        super.fill(id, data);
+        super.fill(data);
 
         this.graph.setVisible(data != null);
         this.pickNode(null);

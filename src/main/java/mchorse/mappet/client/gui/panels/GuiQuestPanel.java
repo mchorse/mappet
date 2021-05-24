@@ -13,7 +13,6 @@ import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
-import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiLabel;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.Icons;
@@ -76,7 +75,7 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
         this.editor.add(Elements.label(IKey.lang("mappet.gui.quests.complete")).background().marginTop(12).marginBottom(4), this.complete);
         this.editor.scroll.opposite = true;
 
-        this.fill("", null);
+        this.fill(null);
     }
 
     @Override
@@ -92,9 +91,9 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
     }
 
     @Override
-    public void fill(String id, Quest data)
+    public void fill(Quest data)
     {
-        super.fill(id, data);
+        super.fill(data);
 
         this.editor.setVisible(data != null);
 

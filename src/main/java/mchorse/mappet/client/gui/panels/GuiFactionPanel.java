@@ -100,7 +100,7 @@ public class GuiFactionPanel extends GuiMappetDashboardPanel<Faction>
             List<String> keys = new ArrayList<String>(this.names.list.getList());
 
             keys.removeIf((key) -> this.data.relations.containsKey(key));
-            keys.remove(this.id);
+            keys.remove(this.data.getId());
 
             if (!keys.isEmpty())
             {
@@ -120,7 +120,7 @@ public class GuiFactionPanel extends GuiMappetDashboardPanel<Faction>
         this.editor.add(this.openOwnRelation);
         this.editor.scroll.opposite = true;
 
-        this.fill("", null);
+        this.fill(null);
     }
 
     private void addRelation(String string)
@@ -148,9 +148,9 @@ public class GuiFactionPanel extends GuiMappetDashboardPanel<Faction>
     }
 
     @Override
-    public void fill(String id, Faction data)
+    public void fill(Faction data)
     {
-        super.fill(id, data);
+        super.fill(data);
 
         this.editor.setVisible(data != null);
 
