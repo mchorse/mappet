@@ -27,7 +27,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.INBTSerializable;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
@@ -332,10 +331,23 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
     }
 
     @Override
+    public void disappear()
+    {
+        super.disappear();
+
+        this.save();
+    }
+
+    @Override
     public void close()
     {
         super.close();
 
+        this.save();
+    }
+
+    public void save()
+    {
         if (!this.update && this.data != null)
         {
             Dispatcher.sendToServer(new PacketContentData(this.getType(), this.id, this.data.serializeNBT()));
