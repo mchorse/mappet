@@ -21,6 +21,7 @@ import mchorse.mappet.network.common.blocks.PacketEditEmitter;
 import mchorse.mappet.network.common.blocks.PacketEditRegion;
 import mchorse.mappet.network.common.blocks.PacketEditTrigger;
 import mchorse.mappet.network.common.content.PacketContentData;
+import mchorse.mappet.network.common.content.PacketContentExit;
 import mchorse.mappet.network.common.content.PacketContentNames;
 import mchorse.mappet.network.common.content.PacketContentRequestData;
 import mchorse.mappet.network.common.content.PacketContentRequestNames;
@@ -45,6 +46,7 @@ import mchorse.mappet.network.server.blocks.ServerHandlerEditEmitter;
 import mchorse.mappet.network.server.blocks.ServerHandlerEditRegion;
 import mchorse.mappet.network.server.blocks.ServerHandlerEditTrigger;
 import mchorse.mappet.network.server.content.ServerHandlerContentData;
+import mchorse.mappet.network.server.content.ServerHandlerContentExit;
 import mchorse.mappet.network.server.content.ServerHandlerContentRequestData;
 import mchorse.mappet.network.server.content.ServerHandlerContentRequestNames;
 import mchorse.mappet.network.server.crafting.ServerHandlerCraft;
@@ -103,6 +105,7 @@ public class Dispatcher
             this.register(PacketContentData.class, ClientHandlerContentData.class, Side.CLIENT);
             this.register(PacketContentData.class, ServerHandlerContentData.class, Side.SERVER);
             this.register(PacketContentNames.class, ClientHandlerContentNames.class, Side.CLIENT);
+            this.register(PacketContentExit.class, ServerHandlerContentExit.class, Side.SERVER);
 
             /* NPCs */
             this.register(PacketNpcMorph.class, ClientHandlerNpcMorph.class, Side.CLIENT);

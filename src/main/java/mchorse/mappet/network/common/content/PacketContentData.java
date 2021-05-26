@@ -10,6 +10,7 @@ public class PacketContentData extends PacketContentBase
     public String name = "";
     public String rename;
     public NBTTagCompound data;
+    public boolean allowed = true;
 
     public PacketContentData()
     {
@@ -37,6 +38,13 @@ public class PacketContentData extends PacketContentBase
         return this;
     }
 
+    public PacketContentData disallow()
+    {
+        this.allowed = false;
+
+        return this;
+    }
+
     @Override
     public void fromBytes(ByteBuf buf)
     {
@@ -53,6 +61,8 @@ public class PacketContentData extends PacketContentBase
         {
             this.rename = ByteBufUtils.readUTF8String(buf);
         }
+
+        this.allowed = buf.readBoolean();
     }
 
     @Override
@@ -75,5 +85,7 @@ public class PacketContentData extends PacketContentBase
         {
             ByteBufUtils.writeUTF8String(buf, this.rename);
         }
+
+        buf.writeBoolean(this.allowed);
     }
 }

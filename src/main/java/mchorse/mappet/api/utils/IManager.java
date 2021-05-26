@@ -7,6 +7,8 @@ import java.util.Collection;
 
 public interface IManager <T extends INBTSerializable<NBTTagCompound>>
 {
+    boolean exists(String name);
+
     public default T create(String id)
     {
         return this.create(id, null);

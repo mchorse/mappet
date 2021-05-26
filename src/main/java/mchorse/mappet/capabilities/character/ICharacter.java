@@ -5,6 +5,8 @@ import mchorse.mappet.api.dialogues.Dialogue;
 import mchorse.mappet.api.dialogues.DialogueContext;
 import mchorse.mappet.api.quests.Quests;
 import mchorse.mappet.api.states.States;
+import mchorse.mappet.api.utils.ContentType;
+import mchorse.mappet.utils.CurrentSession;
 import mchorse.mappet.utils.PositionCache;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -40,4 +42,8 @@ public interface ICharacter extends INBTSerializable<NBTTagCompound>
     /* Prev position */
 
     public PositionCache getPositionCache();
+
+    /* Admin editing */
+
+    public CurrentSession getCurrentSession();
 }

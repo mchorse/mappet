@@ -14,6 +14,11 @@ public class ServerHandlerEditRegion extends ServerMessageHandler<PacketEditRegi
     @Override
     public void run(EntityPlayerMP player, PacketEditRegion message)
     {
+        if (!player.isCreative())
+        {
+            return;
+        }
+
         TileEntity tile = WorldUtils.getTileEntity(player.world, message.pos);
 
         if (tile instanceof TileRegion)

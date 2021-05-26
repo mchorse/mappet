@@ -8,6 +8,8 @@ import mchorse.mappet.client.gui.panels.GuiNpcPanel;
 import mchorse.mappet.client.gui.panels.GuiQuestChainPanel;
 import mchorse.mappet.client.gui.panels.GuiQuestPanel;
 import mchorse.mappet.client.gui.panels.GuiRegionPanel;
+import mchorse.mappet.network.Dispatcher;
+import mchorse.mappet.network.common.content.PacketContentExit;
 import mchorse.mclib.client.gui.mclib.GuiAbstractDashboard;
 import mchorse.mclib.client.gui.mclib.GuiDashboardPanels;
 import mchorse.mclib.client.gui.utils.Icons;
@@ -83,5 +85,13 @@ public class GuiMappetDashboard extends GuiAbstractDashboard
         this.panels.registerPanel(this.chain, IKey.lang("mappet.gui.panels.chains"), Icons.FOLDER);
 
         this.panels.setPanel(this.crafting);
+    }
+
+    @Override
+    protected void closeScreen()
+    {
+        super.closeScreen();
+
+        Dispatcher.sendToServer(new PacketContentExit());
     }
 }

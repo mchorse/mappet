@@ -11,6 +11,7 @@ import mchorse.mappet.client.gui.utils.GuiCheckerElement;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
+import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiCirculateElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
@@ -111,14 +112,17 @@ public class GuiFactionPanel extends GuiMappetDashboardPanel<Faction>
         add.flex().relative(label).xy(1F, 0.5F).w(10).anchor(1F, 0.5F);
         label.add(add);
 
-        this.editor.flex().column(0).padding(10);
-        this.editor.add(Elements.row(mc, 5, a, b));
-        this.editor.add(Elements.label(IKey.lang("mappet.gui.factions.visible")).marginTop(12), this.visible);
-        this.editor.add(Elements.label(IKey.lang("mappet.gui.factions.score")).marginTop(12), this.score);
-        this.editor.add(Elements.row(mc, 5, c, d).marginTop(12));
-        this.editor.add(label.marginTop(12), this.relations);
-        this.editor.add(this.openOwnRelation);
-        this.editor.scroll.opposite = true;
+        GuiScrollElement scrollEditor = this.createScrollEditor();
+
+        scrollEditor.add(Elements.row(mc, 5, a, b));
+        scrollEditor.add(Elements.label(IKey.lang("mappet.gui.factions.visible")).marginTop(12), this.visible);
+        scrollEditor.add(Elements.label(IKey.lang("mappet.gui.factions.score")).marginTop(12), this.score);
+        scrollEditor.add(Elements.row(mc, 5, c, d).marginTop(12));
+        scrollEditor.add(label.marginTop(12), this.relations);
+        scrollEditor.add(this.openOwnRelation);
+        scrollEditor.scroll.opposite = true;
+
+        this.editor.add(scrollEditor);
 
         this.fill(null);
     }
@@ -148,9 +152,9 @@ public class GuiFactionPanel extends GuiMappetDashboardPanel<Faction>
     }
 
     @Override
-    public void fill(Faction data)
+    public void fill(Faction data, boolean allowed)
     {
-        super.fill(data);
+        super.fill(data, allowed);
 
         this.editor.setVisible(data != null);
 

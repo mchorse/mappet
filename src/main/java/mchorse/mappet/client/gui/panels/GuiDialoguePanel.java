@@ -45,7 +45,7 @@ public class GuiDialoguePanel extends GuiMappetDashboardPanel<Dialogue>
 
         this.names.flex().hTo(this.closable.area, -5);
 
-        this.add(this.graph);
+        this.editor.add(this.graph);
         this.sidebar.prepend(this.closable);
 
         this.fill(null);
@@ -106,7 +106,7 @@ public class GuiDialoguePanel extends GuiMappetDashboardPanel<Dialogue>
                 this.panel = panel;
                 this.panel.resize();
 
-                this.add(panel);
+                this.editor.add(panel);
             }
         }
     }
@@ -124,12 +124,12 @@ public class GuiDialoguePanel extends GuiMappetDashboardPanel<Dialogue>
     }
 
     @Override
-    public void fill(Dialogue data)
+    public void fill(Dialogue data, boolean allowed)
     {
-        super.fill(data);
+        super.fill(data, allowed);
 
         this.graph.setVisible(data != null);
-        this.closable.setVisible(data != null);
+        this.closable.setVisible(data != null && allowed);
         this.pickNode(null);
 
         if (data != null)

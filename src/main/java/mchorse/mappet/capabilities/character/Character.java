@@ -5,6 +5,7 @@ import mchorse.mappet.api.dialogues.DialogueContext;
 import mchorse.mappet.api.dialogues.Dialogue;
 import mchorse.mappet.api.quests.Quests;
 import mchorse.mappet.api.states.States;
+import mchorse.mappet.utils.CurrentSession;
 import mchorse.mappet.utils.PositionCache;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -31,6 +32,7 @@ public class Character implements ICharacter
     private Instant lastClear = Instant.now();
 
     private PositionCache positionCache = new PositionCache();
+    private CurrentSession session = new CurrentSession();
 
     @Override
     public States getStates()
@@ -91,6 +93,12 @@ public class Character implements ICharacter
     public PositionCache getPositionCache()
     {
         return this.positionCache;
+    }
+
+    @Override
+    public CurrentSession getCurrentSession()
+    {
+        return this.session;
     }
 
     @Override

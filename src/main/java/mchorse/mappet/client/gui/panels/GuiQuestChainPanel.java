@@ -25,7 +25,7 @@ public class GuiQuestChainPanel extends GuiMappetDashboardPanel<QuestChain>
         this.graph = new GuiNodeGraph<QuestNode>(mc, QuestChainManager.FACTORY, this::pickNode);
         this.graph.flex().relative(this.editor).wh(1F, 1F);
 
-        this.add(this.graph, this.panel);
+        this.editor.add(this.graph);
 
         this.fill(null);
     }
@@ -55,7 +55,7 @@ public class GuiQuestChainPanel extends GuiMappetDashboardPanel<QuestChain>
                 this.panel = panel;
                 this.panel.resize();
 
-                this.add(panel);
+                this.editor.add(panel);
             }
         }
     }
@@ -73,9 +73,9 @@ public class GuiQuestChainPanel extends GuiMappetDashboardPanel<QuestChain>
     }
 
     @Override
-    public void fill(QuestChain data)
+    public void fill(QuestChain data, boolean allowed)
     {
-        super.fill(data);
+        super.fill(data, allowed);
 
         this.graph.setVisible(data != null);
         this.pickNode(null);

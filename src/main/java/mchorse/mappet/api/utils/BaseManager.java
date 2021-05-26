@@ -28,6 +28,12 @@ public abstract class BaseManager <T extends AbstractData> implements IManager<T
     }
 
     @Override
+    public boolean exists(String name)
+    {
+        return this.getFile(name).exists();
+    }
+
+    @Override
     public final T create(String id, NBTTagCompound tag)
     {
         T data = this.createData(tag);

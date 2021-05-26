@@ -43,7 +43,7 @@ public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventNode>
         this.hotkeys = new GuiIconElement(mc, Icons.DOWNLOAD, (b) -> Dispatcher.sendToServer(new PacketEventRequestHotkeys()));
         this.buttons.prepend(this.hotkeys);
 
-        this.add(this.graph, this.panel);
+        this.editor.add(this.graph);
 
         this.fill(null);
     }
@@ -88,7 +88,7 @@ public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventNode>
                 this.panel = panel;
                 this.panel.resize();
 
-                this.add(panel);
+                this.editor.add(panel);
             }
         }
     }
@@ -106,9 +106,9 @@ public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventNode>
     }
 
     @Override
-    public void fill(NodeSystem<EventNode> data)
+    public void fill(NodeSystem<EventNode> data, boolean allowed)
     {
-        super.fill(data);
+        super.fill(data, allowed);
 
         this.graph.setVisible(data != null);
         this.pickNode(null);

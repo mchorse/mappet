@@ -17,6 +17,7 @@ import mchorse.mclib.client.gui.framework.elements.modals.GuiConfirmModal;
 import mchorse.mclib.client.gui.framework.elements.modals.GuiModal;
 import mchorse.mclib.client.gui.framework.elements.modals.GuiPromptModal;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDrawable;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.mclib.GuiDashboardPanel;
@@ -45,7 +46,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
     public GuiIconElement remove;
     public GuiStringSearchListElement names;
 
-    public GuiScrollElement editor;
+    public GuiElement editor;
     public GuiInventoryElement inventory;
 
     protected boolean update;
@@ -98,9 +99,9 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
         });
         this.sidebar.add(drawable, this.names, this.buttons);
 
-        this.editor = new GuiScrollElement(mc);
+        this.editor = new GuiElement(mc);
         this.editor.markContainer();
-        this.editor.flex().relative(this).wTo(this.sidebar.area).h(1F).column(5).vertical().stretch().scroll();
+        this.editor.flex().relative(this).wTo(this.sidebar.area).h(1F);
 
         this.inventory = new GuiInventoryElement(mc, (stack) ->
         {
@@ -195,7 +196,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
         {
             this.save();
 
-            Dispatcher.sendToServer(new PacketContentData(this.getType(), name, data == null ? null : data.serializeNBT()));
+            Dispatcher.sendToServer(new PacketContentData(this.getType(), name, data == null ? new NBTTagCompound() : data.serializeNBT()));
 
             this.names.list.add(name);
             this.names.list.sort();
@@ -211,6 +212,8 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
             }
 
             this.fill(data);
+
+
         }
     }
 
@@ -287,9 +290,17 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
 
     /* Data population */
 
-    public void fill(T data)
+    public final void fill(T data)
+    {
+        this.fill(data, true);
+    }
+
+    public void fill(T data, boolean allowed)
     {
         this.data = data;
+        this.editor.setEnabled(allowed);
+        this.remove.setEnabled(allowed);
+        this.rename.setEnabled(allowed);
     }
 
     public void fillNames(List<String> names)
@@ -300,6 +311,15 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
         this.names.list.add(names);
         this.names.list.sort();
         this.names.list.setCurrentScroll(value);
+    }
+
+    protected GuiScrollElement createScrollEditor()
+    {
+        GuiScrollElement scrollEditor = new GuiScrollElement(mc);
+
+        scrollEditor.flex().relative(this.editor).wh(1F, 1F).column(5).stretch().vertical().scroll().padding(10);
+
+        return scrollEditor;
     }
 
     @Override
@@ -320,6 +340,11 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
             this.update = false;
 
             this.requestDataNames();
+        }
+
+        if (this.data != null)
+        {
+            Dispatcher.sendToServer(new PacketContentRequestData(this.getType(), this.data.getId()));
         }
     }
 
@@ -346,7 +371,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
 
     public void save()
     {
-        if (!this.update && this.data != null)
+        if (!this.update && this.data != null && this.editor.isEnabled())
         {
             Dispatcher.sendToServer(new PacketContentData(this.getType(), this.data.getId(), this.data.serializeNBT()));
         }
@@ -361,5 +386,10 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
         }
 
         super.draw(context);
+
+        if (!this.editor.isEnabled() && this.data != null)
+        {
+            GuiDraw.drawLockedArea(this.editor);
+        }
     }
 }

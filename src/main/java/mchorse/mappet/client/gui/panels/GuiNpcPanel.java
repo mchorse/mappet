@@ -34,8 +34,7 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
         this.npcEditor.flex().relative(this).y(10).wTo(this.editor.area, 1F).h(1F, -10);
         this.npcEditor.setVisible(false);
 
-        this.toggleSidebar.removeFromParent();
-        this.add(this.npcEditor, this.states, this.toggleSidebar, this.inventory);
+        this.editor.add(this.npcEditor, this.states, this.inventory);
 
         this.fill(null);
     }
@@ -64,9 +63,9 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
     }
 
     @Override
-    public void fill(Npc data)
+    public void fill(Npc data, boolean allowed)
     {
-        super.fill(data);
+        super.fill(data, allowed);
 
         this.npcEditor.setVisible(data != null);
         this.states.setVisible(data != null);

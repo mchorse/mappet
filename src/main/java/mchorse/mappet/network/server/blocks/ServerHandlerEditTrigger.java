@@ -12,6 +12,11 @@ public class ServerHandlerEditTrigger extends ServerMessageHandler<PacketEditTri
     @Override
     public void run(EntityPlayerMP player, PacketEditTrigger message)
     {
+        if (!player.isCreative())
+        {
+            return;
+        }
+
         TileEntity tile = WorldUtils.getTileEntity(player.world, message.pos);
 
         if (tile instanceof TileTrigger)

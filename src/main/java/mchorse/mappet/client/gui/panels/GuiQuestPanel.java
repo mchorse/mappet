@@ -8,6 +8,7 @@ import mchorse.mappet.client.gui.quests.GuiRewards;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mappet.client.gui.utils.GuiTriggerElement;
 import mchorse.mclib.client.gui.framework.GuiBase;
+import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
@@ -52,8 +53,6 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
         this.objectives.marginBottom(20);
         this.rewards = new GuiRewards(mc);
 
-        this.add(this.inventory);
-
         GuiLabel objectiveLabel = Elements.label(IKey.lang("mappet.gui.quests.objectives.title")).background();
         GuiLabel rewardLabel = Elements.label(IKey.lang("mappet.gui.quests.rewards.title")).background();
         GuiIconElement addObjective = new GuiIconElement(mc, Icons.ADD, (b) -> GuiBase.getCurrent().replaceContextMenu(this.objectives.getAdds()));
@@ -64,16 +63,19 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
         objectiveLabel.marginTop(12).marginBottom(5).add(addObjective);
         rewardLabel.marginBottom(5).add(addReward);
 
-        this.editor.flex().column(0).padding(10);
-        this.editor.add(Elements.label(IKey.lang("mappet.gui.quests.title")), this.title);
-        this.editor.add(Elements.label(IKey.lang("mappet.gui.quests.description")).marginTop(12), this.story);
-        this.editor.add(this.cancelable.marginTop(6));
-        this.editor.add(objectiveLabel, this.objectives);
-        this.editor.add(rewardLabel, this.rewards);
-        this.editor.add(Elements.label(IKey.lang("mappet.gui.quests.accept")).background().marginTop(20).marginBottom(4), this.accept);
-        this.editor.add(Elements.label(IKey.lang("mappet.gui.quests.decline")).background().marginTop(12).marginBottom(4), this.decline);
-        this.editor.add(Elements.label(IKey.lang("mappet.gui.quests.complete")).background().marginTop(12).marginBottom(4), this.complete);
-        this.editor.scroll.opposite = true;
+        GuiScrollElement scrollEditor = this.createScrollEditor();
+
+        scrollEditor.add(Elements.label(IKey.lang("mappet.gui.quests.title")), this.title);
+        scrollEditor.add(Elements.label(IKey.lang("mappet.gui.quests.description")).marginTop(12), this.story);
+        scrollEditor.add(this.cancelable.marginTop(6));
+        scrollEditor.add(objectiveLabel, this.objectives);
+        scrollEditor.add(rewardLabel, this.rewards);
+        scrollEditor.add(Elements.label(IKey.lang("mappet.gui.quests.accept")).background().marginTop(20).marginBottom(4), this.accept);
+        scrollEditor.add(Elements.label(IKey.lang("mappet.gui.quests.decline")).background().marginTop(12).marginBottom(4), this.decline);
+        scrollEditor.add(Elements.label(IKey.lang("mappet.gui.quests.complete")).background().marginTop(12).marginBottom(4), this.complete);
+        scrollEditor.scroll.opposite = true;
+
+        this.editor.add(scrollEditor, this.inventory);
 
         this.fill(null);
     }
@@ -91,9 +93,9 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
     }
 
     @Override
-    public void fill(Quest data)
+    public void fill(Quest data, boolean allowed)
     {
-        super.fill(data);
+        super.fill(data, allowed);
 
         this.editor.setVisible(data != null);
 

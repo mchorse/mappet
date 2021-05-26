@@ -6,6 +6,7 @@ import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.crafting.GuiCraftingRecipe;
 import mchorse.mappet.client.gui.crafting.GuiCraftingRecipeList;
+import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
@@ -42,14 +43,16 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
             return menu;
         });
 
+        GuiScrollElement scrollEditor = this.createScrollEditor();
+
         this.recipe = new GuiCraftingRecipe(mc, () -> this.inventory);
 
-        this.title.flex().relative(this).x(10).y(22).wTo(this.editor.area, 1F, -10);
-        this.recipes.flex().relative(this).y(52).w(120).h(1F, -55);
-        this.editor.flex().x(120).y(52).h(1F, -55).column(0);
+        this.title.flex().relative(this.editor).x(10).y(22).w(1F, -20);
+        this.recipes.flex().relative(this.editor).y(52).w(120).h(1F, -55);
+        scrollEditor.flex().x(120).y(52).w(1F, -120).h(1F, -55).column(0).padding(0);
 
-        this.add(this.title, this.recipes, this.inventory);
-        this.editor.add(this.recipe);
+        this.editor.add(this.title, this.recipes, scrollEditor, this.inventory);
+        scrollEditor.add(this.recipe);
 
         this.fill(null);
     }
@@ -78,8 +81,6 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
         this.pickRecipe(recipe, true);
         this.editor.resize();
         this.recipes.update();
-
-        this.editor.scroll.scrollTo(this.editor.scroll.scrollSize);
     }
 
     private void removeRecipe()
@@ -110,9 +111,9 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
     }
 
     @Override
-    public void fill(CraftingTable data)
+    public void fill(CraftingTable data, boolean allowed)
     {
-        super.fill(data);
+        super.fill(data, allowed);
 
         this.title.setVisible(data != null);
         this.editor.setVisible(data != null);
@@ -149,8 +150,6 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
             this.editor.area.draw(0x66000000);
         }
 
-        super.draw(context);
-
         if (this.title.isVisible())
         {
             this.font.drawStringWithShadow(I18n.format("mappet.gui.crafting.title"), this.title.area.x, this.title.area.y - 12, 0xffffff);
@@ -171,5 +170,7 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
 
             GuiDraw.drawMultiText(this.font, I18n.format("mappet.gui.crafting.info.empty_recipe"), x, this.editor.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
         }
+
+        super.draw(context);
     }
 }
