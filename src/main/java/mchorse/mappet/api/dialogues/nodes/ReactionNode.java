@@ -9,6 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public class ReactionNode extends DialogueNode
 {
     public AbstractMorph morph;
+    public String sound = "";
     public boolean read;
     public String marker = "";
 
@@ -41,6 +42,7 @@ public class ReactionNode extends DialogueNode
             tag.setTag("Morph", this.morph.toNBT());
         }
 
+        tag.setString("Sound", this.sound);
         tag.setBoolean("Read", this.read);
         tag.setString("Marker", this.marker);
 
@@ -57,6 +59,7 @@ public class ReactionNode extends DialogueNode
             this.morph = MorphManager.INSTANCE.morphFromNBT(tag.getCompoundTag("Morph"));
         }
 
+        this.sound = tag.getString("Sound");
         this.read = tag.getBoolean("Read");
         this.marker = tag.getString("Marker");
     }

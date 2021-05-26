@@ -111,7 +111,6 @@ public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventNode>
         super.fill(data, allowed);
 
         this.graph.setVisible(data != null);
-        this.pickNode(null);
 
         if (data != null)
         {

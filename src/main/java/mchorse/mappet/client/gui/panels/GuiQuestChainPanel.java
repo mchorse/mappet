@@ -78,7 +78,6 @@ public class GuiQuestChainPanel extends GuiMappetDashboardPanel<QuestChain>
         super.fill(data, allowed);
 
         this.graph.setVisible(data != null);
-        this.pickNode(null);
 
         if (data != null)
         {

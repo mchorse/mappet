@@ -4,6 +4,7 @@ import mchorse.mappet.Mappet;
 import mchorse.mappet.api.dialogues.Dialogue;
 import mchorse.mappet.api.dialogues.DialogueContext;
 import mchorse.mappet.api.events.EventContext;
+import mchorse.mappet.utils.WorldUtils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -47,7 +48,7 @@ public class Trigger implements INBTSerializable<NBTTagCompound>
         {
             for (EntityPlayerMP player : context.server.getPlayerList().getPlayers())
             {
-                player.connection.sendPacket(new SPacketCustomSound(this.soundEvent, SoundCategory.MASTER, target.posX, target.posY, target.posZ, 1, 1));
+                WorldUtils.playSound(player, this.soundEvent);
             }
         }
 

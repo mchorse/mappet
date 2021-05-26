@@ -44,7 +44,9 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class GuiNodeGraph <T extends Node> extends GuiCanvas
 {
@@ -425,11 +427,11 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
 
     public void set(NodeSystem<T> system)
     {
+        boolean same = this.system != null && system != null && this.system.getId().equals(system.getId());
+
         this.system = system;
 
-        this.selected.clear();
-
-        if (system != null)
+        if (system != null && !same)
         {
             int x = system.main == null ? 0 : system.main.x;
             int y = system.main == null ? 0 : system.main.y;
@@ -450,6 +452,24 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
             this.scaleY.setShift(y);
             this.scaleX.setZoom(0.5F);
             this.scaleY.setZoom(0.5F);
+        }
+
+        if (same)
+        {
+            List<UUID> ids = this.selected.stream().map(Node::getId).collect(Collectors.toList());
+
+            this.selected.clear();
+
+            for (UUID uuid : ids)
+            {
+                this.selected.add(this.system.nodes.get(uuid));
+            }
+
+            this.setNode(this.selected.isEmpty() ? null : this.selected.get(this.selected.size() - 1));
+        }
+        else
+        {
+            this.selected.clear();
         }
     }
 

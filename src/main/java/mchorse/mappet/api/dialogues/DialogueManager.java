@@ -14,6 +14,7 @@ import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.dialogue.PacketDialogueFragment;
+import mchorse.mappet.utils.WorldUtils;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -100,9 +101,14 @@ public class DialogueManager extends BaseManager<Dialogue>
             character.setCraftingTable(null);
         }
 
-        if (context.reactionNode != null && context.reactionNode.read)
+        if (context.reactionNode != null)
         {
-            character.getStates().readDialogue(dialogue.getId(), context.reactionNode.marker);
+            if (context.reactionNode.read)
+            {
+                character.getStates().readDialogue(dialogue.getId(), context.reactionNode.marker);
+            }
+
+            WorldUtils.playSound(player, context.reactionNode.sound);
         }
 
         Dispatcher.sendTo(packet, player);

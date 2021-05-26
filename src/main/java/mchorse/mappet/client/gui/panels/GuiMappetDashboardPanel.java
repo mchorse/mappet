@@ -100,7 +100,6 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
         this.sidebar.add(drawable, this.names, this.buttons);
 
         this.editor = new GuiElement(mc);
-        this.editor.markContainer();
         this.editor.flex().relative(this).wTo(this.sidebar.area).h(1F);
 
         this.inventory = new GuiInventoryElement(mc, (stack) ->

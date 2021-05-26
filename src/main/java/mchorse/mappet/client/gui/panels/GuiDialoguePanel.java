@@ -130,7 +130,6 @@ public class GuiDialoguePanel extends GuiMappetDashboardPanel<Dialogue>
 
         this.graph.setVisible(data != null);
         this.closable.setVisible(data != null && allowed);
-        this.pickNode(null);
 
         if (data != null)
         {
