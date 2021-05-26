@@ -39,7 +39,7 @@ public class CommonProxy
 
         MinecraftForge.EVENT_BUS.register(eventHandler = new EventHandler());
 
-        GameRegistry.registerEntitySelector(new MappetNpcSelector(), MappetNpcSelector.ARGUMENT_MAPPET_NPC_ID);
+        GameRegistry.registerEntitySelector(new MappetNpcSelector(), MappetNpcSelector.ARGUMENT_MAPPET_NPC_ID, MappetNpcSelector.ARGUMENT_MAPPET_STATES);
 
         CapabilityManager.INSTANCE.register(ICharacter.class, new CharacterStorage(), Character::new);
     }

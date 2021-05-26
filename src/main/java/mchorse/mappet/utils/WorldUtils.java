@@ -1,5 +1,10 @@
 package mchorse.mappet.utils;
 
+import mchorse.mappet.api.states.States;
+import mchorse.mappet.capabilities.character.Character;
+import mchorse.mappet.capabilities.character.ICharacter;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.play.server.SPacketCustomSound;
 import net.minecraft.tileentity.TileEntity;
@@ -22,5 +27,20 @@ public class WorldUtils
     public static void playSound(EntityPlayerMP player, String soundEvent)
     {
         player.connection.sendPacket(new SPacketCustomSound(soundEvent, SoundCategory.MASTER, player.posX, player.posY, player.posZ, 1, 1));
+    }
+
+    public static States getStates(Entity entity)
+    {
+        if (entity instanceof EntityPlayer)
+        {
+            ICharacter character = Character.get((EntityPlayer) entity);
+
+            if (character != null)
+            {
+                return character.getStates();
+            }
+        }
+
+        return null;
     }
 }
