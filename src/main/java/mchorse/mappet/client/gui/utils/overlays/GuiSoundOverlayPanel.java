@@ -33,15 +33,10 @@ public class GuiSoundOverlayPanel extends GuiResourceLocationOverlayPanel
 
         if (lastUpdate < LangKey.lastTime)
         {
-            try
-            {
-                extraSounds.clear();
+            extraSounds.clear();
 
-                updateSounds("b.a");
-                updateSounds("mp.sounds");
-            }
-            catch (Exception e)
-            {}
+            updateSounds("b.a");
+            updateSounds("mp.sounds");
 
             lastUpdate = LangKey.lastTime;
         }
@@ -52,18 +47,23 @@ public class GuiSoundOverlayPanel extends GuiResourceLocationOverlayPanel
         return locations;
     }
 
-    private static void updateSounds(String rp) throws IOException
+    private static void updateSounds(String rp)
     {
-        IResource resource = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation(rp, "sounds.json"));
-        JsonElement element = new JsonParser().parse(IOUtils.toString(resource.getInputStream(), Charset.defaultCharset()));
-
-        if (element.isJsonObject())
+        try
         {
-            for (Map.Entry<String, JsonElement> entry : element.getAsJsonObject().entrySet())
+            IResource resource = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation(rp, "sounds.json"));
+            JsonElement element = new JsonParser().parse(IOUtils.toString(resource.getInputStream(), Charset.defaultCharset()));
+
+            if (element.isJsonObject())
             {
-                extraSounds.add(new ResourceLocation(rp, entry.getKey()));
+                for (Map.Entry<String, JsonElement> entry : element.getAsJsonObject().entrySet())
+                {
+                    extraSounds.add(new ResourceLocation(rp, entry.getKey()));
+                }
             }
         }
+        catch (Exception e)
+        {}
     }
 
     public GuiSoundOverlayPanel(Minecraft mc, Consumer<ResourceLocation> callback)
