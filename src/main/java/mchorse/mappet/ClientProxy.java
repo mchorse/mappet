@@ -3,6 +3,7 @@ package mchorse.mappet;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.KeyboardHandler;
 import mchorse.mappet.client.RenderingHandler;
+import mchorse.mappet.client.SoundPack;
 import mchorse.mappet.client.renders.entity.RenderNpc;
 import mchorse.mappet.client.renders.tile.TileRegionRenderer;
 import mchorse.mappet.client.renders.tile.TileTriggerRenderer;
@@ -11,6 +12,7 @@ import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.content.PacketContentRequestNames;
 import mchorse.mappet.tile.TileRegion;
 import mchorse.mappet.tile.TileTrigger;
+import mchorse.mclib.utils.ReflectionUtils;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -19,6 +21,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +63,8 @@ public class ClientProxy extends CommonProxy
         ClientRegistry.bindTileEntitySpecialRenderer(TileRegion.class, new TileRegionRenderer());
 
         RenderingRegistry.registerEntityRenderingHandler(EntityNpc.class, new RenderNpc.Factory());
+
+        ReflectionUtils.registerResourcePack(new SoundPack(new File(CommonProxy.configFolder, "sounds")));
     }
 
     @Override

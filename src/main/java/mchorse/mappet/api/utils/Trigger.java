@@ -7,6 +7,7 @@ import mchorse.mappet.api.events.EventContext;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.play.server.SPacketCustomSound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -42,16 +43,12 @@ public class Trigger implements INBTSerializable<NBTTagCompound>
             context.execute(this.command);
         }
 
-        SoundEvent event = null;
-
-        if (!this.soundEvent.isEmpty())
+        if (target != null)
         {
-            event = SoundEvent.REGISTRY.getObject(new ResourceLocation(this.soundEvent));
-        }
-
-        if (event != null && target != null)
-        {
-            target.world.playSound(null, target.posX, target.posY, target.posZ, event, SoundCategory.MASTER, 1, 1);
+            for (EntityPlayerMP player : context.server.getPlayerList().getPlayers())
+            {
+                player.connection.sendPacket(new SPacketCustomSound(this.soundEvent, SoundCategory.MASTER, target.posX, target.posY, target.posZ, 1, 1));
+            }
         }
 
         if (!this.triggerEvent.isEmpty())
