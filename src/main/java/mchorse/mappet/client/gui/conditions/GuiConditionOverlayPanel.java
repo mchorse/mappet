@@ -1,5 +1,6 @@
 package mchorse.mappet.client.gui.conditions;
 
+import mchorse.mappet.CommonProxy;
 import mchorse.mappet.api.conditions.Condition;
 import mchorse.mappet.api.conditions.blocks.AbstractBlock;
 import mchorse.mappet.api.conditions.blocks.ConditionBlock;
@@ -87,10 +88,10 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
             {
                 GuiSimpleContextMenu adds = new GuiSimpleContextMenu(this.mc).shadow();
 
-                for (String key : AbstractBlock.FACTORY.getKeys())
+                for (String key : CommonProxy.getConditionBlocks().getKeys())
                 {
                     IKey label = IKey.format("mappet.gui.conditions.context.add_condition", IKey.lang("mappet.gui.condition_types." + key));
-                    int color = AbstractBlock.FACTORY.getColor(key);
+                    int color = CommonProxy.getConditionBlocks().getColor(key);
 
                     adds.action(Icons.ADD, label, () -> this.addBlock(key), color);
                 }
@@ -138,7 +139,7 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
 
     private void addBlock(String type)
     {
-        AbstractBlock block = AbstractBlock.FACTORY.create(type);
+        AbstractBlock block = CommonProxy.getConditionBlocks().create(type);
 
         this.condition.blocks.add(block);
         this.pickBlock(block, true);
@@ -150,13 +151,13 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
         AbstractBlock block = this.list.getCurrentFirst();
         NBTTagCompound tag = block.serializeNBT();
 
-        tag.setString("Type", AbstractBlock.FACTORY.getType(block));
+        tag.setString("Type", CommonProxy.getConditionBlocks().getType(block));
         GuiScreen.setClipboardString(tag.toString());
     }
 
     private void pasteCondition(NBTTagCompound tag)
     {
-        AbstractBlock block = AbstractBlock.FACTORY.create(tag.getString("Type"));
+        AbstractBlock block = CommonProxy.getConditionBlocks().create(tag.getString("Type"));
 
         block.deserializeNBT(tag);
         this.condition.blocks.add(block);
@@ -228,7 +229,7 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
         @Override
         protected void drawElementPart(AbstractBlock element, int i, int x, int y, boolean hover, boolean selected)
         {
-            int color = AbstractBlock.FACTORY.getColor(element);
+            int color = CommonProxy.getConditionBlocks().getColor(element);
 
             Gui.drawRect(x, y, x + 4, y + this.scroll.scrollItemSize, 0xff000000 + color);
             GuiDraw.drawHorizontalGradientRect(x + 4, y, x + 24, y + this.scroll.scrollItemSize, 0x44000000 + color, color);

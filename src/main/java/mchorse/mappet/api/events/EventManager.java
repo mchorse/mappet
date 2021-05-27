@@ -1,15 +1,11 @@
 package mchorse.mappet.api.events;
 
+import mchorse.mappet.CommonProxy;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.events.hotkeys.EventHotkeys;
-import mchorse.mappet.api.events.nodes.CommandNode;
-import mchorse.mappet.api.events.nodes.ConditionNode;
 import mchorse.mappet.api.events.nodes.EventNode;
-import mchorse.mappet.api.events.nodes.SwitchNode;
-import mchorse.mappet.api.events.nodes.TimerNode;
 import mchorse.mappet.api.utils.manager.BaseManager;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
-import mchorse.mappet.api.utils.factory.MapFactory;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.io.File;
@@ -17,12 +13,6 @@ import java.util.List;
 
 public class EventManager extends BaseManager<NodeSystem<EventNode>>
 {
-    public static final MapFactory<EventNode> FACTORY = new MapFactory<EventNode>()
-        .register("command", CommandNode.class, 0x942aff)
-        .register("condition", ConditionNode.class, 0xff1493)
-        .register("switch", SwitchNode.class, 0xaee300)
-        .register("timer", TimerNode.class, 0x11ff33);
-
     public EventHotkeys hotkeys = new EventHotkeys();
 
     public EventManager(File folder)
@@ -33,7 +23,7 @@ public class EventManager extends BaseManager<NodeSystem<EventNode>>
     @Override
     protected NodeSystem<EventNode> createData(NBTTagCompound tag)
     {
-        NodeSystem<EventNode> event = new NodeSystem<EventNode>(FACTORY);
+        NodeSystem<EventNode> event = new NodeSystem<EventNode>(CommonProxy.getEvents());
 
         if (tag != null)
         {

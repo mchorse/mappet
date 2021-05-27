@@ -1,15 +1,10 @@
 package mchorse.mappet.api.dialogues;
 
+import mchorse.mappet.CommonProxy;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.crafting.CraftingTable;
-import mchorse.mappet.api.dialogues.nodes.CraftingNode;
-import mchorse.mappet.api.dialogues.nodes.QuestChainNode;
-import mchorse.mappet.api.dialogues.nodes.ReactionNode;
-import mchorse.mappet.api.dialogues.nodes.ReplyNode;
-import mchorse.mappet.api.events.EventManager;
 import mchorse.mappet.api.events.nodes.EventNode;
 import mchorse.mappet.api.utils.manager.BaseManager;
-import mchorse.mappet.api.utils.factory.MapFactory;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.network.Dispatcher;
@@ -24,13 +19,6 @@ import java.util.stream.Collectors;
 
 public class DialogueManager extends BaseManager<Dialogue>
 {
-    public static final MapFactory<EventNode> FACTORY = EventManager.FACTORY.copy()
-        .register("reply", ReplyNode.class, 0x00a0ff)
-        .register("reaction", ReactionNode.class, 0xff2200)
-        .register("crafting", CraftingNode.class, 0xff6600)
-        .register("quest_chain", QuestChainNode.class, 0xffff00).alias("quest_chain", "quest")
-        .unregister("timer");
-
     public DialogueManager(File folder)
     {
         super(folder);
@@ -39,7 +27,7 @@ public class DialogueManager extends BaseManager<Dialogue>
     @Override
     protected Dialogue createData(NBTTagCompound tag)
     {
-        Dialogue dialogue = new Dialogue(FACTORY);
+        Dialogue dialogue = new Dialogue(CommonProxy.getDialogues());
 
         if (tag != null)
         {

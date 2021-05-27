@@ -1,5 +1,6 @@
 package mchorse.mappet.client.gui.panels;
 
+import mchorse.mappet.CommonProxy;
 import mchorse.mappet.api.events.EventManager;
 import mchorse.mappet.api.events.hotkeys.EventHotkeys;
 import mchorse.mappet.api.events.nodes.CommandNode;
@@ -37,7 +38,7 @@ public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventNode>
     {
         super(mc, dashboard);
 
-        this.graph = new GuiEventNodeGraph(mc, EventManager.FACTORY, this::pickNode);
+        this.graph = new GuiEventNodeGraph(mc, CommonProxy.getEvents(), this::pickNode);
         this.graph.notifyAboutMain().flex().relative(this.editor).wh(1F, 1F);
 
         this.hotkeys = new GuiIconElement(mc, Icons.DOWNLOAD, (b) -> Dispatcher.sendToServer(new PacketEventRequestHotkeys()));

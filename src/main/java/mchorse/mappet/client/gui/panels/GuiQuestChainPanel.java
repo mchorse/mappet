@@ -1,7 +1,7 @@
 package mchorse.mappet.client.gui.panels;
 
+import mchorse.mappet.CommonProxy;
 import mchorse.mappet.api.quests.chains.QuestChain;
-import mchorse.mappet.api.quests.chains.QuestChainManager;
 import mchorse.mappet.api.quests.chains.QuestNode;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
@@ -22,7 +22,7 @@ public class GuiQuestChainPanel extends GuiMappetDashboardPanel<QuestChain>
     {
         super(mc, dashboard);
 
-        this.graph = new GuiNodeGraph<QuestNode>(mc, QuestChainManager.FACTORY, this::pickNode);
+        this.graph = new GuiNodeGraph<QuestNode>(mc, CommonProxy.getChains(), this::pickNode);
         this.graph.flex().relative(this.editor).wh(1F, 1F);
 
         this.editor.add(this.graph);

@@ -1,5 +1,6 @@
 package mchorse.mappet.client.gui.conditions.blocks;
 
+import mchorse.mappet.CommonProxy;
 import mchorse.mappet.api.conditions.blocks.AbstractBlock;
 import mchorse.mappet.client.gui.conditions.GuiConditionOverlayPanel;
 import mchorse.mclib.McLib;
@@ -28,7 +29,7 @@ public class GuiAbstractBlockPanel <T extends AbstractBlock> extends GuiElement
         this.overlay = overlay;
         this.block = block;
 
-        GuiLabel label = Elements.label(IKey.lang("mappet.gui.condition_types." + AbstractBlock.FACTORY.getType(block)));
+        GuiLabel label = Elements.label(IKey.lang("mappet.gui.condition_types." + CommonProxy.getConditionBlocks().getType(block)));
 
         this.not = new GuiIconElement(mc, Icons.EXCLAMATION, (b) -> this.block.not = !this.block.not);
         this.not.tooltip(IKey.lang("mappet.gui.conditions.not")).flex().wh(16, 16);

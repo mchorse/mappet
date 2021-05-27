@@ -1,7 +1,7 @@
 package mchorse.mappet.client.gui.panels;
 
+import mchorse.mappet.CommonProxy;
 import mchorse.mappet.api.dialogues.Dialogue;
-import mchorse.mappet.api.dialogues.DialogueManager;
 import mchorse.mappet.api.dialogues.nodes.CraftingNode;
 import mchorse.mappet.api.dialogues.nodes.DialogueNode;
 import mchorse.mappet.api.dialogues.nodes.QuestChainNode;
@@ -37,7 +37,7 @@ public class GuiDialoguePanel extends GuiMappetDashboardPanel<Dialogue>
     {
         super(mc, dashboard);
 
-        this.graph = new GuiEventNodeGraph(mc, DialogueManager.FACTORY, this::pickNode);
+        this.graph = new GuiEventNodeGraph(mc, CommonProxy.getDialogues(), this::pickNode);
         this.graph.notifyAboutMain().flex().relative(this.editor).wh(1F, 1F);
 
         this.closable = new GuiToggleElement(mc, IKey.lang("mappet.gui.nodes.dialogue.closable"), (b) -> this.data.closable = b.isToggled());

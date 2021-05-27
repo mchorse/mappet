@@ -1,10 +1,9 @@
 package mchorse.mappet.api.quests.chains;
 
+import mchorse.mappet.CommonProxy;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.quests.Quest;
 import mchorse.mappet.api.utils.manager.BaseManager;
-import mchorse.mappet.api.utils.factory.IFactory;
-import mchorse.mappet.api.utils.factory.MapFactory;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,9 +13,6 @@ import java.io.File;
 
 public class QuestChainManager extends BaseManager<QuestChain>
 {
-    public static final IFactory<QuestNode> FACTORY = new MapFactory<QuestNode>()
-        .register("quest", QuestNode.class, 0xffff00);
-
     public QuestChainManager(File folder)
     {
         super(folder);
@@ -25,7 +21,7 @@ public class QuestChainManager extends BaseManager<QuestChain>
     @Override
     protected QuestChain createData(NBTTagCompound tag)
     {
-        QuestChain chain = new QuestChain(FACTORY);
+        QuestChain chain = new QuestChain(CommonProxy.getChains());
 
         if (tag != null)
         {
