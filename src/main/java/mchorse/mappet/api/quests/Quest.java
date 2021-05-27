@@ -24,6 +24,7 @@ public class Quest extends AbstractData implements INBTPartialSerializable
     public String title = "";
     public String story = "";
     public boolean cancelable = true;
+    public boolean instant;
 
     public Trigger accept = new Trigger();
     public Trigger decline = new Trigger();
@@ -184,11 +185,8 @@ public class Quest extends AbstractData implements INBTPartialSerializable
 
         tag.setString("Title", this.title);
         tag.setString("Story", this.story);
-
-        if (!this.cancelable)
-        {
-            tag.setBoolean("Cancelable", this.cancelable);
-        }
+        tag.setBoolean("Cancelable", this.cancelable);
+        tag.setBoolean("Instant", this.instant);
 
         NBTTagCompound accept = this.accept.serializeNBT();
         NBTTagCompound decline = this.decline.serializeNBT();
@@ -229,6 +227,11 @@ public class Quest extends AbstractData implements INBTPartialSerializable
         if (tag.hasKey("Cancelable"))
         {
             this.cancelable = tag.getBoolean("Cancelable");
+        }
+
+        if (tag.hasKey("Instant"))
+        {
+            this.instant = tag.getBoolean("Instant");
         }
 
         if (tag.hasKey("Accept"))

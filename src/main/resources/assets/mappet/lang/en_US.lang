@@ -156,6 +156,8 @@ mappet.gui.panels.keys.category=Mappet panel keybinds
 mappet.gui.panels.keys.toggle_sidebar=Toggle sidebar
 
 mappet.gui.quests.cancelable=Cancelable
+mappet.gui.quests.instant=Instant
+mappet.gui.quests.instant_tooltip=When enabled, this quest will be instantly completed instead of having to hand it in to an NPC/dialogue
 mappet.gui.quests.title=Title
 mappet.gui.quests.description=Quest's description
 mappet.gui.quests.accept=Accept quest trigger

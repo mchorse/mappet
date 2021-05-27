@@ -150,14 +150,13 @@ public class EventHandler
                     Map.Entry<String, Quest> entry = it.next();
                     Quest quest = entry.getValue();
 
-                    /* if (quest.rewardIfComplete(player))
+                    if (quest.instant && quest.rewardIfComplete(player))
                     {
-                        player.sendMessage(new TextComponentString("Quest '" + entry.getKey() + "' was completed! Here is your reward!"));
                         it.remove();
 
                         Dispatcher.sendTo(new PacketQuest(entry.getKey(), null), (EntityPlayerMP) player);
                     }
-                    else */
+                    else
                     {
                         Dispatcher.sendTo(new PacketQuest(entry.getKey(), entry.getValue()), (EntityPlayerMP) player);
                     }

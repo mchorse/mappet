@@ -26,6 +26,7 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
     public GuiTextElement title;
     public GuiTextElement story;
     public GuiToggleElement cancelable;
+    public GuiToggleElement instant;
 
     public GuiTriggerElement accept;
     public GuiTriggerElement decline;
@@ -44,6 +45,8 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
             IKey.lang("mappet.gui.quests.description")
         );
         this.cancelable = new GuiToggleElement(mc, IKey.lang("mappet.gui.quests.cancelable"), (b) -> this.data.cancelable = b.isToggled());
+        this.instant = new GuiToggleElement(mc, IKey.lang("mappet.gui.quests.instant"), (b) -> this.data.instant = b.isToggled());
+        this.instant.tooltip(IKey.lang("mappet.gui.quests.instant_tooltip"));
 
         this.accept = new GuiTriggerElement(mc);
         this.decline = new GuiTriggerElement(mc);
@@ -67,7 +70,7 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
 
         scrollEditor.add(Elements.label(IKey.lang("mappet.gui.quests.title")), this.title);
         scrollEditor.add(Elements.label(IKey.lang("mappet.gui.quests.description")).marginTop(12), this.story);
-        scrollEditor.add(this.cancelable.marginTop(6));
+        scrollEditor.add(Elements.row(mc, 5, this.cancelable, this.instant).marginTop(6));
         scrollEditor.add(objectiveLabel, this.objectives);
         scrollEditor.add(rewardLabel, this.rewards);
         scrollEditor.add(Elements.label(IKey.lang("mappet.gui.quests.accept")).background().marginTop(20).marginBottom(4), this.accept);
@@ -104,6 +107,7 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
             this.title.setText(data.title);
             this.story.setText(data.story);
             this.cancelable.toggled(data.cancelable);
+            this.instant.toggled(data.instant);
 
             this.accept.set(data.accept);
             this.decline.set(data.decline);
