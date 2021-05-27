@@ -13,11 +13,16 @@ import javax.annotation.Nullable;
 public class TriggerSender implements ICommandSender
 {
     public MinecraftServer server;
+    public World world;
+    public BlockPos pos;
+
     public EntityLivingBase entity;
 
-    public TriggerSender set(MinecraftServer server)
+    public TriggerSender set(MinecraftServer server, World world, BlockPos pos)
     {
         this.server = server;
+        this.world = world;
+        this.pos = pos;
         this.entity = null;
 
         return this;
@@ -46,7 +51,12 @@ public class TriggerSender implements ICommandSender
     @Override
     public World getEntityWorld()
     {
-        return this.entity == null ? this.server.getEntityWorld() : this.entity.world;
+        if (this.entity != null)
+        {
+            return this.entity.world;
+        }
+
+        return this.world == null ? this.server.getEntityWorld() : this.world;
     }
 
     @Nullable
@@ -59,13 +69,23 @@ public class TriggerSender implements ICommandSender
     @Override
     public BlockPos getPosition()
     {
-        return this.entity == null ? BlockPos.ORIGIN : new BlockPos(this.entity);
+        if (this.entity != null)
+        {
+            return new BlockPos(this.entity);
+        }
+
+        return this.pos == null ? BlockPos.ORIGIN : this.pos;
     }
 
     @Override
     public Vec3d getPositionVector()
     {
-        return this.entity == null ? Vec3d.ZERO : this.entity.getPositionVector();
+        if (this.entity != null)
+        {
+            return this.entity.getPositionVector();
+        }
+
+        return this.pos == null ? Vec3d.ZERO : new Vec3d(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5);
     }
 
     @Nullable

@@ -86,7 +86,7 @@ public class TileEmitter extends TileEntity implements ITickable
         }
 
         IBlockState state = this.world.getBlockState(this.pos);
-        boolean result = this.checker.check(new DataContext(this.world));
+        boolean result = this.checker.check(new DataContext(this.world, this.getPos()));
 
         if (state.getValue(BlockEmitter.POWERED) != result)
         {

@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTPrimitive;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -20,6 +21,7 @@ public class DataContext
 
     public MinecraftServer server;
     public World world;
+    public BlockPos pos;
     public EntityLivingBase subject;
     public EntityLivingBase object;
 
@@ -47,6 +49,14 @@ public class DataContext
         this(world.getMinecraftServer());
 
         this.world = world;
+    }
+
+    public DataContext(World world, BlockPos pos)
+    {
+        this(world.getMinecraftServer());
+
+        this.world = world;
+        this.pos = pos;
     }
 
     public DataContext(MinecraftServer server)
@@ -143,7 +153,7 @@ public class DataContext
 
         if (this.subject == null)
         {
-            this.sender.set(this.server);
+            this.sender.set(this.server, this.world, this.pos);
         }
         else
         {

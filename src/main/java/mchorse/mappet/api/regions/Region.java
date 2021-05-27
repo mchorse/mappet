@@ -12,6 +12,7 @@ import mchorse.mappet.utils.EnumUtils;
 import mchorse.mappet.utils.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -31,9 +32,9 @@ public class Region implements INBTSerializable<NBTTagCompound>
     public Target target = Target.GLOBAL;
     public boolean additive = true;
 
-    public boolean isEnabled(World world)
+    public boolean isEnabled(World world, BlockPos pos)
     {
-        return this.enabled.check(new DataContext(world));
+        return this.enabled.check(new DataContext(world, pos));
     }
 
     public void triggerEnter(EntityPlayer player)
