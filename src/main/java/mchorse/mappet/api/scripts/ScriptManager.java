@@ -19,16 +19,24 @@ public class ScriptManager extends FolderManager
     {
         super(folder);
 
-        this.manager = new ScriptEngineManager();
+        try
+        {
+            this.manager = new ScriptEngineManager();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public boolean execute(String script, DataContext context)
     {
         File file = getFile(script);
-        ScriptEngine engine = this.manager.getEngineByName("nashorn");
 
         try
         {
+            ScriptEngine engine = this.manager.getEngineByName("nashorn");
+
             engine.eval(new FileReader(file));
 
             ((Invocable) engine).invokeFunction("main", context);
