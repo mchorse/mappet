@@ -227,6 +227,9 @@ mappet.gui.region.box_size=Half size
 mappet.gui.region.ellipse_size=Ellipsoid radius
 mappet.gui.region.sphere_size=Radius and height
 mappet.gui.region.info.empty=Select a region block in the list on the right, or interact with any region blocks in the world, to start editing...
+mappet.gui.region.write_states=Write state
+mappet.gui.region.additive=Additive
+mappet.gui.region.additive_tooltip=Instead of adding §71§r upon entering, and removing the state upon exiting, with additive enabled, it will add §71§r every time player enters without removing the state upon exiting.
 
 mappet.gui.nodes.node.title=Title
 mappet.gui.nodes.event.binary=Binary

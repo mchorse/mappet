@@ -1,10 +1,16 @@
 package mchorse.mappet.api.regions;
 
+import mchorse.mappet.Mappet;
+import mchorse.mappet.api.conditions.utils.Target;
 import mchorse.mappet.api.regions.shapes.AbstractShape;
 import mchorse.mappet.api.regions.shapes.BoxShape;
+import mchorse.mappet.api.states.States;
 import mchorse.mappet.api.utils.Checker;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.Trigger;
+import mchorse.mappet.utils.EnumUtils;
+import mchorse.mappet.utils.WorldUtils;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -19,9 +25,49 @@ public class Region implements INBTSerializable<NBTTagCompound>
     public Trigger onExit = new Trigger();
     public AbstractShape shape = new BoxShape();
 
+    /* Automatic state writing */
+    public boolean writeState;
+    public String state = "";
+    public Target target = Target.GLOBAL;
+    public boolean additive = true;
+
     public boolean isEnabled(World world)
     {
         return this.enabled.check(new DataContext(world));
+    }
+
+    public void triggerEnter(EntityPlayer player)
+    {
+        if (this.writeState && !this.state.isEmpty())
+        {
+            States states = this.target == Target.GLOBAL ? Mappet.states : WorldUtils.getStates(player);
+
+            if (this.additive)
+            {
+                states.add(this.state, 1);
+            }
+            else
+            {
+                states.set(this.state, 1);
+            }
+        }
+
+        this.onEnter.trigger(player);
+    }
+
+    public void triggerExit(EntityPlayer player)
+    {
+        if (this.writeState && !this.state.isEmpty())
+        {
+            States states = this.target == Target.GLOBAL ? Mappet.states : WorldUtils.getStates(player);
+
+            if (!this.additive)
+            {
+                states.reset(this.state);
+            }
+        }
+
+        this.onEnter.trigger(player);
     }
 
     @Override
@@ -29,18 +75,9 @@ public class Region implements INBTSerializable<NBTTagCompound>
     {
         NBTTagCompound tag = new NBTTagCompound();
 
-        if (!this.passable)
-        {
-            tag.setBoolean("Passable", this.passable);
-        }
-
+        tag.setBoolean("Passable", this.passable);
         tag.setTag("Enabled", this.enabled.serializeNBT());
-
-        if (this.delay > 0)
-        {
-            tag.setInteger("Delay", this.delay);
-        }
-
+        tag.setInteger("Delay", this.delay);
         tag.setTag("OnEnter", this.onEnter.serializeNBT());
         tag.setTag("OnExit", this.onExit.serializeNBT());
 
@@ -48,6 +85,11 @@ public class Region implements INBTSerializable<NBTTagCompound>
 
         shape.setString("Type", this.shape.getType());
         tag.setTag("Shape", shape);
+
+        tag.setBoolean("WriteState", this.writeState);
+        tag.setString("State", this.state.trim());
+        tag.setInteger("Target", this.target.ordinal());
+        tag.setBoolean("Additive", this.additive);
 
         return tag;
     }
@@ -96,5 +138,10 @@ public class Region implements INBTSerializable<NBTTagCompound>
                 }
             }
         }
+
+        this.writeState = tag.getBoolean("WriteState");
+        this.state = tag.getString("State");
+        this.target = EnumUtils.getValue(tag.getInteger("Target"), Target.values(), Target.GLOBAL);
+        this.additive = tag.getBoolean("Additive");
     }
 }

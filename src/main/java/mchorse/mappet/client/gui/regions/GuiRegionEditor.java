@@ -1,5 +1,6 @@
 package mchorse.mappet.client.gui.regions;
 
+import mchorse.mappet.api.conditions.utils.Target;
 import mchorse.mappet.api.regions.Region;
 import mchorse.mappet.api.regions.shapes.AbstractShape;
 import mchorse.mappet.api.regions.shapes.BoxShape;
@@ -15,6 +16,7 @@ import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.mclib.utils.Direction;
 import net.minecraft.client.Minecraft;
 
 public class GuiRegionEditor extends GuiElement
@@ -26,6 +28,12 @@ public class GuiRegionEditor extends GuiElement
     public GuiTriggerElement onExit;
     public GuiCirculateElement shape;
     public GuiShapeEditor shapeEditor;
+
+    public GuiToggleElement writeState;
+    public GuiElement stateOptions;
+    public GuiTextElement state;
+    public GuiCirculateElement target;
+    public GuiToggleElement additive;
 
     private Region region;
 
@@ -45,6 +53,24 @@ public class GuiRegionEditor extends GuiElement
         this.shape.addLabel(IKey.lang("mappet.gui.shapes.cylinder"));
         this.shapeEditor = new GuiShapeEditor(mc);
 
+        this.writeState = new GuiToggleElement(mc, IKey.lang("mappet.gui.region.write_states"), (b) -> this.toggleStates());
+        this.stateOptions = Elements.column(mc, 5);
+        this.state = new GuiTextElement(mc, (t) -> this.region.state = t);
+        this.target = new GuiCirculateElement(mc, (b) -> this.region.target = Target.values()[this.target.getValue()]);
+
+        for (Target target : Target.values())
+        {
+            this.target.addLabel(IKey.lang("mappet.gui.conditions.targets." + target.name().toLowerCase()));
+
+            if (!(target == Target.SUBJECT || target == Target.GLOBAL))
+            {
+                this.target.disable(target.ordinal());
+            }
+        }
+
+        this.additive = new GuiToggleElement(mc, IKey.lang("mappet.gui.region.additive"), (b) -> this.region.additive = b.isToggled());
+        this.additive.tooltip(IKey.lang("mappet.gui.region.additive_tooltip"), Direction.TOP);
+
         this.add(this.passable);
         this.add(Elements.label(IKey.lang("mappet.gui.region.enabled")).marginTop(6), this.enabled);
         this.add(Elements.label(IKey.lang("mappet.gui.region.delay")).marginTop(12), this.delay);
@@ -53,7 +79,25 @@ public class GuiRegionEditor extends GuiElement
         this.add(Elements.label(IKey.lang("mappet.gui.region.shape")).background().marginTop(12).marginBottom(5), this.shape);
         this.add(this.shapeEditor);
 
+        this.add(this.writeState.marginTop(12));
+        this.stateOptions.add(Elements.label(IKey.lang("mappet.gui.conditions.state.id")).marginTop(6), this.state);
+        this.stateOptions.add(this.target, this.additive);
+
         this.flex().column(5).vertical().stretch();
+    }
+
+    private void toggleStates()
+    {
+        this.region.writeState = this.writeState.isToggled();
+
+        this.stateOptions.removeFromParent();
+
+        if (this.region.writeState)
+        {
+            this.add(this.stateOptions);
+        }
+
+        this.getParentContainer().resize();
     }
 
     private void changeShape(GuiButtonElement element)
@@ -96,6 +140,13 @@ public class GuiRegionEditor extends GuiElement
             this.onExit.set(region.onExit);
             this.shape.setValue(region.shape instanceof BoxShape ? 0 : (region.shape instanceof CylinderShape ? 2 : 1));
             this.shapeEditor.set(region.shape);
+
+            this.writeState.toggled(region.writeState);
+            this.state.setText(region.state);
+            this.target.setValue(region.target.ordinal());
+            this.additive.toggled(region.additive);
+
+            this.toggleStates();
         }
     }
 }
