@@ -8,7 +8,7 @@ import mchorse.mappet.api.dialogues.nodes.ReactionNode;
 import mchorse.mappet.api.dialogues.nodes.ReplyNode;
 import mchorse.mappet.api.events.EventManager;
 import mchorse.mappet.api.events.nodes.EventNode;
-import mchorse.mappet.api.utils.BaseManager;
+import mchorse.mappet.api.utils.manager.BaseManager;
 import mchorse.mappet.api.utils.factory.MapFactory;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;

@@ -1,6 +1,7 @@
 package mchorse.mappet.api.utils;
 
 import mchorse.mappet.Mappet;
+import mchorse.mappet.api.utils.manager.IManager;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.panels.GuiMappetDashboardPanel;
 import net.minecraftforge.fml.relauncher.Side;

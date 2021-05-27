@@ -1,6 +1,6 @@
 package mchorse.mappet.api.factions;
 
-import mchorse.mappet.api.utils.BaseManager;
+import mchorse.mappet.api.utils.manager.BaseManager;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.io.File;

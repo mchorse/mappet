@@ -44,7 +44,7 @@ public class CommandStateIf extends CommandStateBase
         double previous = states.get(id);
 
         String expression = String.join(" ", SubCommandBase.dropFirstArguments(args, 2));
-        DataContext context = null;
+        DataContext context;
 
         if (sender instanceof EntityPlayer)
         {

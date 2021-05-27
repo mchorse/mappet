@@ -1,6 +1,6 @@
 package mchorse.mappet.api.data;
 
-import mchorse.mappet.api.utils.BaseManager;
+import mchorse.mappet.api.utils.manager.BaseManager;
 import net.minecraft.nbt.NBTTagCompound;
 import org.apache.commons.io.FileUtils;
 

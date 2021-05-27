@@ -1,12 +1,10 @@
 package mchorse.mappet.api.quests.chains;
 
 import mchorse.mappet.Mappet;
-import mchorse.mappet.api.events.nodes.EventNode;
 import mchorse.mappet.api.quests.Quest;
-import mchorse.mappet.api.utils.BaseManager;
+import mchorse.mappet.api.utils.manager.BaseManager;
 import mchorse.mappet.api.utils.factory.IFactory;
 import mchorse.mappet.api.utils.factory.MapFactory;
-import mchorse.mappet.api.utils.nodes.Node;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import net.minecraft.entity.player.EntityPlayer;

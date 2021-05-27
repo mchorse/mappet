@@ -7,7 +7,7 @@ import mchorse.mappet.api.events.nodes.ConditionNode;
 import mchorse.mappet.api.events.nodes.EventNode;
 import mchorse.mappet.api.events.nodes.SwitchNode;
 import mchorse.mappet.api.events.nodes.TimerNode;
-import mchorse.mappet.api.utils.BaseManager;
+import mchorse.mappet.api.utils.manager.BaseManager;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
 import mchorse.mappet.api.utils.factory.MapFactory;
 import net.minecraft.nbt.NBTTagCompound;

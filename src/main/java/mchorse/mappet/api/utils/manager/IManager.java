@@ -1,4 +1,4 @@
-package mchorse.mappet.api.utils;
+package mchorse.mappet.api.utils.manager;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;

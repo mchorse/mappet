@@ -9,6 +9,7 @@ import mchorse.mappet.api.factions.FactionManager;
 import mchorse.mappet.api.npcs.NpcManager;
 import mchorse.mappet.api.quests.QuestManager;
 import mchorse.mappet.api.quests.chains.QuestChainManager;
+import mchorse.mappet.api.scripts.ScriptManager;
 import mchorse.mappet.api.states.States;
 import mchorse.mappet.blocks.BlockEmitter;
 import mchorse.mappet.blocks.BlockRegion;
@@ -87,6 +88,7 @@ public final class Mappet
     public static FactionManager factions;
     public static DataManager data;
     public static QuestChainManager chains;
+    public static ScriptManager scripts;
 
     /* Configuration */
     public static ValueInt eventMaxExecutions;
@@ -158,6 +160,7 @@ public final class Mappet
         factions = new FactionManager(new File(mappetWorldFolder, "factions"));
         data = new DataManager(new File(mappetWorldFolder, "data"));
         chains = new QuestChainManager(new File(mappetWorldFolder, "chains"));
+        scripts = new ScriptManager(new File(mappetWorldFolder, "scripts"));
 
         event.registerServerCommand(new CommandMappet());
     }
@@ -177,5 +180,6 @@ public final class Mappet
         factions = null;
         data = null;
         chains = null;
+        scripts = null;
     }
 }

@@ -22,6 +22,8 @@ mappet.error.npc.cant_edit=§fGiven value for §7%s§f property: §7%s§f is in 
 
 mappet.error.data.missing=§fData by ID §7%s§f is missing!
 
+mappet.error.script.empty=§fScript by ID §7%s§f is either missing or has no §7main§r function!
+
 # Info
 mappet.info.states.clear=§fValue by key §7%s§f was removed from states.
 mappet.info.states.clear_all=§fAll values were removed from §7%s§f's states.
@@ -85,6 +87,9 @@ mappet.commands.mp.data.help=Data utility subcommand that provides an ability to
 mappet.commands.mp.data.clear=Clears all global and player states, and also all player inventories.
 mappet.commands.mp.data.load=Loads saved data by §7<id>§r. §7[global]§r determines whether global states should be loaded too (it's §7true§r (enabled) by default). §7[players]§r allows to pick another player whose inventory and player states should be loaded to.
 mappet.commands.mp.data.save=Saves global states, and current player's states and inventory to data by §7<id>§r.
+
+mappet.commands.mp.script.help=Scripts subcommand.
+mappet.commands.mp.script.eval=This command evaluates script by §7<id>§r (from world's §7mappet/scripts/§r folder, without file extension) upon players found by §7<player>§r target selector. You can also pass arbitrary NBT data to the event using §7[data]§r argument.
 
 # Config
 

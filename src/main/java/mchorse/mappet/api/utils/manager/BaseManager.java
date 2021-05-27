@@ -1,36 +1,22 @@
-package mchorse.mappet.api.utils;
+package mchorse.mappet.api.utils.manager;
 
+import mchorse.mappet.api.utils.AbstractData;
 import mchorse.mappet.utils.NBTToJsonLike;
 import net.minecraft.nbt.NBTTagCompound;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Base JSON manager which loads and saves different data
  * structures based upon NBT
  */
-public abstract class BaseManager <T extends AbstractData> implements IManager<T>
+public abstract class BaseManager <T extends AbstractData> extends FolderManager<T>
 {
-    private File folder;
-
     public BaseManager(File folder)
     {
-        if (folder != null)
-        {
-            this.folder = folder;
-            this.folder.mkdirs();
-        }
-    }
-
-    @Override
-    public boolean exists(String name)
-    {
-        return this.getFile(name).exists();
+        super(folder);
     }
 
     @Override
@@ -90,59 +76,5 @@ public abstract class BaseManager <T extends AbstractData> implements IManager<T
         }
 
         return false;
-    }
-
-    @Override
-    public boolean rename(String id, String newId)
-    {
-        File file = this.getFile(id);
-
-        if (file != null && file.exists())
-        {
-            return file.renameTo(this.getFile(newId));
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean delete(String name)
-    {
-        File file = this.getFile(name);
-
-        return file != null && file.delete();
-    }
-
-    @Override
-    public Collection<String> getKeys()
-    {
-        List<String> list = new ArrayList<String>();
-
-        if (this.folder == null)
-        {
-            return list;
-        }
-
-        for (File file : this.folder.listFiles())
-        {
-            String name = file.getName();
-
-            if (file.isFile() && name.endsWith(".json"))
-            {
-                list.add(name.substring(0, name.lastIndexOf(".")));
-            }
-        }
-
-        return list;
-    }
-
-    public File getFile(String name)
-    {
-        if (this.folder == null)
-        {
-            return null;
-        }
-
-        return new File(this.folder, name + ".json");
     }
 }
