@@ -1,5 +1,6 @@
 package mchorse.mappet.api.events.hotkeys;
 
+import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.utils.NBTToJsonLike;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,7 +26,7 @@ public class EventHotkeys implements INBTSerializable<NBTTagCompound>
         {
             if (hotkey.keycode == keycode)
             {
-                hotkey.execute(player);
+                hotkey.execute(new DataContext(player).set("key", keycode));
 
                 break;
             }

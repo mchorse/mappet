@@ -1,9 +1,8 @@
 package mchorse.mappet.api.events.hotkeys;
 
-import mchorse.mappet.Mappet;
-import mchorse.mappet.api.events.EventContext;
 import mchorse.mappet.api.utils.Checker;
 import mchorse.mappet.api.utils.DataContext;
+import mchorse.mappet.api.utils.Trigger;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -11,20 +10,20 @@ import net.minecraftforge.common.util.INBTSerializable;
 public class EventHotkey implements INBTSerializable<NBTTagCompound>
 {
     public int keycode;
-    public String event = "";
+    public Trigger trigger = new Trigger();
     public Checker enabled = new Checker(true);
 
-    public void execute(EntityPlayer player)
+    public void execute(DataContext context)
     {
-        if (this.isEnabled(player))
+        if (this.isEnabled(context))
         {
-            Mappet.events.execute(this.event, new EventContext(new DataContext(player)));
+            this.trigger.trigger(context);
         }
     }
 
-    private boolean isEnabled(EntityPlayer player)
+    private boolean isEnabled(DataContext context)
     {
-        return this.enabled.check(new DataContext(player));
+        return this.enabled.check(context);
     }
 
     @Override
@@ -33,7 +32,7 @@ public class EventHotkey implements INBTSerializable<NBTTagCompound>
         NBTTagCompound tag = new NBTTagCompound();
 
         tag.setInteger("Keycode", this.keycode);
-        tag.setString("Event", this.event);
+        tag.setTag("Trigger", this.trigger.serializeNBT());
         tag.setTag("Enabled", this.enabled.serializeNBT());
 
         return tag;
@@ -43,7 +42,7 @@ public class EventHotkey implements INBTSerializable<NBTTagCompound>
     public void deserializeNBT(NBTTagCompound tag)
     {
         this.keycode = tag.getInteger("Keycode");
-        this.event = tag.getString("Event");
+        this.trigger.deserializeNBT(tag.getCompoundTag("Trigger"));
         this.enabled.deserializeNBT(tag.getTag("Enabled"));
     }
 }
