@@ -22,13 +22,15 @@ import java.util.function.Consumer;
 
 public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElement
 {
-    public static final int PADDING = 10;
-    public static final int LINE_HEIGHT = 12;
-
     public ScrollArea horizontal = new ScrollArea();
     public ScrollArea vertical = new ScrollArea();
 
     public Consumer<String> callback;
+
+    /* Visual properties */
+    private boolean background;
+    private int padding = 10;
+    private int lineHeight = 12;
 
     /* Editing */
     private boolean focused;
@@ -39,6 +41,8 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
     private int lastMX;
     private int lastMY;
+    private long update;
+    private long lastUpdate;
 
     public GuiMultiTextElement(Minecraft mc, Consumer<String> callback)
     {
@@ -48,9 +52,35 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
         this.horizontal.direction = ScrollDirection.HORIZONTAL;
         this.horizontal.cancelScrollEdge = true;
-        this.horizontal.scrollSpeed = LINE_HEIGHT * 2;
+        this.horizontal.scrollSpeed = this.lineHeight * 2;
         this.vertical.cancelScrollEdge = true;
-        this.vertical.scrollSpeed = LINE_HEIGHT * 2;
+        this.vertical.scrollSpeed = this.lineHeight * 2;
+    }
+
+    public GuiMultiTextElement background()
+    {
+        return this.background(true);
+    }
+
+    public GuiMultiTextElement background(boolean background)
+    {
+        this.background = background;
+
+        return this;
+    }
+
+    public GuiMultiTextElement padding(int padding)
+    {
+        this.padding = padding;
+
+        return this;
+    }
+
+    public GuiMultiTextElement lineHeight(int lineHeight)
+    {
+        this.lineHeight = lineHeight;
+
+        return this;
     }
 
     public void setText(String text)
@@ -116,15 +146,15 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
             if (i == min.line && i == max.line)
             {
-                joiner.add(line.substring(min.offset, max.offset));
+                joiner.add(line.substring(min.getOffset(line), max.getOffset(line)));
             }
             else if (i == min.line)
             {
-                joiner.add(line.substring(min.offset));
+                joiner.add(min.end(line));
             }
             else if (i == max.line)
             {
-                joiner.add(line.substring(0, max.offset));
+                joiner.add(max.start(line));
             }
             else
             {
@@ -168,8 +198,8 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         }
         else
         {
-            this.text.set(this.cursor.line, line.substring(0, this.cursor.offset));
-            this.text.add(this.cursor.line + 1, line.substring(this.cursor.offset));
+            this.text.set(this.cursor.line, this.cursor.start(line));
+            this.text.add(this.cursor.line + 1, this.cursor.end(line));
             this.moveCursorToLineStart();
         }
 
@@ -194,7 +224,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             }
             else
             {
-                line = line.substring(0, this.cursor.offset) + character + line.substring(this.cursor.offset);
+                line = this.cursor.start(line) + character + this.cursor.end(line);
             }
 
             this.text.set(this.cursor.line, line);
@@ -266,11 +296,68 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             }
             else
             {
-                line = line.substring(0, this.cursor.offset - 1) + line.substring(this.cursor.offset);
+                line = this.cursor.start(line, -1) + this.cursor.end(line);
                 this.text.set(this.cursor.line, line);
                 this.moveCursor(-1, 0);
             }
         }
+    }
+
+    public void deleteSelection()
+    {
+        if (!this.isSelecting())
+        {
+            return;
+        }
+
+        Cursor min = this.cursor;
+        Cursor max = this.selection;
+
+        if (this.selection.isGreater(this.cursor))
+        {
+            min = this.selection;
+            max = this.cursor;
+        }
+
+        if (min.line == max.line)
+        {
+            String line = this.text.get(min.line);
+
+            if (min.offset <= 0 && max.offset >= line.length())
+            {
+                this.text.set(min.line, "");
+            }
+            else
+            {
+                this.text.set(min.line, min.start(line) + max.end(line));
+            }
+        }
+        else
+        {
+            String end = "";
+
+            for (int i = max.line; i >= min.line; i--)
+            {
+                String line = this.text.get(i);
+
+                if (i == max.line)
+                {
+                    end = max.end(line);
+                    this.text.remove(i);
+                }
+                else if (i == min.line)
+                {
+                    this.text.set(i, min.start(line) + end);
+                }
+                else
+                {
+                    this.text.remove(i);
+                }
+            }
+        }
+
+        this.cursor.copy(min);
+        this.deselect();
     }
 
     public boolean hasLine(int line)
@@ -341,13 +428,13 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
     public void moveCursorTo(Cursor cursor, int x, int y)
     {
-        x -= this.area.x + PADDING;
-        y -= this.area.y + PADDING;
+        x -= this.area.x + this.padding;
+        y -= this.area.y + this.padding;
 
         x += this.horizontal.scroll;
         y += this.vertical.scroll;
 
-        cursor.line = MathUtils.clamp(y / LINE_HEIGHT, 0, this.text.size() - 1);
+        cursor.line = MathUtils.clamp(y / this.lineHeight, 0, this.text.size() - 1);
 
         String line = this.text.get(cursor.line);
         int w = this.font.getStringWidth(line);
@@ -363,11 +450,11 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         else
         {
             cursor.offset = 0;
-            w = this.font.getStringWidth(line.substring(0, cursor.offset + 1));
+            w = this.font.getStringWidth(cursor.start(line));
 
             while (x > w)
             {
-                w = this.font.getStringWidth(line.substring(0, cursor.offset + 1));
+                w = this.font.getStringWidth(cursor.start(line, 1));
 
                 cursor.offset += 1;
             }
@@ -519,6 +606,8 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         }
         else if (context.keyCode == Keyboard.KEY_V && ctrl)
         {
+            this.deleteSelection();
+            this.deselect();
             this.writeString(GuiScreen.getClipboardString());
         }
         else if (context.keyCode == Keyboard.KEY_UP || context.keyCode == Keyboard.KEY_DOWN || context.keyCode == Keyboard.KEY_RIGHT || context.keyCode == Keyboard.KEY_LEFT)
@@ -541,23 +630,36 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         }
         else if (context.keyCode == Keyboard.KEY_RETURN)
         {
+            this.deleteSelection();
+            this.deselect();
             this.writeNewLine();
         }
-        else if (context.keyCode == Keyboard.KEY_BACK)
+        else if (context.keyCode == Keyboard.KEY_BACK || context.keyCode == Keyboard.KEY_DELETE)
         {
-            this.deleteCharacter();
-        }
-        else if (context.keyCode == Keyboard.KEY_DELETE)
-        {
-            this.moveCursor(1, 0);
-            this.deleteCharacter();
+            if (this.isSelecting())
+            {
+                this.deleteSelection();
+                this.deselect();
+            }
+            else
+            {
+                if (context.keyCode == Keyboard.KEY_DELETE)
+                {
+                    this.moveCursor(1, 0);
+                }
+
+                this.deleteCharacter();
+            }
         }
         else if (ChatAllowedCharacters.isAllowedCharacter(context.typedChar))
         {
+            this.deleteSelection();
+            this.deselect();
             this.writeCharacter(String.valueOf(context.typedChar));
             this.moveCursor(1, 0);
         }
 
+        this.update = context.tick + 20;
         this.horizontal.clamp();
         this.vertical.clamp();
 
@@ -567,14 +669,19 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
     @Override
     public void draw(GuiContext context)
     {
-        this.handleMouse(context);
+        this.handleLogic(context);
+
+        if (this.background)
+        {
+            this.drawBackground();
+        }
 
         super.draw(context);
 
         GuiDraw.scissor(this.area.x, this.area.y, this.area.w, this.area.h, context);
 
-        int x = this.area.x + PADDING;
-        int y = this.area.y + PADDING;
+        int x = this.area.x + this.padding;
+        int y = this.area.y + this.padding;
         int w = 0;
         int i = 0;
 
@@ -602,8 +709,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
                 if (this.cursor.line == i && this.focused)
                 {
-                    int index = Math.min(this.cursor.offset, line.length());
-                    int nw = line.isEmpty() ? 0 : this.font.getStringWidth(line.substring(0, index));
+                    int nw = line.isEmpty() ? 0 : this.font.getStringWidth(this.cursor.start(line));
                     int a = (int) (Math.sin((context.tick + context.partialTicks) / 2D) * 127.5 + 127.5) << 24;
 
                     Gui.drawRect(nx + nw, ny - 1, nx + nw + 1, ny + this.font.FONT_HEIGHT + 1, a + 0xffffff);
@@ -613,12 +719,12 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             }
 
             w = Math.max(sw, w);
-            y += LINE_HEIGHT;
+            y += this.lineHeight;
             i += 1;
         }
 
-        this.horizontal.scrollSize = w + PADDING * 2;
-        this.vertical.scrollSize = y - this.area.y + PADDING - (this.text.isEmpty() ? 0 : LINE_HEIGHT - this.font.FONT_HEIGHT);
+        this.horizontal.scrollSize = w + this.padding * 2;
+        this.vertical.scrollSize = y - this.area.y + this.padding - (this.text.isEmpty() ? 0 : this.lineHeight - this.font.FONT_HEIGHT);
 
         this.horizontal.drawScrollbar();
         this.vertical.drawScrollbar();
@@ -626,11 +732,27 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         GuiDraw.unscissor(context);
     }
 
+    protected void drawBackground()
+    {
+        this.area.draw(0xffa0a0a0);
+        this.area.draw(0xff000000, 1);
+    }
+
     /**
      * Handle dragging scrollbars and selecting text
      */
-    private void handleMouse(GuiContext context)
+    private void handleLogic(GuiContext context)
     {
+        if (this.update > this.lastUpdate)
+        {
+            this.lastUpdate = this.update;
+
+            if (this.callback != null)
+            {
+                this.callback.accept(this.getText());
+            }
+        }
+
         if (this.dragging == 1 && (Math.abs(context.mouseX - this.lastMX) > 4 || Math.abs(context.mouseY - this.lastMY) > 4))
         {
             this.startSelecting();
@@ -656,20 +778,20 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
         if (min.line == i && max.line == i)
         {
-            int lw1 = this.font.getStringWidth(line.substring(0, MathUtils.clamp(min.offset, 0, line.length())));
-            int lw2 = this.font.getStringWidth(line.substring(0, MathUtils.clamp(max.offset, 0, line.length())));
+            int lw1 = this.font.getStringWidth(min.start(line));
+            int lw2 = this.font.getStringWidth(max.start(line));
 
             Gui.drawRect(nx + lw1, ny - selectionPad, nx + lw2, ny + this.font.FONT_HEIGHT + selectionPad, color);
         }
         else if (min.line == i)
         {
-            int lw = this.font.getStringWidth(line.substring(0, MathUtils.clamp(min.offset, 0, line.length())));
+            int lw = this.font.getStringWidth(min.start(line));
 
             Gui.drawRect(nx + lw, ny - selectionPad, nx + sw, ny + this.font.FONT_HEIGHT + selectionPad, color);
         }
         else if (max.line == i)
         {
-            int lw = this.font.getStringWidth(line.substring(0, MathUtils.clamp(max.offset, 0, line.length())));
+            int lw = this.font.getStringWidth(max.start(line));
 
             Gui.drawRect(nx, ny - selectionPad, nx + lw, ny + this.font.FONT_HEIGHT + selectionPad, color);
         }
@@ -698,6 +820,38 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         public void copy(Cursor cursor)
         {
             this.set(cursor.line, cursor.offset);
+        }
+
+        /* String clipping */
+
+        public String start(String line)
+        {
+            return this.start(line, 0);
+        }
+
+        public String start(String line, int offset)
+        {
+            return line.isEmpty() ? line : line.substring(0, this.getOffset(line, offset));
+        }
+
+        public String end(String line)
+        {
+            return this.end(line, 0);
+        }
+
+        public String end(String line, int offset)
+        {
+            return line.isEmpty() ? line : line.substring(this.getOffset(line, offset));
+        }
+
+        public int getOffset(String line)
+        {
+            return this.getOffset(line, 0);
+        }
+
+        public int getOffset(String line, int offset)
+        {
+            return MathUtils.clamp(this.offset + offset, 0, line.length());
         }
 
         /**
