@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.function.Consumer;
+import java.util.regex.Pattern;
 
 public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElement
 {
@@ -42,6 +43,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
     /* Last mouse position */
     private int lastMX;
     private int lastMY;
+    private long lastClick;
 
     /* Callback update (to avoid joining a huge array of text every keystroke) */
     private long update;
@@ -134,14 +136,8 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
         StringJoiner joiner = new StringJoiner("\n");
 
-        Cursor min = this.cursor;
-        Cursor max = this.selection;
-
-        if (this.selection.isGreater(this.cursor))
-        {
-            min = this.selection;
-            max = this.cursor;
-        }
+        Cursor min = this.getMin();
+        Cursor max = this.getMax();
 
         for (int i = min.line; i <= Math.min(max.line, this.text.size() - 1); i++)
         {
@@ -166,6 +162,84 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         }
 
         return joiner.toString();
+    }
+
+    public boolean selectGroup(int direction, boolean select)
+    {
+        String line = this.text.get(this.cursor.line);
+
+        if (line.isEmpty() || this.cursor.offset >= line.length() - 1)
+        {
+            return false;
+        }
+
+        int offset = this.cursor.offset;
+
+        String character = String.valueOf(line.charAt(offset));
+        StringGroup group = StringGroup.get(character);
+
+        int min = offset;
+        int max = offset;
+
+        if (direction <= 0)
+        {
+            while (min > 0)
+            {
+                if (group.match(String.valueOf(line.charAt(min - 1))))
+                {
+                    min -= 1;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
+        if (direction >= 0)
+        {
+            while (max < line.length())
+            {
+                if (group.match(String.valueOf(line.charAt(max))))
+                {
+                    max += 1;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
+        if (offset == max && offset == min)
+        {
+            return false;
+        }
+
+        if (select)
+        {
+            if (direction == 0)
+            {
+                this.cursor.offset = min;
+                this.selection.set(this.cursor.line, max);
+            }
+            else
+            {
+                if (!this.isSelected())
+                {
+                    this.selection.copy(this.cursor);
+                }
+
+                this.cursor.offset = direction < 0 ? min : max;
+            }
+        }
+        else
+        {
+            this.deselect();
+            this.cursor.offset = direction < 0 ? min : max;
+        }
+
+        return true;
     }
 
     public void checkSelection(boolean selecting)
@@ -313,14 +387,8 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             return;
         }
 
-        Cursor min = this.cursor;
-        Cursor max = this.selection;
-
-        if (this.selection.isGreater(this.cursor))
-        {
-            min = this.selection;
-            max = this.cursor;
-        }
+        Cursor min = this.getMin();
+        Cursor max = this.getMax();
 
         if (min.line == max.line)
         {
@@ -366,6 +434,16 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
     public boolean hasLine(int line)
     {
         return line >= 0 && line < this.text.size();
+    }
+
+    protected Cursor getMin()
+    {
+        return this.selection.isGreater(this.cursor) ? this.selection : this.cursor;
+    }
+
+    protected Cursor getMax()
+    {
+        return this.selection.isGreater(this.cursor) ? this.cursor : this.selection;
     }
 
     /* Moving cursor API */
@@ -556,18 +634,27 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         {
             if (context.mouseButton == 0)
             {
-                if (!shift)
+                if (System.currentTimeMillis() < this.lastClick)
                 {
-                    this.deselect();
-
-                    this.dragging = 1;
+                    this.selectGroup(0, true);
+                    this.lastClick -= 500;
                 }
-                else if (!this.isSelected())
+                else
                 {
-                    this.startSelecting();
-                }
+                    if (!shift)
+                    {
+                        this.deselect();
 
-                this.moveCursorTo(this.cursor, context.mouseX, context.mouseY);
+                        this.dragging = 1;
+                    }
+                    else if (!this.isSelected())
+                    {
+                        this.startSelecting();
+                    }
+
+                    this.moveCursorTo(this.cursor, context.mouseX, context.mouseY);
+                    this.lastClick = System.currentTimeMillis() + 200;
+                }
             }
             else if (context.mouseButton == 2)
             {
@@ -660,7 +747,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
                 this.deselect();
             }
 
-            return true;
+            return context.keyCode == Keyboard.KEY_X;
         }
         else if (ctrl && context.keyCode == Keyboard.KEY_V)
         {
@@ -675,8 +762,19 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             int x = context.keyCode == Keyboard.KEY_RIGHT ? 1 : (context.keyCode == Keyboard.KEY_LEFT ? -1 : 0);
             int y = context.keyCode == Keyboard.KEY_UP ? -1 : (context.keyCode == Keyboard.KEY_DOWN ? 1 : 0);
 
-            this.checkSelection(shift);
-            this.moveCursor(x, y);
+            if (x != 0 && ctrl)
+            {
+                if (!this.selectGroup(x, shift))
+                {
+                    this.checkSelection(shift);
+                    this.moveCursor(x, 0);
+                }
+            }
+            else
+            {
+                this.checkSelection(shift);
+                this.moveCursor(x, y);
+            }
 
             return true;
         }
@@ -753,14 +851,8 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         int w = 0;
         int i = 0;
 
-        Cursor min = this.cursor;
-        Cursor max = this.selection;
-
-        if (this.selection.isGreater(this.cursor))
-        {
-            min = this.selection;
-            max = this.cursor;
-        }
+        Cursor min = this.getMin();
+        Cursor max = this.getMax();
 
         for (String line : this.text)
         {
@@ -946,6 +1038,37 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             }
 
             return this.line < cursor.line;
+        }
+    }
+
+    public static enum StringGroup
+    {
+        SPACE("[\\s]"), ALPHANUMERIC("[\\w\\d]"), OTHER("[^\\w\\d\\s]");
+
+
+        private Pattern regex;
+
+        public static StringGroup get(String character)
+        {
+            for (StringGroup group : values())
+            {
+                if (group.match(character))
+                {
+                    return group;
+                }
+            }
+
+            return OTHER;
+        }
+
+        StringGroup(String regex)
+        {
+            this.regex = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        }
+
+        public boolean match(String character)
+        {
+            return this.regex.matcher(character).matches();
         }
     }
 }
