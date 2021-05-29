@@ -18,7 +18,7 @@ public class ItemBlock extends TargetBlock
     public ItemCheck check = ItemCheck.HELD;
 
     @Override
-    public boolean evaluate(DataContext context)
+    public boolean evaluateBlock(DataContext context)
     {
         if (this.target != Target.GLOBAL)
         {

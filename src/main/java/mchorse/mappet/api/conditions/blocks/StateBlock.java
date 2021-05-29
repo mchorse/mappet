@@ -11,7 +11,7 @@ public class StateBlock extends PropertyBlock
     {}
 
     @Override
-    public boolean evaluate(DataContext context)
+    public boolean evaluateBlock(DataContext context)
     {
         States states = this.getStates(context);
 

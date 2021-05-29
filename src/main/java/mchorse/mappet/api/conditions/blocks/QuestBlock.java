@@ -17,7 +17,7 @@ public class QuestBlock extends TargetBlock
     public QuestCheck quest = QuestCheck.COMPLETED;
 
     @Override
-    public boolean evaluate(DataContext context)
+    public boolean evaluateBlock(DataContext context)
     {
         if (this.target == Target.GLOBAL)
         {

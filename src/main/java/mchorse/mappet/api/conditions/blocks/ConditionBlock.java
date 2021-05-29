@@ -12,7 +12,7 @@ public class ConditionBlock extends AbstractBlock
     public Condition condition = new Condition(false);
 
     @Override
-    public boolean evaluate(DataContext context)
+    public boolean evaluateBlock(DataContext context)
     {
         return this.condition.execute(context);
     }

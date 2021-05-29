@@ -29,24 +29,12 @@ public class Condition implements INBTSerializable<NBTTagCompound>
             return this.defaultValue;
         }
 
-        AbstractBlock first = this.blocks.get(0);
-
-        boolean result = first.evaluate(context);
-
-        if (first.not)
-        {
-            result = !result;
-        }
+        boolean result = this.blocks.get(0).evaluate(context);
 
         for (int i = 1; i < this.blocks.size(); i++)
         {
             AbstractBlock block = this.blocks.get(i);
             boolean value = block.evaluate(context);
-
-            if (block.not)
-            {
-                value = !value;
-            }
 
             if (block.or)
             {

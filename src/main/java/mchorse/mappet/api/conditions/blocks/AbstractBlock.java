@@ -1,8 +1,6 @@
 package mchorse.mappet.api.conditions.blocks;
 
 import mchorse.mappet.api.utils.DataContext;
-import mchorse.mappet.api.utils.factory.IFactory;
-import mchorse.mappet.api.utils.factory.MapFactory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.relauncher.Side;
@@ -13,7 +11,14 @@ public abstract class AbstractBlock implements INBTSerializable<NBTTagCompound>
     public boolean not;
     public boolean or;
 
-    public abstract boolean evaluate(DataContext context);
+    public boolean evaluate(DataContext context)
+    {
+        boolean result = this.evaluateBlock(context);
+
+        return this.not != result;
+    }
+
+    protected abstract boolean evaluateBlock(DataContext context);
 
     @SideOnly(Side.CLIENT)
     public abstract String stringify();

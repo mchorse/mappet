@@ -28,7 +28,7 @@ public class FactionBlock extends PropertyBlock
     }
 
     @Override
-    public boolean evaluate(DataContext context)
+    public boolean evaluateBlock(DataContext context)
     {
         if (this.target != Target.GLOBAL)
         {

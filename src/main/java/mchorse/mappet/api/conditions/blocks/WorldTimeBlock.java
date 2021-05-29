@@ -17,7 +17,7 @@ public class WorldTimeBlock extends AbstractBlock
     {}
 
     @Override
-    public boolean evaluate(DataContext context)
+    public boolean evaluateBlock(DataContext context)
     {
         long time = context.world.getWorldTime();
 
