@@ -171,12 +171,9 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
     public void setNpc(Npc npc, NpcState state)
     {
-        this.setState(state, false);
+        this.state.id = npc.getId();
 
-        if (this.state.id.isEmpty())
-        {
-            this.state.id = npc.getId();
-        }
+        this.setState(state, true, false);
     }
 
     public String getId()
@@ -189,10 +186,17 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         return this.state;
     }
 
-    public void setState(NpcState state, boolean notify)
+    public void setState(NpcState state, boolean preserveId, boolean notify)
     {
+        String id = this.getId();
+
         this.state = new NpcState();
         this.state.deserializeNBT(state.serializeNBT());
+
+        if (preserveId)
+        {
+            this.state.id = id;
+        }
 
         /* Set */
         this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(this.state.pathDistance);
@@ -443,7 +447,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         NpcState state = new NpcState();
 
         state.deserializeNBT(tag.getCompoundTag("State"));
-        this.setState(state, false);
+        this.setState(state, false, false);
 
         if (tag.hasKey("NpcId"))
         {

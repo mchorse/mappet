@@ -19,7 +19,7 @@ public class ServerHandlerNpcState extends ServerMessageHandler<PacketNpcState>
             NpcState state = new NpcState();
 
             state.deserializeNBT(message.state);
-            ((EntityNpc) npc).setState(state, true);
+            ((EntityNpc) npc).setState(state, false, true);
         }
     }
 }

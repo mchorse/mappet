@@ -59,7 +59,7 @@ public class CommandNpcEdit extends CommandNpcBase
         {
             if (state.edit(property, value.trim()))
             {
-                entity.setState(state, true);
+                entity.setState(state, !property.equals(NpcLexer.PROPERTIES.get(0)), true);
             }
             else
             {
