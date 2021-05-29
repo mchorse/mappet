@@ -4,12 +4,15 @@ import mchorse.mappet.client.gui.panels.GuiCraftingTablePanel;
 import mchorse.mappet.client.gui.panels.GuiDialoguePanel;
 import mchorse.mappet.client.gui.panels.GuiEventPanel;
 import mchorse.mappet.client.gui.panels.GuiFactionPanel;
+import mchorse.mappet.client.gui.panels.GuiMappetDashboardPanel;
 import mchorse.mappet.client.gui.panels.GuiNpcPanel;
 import mchorse.mappet.client.gui.panels.GuiQuestChainPanel;
 import mchorse.mappet.client.gui.panels.GuiQuestPanel;
 import mchorse.mappet.client.gui.panels.GuiRegionPanel;
+import mchorse.mappet.client.gui.utils.GuiDebugPanel;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.content.PacketContentExit;
+import mchorse.mclib.McLib;
 import mchorse.mclib.client.gui.mclib.GuiAbstractDashboard;
 import mchorse.mclib.client.gui.mclib.GuiDashboardPanels;
 import mchorse.mclib.client.gui.utils.Icons;
@@ -83,6 +86,11 @@ public class GuiMappetDashboard extends GuiAbstractDashboard
         this.panels.registerPanel(this.npc, IKey.lang("mappet.gui.panels.npcs"), Icons.PROCESSOR);
         this.panels.registerPanel(this.faction, IKey.lang("mappet.gui.panels.factions"), Icons.BOOKMARK);
         this.panels.registerPanel(this.chain, IKey.lang("mappet.gui.panels.chains"), Icons.FOLDER);
+
+        if (McLib.debugPanel.get())
+        {
+            this.panels.registerPanel(new GuiDebugPanel(mc, this), IKey.str("Debug"), Icons.POSE);
+        }
 
         this.panels.setPanel(this.crafting);
     }
