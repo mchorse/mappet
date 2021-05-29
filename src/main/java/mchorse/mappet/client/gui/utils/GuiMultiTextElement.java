@@ -39,8 +39,11 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
     private Cursor cursor = new Cursor(0, 0);
     private Cursor selection = new Cursor(-1, -1);
 
+    /* Last mouse position */
     private int lastMX;
     private int lastMY;
+
+    /* Callback update (to avoid joining a huge array of text every keystroke) */
     private long update;
     private long lastUpdate;
 
@@ -98,7 +101,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
     /* Selection API */
 
-    public boolean isSelecting()
+    public boolean isSelected()
     {
         return this.selection.line >= 0;
     }
@@ -124,7 +127,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
     public String getSelectedText()
     {
-        if (!this.isSelecting())
+        if (!this.isSelected())
         {
             return "";
         }
@@ -167,11 +170,11 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
     public void checkSelection(boolean selecting)
     {
-        if (selecting && !this.isSelecting())
+        if (selecting && !this.isSelected())
         {
             this.startSelecting();
         }
-        else if (!selecting && this.isSelecting())
+        else if (!selecting && this.isSelected())
         {
             this.deselect();
         }
@@ -305,7 +308,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
     public void deleteSelection()
     {
-        if (!this.isSelecting())
+        if (!this.isSelected())
         {
             return;
         }
@@ -466,6 +469,22 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         }
     }
 
+    public void moveViewportToCursor()
+    {
+        if (!this.hasLine(this.cursor.line))
+        {
+            return;
+        }
+
+        int x = this.font.getStringWidth(this.cursor.start(this.text.get(this.cursor.line)));
+        int y = this.cursor.line * this.lineHeight;
+        int w = 4;
+        int h = this.lineHeight;
+
+        this.horizontal.scrollIntoView(x, w + this.padding * 2);
+        this.vertical.scrollIntoView(y, h + this.padding * 2);
+    }
+
     /* Focusable */
 
     @Override
@@ -493,13 +512,13 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
     @Override
     public void selectAll(GuiContext context)
     {
-        /* TODO: ... */
+        this.selectAll();
     }
 
     @Override
     public void unselect(GuiContext context)
     {
-        /* TODO: ... */
+        this.deselect();
     }
 
     /* GUI input handling */
@@ -535,18 +554,26 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
         if (this.focused)
         {
-            if (!shift)
+            if (context.mouseButton == 0)
             {
-                this.deselect();
+                if (!shift)
+                {
+                    this.deselect();
 
-                this.dragging = 1;
+                    this.dragging = 1;
+                }
+                else if (!this.isSelected())
+                {
+                    this.startSelecting();
+                }
+
+                this.moveCursorTo(this.cursor, context.mouseX, context.mouseY);
             }
-            else if (!this.isSelecting())
+            else if (context.mouseButton == 2)
             {
-                this.startSelecting();
+                this.dragging = 3;
             }
 
-            this.moveCursorTo(this.cursor, context.mouseX, context.mouseY);
             this.lastMX = context.mouseX;
             this.lastMY = context.mouseY;
         }
@@ -593,22 +620,55 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             return false;
         }
 
+        if (context.keyCode == Keyboard.KEY_ESCAPE)
+        {
+            context.unfocus();
+            return true;
+        }
+
         boolean ctrl = GuiScreen.isCtrlKeyDown();
         boolean shift = GuiScreen.isShiftKeyDown();
 
-        if (context.keyCode == Keyboard.KEY_A && ctrl)
+        if (this.handleKeys(context, ctrl, shift))
+        {
+            this.moveViewportToCursor();
+        }
+
+        this.update = context.tick + 20;
+        this.horizontal.clamp();
+        this.vertical.clamp();
+
+        return false;
+    }
+
+    /**
+     * Handle multiline text editor keybinds
+     */
+    protected boolean handleKeys(GuiContext context, boolean ctrl, boolean shift)
+    {
+        if (ctrl && context.keyCode == Keyboard.KEY_A)
         {
             this.selectAll();
         }
-        else if (context.keyCode == Keyboard.KEY_C && ctrl)
+        else if (ctrl && (context.keyCode == Keyboard.KEY_C || context.keyCode == Keyboard.KEY_X) && this.isSelected())
         {
             GuiScreen.setClipboardString(this.getSelectedText());
+
+            if (context.keyCode == Keyboard.KEY_X)
+            {
+                this.deleteSelection();
+                this.deselect();
+            }
+
+            return true;
         }
-        else if (context.keyCode == Keyboard.KEY_V && ctrl)
+        else if (ctrl && context.keyCode == Keyboard.KEY_V)
         {
             this.deleteSelection();
             this.deselect();
             this.writeString(GuiScreen.getClipboardString());
+
+            return true;
         }
         else if (context.keyCode == Keyboard.KEY_UP || context.keyCode == Keyboard.KEY_DOWN || context.keyCode == Keyboard.KEY_RIGHT || context.keyCode == Keyboard.KEY_LEFT)
         {
@@ -617,26 +677,34 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
             this.checkSelection(shift);
             this.moveCursor(x, y);
+
+            return true;
         }
         else if (context.keyCode == Keyboard.KEY_HOME)
         {
             this.checkSelection(shift);
             this.moveCursorToLineStart();
+
+            return true;
         }
         else if (context.keyCode == Keyboard.KEY_END)
         {
             this.checkSelection(shift);
             this.moveCursorToLineEnd();
+
+            return true;
         }
         else if (context.keyCode == Keyboard.KEY_RETURN)
         {
             this.deleteSelection();
             this.deselect();
             this.writeNewLine();
+
+            return true;
         }
         else if (context.keyCode == Keyboard.KEY_BACK || context.keyCode == Keyboard.KEY_DELETE)
         {
-            if (this.isSelecting())
+            if (this.isSelected())
             {
                 this.deleteSelection();
                 this.deselect();
@@ -650,6 +718,8 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
                 this.deleteCharacter();
             }
+
+            return true;
         }
         else if (ChatAllowedCharacters.isAllowedCharacter(context.typedChar))
         {
@@ -657,11 +727,9 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             this.deselect();
             this.writeCharacter(String.valueOf(context.typedChar));
             this.moveCursor(1, 0);
-        }
 
-        this.update = context.tick + 20;
-        this.horizontal.clamp();
-        this.vertical.clamp();
+            return true;
+        }
 
         return false;
     }
@@ -702,7 +770,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
             if (ny + this.font.FONT_HEIGHT >= this.area.y && ny < this.area.ey())
             {
-                if (this.isSelecting())
+                if (this.isSelected())
                 {
                     this.drawSelectionBar(nx, ny, line, sw, i, min, max);
                 }
@@ -762,6 +830,19 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         if (this.focused && this.dragging == 2)
         {
             this.moveCursorTo(this.cursor, context.mouseX, context.mouseY);
+            this.moveViewportToCursor();
+        }
+
+        if (this.dragging == 3)
+        {
+            this.horizontal.scroll += this.lastMX - context.mouseX;
+            this.horizontal.clamp();
+
+            this.vertical.scroll += this.lastMY - context.mouseY;
+            this.vertical.clamp();
+
+            this.lastMX = context.mouseX;
+            this.lastMY = context.mouseY;
         }
 
         this.horizontal.drag(context);
