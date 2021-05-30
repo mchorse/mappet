@@ -83,6 +83,12 @@ artifacts {
     archives sourcesJar
 }
 
+task scriptingJavadocs(type: Javadoc) {
+    source = sourceSets.main.allJava
+
+    include "mchorse/mappet/api/scripts/user/**"
+}
+
 /* Comparing keys */
 task compareLangFiles {
     doLast {
