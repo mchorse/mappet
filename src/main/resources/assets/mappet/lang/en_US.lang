@@ -89,7 +89,7 @@ mappet.commands.mp.data.load=Loads saved data by §7<id>§r. §7[global]§r dete
 mappet.commands.mp.data.save=Saves global states, and current player's states and inventory to data by §7<id>§r.
 
 mappet.commands.mp.script.help=Scripts subcommand.
-mappet.commands.mp.script.eval=This command evaluates script by §7<id>§r (from world's §7mappet/scripts/§r folder, without file extension) upon players found by §7<player>§r target selector. You can also pass arbitrary NBT data to the event using §7[data]§r argument.
+mappet.commands.mp.script.eval=This command evaluates script by §7<id>§r (from world's §7mappet/scripts/§r folder, without file extension) upon players found by §7<player>§r target selector. Script's §7[function]§r (§7main§r if omitted) function will be called. You can also pass arbitrary NBT data to the event using §7[data]§r argument.
 
 # Config
 
@@ -146,6 +146,7 @@ mappet.gui.panels.regions=Regions
 mappet.gui.panels.npcs=NPCs
 mappet.gui.panels.factions=Factions
 mappet.gui.panels.chains=Quest chains
+mappet.gui.panels.scripts=Scripts
 mappet.gui.panels.modals.add=Type in a name:
 mappet.gui.panels.modals.dupe=Type in a new name for a duplicate:
 mappet.gui.panels.modals.rename=Type in a new name:

@@ -94,6 +94,8 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         this.text.addAll(Arrays.asList(text.split("\n")));
 
         this.cursor.set(0, 0);
+        this.horizontal.scroll = 0;
+        this.vertical.scroll = 0;
     }
 
     public String getText()
@@ -450,6 +452,11 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
     public void moveCursor(int x, int y)
     {
+        this.moveCursor(x, y, true);
+    }
+
+    public void moveCursor(int x, int y, boolean jumpLine)
+    {
         if (!this.hasLine(this.cursor.line))
         {
             return;
@@ -463,18 +470,32 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
             if (nx < 0)
             {
-                if (this.hasLine(this.cursor.line - 1))
+                if (jumpLine)
                 {
-                    this.cursor.line -= 1;
-                    this.moveCursorToLineEnd();
+                    if (this.hasLine(this.cursor.line - 1))
+                    {
+                        this.cursor.line -= 1;
+                        this.moveCursorToLineEnd();
+                    }
+                }
+                else
+                {
+                    this.moveCursorToLineStart();
                 }
             }
             else if (nx > line.length())
             {
-                if (this.hasLine(this.cursor.line + 1))
+                if (jumpLine)
                 {
-                    this.cursor.line += 1;
-                    this.moveCursorToLineStart();
+                    if (this.hasLine(this.cursor.line + 1))
+                    {
+                        this.cursor.line += 1;
+                        this.moveCursorToLineStart();
+                    }
+                }
+                else
+                {
+                    this.moveCursorToLineEnd();
                 }
             }
             else
@@ -818,6 +839,17 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             }
 
             return true;
+        }
+        else if (context.keyCode == Keyboard.KEY_TAB)
+        {
+            this.deleteSelection();
+            this.deselect();
+            this.writeString("    ");
+
+            for (int i = 0; i < 4; i++)
+            {
+                this.moveCursor(1, 0, false);
+            }
         }
         else if (ChatAllowedCharacters.isAllowedCharacter(context.typedChar))
         {

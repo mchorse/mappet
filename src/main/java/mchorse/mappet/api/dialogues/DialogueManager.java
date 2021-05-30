@@ -25,7 +25,7 @@ public class DialogueManager extends BaseManager<Dialogue>
     }
 
     @Override
-    protected Dialogue createData(NBTTagCompound tag)
+    protected Dialogue createData(String id, NBTTagCompound tag)
     {
         Dialogue dialogue = new Dialogue(CommonProxy.getDialogues());
 

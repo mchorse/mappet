@@ -22,14 +22,14 @@ public abstract class BaseManager <T extends AbstractData> extends FolderManager
     @Override
     public final T create(String id, NBTTagCompound tag)
     {
-        T data = this.createData(tag);
+        T data = this.createData(id, tag);
 
         data.setId(id);
 
         return data;
     }
 
-    protected abstract T createData(NBTTagCompound tag);
+    protected abstract T createData(String id, NBTTagCompound tag);
 
     @Override
     public T load(String id)
@@ -53,9 +53,9 @@ public abstract class BaseManager <T extends AbstractData> extends FolderManager
         return null;
     }
 
-    public boolean save(String name, T data)
+    public boolean save(String id, T data)
     {
-        return this.save(name, data.serializeNBT());
+        return this.save(id, data.serializeNBT());
     }
 
     @Override

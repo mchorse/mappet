@@ -31,7 +31,7 @@ public class GuiPropertyBlockElement extends GuiTargetBlockElement<PropertyBlock
         }
 
         this.comparison.setValue(block.comparison.ordinal());
-        this.value = new GuiTrackpadElement(mc, (v) -> this.block.value = v.intValue());
+        this.value = new GuiTrackpadElement(mc, (v) -> this.block.value = v);
         this.value.setValue(block.value);
     }
 

@@ -21,7 +21,7 @@ public class EventManager extends BaseManager<NodeSystem<EventNode>>
     }
 
     @Override
-    protected NodeSystem<EventNode> createData(NBTTagCompound tag)
+    protected NodeSystem<EventNode> createData(String id, NBTTagCompound tag)
     {
         NodeSystem<EventNode> event = new NodeSystem<EventNode>(CommonProxy.getEvents());
 

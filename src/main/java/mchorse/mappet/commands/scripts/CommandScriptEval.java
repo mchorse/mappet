@@ -1,10 +1,7 @@
 package mchorse.mappet.commands.scripts;
 
 import mchorse.mappet.Mappet;
-import mchorse.mappet.api.events.EventContext;
-import mchorse.mappet.api.events.nodes.EventNode;
 import mchorse.mappet.api.utils.DataContext;
-import mchorse.mappet.api.utils.nodes.NodeSystem;
 import mchorse.mclib.commands.SubCommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -28,7 +25,7 @@ public class CommandScriptEval extends CommandScriptBase
     @Override
     public String getSyntax()
     {
-        return "{l}{6}/{r}mp {8}script eval{r} {7}<player> <id> [data]{r}";
+        return "{l}{6}/{r}mp {8}script eval{r} {7}<player> <id> [function] [data]{r}";
     }
 
     @Override
@@ -42,13 +39,18 @@ public class CommandScriptEval extends CommandScriptBase
     {
         EntityPlayerMP player = getPlayer(server, sender, args[0]);
         DataContext context = new DataContext(player);
+        String function = args.length > 2 ? args[2] : "main";
 
-        if (args.length > 2)
+        if (args.length > 3)
         {
-            context.parse(String.join(" ", SubCommandBase.dropFirstArguments(args, 2)));
+            context.parse(String.join(" ", SubCommandBase.dropFirstArguments(args, 3)));
         }
 
-        if (!Mappet.scripts.execute(args[1], context))
+        try
+        {
+            Mappet.scripts.execute(args[1], function, context);
+        }
+        catch (Exception e)
         {
             throw new CommandException("script.empty", args[1]);
         }

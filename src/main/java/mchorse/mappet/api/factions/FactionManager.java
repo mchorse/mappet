@@ -13,7 +13,7 @@ public class FactionManager extends BaseManager<Faction>
     }
 
     @Override
-    protected Faction createData(NBTTagCompound tag)
+    protected Faction createData(String id, NBTTagCompound tag)
     {
         Faction faction = new Faction();
 

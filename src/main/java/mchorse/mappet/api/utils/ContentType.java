@@ -116,6 +116,21 @@ public enum ContentType
         {
             return dashboard.chain;
         }
+    },
+    SCRIPTS()
+    {
+        @Override
+        public IManager<? extends AbstractData> getManager()
+        {
+            return Mappet.scripts;
+        }
+
+        @Override
+        @SideOnly(Side.CLIENT)
+        public GuiMappetDashboardPanel get(GuiMappetDashboard dashboard)
+        {
+            return dashboard.script;
+        }
     };
 
     /* Every Karen be like :D */

@@ -5,14 +5,16 @@ import mchorse.mappet.api.utils.AbstractData;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Folder based manager
  */
 public abstract class FolderManager <T extends AbstractData> implements IManager<T>
 {
-    private File folder;
+    protected File folder;
 
     public FolderManager(File folder)
     {
@@ -53,24 +55,29 @@ public abstract class FolderManager <T extends AbstractData> implements IManager
     @Override
     public Collection<String> getKeys()
     {
-        List<String> list = new ArrayList<String>();
+        Set<String> set = new HashSet<String>();
 
         if (this.folder == null)
         {
-            return list;
+            return set;
         }
 
         for (File file : this.folder.listFiles())
         {
             String name = file.getName();
 
-            if (file.isFile() && name.endsWith(this.getExtension()))
+            if (file.isFile() && this.isData(file))
             {
-                list.add(name.substring(0, name.lastIndexOf(".")));
+                set.add(name.substring(0, name.lastIndexOf(".")));
             }
         }
 
-        return list;
+        return set;
+    }
+
+    protected boolean isData(File file)
+    {
+        return file.getName().endsWith(this.getExtension());
     }
 
     public File getFile(String name)

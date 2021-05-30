@@ -19,7 +19,7 @@ public class QuestChainManager extends BaseManager<QuestChain>
     }
 
     @Override
-    protected QuestChain createData(NBTTagCompound tag)
+    protected QuestChain createData(String id, NBTTagCompound tag)
     {
         QuestChain chain = new QuestChain(CommonProxy.getChains());
 

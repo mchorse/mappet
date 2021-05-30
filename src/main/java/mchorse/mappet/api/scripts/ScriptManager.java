@@ -1,20 +1,21 @@
 package mchorse.mappet.api.scripts;
 
-import mchorse.mappet.api.scripts.code.ScriptEvent;
 import mchorse.mappet.api.utils.DataContext;
-import mchorse.mappet.api.utils.manager.FolderManager;
+import mchorse.mappet.api.utils.manager.BaseManager;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.INBTSerializable;
+import org.apache.commons.io.FileUtils;
 
-import javax.script.Invocable;
-import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import java.io.File;
-import java.io.FileReader;
+import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
 
-public class ScriptManager extends FolderManager
+public class ScriptManager extends BaseManager<Script>
 {
     private ScriptEngineManager manager;
+    private Map<String, Script> uniqueScripts = new HashMap<String, Script>();
 
     public ScriptManager(File folder)
     {
@@ -30,51 +31,149 @@ public class ScriptManager extends FolderManager
         }
     }
 
-    public boolean execute(String script, DataContext context)
+    /**
+     * Execute given script
+     */
+    public Object execute(String id, String function, DataContext context) throws ScriptException, NoSuchMethodException
     {
-        File file = getFile(script);
+        Script script = this.uniqueScripts.get(id);
 
-        try
+        if (script == null)
         {
-            ScriptEngine engine = this.manager.getEngineByName("nashorn");
+            script = this.load(id);
 
-            engine.eval(new FileReader(file));
-
-            ((Invocable) engine).invokeFunction("main", new ScriptEvent(context));
-
-            return true;
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
+            if (script.unique)
+            {
+                this.uniqueScripts.put(id, script);
+            }
         }
 
-        return false;
+        if (script == null)
+        {
+            return null;
+        }
+
+        script.start(this.manager);
+
+        return script.execute(function, context);
     }
 
     @Override
-    protected String getExtension()
+    protected Script createData(String id, NBTTagCompound tag)
     {
-        return ".js";
+        Script script = new Script();
+
+        if (tag != null)
+        {
+            script.deserializeNBT(tag);
+        }
+
+        return script;
     }
 
-    /* Unused */
+    /* Custom implementation of base manager to support .js files */
 
     @Override
-    public INBTSerializable<NBTTagCompound> create(String id, NBTTagCompound tag)
+    public Script load(String id)
     {
-        throw new UnsupportedOperationException("Method create(String, NBTTagCompound) isn't supported!");
+        Script script = super.load(id);
+        File js = this.getJSFile(id);
+
+        if (js != null && js.isFile())
+        {
+            try
+            {
+                String code = FileUtils.readFileToString(js, Charset.defaultCharset());
+
+                if (script == null)
+                {
+                    script = new Script();
+                }
+
+                script.code = code.replaceAll("\t", "    ").replaceAll("\r", "");
+            }
+            catch (Exception e)
+            {}
+        }
+
+        return script;
     }
 
     @Override
-    public INBTSerializable<NBTTagCompound> load(String id)
+    public boolean save(String id, NBTTagCompound tag)
     {
-        throw new UnsupportedOperationException("Method load(String) isn't supported!");
+        String code = tag.getString("Code");
+
+        tag.removeTag("Code");
+
+        boolean result = super.save(id, tag);
+
+        if (!code.trim().isEmpty())
+        {
+            try
+            {
+                FileUtils.writeStringToFile(this.getJSFile(id), code, Charset.defaultCharset());
+
+                result = true;
+            }
+            catch (Exception e)
+            {}
+        }
+
+        if (result)
+        {
+            this.uniqueScripts.remove(id);
+        }
+
+        return result;
+    }
+
+    /* Custom implementation of folder manager to support .js files */
+
+    @Override
+    public boolean exists(String name)
+    {
+        File js = this.getJSFile(name);
+
+        return super.exists(name) || (js != null && js.exists());
     }
 
     @Override
-    public boolean save(String name, NBTTagCompound tag)
+    public boolean rename(String id, String newId)
     {
-        throw new UnsupportedOperationException("Method save(String, NBTTagCompound) isn't supported!");
+        File js = this.getJSFile(id);
+        boolean result = super.rename(id, newId);
+
+        if (js != null && js.exists())
+        {
+            return js.renameTo(this.getJSFile(newId)) || result;
+        }
+
+        return result;
+    }
+
+    @Override
+    public boolean delete(String name)
+    {
+        boolean result = super.delete(name);
+        File js = this.getJSFile(name);
+
+        return (js != null && js.delete()) || result;
+    }
+
+    @Override
+    protected boolean isData(File file)
+    {
+        return super.isData(file) || file.getName().endsWith(".js");
+    }
+
+    public File getJSFile(String id)
+    {
+        if (this.folder == null)
+        {
+            return null;
+        }
+
+        return new File(this.folder, id + ".js");
     }
 }
