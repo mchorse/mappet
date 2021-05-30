@@ -119,7 +119,7 @@ public class ExpressionManager
 
         this.context = context;
 
-        for (Map.Entry<String, Object> entry : context.getValues())
+        for (Map.Entry<String, Object> entry : context.getValues().entrySet())
         {
             String key = entry.getKey();
             Variable variable = this.builder.variables.get(key);

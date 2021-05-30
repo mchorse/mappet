@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts;
 
+import mchorse.mappet.api.scripts.code.ScriptEvent;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.manager.FolderManager;
 import net.minecraft.nbt.NBTTagCompound;
@@ -39,7 +40,7 @@ public class ScriptManager extends FolderManager
 
             engine.eval(new FileReader(file));
 
-            ((Invocable) engine).invokeFunction("main", context);
+            ((Invocable) engine).invokeFunction("main", new ScriptEvent(context));
 
             return true;
         }

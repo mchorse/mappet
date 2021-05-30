@@ -112,9 +112,9 @@ public class DataContext
         return this;
     }
 
-    public Set<Map.Entry<String, Object>> getValues()
+    public Map<String, Object> getValues()
     {
-        return this.values.entrySet();
+        return this.values;
     }
 
     public Object getValue(String key)
