@@ -92,6 +92,8 @@ public final class Mappet
     public static ScriptManager scripts;
 
     /* Configuration */
+    public static ValueBoolean npcsPeacefulDamage;
+
     public static ValueInt eventMaxExecutions;
 
     public static ValueInt nodePulseBackgroundColor;
@@ -109,6 +111,8 @@ public final class Mappet
     public void onConfigRegister(RegisterConfigEvent event)
     {
         ConfigBuilder builder = event.createBuilder(MOD_ID);
+
+        npcsPeacefulDamage = builder.category("npc").getBoolean("peaceful_damage", true);
 
         eventMaxExecutions = builder.category("events").getInt("max_executions", 10000, 100, 1000000);
 

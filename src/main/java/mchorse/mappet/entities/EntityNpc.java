@@ -14,6 +14,7 @@ import mchorse.mappet.entities.ai.EntityAIAttackNpcMelee;
 import mchorse.mappet.entities.ai.EntityAIFollowTarget;
 import mchorse.mappet.entities.ai.EntityAIPatrol;
 import mchorse.mappet.entities.ai.EntityAIReturnToPost;
+import mchorse.mappet.entities.utils.NpcDamageSource;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.npc.PacketNpcMorph;
 import mchorse.mappet.network.common.npc.PacketNpcState;
@@ -332,7 +333,9 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     @Override
     public boolean attackEntityAsMob(Entity entityIn)
     {
-        entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), this.state.damage);
+        DamageSource source = Mappet.npcsPeacefulDamage.get() ? new NpcDamageSource(this) : DamageSource.causeMobDamage(this);
+
+        entityIn.attackEntityFrom(source, this.state.damage);
 
         return super.attackEntityAsMob(entityIn);
     }

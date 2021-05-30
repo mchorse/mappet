@@ -95,11 +95,17 @@ mappet.commands.mp.script.eval=This command evaluates script by §7<id>§r (from
 
 mappet.config.title=Mappet
 
+mappet.config.npc.title=NPCs
+mappet.config.npc.tooltip=Mod options related to NPCs
+
+mappet.config.npc.peaceful_damage=Peaceful damage
+mappet.config.comments.npc.peaceful_damage=This option determines whether NPCs can inflict damage to players in peaceful difficulty.
+
 mappet.config.events.title=Events
 mappet.config.events.tooltip=Mod options related to events
 
 mappet.config.events.max_executions=Max event executions
-mappet.config.comments.events.max_executions=This is the maximum amount of node executions can be done per event (to avoid infinite recursion)
+mappet.config.comments.events.max_executions=This is the maximum amount of node executions can be done per event (to avoid infinite recursion).
 
 mappet.config.gui.title=GUI
 mappet.config.gui.tooltip=Options to tweak GUI preferences
