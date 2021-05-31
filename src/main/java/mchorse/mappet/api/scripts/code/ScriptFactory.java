@@ -1,13 +1,16 @@
 package mchorse.mappet.api.scripts.code;
 
+import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
 import mchorse.mappet.api.scripts.code.nbt.ScriptNBTCompound;
 import mchorse.mappet.api.scripts.code.nbt.ScriptNBTList;
 import mchorse.mappet.api.scripts.user.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.IScriptFactory;
+import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.mappet.api.scripts.user.nbt.INBTList;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -66,5 +69,16 @@ public class ScriptFactory implements IScriptFactory
         }
 
         return new ScriptNBTList(list);
+    }
+
+    @Override
+    public IScriptItemStack itemStack(INBTCompound compound)
+    {
+        if (compound instanceof ScriptItemStack)
+        {
+            return new ScriptItemStack(new ItemStack(((ScriptNBTCompound) compound).getNBTCompound()));
+        }
+
+        return ScriptItemStack.EMPTY;
     }
 }

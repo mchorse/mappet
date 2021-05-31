@@ -41,6 +41,15 @@ public class ScriptNBTCompound implements INBTCompound
         return this.tag.toString();
     }
 
+    /**
+     * Just in case someone will use toString() instead of stringify()
+     */
+    @Override
+    public String toString()
+    {
+        return this.tag.toString();
+    }
+
     @Override
     public boolean isEmpty()
     {

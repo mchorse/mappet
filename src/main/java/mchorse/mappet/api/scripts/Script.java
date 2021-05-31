@@ -7,6 +7,7 @@ import mchorse.mappet.api.utils.DataContext;
 import net.minecraft.nbt.NBTTagCompound;
 
 import javax.script.Invocable;
+import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -26,6 +27,7 @@ public class Script extends AbstractData
         if (this.engine == null)
         {
             this.engine = manager.getEngineByName("nashorn");
+            this.engine.getContext().setAttribute("javax.script.filename", this.getId() + ".js", ScriptContext.ENGINE_SCOPE);
             this.engine.eval(this.code);
             this.engine.put("mappet", new ScriptFactory());
         }

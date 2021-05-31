@@ -1,11 +1,11 @@
 package mchorse.mappet.api.scripts.user;
 
+import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.mappet.api.scripts.user.nbt.INBTList;
 
 /**
- * Scripting API factory that allows to initialize/create
- * different stuff
+ * Scripting API factory that allows to initialize/create different stuff.
  */
 public interface IScriptFactory
 {
@@ -42,4 +42,17 @@ public interface IScriptFactory
      * invalid then an empty list will be returned
      */
     public INBTList list(String nbt);
+
+    /**
+     * Create an item stack out of string NBT
+     */
+    public default IScriptItemStack itemStack(String nbt)
+    {
+        return this.itemStack(this.compound(nbt));
+    }
+
+    /**
+     * Create an item stack out of string NBT
+     */
+    public IScriptItemStack itemStack(INBTCompound compound);
 }

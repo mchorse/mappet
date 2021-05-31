@@ -1,7 +1,9 @@
 package mchorse.mappet.api.scripts.code;
 
+import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
 import mchorse.mappet.api.scripts.user.IScriptEntity;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
+import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -57,6 +59,30 @@ public class ScriptEntity implements IScriptEntity
     public boolean isSprinting()
     {
         return this.entity.isSprinting();
+    }
+
+    /* Items */
+
+    @Override
+    public IScriptItemStack mainItem()
+    {
+        if (this.entity instanceof EntityLivingBase)
+        {
+            return new ScriptItemStack(((EntityLivingBase) this.entity).getHeldItemMainhand());
+        }
+
+        return ScriptItemStack.EMPTY;
+    }
+
+    @Override
+    public IScriptItemStack offItem()
+    {
+        if (this.entity instanceof EntityLivingBase)
+        {
+            return new ScriptItemStack(((EntityLivingBase) this.entity).getHeldItemOffhand());
+        }
+
+        return ScriptItemStack.EMPTY;
     }
 
     /* Entity meta */

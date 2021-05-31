@@ -47,6 +47,15 @@ public class ScriptNBTList implements INBTList
         return this.list.toString();
     }
 
+    /**
+     * Just in case someone will use toString() instead of stringify()
+     */
+    @Override
+    public String toString()
+    {
+        return this.list.toString();
+    }
+
     @Override
     public boolean isEmpty()
     {

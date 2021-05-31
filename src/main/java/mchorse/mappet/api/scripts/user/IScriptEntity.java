@@ -1,12 +1,13 @@
 package mchorse.mappet.api.scripts.user;
 
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
+import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 
 /**
- * Entity interface
+ * Entity interface.
  *
  * This interface represents an entity, it could be a player, NPC,
- * or any other entity
+ * or any other entity.
  */
 public interface IScriptEntity
 {
@@ -36,6 +37,18 @@ public interface IScriptEntity
      * Is this entity is sprinting
      */
     public boolean isSprinting();
+
+    /* Items */
+
+    /**
+     * Get item held in main hand
+     */
+    public IScriptItemStack mainItem();
+
+    /**
+     * Get item held in off hand
+     */
+    public IScriptItemStack offItem();
 
     /* Entity meta */
 

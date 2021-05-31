@@ -8,6 +8,8 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 
+import javax.script.ScriptException;
+
 public class CommandScriptEval extends CommandScriptBase
 {
     @Override
@@ -49,6 +51,10 @@ public class CommandScriptEval extends CommandScriptBase
         try
         {
             Mappet.scripts.execute(args[1], function, context);
+        }
+        catch (ScriptException e)
+        {
+            throw new CommandException("script.error", args[1], e.getColumnNumber(), e.getLineNumber(), e.getMessage());
         }
         catch (Exception e)
         {

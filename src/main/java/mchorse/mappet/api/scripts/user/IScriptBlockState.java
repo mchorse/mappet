@@ -1,10 +1,10 @@
 package mchorse.mappet.api.scripts.user;
 
 /**
- * Scripted block state
+ * Scripted block state.
  *
  * This interface represents a block state that can be used
- * to compare or place into the world
+ * to compare or place into the world.
  */
 public interface IScriptBlockState
 {

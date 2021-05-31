@@ -3,7 +3,7 @@ package mchorse.mappet.api.scripts.user;
 import java.util.Map;
 
 /**
- * Script event
+ * Script event.
  *
  * This interface represent the event, the only argument that was passed
  * into script's function. It contains many different useful methods to
