@@ -1,8 +1,6 @@
 package mchorse.mappet.api.scripts.user;
 
 /**
- * World.
- *
  * This interface represent a world passed in the event.
  */
 public interface IScriptWorld

@@ -27,6 +27,11 @@ public interface IScriptEvent
     public IScriptWorld world();
 
     /**
+     * Get the server in which this event happened
+     */
+    public IScriptServer server();
+
+    /**
      * Get a map of extra context values that was passed into the event
      */
     public Map<String, Object> values();

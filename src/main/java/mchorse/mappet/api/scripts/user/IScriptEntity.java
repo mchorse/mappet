@@ -21,7 +21,17 @@ public interface IScriptEntity
     /**
      * Set entity's position (teleport)
      */
-    public void setPosition(double x, double y, double z);
+    public void position(double x, double y, double z);
+
+    /**
+     * Get entity's motion
+     */
+    public ScriptVector motion();
+
+    /**
+     * Set entity's motion
+     */
+    public void motion(double x, double y, double z);
 
     /**
      * Get health points of this entity (20 is the max default for players)
@@ -68,4 +78,14 @@ public interface IScriptEntity
      * Check whether this entity is a player
      */
     public boolean isPlayer();
+
+    /**
+     * Remove this entity from the server without any dead effects
+     */
+    public void remove();
+
+    /**
+     * Kill this entity from the server by inflicting lots of damage (similar to /kill command)
+     */
+    public void kill();
 }

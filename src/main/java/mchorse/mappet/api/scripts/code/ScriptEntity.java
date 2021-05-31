@@ -8,6 +8,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.util.ResourceLocation;
 
 public class ScriptEntity implements IScriptEntity
@@ -33,9 +35,28 @@ public class ScriptEntity implements IScriptEntity
     }
 
     @Override
-    public void setPosition(double x, double y, double z)
+    public void position(double x, double y, double z)
     {
         this.entity.setPositionAndUpdate(x, y, z);
+    }
+
+    @Override
+    public ScriptVector motion()
+    {
+        return new ScriptVector(this.entity.motionX, this.entity.motionY, this.entity.posZ);
+    }
+
+    @Override
+    public void motion(double x, double y, double z)
+    {
+        this.entity.motionX = x;
+        this.entity.motionY = y;
+        this.entity.motionZ = z;
+
+        if (this.isPlayer())
+        {
+            ((EntityPlayerMP) this.entity).connection.sendPacket(new SPacketEntityVelocity(this.entity.getEntityId(), x, y, z));
+        }
     }
 
     @Override
@@ -105,5 +126,17 @@ public class ScriptEntity implements IScriptEntity
     public boolean isPlayer()
     {
         return this.entity instanceof EntityPlayer;
+    }
+
+    @Override
+    public void remove()
+    {
+        this.entity.setDead();
+    }
+
+    @Override
+    public void kill()
+    {
+        this.entity.onKillCommand();
     }
 }

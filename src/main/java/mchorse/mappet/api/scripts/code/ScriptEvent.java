@@ -2,6 +2,7 @@ package mchorse.mappet.api.scripts.code;
 
 import mchorse.mappet.api.scripts.user.IScriptEntity;
 import mchorse.mappet.api.scripts.user.IScriptEvent;
+import mchorse.mappet.api.scripts.user.IScriptServer;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
 import mchorse.mappet.api.utils.DataContext;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,6 +16,8 @@ public class ScriptEvent implements IScriptEvent
 
     private IScriptEntity subject;
     private IScriptEntity object;
+    private IScriptWorld world;
+    private IScriptServer server;
 
     public ScriptEvent(DataContext context)
     {
@@ -46,7 +49,23 @@ public class ScriptEvent implements IScriptEvent
     @Override
     public IScriptWorld world()
     {
-        return new ScriptWorld(this.context.world);
+        if (this.context.world != null)
+        {
+            this.world = new ScriptWorld(this.context.world);
+        }
+
+        return this.world;
+    }
+
+    @Override
+    public IScriptServer server()
+    {
+        if (this.context.server != null)
+        {
+            this.server = new ScriptServer(this.context.server);
+        }
+
+        return this.server;
     }
 
     @Override
