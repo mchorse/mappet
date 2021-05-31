@@ -15,7 +15,7 @@ public interface IScriptEntity
     /**
      * Get entity's position
      */
-    public ScriptVector getPosition();
+    public ScriptVector position();
 
     /**
      * Set entity's position (teleport)
@@ -25,7 +25,7 @@ public interface IScriptEntity
     /**
      * Get health points of this entity (20 is the max default for players)
      */
-    public float getHp();
+    public float hp();
 
     /**
      * Is this entity is sneaking
@@ -43,13 +43,13 @@ public interface IScriptEntity
      * Get unique ID of this entity, which can be used, if needed, in
      * commands as a target selector
      */
-    public String getUniqueId();
+    public String uniqueId();
 
     /**
      * Get entity's resource location ID, like "minecraft:pig" or
      * "minecraft:zombie"
      */
-    public String getEntityId();
+    public String entityId();
 
     /**
      * Check whether this entity is a player

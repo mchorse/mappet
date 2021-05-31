@@ -8,7 +8,7 @@ package mchorse.mappet.api.scripts.user;
 public interface IScriptWorld
 {
     /**
-     * Set a block at XYZ, use {@link IScriptEvent#getBlockState(String, int)}
+     * Set a block at XYZ, use {@link IScriptEvent#blockState(String, int)}
      * to get the block state
      */
     public void setBlock(IScriptBlockState state, int x, int y, int z);

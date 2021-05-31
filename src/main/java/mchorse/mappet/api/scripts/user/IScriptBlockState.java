@@ -11,12 +11,12 @@ public interface IScriptBlockState
     /**
      * Get meta value of this state (it will always be between 0 and 15)
      */
-    public int getMeta();
+    public int meta();
 
     /**
      * Get block's ID like "minecraft:stone"
      */
-    public String getBlockId();
+    public String blockId();
 
     /**
      * Check whether given block state contains same block state

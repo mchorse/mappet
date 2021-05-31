@@ -14,30 +14,22 @@ public interface IScriptEvent
     /**
      * Get subject (primary) entity that was passed into the event
      */
-    public IScriptEntity getSubject();
+    public IScriptEntity subject();
 
     /**
      * Get object (secondary) entity that was passed into the event
      */
-    public IScriptEntity getObject();
+    public IScriptEntity object();
 
     /**
      * Get the world in which this event happened
      */
-    public IScriptWorld getWorld();
+    public IScriptWorld world();
 
     /**
      * Get a map of extra context values that was passed into the event
      */
-    public Map<String, Object> getValues();
-
-    /* Factory stuff */
-
-    /**
-     * Get a block state that can be used to place and compare blocks in
-     * the {@link IScriptWorld}
-     */
-    public IScriptBlockState getBlockState(String blockId, int meta);
+    public Map<String, Object> values();
 
     /* Useful methods */
 
@@ -49,7 +41,7 @@ public interface IScriptEvent
     /**
      * Send a message to all players in the chat
      */
-    public void sendMessage(String message);
+    public void send(String message);
 
     /**
      * Send a message only to one player
@@ -57,5 +49,5 @@ public interface IScriptEvent
      * @return whether event was able to send the message (i.e. if entity
      *         isn't a player, it will return false)
      */
-    public boolean sendMessageTo(IScriptEntity entity, String message);
+    public boolean sendTo(IScriptEntity entity, String message);
 }

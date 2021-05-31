@@ -19,13 +19,13 @@ public class ScriptBlockState implements IScriptBlockState
     }
 
     @Override
-    public int getMeta()
+    public int meta()
     {
         return this.state.getBlock().getMetaFromState(this.state);
     }
 
     @Override
-    public String getBlockId()
+    public String blockId()
     {
         ResourceLocation rl = this.state.getBlock().getRegistryName();
 

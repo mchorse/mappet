@@ -1,16 +1,11 @@
 package mchorse.mappet.api.scripts.code;
 
-import mchorse.mappet.api.scripts.user.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.IScriptEntity;
 import mchorse.mappet.api.scripts.user.IScriptEvent;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
 import mchorse.mappet.api.utils.DataContext;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.util.Map;
 
@@ -27,7 +22,7 @@ public class ScriptEvent implements IScriptEvent
     }
 
     @Override
-    public IScriptEntity getSubject()
+    public IScriptEntity subject()
     {
         if (this.subject == null && this.context.subject != null)
         {
@@ -38,7 +33,7 @@ public class ScriptEvent implements IScriptEvent
     }
 
     @Override
-    public IScriptEntity getObject()
+    public IScriptEntity object()
     {
         if (this.object == null && this.context.object != null)
         {
@@ -49,33 +44,15 @@ public class ScriptEvent implements IScriptEvent
     }
 
     @Override
-    public IScriptWorld getWorld()
+    public IScriptWorld world()
     {
         return new ScriptWorld(this.context.world);
     }
 
     @Override
-    public Map<String, Object> getValues()
+    public Map<String, Object> values()
     {
         return this.context.getValues();
-    }
-
-    /* Factory stuff */
-
-    @Override
-    public IScriptBlockState getBlockState(String blockId, int meta)
-    {
-        ResourceLocation location = new ResourceLocation(blockId);
-        Block block = ForgeRegistries.BLOCKS.getValue(location);
-
-        if (block != null)
-        {
-            IBlockState state = block.getStateFromMeta(meta);
-
-            return new ScriptBlockState(state);
-        }
-
-        return null;
     }
 
     /* Useful methods */
@@ -87,7 +64,7 @@ public class ScriptEvent implements IScriptEvent
     }
 
     @Override
-    public void sendMessage(String message)
+    public void send(String message)
     {
         for (EntityPlayer player : this.context.server.getPlayerList().getPlayers())
         {
@@ -96,7 +73,7 @@ public class ScriptEvent implements IScriptEvent
     }
 
     @Override
-    public boolean sendMessageTo(IScriptEntity entity, String message)
+    public boolean sendTo(IScriptEntity entity, String message)
     {
         if (entity.isPlayer())
         {

@@ -25,7 +25,7 @@ public class ScriptEntity implements IScriptEntity
     /* Entity properties */
 
     @Override
-    public ScriptVector getPosition()
+    public ScriptVector position()
     {
         return new ScriptVector(this.entity.posX, this.entity.posY, this.entity.posZ);
     }
@@ -37,7 +37,7 @@ public class ScriptEntity implements IScriptEntity
     }
 
     @Override
-    public float getHp()
+    public float hp()
     {
         if (this.entity instanceof EntityLivingBase)
         {
@@ -62,13 +62,13 @@ public class ScriptEntity implements IScriptEntity
     /* Entity meta */
 
     @Override
-    public String getUniqueId()
+    public String uniqueId()
     {
         return this.entity.getCachedUniqueIdString();
     }
 
     @Override
-    public String getEntityId()
+    public String entityId()
     {
         ResourceLocation rl = EntityList.getKey(this.entity);
 

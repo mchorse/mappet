@@ -1,6 +1,7 @@
 package mchorse.mappet.api.scripts;
 
 import mchorse.mappet.api.scripts.code.ScriptEvent;
+import mchorse.mappet.api.scripts.code.ScriptFactory;
 import mchorse.mappet.api.utils.AbstractData;
 import mchorse.mappet.api.utils.DataContext;
 import net.minecraft.nbt.NBTTagCompound;
@@ -26,6 +27,7 @@ public class Script extends AbstractData
         {
             this.engine = manager.getEngineByName("nashorn");
             this.engine.eval(this.code);
+            this.engine.put("mappet", new ScriptFactory());
         }
     }
 
