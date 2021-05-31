@@ -2,6 +2,7 @@ package mchorse.mappet.api.scripts.user;
 
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
+import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
 
 /**
  * Entity interface.
@@ -88,4 +89,13 @@ public interface IScriptEntity
      * Kill this entity from the server by inflicting lots of damage (similar to /kill command)
      */
     public void kill();
+
+    /* Mappet stuff */
+
+    /**
+     * Get states of this entity (if it has some, only players have states)
+     *
+     * @return states of a player, or null if an entity doesn't have states
+     */
+    public IMappetStates states();
 }

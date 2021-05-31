@@ -1,5 +1,7 @@
 package mchorse.mappet.api.scripts.user;
 
+import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
+
 /**
  * This interface represent a world passed in the event.
  */

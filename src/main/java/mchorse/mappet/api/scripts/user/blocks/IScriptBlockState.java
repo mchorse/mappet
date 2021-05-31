@@ -1,4 +1,4 @@
-package mchorse.mappet.api.scripts.user;
+package mchorse.mappet.api.scripts.user.blocks;
 
 /**
  * Scripted block state.

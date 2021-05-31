@@ -49,7 +49,7 @@ public class ScriptEvent implements IScriptEvent
     @Override
     public IScriptWorld world()
     {
-        if (this.context.world != null)
+        if (this.world == null && this.context.world != null)
         {
             this.world = new ScriptWorld(this.context.world);
         }
@@ -60,7 +60,7 @@ public class ScriptEvent implements IScriptEvent
     @Override
     public IScriptServer server()
     {
-        if (this.context.server != null)
+        if (this.server == null && this.context.server != null)
         {
             this.server = new ScriptServer(this.context.server);
         }

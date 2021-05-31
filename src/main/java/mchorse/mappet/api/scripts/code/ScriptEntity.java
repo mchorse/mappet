@@ -1,9 +1,14 @@
 package mchorse.mappet.api.scripts.code;
 
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
+import mchorse.mappet.api.scripts.code.mappet.MappetStates;
 import mchorse.mappet.api.scripts.user.IScriptEntity;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
+import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
+import mchorse.mappet.api.states.States;
+import mchorse.mappet.capabilities.character.Character;
+import mchorse.mappet.utils.WorldUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,6 +20,7 @@ import net.minecraft.util.ResourceLocation;
 public class ScriptEntity implements IScriptEntity
 {
     private Entity entity;
+    private IMappetStates states;
 
     public ScriptEntity(Entity entity)
     {
@@ -138,5 +144,23 @@ public class ScriptEntity implements IScriptEntity
     public void kill()
     {
         this.entity.onKillCommand();
+    }
+
+    /* Mappet stuff */
+
+    @Override
+    public IMappetStates states()
+    {
+        if (this.states == null)
+        {
+            States states = WorldUtils.getStates(this.entity);
+
+            if (states != null)
+            {
+                this.states = new MappetStates(states);
+            }
+        }
+
+        return this.states;
     }
 }

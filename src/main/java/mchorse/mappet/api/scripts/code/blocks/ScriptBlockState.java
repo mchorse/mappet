@@ -1,6 +1,6 @@
-package mchorse.mappet.api.scripts.code;
+package mchorse.mappet.api.scripts.code.blocks;
 
-import mchorse.mappet.api.scripts.user.IScriptBlockState;
+import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.ResourceLocation;
 

@@ -1,7 +1,10 @@
 package mchorse.mappet.api.scripts.code;
 
+import mchorse.mappet.Mappet;
+import mchorse.mappet.api.scripts.code.mappet.MappetStates;
 import mchorse.mappet.api.scripts.user.IScriptEntity;
 import mchorse.mappet.api.scripts.user.IScriptServer;
+import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
 import net.minecraft.command.EntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -13,6 +16,7 @@ import java.util.List;
 public class ScriptServer implements IScriptServer
 {
     private MinecraftServer server;
+    private IMappetStates states;
 
     public ScriptServer(MinecraftServer server)
     {
@@ -53,5 +57,16 @@ public class ScriptServer implements IScriptServer
         }
 
         return entities;
+    }
+
+    @Override
+    public IMappetStates states()
+    {
+        if (this.states == null)
+        {
+            this.states = new MappetStates(Mappet.states);
+        }
+
+        return this.states;
     }
 }

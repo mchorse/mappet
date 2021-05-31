@@ -1,5 +1,7 @@
 package mchorse.mappet.api.scripts.user;
 
+import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
+
 import java.util.List;
 
 /**
@@ -16,4 +18,9 @@ public interface IScriptServer
      * Get all players on the server
      */
     public List<IScriptEntity> players();
+
+    /**
+     * Get global (server) states
+     */
+    public IMappetStates states();
 }
