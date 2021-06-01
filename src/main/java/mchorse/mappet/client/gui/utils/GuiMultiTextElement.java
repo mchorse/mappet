@@ -833,9 +833,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         }
         else if (context.keyCode == Keyboard.KEY_RETURN)
         {
-            this.deleteSelection();
-            this.deselect();
-            this.writeNewLine();
+            this.keyNewLine();
 
             return true;
         }
@@ -851,23 +849,19 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
                 if (context.keyCode == Keyboard.KEY_DELETE)
                 {
                     this.moveCursor(1, 0);
+                    this.deleteCharacter();
                 }
-
-                this.deleteCharacter();
+                else
+                {
+                    this.keyBackspace();
+                }
             }
 
             return true;
         }
         else if (context.keyCode == Keyboard.KEY_TAB)
         {
-            this.deleteSelection();
-            this.deselect();
-            this.writeString("    ");
-
-            for (int i = 0; i < 4; i++)
-            {
-                this.moveCursor(1, 0, false);
-            }
+            this.keyTab();
         }
         else if (ChatAllowedCharacters.isAllowedCharacter(context.typedChar))
         {
@@ -880,6 +874,30 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         }
 
         return false;
+    }
+
+    protected void keyNewLine()
+    {
+        this.deleteSelection();
+        this.deselect();
+        this.writeNewLine();
+    }
+
+    protected void keyBackspace()
+    {
+        this.deleteCharacter();
+    }
+
+    protected void keyTab()
+    {
+        this.deleteSelection();
+        this.deselect();
+        this.writeString("    ");
+
+        for (int i = 0; i < 4; i++)
+        {
+            this.moveCursor(1, 0, false);
+        }
     }
 
     @Override
@@ -904,6 +922,11 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         Cursor min = this.getMin();
         Cursor max = this.getMax();
 
+        if (this.isSelected())
+        {
+            this.drawSelectionBar(x, y, min, max);
+        }
+
         for (String line : this.text)
         {
             int sw = this.font.getStringWidth(line);
@@ -912,11 +935,6 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
             if (ny + this.font.FONT_HEIGHT >= this.area.y && ny < this.area.ey())
             {
-                if (this.isSelected())
-                {
-                    this.drawSelectionBar(nx, ny, line, sw, i, min, max);
-                }
-
                 if (this.cursor.line == i && this.focused)
                 {
                     int nw = line.isEmpty() ? 0 : this.font.getStringWidth(this.cursor.start(line));
@@ -1012,35 +1030,38 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
     }
 
     /**
-     * Draw background selection under every line when that line is selected
+     * Draw background text selection
      */
-    private void drawSelectionBar(int nx, int ny, String line, int sw, int i, Cursor min, Cursor max)
+    private void drawSelectionBar(int x, int y, Cursor min, Cursor max)
     {
         final int selectionPad = 2;
+
+        String first = this.text.get(min.line);
+        String last = this.text.get(max.line);
+
+        int nx = x - this.horizontal.scroll + this.getShiftX();
+        int ny = y - this.vertical.scroll + min.line * this.lineHeight;
         int color = 0x88000000 + McLib.primaryColor.get();
 
-        if (min.line == i && max.line == i)
-        {
-            int lw1 = this.font.getStringWidth(min.start(line));
-            int lw2 = this.font.getStringWidth(max.start(line));
+        int x1 = nx + this.font.getStringWidth(min.start(first)) - selectionPad / 2;
+        int x2 = nx + this.font.getStringWidth(max.start(last)) + selectionPad / 2;
 
-            Gui.drawRect(nx + lw1, ny - selectionPad, nx + lw2, ny + this.font.FONT_HEIGHT + selectionPad, color);
-        }
-        else if (min.line == i)
+        if (min.line == max.line)
         {
-            int lw = this.font.getStringWidth(min.start(line));
+            Gui.drawRect(x1, ny - selectionPad, x2, ny + this.font.FONT_HEIGHT + selectionPad, color);
+        }
+        else
+        {
+            int diff = max.line - min.line;
 
-            Gui.drawRect(nx + lw, ny - selectionPad, nx + sw, ny + this.font.FONT_HEIGHT + selectionPad, color);
-        }
-        else if (max.line == i)
-        {
-            int lw = this.font.getStringWidth(max.start(line));
+            Gui.drawRect(x1, ny - selectionPad, this.area.ex(), ny + this.lineHeight, color);
 
-            Gui.drawRect(nx, ny - selectionPad, nx + lw, ny + this.font.FONT_HEIGHT + selectionPad, color);
-        }
-        else if (i < max.line && i > min.line)
-        {
-            Gui.drawRect(nx, ny - selectionPad, nx + (line.isEmpty() ? 2 : sw), ny + this.font.FONT_HEIGHT + selectionPad, color);
+            if (diff > 1)
+            {
+                Gui.drawRect(this.area.x, ny + this.lineHeight, this.area.ex(), ny + diff * this.lineHeight, color);
+            }
+
+            Gui.drawRect(this.area.x, ny + diff * this.lineHeight, x2, ny + diff * this.lineHeight + this.font.FONT_HEIGHT + selectionPad, color);
         }
     }
 
