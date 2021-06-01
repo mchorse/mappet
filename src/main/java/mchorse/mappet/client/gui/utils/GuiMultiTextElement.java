@@ -222,8 +222,8 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         {
             if (direction == 0)
             {
-                this.cursor.offset = min;
-                this.selection.set(this.cursor.line, max);
+                this.cursor.offset = max;
+                this.selection.set(this.cursor.line, min);
             }
             else
             {
