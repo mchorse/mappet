@@ -1,5 +1,6 @@
 package mchorse.mappet.client.gui.quests;
 
+import mchorse.mappet.api.conditions.blocks.DialogueBlock;
 import mchorse.mappet.api.quests.objectives.CollectObjective;
 import mchorse.mappet.api.quests.objectives.AbstractObjective;
 import mchorse.mappet.api.quests.objectives.StateObjective;
@@ -43,7 +44,9 @@ public class GuiObjectives extends GuiElement
     private AbstractObjective createDialogueReadObjective()
     {
         StateObjective objective = new StateObjective();
+        DialogueBlock block = new DialogueBlock();
 
+        objective.expression.condition.blocks.add(block);
         objective.expression.expression = "dialogue_read(\"...\", subject)";
         objective.message = I18n.format("mappet.gui.quests.objective_state.dialogue");
 
