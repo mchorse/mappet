@@ -396,6 +396,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         else
         {
             int line = this.cursor.line;
+            String remainder = this.cursor.end(this.text.get(line));
 
             for (int i = 0; i < size; i++)
             {
@@ -411,6 +412,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             }
 
             this.cursor.offset = splits.get(size - 1).length();
+            this.writeCharacter(remainder);
             this.changedLineAfter(line);
         }
     }

@@ -46,12 +46,56 @@ public class TextEditUndo implements IUndo<GuiMultiTextElement>
     @Override
     public boolean isMergeable(IUndo<GuiMultiTextElement> undo)
     {
+        if (undo instanceof TextEditUndo)
+        {
+            TextEditUndo text = (TextEditUndo) undo;
+
+            if (this.getType() == text.getType() && text.getType() != UndoType.REPLACE)
+            {
+                if (this.getType() == UndoType.INSERT && (this.postText.contains("\n") || text.postText.contains("\n")))
+                {
+                    return false;
+                }
+
+                if (this.getType() == UndoType.DELETE && (this.text.contains("\n") || text.text.contains("\n")))
+                {
+                    return false;
+                }
+
+                return this.isBackspace() == text.isBackspace() && !text.wasSelecting();
+            }
+        }
+
         return false;
     }
 
     @Override
     public void merge(IUndo<GuiMultiTextElement> undo)
-    {}
+    {
+        TextEditUndo text = (TextEditUndo) undo;
+
+        if (text.getType() == UndoType.INSERT)
+        {
+            this.postCursor.copy(text.postCursor);
+            this.postSelection.copy(text.postSelection);
+            this.postText += text.postText;
+        }
+        else if (text.getType() == UndoType.DELETE)
+        {
+            if (this.isBackspace())
+            {
+                this.postCursor.copy(text.postCursor);
+                this.postSelection.copy(text.postSelection);
+                this.text += text.text;
+            }
+            else
+            {
+                this.postCursor.copy(text.postCursor);
+                this.postSelection.copy(text.postSelection);
+                this.text = text.text + this.text;
+            }
+        }
+    }
 
     @Override
     public void undo(GuiMultiTextElement element)
@@ -92,7 +136,7 @@ public class TextEditUndo implements IUndo<GuiMultiTextElement>
             }
 
             /* Handle delete key deletion */
-            boolean backspace = this.cursor.line == this.postCursor.line && this.cursor.offset == this.postCursor.offset;
+            boolean backspace = this.isBackspace();
 
             for (int i = 0; i < this.text.length(); i++)
             {
@@ -114,6 +158,11 @@ public class TextEditUndo implements IUndo<GuiMultiTextElement>
         element.selection.copy(this.postSelection);
     }
 
+    public boolean isBackspace()
+    {
+        return this.getType() == UndoType.DELETE && this.cursor.line == this.postCursor.line && this.cursor.offset == this.postCursor.offset;
+    }
+
     public UndoType getType()
     {
         if (!this.text.isEmpty() && this.postText.isEmpty())
@@ -126,6 +175,11 @@ public class TextEditUndo implements IUndo<GuiMultiTextElement>
         }
 
         return UndoType.REPLACE;
+    }
+
+    public boolean wasSelecting()
+    {
+        return !this.selection.isEmpty();
     }
 
     public static enum UndoType
