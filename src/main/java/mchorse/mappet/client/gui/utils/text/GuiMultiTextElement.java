@@ -1,13 +1,18 @@
-package mchorse.mappet.client.gui.utils;
+package mchorse.mappet.client.gui.utils.text;
 
+import mchorse.mappet.client.gui.utils.text.undo.TextEditUndo;
+import mchorse.mappet.client.gui.utils.text.utils.Cursor;
+import mchorse.mappet.client.gui.utils.text.utils.StringGroup;
 import mchorse.mclib.McLib;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.IFocusedGuiElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
+import mchorse.mclib.client.gui.utils.GuiUtils;
 import mchorse.mclib.client.gui.utils.ScrollArea;
 import mchorse.mclib.client.gui.utils.ScrollDirection;
 import mchorse.mclib.utils.MathUtils;
+import mchorse.mclib.utils.undo.UndoManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
@@ -19,7 +24,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.function.Consumer;
-import java.util.regex.Pattern;
 
 public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElement
 {
@@ -37,8 +41,8 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
     private boolean focused;
     private int dragging;
     protected List<String> text = new ArrayList<String>();
-    protected Cursor cursor = new Cursor(0, 0);
-    protected Cursor selection = new Cursor(-1, -1);
+    public final Cursor cursor = new Cursor();
+    public final Cursor selection = new Cursor(-1, 0);
 
     /* Last mouse position */
     private int lastMX;
@@ -48,6 +52,8 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
     /* Callback update (to avoid joining a huge array of text every keystroke) */
     private long update;
     private long lastUpdate;
+
+    private UndoManager<GuiMultiTextElement> undo;
 
     public GuiMultiTextElement(Minecraft mc, Consumer<String> callback)
     {
@@ -60,6 +66,8 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         this.horizontal.scrollSpeed = this.lineHeight * 2;
         this.vertical.cancelScrollEdge = true;
         this.vertical.scrollSpeed = this.lineHeight * 2;
+
+        this.setText("");
     }
 
     public GuiMultiTextElement background()
@@ -94,8 +102,10 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         this.text.addAll(Arrays.asList(text.split("\n")));
 
         this.cursor.set(0, 0);
+        this.selection.set(-1, 0);
         this.horizontal.scroll = 0;
         this.vertical.scroll = 0;
+        this.undo = new UndoManager<GuiMultiTextElement>(100);
     }
 
     public String getText()
@@ -107,7 +117,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
     public boolean isSelected()
     {
-        return this.selection.line >= 0;
+        return !this.selection.isEmpty();
     }
 
     public void startSelecting()
@@ -117,7 +127,19 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
     public void deselect()
     {
-        this.selection.set(-1, -1);
+        this.selection.set(-1, 0);
+    }
+
+    public void swapSelection()
+    {
+        if (this.isSelected())
+        {
+            Cursor temp = new Cursor();
+
+            temp.copy(this.selection);
+            this.selection.copy(this.cursor);
+            this.cursor.copy(temp);
+        }
     }
 
     public void selectAll()
@@ -136,10 +158,15 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             return "";
         }
 
+        return this.getText(this.cursor, this.selection);
+    }
+
+    public String getText(Cursor a, Cursor b)
+    {
         StringJoiner joiner = new StringJoiner("\n");
 
-        Cursor min = this.getMin();
-        Cursor max = this.getMax();
+        Cursor min = a.isGreater(b) ? a : b;
+        Cursor max = a.isGreater(b) ? b : a;
 
         for (int i = min.line; i <= Math.min(max.line, this.text.size() - 1); i++)
         {
@@ -244,6 +271,43 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         return true;
     }
 
+    /**
+     * Select only a textful >:)
+     */
+    public boolean selectTextful(String text, boolean reverse)
+    {
+        this.deselect();
+
+        List<String> splits = this.splitNewlineString(text);
+
+        this.selection.copy(this.cursor);
+
+        for (int i = 0; i < splits.size(); i++)
+        {
+            String line = this.text.get(this.selection.line);
+            int l = splits.get(reverse ? splits.size() - (i + 1) : i).length();
+
+            this.selection.offset += (reverse ? -l : l);
+
+            if (i < splits.size() - 1)
+            {
+                if (reverse && this.selection.offset < 0)
+                {
+                    return false;
+                }
+                else if (!reverse && this.selection.offset + l < line.length())
+                {
+                    return false;
+                }
+
+                this.selection.line += reverse ? -1 : 1;
+                this.selection.offset = reverse ? this.text.get(this.selection.line).length() : 0;
+            }
+        }
+
+        return true;
+    }
+
     public void checkSelection(boolean selecting)
     {
         if (selecting && !this.isSelected())
@@ -321,19 +385,21 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
     public void writeString(String string)
     {
-        String[] splits = string.split("\n");
+        List<String> splits = this.splitNewlineString(string);
+        int size = splits.size();
 
-        if (splits.length == 1)
+        if (size == 1)
         {
             this.writeCharacter(string);
+            this.cursor.offset += string.length();
         }
         else
         {
             int line = this.cursor.line;
 
-            for (int i = 0; i < splits.length; i++)
+            for (int i = 0; i < size; i++)
             {
-                if (i != 0 && i <= splits.length - 1)
+                if (i != 0 && i <= size - 1)
                 {
                     this.cursor.line += 1;
 
@@ -341,15 +407,40 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
                     this.text.add(this.cursor.line, "");
                 }
 
-                this.writeCharacter(splits[i]);
+                this.writeCharacter(splits.get(i));
             }
 
-            this.cursor.offset = splits[splits.length - 1].length();
+            this.cursor.offset = splits.get(size - 1).length();
             this.changedLineAfter(line);
         }
     }
 
-    public void deleteCharacter()
+    private List<String> splitNewlineString(String string)
+    {
+        List<String> splits = new ArrayList<String>();
+        StringBuilder builder = new StringBuilder();
+
+        for (int i = 0, c = string.length(); i < c; i++)
+        {
+            char character = string.charAt(i);
+
+            if (character == '\n')
+            {
+                splits.add(builder.toString());
+                builder = new StringBuilder();
+            }
+            else
+            {
+                builder.append(character);
+            }
+        }
+
+        splits.add(builder.toString());
+
+        return splits;
+    }
+
+    public String deleteCharacter()
     {
         if (this.hasLine(this.cursor.line))
         {
@@ -366,15 +457,21 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
                     this.moveCursorToLineEnd();
                     this.changedLineAfter(this.cursor.line);
+
+                    return "\n";
                 }
             }
             else if (index >= line.length())
             {
+                String deleted = line.substring(line.length() - 1);
+
                 line = line.substring(0, line.length() - 1);
                 this.text.set(this.cursor.line, line);
                 this.moveCursorToLineEnd();
 
                 this.changedLine(this.cursor.line);
+
+                return deleted;
             }
             else if (index == 0)
             {
@@ -387,16 +484,24 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
                     this.moveCursorToLineEnd();
                     this.text.set(this.cursor.line, this.text.get(this.cursor.line) + text);
                     this.changedLineAfter(this.cursor.line);
+
+                    return "\n";
                 }
             }
             else
             {
+                String deleted = line.substring(this.cursor.getOffset(line, -1), this.cursor.getOffset(line));
+
                 line = this.cursor.start(line, -1) + this.cursor.end(line);
                 this.text.set(this.cursor.line, line);
                 this.moveCursor(-1, 0);
                 this.changedLine(this.cursor.line);
+
+                return deleted;
             }
         }
+
+        return "";
     }
 
     public void deleteSelection()
@@ -755,9 +860,16 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         boolean ctrl = GuiScreen.isCtrlKeyDown();
         boolean shift = GuiScreen.isShiftKeyDown();
 
-        if (this.handleKeys(context, ctrl, shift))
+        TextEditUndo undo = new TextEditUndo(this.getSelectedText(), this.cursor, this.selection);
+
+        if (this.handleKeys(context, undo, ctrl, shift))
         {
             this.moveViewportToCursor();
+        }
+
+        if (undo.ready)
+        {
+            this.undo.pushUndo(undo);
         }
 
         this.update = context.tick + 20;
@@ -770,32 +882,23 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
     /**
      * Handle multiline text editor keybinds
      */
-    protected boolean handleKeys(GuiContext context, boolean ctrl, boolean shift)
+    protected boolean handleKeys(GuiContext context, TextEditUndo undo, boolean ctrl, boolean shift)
     {
-        if (ctrl && context.keyCode == Keyboard.KEY_A)
+        /* Undo/redo */
+        if (ctrl && context.keyCode == Keyboard.KEY_Z)
+        {
+            return this.undo.undo(this);
+        }
+        else if (ctrl && context.keyCode == Keyboard.KEY_Y)
+        {
+            return this.undo.redo(this);
+        }
+        /* Select all */
+        else if (ctrl && context.keyCode == Keyboard.KEY_A)
         {
             this.selectAll();
         }
-        else if (ctrl && (context.keyCode == Keyboard.KEY_C || context.keyCode == Keyboard.KEY_X) && this.isSelected())
-        {
-            GuiScreen.setClipboardString(this.getSelectedText());
-
-            if (context.keyCode == Keyboard.KEY_X)
-            {
-                this.deleteSelection();
-                this.deselect();
-            }
-
-            return context.keyCode == Keyboard.KEY_X;
-        }
-        else if (ctrl && context.keyCode == Keyboard.KEY_V)
-        {
-            this.deleteSelection();
-            this.deselect();
-            this.writeString(GuiScreen.getClipboardString());
-
-            return true;
-        }
+        /* Cursor and navigation */
         else if (context.keyCode == Keyboard.KEY_UP || context.keyCode == Keyboard.KEY_DOWN || context.keyCode == Keyboard.KEY_RIGHT || context.keyCode == Keyboard.KEY_LEFT)
         {
             int x = context.keyCode == Keyboard.KEY_RIGHT ? 1 : (context.keyCode == Keyboard.KEY_LEFT ? -1 : 0);
@@ -831,9 +934,45 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
             return true;
         }
+        /* Copy, cut and paste */
+        else if (ctrl && (context.keyCode == Keyboard.KEY_C || context.keyCode == Keyboard.KEY_X) && this.isSelected())
+        {
+            GuiScreen.setClipboardString(this.getSelectedText());
+
+            if (context.keyCode == Keyboard.KEY_X)
+            {
+                this.deleteSelection();
+                this.deselect();
+
+                undo.ready().post("", this.cursor, this.selection);
+            }
+
+            return context.keyCode == Keyboard.KEY_X;
+        }
+        else if (ctrl && context.keyCode == Keyboard.KEY_V)
+        {
+            String pasted = GuiScreen.getClipboardString();
+
+            this.deleteSelection();
+            this.deselect();
+            this.writeString(pasted);
+
+            undo.ready().post(pasted, this.cursor, this.selection);
+
+            return true;
+        }
+        /* Text input */
+        else if (context.keyCode == Keyboard.KEY_TAB)
+        {
+            this.keyTab(undo.ready());
+            undo.post(undo.postText, this.cursor, this.selection);
+
+            return true;
+        }
         else if (context.keyCode == Keyboard.KEY_RETURN)
         {
-            this.keyNewLine();
+            this.keyNewLine(undo.ready());
+            undo.post(undo.postText, this.cursor, this.selection);
 
             return true;
         }
@@ -849,26 +988,28 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
                 if (context.keyCode == Keyboard.KEY_DELETE)
                 {
                     this.moveCursor(1, 0);
-                    this.deleteCharacter();
+                    undo.text = this.deleteCharacter();
                 }
                 else
                 {
-                    this.keyBackspace();
+                    this.keyBackspace(undo);
                 }
             }
 
+            undo.ready().post("", this.cursor, this.selection);
+
             return true;
-        }
-        else if (context.keyCode == Keyboard.KEY_TAB)
-        {
-            this.keyTab();
         }
         else if (ChatAllowedCharacters.isAllowedCharacter(context.typedChar))
         {
+            String character = String.valueOf(context.typedChar);
+
             this.deleteSelection();
             this.deselect();
-            this.writeCharacter(String.valueOf(context.typedChar));
+            this.writeCharacter(character);
             this.moveCursor(1, 0);
+
+            undo.ready().post(character, this.cursor, this.selection);
 
             return true;
         }
@@ -876,28 +1017,27 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         return false;
     }
 
-    protected void keyNewLine()
+    protected void keyNewLine(TextEditUndo undo)
     {
         this.deleteSelection();
         this.deselect();
         this.writeNewLine();
+
+        undo.postText = "\n";
     }
 
-    protected void keyBackspace()
+    protected void keyBackspace(TextEditUndo undo)
     {
-        this.deleteCharacter();
+        undo.text = this.deleteCharacter();
     }
 
-    protected void keyTab()
+    protected void keyTab(TextEditUndo undo)
     {
         this.deleteSelection();
         this.deselect();
         this.writeString("    ");
 
-        for (int i = 0; i < 4; i++)
-        {
-            this.moveCursor(1, 0, false);
-        }
+        undo.postText = "    ";
     }
 
     @Override
@@ -1062,104 +1202,6 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             }
 
             Gui.drawRect(this.area.x, ny + diff * this.lineHeight, x2, ny + diff * this.lineHeight + this.font.FONT_HEIGHT + selectionPad, color);
-        }
-    }
-
-    public static class Cursor
-    {
-        public int line;
-        public int offset;
-
-        public Cursor(int line, int offset)
-        {
-            this.set(line, offset);
-        }
-
-        public void set(int line, int offset)
-        {
-            this.line = line;
-            this.offset = offset;
-        }
-
-        public void copy(Cursor cursor)
-        {
-            this.set(cursor.line, cursor.offset);
-        }
-
-        /* String clipping */
-
-        public String start(String line)
-        {
-            return this.start(line, 0);
-        }
-
-        public String start(String line, int offset)
-        {
-            return line.isEmpty() ? line : line.substring(0, this.getOffset(line, offset));
-        }
-
-        public String end(String line)
-        {
-            return this.end(line, 0);
-        }
-
-        public String end(String line, int offset)
-        {
-            return line.isEmpty() ? line : line.substring(this.getOffset(line, offset));
-        }
-
-        public int getOffset(String line)
-        {
-            return this.getOffset(line, 0);
-        }
-
-        public int getOffset(String line, int offset)
-        {
-            return MathUtils.clamp(this.offset + offset, 0, line.length());
-        }
-
-        /**
-         * Whether given cursor is greater than this one
-         */
-        public boolean isGreater(Cursor cursor)
-        {
-            if (this.line == cursor.line)
-            {
-                return this.offset < cursor.offset;
-            }
-
-            return this.line < cursor.line;
-        }
-    }
-
-    public static enum StringGroup
-    {
-        SPACE("[\\s]"), ALPHANUMERIC("[\\w\\d]"), OTHER("[^\\w\\d\\s]");
-
-
-        private Pattern regex;
-
-        public static StringGroup get(String character)
-        {
-            for (StringGroup group : values())
-            {
-                if (group.match(character))
-                {
-                    return group;
-                }
-            }
-
-            return OTHER;
-        }
-
-        StringGroup(String regex)
-        {
-            this.regex = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-        }
-
-        public boolean match(String character)
-        {
-            return this.regex.matcher(character).matches();
         }
     }
 }

@@ -2,7 +2,9 @@ package mchorse.mappet.client.gui.scripts;
 
 import mchorse.mappet.client.gui.scripts.utils.SyntaxHighlighter;
 import mchorse.mappet.client.gui.scripts.utils.TextSegment;
-import mchorse.mappet.client.gui.utils.GuiMultiTextElement;
+import mchorse.mappet.client.gui.utils.text.undo.TextEditUndo;
+import mchorse.mappet.client.gui.utils.text.utils.Cursor;
+import mchorse.mappet.client.gui.utils.text.GuiMultiTextElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.utils.ColorUtils;
@@ -32,8 +34,12 @@ public class GuiTextEditor extends GuiMultiTextElement
     {
         super.setText(text);
 
-        this.segments.clear();
-        this.ensureSize();
+        /* It will be null before when it will get called from parent's constructor */
+        if (this.segments != null)
+        {
+            this.segments.clear();
+            this.ensureSize();
+        }
     }
 
     private void ensureSize()
@@ -84,18 +90,22 @@ public class GuiTextEditor extends GuiMultiTextElement
     /* Change input behavior */
 
     @Override
-    protected void keyNewLine()
+    protected void keyNewLine(TextEditUndo undo)
     {
         int indent = this.getIndent(this.cursor.line);
 
-        super.keyNewLine();
+        super.keyNewLine(undo);
 
-        this.writeString(this.createIndent(indent));
+        String margin = this.createIndent(indent);
+
+        this.writeString(margin);
         this.cursor.offset = indent;
+
+        undo.postText += margin;
     }
 
     @Override
-    protected void keyBackspace()
+    protected void keyBackspace(TextEditUndo undo)
     {
         String line = this.text.get(this.cursor.line);
 
@@ -108,17 +118,21 @@ public class GuiTextEditor extends GuiMultiTextElement
             this.startSelecting();
             this.cursor.offset -= offset;
 
+            String deleted = this.getSelectedText();
+
             this.deleteSelection();
             this.deselect();
+
+            undo.text = deleted;
         }
         else
         {
-            super.keyBackspace();
+            super.keyBackspace(undo);
         }
     }
 
     @Override
-    protected void keyTab()
+    protected void keyTab(TextEditUndo undo)
     {
         if (this.isSelected())
         {
@@ -130,7 +144,7 @@ public class GuiTextEditor extends GuiMultiTextElement
                 min.offset = Math.max(min.offset - 4, 0);
             }
 
-            Cursor temp = new Cursor(0, 0);
+            Cursor temp = new Cursor();
             String[] splits = this.getSelectedText().split("\n");
 
             for (int i = 0; i < splits.length; i++)
@@ -157,10 +171,12 @@ public class GuiTextEditor extends GuiMultiTextElement
             {
                 min.offset += 4;
             }
+
+            undo.postText = this.getSelectedText();
         }
         else
         {
-            super.keyTab();
+            super.keyTab(undo);
         }
     }
 

@@ -6,7 +6,7 @@ import mchorse.mappet.api.quests.Quest;
 import mchorse.mappet.api.quests.objectives.AbstractObjective;
 import mchorse.mappet.api.quests.rewards.IReward;
 import mchorse.mappet.api.quests.rewards.ItemStackReward;
-import mchorse.mappet.client.gui.utils.GuiText;
+import mchorse.mappet.client.gui.utils.text.GuiText;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiSlotElement;
 import mchorse.mclib.client.gui.utils.Elements;

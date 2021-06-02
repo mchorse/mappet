@@ -1,4 +1,4 @@
-package mchorse.mappet.client.gui.utils;
+package mchorse.mappet.client.gui.utils.text;
 
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import net.minecraft.client.Minecraft;
