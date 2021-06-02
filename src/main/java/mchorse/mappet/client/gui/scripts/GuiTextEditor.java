@@ -54,7 +54,9 @@ public class GuiTextEditor extends GuiMultiTextElement
             this.segments.remove(this.segments.size() - 1);
         }
 
-        this.placements = (int) Math.ceil(Math.pow(this.text.size() + 1, 0.1D)) * 6;
+        double power = Math.ceil(Math.log10(this.text.size() + 1));
+
+        this.placements = (int) power * 6;
     }
 
     @Override

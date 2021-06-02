@@ -398,6 +398,8 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             int line = this.cursor.line;
             String remainder = this.cursor.end(this.text.get(line));
 
+            this.text.set(line, this.cursor.start(this.text.get(line)));
+
             for (int i = 0; i < size; i++)
             {
                 if (i != 0 && i <= size - 1)
