@@ -631,9 +631,10 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         {
             int ny = this.cursor.line + (y > 0 ? 1 : -1);
 
-            if (ny >= 0 && ny < this.text.size())
+            if (this.hasLine(ny))
             {
                 this.cursor.line = ny;
+                this.cursor.offset = MathUtils.clamp(this.cursor.offset, 0, this.text.get(this.cursor.line).length());
             }
         }
     }
