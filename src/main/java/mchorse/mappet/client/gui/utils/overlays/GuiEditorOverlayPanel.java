@@ -22,7 +22,6 @@ public abstract class GuiEditorOverlayPanel <T> extends GuiOverlayPanel
         super(mc, title);
 
         this.list = this.createList(mc);
-        this.list.sorting();
         this.list.context(() ->
         {
             GuiSimpleContextMenu menu = new GuiSimpleContextMenu(this.mc).action(Icons.ADD, this.getAddLabel(), this::addItem);

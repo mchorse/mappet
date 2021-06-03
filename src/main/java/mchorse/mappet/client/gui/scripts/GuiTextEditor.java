@@ -2,9 +2,9 @@ package mchorse.mappet.client.gui.scripts;
 
 import mchorse.mappet.client.gui.scripts.utils.SyntaxHighlighter;
 import mchorse.mappet.client.gui.scripts.utils.TextSegment;
+import mchorse.mappet.client.gui.utils.text.GuiMultiTextElement;
 import mchorse.mappet.client.gui.utils.text.undo.TextEditUndo;
 import mchorse.mappet.client.gui.utils.text.utils.Cursor;
-import mchorse.mappet.client.gui.utils.text.GuiMultiTextElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.utils.ColorUtils;
@@ -29,6 +29,17 @@ public class GuiTextEditor extends GuiMultiTextElement
         this.highlighter = new SyntaxHighlighter();
     }
 
+    public SyntaxHighlighter getHighlighter()
+    {
+        return this.highlighter;
+    }
+
+    public void resetHighlight()
+    {
+        this.segments.clear();
+        this.ensureSize();
+    }
+
     @Override
     public void setText(String text)
     {
@@ -37,8 +48,7 @@ public class GuiTextEditor extends GuiMultiTextElement
         /* It will be null before when it will get called from parent's constructor */
         if (this.segments != null)
         {
-            this.segments.clear();
-            this.ensureSize();
+            this.resetHighlight();
         }
     }
 
@@ -243,7 +253,7 @@ public class GuiTextEditor extends GuiMultiTextElement
         {
             for (TextSegment segment : segments)
             {
-                this.font.drawString(segment.text, nx, ny, segment.color, true);
+                this.font.drawString(segment.text, nx, ny, segment.color, this.highlighter.getStyle().shadow);
 
                 nx += segment.width;
             }
@@ -259,7 +269,7 @@ public class GuiTextEditor extends GuiMultiTextElement
     @Override
     protected void drawBackground()
     {
-        this.area.draw(0xff000000 + ColorUtils.multiplyColor(this.highlighter.getStyle().BACKGROUND, 0.8F));
+        this.area.draw(0xff000000 + ColorUtils.multiplyColor(this.highlighter.getStyle().background, 0.8F));
     }
 
     @Override
@@ -268,7 +278,7 @@ public class GuiTextEditor extends GuiMultiTextElement
         /* Draw line numbers background */
         int x = this.area.x + 10 + this.placements;
 
-        Gui.drawRect(this.area.x, this.area.y, x, this.area.ey(), 0xff000000 + this.highlighter.getStyle().BACKGROUND);
+        Gui.drawRect(this.area.x, this.area.y, x, this.area.ey(), 0xff000000 + this.highlighter.getStyle().background);
 
         /* Draw line numbers themselves */
         int start = Math.max(0, (this.vertical.scroll - 10) / this.lineHeight);
@@ -285,7 +295,7 @@ public class GuiTextEditor extends GuiMultiTextElement
 
             String label = String.valueOf(i + 1);
 
-            this.font.drawString(label, this.area.x + 5 + this.placements - this.font.getStringWidth(label), ny, this.highlighter.getStyle().LINE_NUMBERS);
+            this.font.drawString(label, this.area.x + 5 + this.placements - this.font.getStringWidth(label), ny, this.highlighter.getStyle().lineNumbers);
 
             y += this.lineHeight;
         }

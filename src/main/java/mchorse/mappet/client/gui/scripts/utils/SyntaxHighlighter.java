@@ -12,7 +12,7 @@ public class SyntaxHighlighter
     private static final Set<String> OPERATORS = ImmutableSet.of("+", "-", "=", "/", "*", "<", ">", "~", "&", "|", "!");
     private static final Set<String> PRIMARY_KEYWORDS = ImmutableSet.of("break", "continue", "switch", "case", "default", "try", "catch", "delete", "do", "while", "else", "finally", "if", "else", "for", "in", "instanceof", "new", "throw", "typeof", "with", "yield", "return");
     private static final Set<String> SECONDARY_KEYWORDS = ImmutableSet.of("const", "function", "var", "let", "prototype", "Math", "JSON", "mappet");
-    private static final Set<String> SPECIAL = ImmutableSet.of("this", "super");
+    private static final Set<String> SPECIAL = ImmutableSet.of("this");
     private static final Set<String> TYPE_KEYSWORDS = ImmutableSet.of("true", "false", "null", "undefined");
 
     private SyntaxStyle style;
@@ -37,6 +37,11 @@ public class SyntaxHighlighter
         return this.style;
     }
 
+    public void setStyle(SyntaxStyle style)
+    {
+        this.style = style == null ? this.style : style;
+    }
+
     /**
      * Parse text segments that will be used for syntax highlighting
      */
@@ -49,9 +54,9 @@ public class SyntaxHighlighter
         {
             TextSegment last = prevLine.get(prevLine.size() - 1);
 
-            if (last.color == this.style.COMMENTS && !last.text.startsWith("//") && !last.text.trim().endsWith("*/"))
+            if (last.color == this.style.comments && !last.text.startsWith("//") && !last.text.trim().endsWith("*/"))
             {
-                list.add(new TextSegment(line, this.style.COMMENTS, 0));
+                list.add(new TextSegment(line, this.style.comments, 0));
 
                 return list;
             }
@@ -71,7 +76,7 @@ public class SyntaxHighlighter
             {
                 if (this.string == '\0')
                 {
-                    list.add(new TextSegment(this.buffer, this.style.OTHER, font.getStringWidth(this.buffer)));
+                    list.add(new TextSegment(this.buffer, this.style.other, font.getStringWidth(this.buffer)));
 
                     this.buffer = "";
                     this.string = character;
@@ -84,7 +89,7 @@ public class SyntaxHighlighter
                     {
                         this.string = '\0';
                         this.buffer += character;
-                        list.add(new TextSegment(this.buffer, this.style.STRINGS, font.getStringWidth(this.buffer)));
+                        list.add(new TextSegment(this.buffer, this.style.strings, font.getStringWidth(this.buffer)));
 
                         this.buffer = "";
 
@@ -110,8 +115,8 @@ public class SyntaxHighlighter
                     {
                         String comment = line.substring(lastI, i + 2);
 
-                        list.add(new TextSegment(this.buffer, this.style.OTHER, font.getStringWidth(this.buffer)));
-                        list.add(new TextSegment(comment, this.style.COMMENTS, font.getStringWidth(comment)));
+                        list.add(new TextSegment(this.buffer, this.style.other, font.getStringWidth(this.buffer)));
+                        list.add(new TextSegment(comment, this.style.comments, font.getStringWidth(comment)));
 
                         i += 1;
                         this.buffer = "";
@@ -124,8 +129,8 @@ public class SyntaxHighlighter
 
                 String comment = line.substring(lastI);
 
-                list.add(new TextSegment(this.buffer, this.style.OTHER, font.getStringWidth(this.buffer)));
-                list.add(new TextSegment(comment, this.style.COMMENTS, 0));
+                list.add(new TextSegment(this.buffer, this.style.other, font.getStringWidth(this.buffer)));
+                list.add(new TextSegment(comment, this.style.comments, 0));
 
                 return list;
             }
@@ -135,8 +140,8 @@ public class SyntaxHighlighter
             {
                 String comment = line.substring(i);
 
-                list.add(new TextSegment(buffer, this.style.OTHER, font.getStringWidth(this.buffer)));
-                list.add(new TextSegment(comment, this.style.COMMENTS, 0));
+                list.add(new TextSegment(buffer, this.style.other, font.getStringWidth(this.buffer)));
+                list.add(new TextSegment(comment, this.style.comments, 0));
 
                 return list;
             }
@@ -146,8 +151,8 @@ public class SyntaxHighlighter
             {
                 String sign = String.valueOf(character);
 
-                list.add(new TextSegment(this.buffer, this.style.OTHER, font.getStringWidth(this.buffer)));
-                list.add(new TextSegment(sign, this.style.PRIMARY, font.getStringWidth(sign)));
+                list.add(new TextSegment(this.buffer, this.style.other, font.getStringWidth(this.buffer)));
+                list.add(new TextSegment(sign, this.style.primary, font.getStringWidth(sign)));
 
                 this.buffer = "";
 
@@ -170,23 +175,23 @@ public class SyntaxHighlighter
 
                 if (PRIMARY_KEYWORDS.contains(keyword))
                 {
-                    this.pushKeyword(list, keyword, this.style.PRIMARY, i, font);
+                    this.pushKeyword(list, keyword, this.style.primary, i, font);
                 }
                 else if (SPECIAL.contains(keyword))
                 {
-                    this.pushKeyword(list, keyword, this.style.SPECIAL, i, font);
+                    this.pushKeyword(list, keyword, this.style.special, i, font);
                 }
                 else if (SECONDARY_KEYWORDS.contains(keyword) || this.isFunctionCall(list, keyword, next))
                 {
-                    this.pushKeyword(list, keyword, this.style.SECONDARY, i, font);
+                    this.pushKeyword(list, keyword, this.style.secondary, i, font);
                 }
                 else if (this.isNumberOrConstant(keyword))
                 {
-                    this.pushKeyword(list, keyword, this.style.NUMBERS, i, font);
+                    this.pushKeyword(list, keyword, this.style.numbers, i, font);
                 }
                 else if (this.isIdentifier(list))
                 {
-                    this.pushKeyword(list, keyword, this.style.IDENTIFIER, i, font);
+                    this.pushKeyword(list, keyword, this.style.identifier, i, font);
                 }
             }
 
@@ -199,7 +204,7 @@ public class SyntaxHighlighter
         /* If there is some remaining buffer, simply push it as some ordinary text */
         if (!this.buffer.trim().isEmpty())
         {
-            list.add(new TextSegment(this.buffer, this.style.OTHER, 0));
+            list.add(new TextSegment(this.buffer, this.style.other, 0));
         }
 
         return list;
@@ -214,7 +219,7 @@ public class SyntaxHighlighter
         {
             String other = this.buffer.substring(0, this.buffer.length() - keyword.length());
 
-            list.add(new TextSegment(other, this.style.OTHER, font.getStringWidth(other)));
+            list.add(new TextSegment(other, this.style.other, font.getStringWidth(other)));
         }
 
         list.add(new TextSegment(keyword, color, font.getStringWidth(keyword)));
@@ -238,7 +243,7 @@ public class SyntaxHighlighter
                 return false;
             }
 
-            if (bufferIsKeyword && previous.color != this.style.OTHER)
+            if (bufferIsKeyword && previous.color != this.style.other)
             {
                 return false;
             }
@@ -280,7 +285,7 @@ public class SyntaxHighlighter
         {
             TextSegment previous = list.get(list.size() - 1);
 
-            if (previous.text.trim().equals("function") && previous.color == this.getStyle().SECONDARY)
+            if (previous.text.trim().equals("function") && previous.color == this.getStyle().secondary)
             {
                 return true;
             }

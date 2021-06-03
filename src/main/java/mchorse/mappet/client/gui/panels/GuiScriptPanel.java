@@ -1,5 +1,6 @@
 package mchorse.mappet.client.gui.panels;
 
+import mchorse.mappet.Mappet;
 import mchorse.mappet.api.scripts.Script;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
@@ -53,6 +54,7 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
 
         if (data != null)
         {
+            this.code.getHighlighter().setStyle(Mappet.syntaxStyle.get());
             this.code.setText(data.code);
             this.unique.toggled(data.unique);
         }

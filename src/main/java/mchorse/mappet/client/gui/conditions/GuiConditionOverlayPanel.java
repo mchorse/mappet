@@ -69,7 +69,7 @@ public class GuiConditionOverlayPanel extends GuiEditorOverlayPanel<AbstractBloc
 
         this.condition = condition;
 
-        this.list.setList(condition.blocks);
+        this.list.sorting().setList(condition.blocks);
         this.list.context(() ->
         {
             GuiSimpleContextMenu menu = new GuiSimpleContextMenu(this.mc).shadow();

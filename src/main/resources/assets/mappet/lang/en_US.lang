@@ -111,6 +111,8 @@ mappet.config.comments.events.max_executions=This is the maximum amount of node 
 mappet.config.gui.title=GUI
 mappet.config.gui.tooltip=Options to tweak GUI preferences
 
+mappet.config.gui.syntax_style=Syntax style
+mappet.config.comments.gui.syntax_style=This option allows to change the syntax highlighting in the text editor
 mappet.config.gui.pulse_background_color=Pulsing inactive color
 mappet.config.comments.gui.pulse_background_color=This option determines the color of node connection pulsing, i.e. the inactive color.
 mappet.config.gui.pulse_background_mclib=Use primary color
@@ -389,6 +391,25 @@ mappet.gui.conditions.targets.global=Global
 mappet.gui.conditions.targets.subject=Subject
 mappet.gui.conditions.targets.object=Object
 mappet.gui.conditions.targets.selector=Selector
+
+mappet.gui.syntax_theme.main=Theme editor
+mappet.gui.syntax_theme.title=Theme's title
+mappet.gui.syntax_theme.shadow=Text shadow
+mappet.gui.syntax_theme.colors.title=Syntax colors
+mappet.gui.syntax_theme.colors.primary=Primary color for keywords
+mappet.gui.syntax_theme.colors.secondary=Secondary color for definition keywords and function calls
+mappet.gui.syntax_theme.colors.identifier=For function names in function
+mappet.gui.syntax_theme.colors.special=For "this" keyword
+mappet.gui.syntax_theme.colors.strings=For single line strings wrapped into " and '
+mappet.gui.syntax_theme.colors.comments=For single and multiline comments
+mappet.gui.syntax_theme.colors.numbers=For constant values like number literals, null and undefined 
+mappet.gui.syntax_theme.colors.other=Plain text
+mappet.gui.syntax_theme.background_colors.title=Background colors
+mappet.gui.syntax_theme.background_colors.line_numbers=Line numbers color
+mappet.gui.syntax_theme.background_colors.background=Background color
+mappet.gui.syntax_theme.context.add=Add a theme...
+mappet.gui.syntax_theme.context.remove=Remove this theme
+mappet.gui.syntax_theme.modal.add=Type into a name for new theme:
 
 # GUI enums
 

@@ -28,7 +28,7 @@ public class GuiFactionRelationOverlayPanel extends GuiEditorOverlayPanel<Factio
     {
         super(mc, IKey.lang("mappet.gui.factions.overlay.main"));
 
-        this.list.setList(relation.thresholds);
+        this.list.sorting().setList(relation.thresholds);
 
         this.title = new GuiTextElement(mc, 1000, (t) -> this.item.title = t);
         this.color = new GuiColorElement(mc, (c) -> this.item.color = c);
