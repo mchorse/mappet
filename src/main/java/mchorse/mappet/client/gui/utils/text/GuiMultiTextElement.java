@@ -1007,7 +1007,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         }
         else if (ChatAllowedCharacters.isAllowedCharacter(context.typedChar))
         {
-            String character = String.valueOf(context.typedChar);
+            String character = this.getFromChar(context.typedChar);
 
             this.deleteSelection();
             this.deselect();
@@ -1020,6 +1020,11 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         }
 
         return false;
+    }
+
+    protected String getFromChar(char typedChar)
+    {
+        return String.valueOf(typedChar);
     }
 
     protected void keyNewLine(TextEditUndo undo)

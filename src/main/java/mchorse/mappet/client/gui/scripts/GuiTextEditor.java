@@ -102,6 +102,33 @@ public class GuiTextEditor extends GuiMultiTextElement
     /* Change input behavior */
 
     @Override
+    protected String getFromChar(char typedChar)
+    {
+        if (typedChar == '(')
+        {
+            return "()";
+        }
+        else if (typedChar == '[')
+        {
+            return "[]";
+        }
+        else if (typedChar == '{')
+        {
+            return "{}";
+        }
+        else if (typedChar == '"')
+        {
+            return "\"\"";
+        }
+        else if (typedChar == '\'')
+        {
+            return "''";
+        }
+
+        return super.getFromChar(typedChar);
+    }
+
+    @Override
     protected void keyNewLine(TextEditUndo undo)
     {
         String line = this.text.get(this.cursor.line);
