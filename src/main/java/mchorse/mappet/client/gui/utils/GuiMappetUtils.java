@@ -55,9 +55,10 @@ public class GuiMappetUtils
         InputRenderer.renderMouseButtons(area.mx() - 6, area.my() - 8 + offset, 0, false, factor2 > 0, false, false);
 
         String label = I18n.format("mappet.gui.right_click");
-        int w = context.font.getStringWidth(label);
+        int w = (int) (area.w / 1.1F);
+        int color = ColorUtils.multiplyColor(0x444444, 1 - (float) factor);
 
-        context.font.drawString(label, area.mx() - w / 2, area.my() - 30, ColorUtils.multiplyColor(0x444444, 1 - (float) factor));
+        GuiDraw.drawMultiText(context.font, label, area.mx() - w / 2, area.my() - 20, color, w, 12, 0.5F, 1);
 
         GuiDraw.drawVerticalGradientRect(area.x, area.my() + 20, area.ex(), area.my() + 40, 0, 0xff000000);
         Gui.drawRect(area.x, area.my() + 40, area.ex(), area.my() + 90, 0xff000000);
