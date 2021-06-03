@@ -1028,7 +1028,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         this.deselect();
         this.writeNewLine();
 
-        undo.postText = "\n";
+        undo.postText += "\n";
     }
 
     protected void keyBackspace(TextEditUndo undo)

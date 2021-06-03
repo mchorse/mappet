@@ -104,7 +104,14 @@ public class GuiTextEditor extends GuiMultiTextElement
     @Override
     protected void keyNewLine(TextEditUndo undo)
     {
-        int indent = this.getIndent(this.cursor.line);
+        String line = this.text.get(this.cursor.line);
+        boolean unwrap = line.length() >= 2
+            && this.cursor.offset > 0
+            && this.cursor.offset < line.length()
+            && line.charAt(this.cursor.offset) == '}'
+            && line.charAt(this.cursor.offset - 1) == '{';
+
+        int indent = this.getIndent(line) + (unwrap ? 4 : 0);
 
         super.keyNewLine(undo);
 
@@ -114,6 +121,19 @@ public class GuiTextEditor extends GuiMultiTextElement
         this.cursor.offset = indent;
 
         undo.postText += margin;
+
+        if (unwrap)
+        {
+            super.keyNewLine(undo);
+
+            margin = this.createIndent(indent - 4);
+
+            this.writeString(margin);
+            this.cursor.line -= 1;
+            this.cursor.offset = indent;
+
+            undo.postText += margin;
+        }
     }
 
     @Override
