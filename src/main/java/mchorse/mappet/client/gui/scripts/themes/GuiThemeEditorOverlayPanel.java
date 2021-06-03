@@ -1,11 +1,10 @@
 package mchorse.mappet.client.gui.scripts.themes;
 
-import mchorse.mappet.ClientProxy;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.client.gui.scripts.GuiTextEditor;
 import mchorse.mappet.client.gui.scripts.utils.SyntaxStyle;
 import mchorse.mappet.client.gui.utils.overlays.GuiEditorOverlayPanel;
-import mchorse.mappet.utils.NBTToJsonLike;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiColorElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
@@ -13,17 +12,29 @@ import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
 import mchorse.mclib.client.gui.framework.elements.modals.GuiModal;
 import mchorse.mclib.client.gui.framework.elements.modals.GuiPromptModal;
 import mchorse.mclib.client.gui.utils.Elements;
+import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
-import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.function.Consumer;
 
 public class GuiThemeEditorOverlayPanel extends GuiEditorOverlayPanel<GuiThemeEditorOverlayPanel.SyntaxStyleEntry>
 {
+    public static final String CODE_SAMPLE = "/* Main function */\n" +
+        "function main(e) {\n" +
+        "    // Set subject's position one block higher\n" +
+        "    var pos = e.subject().position();\n" +
+        "    \n" +
+        "    this.orange = \"Hello, world!\";\n" +
+        "    \n" +
+        "    e.send(this.orange);\n" +
+        "    e.subject().position(pos.x, pos.y + 1, pos.z);\n" +
+        "}";
+
+    public GuiIconElement open;
+
     public GuiTextElement title;
     public GuiToggleElement shadow;
     public GuiColorElement primary;
@@ -41,6 +52,9 @@ public class GuiThemeEditorOverlayPanel extends GuiEditorOverlayPanel<GuiThemeEd
     public GuiThemeEditorOverlayPanel(Minecraft mc)
     {
         super(mc, IKey.lang("mappet.gui.syntax_theme.main"));
+
+        this.open = new GuiIconElement(mc, Icons.FOLDER, (b) -> Themes.open());
+        this.open.tooltip(IKey.lang("mappet.gui.syntax_theme.folder")).flex().wh(16, 16);
 
         this.title = new GuiTextElement(mc, 100, (s) -> this.item.style.title = s);
         this.shadow = new GuiToggleElement(mc, IKey.lang("mappet.gui.syntax_theme.shadow"), (b) -> this.item.style.shadow = b.isToggled());
@@ -109,52 +123,35 @@ public class GuiThemeEditorOverlayPanel extends GuiEditorOverlayPanel<GuiThemeEd
 
         this.content.flex().h(0.5F);
         this.preview.flex().relative(this).y(0.5F, 28).w(1F).hTo(this.area, 1F);
-        this.preview.setText(
-            "/* Main function */\n" +
-            "function main(e) {\n" +
-            "    // Set subject's position one block higher\n" +
-            "    var pos = e.subject().position();\n" +
-            "    \n" +
-            "    this.orange = \"Hello, world!\";\n" +
-            "    \n" +
-            "    e.send(this.orange);\n" +
-            "    e.subject().position(pos.x, pos.y + 1, pos.z);\n" +
-            "}"
-        );
+        this.preview.setText(CODE_SAMPLE);
 
         this.add(this.preview.background());
+        this.icons.add(this.open);
 
         this.loadThemes();
     }
 
     private void loadThemes()
     {
-        File[] files = ClientProxy.editorThemes.listFiles();
-
-        if (files == null)
-        {
-            return;
-        }
-
         /* Load theme files from the folder */
-        for (File file : files)
+        for (File file : Themes.themes())
         {
-            try
-            {
-                String code = FileUtils.readFileToString(file, Charset.defaultCharset());
-                SyntaxStyle style = new SyntaxStyle(NBTToJsonLike.fromJson(code));
-                SyntaxStyleEntry entry = new SyntaxStyleEntry(file, style);
+            SyntaxStyle style = Themes.readTheme(file);
 
-                this.list.add(entry);
+            if (style == null)
+            {
+                continue;
             }
-            catch (Exception e)
-            {}
+
+            SyntaxStyleEntry entry = new SyntaxStyleEntry(file, style);
+
+            this.list.add(entry);
         }
 
         /* If there are no files, just load the default one */
         if (this.list.getList().isEmpty())
         {
-            this.list.add(new SyntaxStyleEntry(new File(ClientProxy.editorThemes, "monokai.json"), new SyntaxStyle()));
+            this.list.add(new SyntaxStyleEntry(Themes.themeFile("monokai.json"), new SyntaxStyle()));
         }
 
         for (SyntaxStyleEntry entry : this.list.getList())
@@ -201,12 +198,7 @@ public class GuiThemeEditorOverlayPanel extends GuiEditorOverlayPanel<GuiThemeEd
 
     private void addNewTheme(String string)
     {
-        if (!string.endsWith(".json"))
-        {
-            string += ".json";
-        }
-
-        File file = new File(ClientProxy.editorThemes, string);
+        File file = Themes.themeFile(string);
 
         if (!file.isFile())
         {
@@ -243,6 +235,8 @@ public class GuiThemeEditorOverlayPanel extends GuiEditorOverlayPanel<GuiThemeEd
     @Override
     protected void fillData(SyntaxStyleEntry item)
     {
+
+
         this.title.setText(item.style.title);
         this.shadow.toggled(item.style.shadow);
         this.primary.picker.setColor(item.style.primary);
@@ -280,7 +274,12 @@ public class GuiThemeEditorOverlayPanel extends GuiEditorOverlayPanel<GuiThemeEd
         @Override
         protected String elementToString(SyntaxStyleEntry element)
         {
-            return element.style.title + " - " + element.file.getName();
+            if (element.style.title.trim().isEmpty())
+            {
+                return element.file.getName();
+            }
+
+            return element.style.title + " (" + element.file.getName() + ")";
         }
     }
 
@@ -297,7 +296,7 @@ public class GuiThemeEditorOverlayPanel extends GuiEditorOverlayPanel<GuiThemeEd
 
         public void save()
         {
-            ClientProxy.writeTheme(this.file, this.style);
+            Themes.writeTheme(this.file, this.style);
         }
     }
 }

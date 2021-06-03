@@ -111,8 +111,7 @@ mappet.config.comments.events.max_executions=This is the maximum amount of node 
 mappet.config.gui.title=GUI
 mappet.config.gui.tooltip=Options to tweak GUI preferences
 
-mappet.config.gui.syntax_style=Syntax style
-mappet.config.comments.gui.syntax_style=This option allows to change the syntax highlighting in the text editor
+mappet.config.comments.gui.syntax_style=This button opens theme editor where you can manage and edit script editor highlighting themes.
 mappet.config.gui.pulse_background_color=Pulsing inactive color
 mappet.config.comments.gui.pulse_background_color=This option determines the color of node connection pulsing, i.e. the inactive color.
 mappet.config.gui.pulse_background_mclib=Use primary color
@@ -393,6 +392,8 @@ mappet.gui.conditions.targets.object=Object
 mappet.gui.conditions.targets.selector=Selector
 
 mappet.gui.syntax_theme.main=Theme editor
+mappet.gui.syntax_theme.edit=Edit themes...
+mappet.gui.syntax_theme.folder=Open themes folder...
 mappet.gui.syntax_theme.title=Theme's title
 mappet.gui.syntax_theme.shadow=Text shadow
 mappet.gui.syntax_theme.colors.title=Syntax colors

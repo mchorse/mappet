@@ -2,8 +2,8 @@ package mchorse.mappet.utils;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
-import mchorse.mappet.ClientProxy;
 import mchorse.mappet.client.gui.scripts.themes.GuiThemeEditorOverlayPanel;
+import mchorse.mappet.client.gui.scripts.themes.Themes;
 import mchorse.mappet.client.gui.scripts.utils.SyntaxStyle;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
 import mchorse.mclib.client.gui.framework.GuiBase;
@@ -18,10 +18,7 @@ import mchorse.mclib.config.values.Value;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
 
@@ -57,40 +54,25 @@ public class ValueSyntaxStyle extends Value implements IConfigGuiProvider
     @SideOnly(Side.CLIENT)
     public List<GuiElement> getFields(Minecraft mc, GuiConfigPanel config)
     {
-        GuiElement element = new GuiElement(mc);
-        GuiLabel label = Elements.label(IKey.lang(this.getLabelKey()), 0).anchor(0, 0.5F);
-        GuiButtonElement button = new GuiButtonElement(mc, IKey.lang("Edit theme..."), (t) ->
+        GuiButtonElement button = new GuiButtonElement(mc, IKey.lang("mappet.gui.syntax_theme.edit"), (t) ->
         {
             GuiOverlay.addOverlay(GuiBase.getCurrent(), new GuiThemeEditorOverlayPanel(mc), 0.6F, 0.95F);
         });
 
-        button.flex().w(90);
-
-        element.flex().row(0).preferred(0).height(20);
-        element.add(label, button.removeTooltip());
-
-        return Arrays.asList(element.tooltip(IKey.lang(this.getCommentKey())));
+        return Arrays.asList(button.tooltip(IKey.lang(this.getCommentKey())));
     }
 
     @Override
     public void valueFromJSON(JsonElement element)
     {
-        try
+        String file = element.getAsString();
+        SyntaxStyle style = Themes.readTheme(Themes.themeFile(file));
+
+        if (style != null)
         {
-            String file = element.getAsString();
-
-            if (!file.endsWith(".json"))
-            {
-                file += ".json";
-            }
-
-            File syntaxFile = new File(ClientProxy.editorThemes, file);
-
-            this.style = new SyntaxStyle(NBTToJsonLike.fromJson(FileUtils.readFileToString(syntaxFile, Charset.defaultCharset())));
+            this.style = style;
             this.file = file;
         }
-        catch (Exception e)
-        {}
     }
 
     @Override
