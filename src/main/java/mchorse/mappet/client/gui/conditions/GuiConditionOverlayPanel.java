@@ -19,10 +19,8 @@ import mchorse.mappet.client.gui.conditions.blocks.GuiQuestBlockPanel;
 import mchorse.mappet.client.gui.conditions.blocks.GuiStateBlockPanel;
 import mchorse.mappet.client.gui.conditions.blocks.GuiWorldTimeBlockPanel;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
-import mchorse.mappet.client.gui.utils.overlays.GuiOverlayPanel;
-import mchorse.mclib.client.InputRenderer;
+import mchorse.mappet.client.gui.utils.overlays.GuiEditorOverlayPanel;
 import mchorse.mclib.client.gui.framework.GuiBase;
-import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
@@ -30,13 +28,9 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
-import mchorse.mclib.utils.ColorUtils;
-import mchorse.mclib.utils.Interpolation;
-import mchorse.mclib.utils.Interpolations;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -45,7 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class GuiConditionOverlayPanel extends GuiOverlayPanel
+public class GuiConditionOverlayPanel extends GuiEditorOverlayPanel<AbstractBlock>
 {
     public static final Map<
             Class<? extends AbstractBlock>,
@@ -54,12 +48,9 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
             Class<? extends AbstractBlock>,
             Class<? extends GuiAbstractBlockPanel<? extends AbstractBlock>>>();
 
-    public GuiAbstractBlockListElement list;
-    public GuiScrollElement editor;
     public GuiInventoryElement inventory;
 
     private Condition condition;
-    private AbstractBlock block;
 
     static
     {
@@ -78,8 +69,7 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
 
         this.condition = condition;
 
-        this.list = new GuiAbstractBlockListElement(mc, (l) -> this.pickBlock(l.get(0), false));
-        this.list.sorting().setList(condition.blocks);
+        this.list.setList(condition.blocks);
         this.list.context(() ->
         {
             GuiSimpleContextMenu menu = new GuiSimpleContextMenu(this.mc).shadow();
@@ -115,12 +105,11 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
 
             if (!this.list.isDeselected())
             {
-                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.conditions.context.remove"), this::removeBlock, 0xff0022);
+                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.conditions.context.remove"), this::removeItem, 0xff0022);
             }
 
             return menu;
         });
-        this.editor = new GuiScrollElement(mc);
         this.inventory = new GuiInventoryElement(mc, (stack) ->
         {
             this.inventory.linked.acceptStack(stack);
@@ -129,12 +118,15 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
         this.inventory.flex().relative(this).xy(0.5F, 0.5F).anchor(0.5F, 0.5F);
         this.inventory.setVisible(false);
 
-        this.list.flex().relative(this.content).w(120).h(1F);
-        this.editor.flex().relative(this.content).x(120).w(1F, -120).h(1F).column(5).vertical().stretch().scroll().padding(10);
+        this.content.add(this.inventory);
 
-        this.content.add(this.editor, this.list, this.inventory);
+        this.pickItem(this.condition.blocks.isEmpty() ? null : this.condition.blocks.get(0), true);
+    }
 
-        this.pickBlock(this.condition.blocks.isEmpty() ? null : this.condition.blocks.get(0), true);
+    @Override
+    protected GuiListElement<AbstractBlock> createList(Minecraft mc)
+    {
+        return new GuiAbstractBlockListElement(mc, (l) -> this.pickItem(l.get(0), false));
     }
 
     private void addBlock(String type)
@@ -142,7 +134,7 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
         AbstractBlock block = CommonProxy.getConditionBlocks().create(type);
 
         this.condition.blocks.add(block);
-        this.pickBlock(block, true);
+        this.pickItem(block, true);
         this.list.update();
     }
 
@@ -163,49 +155,22 @@ public class GuiConditionOverlayPanel extends GuiOverlayPanel
         this.condition.blocks.add(block);
         this.list.update();
 
-        this.pickBlock(block, true);
+        this.pickItem(block, true);
     }
 
-    private void removeBlock()
+    @Override
+    protected void fillData(AbstractBlock block)
     {
-        int index = this.list.getIndex();
+        this.editor.removeAll();
 
-        this.condition.blocks.remove(index);
-
-        index = Math.max(index - 1, 0);
-
-        this.pickBlock(this.condition.blocks.isEmpty() ? null :this.condition.blocks.get(index), true);
-        this.list.update();
-    }
-
-    private void pickBlock(AbstractBlock block, boolean select)
-    {
-        this.block = block;
-
-        this.editor.setVisible(block != null);
-
-        if (block != null)
+        try
         {
-            this.editor.removeAll();
-
-            try
-            {
-                GuiAbstractBlockPanel panel = (GuiAbstractBlockPanel) PANELS.get(block.getClass()).getConstructors()[0].newInstance(this.mc, this, block);
-
-                this.editor.add(panel);
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-
-            if (select)
-            {
-                this.list.setCurrentScroll(block);
-            }
+            this.editor.add((GuiAbstractBlockPanel) PANELS.get(block.getClass()).getConstructors()[0].newInstance(this.mc, this, block));
         }
-
-        this.resize();
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     @Override

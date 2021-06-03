@@ -43,6 +43,7 @@ public class GuiWorldTimeBlockPanel extends GuiAbstractBlockPanel<WorldTimeBlock
         this.add(a, b);
 
         this.elements = new GuiElement[]{a, b};
+        this.toggleMode(this.type);
     }
 
     private void toggleMode(GuiButtonElement b)
