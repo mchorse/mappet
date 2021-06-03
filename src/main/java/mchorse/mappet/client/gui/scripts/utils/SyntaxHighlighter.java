@@ -9,9 +9,10 @@ import java.util.Set;
 
 public class SyntaxHighlighter
 {
-    private static final Set<String> OPERATORS = ImmutableSet.of("+", "-", "=", "/", "*", "<", ">", "~", "&", "|");
-    private static final Set<String> PRIMARY_KEYWORDS = ImmutableSet.of("break", "continue", "switch", "case", "default", "try", "catch", "debugger", "delete", "do", "while", "else", "finally", "if", "else", "for", "in", "instanceof", "new", "throw", "typeof", "with", "yeild", "import", "from", "return");
-    private static final Set<String> SECONDARY_KEYWORDS = ImmutableSet.of("const", "function", "var", "let", "class", "Math", "JSON", "mappet");
+    private static final Set<String> OPERATORS = ImmutableSet.of("+", "-", "=", "/", "*", "<", ">", "~", "&", "|", "!");
+    private static final Set<String> PRIMARY_KEYWORDS = ImmutableSet.of("break", "continue", "switch", "case", "default", "try", "catch", "delete", "do", "while", "else", "finally", "if", "else", "for", "in", "instanceof", "new", "throw", "typeof", "with", "yield", "return");
+    private static final Set<String> SECONDARY_KEYWORDS = ImmutableSet.of("const", "function", "var", "let", "prototype", "Math", "JSON", "mappet");
+    private static final Set<String> SPECIAL = ImmutableSet.of("this", "super");
     private static final Set<String> TYPE_KEYSWORDS = ImmutableSet.of("true", "false", "null", "undefined");
 
     private SyntaxStyle style;
@@ -156,26 +157,36 @@ public class SyntaxHighlighter
             this.buffer += character;
 
             /* Keywords */
-            if (i < c - 1)
+            char next = i < c - 1 ? line.charAt(i + 1) : '\0';
+
+            if (!isString && ((next != '\0' && !Character.isLetterOrDigit(next)) || i == c - 1))
             {
-                if (!Character.isLetterOrDigit(line.charAt(this.last)))
+                if (this.last < i && !Character.isLetterOrDigit(line.charAt(this.last)))
                 {
                     this.last += 1;
                 }
 
-                String keyword = line.substring(last, i + 1).trim();
+                String keyword = line.substring(this.last, i + 1);
 
-                if (!isString && PRIMARY_KEYWORDS.contains(keyword))
+                if (PRIMARY_KEYWORDS.contains(keyword))
                 {
                     this.pushKeyword(list, keyword, this.style.PRIMARY, i, font);
                 }
-                else if (!isString && SECONDARY_KEYWORDS.contains(keyword))
+                else if (SPECIAL.contains(keyword))
+                {
+                    this.pushKeyword(list, keyword, this.style.SPECIAL, i, font);
+                }
+                else if (SECONDARY_KEYWORDS.contains(keyword) || this.isFunctionCall(list, keyword, next))
                 {
                     this.pushKeyword(list, keyword, this.style.SECONDARY, i, font);
                 }
-                else if (!isString && this.isNumberOrConstant(keyword))
+                else if (this.isNumberOrConstant(keyword))
                 {
                     this.pushKeyword(list, keyword, this.style.NUMBERS, i, font);
+                }
+                else if (this.isIdentifier(list))
+                {
+                    this.pushKeyword(list, keyword, this.style.IDENTIFIER, i, font);
                 }
             }
 
@@ -213,6 +224,35 @@ public class SyntaxHighlighter
     }
 
     /**
+     * Check whether current state clarify as a function call
+     */
+    private boolean isFunctionCall(List<TextSegment> list, String keyword, char next)
+    {
+        if (!list.isEmpty())
+        {
+            TextSegment previous = list.get(list.size() - 1);
+            boolean bufferIsKeyword = this.buffer.trim().equals(keyword);
+
+            if (bufferIsKeyword && previous.text.equals("function"))
+            {
+                return false;
+            }
+
+            if (bufferIsKeyword && previous.color != this.style.OTHER)
+            {
+                return false;
+            }
+
+            if (previous.text.trim().equals(keyword.trim()))
+            {
+                return false;
+            }
+        }
+
+        return next == '(';
+    }
+
+    /**
      * Check whether given keyword is some constant or a number literal
      */
     private boolean isNumberOrConstant(String keyword)
@@ -230,6 +270,21 @@ public class SyntaxHighlighter
         }
         catch (NumberFormatException e)
         {}
+
+        return false;
+    }
+
+    private boolean isIdentifier(List<TextSegment> list)
+    {
+        if (!list.isEmpty())
+        {
+            TextSegment previous = list.get(list.size() - 1);
+
+            if (previous.text.trim().equals("function") && previous.color == this.getStyle().SECONDARY)
+            {
+                return true;
+            }
+        }
 
         return false;
     }
