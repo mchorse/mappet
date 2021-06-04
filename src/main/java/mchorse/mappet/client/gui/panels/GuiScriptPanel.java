@@ -60,6 +60,10 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
             {
                 this.code.setText(data.code);
             }
+            else
+            {
+                this.code.resetHighlight();
+            }
 
             this.unique.toggled(data.unique);
         }
