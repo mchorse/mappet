@@ -62,39 +62,38 @@ public class TextEditUndo implements IUndo<GuiMultiTextElement>
 
             if (this.getType() == text.getType() && text.getType() != UndoType.REPLACE)
             {
-                if (this.getType() == UndoType.INSERT)
+                /* Vertical merging can't be done */
+                if (this.postCursor.line != text.postCursor.line)
                 {
-                    if (this.postCursor.line != text.postCursor.line)
-                    {
-                        return false;
-                    }
+                    return false;
+                }
 
-                    if (text.cursor.offset != this.cursor.offset + this.postText.length())
-                    {
-                        return false;
-                    }
+                /* Verifying insert undo which only makes sense if the the next
+                 * offset is exactly X character(s) away from previous cursor */
+                if (this.getType() == UndoType.INSERT && text.cursor.offset != this.cursor.offset + this.postText.length())
+                {
+                    return false;
                 }
 
                 if (this.getType() == UndoType.DELETE)
                 {
-                    if (this.postCursor.line != text.postCursor.line)
-                    {
-                        return false;
-                    }
-
                     if (this.isBackspace() && text.isBackspace())
                     {
+                        /* Backspace merging only works when cursor at the same place */
                         if (!this.cursor.isEqualTo(text.cursor))
                         {
                             return false;
                         }
                     }
+                    /* Verifying delete undo which only makes sense if the the next
+                     * offset is exactly X character(s) away from previous cursor */
                     else if (text.cursor.offset != this.cursor.offset - this.text.length())
                     {
                         return false;
                     }
                 }
 
+                /* Undos involving selections can't be merged either */
                 return this.isBackspace() == text.isBackspace() && !text.wasSelecting();
             }
         }
@@ -117,6 +116,9 @@ public class TextEditUndo implements IUndo<GuiMultiTextElement>
         }
     }
 
+    /**
+     * Handle insert merging (simple)
+     */
     private void mergeInsert(TextEditUndo text)
     {
         this.postCursor.copy(text.postCursor);
@@ -124,6 +126,9 @@ public class TextEditUndo implements IUndo<GuiMultiTextElement>
         this.postText += text.postText;
     }
 
+    /**
+     * Handle delete merging (simple)
+     */
     private void mergeDelete(TextEditUndo text)
     {
         if (this.isBackspace())
@@ -139,6 +144,10 @@ public class TextEditUndo implements IUndo<GuiMultiTextElement>
             this.text = text.text + this.text;
         }
     }
+
+    /* If being completely honest, I don't understand how these undo
+     * and redo method works... but they works, at least most of the
+     * time... */
 
     @Override
     public void undo(GuiMultiTextElement element)
@@ -161,7 +170,7 @@ public class TextEditUndo implements IUndo<GuiMultiTextElement>
 
         if (type == UndoType.REPLACE || type == UndoType.DELETE)
         {
-            if (!this.wasSelecting())
+            if (!this.wasSelecting() || type == UndoType.DELETE)
             {
                 element.cursor.copy(this.postCursor);
                 element.selection.copy(this.postSelection);
