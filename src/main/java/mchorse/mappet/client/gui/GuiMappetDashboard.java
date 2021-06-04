@@ -17,6 +17,7 @@ import mchorse.mclib.client.gui.mclib.GuiDashboardPanels;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.metamorph.client.gui.creative.GuiCreativeMorphsMenu;
+import mchorse.metamorph.util.MMIcons;
 import net.minecraft.client.Minecraft;
 
 public class GuiMappetDashboard extends GuiAbstractDashboard
@@ -87,7 +88,7 @@ public class GuiMappetDashboard extends GuiAbstractDashboard
         this.panels.registerPanel(this.npc, IKey.lang("mappet.gui.panels.npcs"), Icons.PROCESSOR);
         this.panels.registerPanel(this.faction, IKey.lang("mappet.gui.panels.factions"), Icons.BOOKMARK);
         this.panels.registerPanel(this.chain, IKey.lang("mappet.gui.panels.chains"), Icons.FOLDER);
-        this.panels.registerPanel(this.script, IKey.lang("mappet.gui.panels.scripts"), Icons.CODE);
+        this.panels.registerPanel(this.script, IKey.lang("mappet.gui.panels.scripts"), MMIcons.PROPERTIES);
 
         this.panels.setPanel(this.crafting);
     }

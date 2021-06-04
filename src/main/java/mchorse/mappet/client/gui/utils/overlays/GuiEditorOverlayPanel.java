@@ -68,7 +68,11 @@ public abstract class GuiEditorOverlayPanel <T> extends GuiOverlayPanel
         int index = this.list.getIndex();
 
         this.list.getList().remove(index);
-        this.pickItem(this.list.getList().get(Math.max(index - 1, 0)), true);
+
+        index = Math.max(index - 1, 0);
+        T item = this.list.getList().isEmpty() ? null : this.list.getList().get(index);
+
+        this.pickItem(item, true);
         this.list.update();
     }
 
