@@ -22,6 +22,9 @@ mappet.error.npc.cant_edit=§f为属性 §7%s§f 给定的值: §7%s§f 的格�
 
 mappet.error.data.missing=§fID 为 §7%s§f 的数据不存在！
 
+mappet.error.script.empty=§fScript by ID §7%s§f is either missing or has no §7main§r function!
+mappet.error.script.error=§fScript by ID §7%s§f failed to execute. An error at %s§r:%s§r occurred!\n\n%s§r
+
 # Info
 mappet.info.states.clear=§f状态键 §7%s§f 的值已从状态中移除。
 mappet.info.states.clear_all=§f已移除状态 §7%s§f 所有的值。
@@ -86,9 +89,23 @@ mappet.commands.mp.data.clear=清除所有全局和玩家的状态，以及所�
 mappet.commands.mp.data.load=根据 §7<id>§r 加载保存的数据。§7[全局]§r 决定是否会同时加载全局状态（默认为 §7true§r（启用））。§7[玩家]§r 用于选择另一个玩家，其中的背包数据和玩家状态会被加载至该玩家。
 mappet.commands.mp.data.save=保存全局状态，以及当前玩家的状态和背包至数据 §7<id>§r 中。
 
+mappet.commands.mp.script.help=Scripts subcommand.
+mappet.commands.mp.script.eval=This command evaluates script by §7<id>§r (from world's §7mappet/scripts/§r folder, without file extension) upon players found by §7<player>§r target selector. Script's §7[function]§r (§7main§r if omitted) function will be called. You can also pass arbitrary NBT data to the event using §7[data]§r argument.
+
 # Config
 
 mappet.config.title=Mappet
+
+mappet.config.general.title=General
+mappet.config.general.tooltip=General mod options
+
+mappet.config.comments.general.syntax_style=This button opens theme editor where you can manage and edit script editor highlighting themes.
+
+mappet.config.npc.title=NPCs
+mappet.config.npc.tooltip=Mod options related to NPCs
+
+mappet.config.npc.peaceful_damage=Peaceful damage
+mappet.config.comments.npc.peaceful_damage=This option determines whether NPCs can inflict damage to players in peaceful difficulty.
 
 mappet.config.events.title=事件
 mappet.config.events.tooltip=与事件相关的模组选项
@@ -141,6 +158,7 @@ mappet.gui.panels.regions=区域
 mappet.gui.panels.npcs=NPCs
 mappet.gui.panels.factions=阵营
 mappet.gui.panels.chains=任务链
+mappet.gui.panels.scripts=Scripts
 mappet.gui.panels.modals.add=输入名称:
 mappet.gui.panels.modals.dupe=为副本输入名称：
 mappet.gui.panels.modals.rename=输入新名称：
@@ -151,6 +169,8 @@ mappet.gui.panels.keys.category=Mappet 面板快捷键
 mappet.gui.panels.keys.toggle_sidebar=开关侧边栏
 
 mappet.gui.quests.cancelable=可以取消
+mappet.gui.quests.instant=Instant
+mappet.gui.quests.instant_tooltip=When enabled, this quest will be instantly completed instead of having to hand it in to an NPC/dialogue
 mappet.gui.quests.title=标题
 mappet.gui.quests.description=任务描述
 mappet.gui.quests.accept=接受任务时触发
@@ -222,6 +242,9 @@ mappet.gui.region.box_size=半尺寸
 mappet.gui.region.ellipse_size=椭球半径
 mappet.gui.region.sphere_size=半径与高度
 mappet.gui.region.info.empty=在右右侧列表中选择一个区域方块，或与世界上的任何区域方块交互，即可以开始编辑...
+mappet.gui.region.write_states=Write state
+mappet.gui.region.additive=Additive
+mappet.gui.region.additive_tooltip=Instead of adding §71§r upon entering, and removing the state upon exiting, with additive enabled, it will add §71§r every time player enters without removing the state upon exiting.
 
 mappet.gui.nodes.node.title=标题
 mappet.gui.nodes.event.binary=二进制
@@ -232,7 +255,6 @@ mappet.gui.nodes.event.timer=计时器
 mappet.gui.nodes.event.subject=主对象(Subject)
 mappet.gui.nodes.event.hotkeys.title=时间快捷键编辑器
 mappet.gui.nodes.event.hotkeys.key=快捷键
-mappet.gui.nodes.event.hotkeys.event=事件
 mappet.gui.nodes.event.hotkeys.enabled=启用
 mappet.gui.nodes.event.hotkeys.context.add=添加事件快捷键
 mappet.gui.nodes.event.hotkeys.context.remove=移除事件快捷键
@@ -373,6 +395,27 @@ mappet.gui.conditions.targets.subject=主对象(Subject)
 mappet.gui.conditions.targets.object=次对象(Object)
 mappet.gui.conditions.targets.selector=选择器
 
+mappet.gui.syntax_theme.main=Theme editor
+mappet.gui.syntax_theme.edit=Edit themes...
+mappet.gui.syntax_theme.folder=Open themes folder...
+mappet.gui.syntax_theme.title=Theme's title
+mappet.gui.syntax_theme.shadow=Text shadow
+mappet.gui.syntax_theme.colors.title=Syntax colors
+mappet.gui.syntax_theme.colors.primary=Primary color for keywords
+mappet.gui.syntax_theme.colors.secondary=Secondary color for definition keywords and function calls
+mappet.gui.syntax_theme.colors.identifier=For function names in function
+mappet.gui.syntax_theme.colors.special=For "this" keyword
+mappet.gui.syntax_theme.colors.strings=For single line strings wrapped into " and '
+mappet.gui.syntax_theme.colors.comments=For single and multiline comments
+mappet.gui.syntax_theme.colors.numbers=For constant values like number literals, null and undefined 
+mappet.gui.syntax_theme.colors.other=Plain text
+mappet.gui.syntax_theme.background_colors.title=Background colors
+mappet.gui.syntax_theme.background_colors.line_numbers=Line numbers color
+mappet.gui.syntax_theme.background_colors.background=Background color
+mappet.gui.syntax_theme.context.add=Add a theme...
+mappet.gui.syntax_theme.context.remove=Remove this theme
+mappet.gui.syntax_theme.modal.add=Type into a name for new theme:
+
 # GUI enums
 
 mappet.gui.shapes.box=立方体
@@ -423,3 +466,7 @@ tile.mappet.region.tooltip=当玩家进入或离开设置的区域时触发事�
 entity.mappet.npc.name=Mappet NPC
 
 mappet.translation.credit=本文由 McHorse 摘录
+mappet.translation.wiki=Wiki
+mappet.translation.wiki_url=https://github.com/mchorse/mappet/wiki
+mappet.translation.community=Discord
+mappet.translation.community_url=https://discord.gg/QhvbgSWpYn

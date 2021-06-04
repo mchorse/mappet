@@ -96,6 +96,11 @@ mappet.commands.mp.script.eval=This command evaluates script by §7<id>§r (from
 
 mappet.config.title=Mappet
 
+mappet.config.general.title=General
+mappet.config.general.tooltip=General mod options
+
+mappet.config.comments.general.syntax_style=This button opens theme editor where you can manage and edit script editor highlighting themes.
+
 mappet.config.npc.title=NPCs
 mappet.config.npc.tooltip=Mod options related to NPCs
 
@@ -111,7 +116,6 @@ mappet.config.comments.events.max_executions=This is the maximum amount of node 
 mappet.config.gui.title=GUI
 mappet.config.gui.tooltip=Options to tweak GUI preferences
 
-mappet.config.comments.gui.syntax_style=This button opens theme editor where you can manage and edit script editor highlighting themes.
 mappet.config.gui.pulse_background_color=Pulsing inactive color
 mappet.config.comments.gui.pulse_background_color=This option determines the color of node connection pulsing, i.e. the inactive color.
 mappet.config.gui.pulse_background_mclib=Use primary color
@@ -461,4 +465,8 @@ tile.mappet.region.tooltip=Trigger events when players enter and exit configured
 
 entity.mappet.npc.name=Mappet NPC
 
-mappet.translation.credit=McHorse extracted these lines
+mappet.translation.credit=Mappet by McHorse, special thanks goes to Andruxioid, Centryfuga and Jvonlins
+mappet.translation.wiki=Wiki
+mappet.translation.wiki_url=https://github.com/mchorse/mappet/wiki
+mappet.translation.community=Discord
+mappet.translation.community_url=https://discord.gg/QhvbgSWpYn

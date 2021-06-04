@@ -16,6 +16,7 @@ import mchorse.mappet.blocks.BlockRegion;
 import mchorse.mappet.blocks.BlockTrigger;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.commands.CommandMappet;
+import mchorse.mappet.utils.ValueButtons;
 import mchorse.mappet.utils.ValueSyntaxStyle;
 import mchorse.mclib.McLib;
 import mchorse.mclib.commands.utils.L10n;
@@ -114,15 +115,17 @@ public final class Mappet
     {
         ConfigBuilder builder = event.createBuilder(MOD_ID);
 
+        builder.category("general").register(new ValueButtons("buttons").clientSide());
+        builder.register(syntaxStyle = new ValueSyntaxStyle("syntax_style"));
+        syntaxStyle.clientSide();
+
         npcsPeacefulDamage = builder.category("npc").getBoolean("peaceful_damage", true);
 
         eventMaxExecutions = builder.category("events").getInt("max_executions", 10000, 100, 1000000);
 
-        builder.category("gui").register(syntaxStyle = new ValueSyntaxStyle("syntax_style"));
-        nodePulseBackgroundColor = builder.getInt("pulse_background_color", 0x000000).color();
+        nodePulseBackgroundColor = builder.category("gui").getInt("pulse_background_color", 0x000000).color();
         nodePulseBackgroundMcLibPrimary = builder.getBoolean("pulse_background_mclib", false);
         nodeThickness = builder.getInt("node_thickness", 3, 0, 20);
-
         questsPreviewRewards = builder.getBoolean("quest_preview_rewards", true);
 
         builder.getCategory().markClientSide();
