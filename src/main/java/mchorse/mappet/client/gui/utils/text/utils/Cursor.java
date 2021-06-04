@@ -64,9 +64,9 @@ public class Cursor
     }
 
     /**
-     * Whether given cursor is greater than this one
+     * Whether this cursor is less to given cursor
      */
-    public boolean isGreater(Cursor cursor)
+    public boolean isThisLessTo(Cursor cursor)
     {
         if (this.line == cursor.line)
         {
@@ -74,5 +74,26 @@ public class Cursor
         }
 
         return this.line < cursor.line;
+    }
+
+    /**
+     * Whether this cursor is less or equals to given cursor
+     */
+    public boolean isThisLessOrEqualTo(Cursor cursor)
+    {
+        if (this.line == cursor.line)
+        {
+            return this.offset <= cursor.offset;
+        }
+
+        return this.line < cursor.line;
+    }
+
+    /**
+     * Whether this cursor is equal to given cursor
+     */
+    public boolean isEqualTo(Cursor cursor)
+    {
+        return this.line == cursor.line && this.offset == cursor.offset;
     }
 }

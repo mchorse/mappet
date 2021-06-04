@@ -8,7 +8,6 @@ import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.IFocusedGuiElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
-import mchorse.mclib.client.gui.utils.GuiUtils;
 import mchorse.mclib.client.gui.utils.ScrollArea;
 import mchorse.mclib.client.gui.utils.ScrollDirection;
 import mchorse.mclib.utils.MathUtils;
@@ -105,7 +104,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         this.selection.set(-1, 0);
         this.horizontal.scroll = 0;
         this.vertical.scroll = 0;
-        this.undo = new UndoManager<GuiMultiTextElement>(100);
+        this.undo = new UndoManager<GuiMultiTextElement>(100).simpleMerge();
     }
 
     public String getText()
@@ -165,8 +164,8 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
     {
         StringJoiner joiner = new StringJoiner("\n");
 
-        Cursor min = a.isGreater(b) ? a : b;
-        Cursor max = a.isGreater(b) ? b : a;
+        Cursor min = a.isThisLessTo(b) ? a : b;
+        Cursor max = a.isThisLessTo(b) ? b : a;
 
         for (int i = min.line; i <= Math.min(max.line, this.text.size() - 1); i++)
         {
@@ -565,14 +564,14 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         return line >= 0 && line < this.text.size();
     }
 
-    protected Cursor getMin()
+    public Cursor getMin()
     {
-        return this.selection.isGreater(this.cursor) ? this.selection : this.cursor;
+        return this.selection.isThisLessTo(this.cursor) ? this.selection : this.cursor;
     }
 
-    protected Cursor getMax()
+    public Cursor getMax()
     {
-        return this.selection.isGreater(this.cursor) ? this.cursor : this.selection;
+        return this.selection.isThisLessTo(this.cursor) ? this.cursor : this.selection;
     }
 
     /* Moving cursor API */
