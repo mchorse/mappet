@@ -60,41 +60,47 @@ public class ItemNpcTool extends Item
 
         if (!worldIn.isRemote)
         {
-            NBTTagCompound tag = stack.getTagCompound();
+            EntityNpc entity = new EntityNpc(worldIn);
+            BlockPos posOffset = pos.offset(facing);
 
-            if (tag != null)
+            entity.setPosition(posOffset.getX() + hitX, posOffset.getY() + hitY, posOffset.getZ() + hitZ);
+
+            this.setupState(entity, stack);
+
+            entity.world.spawnEntity(entity);
+            entity.initialize();
+
+            if (!player.isSneaking())
             {
-                String npcId = tag.getString("Npc");
-                String stateId = tag.getString("State");
-
-                Npc npc = Mappet.npcs.load(npcId);
-                NpcState state = npc == null ? null : npc.states.get(stateId);
-
-                if (npc != null && state == null && npc.states.containsKey("default"))
-                {
-                    state = npc.states.get("default");
-                }
-
-                if (npc != null && state != null)
-                {
-                    EntityNpc entity = new EntityNpc(worldIn);
-                    BlockPos posOffset = pos.offset(facing);
-
-                    entity.setPosition(posOffset.getX() + hitX, posOffset.getY() + hitY, posOffset.getZ() + hitZ);
-                    entity.setNpc(npc, state);
-
-                    entity.world.spawnEntity(entity);
-                    entity.initialize();
-
-                    if (!player.isSneaking())
-                    {
-                        Dispatcher.sendTo(new PacketNpcState(entity.getEntityId(), entity.getState().serializeNBT()), (EntityPlayerMP) player);
-                    }
-                }
+                Dispatcher.sendTo(new PacketNpcState(entity.getEntityId(), entity.getState().serializeNBT()), (EntityPlayerMP) player);
             }
         }
 
         return stack.getItem() == Mappet.npcTool ? EnumActionResult.SUCCESS : super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
+    }
+
+    private void setupState(EntityNpc entity, ItemStack stack)
+    {
+        NBTTagCompound tag = stack.getTagCompound();
+
+        if (tag != null)
+        {
+            String npcId = tag.getString("Npc");
+            String stateId = tag.getString("State");
+
+            Npc npc = Mappet.npcs.load(npcId);
+            NpcState state = npc == null ? null : npc.states.get(stateId);
+
+            if (npc != null && state == null && npc.states.containsKey("default"))
+            {
+                state = npc.states.get("default");
+            }
+
+            if (state != null)
+            {
+                entity.setNpc(npc, state);
+            }
+        }
     }
 
     private boolean openNpcTool(EntityPlayer player, ItemStack stack)
