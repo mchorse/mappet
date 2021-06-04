@@ -42,6 +42,8 @@ public class RenderNpc extends RenderLiving<EntityNpc>
         entity.prevRotationYawHead = prevYawHead;
         entity.renderYawOffset = bodyYaw;
         entity.prevRenderYawOffset = bodyPrevYaw;
+
+        this.renderLeash(entity, x, y, z, yawHead, partialTicks);
     }
 
     public static class Factory implements IRenderFactory<EntityNpc>
