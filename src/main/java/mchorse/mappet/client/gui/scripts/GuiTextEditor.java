@@ -204,26 +204,28 @@ public class GuiTextEditor extends GuiMultiTextElement
             }
 
             Cursor temp = new Cursor();
-            String[] splits = this.getSelectedText().split("\n");
+            List<String> splits = GuiMultiTextElement.splitNewlineString(this.getSelectedText());
 
-            for (int i = 0; i < splits.length; i++)
+            for (int i = 0; i < splits.size(); i++)
             {
                 if (shift)
                 {
-                    int indent = this.getIndent(splits[i]);
+                    int indent = this.getIndent(splits.get(i));
 
-                    splits[i] = splits[i].substring(Math.min(indent, 4));
+                    splits.set(i, splits.get(i).substring(Math.min(indent, 4)));
                 }
                 else
                 {
-                    splits[i] = "    " + splits[i];
+                    splits.set(i, "    " + splits.get(i));
                 }
             }
 
+            String result = String.join("\n", splits);
+
             temp.copy(min);
             this.deleteSelection();
-            this.writeString(String.join("\n", splits));
-            this.getMin().set(min.line, splits[splits.length - 1].length());
+            this.writeString(result);
+            this.getMin().set(min.line, splits.get(splits.size() - 1).length());
             min.copy(temp);
 
             if (!shift)
@@ -231,7 +233,7 @@ public class GuiTextEditor extends GuiMultiTextElement
                 min.offset += 4;
             }
 
-            undo.postText = this.getSelectedText();
+            undo.postText = result;
         }
         else
         {

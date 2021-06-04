@@ -54,6 +54,31 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
     private UndoManager<GuiMultiTextElement> undo;
 
+    public static List<String> splitNewlineString(String string)
+    {
+        List<String> splits = new ArrayList<String>();
+        StringBuilder builder = new StringBuilder();
+
+        for (int i = 0, c = string.length(); i < c; i++)
+        {
+            char character = string.charAt(i);
+
+            if (character == '\n')
+            {
+                splits.add(builder.toString());
+                builder = new StringBuilder();
+            }
+            else
+            {
+                builder.append(character);
+            }
+        }
+
+        splits.add(builder.toString());
+
+        return splits;
+    }
+
     public GuiMultiTextElement(Minecraft mc, Consumer<String> callback)
     {
         super(mc);
@@ -277,7 +302,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
     {
         this.deselect();
 
-        List<String> splits = this.splitNewlineString(text);
+        List<String> splits = splitNewlineString(text);
 
         this.selection.copy(this.cursor);
 
@@ -384,7 +409,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
     public void writeString(String string)
     {
-        List<String> splits = this.splitNewlineString(string);
+        List<String> splits = splitNewlineString(string);
         int size = splits.size();
 
         if (size == 1)
@@ -416,31 +441,6 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             this.writeCharacter(remainder);
             this.changedLineAfter(line);
         }
-    }
-
-    private List<String> splitNewlineString(String string)
-    {
-        List<String> splits = new ArrayList<String>();
-        StringBuilder builder = new StringBuilder();
-
-        for (int i = 0, c = string.length(); i < c; i++)
-        {
-            char character = string.charAt(i);
-
-            if (character == '\n')
-            {
-                splits.add(builder.toString());
-                builder = new StringBuilder();
-            }
-            else
-            {
-                builder.append(character);
-            }
-        }
-
-        splits.add(builder.toString());
-
-        return splits;
     }
 
     public String deleteCharacter()

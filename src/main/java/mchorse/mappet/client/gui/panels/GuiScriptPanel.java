@@ -18,7 +18,7 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
     {
         super(mc, dashboard);
 
-        this.code = new GuiTextEditor(mc, (t) -> this.data.code = t);
+        this.code = new GuiTextEditor(mc, null);
         this.code.background().flex().relative(this.editor).wh(1F, 1F);
 
         this.unique = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.meta.unique"), (b) -> this.data.unique = b.isToggled());
@@ -55,8 +55,19 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
         if (data != null)
         {
             this.code.getHighlighter().setStyle(Mappet.syntaxStyle.get());
-            this.code.setText(data.code);
+
+            if (!this.code.getText().equals(data.code))
+            {
+                this.code.setText(data.code);
+            }
+
             this.unique.toggled(data.unique);
         }
+    }
+
+    @Override
+    protected void preSave()
+    {
+        this.data.code = this.code.getText();
     }
 }

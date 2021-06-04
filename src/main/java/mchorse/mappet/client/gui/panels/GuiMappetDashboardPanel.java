@@ -372,9 +372,13 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
     {
         if (!this.update && this.data != null && this.editor.isEnabled())
         {
+            this.preSave();
             Dispatcher.sendToServer(new PacketContentData(this.getType(), this.data.getId(), this.data.serializeNBT()));
         }
     }
+
+    protected void preSave()
+    {}
 
     @Override
     public void draw(GuiContext context)

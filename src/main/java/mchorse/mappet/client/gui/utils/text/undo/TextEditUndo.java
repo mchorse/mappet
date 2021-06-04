@@ -6,11 +6,21 @@ import mchorse.mclib.utils.undo.IUndo;
 
 public class TextEditUndo implements IUndo<GuiMultiTextElement>
 {
+    /**
+     * Text that was present before undo
+     */
     public String text;
+
+    /* Cursor and selection before a text operation */
     public Cursor cursor = new Cursor(-1, 0);
     public Cursor selection = new Cursor(-1, 0);
 
+    /**
+     * Text that will be added
+     */
     public String postText = "";
+
+    /* Cursor and selection after a text operation */
     public Cursor postCursor = new Cursor(-1, 0);
     public Cursor postSelection = new Cursor(-1, 0);
 
@@ -54,12 +64,12 @@ public class TextEditUndo implements IUndo<GuiMultiTextElement>
             {
                 if (this.getType() == UndoType.INSERT)
                 {
-                    if (this.postText.contains("\n") || text.postText.contains("\n"))
+                    if (this.postCursor.line != text.postCursor.line)
                     {
                         return false;
                     }
 
-                    if (text.postCursor.isThisLessOrEqualTo(this.postCursor))
+                    if (text.cursor.offset != this.cursor.offset + this.postText.length())
                     {
                         return false;
                     }
@@ -67,7 +77,7 @@ public class TextEditUndo implements IUndo<GuiMultiTextElement>
 
                 if (this.getType() == UndoType.DELETE)
                 {
-                    if (this.text.contains("\n") || text.text.contains("\n"))
+                    if (this.postCursor.line != text.postCursor.line)
                     {
                         return false;
                     }
@@ -79,7 +89,7 @@ public class TextEditUndo implements IUndo<GuiMultiTextElement>
                             return false;
                         }
                     }
-                    else if (this.postCursor.line != text.postCursor.line || text.postCursor.offset != this.postCursor.offset - text.text.length())
+                    else if (text.cursor.offset != this.cursor.offset - this.text.length())
                     {
                         return false;
                     }
@@ -133,19 +143,30 @@ public class TextEditUndo implements IUndo<GuiMultiTextElement>
     @Override
     public void undo(GuiMultiTextElement element)
     {
-        element.cursor.copy(this.postCursor);
-        element.selection.copy(this.postSelection);
+        element.cursor.copy(this.cursor);
+        element.selection.copy(this.selection);
 
         UndoType type = this.getType();
 
         if (type == UndoType.REPLACE || type == UndoType.INSERT)
         {
-            element.selectTextful(this.postText, true);
+            if (element.selection.isThisLessTo(element.cursor))
+            {
+                element.swapSelection();
+            }
+
+            element.selectTextful(this.postText, false);
             element.deleteSelection();
         }
 
         if (type == UndoType.REPLACE || type == UndoType.DELETE)
         {
+            if (!this.wasSelecting())
+            {
+                element.cursor.copy(this.postCursor);
+                element.selection.copy(this.postSelection);
+            }
+
             element.writeString(this.text);
         }
 
