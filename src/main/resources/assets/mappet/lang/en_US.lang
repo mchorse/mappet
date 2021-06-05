@@ -238,7 +238,7 @@ mappet.gui.region.enabled=Enabled
 mappet.gui.region.delay=Trigger delay
 mappet.gui.region.on_enter=On player enter trigger
 mappet.gui.region.on_exit=On player exit trigger
-mappet.gui.region.shape=Shape
+mappet.gui.region.shapes=Shapes
 mappet.gui.region.offset=Offset
 mappet.gui.region.box_size=Half size
 mappet.gui.region.ellipse_size=Ellipsoid radius
@@ -247,6 +247,7 @@ mappet.gui.region.info.empty=Select a region block in the list on the right, or 
 mappet.gui.region.write_states=Write state
 mappet.gui.region.additive=Additive
 mappet.gui.region.additive_tooltip=Instead of adding §71§r upon entering, and removing the state upon exiting, with additive enabled, it will add §71§r every time player enters without removing the state upon exiting.
+mappet.gui.region.context.remove=Remove this shape
 
 mappet.gui.nodes.node.title=Title
 mappet.gui.nodes.event.binary=Binary

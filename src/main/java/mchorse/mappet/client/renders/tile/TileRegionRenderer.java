@@ -117,14 +117,21 @@ public class TileRegionRenderer extends TileBaseBlockRenderer<TileRegion>
     @Override
     protected void renderMoreDebug(TileRegion te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
-        AbstractShape shape = te.region.shape;
+        Color color = te == this.selected ? SELECTED : NOT_SELECTED;
+
+        for (AbstractShape shape : te.region.shapes)
+        {
+            this.renderShape(shape, x, y, z, color);
+        }
+    }
+
+    public void renderShape(AbstractShape shape, double x, double y, double z, Color color)
+    {
         Vector3d diff = new Vector3d(shape.pos.x + 0.5F, shape.pos.y + 0.5F, shape.pos.z + 0.5F);
 
         diff.x += x;
         diff.y += y;
         diff.z += z;
-
-        Color color = te == this.selected ? SELECTED : NOT_SELECTED;
 
         if (shape instanceof BoxShape)
         {

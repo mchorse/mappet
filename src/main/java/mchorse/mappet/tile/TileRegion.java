@@ -104,7 +104,7 @@ public class TileRegion extends TileEntity implements ITickable
             UUID id = player.getGameProfile().getId();
             boolean wasInside = this.players.contains(id);
 
-            if (this.region.shape.isPlayerInside(player, this.getPos()))
+            if (this.region.isPlayerInside(player, this.getPos()))
             {
                 if (!this.region.passable)
                 {
@@ -152,7 +152,7 @@ public class TileRegion extends TileEntity implements ITickable
         PositionCache cache = character.getPositionCache();
         Vec3d vec = cache.lastPosition;
 
-        if (vec != null && !this.region.shape.isPlayerInside(vec.x, vec.y + player.height / 2, vec.z, this.getPos()))
+        if (vec != null && !this.region.isPlayerInside(vec.x, vec.y + player.height / 2, vec.z, this.getPos()))
         {
             player.setPositionAndUpdate(vec.x, vec.y, vec.z);
             cache.resetLastPositionTimer();
@@ -162,7 +162,7 @@ public class TileRegion extends TileEntity implements ITickable
 
         vec = cache.lastLastPosition;
 
-        if (vec != null && !this.region.shape.isPlayerInside(vec.x, vec.y + player.height / 2, vec.z, this.getPos()))
+        if (vec != null && !this.region.isPlayerInside(vec.x, vec.y + player.height / 2, vec.z, this.getPos()))
         {
             player.setPositionAndUpdate(vec.x, vec.y, vec.z);
             cache.resetLastPositionTimer();
@@ -182,7 +182,7 @@ public class TileRegion extends TileEntity implements ITickable
             vec = vec.normalize();
             vec = vec.scale(-0.5D);
 
-            while (this.region.shape.isPlayerInside(player, this.getPos()))
+            while (this.region.isPlayerInside(player, this.getPos()))
             {
                 player.posX += vec.x;
                 player.posY += vec.y;

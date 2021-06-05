@@ -12,10 +12,14 @@ import mchorse.mappet.utils.EnumUtils;
 import mchorse.mappet.utils.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Region implements INBTSerializable<NBTTagCompound>
 {
@@ -24,7 +28,12 @@ public class Region implements INBTSerializable<NBTTagCompound>
     public int delay;
     public Trigger onEnter = new Trigger();
     public Trigger onExit = new Trigger();
-    public AbstractShape shape = new BoxShape();
+    public List<AbstractShape> shapes = new ArrayList<AbstractShape>();
+
+    public Region()
+    {
+        this.shapes.add(new BoxShape());
+    }
 
     /* Automatic state writing */
     public boolean writeState;
@@ -35,6 +44,32 @@ public class Region implements INBTSerializable<NBTTagCompound>
     public boolean isEnabled(World world, BlockPos pos)
     {
         return this.enabled.check(new DataContext(world, pos));
+    }
+
+    public boolean isPlayerInside(EntityPlayer player, BlockPos pos)
+    {
+        for (AbstractShape shape : this.shapes)
+        {
+            if (shape.isPlayerInside(player, pos))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isPlayerInside(double x, double y, double z, BlockPos pos)
+    {
+        for (AbstractShape shape : this.shapes)
+        {
+            if (shape.isPlayerInside(x, y, z, pos))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void triggerEnter(EntityPlayer player)
@@ -68,7 +103,7 @@ public class Region implements INBTSerializable<NBTTagCompound>
             }
         }
 
-        this.onEnter.trigger(player);
+        this.onExit.trigger(player);
     }
 
     @Override
@@ -82,11 +117,17 @@ public class Region implements INBTSerializable<NBTTagCompound>
         tag.setTag("OnEnter", this.onEnter.serializeNBT());
         tag.setTag("OnExit", this.onExit.serializeNBT());
 
-        NBTTagCompound shape = this.shape.serializeNBT();
+        NBTTagList shapes = new NBTTagList();
 
-        shape.setString("Type", this.shape.getType());
-        tag.setTag("Shape", shape);
+        for (AbstractShape shape : this.shapes)
+        {
+            NBTTagCompound shapeTag = shape.serializeNBT();
 
+            shapeTag.setString("Type", shape.getType());
+            shapes.appendTag(shapeTag);
+        }
+
+        tag.setTag("Shapes", shapes);
         tag.setBoolean("WriteState", this.writeState);
         tag.setString("State", this.state.trim());
         tag.setInteger("Target", this.target.ordinal());
@@ -123,26 +164,57 @@ public class Region implements INBTSerializable<NBTTagCompound>
             this.onExit.deserializeNBT(tag.getCompoundTag("OnExit"));
         }
 
+        this.shapes.clear();
+
         if (tag.hasKey("Shape", Constants.NBT.TAG_COMPOUND))
         {
-            NBTTagCompound shapeTag = tag.getCompoundTag("Shape");
+            AbstractShape shape = this.readShape(tag.getCompoundTag("Shape"));
 
-            if (shapeTag.hasKey("Type"))
+            if (shape != null)
             {
-                AbstractShape shape = AbstractShape.fromString(shapeTag.getString("Type"));
+                this.shapes.add(shape);
+            }
+        }
+        else if (tag.hasKey("Shapes", Constants.NBT.TAG_LIST))
+        {
+            NBTTagList list = tag.getTagList("Shapes", Constants.NBT.TAG_COMPOUND);
+
+            for (int i = 0; i < list.tagCount(); i++)
+            {
+                AbstractShape shape = this.readShape(list.getCompoundTagAt(i));
 
                 if (shape != null)
                 {
-                    shape.deserializeNBT(shapeTag);
-
-                    this.shape = shape;
+                    this.shapes.add(shape);
                 }
             }
+        }
+
+        if (this.shapes.isEmpty())
+        {
+            this.shapes.add(new BoxShape());
         }
 
         this.writeState = tag.getBoolean("WriteState");
         this.state = tag.getString("State");
         this.target = EnumUtils.getValue(tag.getInteger("Target"), Target.values(), Target.GLOBAL);
         this.additive = tag.getBoolean("Additive");
+    }
+
+    private AbstractShape readShape(NBTTagCompound shapeTag)
+    {
+        if (shapeTag.hasKey("Type"))
+        {
+            AbstractShape shape = AbstractShape.fromString(shapeTag.getString("Type"));
+
+            if (shape != null)
+            {
+                shape.deserializeNBT(shapeTag);
+
+                return shape;
+            }
+        }
+
+        return null;
     }
 }

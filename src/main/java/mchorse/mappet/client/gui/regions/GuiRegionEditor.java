@@ -8,13 +8,17 @@ import mchorse.mappet.api.regions.shapes.CylinderShape;
 import mchorse.mappet.api.regions.shapes.SphereShape;
 import mchorse.mappet.client.gui.utils.GuiCheckerElement;
 import mchorse.mappet.client.gui.utils.GuiTriggerElement;
+import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiCirculateElement;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiLabel;
 import mchorse.mclib.client.gui.utils.Elements;
+import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.Direction;
 import net.minecraft.client.Minecraft;
@@ -26,14 +30,14 @@ public class GuiRegionEditor extends GuiElement
     public GuiTrackpadElement delay;
     public GuiTriggerElement onEnter;
     public GuiTriggerElement onExit;
-    public GuiCirculateElement shape;
-    public GuiShapeEditor shapeEditor;
 
     public GuiToggleElement writeState;
     public GuiElement stateOptions;
     public GuiTextElement state;
     public GuiCirculateElement target;
     public GuiToggleElement additive;
+
+    public GuiElement shapes;
 
     private Region region;
 
@@ -46,12 +50,6 @@ public class GuiRegionEditor extends GuiElement
         this.delay = new GuiTrackpadElement(mc, (value) -> this.region.delay = value.intValue());
         this.onEnter = new GuiTriggerElement(mc);
         this.onExit = new GuiTriggerElement(mc);
-        this.shape = new GuiCirculateElement(mc, this::changeShape);
-        this.shape.flex().w(80);
-        this.shape.addLabel(IKey.lang("mappet.gui.shapes.box"));
-        this.shape.addLabel(IKey.lang("mappet.gui.shapes.sphere"));
-        this.shape.addLabel(IKey.lang("mappet.gui.shapes.cylinder"));
-        this.shapeEditor = new GuiShapeEditor(mc);
 
         this.writeState = new GuiToggleElement(mc, IKey.lang("mappet.gui.region.write_states"), (b) -> this.toggleStates());
         this.stateOptions = Elements.column(mc, 5);
@@ -71,60 +69,52 @@ public class GuiRegionEditor extends GuiElement
         this.additive = new GuiToggleElement(mc, IKey.lang("mappet.gui.region.additive"), (b) -> this.region.additive = b.isToggled());
         this.additive.tooltip(IKey.lang("mappet.gui.region.additive_tooltip"), Direction.TOP);
 
+        this.shapes = Elements.column(mc, 5);
+
         this.add(this.passable);
         this.add(Elements.label(IKey.lang("mappet.gui.region.enabled")).marginTop(6), this.enabled);
         this.add(Elements.label(IKey.lang("mappet.gui.region.delay")).marginTop(12), this.delay);
         this.add(Elements.label(IKey.lang("mappet.gui.region.on_enter")).background().marginTop(12).marginBottom(5), this.onEnter);
         this.add(Elements.label(IKey.lang("mappet.gui.region.on_exit")).background().marginTop(12).marginBottom(5), this.onExit);
-        this.add(Elements.label(IKey.lang("mappet.gui.region.shape")).background().marginTop(12).marginBottom(5), this.shape);
-        this.add(this.shapeEditor);
 
         this.add(this.writeState.marginTop(12));
-        this.stateOptions.add(Elements.label(IKey.lang("mappet.gui.conditions.state.id")).marginTop(6), this.state);
-        this.stateOptions.add(this.target, this.additive);
+        this.add(this.stateOptions);
+
+        GuiLabel shapesLabel = Elements.label(IKey.lang("mappet.gui.region.shapes")).background();
+        GuiIconElement addShape = new GuiIconElement(mc, Icons.ADD, this::addShape);
+
+        addShape.flex().relative(shapesLabel).xy(1F, 0.5F).w(10).anchor(1F, 0.5F);
+        shapesLabel.marginTop(12).add(addShape);
+
+        this.add(shapesLabel);
+        this.add(this.shapes);
 
         this.flex().column(5).vertical().stretch();
+    }
+
+    private void addShape(GuiIconElement element)
+    {
+        AbstractShape shape = new BoxShape();
+        GuiShapeEditor editor = new GuiShapeEditor(this.mc);
+
+        this.region.shapes.add(shape);
+        this.shapes.add(editor.marginTop(12));
+        editor.set(this.region, shape);
     }
 
     private void toggleStates()
     {
         this.region.writeState = this.writeState.isToggled();
 
-        this.stateOptions.removeFromParent();
+        this.stateOptions.removeAll();
 
         if (this.region.writeState)
         {
-            this.add(this.stateOptions);
+            this.stateOptions.add(Elements.label(IKey.lang("mappet.gui.conditions.state.id")).marginTop(6), this.state);
+            this.stateOptions.add(this.target, this.additive);
         }
 
         this.getParentContainer().resize();
-    }
-
-    private void changeShape(GuiButtonElement element)
-    {
-        int value = this.shape.getValue();
-        AbstractShape shape = null;
-
-        if (value == 0)
-        {
-            shape = new BoxShape();
-        }
-        else if (value == 1)
-        {
-            shape = new SphereShape();
-        }
-        else if (value == 2)
-        {
-            shape = new CylinderShape();
-        }
-
-        if (shape != null)
-        {
-            shape.copyFrom(this.region.shape);
-            this.shapeEditor.set(shape);
-
-            this.region.shape = shape;
-        }
     }
 
     public void set(Region region)
@@ -138,8 +128,16 @@ public class GuiRegionEditor extends GuiElement
             this.delay.setValue(region.delay);
             this.onEnter.set(region.onEnter);
             this.onExit.set(region.onExit);
-            this.shape.setValue(region.shape instanceof BoxShape ? 0 : (region.shape instanceof CylinderShape ? 2 : 1));
-            this.shapeEditor.set(region.shape);
+
+            this.shapes.removeAll();
+
+            for (AbstractShape shape : region.shapes)
+            {
+                GuiShapeEditor editor = new GuiShapeEditor(this.mc);
+
+                this.shapes.add(editor.marginTop(12));
+                editor.set(region, shape);
+            }
 
             this.writeState.toggled(region.writeState);
             this.state.setText(region.state);
