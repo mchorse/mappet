@@ -28,6 +28,7 @@ public class GuiRegionEditor extends GuiElement
     public GuiToggleElement passable;
     public GuiCheckerElement enabled;
     public GuiTrackpadElement delay;
+    public GuiTrackpadElement update;
     public GuiTriggerElement onEnter;
     public GuiTriggerElement onExit;
 
@@ -47,7 +48,8 @@ public class GuiRegionEditor extends GuiElement
 
         this.passable = new GuiToggleElement(mc, IKey.lang("mappet.gui.region.passable"), (b) -> this.region.passable = b.isToggled());
         this.enabled = new GuiCheckerElement(mc);
-        this.delay = new GuiTrackpadElement(mc, (value) -> this.region.delay = value.intValue());
+        this.delay = new GuiTrackpadElement(mc, (value) -> this.region.delay = value.intValue()).limit(0).integer();
+        this.update = new GuiTrackpadElement(mc, (value) -> this.region.update = value.intValue()).limit(1).integer();
         this.onEnter = new GuiTriggerElement(mc);
         this.onExit = new GuiTriggerElement(mc);
 
@@ -74,6 +76,7 @@ public class GuiRegionEditor extends GuiElement
         this.add(this.passable);
         this.add(Elements.label(IKey.lang("mappet.gui.region.enabled")).marginTop(6), this.enabled);
         this.add(Elements.label(IKey.lang("mappet.gui.region.delay")).marginTop(12), this.delay);
+        this.add(Elements.label(IKey.lang("mappet.gui.region.update")).marginTop(12), this.update);
         this.add(Elements.label(IKey.lang("mappet.gui.region.on_enter")).background().marginTop(12).marginBottom(5), this.onEnter);
         this.add(Elements.label(IKey.lang("mappet.gui.region.on_exit")).background().marginTop(12).marginBottom(5), this.onExit);
 
@@ -126,6 +129,7 @@ public class GuiRegionEditor extends GuiElement
             this.passable.toggled(region.passable);
             this.enabled.set(region.enabled);
             this.delay.setValue(region.delay);
+            this.update.setValue(region.update);
             this.onEnter.set(region.onEnter);
             this.onExit.set(region.onExit);
 

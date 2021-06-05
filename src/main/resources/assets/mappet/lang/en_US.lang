@@ -236,6 +236,7 @@ mappet.gui.crafting.info.empty_recipe=Select or create a new crafting recipe in 
 mappet.gui.region.passable=Passable
 mappet.gui.region.enabled=Enabled
 mappet.gui.region.delay=Trigger delay
+mappet.gui.region.update=Update frequency
 mappet.gui.region.on_enter=On player enter trigger
 mappet.gui.region.on_exit=On player exit trigger
 mappet.gui.region.shapes=Shapes

@@ -5,8 +5,10 @@ import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.utils.PositionCache;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
@@ -52,8 +54,9 @@ public class TileRegion extends TileEntity implements ITickable
             this.checkDelays();
         }
 
-        /* TODO: frequency */
-        if (this.tick % 3 == 0)
+        int frequency = Math.max(this.region.update, 1);
+
+        if (this.tick % frequency == 0)
         {
             this.checkRegion();
         }
@@ -143,6 +146,7 @@ public class TileRegion extends TileEntity implements ITickable
     private void handlePassing(EntityPlayer player)
     {
         ICharacter character = Character.get(player);
+        Vec3d last = player.getPositionVector();
 
         if (character == null)
         {
@@ -154,7 +158,8 @@ public class TileRegion extends TileEntity implements ITickable
 
         if (vec != null && !this.region.isPlayerInside(vec.x, vec.y + player.height / 2, vec.z, this.getPos()))
         {
-            player.setPositionAndUpdate(vec.x, vec.y, vec.z);
+            this.teleportPlayer(player, vec, last);
+
             cache.resetLastPositionTimer();
 
             return;
@@ -164,7 +169,8 @@ public class TileRegion extends TileEntity implements ITickable
 
         if (vec != null && !this.region.isPlayerInside(vec.x, vec.y + player.height / 2, vec.z, this.getPos()))
         {
-            player.setPositionAndUpdate(vec.x, vec.y, vec.z);
+            this.teleportPlayer(player, vec, last);
+
             cache.resetLastPositionTimer();
 
             return;
@@ -189,10 +195,20 @@ public class TileRegion extends TileEntity implements ITickable
                 player.posZ += vec.z;
             }
 
-            player.setPositionAndUpdate(player.posX, player.posY, player.posZ);
+            this.teleportPlayer(player, vec, last);
         }
 
         cache.resetLastPositionTimer();
+    }
+
+    private void teleportPlayer(EntityPlayer player, Vec3d vec, Vec3d last)
+    {
+        player.setPositionAndUpdate(vec.x, vec.y, vec.z);
+
+        Vec3d motion = last.subtract(player.getPositionVector()).scale(-0.5);
+        double y = Math.abs(motion.y) < 0.01 ? 0.2 : motion.y;
+
+        ((EntityPlayerMP) player).connection.sendPacket(new SPacketEntityVelocity(player.getEntityId(), motion.x, y, motion.z));
     }
 
     /* Rendering related stuff */

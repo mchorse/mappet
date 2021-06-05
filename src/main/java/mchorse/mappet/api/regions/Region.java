@@ -26,6 +26,7 @@ public class Region implements INBTSerializable<NBTTagCompound>
     public boolean passable = true;
     public Checker enabled = new Checker(true);
     public int delay;
+    public int update = 3;
     public Trigger onEnter = new Trigger();
     public Trigger onExit = new Trigger();
     public List<AbstractShape> shapes = new ArrayList<AbstractShape>();
@@ -114,6 +115,7 @@ public class Region implements INBTSerializable<NBTTagCompound>
         tag.setBoolean("Passable", this.passable);
         tag.setTag("Enabled", this.enabled.serializeNBT());
         tag.setInteger("Delay", this.delay);
+        tag.setInteger("Update", this.update);
         tag.setTag("OnEnter", this.onEnter.serializeNBT());
         tag.setTag("OnExit", this.onExit.serializeNBT());
 
@@ -152,6 +154,11 @@ public class Region implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("Delay", Constants.NBT.TAG_ANY_NUMERIC))
         {
             this.delay = tag.getInteger("Delay");
+        }
+
+        if (tag.hasKey("Update", Constants.NBT.TAG_ANY_NUMERIC))
+        {
+            this.update = tag.getInteger("Update");
         }
 
         if (tag.hasKey("OnEnter", Constants.NBT.TAG_COMPOUND))
