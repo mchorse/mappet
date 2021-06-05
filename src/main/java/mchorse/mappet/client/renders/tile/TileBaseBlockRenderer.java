@@ -5,6 +5,7 @@ import mchorse.mclib.utils.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.relauncher.Side;
@@ -40,6 +41,8 @@ public abstract class TileBaseBlockRenderer <T extends TileEntity> extends TileE
             GlStateManager.disableLighting();
             GlStateManager.disableTexture2D();
             GlStateManager.enableBlend();
+            GlStateManager.enableCull();
+            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
             Color color = this.getBoxColor(te);
 
@@ -48,6 +51,7 @@ public abstract class TileBaseBlockRenderer <T extends TileEntity> extends TileE
             this.renderMoreDebug(te, x, y, z, partialTicks, destroyStage, alpha);
 
             GlStateManager.disableBlend();
+            GlStateManager.disableCull();
             GlStateManager.enableTexture2D();
             GlStateManager.enableLighting();
             GlStateManager.enableDepth();

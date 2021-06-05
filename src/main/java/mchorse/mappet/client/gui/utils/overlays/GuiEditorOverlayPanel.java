@@ -46,12 +46,12 @@ public abstract class GuiEditorOverlayPanel <T> extends GuiOverlayPanel
 
     protected IKey getAddLabel()
     {
-        return IKey.str("");
+        return IKey.EMPTY;
     }
 
     protected IKey getRemoveLabel()
     {
-        return IKey.str("");
+        return IKey.EMPTY;
     }
 
     protected void addItem()
