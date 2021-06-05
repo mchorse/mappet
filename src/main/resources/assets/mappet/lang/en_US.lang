@@ -22,7 +22,7 @@ mappet.error.npc.cant_edit=§fGiven value for §7%s§f property: §7%s§f is in 
 
 mappet.error.data.missing=§fData by ID §7%s§f is missing!
 
-mappet.error.script.empty=§fScript by ID §7%s§f is either missing or has no §7main§r function!
+mappet.error.script.empty=§fScript by ID §7%s§f is either missing or has no §7main§r function! Error message:\n\n%s§r
 mappet.error.script.error=§fScript by ID §7%s§f failed to execute. An error at %s§r:%s§r occurred!\n\n%s§r
 
 # Info
@@ -112,6 +112,8 @@ mappet.config.events.tooltip=Mod options related to events
 
 mappet.config.events.max_executions=Max event executions
 mappet.config.comments.events.max_executions=This is the maximum amount of node executions can be done per event (to avoid infinite recursion).
+mappet.config.events.use_server_for_commands=Use server for commands
+mappet.config.comments.events.use_server_for_commands=Instead of using a dedicated trigger (which supports position based target selectors), use directly server for event commands (and scripts)
 
 mappet.config.gui.title=GUI
 mappet.config.gui.tooltip=Options to tweak GUI preferences

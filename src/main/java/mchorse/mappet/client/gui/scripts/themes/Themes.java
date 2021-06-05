@@ -4,8 +4,6 @@ import mchorse.mappet.ClientProxy;
 import mchorse.mappet.client.gui.scripts.utils.SyntaxStyle;
 import mchorse.mappet.utils.NBTToJsonLike;
 import mchorse.mclib.client.gui.utils.GuiUtils;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -13,7 +11,6 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-@SideOnly(Side.CLIENT)
 public class Themes
 {
     private static File editorThemes;

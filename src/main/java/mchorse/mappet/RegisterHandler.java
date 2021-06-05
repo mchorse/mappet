@@ -7,6 +7,7 @@ import mchorse.mappet.api.factions.FactionManager;
 import mchorse.mappet.api.npcs.NpcManager;
 import mchorse.mappet.api.quests.QuestManager;
 import mchorse.mappet.api.quests.chains.QuestChainManager;
+import mchorse.mappet.api.scripts.ScriptManager;
 import mchorse.mappet.blocks.BlockEmitter;
 import mchorse.mappet.blocks.BlockRegion;
 import mchorse.mappet.blocks.BlockTrigger;
@@ -47,6 +48,7 @@ public class RegisterHandler
             Mappet.npcs = new NpcManager(null);
             Mappet.factions = new FactionManager(null);
             Mappet.chains = new QuestChainManager(null);
+            Mappet.scripts = new ScriptManager(null);
         }
     }
 
@@ -61,6 +63,7 @@ public class RegisterHandler
         Mappet.npcs = null;
         Mappet.factions = null;
         Mappet.chains = null;
+        Mappet.scripts = null;
 
         KeyboardHandler.hotkeys.clear();
     }

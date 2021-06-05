@@ -43,6 +43,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.File;
+import java.util.logging.Logger;
 
 /**
  * Mappet mod
@@ -53,7 +54,7 @@ import java.io.File;
 public final class Mappet
 {
     public static final String MOD_ID = "mappet";
-    public static final String VERSION = "%VERSION%";
+    public static final String VERSION = "0.1";
 
     @Mod.Instance
     public static Mappet instance;
@@ -97,6 +98,7 @@ public final class Mappet
     public static ValueBoolean npcsPeacefulDamage;
 
     public static ValueInt eventMaxExecutions;
+    public static ValueBoolean eventUseServerForCommands;
 
     public static ValueSyntaxStyle syntaxStyle;
     public static ValueInt nodePulseBackgroundColor;
@@ -122,6 +124,7 @@ public final class Mappet
         npcsPeacefulDamage = builder.category("npc").getBoolean("peaceful_damage", true);
 
         eventMaxExecutions = builder.category("events").getInt("max_executions", 10000, 100, 1000000);
+        eventUseServerForCommands = builder.getBoolean("use_server_for_commands", false);
 
         nodePulseBackgroundColor = builder.category("gui").getInt("pulse_background_color", 0x000000).color();
         nodePulseBackgroundMcLibPrimary = builder.getBoolean("pulse_background_mclib", false);

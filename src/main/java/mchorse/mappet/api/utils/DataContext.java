@@ -1,6 +1,8 @@
 package mchorse.mappet.api.utils;
 
+import mchorse.mappet.Mappet;
 import mchorse.mappet.utils.ExpressionRewriter;
+import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTBase;
@@ -69,7 +71,9 @@ public class DataContext
     private void setup()
     {
         this.set("subject", this.subject == null ? "" : this.subject.getCachedUniqueIdString());
+        this.set("subject_name", this.subject == null ? "" : this.subject.getName());
         this.set("object", this.object == null ? "" : this.object.getCachedUniqueIdString());
+        this.set("object_name", this.object == null ? "" : this.object.getName());
     }
 
     public DataContext set(String key, double value)
@@ -144,8 +148,13 @@ public class DataContext
         return this.values.keySet();
     }
 
-    public TriggerSender getSender()
+    public ICommandSender getSender()
     {
+        if (Mappet.eventUseServerForCommands.get())
+        {
+            return this.server;
+        }
+
         if (this.sender == null)
         {
             this.sender = new TriggerSender();

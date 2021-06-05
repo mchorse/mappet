@@ -38,6 +38,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.io.File;
+import java.util.logging.FileHandler;
+import java.util.logging.SimpleFormatter;
 
 /**
  * Common proxy 

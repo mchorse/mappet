@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 
 import javax.script.ScriptException;
+import java.util.logging.Level;
 
 public class CommandScriptEval extends CommandScriptBase
 {
@@ -58,7 +59,14 @@ public class CommandScriptEval extends CommandScriptBase
         }
         catch (Exception e)
         {
-            throw new CommandException("script.empty", args[1]);
+            StringBuilder stack = new StringBuilder();
+
+            for (StackTraceElement element : e.getStackTrace())
+            {
+                stack.append(element.toString()).append("\n");
+            }
+
+            throw new CommandException("script.empty", args[1], stack.toString());
         }
     }
 }
