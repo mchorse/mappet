@@ -3,6 +3,7 @@ package mchorse.mappet.client.gui.conditions.blocks;
 import mchorse.mappet.ClientProxy;
 import mchorse.mappet.api.conditions.blocks.QuestBlock;
 import mchorse.mappet.api.conditions.blocks.TargetBlock;
+import mchorse.mappet.api.conditions.utils.Target;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.conditions.GuiConditionOverlayPanel;
 import mchorse.mappet.client.gui.conditions.utils.GuiTargetBlockElement;
@@ -26,7 +27,7 @@ public class GuiQuestBlockPanel extends GuiAbstractBlockPanel<QuestBlock>
         super(mc, overlay, block);
 
         this.id = new GuiButtonElement(mc, IKey.lang("mappet.gui.overlays.quest"), (t) -> this.openQuests());
-        this.property = new GuiTargetBlockElement<TargetBlock>(mc, block);
+        this.property = new GuiTargetBlockElement<TargetBlock>(mc, block).skip(Target.NPC);
         this.quest = new GuiCirculateElement(mc, this::toggleQuest);
 
         for (QuestBlock.QuestCheck check : QuestBlock.QuestCheck.values())

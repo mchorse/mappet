@@ -43,7 +43,12 @@ public class GuiTargetBlockElement <T extends TargetBlock> extends GuiElement
 
     public GuiTargetBlockElement<T> skipGlobal()
     {
-        this.target.disable(Target.GLOBAL.ordinal());
+        return this.skip(Target.GLOBAL);
+    }
+
+    public GuiTargetBlockElement<T> skip(Target target)
+    {
+        this.target.disable(target.ordinal());
 
         return this;
     }
