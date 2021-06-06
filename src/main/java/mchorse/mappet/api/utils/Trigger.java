@@ -17,6 +17,8 @@ public class Trigger implements INBTSerializable<NBTTagCompound>
     public String triggerEvent = "";
     public String command = "";
     public String dialogue = "";
+    public String script = "";
+    public String scriptFunction = "";
 
     private boolean empty;
 
@@ -26,13 +28,15 @@ public class Trigger implements INBTSerializable<NBTTagCompound>
         this.triggerEvent = trigger.triggerEvent;
         this.command = trigger.command;
         this.dialogue = trigger.dialogue;
+        this.script = trigger.script;
+        this.scriptFunction = trigger.scriptFunction;
 
         this.recalculateEmpty();
     }
 
     public void recalculateEmpty()
     {
-        this.empty = this.soundEvent.isEmpty() && this.triggerEvent.isEmpty() && this.command.isEmpty() && this.dialogue.isEmpty();
+        this.empty = this.soundEvent.isEmpty() && this.triggerEvent.isEmpty() && this.command.isEmpty() && this.dialogue.isEmpty() && this.script.isEmpty();
     }
 
     public void trigger(EntityLivingBase target)
@@ -74,6 +78,18 @@ public class Trigger implements INBTSerializable<NBTTagCompound>
                 }
             }
         }
+
+        if (!this.script.isEmpty())
+        {
+            try
+            {
+                Mappet.scripts.execute(this.script, this.scriptFunction.isEmpty() ? "main" : this.scriptFunction.trim(), context);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -101,6 +117,12 @@ public class Trigger implements INBTSerializable<NBTTagCompound>
             tag.setString("Dialogue", this.dialogue);
         }
 
+        if (!this.script.isEmpty())
+        {
+            tag.setString("Script", this.script);
+            tag.setString("ScriptFunction", this.scriptFunction);
+        }
+
         return tag;
     }
 
@@ -125,6 +147,16 @@ public class Trigger implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("Dialogue"))
         {
             this.dialogue = tag.getString("Dialogue");
+        }
+
+        if (tag.hasKey("Script"))
+        {
+            this.script = tag.getString("Script");
+        }
+
+        if (tag.hasKey("ScriptFunction"))
+        {
+            this.scriptFunction = tag.getString("ScriptFunction");
         }
 
         this.recalculateEmpty();

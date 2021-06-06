@@ -9,6 +9,7 @@ import mchorse.mappet.network.common.content.PacketRequestServerSettings;
 import mchorse.mappet.network.common.content.PacketServerSettings;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiLabel;
 import mchorse.mclib.client.gui.mclib.GuiDashboardPanel;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;
@@ -45,9 +46,8 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
         for (Map.Entry<String, Trigger> entry : this.settings.registered.entrySet())
         {
             GuiTriggerElement trigger = new GuiTriggerElement(this.mc, entry.getValue());
-            GuiElement element = Elements.column(this.mc, 5,
-                Elements.label(IKey.lang("mappet.gui.settings.triggers." + entry.getKey())).background(), trigger
-            );
+            GuiLabel label = Elements.label(IKey.lang("mappet.gui.settings.triggers." + entry.getKey())).background();
+            GuiElement element = Elements.column(this.mc, 5, label.marginBottom(4), trigger);
 
             if (!first)
             {

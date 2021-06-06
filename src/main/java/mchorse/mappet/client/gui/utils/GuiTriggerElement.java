@@ -14,6 +14,7 @@ import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.metamorph.util.MMIcons;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
@@ -24,6 +25,7 @@ public class GuiTriggerElement extends GuiElement
     public GuiIconElement soundEvent;
     public GuiIconElement triggerEvent;
     public GuiIconElement dialogue;
+    public GuiIconElement script;
 
     private Trigger trigger;
 
@@ -46,13 +48,20 @@ public class GuiTriggerElement extends GuiElement
         this.triggerEvent.tooltip(IKey.lang("mappet.gui.trigger.event"));
         this.dialogue = new GuiIconElement(mc, Icons.BUBBLE, (b) -> this.openDialoguesOverlay());
         this.dialogue.tooltip(IKey.lang("mappet.gui.trigger.dialogue"));
+        this.script = new GuiIconElement(mc, MMIcons.PROPERTIES, (b) -> this.openScriptsOverlay());
+        this.script.tooltip(IKey.lang("mappet.gui.trigger.script"));
+
+        this.soundEvent.flex().w(16);
+        this.triggerEvent.flex().w(16);
+        this.dialogue.flex().w(16);
+        this.script.flex().w(16);
 
         this.flex().h(32);
 
         GuiElement element = new GuiElement(mc);
 
         element.flex().relative(this).y(12).w(1F).h(20).row(0).preferred(0);
-        element.add(this.command, this.soundEvent, this.triggerEvent, this.dialogue);
+        element.add(this.command, this.soundEvent, this.triggerEvent, this.dialogue, this.script);
         this.add(element);
 
         this.set(trigger);
@@ -87,6 +96,24 @@ public class GuiTriggerElement extends GuiElement
         });
     }
 
+    private void openScriptsOverlay()
+    {
+        ClientProxy.requestNames(ContentType.SCRIPTS, (names) ->
+        {
+            GuiContentNamesOverlayPanel overlay = new GuiContentNamesOverlayPanel(this.mc, IKey.lang("mappet.gui.overlays.script"), ContentType.SCRIPTS, names, this::setScript);
+            GuiTextElement function = new GuiTextElement(this.mc, 100, (t) -> this.trigger.scriptFunction = t);
+
+            function.setText(this.trigger.scriptFunction);
+            function.tooltip(IKey.lang("mappet.gui.trigger.script_function"));
+            function.flex().relative(overlay.content).y(1F).w(1F);
+            overlay.content.flex().h.offset -= 30;
+            overlay.content.add(function);
+
+            overlay.set(this.trigger.script);
+            GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay, 0.5F, 0.7F);
+        });
+    }
+
     private void setSound(ResourceLocation location)
     {
         this.trigger.soundEvent = location == null ? "" : location.toString();
@@ -102,6 +129,12 @@ public class GuiTriggerElement extends GuiElement
     private void setDialogue(String name)
     {
         this.trigger.dialogue = name;
+        this.updateColors();
+    }
+
+    private void setScript(String name)
+    {
+        this.trigger.script = name;
         this.updateColors();
     }
 
@@ -126,9 +159,10 @@ public class GuiTriggerElement extends GuiElement
         int active = 0xffffffff;
         int inactive = 0xaa888888;
 
-        this.soundEvent.iconColor(trigger.soundEvent.isEmpty() ? inactive : active);
-        this.triggerEvent.iconColor(trigger.triggerEvent.isEmpty() ? inactive : active);
-        this.dialogue.iconColor(trigger.dialogue.isEmpty() ? inactive : active);
+        this.soundEvent.iconColor(this.trigger.soundEvent.isEmpty() ? inactive : active);
+        this.triggerEvent.iconColor(this.trigger.triggerEvent.isEmpty() ? inactive : active);
+        this.dialogue.iconColor(this.trigger.dialogue.isEmpty() ? inactive : active);
+        this.script.iconColor(this.trigger.script.isEmpty() ? inactive : active);
     }
 
     @Override
