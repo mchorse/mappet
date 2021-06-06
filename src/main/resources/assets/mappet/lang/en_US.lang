@@ -398,6 +398,8 @@ mappet.gui.conditions.targets.global=Global
 mappet.gui.conditions.targets.subject=Subject
 mappet.gui.conditions.targets.object=Object
 mappet.gui.conditions.targets.selector=Selector
+mappet.gui.conditions.targets.player=Player
+mappet.gui.conditions.targets.npc=NPC
 
 mappet.gui.syntax_theme.main=Theme editor
 mappet.gui.syntax_theme.edit=Edit themes...

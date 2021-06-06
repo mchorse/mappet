@@ -1,9 +1,11 @@
 package mchorse.mappet.api.utils;
 
 import mchorse.mappet.Mappet;
+import mchorse.mappet.entities.EntityNpc;
 import mchorse.mappet.utils.ExpressionRewriter;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTPrimitive;
@@ -141,6 +143,34 @@ public class DataContext
         }
 
         return REWRITER.set(this).rewrite(text);
+    }
+
+    public EntityPlayer getPlayer()
+    {
+        if (this.subject instanceof EntityPlayer)
+        {
+            return (EntityPlayer) this.subject;
+        }
+        else if (this.object instanceof EntityPlayer)
+        {
+            return (EntityPlayer) this.object;
+        }
+
+        return null;
+    }
+
+    public EntityNpc getNPC()
+    {
+        if (this.subject instanceof EntityNpc)
+        {
+            return (EntityNpc) this.subject;
+        }
+        else if (this.object instanceof EntityNpc)
+        {
+            return (EntityNpc) this.object;
+        }
+
+        return null;
     }
 
     public Set<String> getKeys()

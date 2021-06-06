@@ -6,6 +6,7 @@ import mchorse.mappet.api.states.States;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
+import mchorse.mappet.entities.EntityNpc;
 import mchorse.mappet.utils.EnumUtils;
 import mchorse.mappet.utils.WorldUtils;
 import net.minecraft.command.EntitySelector;
@@ -29,6 +30,10 @@ public abstract class TargetBlock extends AbstractBlock
         {
             return (EntityPlayer) context.object;
         }
+        else if (this.target == Target.PLAYER)
+        {
+            return context.getPlayer();
+        }
         else if (this.target == Target.SELECTOR)
         {
             try
@@ -51,6 +56,14 @@ public abstract class TargetBlock extends AbstractBlock
         else if (this.target == Target.OBJECT && context.object != null)
         {
             return context.object;
+        }
+        else if (this.target == Target.PLAYER)
+        {
+            return context.getPlayer();
+        }
+        else if (this.target == Target.NPC)
+        {
+            return context.getNPC();
         }
         else if (this.target == Target.SELECTOR)
         {
