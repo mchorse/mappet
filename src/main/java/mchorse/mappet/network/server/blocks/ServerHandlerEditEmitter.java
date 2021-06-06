@@ -22,7 +22,7 @@ public class ServerHandlerEditEmitter extends ServerMessageHandler<PacketEditEmi
 
         if (tile instanceof TileEmitter)
         {
-            ((TileEmitter) tile).setExpression(message.checker, message.radius);
+            ((TileEmitter) tile).setExpression(message);
         }
     }
 }

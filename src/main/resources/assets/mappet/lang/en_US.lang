@@ -215,6 +215,7 @@ mappet.gui.trigger_block.right=Trigger event on right click
 
 mappet.gui.emitter_block.expression=Expression
 mappet.gui.emitter_block.radius=Radius
+mappet.gui.emitter_block.update=Update frequency
 
 mappet.gui.npc_tool.title=NPC tool configuration
 mappet.gui.npc_tool.npc=NPC

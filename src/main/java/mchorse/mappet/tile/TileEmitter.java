@@ -3,6 +3,7 @@ package mchorse.mappet.tile;
 import mchorse.mappet.api.utils.Checker;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.blocks.BlockEmitter;
+import mchorse.mappet.network.common.blocks.PacketEditEmitter;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,6 +16,7 @@ public class TileEmitter extends TileEntity implements ITickable
 {
     private Checker checker = new Checker();
     private float radius;
+    private int update = 5;
 
     private int tick = 0;
 
@@ -31,10 +33,16 @@ public class TileEmitter extends TileEntity implements ITickable
         return this.radius;
     }
 
-    public void setExpression(NBTTagCompound tag, float radius)
+    public int getUpdate()
     {
-        this.checker.deserializeNBT(tag);
-        this.radius = radius;
+        return this.update;
+    }
+
+    public void setExpression(PacketEditEmitter message)
+    {
+        this.checker.deserializeNBT(message.checker);
+        this.radius = message.radius;
+        this.update = Math.max(message.update, 1);
         this.updateExpression();
         this.markDirty();
     }
@@ -53,8 +61,7 @@ public class TileEmitter extends TileEntity implements ITickable
             return;
         }
 
-        /* TODO: add an option to change frequency */
-        if (this.tick % 5 == 0 && !this.checker.isEmpty())
+        if (this.tick % this.update == 0 && !this.checker.isEmpty())
         {
             this.updateExpression();
         }
@@ -104,6 +111,11 @@ public class TileEmitter extends TileEntity implements ITickable
             tag.setFloat("Radius", this.radius);
         }
 
+        if (this.update > 0)
+        {
+            tag.setInteger("Update", this.update);
+        }
+
         return super.writeToNBT(tag);
     }
 
@@ -120,6 +132,11 @@ public class TileEmitter extends TileEntity implements ITickable
         if (tag.hasKey("Radius"))
         {
             this.radius = tag.getFloat("Radius");
+        }
+
+        if (tag.hasKey("Update"))
+        {
+            this.update = tag.getInteger("Update");
         }
     }
 }
