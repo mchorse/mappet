@@ -40,10 +40,7 @@ public class GuiFactionBlockPanel extends GuiAbstractBlockPanel<FactionBlock>
             Elements.column(mc, 5, Elements.label(IKey.lang("mappet.gui.conditions.faction.check")).marginTop(12), this.faction)
         ));
         this.add(this.property.targeter.marginTop(12));
-        this.add(Elements.row(mc, 5,
-            Elements.column(mc, 5, Elements.label(IKey.lang("mappet.gui.conditions.comparison")), this.property.comparison),
-            Elements.column(mc, 5, Elements.label(IKey.lang("mappet.gui.conditions.value")), this.property.value)
-        ).marginTop(12));
+        this.add(this.property.compare.marginTop(12));
     }
 
     private void openFactions()

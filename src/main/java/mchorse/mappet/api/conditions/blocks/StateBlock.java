@@ -20,16 +20,13 @@ public class StateBlock extends PropertyBlock
             return false;
         }
 
-        double a = states.get(this.id);
-        double b = this.value;
-
-        return this.comparison.compare(a, b);
+        return this.compare(states.get(this.id));
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public String stringify()
     {
-        return this.comparison.stringify(this.id, this.value);
+        return this.comparison.stringify(this.id, this.value, this.expression);
     }
 }

@@ -18,7 +18,7 @@ public enum Comparison
 
         @Override
         @SideOnly(Side.CLIENT)
-        public String stringify(String a, double b)
+        public String stringify(String a, double b, String expression)
         {
             return a + " == true";
         }
@@ -40,7 +40,7 @@ public enum Comparison
 
         @Override
         @SideOnly(Side.CLIENT)
-        public String stringify(String a, double b)
+        public String stringify(String a, double b, String expression)
         {
             return a + " == false";
         }
@@ -50,6 +50,20 @@ public enum Comparison
         public IKey stringify()
         {
             return IKey.lang("mappet.gui.conditions.comparisons.is_false");
+        }
+    },
+    EXPRESSION(null)
+    {
+        @Override
+        public String stringify(String a, double b, String expression)
+        {
+            return expression;
+        }
+
+        @Override
+        public IKey stringify()
+        {
+            return IKey.lang("mappet.gui.conditions.expression");
         }
     };
 
@@ -66,7 +80,7 @@ public enum Comparison
     }
 
     @SideOnly(Side.CLIENT)
-    public String stringify(String a, double b)
+    public String stringify(String a, double b, String expression)
     {
         return a + " " + this.operation.sign + " " + b;
     }

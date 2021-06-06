@@ -26,10 +26,7 @@ public class EntityBlock extends PropertyBlock
             return false;
         }
 
-        double a = EntityUtils.getProperty(entity, this.id);
-        double b = this.value;
-
-        return this.comparison.compare(a, b);
+        return this.compare(EntityUtils.getProperty(entity, this.id));
     }
 
     @Override
@@ -43,6 +40,6 @@ public class EntityBlock extends PropertyBlock
             id = I18n.format("mappet.gui.entity_property." + this.id);
         }
 
-        return this.comparison.stringify(id, this.value);
+        return this.comparison.stringify(id, this.value, this.expression);
     }
 }

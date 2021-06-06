@@ -46,10 +46,7 @@ public class FactionBlock extends PropertyBlock
                     return false;
                 }
 
-                double a = states.getFactionScore(this.id);
-                double b = this.value;
-
-                return this.comparison.compare(a, b);
+                return this.compare(states.getFactionScore(this.id));
             }
 
             Faction faction = Mappet.factions.load(this.id);
@@ -71,7 +68,7 @@ public class FactionBlock extends PropertyBlock
     {
         if (this.faction == FactionCheck.SCORE)
         {
-            return this.comparison.stringify(this.id, this.value);
+            return this.comparison.stringify(this.id, this.value, this.expression);
         }
         else if (this.faction == FactionCheck.AGGRESSIVE)
         {
