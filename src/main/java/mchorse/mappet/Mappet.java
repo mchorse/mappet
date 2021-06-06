@@ -6,11 +6,13 @@ import mchorse.mappet.api.dialogues.DialogueManager;
 import mchorse.mappet.api.events.EventManager;
 import mchorse.mappet.api.expressions.ExpressionManager;
 import mchorse.mappet.api.factions.FactionManager;
+import mchorse.mappet.api.misc.ServerSettings;
 import mchorse.mappet.api.npcs.NpcManager;
 import mchorse.mappet.api.quests.QuestManager;
 import mchorse.mappet.api.quests.chains.QuestChainManager;
 import mchorse.mappet.api.scripts.ScriptManager;
 import mchorse.mappet.api.states.States;
+import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.blocks.BlockEmitter;
 import mchorse.mappet.blocks.BlockRegion;
 import mchorse.mappet.blocks.BlockTrigger;
@@ -43,7 +45,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.File;
-import java.util.logging.Logger;
 
 /**
  * Mappet mod
@@ -82,6 +83,7 @@ public final class Mappet
     };
 
     /* Server side data */
+    public static ServerSettings settings;
     public static States states;
     public static QuestManager quests;
     public static CraftingManager crafting;
@@ -164,9 +166,16 @@ public final class Mappet
     @Mod.EventHandler
     public void serverStarting(FMLServerStartingEvent event)
     {
+        /* Register command */
+        event.registerServerCommand(new CommandMappet());
+
+        /* Initiate managers and global state*/
         File mappetWorldFolder = new File(DimensionManager.getCurrentSaveRootDirectory(), MOD_ID);
 
         mappetWorldFolder.mkdirs();
+
+        settings = new ServerSettings(new File(mappetWorldFolder, "settings.json"));
+        settings.load();
         states = new States(new File(mappetWorldFolder, "states.json"));
         states.load();
 
@@ -182,12 +191,18 @@ public final class Mappet
         chains = new QuestChainManager(new File(mappetWorldFolder, "chains"));
         scripts = new ScriptManager(new File(mappetWorldFolder, "scripts"));
 
-        event.registerServerCommand(new CommandMappet());
+        /* Initiate */
+        if (settings.serverInit != null)
+        {
+            settings.serverInit.trigger(new DataContext(event.getServer()));
+        }
     }
 
     @Mod.EventHandler
     public void serverStopped(FMLServerStoppedEvent event)
     {
+        settings.save();
+        settings = null;
         states.save();
         states = null;
 
@@ -201,5 +216,7 @@ public final class Mappet
         data = null;
         chains = null;
         scripts = null;
+
+        CommonProxy.eventHandler.reset();
     }
 }

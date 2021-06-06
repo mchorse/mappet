@@ -2,6 +2,7 @@ package mchorse.mappet;
 
 import mchorse.mappet.api.events.EventExecutionFork;
 import mchorse.mappet.api.quests.Quest;
+import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.CharacterProvider;
 import mchorse.mappet.capabilities.character.ICharacter;
@@ -11,17 +12,24 @@ import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.events.PacketEventPlayerHotkeys;
 import mchorse.mappet.network.common.quests.PacketQuest;
 import mchorse.mappet.network.common.quests.PacketQuests;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.ServerChatEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -54,10 +62,88 @@ public class EventHandler
      */
     private List<EventExecutionFork> secondList = new ArrayList<EventExecutionFork>();
 
+    /**
+     * Server data context which is used by server tick global trigger
+     */
+    private DataContext context;
+
     public void addExecutionForks(List<EventExecutionFork> executionForks)
     {
         this.eventForks.addAll(executionForks);
     }
+
+    public void reset()
+    {
+        this.playersToCheck.clear();
+        this.eventForks.clear();
+        this.secondList.clear();
+        this.context = null;
+    }
+
+    /* Server trigger handlers */
+
+    @SubscribeEvent
+    public void onPlayerChat(ServerChatEvent event)
+    {
+        if (Mappet.settings.chat != null)
+        {
+            DataContext context = new DataContext(event.getPlayer());
+
+            Mappet.settings.chat.trigger(context.set("message", event.getMessage()));
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerPlaceBlock(BlockEvent.PlaceEvent event)
+    {
+        if (Mappet.settings.placeBlock != null)
+        {
+            DataContext context = new DataContext(event.getPlayer());
+            IBlockState state = event.getPlacedBlock();
+
+            Mappet.settings.placeBlock.trigger(context
+                .set("block", state.getBlock().getRegistryName().toString())
+                .set("meta", state.getBlock().getMetaFromState(state))
+                .set("x", event.getPos().getX())
+                .set("y", event.getPos().getY())
+                .set("z", event.getPos().getZ()));
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerBreakBlock(BlockEvent.BreakEvent event)
+    {
+        if (Mappet.settings.breakBlock != null)
+        {
+            DataContext context = new DataContext(event.getPlayer());
+            IBlockState state = event.getState();
+
+            Mappet.settings.breakBlock.trigger(context
+                .set("block", state.getBlock().getRegistryName().toString())
+                .set("meta", state.getBlock().getMetaFromState(state))
+                .set("x", event.getPos().getX())
+                .set("y", event.getPos().getY())
+                .set("z", event.getPos().getZ()));
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerDamageEntity(LivingDamageEvent event)
+    {
+        DamageSource source = event.getSource();
+
+        if (source.getTrueSource() instanceof EntityPlayer)
+        {
+            if (Mappet.settings.damageEntity != null)
+            {
+                DataContext context = new DataContext(event.getEntityLiving(), (EntityPlayer) source.getTrueSource());
+
+                Mappet.settings.damageEntity.trigger(context.set("damage", event.getAmount()));
+            }
+        }
+    }
+
+    /* Other cool stuff */
 
     /**
      * Attach player capabilities
@@ -187,6 +273,17 @@ public class EventHandler
             this.eventForks.clear();
             this.eventForks.addAll(this.secondList);
             this.secondList.clear();
+        }
+
+        /* Execute a server tick trigger */
+        if (Mappet.settings.serverTick != null)
+        {
+            if (this.context == null)
+            {
+                this.context = new DataContext(FMLCommonHandler.instance().getMinecraftServerInstance());
+            }
+
+            Mappet.settings.serverTick.trigger(this.context);
         }
     }
 

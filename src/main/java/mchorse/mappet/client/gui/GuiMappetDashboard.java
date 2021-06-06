@@ -10,6 +10,7 @@ import mchorse.mappet.client.gui.panels.GuiQuestChainPanel;
 import mchorse.mappet.client.gui.panels.GuiQuestPanel;
 import mchorse.mappet.client.gui.panels.GuiRegionPanel;
 import mchorse.mappet.client.gui.panels.GuiScriptPanel;
+import mchorse.mappet.client.gui.panels.GuiServerSettingsPanel;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.content.PacketContentExit;
 import mchorse.mclib.client.gui.mclib.GuiAbstractDashboard;
@@ -24,6 +25,7 @@ public class GuiMappetDashboard extends GuiAbstractDashboard
 {
     public static GuiMappetDashboard dashboard;
 
+    public GuiServerSettingsPanel settings;
     public GuiCraftingTablePanel crafting;
     public GuiQuestPanel quest;
     public GuiEventPanel event;
@@ -70,6 +72,7 @@ public class GuiMappetDashboard extends GuiAbstractDashboard
     @Override
     protected void registerPanels(Minecraft mc)
     {
+        this.settings = new GuiServerSettingsPanel(mc, this);
         this.crafting = new GuiCraftingTablePanel(mc, this);
         this.quest = new GuiQuestPanel(mc, this);
         this.event = new GuiEventPanel(mc, this);
@@ -80,6 +83,7 @@ public class GuiMappetDashboard extends GuiAbstractDashboard
         this.chain = new GuiQuestChainPanel(mc, this);
         this.script = new GuiScriptPanel(mc, this);
 
+        this.panels.registerPanel(this.settings, IKey.lang("mappet.gui.panels.settings"), Icons.GEAR);
         this.panels.registerPanel(this.crafting, IKey.lang("mappet.gui.panels.crafting"), Icons.WRENCH);
         this.panels.registerPanel(this.quest, IKey.lang("mappet.gui.panels.quests"), Icons.EXCLAMATION);
         this.panels.registerPanel(this.event, IKey.lang("mappet.gui.panels.events"), Icons.FILE);
@@ -90,7 +94,7 @@ public class GuiMappetDashboard extends GuiAbstractDashboard
         this.panels.registerPanel(this.chain, IKey.lang("mappet.gui.panels.chains"), Icons.FOLDER);
         this.panels.registerPanel(this.script, IKey.lang("mappet.gui.panels.scripts"), MMIcons.PROPERTIES);
 
-        this.panels.setPanel(this.crafting);
+        this.panels.setPanel(this.settings);
     }
 
     @Override
