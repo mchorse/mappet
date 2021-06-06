@@ -3,9 +3,9 @@ package mchorse.mappet.events;
 import mchorse.mappet.api.events.nodes.EventNode;
 import mchorse.mappet.api.utils.factory.MapFactory;
 
-public class EventNodesRegisterEvent extends FactoryRegisterEvent<EventNode>
+public class RegisterEventNodesEvent extends RegisterFactoryEvent<EventNode>
 {
-    public EventNodesRegisterEvent(MapFactory<EventNode> factory)
+    public RegisterEventNodesEvent(MapFactory<EventNode> factory)
     {
         super(factory);
     }

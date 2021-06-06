@@ -24,10 +24,10 @@ import mchorse.mappet.api.utils.factory.MapFactory;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.CharacterStorage;
 import mchorse.mappet.capabilities.character.ICharacter;
-import mchorse.mappet.events.AbstractBlockRegisterEvent;
-import mchorse.mappet.events.DialogueNodesRegisterEvent;
-import mchorse.mappet.events.EventNodesRegisterEvent;
-import mchorse.mappet.events.QuestChainNodesRegisterEvent;
+import mchorse.mappet.events.RegisterAbstractBlockEvent;
+import mchorse.mappet.events.RegisterDialogueNodesEvent;
+import mchorse.mappet.events.RegisterEventNodesEvent;
+import mchorse.mappet.events.RegisterQuestChainNodesEvent;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.utils.MappetNpcSelector;
 import mchorse.mappet.utils.MetamorphHandler;
@@ -39,8 +39,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.io.File;
-import java.util.logging.FileHandler;
-import java.util.logging.SimpleFormatter;
 
 /**
  * Common proxy 
@@ -113,7 +111,7 @@ public class CommonProxy
             .register("timer", TimerNode.class, 0x11ff33);
 
         events = eventNodes;
-        Mappet.EVENT_BUS.post(new EventNodesRegisterEvent(eventNodes));
+        Mappet.EVENT_BUS.post(new RegisterEventNodesEvent(eventNodes));
 
         /* Register dialogue nodes */
         MapFactory<EventNode> dialogueNodes = eventNodes.copy()
@@ -124,14 +122,14 @@ public class CommonProxy
             .unregister("timer");
 
         dialogues = dialogueNodes;
-        Mappet.EVENT_BUS.post(new DialogueNodesRegisterEvent(dialogueNodes));
+        Mappet.EVENT_BUS.post(new RegisterDialogueNodesEvent(dialogueNodes));
 
         /* Register quest chain blocks */
         MapFactory<QuestNode> questChainNodes = new MapFactory<QuestNode>()
             .register("quest", QuestNode.class, 0xffff00);
 
         chains = questChainNodes;
-        Mappet.EVENT_BUS.post(new QuestChainNodesRegisterEvent(questChainNodes));
+        Mappet.EVENT_BUS.post(new RegisterQuestChainNodesEvent(questChainNodes));
 
         /* Register condition blocks */
         MapFactory<AbstractBlock> blocks = new MapFactory<AbstractBlock>()
@@ -145,6 +143,6 @@ public class CommonProxy
             .register("condition", ConditionBlock.class, 0xff1493);
 
         conditionBlocks = blocks;
-        Mappet.EVENT_BUS.post(new AbstractBlockRegisterEvent(blocks));
+        Mappet.EVENT_BUS.post(new RegisterAbstractBlockEvent(blocks));
     }
 }

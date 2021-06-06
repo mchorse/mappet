@@ -1,6 +1,8 @@
 package mchorse.mappet.api.misc;
 
+import mchorse.mappet.Mappet;
 import mchorse.mappet.api.utils.Trigger;
+import mchorse.mappet.events.RegisterServerTriggers;
 import mchorse.mappet.utils.NBTToJsonLike;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.Constants;
@@ -9,6 +11,8 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Global server settings
@@ -17,17 +21,42 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
 {
     private File file;
 
+    public final Map<String, Trigger> registered = new LinkedHashMap<String, Trigger>();
+
     public Trigger chat;
     public Trigger breakBlock;
     public Trigger placeBlock;
     public Trigger damageEntity;
-    public Trigger serverInit;
+    public Trigger serverLoad;
     public Trigger serverTick;
+
+    public Trigger register(String key, Trigger trigger)
+    {
+        if (this.registered.containsKey(key))
+        {
+            throw new IllegalStateException("Server trigger '" + key + "' is already registered!");
+        }
+
+        this.registered.put(key, trigger);
+
+        return trigger;
+    }
 
     public ServerSettings(File file)
     {
         this.file = file;
+
+        this.chat = this.register("chat", new Trigger());
+        this.breakBlock = this.register("break_block", new Trigger());
+        this.placeBlock = this.register("place_block", new Trigger());
+        this.damageEntity = this.register("damage_entity", new Trigger());
+        this.serverLoad = this.register("server_load", new Trigger());
+        this.serverTick = this.register("server_tick", new Trigger());
+
+        Mappet.EVENT_BUS.post(new RegisterServerTriggers(this));
     }
+
+    /* Deserialization / Serialization */
 
     public void load()
     {
@@ -63,17 +92,17 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
         }
     }
 
+    /* NBT */
+
     @Override
     public NBTTagCompound serializeNBT()
     {
         NBTTagCompound tag = new NBTTagCompound();
 
-        this.writeTrigger(tag, "Chat", this.chat);
-        this.writeTrigger(tag, "BreakBlock", this.breakBlock);
-        this.writeTrigger(tag, "PlaceBlock", this.placeBlock);
-        this.writeTrigger(tag, "DamageEntity", this.damageEntity);
-        this.writeTrigger(tag, "ServerInit", this.serverInit);
-        this.writeTrigger(tag, "ServerTick", this.serverTick);
+        for (Map.Entry<String, Trigger> entry : this.registered.entrySet())
+        {
+            this.writeTrigger(tag, entry.getKey(), entry.getValue());
+        }
 
         return tag;
     }
@@ -94,29 +123,22 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
     @Override
     public void deserializeNBT(NBTTagCompound tag)
     {
-        this.chat = this.readTrigger(tag, "Chat");
-        this.breakBlock = this.readTrigger(tag, "BreakBlock");
-        this.placeBlock = this.readTrigger(tag, "PlaceBlock");
-        this.damageEntity = this.readTrigger(tag, "DamageEntity");
-        this.serverInit = this.readTrigger(tag, "ServerInit");
-        this.serverTick = this.readTrigger(tag, "ServerTick");
+        for (Map.Entry<String, Trigger> entry : this.registered.entrySet())
+        {
+            this.readTrigger(tag, entry.getKey(), entry.getValue());
+        }
     }
 
-    private Trigger readTrigger(NBTTagCompound tag, String key)
+    private void readTrigger(NBTTagCompound tag, String key, Trigger trigger)
     {
         if (tag.hasKey(key, Constants.NBT.TAG_COMPOUND))
         {
-            Trigger trigger = new Trigger();
             NBTTagCompound triggerTag = tag.getCompoundTag(key);
 
             if (!triggerTag.hasNoTags())
             {
                 trigger.deserializeNBT(triggerTag);
-
-                return trigger;
             }
         }
-
-        return null;
     }
 }

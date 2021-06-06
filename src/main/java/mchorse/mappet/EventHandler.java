@@ -85,7 +85,7 @@ public class EventHandler
     @SubscribeEvent
     public void onPlayerChat(ServerChatEvent event)
     {
-        if (Mappet.settings.chat != null)
+        if (!Mappet.settings.chat.isEmpty())
         {
             DataContext context = new DataContext(event.getPlayer());
 
@@ -94,14 +94,14 @@ public class EventHandler
     }
 
     @SubscribeEvent
-    public void onPlayerPlaceBlock(BlockEvent.PlaceEvent event)
+    public void onPlayerBreakBlock(BlockEvent.BreakEvent event)
     {
-        if (Mappet.settings.placeBlock != null)
+        if (!Mappet.settings.breakBlock.isEmpty())
         {
             DataContext context = new DataContext(event.getPlayer());
-            IBlockState state = event.getPlacedBlock();
+            IBlockState state = event.getState();
 
-            Mappet.settings.placeBlock.trigger(context
+            Mappet.settings.breakBlock.trigger(context
                 .set("block", state.getBlock().getRegistryName().toString())
                 .set("meta", state.getBlock().getMetaFromState(state))
                 .set("x", event.getPos().getX())
@@ -111,14 +111,14 @@ public class EventHandler
     }
 
     @SubscribeEvent
-    public void onPlayerBreakBlock(BlockEvent.BreakEvent event)
+    public void onPlayerPlaceBlock(BlockEvent.PlaceEvent event)
     {
-        if (Mappet.settings.breakBlock != null)
+        if (!Mappet.settings.placeBlock.isEmpty())
         {
             DataContext context = new DataContext(event.getPlayer());
-            IBlockState state = event.getState();
+            IBlockState state = event.getPlacedBlock();
 
-            Mappet.settings.breakBlock.trigger(context
+            Mappet.settings.placeBlock.trigger(context
                 .set("block", state.getBlock().getRegistryName().toString())
                 .set("meta", state.getBlock().getMetaFromState(state))
                 .set("x", event.getPos().getX())
@@ -134,7 +134,7 @@ public class EventHandler
 
         if (source.getTrueSource() instanceof EntityPlayer)
         {
-            if (Mappet.settings.damageEntity != null)
+            if (!Mappet.settings.damageEntity.isEmpty())
             {
                 DataContext context = new DataContext(event.getEntityLiving(), (EntityPlayer) source.getTrueSource());
 
@@ -276,7 +276,7 @@ public class EventHandler
         }
 
         /* Execute a server tick trigger */
-        if (Mappet.settings.serverTick != null)
+        if (!Mappet.settings.serverTick.isEmpty())
         {
             if (this.context == null)
             {

@@ -192,9 +192,9 @@ public final class Mappet
         scripts = new ScriptManager(new File(mappetWorldFolder, "scripts"));
 
         /* Initiate */
-        if (settings.serverInit != null)
+        if (!settings.serverLoad.isEmpty())
         {
-            settings.serverInit.trigger(new DataContext(event.getServer()));
+            settings.serverLoad.trigger(new DataContext(event.getServer()));
         }
     }
 

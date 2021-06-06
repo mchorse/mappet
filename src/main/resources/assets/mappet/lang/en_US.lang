@@ -172,10 +172,10 @@ mappet.gui.panels.keys.category=Mappet panel keybinds
 mappet.gui.panels.keys.toggle_sidebar=Toggle sidebar
 
 mappet.gui.settings.triggers.chat=On chat message
-mappet.gui.settings.triggers.block_place=On block place
-mappet.gui.settings.triggers.block_break=On block break
+mappet.gui.settings.triggers.break_block=On block break
+mappet.gui.settings.triggers.place_block=On block place
 mappet.gui.settings.triggers.damage_entity=On entity hit
-mappet.gui.settings.triggers.server_init=On server initiate
+mappet.gui.settings.triggers.server_load=On server load
 mappet.gui.settings.triggers.server_tick=On server tick
 
 mappet.gui.quests.cancelable=Cancelable
