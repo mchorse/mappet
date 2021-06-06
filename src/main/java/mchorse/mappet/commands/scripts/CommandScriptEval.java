@@ -59,14 +59,7 @@ public class CommandScriptEval extends CommandScriptBase
         }
         catch (Exception e)
         {
-            StringBuilder stack = new StringBuilder();
-
-            for (StackTraceElement element : e.getStackTrace())
-            {
-                stack.append(element.toString()).append("\n");
-            }
-
-            throw new CommandException("script.empty", args[1], stack.toString());
+            throw new CommandException("script.empty", args[1], e.getClass().getSimpleName() + ": " + e.getMessage());
         }
     }
 }

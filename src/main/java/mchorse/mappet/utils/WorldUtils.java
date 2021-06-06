@@ -3,6 +3,7 @@ package mchorse.mappet.utils;
 import mchorse.mappet.api.states.States;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
+import mchorse.mappet.entities.EntityNpc;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -39,6 +40,10 @@ public class WorldUtils
             {
                 return character.getStates();
             }
+        }
+        else if (entity instanceof EntityNpc)
+        {
+            return ((EntityNpc) entity).getStates();
         }
 
         return null;

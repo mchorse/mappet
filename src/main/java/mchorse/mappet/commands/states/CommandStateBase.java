@@ -13,6 +13,11 @@ import java.util.stream.Collectors;
 
 public abstract class CommandStateBase extends MappetCommandBase
 {
+    @Override
+    public boolean isUsernameIndex(String[] args, int index)
+    {
+        return args.length > 0 && !args[0].equals("~") && index == 0;
+    }
 
     @Override
     public int getRequiredArgs()

@@ -7,7 +7,9 @@ import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.utils.EnumUtils;
+import mchorse.mappet.utils.WorldUtils;
 import net.minecraft.command.EntitySelector;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -40,6 +42,29 @@ public abstract class TargetBlock extends AbstractBlock
         return null;
     }
 
+    protected Entity getEntity(DataContext context)
+    {
+        if (this.target == Target.SUBJECT && context.subject != null)
+        {
+            return context.subject;
+        }
+        else if (this.target == Target.OBJECT && context.object != null)
+        {
+            return context.object;
+        }
+        else if (this.target == Target.SELECTOR)
+        {
+            try
+            {
+                return EntitySelector.matchOneEntity(context.getSender(), this.selector, Entity.class);
+            }
+            catch (Exception e)
+            {}
+        }
+
+        return null;
+    }
+
     protected ICharacter getCharacter(DataContext context)
     {
         return Character.get(this.getPlayer(context));
@@ -49,9 +74,7 @@ public abstract class TargetBlock extends AbstractBlock
     {
         if (this.target != Target.GLOBAL)
         {
-            ICharacter character = this.getCharacter(context);
-
-            return character == null ? null : character.getStates();
+            return WorldUtils.getStates(this.getEntity(context));
         }
 
         return Mappet.states;

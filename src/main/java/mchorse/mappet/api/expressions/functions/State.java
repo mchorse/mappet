@@ -2,12 +2,10 @@ package mchorse.mappet.api.expressions.functions;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.states.States;
-import mchorse.mappet.capabilities.character.Character;
-import mchorse.mappet.capabilities.character.ICharacter;
+import mchorse.mappet.utils.WorldUtils;
 import mchorse.mclib.math.IValue;
 import mchorse.mclib.math.functions.SNFunction;
 import net.minecraft.command.CommandBase;
-import net.minecraft.entity.player.EntityPlayer;
 
 public class State extends SNFunction
 {
@@ -16,19 +14,17 @@ public class State extends SNFunction
      */
     public static States getState(String target)
     {
-        States states = Mappet.states;
+        States states = null;
 
-        if (!target.equals("~"))
+        if (target.equals("~"))
+        {
+            states = Mappet.states;
+        }
+        else
         {
             try
             {
-                EntityPlayer player = CommandBase.getPlayer(Mappet.expressions.getServer(), Mappet.expressions.getServer(), target);
-                ICharacter character = Character.get(player);
-
-                if (character != null)
-                {
-                    states = character.getStates();
-                }
+                states = WorldUtils.getStates(CommandBase.getEntity(Mappet.expressions.getServer(), Mappet.expressions.getServer(), target));
             }
             catch (Exception e)
             {}
@@ -51,8 +47,13 @@ public class State extends SNFunction
     @Override
     public double doubleValue()
     {
-        String target = this.args.length > 1 ? this.getArg(1).stringValue() : "";
+        String target = this.args.length > 1 ? this.getArg(1).stringValue() : "~";
         States states = getState(target);
+
+        if (states == null)
+        {
+            return 0;
+        }
 
         return states.get(this.getArg(0).stringValue());
     }

@@ -28,6 +28,12 @@ public class CommandStatePrint extends CommandStateBase
     }
 
     @Override
+    public boolean isUsernameIndex(String[] args, int index)
+    {
+        return false;
+    }
+
+    @Override
     public int getRequiredArgs()
     {
         return 1;

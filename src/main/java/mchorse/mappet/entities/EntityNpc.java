@@ -7,6 +7,7 @@ import mchorse.mappet.api.factions.FactionAttitude;
 import mchorse.mappet.api.npcs.Npc;
 import mchorse.mappet.api.npcs.NpcDrop;
 import mchorse.mappet.api.npcs.NpcState;
+import mchorse.mappet.api.states.States;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
@@ -54,6 +55,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
     private Morph morph = new Morph();
     private NpcState state = new NpcState();
+    private States states = new States();
 
     private int lastDamageTime;
     private boolean unkillableFailsafe = true;
@@ -169,6 +171,11 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     }
 
     /* Getter and setters */
+
+    public States getStates()
+    {
+        return this.states;
+    }
 
     public void setNpc(Npc npc, NpcState state)
     {
@@ -436,6 +443,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         super.writeEntityToNBT(tag);
 
         tag.setTag("State", this.state.serializeNBT());
+        tag.setTag("States", this.states.serializeNBT());
     }
 
     @Override
@@ -452,6 +460,8 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         {
             state.id = tag.getString("NpcId");
         }
+
+        this.states.deserializeNBT(tag.getCompoundTag("States"));
     }
 
     /* Network (de)serialization */

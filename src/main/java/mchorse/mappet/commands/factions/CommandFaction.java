@@ -4,8 +4,10 @@ import mchorse.mappet.api.states.States;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.commands.MappetSubCommandBase;
+import mchorse.mappet.utils.WorldUtils;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 
@@ -13,12 +15,12 @@ public class CommandFaction extends MappetSubCommandBase
 {
     public static States getStates(MinecraftServer server, ICommandSender sender, String target) throws CommandException
     {
-        EntityPlayer player = getPlayer(server, sender, target);
-        ICharacter character = Character.get(player);
+        Entity entity = getEntity(server, sender, target);
+        States states = WorldUtils.getStates(entity);
 
-        if (character != null)
+        if (states != null)
         {
-            return character.getStates();
+            return states;
         }
 
         throw new CommandException("states.invalid_target", target);
