@@ -30,6 +30,6 @@ public class StateBlock extends PropertyBlock
     @SideOnly(Side.CLIENT)
     public String stringify()
     {
-        return this.id + " " + this.comparison.operation.sign + " " + this.value;
+        return this.comparison.stringify(this.id, this.value);
     }
 }

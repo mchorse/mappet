@@ -71,7 +71,7 @@ public class FactionBlock extends PropertyBlock
     {
         if (this.faction == FactionCheck.SCORE)
         {
-            return this.id + " " + this.comparison.operation.sign + " " + this.value;
+            return this.comparison.stringify(this.id, this.value);
         }
         else if (this.faction == FactionCheck.AGGRESSIVE)
         {

@@ -393,6 +393,8 @@ mappet.gui.conditions.world_time.range=Range
 mappet.gui.conditions.world_time.types.day=Is day?
 mappet.gui.conditions.world_time.types.night=Is night?
 mappet.gui.conditions.world_time.types.range=In between
+mappet.gui.conditions.entity.id=Pick property...
+mappet.gui.conditions.entity.overlay.main=Entity properties
 mappet.gui.conditions.condition.string=Nested %s block(s)
 mappet.gui.conditions.targets.global=Global
 mappet.gui.conditions.targets.subject=Subject
@@ -400,6 +402,8 @@ mappet.gui.conditions.targets.object=Object
 mappet.gui.conditions.targets.selector=Selector
 mappet.gui.conditions.targets.player=Player
 mappet.gui.conditions.targets.npc=NPC
+mappet.gui.conditions.comparisons.is_true=Is true
+mappet.gui.conditions.comparisons.is_false=Is false
 
 mappet.gui.syntax_theme.main=Theme editor
 mappet.gui.syntax_theme.edit=Edit themes...
@@ -447,9 +451,21 @@ mappet.gui.condition_types.dialogue=Dialogue
 mappet.gui.condition_types.state=State
 mappet.gui.condition_types.faction=Faction
 mappet.gui.condition_types.item=Item
-mappet.gui.condition_types.entity=Entity
 mappet.gui.condition_types.world_time=World time
+mappet.gui.condition_types.entity=Entity
 mappet.gui.condition_types.condition=Condition
+
+mappet.gui.entity_property.xp=Total experience
+mappet.gui.entity_property.xp_level=Experience level
+mappet.gui.entity_property.hp=Health
+mappet.gui.entity_property.hunger=Hunger
+mappet.gui.entity_property.armor=Armor
+mappet.gui.entity_property.ticks=Ticks existed
+mappet.gui.entity_property.light=Light (torch)
+mappet.gui.entity_property.light_sky=Light (sky)
+mappet.gui.entity_property.sneaking=Is sneaking
+mappet.gui.entity_property.sprinting=Is sprinting
+mappet.gui.entity_property.on_ground=Is on ground
 
 # Keys
 mappet.keys.category=Mappet

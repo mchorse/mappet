@@ -27,7 +27,7 @@ public class GuiPropertyBlockElement extends GuiTargetBlockElement<PropertyBlock
 
         for (Comparison comparison : Comparison.values())
         {
-            this.comparison.addLabel(IKey.str(comparison.operation.sign));
+            this.comparison.addLabel(comparison.stringify());
         }
 
         this.comparison.setValue(block.comparison.ordinal());
