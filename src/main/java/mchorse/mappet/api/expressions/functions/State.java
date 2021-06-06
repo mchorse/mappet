@@ -2,7 +2,7 @@ package mchorse.mappet.api.expressions.functions;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.states.States;
-import mchorse.mappet.utils.WorldUtils;
+import mchorse.mappet.utils.EntityUtils;
 import mchorse.mclib.math.IValue;
 import mchorse.mclib.math.functions.SNFunction;
 import net.minecraft.command.CommandBase;
@@ -24,7 +24,7 @@ public class State extends SNFunction
         {
             try
             {
-                states = WorldUtils.getStates(CommandBase.getEntity(Mappet.expressions.getServer(), Mappet.expressions.getServer(), target));
+                states = EntityUtils.getStates(CommandBase.getEntity(Mappet.expressions.getServer(), Mappet.expressions.getServer(), target));
             }
             catch (Exception e)
             {}

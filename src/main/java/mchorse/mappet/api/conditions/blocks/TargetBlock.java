@@ -6,9 +6,8 @@ import mchorse.mappet.api.states.States;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
-import mchorse.mappet.entities.EntityNpc;
+import mchorse.mappet.utils.EntityUtils;
 import mchorse.mappet.utils.EnumUtils;
-import mchorse.mappet.utils.WorldUtils;
 import net.minecraft.command.EntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -87,7 +86,7 @@ public abstract class TargetBlock extends AbstractBlock
     {
         if (this.target != Target.GLOBAL)
         {
-            return WorldUtils.getStates(this.getEntity(context));
+            return EntityUtils.getStates(this.getEntity(context));
         }
 
         return Mappet.states;

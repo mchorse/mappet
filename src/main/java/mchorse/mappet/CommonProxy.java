@@ -3,6 +3,7 @@ package mchorse.mappet;
 import mchorse.mappet.api.conditions.blocks.AbstractBlock;
 import mchorse.mappet.api.conditions.blocks.ConditionBlock;
 import mchorse.mappet.api.conditions.blocks.DialogueBlock;
+import mchorse.mappet.api.conditions.blocks.EntityBlock;
 import mchorse.mappet.api.conditions.blocks.FactionBlock;
 import mchorse.mappet.api.conditions.blocks.ItemBlock;
 import mchorse.mappet.api.conditions.blocks.QuestBlock;
@@ -140,6 +141,7 @@ public class CommonProxy
             .register("faction", FactionBlock.class, 0x942aff)
             .register("item", ItemBlock.class, 0xff7700)
             .register("world_time", WorldTimeBlock.class, 0x0088ff)
+            .register("entity", EntityBlock.class, 0x2d4163)
             .register("condition", ConditionBlock.class, 0xff1493);
 
         conditionBlocks = blocks;

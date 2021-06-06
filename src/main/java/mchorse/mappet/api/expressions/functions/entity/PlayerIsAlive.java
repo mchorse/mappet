@@ -1,4 +1,4 @@
-package mchorse.mappet.api.expressions.functions.player;
+package mchorse.mappet.api.expressions.functions.entity;
 
 import mchorse.mappet.Mappet;
 import mchorse.mclib.math.IValue;

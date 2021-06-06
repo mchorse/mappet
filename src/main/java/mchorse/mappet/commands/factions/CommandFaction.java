@@ -1,14 +1,11 @@
 package mchorse.mappet.commands.factions;
 
 import mchorse.mappet.api.states.States;
-import mchorse.mappet.capabilities.character.Character;
-import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.commands.MappetSubCommandBase;
-import mchorse.mappet.utils.WorldUtils;
+import mchorse.mappet.utils.EntityUtils;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 
 public class CommandFaction extends MappetSubCommandBase
@@ -16,7 +13,7 @@ public class CommandFaction extends MappetSubCommandBase
     public static States getStates(MinecraftServer server, ICommandSender sender, String target) throws CommandException
     {
         Entity entity = getEntity(server, sender, target);
-        States states = WorldUtils.getStates(entity);
+        States states = EntityUtils.getStates(entity);
 
         if (states != null)
         {

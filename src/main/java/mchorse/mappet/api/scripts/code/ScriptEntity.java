@@ -7,8 +7,7 @@ import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
 import mchorse.mappet.api.states.States;
-import mchorse.mappet.capabilities.character.Character;
-import mchorse.mappet.utils.WorldUtils;
+import mchorse.mappet.utils.EntityUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -153,7 +152,7 @@ public class ScriptEntity implements IScriptEntity
     {
         if (this.states == null)
         {
-            States states = WorldUtils.getStates(this.entity);
+            States states = EntityUtils.getStates(this.entity);
 
             if (states != null)
             {

@@ -8,8 +8,8 @@ import mchorse.mappet.api.states.States;
 import mchorse.mappet.api.utils.Checker;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.Trigger;
+import mchorse.mappet.utils.EntityUtils;
 import mchorse.mappet.utils.EnumUtils;
-import mchorse.mappet.utils.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -77,7 +77,7 @@ public class Region implements INBTSerializable<NBTTagCompound>
     {
         if (this.writeState && !this.state.isEmpty())
         {
-            States states = this.target == Target.GLOBAL ? Mappet.states : WorldUtils.getStates(player);
+            States states = this.target == Target.GLOBAL ? Mappet.states : EntityUtils.getStates(player);
 
             if (this.additive)
             {
@@ -96,7 +96,7 @@ public class Region implements INBTSerializable<NBTTagCompound>
     {
         if (this.writeState && !this.state.isEmpty())
         {
-            States states = this.target == Target.GLOBAL ? Mappet.states : WorldUtils.getStates(player);
+            States states = this.target == Target.GLOBAL ? Mappet.states : EntityUtils.getStates(player);
 
             if (!this.additive)
             {

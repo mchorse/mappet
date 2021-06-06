@@ -76,7 +76,7 @@ public class MappetNpcSelector implements IEntitySelectorFactory
 
             list.add((e) ->
             {
-                States states = WorldUtils.getStates(e);
+                States states = EntityUtils.getStates(e);
 
                 if (states == null)
                 {
