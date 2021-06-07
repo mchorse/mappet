@@ -4,12 +4,20 @@ import mchorse.mappet.api.scripts.code.blocks.ScriptBlockState;
 import mchorse.mappet.api.scripts.user.IScriptEntity;
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
+import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import net.minecraftforge.common.DimensionManager;
 
 public class ScriptWorld implements IScriptWorld
@@ -104,5 +112,33 @@ public class ScriptWorld implements IScriptWorld
         }
 
         ((WorldServer) this.world).spawnParticle((EntityPlayerMP) entity.getMinecraftEntity(), type, longDistance, x, y, z, n, dx, dy, dz, speed, args);
+    }
+
+    @Override
+    public IScriptEntity spawnEntity(String id, double x, double y, double z)
+    {
+        return this.spawnEntity(id, x, y, z, null);
+    }
+
+    @Override
+    public IScriptEntity spawnEntity(String id, double x, double y, double z, INBTCompound compound)
+    {
+        if (!this.world.isBlockLoaded(new BlockPos(x, y, z)))
+        {
+            return null;
+        }
+
+        NBTTagCompound tag = new NBTTagCompound();
+
+        if (compound != null)
+        {
+            tag.merge(compound.getNBTTagComound());
+        }
+
+        tag.setString("id", id);
+
+        Entity entity = AnvilChunkLoader.readWorldEntityPos(tag, this.world, x, y, z, true);
+
+        return entity == null ? null : new ScriptEntity(entity);
     }
 }

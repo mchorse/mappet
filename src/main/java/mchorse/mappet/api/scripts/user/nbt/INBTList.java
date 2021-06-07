@@ -1,10 +1,18 @@
 package mchorse.mappet.api.scripts.user.nbt;
 
+import net.minecraft.nbt.NBTTagList;
+
 /**
  * Interface that represents an NBT list tag
  */
 public interface INBTList extends INBT
 {
+    /**
+     * Get raw NBT tag list. <b>BEWARE:</b> you need to know the MCP
+     * mappings in order to directly call methods on this instance!
+     */
+    public NBTTagList getNBTTagList();
+
     /**
      * Check whether this list has an element at given index (instead of
      * checking manually for index to be within 0..size-1 range)

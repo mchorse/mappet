@@ -1,5 +1,7 @@
 package mchorse.mappet.api.scripts.user.nbt;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 import java.util.Set;
 
 /**
@@ -7,6 +9,12 @@ import java.util.Set;
  */
 public interface INBTCompound extends INBT
 {
+    /**
+     * Get raw NBT tag compound. <b>BEWARE:</b> you need to know the MCP
+     * mappings in order to directly call methods on this instance!
+     */
+    public NBTTagCompound getNBTTagComound();
+
     /**
      * Check whether this NBT compound has a value by given key
      */

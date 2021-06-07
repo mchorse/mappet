@@ -4,8 +4,8 @@ import mchorse.mappet.api.scripts.code.blocks.ScriptBlockState;
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
 import mchorse.mappet.api.scripts.code.nbt.ScriptNBTCompound;
 import mchorse.mappet.api.scripts.code.nbt.ScriptNBTList;
-import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.IScriptFactory;
+import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.mappet.api.scripts.user.nbt.INBTList;
@@ -78,7 +78,7 @@ public class ScriptFactory implements IScriptFactory
     {
         if (compound instanceof ScriptItemStack)
         {
-            return new ScriptItemStack(new ItemStack(((ScriptNBTCompound) compound).getNBTCompound()));
+            return new ScriptItemStack(new ItemStack(compound.getNBTTagComound()));
         }
 
         return ScriptItemStack.EMPTY;

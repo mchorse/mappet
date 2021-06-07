@@ -24,7 +24,8 @@ public class ScriptNBTList implements INBTList
         this.list = list == null ? new NBTTagList() : list;
     }
 
-    public NBTTagList getNBTList()
+    @Override
+    public NBTTagList getNBTTagList()
     {
         return this.list;
     }
@@ -77,9 +78,9 @@ public class ScriptNBTList implements INBTList
     @Override
     public void combine(INBT nbt)
     {
-        if (nbt instanceof ScriptNBTList)
+        if (nbt instanceof INBTList)
         {
-            NBTTagList list = ((ScriptNBTList) nbt).getNBTList();
+            NBTTagList list = ((INBTList) nbt).getNBTTagList();
 
             if (this.list.getTagType() == list.getTagType())
             {
@@ -94,9 +95,9 @@ public class ScriptNBTList implements INBTList
     @Override
     public boolean isSame(INBT nbt)
     {
-        if (nbt instanceof ScriptNBTList)
+        if (nbt instanceof INBTList)
         {
-            return this.list.equals(((ScriptNBTList) nbt).getNBTList());
+            return this.list.equals(((INBTList) nbt).getNBTTagList());
         }
 
         return false;
@@ -285,13 +286,13 @@ public class ScriptNBTList implements INBTList
     @Override
     public void setCompound(int index, INBTCompound value)
     {
-        this.list.set(index, ((ScriptNBTCompound) value).getNBTCompound());
+        this.list.set(index, value.getNBTTagComound());
     }
 
     @Override
     public void addCompound(INBTCompound value)
     {
-        this.list.appendTag(((ScriptNBTCompound) value).getNBTCompound());
+        this.list.appendTag(value.getNBTTagComound());
     }
 
     @Override
@@ -305,12 +306,12 @@ public class ScriptNBTList implements INBTList
     @Override
     public void setList(int index, INBTList value)
     {
-        this.list.set(index, ((ScriptNBTList) value).getNBTList());
+        this.list.set(index, value.getNBTTagList());
     }
 
     @Override
     public void addList(INBTList value)
     {
-        this.list.appendTag(((ScriptNBTList) value).getNBTList());
+        this.list.appendTag(value.getNBTTagList());
     }
 }

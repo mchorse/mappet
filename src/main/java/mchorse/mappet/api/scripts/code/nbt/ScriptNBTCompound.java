@@ -18,7 +18,8 @@ public class ScriptNBTCompound implements INBTCompound
         this.tag = tag == null ? new NBTTagCompound() : tag;
     }
 
-    public NBTTagCompound getNBTCompound()
+    @Override
+    public NBTTagCompound getNBTTagComound()
     {
         return this.tag;
     }
@@ -227,6 +228,6 @@ public class ScriptNBTCompound implements INBTCompound
     @Override
     public void setList(String key, INBTList value)
     {
-        this.tag.setTag(key, ((ScriptNBTList) value).getNBTList());
+        this.tag.setTag(key, value.getNBTTagList());
     }
 }

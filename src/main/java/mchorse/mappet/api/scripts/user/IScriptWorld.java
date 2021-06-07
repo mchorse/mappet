@@ -1,6 +1,7 @@
 package mchorse.mappet.api.scripts.user;
 
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
+import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 
@@ -96,4 +97,14 @@ public interface IScriptWorld
      *             a specific item (F3 + H shows the numeric ID of an item)
      */
     public void spawnParticles(IScriptEntity player, EnumParticleTypes type, boolean longDistance, double x, double y, double z, int n, double dx, double dy, double dz, double speed, int... args);
+
+    /**
+     * Spawn an entity at given position
+     */
+    public IScriptEntity spawnEntity(String id, double x, double y, double z);
+
+    /**
+     * Spawn an entity at given position with additional data
+     */
+    public IScriptEntity spawnEntity(String id, double x, double y, double z, INBTCompound compound);
 }
