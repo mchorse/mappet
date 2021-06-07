@@ -702,13 +702,13 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             return;
         }
 
-        int x = this.font.getStringWidth(this.cursor.start(this.text.get(this.cursor.line)));
+        int x = this.font.getStringWidth(this.cursor.start(this.text.get(this.cursor.line))) + this.getShiftX();
         int y = this.cursor.line * this.lineHeight;
         int w = 4;
         int h = this.lineHeight;
 
-        this.horizontal.scrollIntoView(x, w + this.padding * 2);
-        this.vertical.scrollIntoView(y, h + this.padding * 2);
+        this.horizontal.scrollIntoView(x, w + this.padding * 2, this.getShiftX());
+        this.vertical.scrollIntoView(y, h + this.padding * 2, this.getShiftX());
     }
 
     /* Focusable */
