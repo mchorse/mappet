@@ -13,6 +13,9 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.function.Consumer;
 
@@ -26,7 +29,7 @@ public class GuiNpcStatesOverlayPanel extends GuiStringOverlayPanel
 
         this.npc = npc;
 
-        this.content.context(() ->
+        this.strings.context(() ->
         {
             GuiSimpleContextMenu menu = new GuiSimpleContextMenu(mc);
 
@@ -34,6 +37,24 @@ public class GuiNpcStatesOverlayPanel extends GuiStringOverlayPanel
 
             if (!this.strings.list.isDeselected())
             {
+                menu.action(Icons.COPY, IKey.lang("mappet.gui.npcs.context.copy"), this::copyState);
+
+                try
+                {
+                    NBTTagCompound tag = JsonToNBT.getTagFromJson(GuiScreen.getClipboardString());
+
+                    if (tag.hasKey("_StateCopy"))
+                    {
+                        NpcState state = new NpcState();
+
+                        state.deserializeNBT(tag);
+                        menu.action(Icons.PASTE, IKey.lang("mappet.gui.npcs.context.paste"), () -> this.pasteState(state));
+                    }
+                }
+                catch (Exception e)
+                {}
+
+                menu.action(Icons.EDIT, IKey.lang("mappet.gui.npcs.context.rename"), this::renameState);
                 menu.action(Icons.REMOVE, IKey.lang("mappet.gui.npcs.context.remove"), this::removeState, 0xff0022);
             }
 
@@ -45,16 +66,59 @@ public class GuiNpcStatesOverlayPanel extends GuiStringOverlayPanel
 
     private void addState()
     {
-        GuiModal.addFullModal(this, () -> new GuiPromptModal(this.mc, IKey.lang("mappet.gui.npcs.modals.add"), this::addState));
+        GuiModal.addFullModal(this, () -> new GuiPromptModal(this.mc, IKey.lang("mappet.gui.npcs.modals.add"), (name) -> this.addState(name, null)));
     }
 
-    private void addState(String name)
+    private void addState(String name, NpcState state)
     {
         if (!this.npc.states.containsKey(name))
         {
-            NpcState state = new NpcState();
+            if (state == null)
+            {
+                state = new NpcState();
+            }
 
             this.npc.states.put(name, state);
+            this.strings.list.add(name);
+            this.strings.list.sort();
+
+            this.set(name);
+            this.accept(name);
+        }
+    }
+
+    private void copyState()
+    {
+        String key = this.strings.list.getCurrentFirst();
+        NBTTagCompound tag = this.npc.states.get(key).serializeNBT();
+        tag.setBoolean("_StateCopy", true);
+
+        GuiScreen.setClipboardString(tag.toString());
+    }
+
+    private void pasteState(NpcState state)
+    {
+        GuiModal.addFullModal(this, () -> new GuiPromptModal(this.mc, IKey.lang("mappet.gui.npcs.modals.paste"), (name) -> this.addState(name, state)));
+    }
+
+    private void renameState()
+    {
+        GuiModal.addFullModal(this, () ->
+        {
+            return new GuiPromptModal(this.mc, IKey.lang("mappet.gui.npcs.modals.rename"), this::renameState).setValue(this.strings.list.getCurrentFirst());
+        });
+    }
+
+    private void renameState(String name)
+    {
+        String current = this.strings.list.getCurrentFirst();
+
+        if (!this.npc.states.containsKey(name))
+        {
+            NpcState state = this.npc.states.remove(current);
+
+            this.npc.states.put(name, state);
+            this.strings.list.remove(current);
             this.strings.list.add(name);
             this.strings.list.sort();
 

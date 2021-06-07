@@ -337,9 +337,14 @@ mappet.gui.npcs.general.xp=XP drop
 mappet.gui.npcs.drops.title=NPC drops
 mappet.gui.npcs.drops.context.remove=Remove drop
 mappet.gui.npcs.modals.add=Type in a name for a new NPC state:
+mappet.gui.npcs.modals.paste=Type in a name for a pasted NPC state:
+mappet.gui.npcs.modals.rename=Type in a new name for this NPC state:
 mappet.gui.npcs.modals.remove=Are you sure you want to remove this NPC state?
 mappet.gui.npcs.overlay.title=NPC states
-mappet.gui.npcs.context.add=Add a state
+mappet.gui.npcs.context.add=Add a state...
+mappet.gui.npcs.context.copy=Copy this state
+mappet.gui.npcs.context.paste=Paste a state...
+mappet.gui.npcs.context.rename=Rename this state...
 mappet.gui.npcs.context.remove=Remove selected state
 mappet.gui.npcs.info.empty=Select or create an NPC in the list on the right, to start editing...
 
