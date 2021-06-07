@@ -105,13 +105,19 @@ public class ScriptNBTList implements INBTList
     /* INBTCompound implementation */
 
     @Override
+    public boolean has(int index)
+    {
+        return index >= 0 && index < this.size();
+    }
+
+    @Override
     public void remove(int index)
     {
         this.list.removeTag(index);
     }
 
     @Override
-    public byte b(int index)
+    public byte getByte(int index)
     {
         NBTBase base = this.list.get(index);
 
@@ -119,19 +125,19 @@ public class ScriptNBTList implements INBTList
     }
 
     @Override
-    public void b(int index, byte value)
+    public void setByte(int index, byte value)
     {
         this.list.set(index, new NBTTagByte(value));
     }
 
     @Override
-    public void addB(byte value)
+    public void addByte(byte value)
     {
         this.list.appendTag(new NBTTagByte(value));
     }
 
     @Override
-    public short s(int index)
+    public short getShort(int index)
     {
         NBTBase base = this.list.get(index);
 
@@ -139,19 +145,19 @@ public class ScriptNBTList implements INBTList
     }
 
     @Override
-    public void s(int index, short value)
+    public void setShort(int index, short value)
     {
         this.list.set(index, new NBTTagShort(value));
     }
 
     @Override
-    public void addS(short value)
+    public void addShort(short value)
     {
         this.list.appendTag(new NBTTagShort(value));
     }
 
     @Override
-    public int i(int index)
+    public int getInt(int index)
     {
         NBTBase base = this.list.get(index);
 
@@ -159,19 +165,19 @@ public class ScriptNBTList implements INBTList
     }
 
     @Override
-    public void i(int index, int value)
+    public void setInt(int index, int value)
     {
         this.list.set(index, new NBTTagInt(value));
     }
 
     @Override
-    public void addI(int value)
+    public void addInt(int value)
     {
         this.list.appendTag(new NBTTagInt(value));
     }
 
     @Override
-    public long l(int index)
+    public long getLong(int index)
     {
         NBTBase base = this.list.get(index);
 
@@ -179,19 +185,19 @@ public class ScriptNBTList implements INBTList
     }
 
     @Override
-    public void l(int index, long value)
+    public void setLong(int index, long value)
     {
         this.list.set(index, new NBTTagLong(value));
     }
 
     @Override
-    public void addL(long value)
+    public void addLong(long value)
     {
         this.list.appendTag(new NBTTagLong(value));
     }
 
     @Override
-    public float f(int index)
+    public float getFloat(int index)
     {
         NBTBase base = this.list.get(index);
 
@@ -199,19 +205,19 @@ public class ScriptNBTList implements INBTList
     }
 
     @Override
-    public void f(int index, float value)
+    public void setFloat(int index, float value)
     {
         this.list.set(index, new NBTTagFloat(value));
     }
 
     @Override
-    public void addF(float value)
+    public void addFloat(float value)
     {
         this.list.appendTag(new NBTTagFloat(value));
     }
 
     @Override
-    public double d(int index)
+    public double getDouble(int index)
     {
         NBTBase base = this.list.get(index);
 
@@ -219,19 +225,19 @@ public class ScriptNBTList implements INBTList
     }
 
     @Override
-    public void d(int index, double value)
+    public void setDouble(int index, double value)
     {
         this.list.set(index, new NBTTagDouble(value));
     }
 
     @Override
-    public void addD(double value)
+    public void addDouble(double value)
     {
         this.list.appendTag(new NBTTagDouble(value));
     }
 
     @Override
-    public String str(int index)
+    public String getString(int index)
     {
         NBTBase base = this.list.get(index);
 
@@ -239,19 +245,19 @@ public class ScriptNBTList implements INBTList
     }
 
     @Override
-    public void str(int index, String value)
+    public void setString(int index, String value)
     {
         this.list.set(index, new NBTTagString(value));
     }
 
     @Override
-    public void addStr(String value)
+    public void addString(String value)
     {
         this.list.appendTag(new NBTTagString(value));
     }
 
     @Override
-    public boolean bool(int index)
+    public boolean getBoolean(int index)
     {
         NBTBase base = this.list.get(index);
 
@@ -259,25 +265,25 @@ public class ScriptNBTList implements INBTList
     }
 
     @Override
-    public void bool(int index, boolean value)
+    public void setBoolean(int index, boolean value)
     {
         this.list.set(index, new NBTTagByte(value ? (byte) 1 : (byte) 0));
     }
 
     @Override
-    public void addBool(boolean value)
+    public void addBoolean(boolean value)
     {
         this.list.appendTag(new NBTTagByte(value ? (byte) 1 : (byte) 0));
     }
 
     @Override
-    public INBTCompound compound(int index)
+    public INBTCompound getCompound(int index)
     {
         return new ScriptNBTCompound(this.list.getCompoundTagAt(index));
     }
 
     @Override
-    public void compound(int index, INBTCompound value)
+    public void setCompound(int index, INBTCompound value)
     {
         this.list.set(index, ((ScriptNBTCompound) value).getNBTCompound());
     }
@@ -289,7 +295,7 @@ public class ScriptNBTList implements INBTList
     }
 
     @Override
-    public INBTList list(int index)
+    public INBTList getList(int index)
     {
         NBTBase base = this.list.get(index);
 
@@ -297,7 +303,7 @@ public class ScriptNBTList implements INBTList
     }
 
     @Override
-    public void list(int index, INBTList value)
+    public void setList(int index, INBTList value)
     {
         this.list.set(index, ((ScriptNBTList) value).getNBTList());
     }

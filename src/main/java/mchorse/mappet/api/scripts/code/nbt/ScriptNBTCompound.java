@@ -109,115 +109,115 @@ public class ScriptNBTCompound implements INBTCompound
     /* INBTCompound implementation */
 
     @Override
-    public byte b(String key)
+    public byte getByte(String key)
     {
         return this.tag.getByte(key);
     }
 
     @Override
-    public void b(String key, byte value)
+    public void setByte(String key, byte value)
     {
         this.tag.setByte(key, value);
     }
 
     @Override
-    public short s(String key)
+    public short getShort(String key)
     {
         return this.tag.getShort(key);
     }
 
     @Override
-    public void s(String key, short value)
+    public void setShort(String key, short value)
     {
         this.tag.setShort(key, value);
     }
 
     @Override
-    public int i(String key)
+    public int getInt(String key)
     {
         return this.tag.getInteger(key);
     }
 
     @Override
-    public void i(String key, int value)
+    public void setInt(String key, int value)
     {
         this.tag.setInteger(key, value);
     }
 
     @Override
-    public long l(String key)
+    public long getLong(String key)
     {
         return this.tag.getLong(key);
     }
 
     @Override
-    public void l(String key, long value)
+    public void setLong(String key, long value)
     {
         this.tag.setLong(key, value);
     }
 
     @Override
-    public float f(String key)
+    public float getFloat(String key)
     {
         return this.tag.getFloat(key);
     }
 
     @Override
-    public void f(String key, float value)
+    public void setFloat(String key, float value)
     {
         this.tag.setFloat(key, value);
     }
 
     @Override
-    public double d(String key)
+    public double getDouble(String key)
     {
         return this.tag.getDouble(key);
     }
 
     @Override
-    public void d(String key, double value)
+    public void setDouble(String key, double value)
     {
         this.tag.setDouble(key, value);
     }
 
     @Override
-    public String str(String key)
+    public String getString(String key)
     {
         return this.tag.getString(key);
     }
 
     @Override
-    public void str(String key, String value)
+    public void setString(String key, String value)
     {
         this.tag.setString(key, value);
     }
 
     @Override
-    public boolean bool(String key)
+    public boolean getBoolean(String key)
     {
         return this.tag.getBoolean(key);
     }
 
     @Override
-    public void bool(String key, boolean value)
+    public void setBoolean(String key, boolean value)
     {
         this.tag.setBoolean(key, value);
     }
 
     @Override
-    public INBTCompound compound(String key)
+    public INBTCompound getCompound(String key)
     {
         return new ScriptNBTCompound(this.tag.getCompoundTag(key));
     }
 
     @Override
-    public void compound(String key, INBTCompound value)
+    public void setCompound(String key, INBTCompound value)
     {
         this.tag.setTag(key, ((ScriptNBTCompound) value).tag);
     }
 
     @Override
-    public INBTList list(String key)
+    public INBTList getList(String key)
     {
         NBTBase tag = this.tag.getTag(key);
 
@@ -225,7 +225,7 @@ public class ScriptNBTCompound implements INBTCompound
     }
 
     @Override
-    public void list(String key, INBTList value)
+    public void setList(String key, INBTList value)
     {
         this.tag.setTag(key, ((ScriptNBTList) value).getNBTList());
     }

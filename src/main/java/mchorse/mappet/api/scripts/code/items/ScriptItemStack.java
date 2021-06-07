@@ -18,6 +18,7 @@ public class ScriptItemStack implements IScriptItemStack
         this.stack = stack == null ? ItemStack.EMPTY : stack;
     }
 
+    @Override
     public ItemStack getMinecraftItemStack()
     {
         return this.stack;
@@ -30,7 +31,7 @@ public class ScriptItemStack implements IScriptItemStack
     }
 
     @Override
-    public IScriptItem item()
+    public IScriptItem getItem()
     {
         if (this.item == null)
         {
@@ -41,13 +42,13 @@ public class ScriptItemStack implements IScriptItemStack
     }
 
     @Override
-    public int count()
+    public int getCount()
     {
         return this.stack.getCount();
     }
 
     @Override
-    public int meta()
+    public int getMeta()
     {
         return this.stack.getMetadata();
     }
@@ -59,13 +60,13 @@ public class ScriptItemStack implements IScriptItemStack
     }
 
     @Override
-    public INBTCompound data()
+    public INBTCompound getData()
     {
         return new ScriptNBTCompound(this.stack.getTagCompound());
     }
 
     @Override
-    public void data(INBTCompound tag)
+    public void setData(INBTCompound tag)
     {
         this.stack.setTagCompound(((ScriptNBTCompound) tag).getNBTCompound());
     }

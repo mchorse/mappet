@@ -13,19 +13,20 @@ public class ScriptBlockState implements IScriptBlockState
         this.state = state;
     }
 
-    public IBlockState getState()
+    @Override
+    public IBlockState getMinecraftBlockState()
     {
         return this.state;
     }
 
     @Override
-    public int meta()
+    public int getMeta()
     {
         return this.state.getBlock().getMetaFromState(this.state);
     }
 
     @Override
-    public String blockId()
+    public String getBlockId()
     {
         ResourceLocation rl = this.state.getBlock().getRegistryName();
 

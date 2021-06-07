@@ -13,13 +13,14 @@ public class ScriptItem implements IScriptItem
         this.item = item;
     }
 
+    @Override
     public Item getMinecraftItem()
     {
         return this.item;
     }
 
     @Override
-    public String id()
+    public String getId()
     {
         ResourceLocation location = this.item == null ? null : this.item.getRegistryName();
 

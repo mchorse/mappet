@@ -1,6 +1,7 @@
 package mchorse.mappet.api.scripts.user;
 
 import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
+import net.minecraft.server.MinecraftServer;
 
 import java.util.List;
 
@@ -9,6 +10,12 @@ import java.util.List;
  */
 public interface IScriptServer
 {
+    /**
+     * Get Minecraft server instance. <b>BEWARE:</b> you need to know the MCP
+     * mappings in order to directly call methods on this instance!
+     */
+    public MinecraftServer getMinecraftServer();
+
     /**
      * Get all entities matching giving target selector
      */

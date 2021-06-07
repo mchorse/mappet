@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
@@ -81,5 +82,11 @@ public class ScriptFactory implements IScriptFactory
         }
 
         return ScriptItemStack.EMPTY;
+    }
+
+    @Override
+    public EnumParticleTypes particleType(String type)
+    {
+        return EnumParticleTypes.getByName(type);
     }
 }

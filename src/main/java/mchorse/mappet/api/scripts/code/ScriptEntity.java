@@ -26,7 +26,8 @@ public class ScriptEntity implements IScriptEntity
         this.entity = entity;
     }
 
-    public Entity getEntity()
+    @Override
+    public Entity getMinecraftEntity()
     {
         return this.entity;
     }
@@ -34,25 +35,25 @@ public class ScriptEntity implements IScriptEntity
     /* Entity properties */
 
     @Override
-    public ScriptVector position()
+    public ScriptVector getPosition()
     {
         return new ScriptVector(this.entity.posX, this.entity.posY, this.entity.posZ);
     }
 
     @Override
-    public void position(double x, double y, double z)
+    public void setPosition(double x, double y, double z)
     {
         this.entity.setPositionAndUpdate(x, y, z);
     }
 
     @Override
-    public ScriptVector motion()
+    public ScriptVector getMotion()
     {
         return new ScriptVector(this.entity.motionX, this.entity.motionY, this.entity.posZ);
     }
 
     @Override
-    public void motion(double x, double y, double z)
+    public void setMotion(double x, double y, double z)
     {
         this.entity.motionX = x;
         this.entity.motionY = y;
@@ -65,7 +66,7 @@ public class ScriptEntity implements IScriptEntity
     }
 
     @Override
-    public float hp()
+    public float getHp()
     {
         if (this.entity instanceof EntityLivingBase)
         {
@@ -90,7 +91,7 @@ public class ScriptEntity implements IScriptEntity
     /* Items */
 
     @Override
-    public IScriptItemStack mainItem()
+    public IScriptItemStack getMainItem()
     {
         if (this.entity instanceof EntityLivingBase)
         {
@@ -101,7 +102,7 @@ public class ScriptEntity implements IScriptEntity
     }
 
     @Override
-    public IScriptItemStack offItem()
+    public IScriptItemStack getOffItem()
     {
         if (this.entity instanceof EntityLivingBase)
         {
@@ -114,13 +115,13 @@ public class ScriptEntity implements IScriptEntity
     /* Entity meta */
 
     @Override
-    public String uniqueId()
+    public String getUniqueId()
     {
         return this.entity.getCachedUniqueIdString();
     }
 
     @Override
-    public String entityId()
+    public String getEntityId()
     {
         ResourceLocation rl = EntityList.getKey(this.entity);
 

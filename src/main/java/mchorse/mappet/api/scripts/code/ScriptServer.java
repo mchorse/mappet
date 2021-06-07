@@ -23,6 +23,7 @@ public class ScriptServer implements IScriptServer
         this.server = server;
     }
 
+    @Override
     public MinecraftServer getMinecraftServer()
     {
         return this.server;

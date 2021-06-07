@@ -96,7 +96,7 @@ public class ScriptEvent implements IScriptEvent
     {
         if (entity.isPlayer())
         {
-            ((ScriptEntity) entity).getEntity().sendMessage(new TextComponentString(message));
+            entity.getMinecraftEntity().sendMessage(new TextComponentString(message));
         }
 
         return false;

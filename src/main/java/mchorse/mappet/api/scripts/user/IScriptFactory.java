@@ -4,6 +4,7 @@ import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.mappet.api.scripts.user.nbt.INBTList;
+import net.minecraft.util.EnumParticleTypes;
 
 /**
  * Scripting API factory that allows to initialize/create different stuff.
@@ -56,4 +57,9 @@ public interface IScriptFactory
      * Create an item stack out of string NBT
      */
     public IScriptItemStack itemStack(INBTCompound compound);
+
+    /**
+     * Get Minecraft particle type by its name
+     */
+    public EnumParticleTypes particleType(String type);
 }

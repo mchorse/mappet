@@ -1,5 +1,7 @@
 package mchorse.mappet.api.scripts.user.blocks;
 
+import net.minecraft.block.state.IBlockState;
+
 /**
  * Scripted block state.
  *
@@ -9,14 +11,20 @@ package mchorse.mappet.api.scripts.user.blocks;
 public interface IScriptBlockState
 {
     /**
-     * Get meta value of this state (it will always be between 0 and 15)
+     * Get Minecraft block state instance. <b>BEWARE:</b> you need to know the MCP
+     * mappings in order to directly call methods on this instance!
      */
-    public int meta();
+    public IBlockState getMinecraftBlockState();
 
     /**
      * Get block's ID like "minecraft:stone"
      */
-    public String blockId();
+    public String getBlockId();
+
+    /**
+     * Get meta value of this state (it will always be between 0 and 15)
+     */
+    public int getMeta();
 
     /**
      * Check whether given block state contains same block state
