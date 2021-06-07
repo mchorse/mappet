@@ -48,6 +48,8 @@ public class ValueSyntaxStyle extends Value implements IConfigGuiProvider
     {
         this.file = file;
         this.style = new SyntaxStyle(style.toNBT());
+
+        this.saveLater();
     }
 
     @Override
