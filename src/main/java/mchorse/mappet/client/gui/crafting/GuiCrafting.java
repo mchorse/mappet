@@ -43,6 +43,21 @@ public class GuiCrafting extends GuiElement implements ICraftingScreen
         this.recipes.setList(this.table.recipes);
         this.recipes.setIndex(0);
         this.pickRecipe(this.table.recipes.get(0));
+
+        this.keys().keybinds.clear();
+
+        for (CraftingRecipe recipe : this.table.recipes)
+        {
+            if (recipe.hotkey > 0)
+            {
+                this.keys().register(IKey.format("mappet.gui.crafting.keys.craft", recipe.title), recipe.hotkey, () ->
+                {
+                    this.pickRecipe(recipe);
+                    this.recipes.setCurrentScroll(recipe);
+                    this.craft(this.craft);
+                });
+            }
+        }
     }
 
     @Override
@@ -59,29 +74,6 @@ public class GuiCrafting extends GuiElement implements ICraftingScreen
     private void pickRecipe(CraftingRecipe recipe)
     {
         this.craft.setEnabled(recipe.isPlayerHasAllItems(Minecraft.getMinecraft().player));
-    }
-
-    @Override
-    public boolean keyTyped(GuiContext context)
-    {
-        if (super.keyTyped(context))
-        {
-            return true;
-        }
-
-        for (CraftingRecipe recipe : this.table.recipes)
-        {
-            if (recipe.hotkey > 0 && recipe.hotkey == context.keyCode)
-            {
-                this.pickRecipe(recipe);
-                this.recipes.setCurrentScroll(recipe);
-                this.craft(this.craft);
-
-                return true;
-            }
-        }
-
-        return false;
     }
 
     @Override

@@ -244,6 +244,7 @@ mappet.gui.crafting.context.add=Add a crafting recipe
 mappet.gui.crafting.context.remove=Remove current recipe
 mappet.gui.crafting.info.empty=Select or create a crafting table in the list on the right, to start editing...
 mappet.gui.crafting.info.empty_recipe=Select or create a new crafting recipe in the list on the left...
+mappet.gui.crafting.keys.craft=Craft %s
 
 mappet.gui.region.passable=Passable
 mappet.gui.region.enabled=Enabled
