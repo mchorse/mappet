@@ -3,10 +3,8 @@ package mchorse.mappet.api.utils.manager;
 import mchorse.mappet.api.utils.AbstractData;
 import mchorse.mappet.utils.NBTToJsonLike;
 import net.minecraft.nbt.NBTTagCompound;
-import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.nio.charset.Charset;
 
 /**
  * Base JSON manager which loads and saves different data
@@ -36,9 +34,7 @@ public abstract class BaseManager <T extends AbstractData> extends FolderManager
     {
         try
         {
-            File file = this.getFile(id);
-            String json = FileUtils.readFileToString(file, Charset.defaultCharset());
-            NBTTagCompound tag = NBTToJsonLike.fromJson(json);
+            NBTTagCompound tag = NBTToJsonLike.read(this.getFile(id));
             T data = this.create(id);
 
             data.deserializeNBT(tag);
@@ -63,10 +59,7 @@ public abstract class BaseManager <T extends AbstractData> extends FolderManager
     {
         try
         {
-            File file = this.getFile(name);
-            String element = NBTToJsonLike.toJson(tag);
-
-            FileUtils.writeStringToFile(file, element, Charset.defaultCharset());
+            NBTToJsonLike.write(this.getFile(name), tag);
 
             return true;
         }

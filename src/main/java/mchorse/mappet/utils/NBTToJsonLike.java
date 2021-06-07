@@ -4,6 +4,11 @@ import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 
 /**
  * NBT to JSON-like utility
@@ -101,5 +106,23 @@ public class NBTToJsonLike
         }
 
         return null;
+    }
+
+    /**
+     * Write NBT tag compound into a file
+     */
+    public static void write(File file, NBTTagCompound tag) throws IOException
+    {
+        FileUtils.writeStringToFile(file, NBTToJsonLike.toJson(tag), Charset.defaultCharset());
+    }
+
+    /**
+     * Read NBT tag compound out of file
+     */
+    public static NBTTagCompound read(File file) throws IOException
+    {
+        String json = FileUtils.readFileToString(file, Charset.defaultCharset());
+
+        return NBTToJsonLike.fromJson(json);
     }
 }

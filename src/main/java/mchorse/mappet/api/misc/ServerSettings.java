@@ -1,16 +1,15 @@
 package mchorse.mappet.api.misc;
 
 import mchorse.mappet.Mappet;
+import mchorse.mappet.api.misc.hotkeys.TriggerHotkeys;
 import mchorse.mappet.api.utils.Trigger;
 import mchorse.mappet.events.RegisterServerTriggers;
 import mchorse.mappet.utils.NBTToJsonLike;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
-import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.nio.charset.Charset;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -22,6 +21,7 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
     private File file;
 
     public final Map<String, Trigger> registered = new LinkedHashMap<String, Trigger>();
+    public final TriggerHotkeys hotkeys = new TriggerHotkeys();
 
     public Trigger chat;
     public Trigger breakBlock;
@@ -67,8 +67,25 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
 
         try
         {
-            String json = FileUtils.readFileToString(this.file, Charset.defaultCharset());
-            NBTTagCompound tag = NBTToJsonLike.fromJson(json);
+            NBTTagCompound tag = NBTToJsonLike.read(this.file);
+
+            if (!tag.hasKey("Hotkeys"))
+            {
+                File hotkeys = new File(this.file.getParentFile(), "hotkeys.json");
+
+                if (hotkeys.isFile())
+                {
+                    try
+                    {
+                        NBTTagCompound hotkeysTag = NBTToJsonLike.read(hotkeys);
+
+                        tag.setTag("Hotkeys", hotkeysTag);
+                        hotkeys.delete();
+                    }
+                    catch (Exception e)
+                    {}
+                }
+            }
 
             this.deserializeNBT(tag);
         }
@@ -82,9 +99,7 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
     {
         try
         {
-            NBTTagCompound tag = this.serializeNBT();
-
-            FileUtils.writeStringToFile(this.file, NBTToJsonLike.toJson(tag), Charset.defaultCharset());
+            NBTToJsonLike.write(this.file, this.serializeNBT());
         }
         catch (Exception e)
         {
@@ -98,11 +113,19 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
     public NBTTagCompound serializeNBT()
     {
         NBTTagCompound tag = new NBTTagCompound();
+        NBTTagCompound triggers = new NBTTagCompound();
 
         for (Map.Entry<String, Trigger> entry : this.registered.entrySet())
         {
-            this.writeTrigger(tag, entry.getKey(), entry.getValue());
+            this.writeTrigger(triggers, entry.getKey(), entry.getValue());
         }
+
+        if (!triggers.hasNoTags())
+        {
+            tag.setTag("Triggers", triggers);
+        }
+
+        tag.setTag("Hotkeys", this.hotkeys.serializeNBT());
 
         return tag;
     }
@@ -123,9 +146,19 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
     @Override
     public void deserializeNBT(NBTTagCompound tag)
     {
-        for (Map.Entry<String, Trigger> entry : this.registered.entrySet())
+        if (tag.hasKey("Triggers"))
         {
-            this.readTrigger(tag, entry.getKey(), entry.getValue());
+            NBTTagCompound triggers = tag.getCompoundTag("Triggers");
+
+            for (Map.Entry<String, Trigger> entry : this.registered.entrySet())
+            {
+                this.readTrigger(triggers, entry.getKey(), entry.getValue());
+            }
+        }
+
+        if (tag.hasKey("Hotkeys"))
+        {
+            this.hotkeys.deserializeNBT(tag.getCompoundTag("Hotkeys"));
         }
     }
 

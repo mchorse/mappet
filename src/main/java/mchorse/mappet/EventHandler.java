@@ -28,8 +28,6 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -178,9 +176,9 @@ public class EventHandler
                 Dispatcher.sendTo(new PacketQuests(character.getQuests()), player);
             }
 
-            if (!Mappet.events.hotkeys.hotkeys.isEmpty())
+            if (!Mappet.settings.hotkeys.hotkeys.isEmpty())
             {
-                Dispatcher.sendTo(new PacketEventPlayerHotkeys(Mappet.events.hotkeys), player);
+                Dispatcher.sendTo(new PacketEventPlayerHotkeys(Mappet.settings.hotkeys), player);
             }
         }
     }

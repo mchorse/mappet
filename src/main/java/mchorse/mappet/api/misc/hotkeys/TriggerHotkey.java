@@ -1,13 +1,12 @@
-package mchorse.mappet.api.events.hotkeys;
+package mchorse.mappet.api.misc.hotkeys;
 
 import mchorse.mappet.api.utils.Checker;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.Trigger;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 
-public class EventHotkey implements INBTSerializable<NBTTagCompound>
+public class TriggerHotkey implements INBTSerializable<NBTTagCompound>
 {
     public int keycode;
     public Trigger trigger = new Trigger();

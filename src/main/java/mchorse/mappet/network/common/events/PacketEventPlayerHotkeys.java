@@ -1,8 +1,8 @@
 package mchorse.mappet.network.common.events;
 
 import io.netty.buffer.ByteBuf;
-import mchorse.mappet.api.events.hotkeys.EventHotkey;
-import mchorse.mappet.api.events.hotkeys.EventHotkeys;
+import mchorse.mappet.api.misc.hotkeys.TriggerHotkey;
+import mchorse.mappet.api.misc.hotkeys.TriggerHotkeys;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 import java.util.ArrayList;
@@ -15,9 +15,9 @@ public class PacketEventPlayerHotkeys implements IMessage
     public PacketEventPlayerHotkeys()
     {}
 
-    public PacketEventPlayerHotkeys(EventHotkeys hotkeys)
+    public PacketEventPlayerHotkeys(TriggerHotkeys hotkeys)
     {
-        for (EventHotkey hotkey : hotkeys.hotkeys)
+        for (TriggerHotkey hotkey : hotkeys.hotkeys)
         {
             this.hotkeys.add(hotkey.keycode);
         }

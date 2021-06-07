@@ -4,10 +4,8 @@ import mchorse.mappet.ClientProxy;
 import mchorse.mappet.client.gui.scripts.utils.SyntaxStyle;
 import mchorse.mappet.utils.NBTToJsonLike;
 import mchorse.mclib.client.gui.utils.GuiUtils;
-import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,9 +63,7 @@ public class Themes
     {
         try
         {
-            String code = FileUtils.readFileToString(file, Charset.defaultCharset());
-
-            return new SyntaxStyle(NBTToJsonLike.fromJson(code));
+            return new SyntaxStyle(NBTToJsonLike.read(file));
         }
         catch (Exception e)
         {}
@@ -82,7 +78,7 @@ public class Themes
     {
         try
         {
-            FileUtils.writeStringToFile(file, NBTToJsonLike.toJson(style.toNBT()), Charset.defaultCharset());
+            NBTToJsonLike.write(file, style.toNBT());
         }
         catch (Exception e)
         {}

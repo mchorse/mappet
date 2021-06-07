@@ -1,13 +1,11 @@
 package mchorse.mappet.client.gui.events;
 
-import mchorse.mappet.api.events.hotkeys.EventHotkey;
-import mchorse.mappet.api.events.hotkeys.EventHotkeys;
+import mchorse.mappet.api.misc.hotkeys.TriggerHotkey;
+import mchorse.mappet.api.misc.hotkeys.TriggerHotkeys;
 import mchorse.mappet.client.gui.utils.GuiCheckerElement;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mappet.client.gui.utils.GuiTriggerElement;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlayPanel;
-import mchorse.mappet.network.Dispatcher;
-import mchorse.mappet.network.common.events.PacketEventHotkeys;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.input.GuiKeybindElement;
@@ -32,10 +30,10 @@ public class GuiEventHotkeysOverlayPanel extends GuiOverlayPanel
     public GuiTriggerElement trigger;
     public GuiCheckerElement enabled;
 
-    private EventHotkeys hotkeys;
-    private EventHotkey hotkey;
+    private TriggerHotkeys hotkeys;
+    private TriggerHotkey hotkey;
 
-    public GuiEventHotkeysOverlayPanel(Minecraft mc, EventHotkeys hotkeys)
+    public GuiEventHotkeysOverlayPanel(Minecraft mc, TriggerHotkeys hotkeys)
     {
         super(mc, IKey.lang("mappet.gui.nodes.event.hotkeys.title"));
 
@@ -78,14 +76,14 @@ public class GuiEventHotkeysOverlayPanel extends GuiOverlayPanel
         this.editor.add(this.trigger.marginTop(12));
         this.editor.add(Elements.label(IKey.lang("mappet.gui.nodes.event.hotkeys.enabled")).marginTop(12), this.enabled);
 
-        this.content.add(this.list, this.editor);
+        this.content.add(this.editor, this.list);
 
         this.pickHotkey(hotkeys.hotkeys.isEmpty() ? null : hotkeys.hotkeys.get(0), true);
     }
 
     private void addHotkey()
     {
-        EventHotkey hotkey = new EventHotkey();
+        TriggerHotkey hotkey = new TriggerHotkey();
 
         this.hotkeys.hotkeys.add(hotkey);
         this.pickHotkey(hotkey, true);
@@ -101,7 +99,7 @@ public class GuiEventHotkeysOverlayPanel extends GuiOverlayPanel
         this.list.update();
     }
 
-    private void pickHotkey(EventHotkey hotkey, boolean select)
+    private void pickHotkey(TriggerHotkey hotkey, boolean select)
     {
         this.hotkey = hotkey;
 
@@ -121,12 +119,6 @@ public class GuiEventHotkeysOverlayPanel extends GuiOverlayPanel
     }
 
     @Override
-    public void onClose()
-    {
-        Dispatcher.sendToServer(new PacketEventHotkeys(this.hotkeys.serializeNBT()));
-    }
-
-    @Override
     public void draw(GuiContext context)
     {
         super.draw(context);
@@ -137,15 +129,15 @@ public class GuiEventHotkeysOverlayPanel extends GuiOverlayPanel
         }
     }
 
-    public static class GuiEventHotkeyList extends GuiListElement<EventHotkey>
+    public static class GuiEventHotkeyList extends GuiListElement<TriggerHotkey>
     {
-        public GuiEventHotkeyList(Minecraft mc, Consumer<List<EventHotkey>> callback)
+        public GuiEventHotkeyList(Minecraft mc, Consumer<List<TriggerHotkey>> callback)
         {
             super(mc, callback);
         }
 
         @Override
-        protected String elementToString(EventHotkey element)
+        protected String elementToString(TriggerHotkey element)
         {
             return Keys.getKeyName(element.keycode) + " - " + element.trigger.triggerEvent;
         }

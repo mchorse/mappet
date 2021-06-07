@@ -10,7 +10,6 @@ import mchorse.mappet.network.client.content.ClientHandlerServerSettings;
 import mchorse.mappet.network.client.crafting.ClientHandlerCraft;
 import mchorse.mappet.network.client.crafting.ClientHandlerCraftingTable;
 import mchorse.mappet.network.client.dialogue.ClientHandlerDialogueFragment;
-import mchorse.mappet.network.client.events.ClientHandlerEventHotkeys;
 import mchorse.mappet.network.client.events.ClientHandlerEventPlayerHotkeys;
 import mchorse.mappet.network.client.factions.ClientHandlerFactions;
 import mchorse.mappet.network.client.npc.ClientHandlerNpcList;
@@ -33,9 +32,7 @@ import mchorse.mappet.network.common.crafting.PacketCraftingTable;
 import mchorse.mappet.network.common.dialogue.PacketDialogueFragment;
 import mchorse.mappet.network.common.dialogue.PacketPickReply;
 import mchorse.mappet.network.common.events.PacketEventHotkey;
-import mchorse.mappet.network.common.events.PacketEventHotkeys;
 import mchorse.mappet.network.common.events.PacketEventPlayerHotkeys;
-import mchorse.mappet.network.common.events.PacketEventRequestHotkeys;
 import mchorse.mappet.network.common.factions.PacketFactions;
 import mchorse.mappet.network.common.factions.PacketRequestFactions;
 import mchorse.mappet.network.common.npc.PacketNpcList;
@@ -58,8 +55,6 @@ import mchorse.mappet.network.server.crafting.ServerHandlerCraft;
 import mchorse.mappet.network.server.crafting.ServerHandlerCraftingTable;
 import mchorse.mappet.network.server.dialogue.ServerHandlerPickReply;
 import mchorse.mappet.network.server.events.ServerHandlerEventHotkey;
-import mchorse.mappet.network.server.events.ServerHandlerEventHotkeys;
-import mchorse.mappet.network.server.events.ServerHandlerRequestHotkeys;
 import mchorse.mappet.network.server.factions.ServerHandlerRequestFactions;
 import mchorse.mappet.network.server.npc.ServerHandlerNpcList;
 import mchorse.mappet.network.server.npc.ServerHandlerNpcState;
@@ -135,9 +130,6 @@ public class Dispatcher
 
             /* Events */
             this.register(PacketEventHotkey.class, ServerHandlerEventHotkey.class, Side.SERVER);
-            this.register(PacketEventHotkeys.class, ClientHandlerEventHotkeys.class, Side.CLIENT);
-            this.register(PacketEventHotkeys.class, ServerHandlerEventHotkeys.class, Side.SERVER);
-            this.register(PacketEventRequestHotkeys.class, ServerHandlerRequestHotkeys.class, Side.SERVER);
             this.register(PacketEventPlayerHotkeys.class, ClientHandlerEventPlayerHotkeys.class, Side.CLIENT);
         }
     };

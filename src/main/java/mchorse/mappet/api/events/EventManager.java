@@ -2,7 +2,6 @@ package mchorse.mappet.api.events;
 
 import mchorse.mappet.CommonProxy;
 import mchorse.mappet.Mappet;
-import mchorse.mappet.api.events.hotkeys.EventHotkeys;
 import mchorse.mappet.api.events.nodes.EventNode;
 import mchorse.mappet.api.utils.manager.BaseManager;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
@@ -13,8 +12,6 @@ import java.util.List;
 
 public class EventManager extends BaseManager<NodeSystem<EventNode>>
 {
-    public EventHotkeys hotkeys = new EventHotkeys();
-
     public EventManager(File folder)
     {
         super(folder);
