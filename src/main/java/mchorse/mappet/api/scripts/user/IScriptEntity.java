@@ -56,6 +56,18 @@ public interface IScriptEntity
      */
     public boolean isSprinting();
 
+    /* Ray tracing */
+
+    /**
+     * Ray trace from entity's looking direction (including any entity intersection)
+     */
+    public IScriptRayTrace rayTrace(double maxDistance);
+
+    /**
+     * Ray trace from entity's looking direction (excluding entities)
+     */
+    public IScriptRayTrace rayTraceBlock(double maxDistance);
+
     /* Items */
 
     /**

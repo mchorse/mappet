@@ -2,12 +2,14 @@ package mchorse.mappet.api.scripts.code;
 
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
 import mchorse.mappet.api.scripts.code.mappet.MappetStates;
+import mchorse.mappet.api.scripts.user.IScriptRayTrace;
 import mchorse.mappet.api.scripts.user.IScriptEntity;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
 import mchorse.mappet.api.states.States;
 import mchorse.mappet.utils.EntityUtils;
+import mchorse.mclib.utils.RayTracing;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,6 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.RayTraceResult;
 
 public class ScriptEntity implements IScriptEntity
 {
@@ -86,6 +89,20 @@ public class ScriptEntity implements IScriptEntity
     public boolean isSprinting()
     {
         return this.entity.isSprinting();
+    }
+
+    /* Ray tracing */
+
+    @Override
+    public IScriptRayTrace rayTrace(double maxDistance)
+    {
+        return new ScriptRayTrace(RayTracing.rayTraceWithEntity(this.entity, maxDistance));
+    }
+
+    @Override
+    public IScriptRayTrace rayTraceBlock(double maxDistance)
+    {
+        return new ScriptRayTrace(RayTracing.rayTrace(this.entity, maxDistance, 0));
     }
 
     /* Items */
