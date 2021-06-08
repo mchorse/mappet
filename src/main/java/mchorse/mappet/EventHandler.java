@@ -181,6 +181,13 @@ public class EventHandler
                 Dispatcher.sendTo(new PacketEventPlayerHotkeys(Mappet.settings.hotkeys), player);
             }
         }
+
+        if (!Mappet.settings.playerLogIn.isEmpty())
+        {
+            DataContext context = new DataContext(event.player);
+
+            Mappet.settings.playerLogIn.trigger(context);
+        }
     }
 
     @SubscribeEvent

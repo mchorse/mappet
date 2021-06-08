@@ -175,6 +175,7 @@ mappet.gui.settings.triggers.place_block=On block place
 mappet.gui.settings.triggers.damage_entity=On entity hit
 mappet.gui.settings.triggers.server_load=On server load
 mappet.gui.settings.triggers.server_tick=On server tick
+mappet.gui.settings.triggers.player_login=On player log in
 
 mappet.gui.quests.cancelable=Cancelable
 mappet.gui.quests.instant=Instant

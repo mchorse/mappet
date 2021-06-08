@@ -29,6 +29,7 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
     public Trigger damageEntity;
     public Trigger serverLoad;
     public Trigger serverTick;
+    public Trigger playerLogIn;
 
     public Trigger register(String key, Trigger trigger)
     {
@@ -52,6 +53,7 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
         this.damageEntity = this.register("damage_entity", new Trigger());
         this.serverLoad = this.register("server_load", new Trigger());
         this.serverTick = this.register("server_tick", new Trigger());
+        this.playerLogIn = this.register("player_login", new Trigger());
 
         Mappet.EVENT_BUS.post(new RegisterServerTriggerEvent(this));
     }
