@@ -3,6 +3,7 @@ package mchorse.mappet.client.gui.utils.overlays;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.panels.GuiMappetDashboardPanel;
+import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
@@ -31,7 +32,10 @@ public class GuiContentNamesOverlayPanel extends GuiStringOverlayPanel
 
     private void edit(String text)
     {
-        this.close();
+        for (GuiOverlay overlay : this.getRoot().getChildren(GuiOverlay.class))
+        {
+            overlay.closeItself();
+        }
 
         GuiMappetDashboard dashboard = GuiMappetDashboard.get(this.mc);
 
