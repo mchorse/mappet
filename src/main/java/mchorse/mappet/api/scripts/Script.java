@@ -1,20 +1,17 @@
 package mchorse.mappet.api.scripts;
 
-import com.google.common.collect.ImmutableSet;
-import jdk.nashorn.api.scripting.NashornScriptEngine;
-import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
 import mchorse.mappet.api.scripts.code.ScriptEvent;
 import mchorse.mappet.api.scripts.code.ScriptFactory;
 import mchorse.mappet.api.utils.AbstractData;
 import mchorse.mappet.api.utils.DataContext;
+import mchorse.mappet.utils.ScriptUtils;
 import net.minecraft.nbt.NBTTagCompound;
 
+import javax.script.Bindings;
 import javax.script.Invocable;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import java.lang.reflect.Method;
 
 public class Script extends AbstractData
 {
@@ -26,41 +23,24 @@ public class Script extends AbstractData
     public Script()
     {}
 
-    public void start(ScriptEngineManager manager) throws ScriptException
+    public void start() throws ScriptException
     {
         if (this.engine == null)
         {
-            this.engine = this.tryCreatingEngine(manager);
+            this.engine = ScriptUtils.tryCreatingEngine();
             this.engine.getContext().setAttribute("javax.script.filename", this.getId() + ".js", ScriptContext.ENGINE_SCOPE);
             this.engine.put("mappet", new ScriptFactory());
+
+            /* Remove */
+            Bindings bindings = this.engine.getBindings(ScriptContext.ENGINE_SCOPE);
+
+            bindings.remove("load");
+            bindings.remove("loadWithNewGlobal");
+            bindings.remove("exit");
+            bindings.remove("quit");
+
             this.engine.eval(this.code);
         }
-    }
-
-    private ScriptEngine tryCreatingEngine(ScriptEngineManager manager)
-    {
-        for (String name : ImmutableSet.of("nashorn", "Nashorn", "javascript", "JavaScript", "js", "JS", "ecmascript", "ECMAScript"))
-        {
-            ScriptEngine engine = manager.getEngineByName(name);
-
-            if (engine != null)
-            {
-                return engine;
-            }
-        }
-
-        try
-        {
-            Class factoryClass = Class.forName("jdk.nashorn.api.scripting.NashornScriptEngineFactory");
-            Object factory = factoryClass.getConstructor().newInstance();
-            Method getScriptEnging = factoryClass.getDeclaredMethod("getScriptEngine");
-
-            return (ScriptEngine) getScriptEnging.invoke(factory);
-        }
-        catch (Exception e)
-        {}
-
-        return null;
     }
 
     public Object execute(String function, DataContext context) throws ScriptException, NoSuchMethodException

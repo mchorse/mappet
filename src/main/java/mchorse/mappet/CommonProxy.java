@@ -38,6 +38,7 @@ import mchorse.mappet.events.RegisterTriggerBlockEvent;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.utils.MappetNpcSelector;
 import mchorse.mappet.utils.MetamorphHandler;
+import mchorse.mappet.utils.ScriptUtils;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -45,6 +46,10 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import javax.script.Bindings;
+import javax.script.ScriptContext;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 import java.io.File;
 
 /**
@@ -58,6 +63,27 @@ public class CommonProxy
     private static IFactory<AbstractConditionBlock> conditionBlocks;
     private static IFactory<AbstractTriggerBlock> triggerBlocks;
 
+    public static IFactory<EventNode> getEvents()
+    {
+        return events;
+    }
+    public static IFactory<EventNode> getDialogues()
+    {
+        return dialogues;
+    }
+    public static IFactory<QuestNode> getChains()
+    {
+        return chains;
+    }
+    public static IFactory<AbstractConditionBlock> getConditionBlocks()
+    {
+        return conditionBlocks;
+    }
+    public static IFactory<AbstractTriggerBlock> getTriggerBlocks()
+    {
+        return triggerBlocks;
+    }
+
     /**
      * Client folder where saved selectors and animations are getting
      * stored.
@@ -65,31 +91,6 @@ public class CommonProxy
     public static File configFolder;
 
     public static EventHandler eventHandler;
-
-    public static IFactory<EventNode> getEvents()
-    {
-        return events;
-    }
-
-    public static IFactory<EventNode> getDialogues()
-    {
-        return dialogues;
-    }
-
-    public static IFactory<QuestNode> getChains()
-    {
-        return chains;
-    }
-
-    public static IFactory<AbstractConditionBlock> getConditionBlocks()
-    {
-        return conditionBlocks;
-    }
-
-    public static IFactory<AbstractTriggerBlock> getTriggerBlocks()
-    {
-        return triggerBlocks;
-    }
 
     public void preInit(FMLPreInitializationEvent event)
     {
@@ -112,6 +113,28 @@ public class CommonProxy
     {
         MinecraftForge.EVENT_BUS.register(new MetamorphHandler());
         Mappet.EVENT_BUS.register(eventHandler);
+
+        this.initiateJS();
+    }
+
+    /**
+     * Run something in JavaScript to avoid it loading first time
+     */
+    private void initiateJS()
+    {
+        try
+        {
+            ScriptEngine engine = ScriptUtils.tryCreatingEngine();
+
+            if (!engine.eval("true").equals(Boolean.TRUE))
+            {
+                throw new Exception("Something went wrong with JavaScript...");
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public void postInit(FMLPostInitializationEvent event)

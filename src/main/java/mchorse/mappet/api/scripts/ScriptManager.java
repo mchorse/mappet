@@ -2,6 +2,7 @@ package mchorse.mappet.api.scripts;
 
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.manager.BaseManager;
+import mchorse.mappet.utils.ScriptUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import org.apache.commons.io.FileUtils;
 
@@ -14,21 +15,11 @@ import java.util.Map;
 
 public class ScriptManager extends BaseManager<Script>
 {
-    private ScriptEngineManager manager;
     private Map<String, Script> uniqueScripts = new HashMap<String, Script>();
 
     public ScriptManager(File folder)
     {
         super(folder);
-
-        try
-        {
-            this.manager = new ScriptEngineManager();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -42,7 +33,7 @@ public class ScriptManager extends BaseManager<Script>
         {
             script = this.load(id);
 
-            if (script.unique)
+            if (script != null && script.unique)
             {
                 this.uniqueScripts.put(id, script);
             }
@@ -53,7 +44,7 @@ public class ScriptManager extends BaseManager<Script>
             return null;
         }
 
-        script.start(this.manager);
+        script.start();
 
         return script.execute(function, context);
     }
