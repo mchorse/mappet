@@ -1,10 +1,10 @@
 package mchorse.mappet.client.gui.panels;
 
 import mchorse.mappet.api.misc.ServerSettings;
-import mchorse.mappet.api.utils.Trigger;
+import mchorse.mappet.api.triggers.Trigger;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.events.GuiEventHotkeysOverlayPanel;
-import mchorse.mappet.client.gui.utils.GuiTriggerElement;
+import mchorse.mappet.client.gui.triggers.GuiTriggerElement;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.content.PacketRequestServerSettings;

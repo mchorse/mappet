@@ -2,24 +2,24 @@ package mchorse.mappet.client.gui.conditions;
 
 import mchorse.mappet.CommonProxy;
 import mchorse.mappet.api.conditions.Condition;
-import mchorse.mappet.api.conditions.blocks.AbstractBlock;
-import mchorse.mappet.api.conditions.blocks.ConditionBlock;
-import mchorse.mappet.api.conditions.blocks.DialogueBlock;
-import mchorse.mappet.api.conditions.blocks.EntityBlock;
-import mchorse.mappet.api.conditions.blocks.FactionBlock;
-import mchorse.mappet.api.conditions.blocks.ItemBlock;
-import mchorse.mappet.api.conditions.blocks.QuestBlock;
-import mchorse.mappet.api.conditions.blocks.StateBlock;
-import mchorse.mappet.api.conditions.blocks.WorldTimeBlock;
-import mchorse.mappet.client.gui.conditions.blocks.GuiAbstractBlockPanel;
-import mchorse.mappet.client.gui.conditions.blocks.GuiConditionBlockPanel;
-import mchorse.mappet.client.gui.conditions.blocks.GuiDialogueBlockPanel;
-import mchorse.mappet.client.gui.conditions.blocks.GuiEntityBlockPanel;
-import mchorse.mappet.client.gui.conditions.blocks.GuiFactionBlockPanel;
-import mchorse.mappet.client.gui.conditions.blocks.GuiItemBlockPanel;
-import mchorse.mappet.client.gui.conditions.blocks.GuiQuestBlockPanel;
-import mchorse.mappet.client.gui.conditions.blocks.GuiStateBlockPanel;
-import mchorse.mappet.client.gui.conditions.blocks.GuiWorldTimeBlockPanel;
+import mchorse.mappet.api.conditions.blocks.AbstractConditionBlock;
+import mchorse.mappet.api.conditions.blocks.ConditionConditionBlock;
+import mchorse.mappet.api.conditions.blocks.DialogueConditionBlock;
+import mchorse.mappet.api.conditions.blocks.EntityConditionBlock;
+import mchorse.mappet.api.conditions.blocks.FactionConditionBlock;
+import mchorse.mappet.api.conditions.blocks.ItemConditionBlock;
+import mchorse.mappet.api.conditions.blocks.QuestConditionBlock;
+import mchorse.mappet.api.conditions.blocks.StateConditionBlock;
+import mchorse.mappet.api.conditions.blocks.WorldTimeConditionBlock;
+import mchorse.mappet.client.gui.conditions.blocks.GuiAbstractConditionBlockPanel;
+import mchorse.mappet.client.gui.conditions.blocks.GuiConditionConditionBlockPanel;
+import mchorse.mappet.client.gui.conditions.blocks.GuiDialogueConditionBlockPanel;
+import mchorse.mappet.client.gui.conditions.blocks.GuiEntityConditionBlockPanel;
+import mchorse.mappet.client.gui.conditions.blocks.GuiFactionConditionBlockPanel;
+import mchorse.mappet.client.gui.conditions.blocks.GuiItemConditionBlockPanel;
+import mchorse.mappet.client.gui.conditions.blocks.GuiQuestConditionBlockPanel;
+import mchorse.mappet.client.gui.conditions.blocks.GuiStateConditionBlockPanel;
+import mchorse.mappet.client.gui.conditions.blocks.GuiWorldTimeConditionBlockPanel;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mappet.client.gui.utils.overlays.GuiEditorOverlayPanel;
 import mchorse.mclib.client.gui.framework.GuiBase;
@@ -41,14 +41,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class GuiConditionOverlayPanel extends GuiEditorOverlayPanel<AbstractBlock>
+public class GuiConditionOverlayPanel extends GuiEditorOverlayPanel<AbstractConditionBlock>
 {
     public static final Map<
-            Class<? extends AbstractBlock>,
-            Class<? extends GuiAbstractBlockPanel<? extends AbstractBlock>>>
+            Class<? extends AbstractConditionBlock>,
+            Class<? extends GuiAbstractConditionBlockPanel<? extends AbstractConditionBlock>>>
         PANELS = new HashMap<
-            Class<? extends AbstractBlock>,
-            Class<? extends GuiAbstractBlockPanel<? extends AbstractBlock>>>();
+            Class<? extends AbstractConditionBlock>,
+            Class<? extends GuiAbstractConditionBlockPanel<? extends AbstractConditionBlock>>>();
 
     public GuiInventoryElement inventory;
 
@@ -56,14 +56,14 @@ public class GuiConditionOverlayPanel extends GuiEditorOverlayPanel<AbstractBloc
 
     static
     {
-        PANELS.put(QuestBlock.class, GuiQuestBlockPanel.class);
-        PANELS.put(StateBlock.class, GuiStateBlockPanel.class);
-        PANELS.put(DialogueBlock.class, GuiDialogueBlockPanel.class);
-        PANELS.put(FactionBlock.class, GuiFactionBlockPanel.class);
-        PANELS.put(ItemBlock.class, GuiItemBlockPanel.class);
-        PANELS.put(WorldTimeBlock.class, GuiWorldTimeBlockPanel.class);
-        PANELS.put(EntityBlock.class, GuiEntityBlockPanel.class);
-        PANELS.put(ConditionBlock.class, GuiConditionBlockPanel.class);
+        PANELS.put(QuestConditionBlock.class, GuiQuestConditionBlockPanel.class);
+        PANELS.put(StateConditionBlock.class, GuiStateConditionBlockPanel.class);
+        PANELS.put(DialogueConditionBlock.class, GuiDialogueConditionBlockPanel.class);
+        PANELS.put(FactionConditionBlock.class, GuiFactionConditionBlockPanel.class);
+        PANELS.put(ItemConditionBlock.class, GuiItemConditionBlockPanel.class);
+        PANELS.put(WorldTimeConditionBlock.class, GuiWorldTimeConditionBlockPanel.class);
+        PANELS.put(EntityConditionBlock.class, GuiEntityConditionBlockPanel.class);
+        PANELS.put(ConditionConditionBlock.class, GuiConditionConditionBlockPanel.class);
     }
 
     public GuiConditionOverlayPanel(Minecraft mc, Condition condition)
@@ -127,14 +127,14 @@ public class GuiConditionOverlayPanel extends GuiEditorOverlayPanel<AbstractBloc
     }
 
     @Override
-    protected GuiListElement<AbstractBlock> createList(Minecraft mc)
+    protected GuiListElement<AbstractConditionBlock> createList(Minecraft mc)
     {
         return new GuiAbstractBlockListElement(mc, (l) -> this.pickItem(l.get(0), false));
     }
 
     private void addBlock(String type)
     {
-        AbstractBlock block = CommonProxy.getConditionBlocks().create(type);
+        AbstractConditionBlock block = CommonProxy.getConditionBlocks().create(type);
 
         this.condition.blocks.add(block);
         this.pickItem(block, true);
@@ -143,7 +143,7 @@ public class GuiConditionOverlayPanel extends GuiEditorOverlayPanel<AbstractBloc
 
     private void copyCondition()
     {
-        AbstractBlock block = this.list.getCurrentFirst();
+        AbstractConditionBlock block = this.list.getCurrentFirst();
         NBTTagCompound tag = block.serializeNBT();
 
         tag.setString("Type", CommonProxy.getConditionBlocks().getType(block));
@@ -152,7 +152,7 @@ public class GuiConditionOverlayPanel extends GuiEditorOverlayPanel<AbstractBloc
 
     private void pasteCondition(NBTTagCompound tag)
     {
-        AbstractBlock block = CommonProxy.getConditionBlocks().create(tag.getString("Type"));
+        AbstractConditionBlock block = CommonProxy.getConditionBlocks().create(tag.getString("Type"));
 
         block.deserializeNBT(tag);
         this.condition.blocks.add(block);
@@ -162,13 +162,13 @@ public class GuiConditionOverlayPanel extends GuiEditorOverlayPanel<AbstractBloc
     }
 
     @Override
-    protected void fillData(AbstractBlock block)
+    protected void fillData(AbstractConditionBlock block)
     {
         this.editor.removeAll();
 
         try
         {
-            this.editor.add((GuiAbstractBlockPanel) PANELS.get(block.getClass()).getConstructors()[0].newInstance(this.mc, this, block));
+            this.editor.add((GuiAbstractConditionBlockPanel) PANELS.get(block.getClass()).getConstructors()[0].newInstance(this.mc, this, block));
         }
         catch (Exception e)
         {
@@ -187,15 +187,15 @@ public class GuiConditionOverlayPanel extends GuiEditorOverlayPanel<AbstractBloc
         }
     }
 
-    public static class GuiAbstractBlockListElement extends GuiListElement<AbstractBlock>
+    public static class GuiAbstractBlockListElement extends GuiListElement<AbstractConditionBlock>
     {
-        public GuiAbstractBlockListElement(Minecraft mc, Consumer<List<AbstractBlock>> callback)
+        public GuiAbstractBlockListElement(Minecraft mc, Consumer<List<AbstractConditionBlock>> callback)
         {
             super(mc, callback);
         }
 
         @Override
-        protected void drawElementPart(AbstractBlock element, int i, int x, int y, boolean hover, boolean selected)
+        protected void drawElementPart(AbstractConditionBlock element, int i, int x, int y, boolean hover, boolean selected)
         {
             int color = CommonProxy.getConditionBlocks().getColor(element);
 
@@ -206,7 +206,7 @@ public class GuiConditionOverlayPanel extends GuiEditorOverlayPanel<AbstractBloc
         }
 
         @Override
-        protected String elementToString(AbstractBlock element)
+        protected String elementToString(AbstractConditionBlock element)
         {
             return element.stringify();
         }

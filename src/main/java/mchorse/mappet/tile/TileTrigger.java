@@ -1,6 +1,6 @@
 package mchorse.mappet.tile;
 
-import mchorse.mappet.api.utils.Trigger;
+import mchorse.mappet.api.triggers.Trigger;
 import mchorse.mappet.blocks.BlockTrigger;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;

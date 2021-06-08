@@ -1,6 +1,6 @@
 package mchorse.mappet.client.gui.conditions.utils;
 
-import mchorse.mappet.api.conditions.blocks.PropertyBlock;
+import mchorse.mappet.api.conditions.blocks.PropertyConditionBlock;
 import mchorse.mappet.api.conditions.utils.Comparison;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
@@ -17,7 +17,7 @@ import net.minecraft.client.Minecraft;
  * This element doesn't add anything to itself, you need to
  * manually add those fields
  */
-public class GuiPropertyBlockElement extends GuiTargetBlockElement<PropertyBlock>
+public class GuiPropertyBlockElement extends GuiTargetBlockElement<PropertyConditionBlock>
 {
     public GuiElement compare;
 
@@ -25,7 +25,7 @@ public class GuiPropertyBlockElement extends GuiTargetBlockElement<PropertyBlock
     private GuiTrackpadElement value;
     private GuiTextElement expression;
 
-    public GuiPropertyBlockElement(Minecraft mc, PropertyBlock block)
+    public GuiPropertyBlockElement(Minecraft mc, PropertyConditionBlock block)
     {
         super(mc, block);
 

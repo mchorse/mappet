@@ -2,9 +2,9 @@ package mchorse.mappet.client.gui.events;
 
 import mchorse.mappet.api.misc.hotkeys.TriggerHotkey;
 import mchorse.mappet.api.misc.hotkeys.TriggerHotkeys;
-import mchorse.mappet.client.gui.utils.GuiCheckerElement;
+import mchorse.mappet.client.gui.triggers.GuiTriggerElement;
+import mchorse.mappet.client.gui.conditions.GuiCheckerElement;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
-import mchorse.mappet.client.gui.utils.GuiTriggerElement;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlayPanel;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
@@ -139,7 +139,7 @@ public class GuiEventHotkeysOverlayPanel extends GuiOverlayPanel
         @Override
         protected String elementToString(TriggerHotkey element)
         {
-            return Keys.getKeyName(element.keycode) + " - " + element.trigger.triggerEvent;
+            return Keys.getKeyName(element.keycode);
         }
     }
 }

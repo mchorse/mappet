@@ -1,6 +1,6 @@
 package mchorse.mappet.tile;
 
-import mchorse.mappet.api.utils.Checker;
+import mchorse.mappet.api.conditions.Checker;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.blocks.BlockEmitter;
 import mchorse.mappet.network.common.blocks.PacketEditEmitter;

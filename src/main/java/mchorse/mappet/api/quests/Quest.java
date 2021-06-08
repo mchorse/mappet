@@ -6,7 +6,7 @@ import mchorse.mappet.api.quests.objectives.StateObjective;
 import mchorse.mappet.api.quests.objectives.KillObjective;
 import mchorse.mappet.api.quests.rewards.IReward;
 import mchorse.mappet.api.utils.AbstractData;
-import mchorse.mappet.api.utils.Trigger;
+import mchorse.mappet.api.triggers.Trigger;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mclib.utils.TextUtils;

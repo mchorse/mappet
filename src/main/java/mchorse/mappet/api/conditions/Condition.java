@@ -1,7 +1,7 @@
 package mchorse.mappet.api.conditions;
 
 import mchorse.mappet.CommonProxy;
-import mchorse.mappet.api.conditions.blocks.AbstractBlock;
+import mchorse.mappet.api.conditions.blocks.AbstractConditionBlock;
 import mchorse.mappet.api.utils.DataContext;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -13,7 +13,7 @@ import java.util.List;
 
 public class Condition implements INBTSerializable<NBTTagCompound>
 {
-    public List<AbstractBlock> blocks = new ArrayList<AbstractBlock>();
+    public final List<AbstractConditionBlock> blocks = new ArrayList<AbstractConditionBlock>();
 
     private boolean defaultValue;
 
@@ -33,7 +33,7 @@ public class Condition implements INBTSerializable<NBTTagCompound>
 
         for (int i = 1; i < this.blocks.size(); i++)
         {
-            AbstractBlock block = this.blocks.get(i);
+            AbstractConditionBlock block = this.blocks.get(i);
             boolean value = block.evaluate(context);
 
             if (block.or)
@@ -55,7 +55,7 @@ public class Condition implements INBTSerializable<NBTTagCompound>
         NBTTagCompound tag = new NBTTagCompound();
         NBTTagList blocks = new NBTTagList();
 
-        for (AbstractBlock block : this.blocks)
+        for (AbstractConditionBlock block : this.blocks)
         {
             NBTTagCompound blockTag = block.serializeNBT();
 
@@ -81,7 +81,7 @@ public class Condition implements INBTSerializable<NBTTagCompound>
         for (int i = 0; i < blocks.tagCount(); i++)
         {
             NBTTagCompound blockTag = blocks.getCompoundTagAt(i);
-            AbstractBlock block = CommonProxy.getConditionBlocks().create(blockTag.getString("Type"));
+            AbstractConditionBlock block = CommonProxy.getConditionBlocks().create(blockTag.getString("Type"));
 
             if (block != null)
             {

@@ -1,14 +1,14 @@
 package mchorse.mappet;
 
-import mchorse.mappet.api.conditions.blocks.AbstractBlock;
-import mchorse.mappet.api.conditions.blocks.ConditionBlock;
-import mchorse.mappet.api.conditions.blocks.DialogueBlock;
-import mchorse.mappet.api.conditions.blocks.EntityBlock;
-import mchorse.mappet.api.conditions.blocks.FactionBlock;
-import mchorse.mappet.api.conditions.blocks.ItemBlock;
-import mchorse.mappet.api.conditions.blocks.QuestBlock;
-import mchorse.mappet.api.conditions.blocks.StateBlock;
-import mchorse.mappet.api.conditions.blocks.WorldTimeBlock;
+import mchorse.mappet.api.conditions.blocks.AbstractConditionBlock;
+import mchorse.mappet.api.conditions.blocks.ConditionConditionBlock;
+import mchorse.mappet.api.conditions.blocks.DialogueConditionBlock;
+import mchorse.mappet.api.conditions.blocks.EntityConditionBlock;
+import mchorse.mappet.api.conditions.blocks.FactionConditionBlock;
+import mchorse.mappet.api.conditions.blocks.ItemConditionBlock;
+import mchorse.mappet.api.conditions.blocks.QuestConditionBlock;
+import mchorse.mappet.api.conditions.blocks.StateConditionBlock;
+import mchorse.mappet.api.conditions.blocks.WorldTimeConditionBlock;
 import mchorse.mappet.api.dialogues.nodes.CraftingNode;
 import mchorse.mappet.api.dialogues.nodes.QuestChainNode;
 import mchorse.mappet.api.dialogues.nodes.ReactionNode;
@@ -18,16 +18,23 @@ import mchorse.mappet.api.events.nodes.ConditionNode;
 import mchorse.mappet.api.events.nodes.EventNode;
 import mchorse.mappet.api.events.nodes.SwitchNode;
 import mchorse.mappet.api.events.nodes.TimerNode;
+import mchorse.mappet.api.triggers.blocks.AbstractTriggerBlock;
+import mchorse.mappet.api.triggers.blocks.CommandTriggerBlock;
+import mchorse.mappet.api.triggers.blocks.DialogueTriggerBlock;
+import mchorse.mappet.api.triggers.blocks.EventTriggerBlock;
+import mchorse.mappet.api.triggers.blocks.ScriptTriggerBlock;
+import mchorse.mappet.api.triggers.blocks.SoundTriggerBlock;
 import mchorse.mappet.api.quests.chains.QuestNode;
 import mchorse.mappet.api.utils.factory.IFactory;
 import mchorse.mappet.api.utils.factory.MapFactory;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.CharacterStorage;
 import mchorse.mappet.capabilities.character.ICharacter;
-import mchorse.mappet.events.RegisterAbstractBlockEvent;
-import mchorse.mappet.events.RegisterDialogueNodesEvent;
-import mchorse.mappet.events.RegisterEventNodesEvent;
-import mchorse.mappet.events.RegisterQuestChainNodesEvent;
+import mchorse.mappet.events.RegisterConditionBlockEvent;
+import mchorse.mappet.events.RegisterDialogueNodeEvent;
+import mchorse.mappet.events.RegisterEventNodeEvent;
+import mchorse.mappet.events.RegisterQuestChainNodeEvent;
+import mchorse.mappet.events.RegisterTriggerBlockEvent;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.utils.MappetNpcSelector;
 import mchorse.mappet.utils.MetamorphHandler;
@@ -48,7 +55,8 @@ public class CommonProxy
     private static IFactory<EventNode> events;
     private static IFactory<EventNode> dialogues;
     private static IFactory<QuestNode> chains;
-    private static IFactory<AbstractBlock> conditionBlocks;
+    private static IFactory<AbstractConditionBlock> conditionBlocks;
+    private static IFactory<AbstractTriggerBlock> triggerBlocks;
 
     /**
      * Client folder where saved selectors and animations are getting
@@ -73,9 +81,14 @@ public class CommonProxy
         return chains;
     }
 
-    public static IFactory<AbstractBlock> getConditionBlocks()
+    public static IFactory<AbstractConditionBlock> getConditionBlocks()
     {
         return conditionBlocks;
+    }
+
+    public static IFactory<AbstractTriggerBlock> getTriggerBlocks()
+    {
+        return triggerBlocks;
     }
 
     public void preInit(FMLPreInitializationEvent event)
@@ -111,7 +124,7 @@ public class CommonProxy
             .register("timer", TimerNode.class, 0x11ff33);
 
         events = eventNodes;
-        Mappet.EVENT_BUS.post(new RegisterEventNodesEvent(eventNodes));
+        Mappet.EVENT_BUS.post(new RegisterEventNodeEvent(eventNodes));
 
         /* Register dialogue nodes */
         MapFactory<EventNode> dialogueNodes = eventNodes.copy()
@@ -122,27 +135,38 @@ public class CommonProxy
             .unregister("timer");
 
         dialogues = dialogueNodes;
-        Mappet.EVENT_BUS.post(new RegisterDialogueNodesEvent(dialogueNodes));
+        Mappet.EVENT_BUS.post(new RegisterDialogueNodeEvent(dialogueNodes));
 
         /* Register quest chain blocks */
         MapFactory<QuestNode> questChainNodes = new MapFactory<QuestNode>()
             .register("quest", QuestNode.class, 0xffff00);
 
         chains = questChainNodes;
-        Mappet.EVENT_BUS.post(new RegisterQuestChainNodesEvent(questChainNodes));
+        Mappet.EVENT_BUS.post(new RegisterQuestChainNodeEvent(questChainNodes));
 
         /* Register condition blocks */
-        MapFactory<AbstractBlock> blocks = new MapFactory<AbstractBlock>()
-            .register("quest", QuestBlock.class, 0xffaa00)
-            .register("state", StateBlock.class, 0xff0022)
-            .register("dialogue", DialogueBlock.class, 0x00ff33)
-            .register("faction", FactionBlock.class, 0x942aff)
-            .register("item", ItemBlock.class, 0xff7700)
-            .register("world_time", WorldTimeBlock.class, 0x0088ff)
-            .register("entity", EntityBlock.class, 0x2d4163)
-            .register("condition", ConditionBlock.class, 0xff1493);
+        MapFactory<AbstractConditionBlock> conditions = new MapFactory<AbstractConditionBlock>()
+            .register("quest", QuestConditionBlock.class, 0xffaa00)
+            .register("state", StateConditionBlock.class, 0xff0022)
+            .register("dialogue", DialogueConditionBlock.class, 0x11ff33)
+            .register("faction", FactionConditionBlock.class, 0x942aff)
+            .register("item", ItemConditionBlock.class, 0xff7700)
+            .register("world_time", WorldTimeConditionBlock.class, 0x0088ff)
+            .register("entity", EntityConditionBlock.class, 0x2d4163)
+            .register("condition", ConditionConditionBlock.class, 0xff1493);
 
-        conditionBlocks = blocks;
-        Mappet.EVENT_BUS.post(new RegisterAbstractBlockEvent(blocks));
+        conditionBlocks = conditions;
+        Mappet.EVENT_BUS.post(new RegisterConditionBlockEvent(conditions));
+
+        /* Register condition blocks */
+        MapFactory<AbstractTriggerBlock> triggers = new MapFactory<AbstractTriggerBlock>()
+            .register("command", CommandTriggerBlock.class, 0x942aff)
+            .register("sound", SoundTriggerBlock.class, 0xff7700)
+            .register("event", EventTriggerBlock.class, 0xff0022)
+            .register("dialogue", DialogueTriggerBlock.class, 0x11ff33)
+            .register("script", ScriptTriggerBlock.class, 0x2d4163);
+
+        triggerBlocks = triggers;
+        Mappet.EVENT_BUS.post(new RegisterTriggerBlockEvent(triggers));
     }
 }

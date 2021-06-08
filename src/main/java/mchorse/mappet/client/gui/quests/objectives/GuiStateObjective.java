@@ -1,8 +1,7 @@
 package mchorse.mappet.client.gui.quests.objectives;
 
 import mchorse.mappet.api.quests.objectives.StateObjective;
-import mchorse.mappet.client.gui.utils.GuiCheckerElement;
-import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
+import mchorse.mappet.client.gui.conditions.GuiCheckerElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;

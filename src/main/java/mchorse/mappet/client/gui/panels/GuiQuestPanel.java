@@ -6,7 +6,7 @@ import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.quests.GuiObjectives;
 import mchorse.mappet.client.gui.quests.GuiRewards;
 import mchorse.mappet.client.gui.utils.text.GuiMultiTextElement;
-import mchorse.mappet.client.gui.utils.GuiTriggerElement;
+import mchorse.mappet.client.gui.triggers.GuiTriggerElement;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;

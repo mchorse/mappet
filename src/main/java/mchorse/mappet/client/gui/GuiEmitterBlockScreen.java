@@ -1,6 +1,6 @@
 package mchorse.mappet.client.gui;
 
-import mchorse.mappet.client.gui.utils.GuiCheckerElement;
+import mchorse.mappet.client.gui.conditions.GuiCheckerElement;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.blocks.PacketEditEmitter;
 import mchorse.mclib.client.gui.framework.GuiBase;

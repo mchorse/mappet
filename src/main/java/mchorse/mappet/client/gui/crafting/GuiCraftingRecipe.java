@@ -1,9 +1,9 @@
 package mchorse.mappet.client.gui.crafting;
 
 import mchorse.mappet.api.crafting.CraftingRecipe;
-import mchorse.mappet.client.gui.utils.GuiCheckerElement;
+import mchorse.mappet.client.gui.conditions.GuiCheckerElement;
 import mchorse.mappet.client.gui.utils.GuiItemsElement;
-import mchorse.mappet.client.gui.utils.GuiTriggerElement;
+import mchorse.mappet.client.gui.triggers.GuiTriggerElement;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiKeybindElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;

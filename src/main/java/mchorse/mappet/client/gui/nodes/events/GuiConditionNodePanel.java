@@ -2,7 +2,7 @@ package mchorse.mappet.client.gui.nodes.events;
 
 import mchorse.mappet.api.events.nodes.ConditionNode;
 import mchorse.mappet.client.gui.nodes.GuiEventNodePanel;
-import mchorse.mappet.client.gui.utils.GuiCheckerElement;
+import mchorse.mappet.client.gui.conditions.GuiCheckerElement;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;

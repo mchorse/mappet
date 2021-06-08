@@ -2,8 +2,8 @@ package mchorse.mappet.api.misc;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.misc.hotkeys.TriggerHotkeys;
-import mchorse.mappet.api.utils.Trigger;
-import mchorse.mappet.events.RegisterServerTriggers;
+import mchorse.mappet.api.triggers.Trigger;
+import mchorse.mappet.events.RegisterServerTriggerEvent;
 import mchorse.mappet.utils.NBTToJsonLike;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.Constants;
@@ -53,7 +53,7 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
         this.serverLoad = this.register("server_load", new Trigger());
         this.serverTick = this.register("server_tick", new Trigger());
 
-        Mappet.EVENT_BUS.post(new RegisterServerTriggers(this));
+        Mappet.EVENT_BUS.post(new RegisterServerTriggerEvent(this));
     }
 
     /* Deserialization / Serialization */

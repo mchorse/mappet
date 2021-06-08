@@ -1,6 +1,6 @@
 package mchorse.mappet.client.gui.conditions.utils;
 
-import mchorse.mappet.api.conditions.blocks.TargetBlock;
+import mchorse.mappet.api.conditions.blocks.TargetConditionBlock;
 import mchorse.mappet.api.conditions.utils.Target;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
@@ -10,7 +10,7 @@ import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 
-public class GuiTargetBlockElement <T extends TargetBlock> extends GuiElement
+public class GuiTargetBlockElement <T extends TargetConditionBlock> extends GuiElement
 {
     public T block;
 

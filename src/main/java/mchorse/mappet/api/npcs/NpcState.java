@@ -1,6 +1,6 @@
 package mchorse.mappet.api.npcs;
 
-import mchorse.mappet.api.utils.Trigger;
+import mchorse.mappet.api.triggers.Trigger;
 import mchorse.mappet.utils.NBTUtils;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;

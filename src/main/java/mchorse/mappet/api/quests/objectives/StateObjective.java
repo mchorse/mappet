@@ -1,6 +1,6 @@
 package mchorse.mappet.api.quests.objectives;
 
-import mchorse.mappet.api.utils.Checker;
+import mchorse.mappet.api.conditions.Checker;
 import mchorse.mappet.api.utils.DataContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;

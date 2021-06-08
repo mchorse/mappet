@@ -1,7 +1,7 @@
 package mchorse.mappet.network.common.blocks;
 
 import io.netty.buffer.ByteBuf;
-import mchorse.mappet.api.utils.Checker;
+import mchorse.mappet.api.conditions.Checker;
 import mchorse.mappet.tile.TileEmitter;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;

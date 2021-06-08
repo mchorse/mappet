@@ -1,7 +1,7 @@
 package mchorse.mappet.client.gui.npc;
 
 import mchorse.mappet.api.npcs.NpcState;
-import mchorse.mappet.client.gui.utils.GuiTriggerElement;
+import mchorse.mappet.client.gui.triggers.GuiTriggerElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;

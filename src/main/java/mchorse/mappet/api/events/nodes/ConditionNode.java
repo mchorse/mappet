@@ -2,7 +2,7 @@ package mchorse.mappet.api.events.nodes;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.events.EventContext;
-import mchorse.mappet.api.utils.Checker;
+import mchorse.mappet.api.conditions.Checker;
 import mchorse.mclib.math.IValue;
 import net.minecraft.nbt.NBTTagCompound;
 

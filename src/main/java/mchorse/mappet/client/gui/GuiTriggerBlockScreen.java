@@ -1,7 +1,7 @@
 package mchorse.mappet.client.gui;
 
-import mchorse.mappet.api.utils.Trigger;
-import mchorse.mappet.client.gui.utils.GuiTriggerElement;
+import mchorse.mappet.api.triggers.Trigger;
+import mchorse.mappet.client.gui.triggers.GuiTriggerElement;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.blocks.PacketEditTrigger;
 import mchorse.mclib.client.gui.framework.GuiBase;

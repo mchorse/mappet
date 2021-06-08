@@ -1,6 +1,6 @@
 package mchorse.mappet.network.client.blocks;
 
-import mchorse.mappet.api.utils.Trigger;
+import mchorse.mappet.api.triggers.Trigger;
 import mchorse.mappet.client.gui.GuiTriggerBlockScreen;
 import mchorse.mappet.network.common.blocks.PacketEditTrigger;
 import mchorse.mclib.network.ClientMessageHandler;

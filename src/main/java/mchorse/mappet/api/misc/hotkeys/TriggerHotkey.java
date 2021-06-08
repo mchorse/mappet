@@ -1,8 +1,8 @@
 package mchorse.mappet.api.misc.hotkeys;
 
-import mchorse.mappet.api.utils.Checker;
+import mchorse.mappet.api.conditions.Checker;
 import mchorse.mappet.api.utils.DataContext;
-import mchorse.mappet.api.utils.Trigger;
+import mchorse.mappet.api.triggers.Trigger;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 

@@ -7,7 +7,7 @@ import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.factions.GuiFactionRelationOverlayPanel;
 import mchorse.mappet.client.gui.factions.GuiFactions;
 import mchorse.mappet.client.gui.factions.GuiFactionsOverlayPanel;
-import mchorse.mappet.client.gui.utils.GuiCheckerElement;
+import mchorse.mappet.client.gui.conditions.GuiCheckerElement;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
