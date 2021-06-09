@@ -14,11 +14,15 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import net.minecraftforge.common.DimensionManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ScriptWorld implements IScriptWorld
 {
@@ -140,5 +144,37 @@ public class ScriptWorld implements IScriptWorld
         Entity entity = AnvilChunkLoader.readWorldEntityPos(tag, this.world, x, y, z, true);
 
         return entity == null ? null : new ScriptEntity(entity);
+    }
+
+    @Override
+    public List<IScriptEntity> getEntities(double x1, double y1, double z1, double x2, double y2, double z2)
+    {
+        final int maxVolume = 100;
+
+        List<IScriptEntity> entities = new ArrayList<IScriptEntity>();
+
+        double minX = Math.min(x1, x2);
+        double minY = Math.min(y1, y2);
+        double minZ = Math.min(z1, z2);
+        double maxX = Math.max(x1, x2);
+        double maxY = Math.max(y1, y2);
+        double maxZ = Math.max(z1, z2);
+
+        if (maxX - minX > maxVolume || maxY - minY > maxVolume || maxZ - minZ > maxVolume)
+        {
+            return entities;
+        }
+
+        if (!this.world.isBlockLoaded(new BlockPos(minX, minY, minZ)) || !this.world.isBlockLoaded(new BlockPos(maxX, maxY, maxZ)))
+        {
+            return entities;
+        }
+
+        for (Entity entity : this.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ)))
+        {
+            entities.add(new ScriptEntity(entity));
+        }
+
+        return entities;
     }
 }

@@ -2,8 +2,8 @@ package mchorse.mappet.api.scripts.code;
 
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
 import mchorse.mappet.api.scripts.code.mappet.MappetStates;
-import mchorse.mappet.api.scripts.user.IScriptRayTrace;
 import mchorse.mappet.api.scripts.user.IScriptEntity;
+import mchorse.mappet.api.scripts.user.IScriptRayTrace;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
@@ -17,7 +17,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.RayTraceResult;
 
 public class ScriptEntity implements IScriptEntity
 {
@@ -149,6 +148,12 @@ public class ScriptEntity implements IScriptEntity
     public boolean isPlayer()
     {
         return this.entity instanceof EntityPlayer;
+    }
+
+    @Override
+    public boolean isLivingBase()
+    {
+        return this.entity instanceof EntityLivingBase;
     }
 
     @Override

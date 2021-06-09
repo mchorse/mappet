@@ -100,6 +100,11 @@ public interface IScriptEntity
     public boolean isPlayer();
 
     /**
+     * Check whether this entity is living base
+     */
+    public boolean isLivingBase();
+
+    /**
      * Remove this entity from the server without any dead effects
      */
     public void remove();

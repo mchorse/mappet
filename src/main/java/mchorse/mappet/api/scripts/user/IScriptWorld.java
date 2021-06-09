@@ -5,6 +5,8 @@ import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 /**
  * This interface represent a world passed in the event.
  */
@@ -107,4 +109,12 @@ public interface IScriptWorld
      * Spawn an entity at given position with additional data
      */
     public IScriptEntity spawnEntity(String id, double x, double y, double z, INBTCompound compound);
+
+    /**
+     * Get entities within the box specified by given coordinates in this world.
+     * This method limits to scanning entities <b>only within 100 blocks radius</b>
+     * in any direction. If the box provided has any of its sizes that is longer
+     * than 100 blocks, then it will simply return an empty list.
+     */
+    public List<IScriptEntity> getEntities(double x1, double y1, double z1, double x2, double y2, double z2);
 }
