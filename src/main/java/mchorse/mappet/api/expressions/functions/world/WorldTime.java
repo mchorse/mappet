@@ -1,10 +1,9 @@
 package mchorse.mappet.api.expressions.functions.world;
 
-import mchorse.mappet.Mappet;
 import mchorse.mclib.math.IValue;
-import mchorse.mclib.math.functions.NNFunction;
+import net.minecraft.world.World;
 
-public class WorldTime extends NNFunction
+public class WorldTime extends WorldBaseFunction
 {
     public WorldTime(IValue[] values, String name) throws Exception
     {
@@ -14,6 +13,8 @@ public class WorldTime extends NNFunction
     @Override
     public double doubleValue()
     {
-        return Mappet.expressions.getWorld().getWorldTime();
+        World world = this.getWorld();
+
+        return world == null ? 0 : world.getWorldTime();
     }
 }

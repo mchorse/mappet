@@ -1,10 +1,9 @@
 package mchorse.mappet.api.expressions.functions.world;
 
-import mchorse.mappet.Mappet;
 import mchorse.mclib.math.IValue;
-import mchorse.mclib.math.functions.NNFunction;
+import net.minecraft.world.World;
 
-public class WorldIsDay extends NNFunction
+public class WorldIsDay extends WorldBaseFunction
 {
     public WorldIsDay(IValue[] values, String name) throws Exception
     {
@@ -14,6 +13,13 @@ public class WorldIsDay extends NNFunction
     @Override
     public double doubleValue()
     {
-        return Mappet.expressions.getWorld().getWorldTime() % 24000 < 12000 ? 1 : 0;
+        World world = this.getWorld();
+
+        if (world == null)
+        {
+            return 0;
+        }
+
+        return world.getWorldTime() % 24000 < 12000 ? 1 : 0;
     }
 }
