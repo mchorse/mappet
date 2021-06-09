@@ -415,6 +415,11 @@ mappet.gui.conditions.targets.player=Player
 mappet.gui.conditions.targets.npc=NPC
 mappet.gui.conditions.comparisons.is_true=Is true
 mappet.gui.conditions.comparisons.is_false=Is false
+mappet.gui.conditions.context.add=Add a condition...
+mappet.gui.conditions.context.add_condition=Add %s condition
+mappet.gui.conditions.context.copy=Copy this condition
+mappet.gui.conditions.context.paste=Paste copied condition
+mappet.gui.conditions.context.remove=Remove this condition
 
 mappet.gui.syntax_theme.main=Theme editor
 mappet.gui.syntax_theme.edit=Edit themes...

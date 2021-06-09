@@ -36,6 +36,8 @@ public class GuiNpcEditor extends GuiScrollElement
     {
         super(mc, ScrollDirection.HORIZONTAL);
 
+        this.scroll.scrollSpeed *= 2;
+
         this.meta = new GuiNpcMetaPanel(mc, id);
         this.general = new GuiNpcGeneralPanel(mc, inventory, morphs);
         this.health = new GuiNpcHealthPanel(mc);

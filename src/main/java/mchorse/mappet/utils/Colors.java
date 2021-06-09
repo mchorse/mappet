@@ -14,9 +14,9 @@ public class Colors
     public static final int CRAFTING = 0xff6600;
     public static final int DIALOGUE = 0x11ff33;
     public static final int ENTITY = 0x2d4163;
-    public static final int FACTION = 0x0ef0e4;
+    public static final int FACTION = 0xb3ff00;
     public static final int QUEST = 0xffaa00;
     public static final int REPLY = 0x00a0ff;
     public static final int STATE = Colors.NEGATIVE;
-    public static final int TIME = 0x11ff60;
+    public static final int TIME = 0x0088ff;
 }
