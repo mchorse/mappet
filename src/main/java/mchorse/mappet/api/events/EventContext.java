@@ -3,6 +3,7 @@ package mchorse.mappet.api.events;
 import mchorse.mappet.CommonProxy;
 import mchorse.mappet.api.events.nodes.EventBaseNode;
 import mchorse.mappet.api.utils.DataContext;
+import mchorse.mappet.api.utils.IExecutable;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
 import org.apache.commons.lang3.StringUtils;
 
@@ -20,7 +21,7 @@ public class EventContext
     public int nesting = 0;
     public int executions = 0;
 
-    public List<EventExecutionFork> executionForks = new ArrayList<EventExecutionFork>();
+    public List<IExecutable> executionForks = new ArrayList<IExecutable>();
 
     public EventContext(DataContext data)
     {
@@ -46,7 +47,7 @@ public class EventContext
     {
         if (!this.executionForks.isEmpty())
         {
-            CommonProxy.eventHandler.addExecutionForks(this.executionForks);
+            CommonProxy.eventHandler.addExecutables(this.executionForks);
 
             this.executionForks.clear();
         }

@@ -39,6 +39,24 @@ public interface IScriptEvent
     /* Useful methods */
 
     /**
+     * Schedule execution of the same script (with same function)
+     * given ticks forward
+     */
+    public void scheduleScript(int delay);
+
+    /**
+     * Schedule execution of the same script with given function
+     * given ticks forward
+     */
+    public void scheduleScript(String function, int delay);
+
+    /**
+     * Schedule execution of given script with specific function
+     * given ticks forward
+     */
+    public void scheduleScript(String script, String function, int delay);
+
+    /**
      * Execute a command
      */
     public void executeCommand(String command);

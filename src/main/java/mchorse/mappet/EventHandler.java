@@ -3,6 +3,7 @@ package mchorse.mappet;
 import mchorse.mappet.api.events.EventExecutionFork;
 import mchorse.mappet.api.quests.Quest;
 import mchorse.mappet.api.utils.DataContext;
+import mchorse.mappet.api.utils.IExecutable;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.CharacterProvider;
 import mchorse.mappet.capabilities.character.ICharacter;
@@ -50,30 +51,35 @@ public class EventHandler
     private Set<EntityPlayer> playersToCheck = new HashSet<EntityPlayer>();
 
     /**
-     * Delayed event executions
+     * Delayed executions
      */
-    private List<EventExecutionFork> eventForks = new ArrayList<EventExecutionFork>();
+    private List<IExecutable> executables = new ArrayList<IExecutable>();
 
     /**
-     * Second event execution forks to avoid concurrent modification
-     * exceptions when adding consequent delayed events
+     * Second executables list to avoid concurrent modification
+     * exceptions when adding consequent delayed executions
      */
-    private List<EventExecutionFork> secondList = new ArrayList<EventExecutionFork>();
+    private List<IExecutable> secondList = new ArrayList<IExecutable>();
 
     /**
      * Server data context which is used by server tick global trigger
      */
     private DataContext context;
 
-    public void addExecutionForks(List<EventExecutionFork> executionForks)
+    public void addExecutables(List<IExecutable> executionForks)
     {
-        this.eventForks.addAll(executionForks);
+        this.executables.addAll(executionForks);
+    }
+
+    public void addExecutable(IExecutable executable)
+    {
+        this.executables.add(executable);
     }
 
     public void reset()
     {
         this.playersToCheck.clear();
-        this.eventForks.clear();
+        this.executables.clear();
         this.secondList.clear();
         this.context = null;
     }
@@ -262,21 +268,21 @@ public class EventHandler
          * add consequent execution forks, this way I can reliably keep track
          * of order of both the old executions which are not yet executed and
          * of new forks that were added by new timer nodes */
-        if (!this.eventForks.isEmpty())
+        if (!this.executables.isEmpty())
         {
             /* Copy original event forks to another list and clear them
              * to be ready for new forks */
-            this.secondList.addAll(this.eventForks);
-            this.eventForks.clear();
+            this.secondList.addAll(this.executables);
+            this.executables.clear();
 
             /* Execute event forks (and remove those which were finished) */
-            this.secondList.removeIf(EventExecutionFork::update);
+            this.secondList.removeIf(IExecutable::update);
 
             /* Add back to the original list the remaining forks and
              * new forks that were added by consequent timer nodes */
-            this.secondList.addAll(this.eventForks);
-            this.eventForks.clear();
-            this.eventForks.addAll(this.secondList);
+            this.secondList.addAll(this.executables);
+            this.executables.clear();
+            this.executables.addAll(this.secondList);
             this.secondList.clear();
         }
 

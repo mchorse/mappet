@@ -50,7 +50,7 @@ public class Script extends AbstractData
             function = "main";
         }
 
-        return ((Invocable) this.engine).invokeFunction(function, new ScriptEvent(context));
+        return ((Invocable) this.engine).invokeFunction(function, new ScriptEvent(context, this.getId(), function));
     }
 
     @Override

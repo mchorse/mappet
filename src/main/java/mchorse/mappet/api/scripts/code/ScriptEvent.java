@@ -1,5 +1,7 @@
 package mchorse.mappet.api.scripts.code;
 
+import mchorse.mappet.CommonProxy;
+import mchorse.mappet.api.scripts.ScriptExecutionFork;
 import mchorse.mappet.api.scripts.user.IScriptEntity;
 import mchorse.mappet.api.scripts.user.IScriptEvent;
 import mchorse.mappet.api.scripts.user.IScriptServer;
@@ -13,15 +15,19 @@ import java.util.Map;
 public class ScriptEvent implements IScriptEvent
 {
     private DataContext context;
+    private String script;
+    private String function;
 
     private IScriptEntity subject;
     private IScriptEntity object;
     private IScriptWorld world;
     private IScriptServer server;
 
-    public ScriptEvent(DataContext context)
+    public ScriptEvent(DataContext context, String script, String function)
     {
         this.context = context;
+        this.script = script;
+        this.function = function;
     }
 
     @Override
@@ -75,6 +81,24 @@ public class ScriptEvent implements IScriptEvent
     }
 
     /* Useful methods */
+
+    @Override
+    public void scheduleScript(int delay)
+    {
+        this.scheduleScript(this.function, delay);
+    }
+
+    @Override
+    public void scheduleScript(String function, int delay)
+    {
+        this.scheduleScript(this.script, function, delay);
+    }
+
+    @Override
+    public void scheduleScript(String script, String function, int delay)
+    {
+        CommonProxy.eventHandler.addExecutable(new ScriptExecutionFork(this.context, script, function, delay));
+    }
 
     @Override
     public void executeCommand(String command)

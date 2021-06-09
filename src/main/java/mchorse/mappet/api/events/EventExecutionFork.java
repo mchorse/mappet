@@ -2,9 +2,10 @@ package mchorse.mappet.api.events;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.events.nodes.EventBaseNode;
+import mchorse.mappet.api.utils.IExecutable;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
 
-public class EventExecutionFork
+public class EventExecutionFork implements IExecutable
 {
     public NodeSystem<EventBaseNode> event;
     public EventBaseNode node;
@@ -19,6 +20,7 @@ public class EventExecutionFork
         this.timer = timer;
     }
 
+    @Override
     public boolean update()
     {
         if (this.timer <= 0)
