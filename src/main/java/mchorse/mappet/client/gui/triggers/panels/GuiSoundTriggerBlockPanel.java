@@ -16,6 +16,8 @@ public class GuiSoundTriggerBlockPanel extends GuiStringTriggerBlockPanel<SoundT
     public GuiSoundTriggerBlockPanel(Minecraft mc, GuiTriggerOverlayPanel overlay, SoundTriggerBlock block)
     {
         super(mc, overlay, block);
+
+        this.addDelay();
     }
 
     @Override

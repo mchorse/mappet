@@ -11,6 +11,8 @@ public class GuiEventTriggerBlockPanel extends GuiStringTriggerBlockPanel<EventT
     public GuiEventTriggerBlockPanel(Minecraft mc, GuiTriggerOverlayPanel overlay, EventTriggerBlock block)
     {
         super(mc, overlay, block);
+
+        this.addDelay();
     }
 
     @Override

@@ -14,7 +14,7 @@ public abstract class AbstractTriggerBlock implements INBTSerializable<NBTTagCom
     {
         this.tick += 1;
 
-        if (this.tick > 0 && this.tick % this.delay == 0)
+        if (this.tick > 0 && this.tick % Math.max(this.delay, 1) == 0)
         {
             this.trigger(context);
             this.tick = 0;

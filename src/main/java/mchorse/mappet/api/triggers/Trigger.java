@@ -62,7 +62,7 @@ public class Trigger implements INBTSerializable<NBTTagCompound>
     {
         for (AbstractTriggerBlock block : this.blocks)
         {
-            block.trigger(context);
+            block.triggerWithDelay(context);
         }
     }
 

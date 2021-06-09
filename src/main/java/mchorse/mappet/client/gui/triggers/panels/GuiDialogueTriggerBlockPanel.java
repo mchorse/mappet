@@ -11,6 +11,8 @@ public class GuiDialogueTriggerBlockPanel extends GuiStringTriggerBlockPanel<Dia
     public GuiDialogueTriggerBlockPanel(Minecraft mc, GuiTriggerOverlayPanel overlay, DialogueTriggerBlock block)
     {
         super(mc, overlay, block);
+
+        this.addDelay();
     }
 
     @Override

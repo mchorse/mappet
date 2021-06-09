@@ -22,5 +22,6 @@ public class GuiCommandTriggerBlockPanel extends GuiAbstractTriggerBlockPanel<Co
         this.command.setText(block.string);
 
         this.add(this.command);
+        this.addDelay();
     }
 }

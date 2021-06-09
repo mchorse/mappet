@@ -21,6 +21,7 @@ public class GuiScriptTriggerBlockPanel extends GuiStringTriggerBlockPanel<Scrip
         this.function.tooltip(IKey.lang("mappet.gui.triggers.script.function_tooltip"));
 
         this.add(Elements.label(IKey.lang("mappet.gui.triggers.function")).marginTop(12), this.function);
+        this.addDelay();
     }
 
     @Override
