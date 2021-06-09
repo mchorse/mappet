@@ -1,6 +1,7 @@
 package mchorse.mappet.client.gui.npc.utils;
 
 import mchorse.mappet.api.npcs.NpcDrop;
+import mchorse.mappet.utils.Colors;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiSlotElement;
@@ -78,7 +79,7 @@ public class GuiNpcDrops extends GuiElement
                 row.removeFromParent();
                 this.getParentContainer().resize();
             }
-        }, 0xff0022));
+        }, Colors.NEGATIVE));
 
         row.add(slot, chance);
         this.element.add(row);

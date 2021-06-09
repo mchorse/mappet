@@ -5,6 +5,7 @@ import mchorse.mappet.api.utils.factory.IFactory;
 import mchorse.mappet.api.utils.nodes.Node;
 import mchorse.mappet.api.utils.nodes.NodeRelation;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
+import mchorse.mappet.utils.Colors;
 import mchorse.mclib.McLib;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
@@ -52,11 +53,6 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
 {
     public static final IKey KEYS_CATEGORY = IKey.lang("mappet.gui.nodes.keys.editor");
     public static final IKey ADD_CATEGORY = IKey.lang("mappet.gui.nodes.keys.add");
-
-    public static final int ACTIVE = 0x0088ff;
-    public static final int IF = 0x00ff44;
-    public static final int ELSE = 0xff0044;
-    public static final int INACTIVE = 0xffbb00;
 
     public NodeSystem<T> system;
 
@@ -122,7 +118,7 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
                 menu.action(Icons.REVERSE, IKey.lang("mappet.gui.nodes.context.sort"), this::sortInputs);
                 menu.action(Icons.MINIMIZE, IKey.lang("mappet.gui.nodes.context.tie"), this::tieSelected);
                 menu.action(Icons.MAXIMIZE, IKey.lang("mappet.gui.nodes.context.untie"), this::untieSelected);
-                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.nodes.context.remove"), this::removeSelected, 0xff0022);
+                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.nodes.context.remove"), this::removeSelected, Colors.NEGATIVE);
             }
 
             return menu;
@@ -743,7 +739,7 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
                     title = title.substring(0, 37) + "§r...";
                 }
 
-                GuiDraw.drawTextBackground(this.font, title, nodeArea.mx() - this.font.getStringWidth(title) / 2, nodeArea.my() - 4, 0xffffff, 0x88000000);
+                GuiDraw.drawTextBackground(this.font, title, nodeArea.mx() - this.font.getStringWidth(title) / 2, nodeArea.my() - 4, 0xffffff, ColorUtils.HALF_BLACK);
             }
         }
 
@@ -785,43 +781,43 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
 
         if (this.output == node)
         {
-            colorO = ACTIVE;
+            colorO = Colors.ACTIVE;
 
             if (insideI)
             {
-                colorI = ELSE;
+                colorI = Colors.NEGATIVE;
             }
         }
         else if (this.output != null)
         {
             if (insideO)
             {
-                colorO = ELSE;
+                colorO = Colors.NEGATIVE;
             }
             else if (insideI)
             {
-                colorI = IF;
+                colorI = Colors.POSITIVE;
             }
         }
 
         if (this.input == node)
         {
-            colorI = ACTIVE;
+            colorI = Colors.ACTIVE;
 
             if (insideO)
             {
-                colorO = ELSE;
+                colorO = Colors.NEGATIVE;
             }
         }
         else if (this.input != null)
         {
             if (insideI)
             {
-                colorI = ELSE;
+                colorI = Colors.NEGATIVE;
             }
             else if (insideO)
             {
-                colorO = IF;
+                colorO = Colors.POSITIVE;
             }
         }
 
@@ -936,7 +932,7 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
 
     protected int getNodeActiveColor(T output, int r)
     {
-        return ACTIVE;
+        return Colors.ACTIVE;
     }
 
     protected float getNodeActiveColorOpacity(T output, int r)

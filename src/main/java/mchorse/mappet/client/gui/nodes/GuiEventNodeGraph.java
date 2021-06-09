@@ -2,6 +2,7 @@ package mchorse.mappet.client.gui.nodes;
 
 import mchorse.mappet.api.events.nodes.EventNode;
 import mchorse.mappet.api.utils.factory.IFactory;
+import mchorse.mappet.utils.Colors;
 import net.minecraft.client.Minecraft;
 
 import java.util.function.Consumer;
@@ -24,7 +25,7 @@ public class GuiEventNodeGraph extends GuiNodeGraph<EventNode>
     {
         if (output.binary)
         {
-            return r == 0 ? IF : (r == 1 ? ELSE : INACTIVE);
+            return r == 0 ? Colors.POSITIVE : (r == 1 ? Colors.NEGATIVE : Colors.INACTIVE);
         }
 
         return super.getNodeActiveColor(output, r);

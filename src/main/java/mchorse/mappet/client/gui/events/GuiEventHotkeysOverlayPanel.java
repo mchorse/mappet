@@ -6,6 +6,7 @@ import mchorse.mappet.client.gui.triggers.GuiTriggerElement;
 import mchorse.mappet.client.gui.conditions.GuiCheckerElement;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlayPanel;
+import mchorse.mappet.utils.Colors;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.input.GuiKeybindElement;
@@ -47,7 +48,7 @@ public class GuiEventHotkeysOverlayPanel extends GuiOverlayPanel
 
             if (!this.hotkeys.hotkeys.isEmpty())
             {
-                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.nodes.event.hotkeys.context.remove"), this::removeHotkey, 0xff0022);
+                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.nodes.event.hotkeys.context.remove"), this::removeHotkey, Colors.NEGATIVE);
             }
 
             return menu.shadow();

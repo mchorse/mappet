@@ -11,6 +11,7 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiLabel;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.mclib.utils.ColorUtils;
 import net.minecraft.client.Minecraft;
 
 public class GuiAbstractConditionBlockPanel <T extends AbstractConditionBlock> extends GuiElement
@@ -51,12 +52,12 @@ public class GuiAbstractConditionBlockPanel <T extends AbstractConditionBlock> e
 
         if (this.block.not)
         {
-            this.not.area.draw(0x88000000 + primary);
+            this.not.area.draw(ColorUtils.HALF_BLACK + primary);
         }
 
         if (this.block.or)
         {
-            this.or.area.draw(0x88000000 + primary);
+            this.or.area.draw(ColorUtils.HALF_BLACK + primary);
         }
 
         super.draw(context);

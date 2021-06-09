@@ -9,6 +9,7 @@ import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.mclib.utils.ColorUtils;
 import net.minecraft.client.Minecraft;
 
 public class GuiCrafting extends GuiElement implements ICraftingScreen
@@ -85,7 +86,7 @@ public class GuiCrafting extends GuiElement implements ICraftingScreen
         {
             int w = this.font.getStringWidth(this.table.getId());
 
-            GuiDraw.drawTextBackground(this.font, this.table.getId(), this.area.mx(w), this.craft.area.my(this.font.FONT_HEIGHT - 2), 0xffffff, 0x88000000);
+            GuiDraw.drawTextBackground(this.font, this.table.getId(), this.area.mx(w), this.craft.area.my(this.font.FONT_HEIGHT - 2), 0xffffff, ColorUtils.HALF_BLACK);
         }
     }
 }

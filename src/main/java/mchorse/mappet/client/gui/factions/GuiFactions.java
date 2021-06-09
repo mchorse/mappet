@@ -2,6 +2,7 @@ package mchorse.mappet.client.gui.factions;
 
 import mchorse.mappet.api.factions.FactionAttitude;
 import mchorse.mappet.client.gui.panels.GuiFactionPanel;
+import mchorse.mappet.utils.Colors;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiCirculateElement;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
@@ -40,7 +41,7 @@ public class GuiFactions extends GuiElement
             row.removeFromParent();
             this.relations.remove(faction);
             this.getParentContainer().resize();
-        }, 0xff0022));
+        }, Colors.NEGATIVE));
 
         this.add(row);
 

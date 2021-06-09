@@ -36,6 +36,7 @@ import mchorse.mappet.events.RegisterEventNodeEvent;
 import mchorse.mappet.events.RegisterQuestChainNodeEvent;
 import mchorse.mappet.events.RegisterTriggerBlockEvent;
 import mchorse.mappet.network.Dispatcher;
+import mchorse.mappet.utils.Colors;
 import mchorse.mappet.utils.MappetNpcSelector;
 import mchorse.mappet.utils.MetamorphHandler;
 import mchorse.mappet.utils.ScriptUtils;
@@ -141,20 +142,20 @@ public class CommonProxy
     {
         /* Register event nodes */
         MapFactory<EventNode> eventNodes = new MapFactory<EventNode>()
-            .register("command", CommandNode.class, 0x942aff)
-            .register("condition", ConditionNode.class, 0xff1493)
-            .register("switch", SwitchNode.class, 0xaee300)
-            .register("timer", TimerNode.class, 0x11ff33);
+            .register("command", CommandNode.class, Colors.COMMAND)
+            .register("condition", ConditionNode.class, Colors.CONDITION)
+            .register("switch", SwitchNode.class, Colors.FACTION)
+            .register("timer", TimerNode.class, Colors.TIME);
 
         events = eventNodes;
         Mappet.EVENT_BUS.post(new RegisterEventNodeEvent(eventNodes));
 
         /* Register dialogue nodes */
         MapFactory<EventNode> dialogueNodes = eventNodes.copy()
-            .register("reply", ReplyNode.class, 0x00a0ff)
-            .register("reaction", ReactionNode.class, 0xff2200)
-            .register("crafting", CraftingNode.class, 0xff6600)
-            .register("quest_chain", QuestChainNode.class, 0xffff00).alias("quest_chain", "quest")
+            .register("reply", ReplyNode.class, Colors.REPLY)
+            .register("reaction", ReactionNode.class, Colors.STATE)
+            .register("crafting", CraftingNode.class, Colors.CRAFTING)
+            .register("quest_chain", QuestChainNode.class, Colors.QUEST).alias("quest_chain", "quest")
             .unregister("timer");
 
         dialogues = dialogueNodes;
@@ -162,32 +163,32 @@ public class CommonProxy
 
         /* Register quest chain blocks */
         MapFactory<QuestNode> questChainNodes = new MapFactory<QuestNode>()
-            .register("quest", QuestNode.class, 0xffff00);
+            .register("quest", QuestNode.class, Colors.QUEST);
 
         chains = questChainNodes;
         Mappet.EVENT_BUS.post(new RegisterQuestChainNodeEvent(questChainNodes));
 
         /* Register condition blocks */
         MapFactory<AbstractConditionBlock> conditions = new MapFactory<AbstractConditionBlock>()
-            .register("quest", QuestConditionBlock.class, 0xffaa00)
-            .register("state", StateConditionBlock.class, 0xff0022)
-            .register("dialogue", DialogueConditionBlock.class, 0x11ff33)
-            .register("faction", FactionConditionBlock.class, 0x942aff)
-            .register("item", ItemConditionBlock.class, 0xff7700)
-            .register("world_time", WorldTimeConditionBlock.class, 0x0088ff)
-            .register("entity", EntityConditionBlock.class, 0x2d4163)
-            .register("condition", ConditionConditionBlock.class, 0xff1493);
+            .register("quest", QuestConditionBlock.class, Colors.QUEST)
+            .register("state", StateConditionBlock.class, Colors.STATE)
+            .register("dialogue", DialogueConditionBlock.class, Colors.DIALOGUE)
+            .register("faction", FactionConditionBlock.class, Colors.FACTION)
+            .register("item", ItemConditionBlock.class, Colors.CRAFTING)
+            .register("world_time", WorldTimeConditionBlock.class, Colors.TIME)
+            .register("entity", EntityConditionBlock.class, Colors.ENTITY)
+            .register("condition", ConditionConditionBlock.class, Colors.CONDITION);
 
         conditionBlocks = conditions;
         Mappet.EVENT_BUS.post(new RegisterConditionBlockEvent(conditions));
 
         /* Register condition blocks */
         MapFactory<AbstractTriggerBlock> triggers = new MapFactory<AbstractTriggerBlock>()
-            .register("command", CommandTriggerBlock.class, 0x942aff)
-            .register("sound", SoundTriggerBlock.class, 0xff7700)
-            .register("event", EventTriggerBlock.class, 0xff0022)
-            .register("dialogue", DialogueTriggerBlock.class, 0x11ff33)
-            .register("script", ScriptTriggerBlock.class, 0x2d4163);
+            .register("command", CommandTriggerBlock.class, Colors.COMMAND)
+            .register("sound", SoundTriggerBlock.class, Colors.CRAFTING)
+            .register("event", EventTriggerBlock.class, Colors.STATE)
+            .register("dialogue", DialogueTriggerBlock.class, Colors.DIALOGUE)
+            .register("script", ScriptTriggerBlock.class, Colors.ENTITY);
 
         triggerBlocks = triggers;
         Mappet.EVENT_BUS.post(new RegisterTriggerBlockEvent(triggers));

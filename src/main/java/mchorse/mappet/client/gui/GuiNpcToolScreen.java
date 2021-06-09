@@ -7,6 +7,7 @@ import mchorse.mappet.network.common.npc.PacketNpcTool;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.list.GuiStringListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
+import mchorse.mclib.utils.ColorUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
@@ -82,7 +83,7 @@ public class GuiNpcToolScreen extends GuiBase
 
         String title = I18n.format("mappet.gui.npc_tool.title");
 
-        GuiDraw.drawTextBackground(this.fontRenderer, title, this.viewport.mx(this.fontRenderer.getStringWidth(title)), this.viewport.y + 20, 0xffffff, 0x88000000);
+        GuiDraw.drawTextBackground(this.fontRenderer, title, this.viewport.mx(this.fontRenderer.getStringWidth(title)), this.viewport.y + 20, 0xffffff, ColorUtils.HALF_BLACK);
         this.fontRenderer.drawStringWithShadow(I18n.format("mappet.gui.npc_tool.npc"), this.npcs.area.x, this.npcs.area.y - 12, 0xffffff);
         this.fontRenderer.drawStringWithShadow(I18n.format("mappet.gui.npc_tool.state"), this.states.area.x, this.states.area.y - 12, 0xffffff);
 

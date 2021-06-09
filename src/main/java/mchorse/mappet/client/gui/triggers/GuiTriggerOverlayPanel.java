@@ -16,6 +16,7 @@ import mchorse.mappet.client.gui.triggers.panels.GuiScriptTriggerBlockPanel;
 import mchorse.mappet.client.gui.triggers.panels.GuiSoundTriggerBlockPanel;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mappet.client.gui.utils.overlays.GuiEditorOverlayPanel;
+import mchorse.mappet.utils.Colors;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
@@ -100,7 +101,7 @@ public class GuiTriggerOverlayPanel extends GuiEditorOverlayPanel<AbstractTrigge
 
             if (!this.list.isDeselected())
             {
-                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.triggers.context.remove"), this::removeItem, 0xff0022);
+                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.triggers.context.remove"), this::removeItem, Colors.NEGATIVE);
             }
 
             return menu;

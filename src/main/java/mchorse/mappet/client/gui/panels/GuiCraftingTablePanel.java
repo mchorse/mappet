@@ -6,7 +6,7 @@ import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.crafting.GuiCraftingRecipe;
 import mchorse.mappet.client.gui.crafting.GuiCraftingRecipeList;
-import mchorse.mappet.client.gui.utils.GuiMappetUtils;
+import mchorse.mappet.utils.Colors;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
@@ -38,7 +38,7 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
 
             if (!this.recipes.isDeselected())
             {
-                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.crafting.context.remove"), this::removeRecipe, 0xff0022);
+                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.crafting.context.remove"), this::removeRecipe, Colors.NEGATIVE);
             }
 
             return menu;

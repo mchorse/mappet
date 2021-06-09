@@ -4,6 +4,7 @@ import mchorse.mappet.api.quests.rewards.IReward;
 import mchorse.mappet.api.quests.rewards.ItemStackReward;
 import mchorse.mappet.client.gui.quests.rewards.GuiItemStackReward;
 import mchorse.mappet.client.gui.quests.rewards.GuiReward;
+import mchorse.mappet.utils.Colors;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
@@ -48,7 +49,7 @@ public class GuiRewards extends GuiElement
             final GuiReward finalElement = element;
 
             element.context(() -> new GuiSimpleContextMenu(Minecraft.getMinecraft())
-                .action(Icons.REMOVE, IKey.lang("mappet.gui.quests.rewards.context.remove"), () -> this.removeReward(finalElement), 0xff0022));
+                .action(Icons.REMOVE, IKey.lang("mappet.gui.quests.rewards.context.remove"), () -> this.removeReward(finalElement), Colors.NEGATIVE));
 
             if (add)
             {

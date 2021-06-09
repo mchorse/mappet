@@ -10,6 +10,7 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.ScrollArea;
 import mchorse.mclib.client.gui.utils.ScrollDirection;
+import mchorse.mclib.utils.ColorUtils;
 import mchorse.mclib.utils.MathUtils;
 import mchorse.mclib.utils.undo.UndoManager;
 import net.minecraft.client.Minecraft;
@@ -1190,7 +1191,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
         int nx = x - this.horizontal.scroll + this.getShiftX();
         int ny = y - this.vertical.scroll + min.line * this.lineHeight;
-        int color = 0x88000000 + McLib.primaryColor.get();
+        int color = ColorUtils.HALF_BLACK + McLib.primaryColor.get();
 
         int x1 = nx + this.font.getStringWidth(min.start(first)) - selectionPad / 2;
         int x2 = nx + this.font.getStringWidth(max.start(last)) + selectionPad / 2;

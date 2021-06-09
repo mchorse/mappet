@@ -1,7 +1,7 @@
 package mchorse.mappet.client.gui.utils;
 
+import mchorse.mappet.utils.Colors;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
-import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
@@ -57,7 +57,7 @@ public class GuiBlockPosList extends GuiElement
         };
         posElement.context(() ->
         {
-            return posElement.createDefaultContextMenu().action(Icons.REMOVE, IKey.lang("mappet.gui.block_pos.context.remove"), () -> this.removeBlock(posElement), 0xff0022);
+            return posElement.createDefaultContextMenu().action(Icons.REMOVE, IKey.lang("mappet.gui.block_pos.context.remove"), () -> this.removeBlock(posElement), Colors.NEGATIVE);
         });
 
         return posElement;

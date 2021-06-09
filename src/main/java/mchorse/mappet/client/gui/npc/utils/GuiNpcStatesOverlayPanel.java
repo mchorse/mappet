@@ -4,7 +4,7 @@ import mchorse.mappet.api.npcs.Npc;
 import mchorse.mappet.api.npcs.NpcState;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mappet.client.gui.utils.overlays.GuiStringOverlayPanel;
-import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
+import mchorse.mappet.utils.Colors;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.modals.GuiConfirmModal;
 import mchorse.mclib.client.gui.framework.elements.modals.GuiModal;
@@ -55,7 +55,7 @@ public class GuiNpcStatesOverlayPanel extends GuiStringOverlayPanel
                 {}
 
                 menu.action(Icons.EDIT, IKey.lang("mappet.gui.npcs.context.rename"), this::renameState);
-                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.npcs.context.remove"), this::removeState, 0xff0022);
+                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.npcs.context.remove"), this::removeState, Colors.NEGATIVE);
             }
 
             return menu.shadow();

@@ -51,7 +51,7 @@ public class GuiMappetUtils
 
         int offset = (int) (factor * 70 + factor2 * 2);
 
-        GuiDraw.drawDropCircleShadow(area.mx(), area.my() + (int) (factor * 70), 16, 0, 16, 0x88000000 + primary, primary);
+        GuiDraw.drawDropCircleShadow(area.mx(), area.my() + (int) (factor * 70), 16, 0, 16, ColorUtils.HALF_BLACK + primary, primary);
         InputRenderer.renderMouseButtons(area.mx() - 6, area.my() - 8 + offset, 0, false, factor2 > 0, false, false);
 
         String label = I18n.format("mappet.gui.right_click");

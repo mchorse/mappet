@@ -22,6 +22,7 @@ import mchorse.mappet.client.gui.conditions.blocks.GuiStateConditionBlockPanel;
 import mchorse.mappet.client.gui.conditions.blocks.GuiWorldTimeConditionBlockPanel;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mappet.client.gui.utils.overlays.GuiEditorOverlayPanel;
+import mchorse.mappet.utils.Colors;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
@@ -108,7 +109,7 @@ public class GuiConditionOverlayPanel extends GuiEditorOverlayPanel<AbstractCond
 
             if (!this.list.isDeselected())
             {
-                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.conditions.context.remove"), this::removeItem, 0xff0022);
+                menu.action(Icons.REMOVE, IKey.lang("mappet.gui.conditions.context.remove"), this::removeItem, Colors.NEGATIVE);
             }
 
             return menu;

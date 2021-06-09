@@ -1,14 +1,15 @@
 package mchorse.mappet.client.gui.quests;
 
 import mchorse.mappet.api.conditions.blocks.DialogueConditionBlock;
-import mchorse.mappet.api.quests.objectives.CollectObjective;
 import mchorse.mappet.api.quests.objectives.AbstractObjective;
-import mchorse.mappet.api.quests.objectives.StateObjective;
+import mchorse.mappet.api.quests.objectives.CollectObjective;
 import mchorse.mappet.api.quests.objectives.KillObjective;
+import mchorse.mappet.api.quests.objectives.StateObjective;
 import mchorse.mappet.client.gui.quests.objectives.GuiCollectObjective;
-import mchorse.mappet.client.gui.quests.objectives.GuiStateObjective;
 import mchorse.mappet.client.gui.quests.objectives.GuiKillObjective;
 import mchorse.mappet.client.gui.quests.objectives.GuiObjective;
+import mchorse.mappet.client.gui.quests.objectives.GuiStateObjective;
+import mchorse.mappet.utils.Colors;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
@@ -77,7 +78,7 @@ public class GuiObjectives extends GuiElement
             final GuiObjective finalElement = element;
 
             element.context(() -> new GuiSimpleContextMenu(Minecraft.getMinecraft())
-                .action(Icons.REMOVE, IKey.lang("mappet.gui.quests.objectives.context.remove"), () -> this.removeObjective(finalElement), 0xff0022));
+                .action(Icons.REMOVE, IKey.lang("mappet.gui.quests.objectives.context.remove"), () -> this.removeObjective(finalElement), Colors.NEGATIVE));
 
             if (add)
             {

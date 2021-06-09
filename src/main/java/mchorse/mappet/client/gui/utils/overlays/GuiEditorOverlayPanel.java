@@ -1,5 +1,6 @@
 package mchorse.mappet.client.gui.utils.overlays;
 
+import mchorse.mappet.utils.Colors;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
@@ -28,7 +29,7 @@ public abstract class GuiEditorOverlayPanel <T> extends GuiOverlayPanel
 
             if (!this.list.getList().isEmpty())
             {
-                menu.action(Icons.REMOVE, this.getRemoveLabel(), this::removeItem, 0xff0022);
+                menu.action(Icons.REMOVE, this.getRemoveLabel(), this::removeItem, Colors.NEGATIVE);
             }
 
             return menu.shadow();

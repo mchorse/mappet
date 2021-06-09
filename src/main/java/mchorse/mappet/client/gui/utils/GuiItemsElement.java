@@ -1,9 +1,9 @@
 package mchorse.mappet.client.gui.utils;
 
+import mchorse.mappet.utils.Colors;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiSlotElement;
-import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiLabel;
 import mchorse.mclib.client.gui.utils.Elements;
@@ -96,7 +96,7 @@ public class GuiItemsElement extends GuiElement
                 slot.removeFromParent();
                 this.getParentContainer().resize();
             }
-        }, 0xff0022));
+        }, Colors.NEGATIVE));
 
         this.stacks.add(slot);
     }

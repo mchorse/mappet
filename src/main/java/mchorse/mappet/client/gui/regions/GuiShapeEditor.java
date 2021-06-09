@@ -5,6 +5,7 @@ import mchorse.mappet.api.regions.shapes.AbstractShape;
 import mchorse.mappet.api.regions.shapes.BoxShape;
 import mchorse.mappet.api.regions.shapes.CylinderShape;
 import mchorse.mappet.api.regions.shapes.SphereShape;
+import mchorse.mappet.utils.Colors;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiCirculateElement;
@@ -17,7 +18,6 @@ import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 
 import javax.vecmath.Vector3d;
-import java.util.function.Supplier;
 
 public class GuiShapeEditor extends GuiElement
 {
@@ -40,7 +40,7 @@ public class GuiShapeEditor extends GuiElement
         super(mc);
 
         this.context(() -> new GuiSimpleContextMenu(this.mc)
-            .action(Icons.REMOVE, IKey.lang("mappet.gui.region.context.remove"), this::removeShape, 0xff0022));
+            .action(Icons.REMOVE, IKey.lang("mappet.gui.region.context.remove"), this::removeShape, Colors.NEGATIVE));
 
         this.shapeSwitch = new GuiCirculateElement(mc, this::changeShape);
         this.shapeSwitch.addLabel(IKey.lang("mappet.gui.shapes.box"));
