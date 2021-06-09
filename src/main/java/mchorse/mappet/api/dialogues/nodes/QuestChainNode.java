@@ -2,10 +2,10 @@ package mchorse.mappet.api.dialogues.nodes;
 
 import mchorse.mappet.api.dialogues.DialogueContext;
 import mchorse.mappet.api.events.EventContext;
-import mchorse.mappet.api.events.nodes.EventNode;
+import mchorse.mappet.api.events.nodes.EventBaseNode;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class QuestChainNode extends EventNode
+public class QuestChainNode extends EventBaseNode
 {
     public String chain = "";
     public String subject = "";
@@ -15,7 +15,7 @@ public class QuestChainNode extends EventNode
     {
         ((DialogueContext) context).quest = this;
 
-        return EventNode.HALT;
+        return EventBaseNode.HALT;
     }
 
     @Override

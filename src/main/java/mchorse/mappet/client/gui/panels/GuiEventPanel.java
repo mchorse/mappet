@@ -1,28 +1,64 @@
 package mchorse.mappet.client.gui.panels;
 
 import mchorse.mappet.CommonProxy;
+import mchorse.mappet.api.dialogues.nodes.QuestChainNode;
+import mchorse.mappet.api.dialogues.nodes.ReactionNode;
+import mchorse.mappet.api.dialogues.nodes.ReplyNode;
 import mchorse.mappet.api.events.nodes.CommandNode;
 import mchorse.mappet.api.events.nodes.ConditionNode;
+import mchorse.mappet.api.events.nodes.DialogueNode;
+import mchorse.mappet.api.events.nodes.EventBaseNode;
 import mchorse.mappet.api.events.nodes.EventNode;
+import mchorse.mappet.api.events.nodes.ScriptNode;
 import mchorse.mappet.api.events.nodes.SwitchNode;
 import mchorse.mappet.api.events.nodes.TimerNode;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
+import mchorse.mappet.client.gui.nodes.GuiEventBaseNodePanel;
 import mchorse.mappet.client.gui.nodes.GuiEventNodeGraph;
-import mchorse.mappet.client.gui.nodes.GuiEventNodePanel;
+import mchorse.mappet.client.gui.nodes.dialogues.GuiQuestChainNodePanel;
+import mchorse.mappet.client.gui.nodes.dialogues.GuiReactionNodePanel;
 import mchorse.mappet.client.gui.nodes.events.GuiCommandNodePanel;
 import mchorse.mappet.client.gui.nodes.events.GuiConditionNodePanel;
+import mchorse.mappet.client.gui.nodes.events.GuiDialogueNodePanel;
+import mchorse.mappet.client.gui.nodes.events.GuiEventNodePanel;
+import mchorse.mappet.client.gui.nodes.events.GuiScriptNodePanel;
 import mchorse.mappet.client.gui.nodes.events.GuiTimerNodePanel;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 
-public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventNode>>
+import java.util.HashMap;
+import java.util.Map;
+
+public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventBaseNode>>
 {
+    public static final Map<
+            Class<? extends EventBaseNode>,
+            Class<? extends GuiEventBaseNodePanel<? extends EventBaseNode>>>
+        PANELS = new HashMap<
+            Class<? extends EventBaseNode>,
+            Class<? extends GuiEventBaseNodePanel<? extends EventBaseNode>>>();
+
+    static
+    {
+        PANELS.put(CommandNode.class, GuiCommandNodePanel.class);
+        PANELS.put(ConditionNode.class, GuiConditionNodePanel.class);
+        PANELS.put(SwitchNode.class, GuiConditionNodePanel.class);
+        PANELS.put(TimerNode.class, GuiTimerNodePanel.class);
+        PANELS.put(EventNode.class, GuiEventNodePanel.class);
+        PANELS.put(DialogueNode.class, GuiDialogueNodePanel.class);
+        PANELS.put(ScriptNode.class, GuiScriptNodePanel.class);
+
+        PANELS.put(ReactionNode.class, GuiReactionNodePanel.class);
+        PANELS.put(ReplyNode.class, mchorse.mappet.client.gui.nodes.dialogues.GuiDialogueNodePanel.class);
+        PANELS.put(QuestChainNode.class, GuiQuestChainNodePanel.class);
+    }
+
     public GuiEventNodeGraph graph;
-    public GuiEventNodePanel panel;
+    public GuiEventBaseNodePanel panel;
 
     public GuiEventPanel(Minecraft mc, GuiMappetDashboard dashboard)
     {
@@ -36,7 +72,7 @@ public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventNode>
         this.fill(null);
     }
 
-    private void pickNode(EventNode node)
+    private void pickNode(EventBaseNode node)
     {
         if (this.panel != null)
         {
@@ -46,27 +82,19 @@ public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventNode>
 
         if (node != null)
         {
-            GuiEventNodePanel panel = null;
+            GuiEventBaseNodePanel panel = null;
 
-            if (node instanceof CommandNode)
+            try
             {
-                panel = new GuiCommandNodePanel(this.mc);
+                panel = GuiEventPanel.PANELS.get(node.getClass())
+                    .getConstructor(Minecraft.class, GuiMappetDashboardPanel.class)
+                    .newInstance(this.mc, this);
+
                 panel.set(node);
             }
-            else if (node instanceof ConditionNode)
+            catch (Exception e)
             {
-                panel = new GuiConditionNodePanel(this.mc);
-                panel.set(node);
-
-                if (node instanceof SwitchNode)
-                {
-                    panel.binary.removeFromParent();
-                }
-            }
-            else if (node instanceof TimerNode)
-            {
-                panel = new GuiTimerNodePanel(this.mc);
-                panel.set(node);
+                e.printStackTrace();
             }
 
             if (panel != null)
@@ -94,7 +122,7 @@ public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventNode>
     }
 
     @Override
-    public void fill(NodeSystem<EventNode> data, boolean allowed)
+    public void fill(NodeSystem<EventBaseNode> data, boolean allowed)
     {
         super.fill(data, allowed);
 

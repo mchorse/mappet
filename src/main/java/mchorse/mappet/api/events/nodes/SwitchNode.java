@@ -5,7 +5,7 @@ import mchorse.mappet.api.events.EventContext;
 import mchorse.mclib.math.IValue;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class SwitchNode extends EventNode
+public class SwitchNode extends EventBaseNode
 {
     public String expression = "";
 

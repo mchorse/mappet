@@ -96,24 +96,29 @@ public class DataContext
     {
         try
         {
-            NBTTagCompound tag = JsonToNBT.getTagFromJson(nbt);
-
-            for (String key : tag.getKeySet())
-            {
-                NBTBase value = tag.getTag(key);
-
-                if (value instanceof NBTPrimitive)
-                {
-                    this.set(key, ((NBTPrimitive) value).getDouble());
-                }
-                else if (value instanceof NBTTagString)
-                {
-                    this.set(key, ((NBTTagString) value).getString());
-                }
-            }
+            this.parse(JsonToNBT.getTagFromJson(nbt));
         }
         catch (Exception e)
         {}
+
+        return this;
+    }
+
+    public DataContext parse(NBTTagCompound tag)
+    {
+        for (String key : tag.getKeySet())
+        {
+            NBTBase value = tag.getTag(key);
+
+            if (value instanceof NBTPrimitive)
+            {
+                this.set(key, ((NBTPrimitive) value).getDouble());
+            }
+            else if (value instanceof NBTTagString)
+            {
+                this.set(key, ((NBTTagString) value).getString());
+            }
+        }
 
         return this;
     }
@@ -200,5 +205,19 @@ public class DataContext
         }
 
         return this.sender;
+    }
+
+    public DataContext copy()
+    {
+        DataContext context = new DataContext(this.server);
+
+        context.subject = this.subject;
+        context.object = this.object;
+        context.pos = this.pos;
+        context.world = this.world;
+        context.values.putAll(this.values);
+        context.setup();
+
+        return context;
     }
 }

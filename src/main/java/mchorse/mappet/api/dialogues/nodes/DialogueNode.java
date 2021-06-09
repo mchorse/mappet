@@ -1,11 +1,11 @@
 package mchorse.mappet.api.dialogues.nodes;
 
 import mchorse.mappet.api.dialogues.DialogueFragment;
-import mchorse.mappet.api.events.nodes.EventNode;
+import mchorse.mappet.api.events.nodes.EventBaseNode;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.Constants;
 
-public abstract class DialogueNode extends EventNode
+public abstract class DialogueNode extends EventBaseNode
 {
     public DialogueFragment message = new DialogueFragment();
 

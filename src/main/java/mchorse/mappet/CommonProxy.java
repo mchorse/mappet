@@ -15,7 +15,10 @@ import mchorse.mappet.api.dialogues.nodes.ReactionNode;
 import mchorse.mappet.api.dialogues.nodes.ReplyNode;
 import mchorse.mappet.api.events.nodes.CommandNode;
 import mchorse.mappet.api.events.nodes.ConditionNode;
+import mchorse.mappet.api.events.nodes.DialogueNode;
+import mchorse.mappet.api.events.nodes.EventBaseNode;
 import mchorse.mappet.api.events.nodes.EventNode;
+import mchorse.mappet.api.events.nodes.ScriptNode;
 import mchorse.mappet.api.events.nodes.SwitchNode;
 import mchorse.mappet.api.events.nodes.TimerNode;
 import mchorse.mappet.api.triggers.blocks.AbstractTriggerBlock;
@@ -47,10 +50,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import javax.script.Bindings;
-import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import java.io.File;
 
 /**
@@ -58,17 +58,17 @@ import java.io.File;
  */
 public class CommonProxy
 {
-    private static IFactory<EventNode> events;
-    private static IFactory<EventNode> dialogues;
+    private static IFactory<EventBaseNode> events;
+    private static IFactory<EventBaseNode> dialogues;
     private static IFactory<QuestNode> chains;
     private static IFactory<AbstractConditionBlock> conditionBlocks;
     private static IFactory<AbstractTriggerBlock> triggerBlocks;
 
-    public static IFactory<EventNode> getEvents()
+    public static IFactory<EventBaseNode> getEvents()
     {
         return events;
     }
-    public static IFactory<EventNode> getDialogues()
+    public static IFactory<EventBaseNode> getDialogues()
     {
         return dialogues;
     }
@@ -141,17 +141,20 @@ public class CommonProxy
     public void postInit(FMLPostInitializationEvent event)
     {
         /* Register event nodes */
-        MapFactory<EventNode> eventNodes = new MapFactory<EventNode>()
+        MapFactory<EventBaseNode> eventNodes = new MapFactory<EventBaseNode>()
             .register("command", CommandNode.class, Colors.COMMAND)
             .register("condition", ConditionNode.class, Colors.CONDITION)
             .register("switch", SwitchNode.class, Colors.FACTION)
-            .register("timer", TimerNode.class, Colors.TIME);
+            .register("timer", TimerNode.class, Colors.TIME)
+            .register("event", EventNode.class, Colors.STATE)
+            .register("dialogue", DialogueNode.class, Colors.DIALOGUE)
+            .register("script", ScriptNode.class, Colors.ENTITY);
 
         events = eventNodes;
         Mappet.EVENT_BUS.post(new RegisterEventNodeEvent(eventNodes));
 
         /* Register dialogue nodes */
-        MapFactory<EventNode> dialogueNodes = eventNodes.copy()
+        MapFactory<EventBaseNode> dialogueNodes = eventNodes.copy()
             .register("reply", ReplyNode.class, Colors.REPLY)
             .register("reaction", ReactionNode.class, Colors.STATE)
             .register("crafting", CraftingNode.class, Colors.CRAFTING)

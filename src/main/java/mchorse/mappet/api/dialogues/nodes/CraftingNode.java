@@ -2,10 +2,10 @@ package mchorse.mappet.api.dialogues.nodes;
 
 import mchorse.mappet.api.dialogues.DialogueContext;
 import mchorse.mappet.api.events.EventContext;
-import mchorse.mappet.api.events.nodes.EventNode;
+import mchorse.mappet.api.events.nodes.EventBaseNode;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class CraftingNode extends EventNode
+public class CraftingNode extends EventBaseNode
 {
     public String table = "";
 
@@ -14,7 +14,7 @@ public class CraftingNode extends EventNode
     {
         ((DialogueContext) context).crafting = this;
 
-        return EventNode.HALT;
+        return EventBaseNode.HALT;
     }
 
     @Override

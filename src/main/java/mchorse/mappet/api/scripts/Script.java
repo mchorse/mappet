@@ -45,6 +45,11 @@ public class Script extends AbstractData
 
     public Object execute(String function, DataContext context) throws ScriptException, NoSuchMethodException
     {
+        if (function.isEmpty())
+        {
+            function = "main";
+        }
+
         return ((Invocable) this.engine).invokeFunction(function, new ScriptEvent(context));
     }
 

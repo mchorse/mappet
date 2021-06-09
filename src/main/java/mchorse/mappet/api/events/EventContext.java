@@ -1,11 +1,9 @@
 package mchorse.mappet.api.events;
 
 import mchorse.mappet.CommonProxy;
-import mchorse.mappet.api.events.nodes.EventNode;
+import mchorse.mappet.api.events.nodes.EventBaseNode;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
-import mchorse.mappet.entities.EntityNpc;
-import net.minecraft.entity.EntityLivingBase;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -13,7 +11,7 @@ import java.util.List;
 
 public class EventContext
 {
-    public NodeSystem<EventNode> system;
+    public NodeSystem<EventBaseNode> system;
 
     public DataContext data;
 
@@ -36,7 +34,7 @@ public class EventContext
         return this;
     }
 
-    public void addExecutionFork(EventNode node, int timer)
+    public void addExecutionFork(EventBaseNode node, int timer)
     {
         if (this.system != null && timer > 0)
         {

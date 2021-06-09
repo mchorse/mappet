@@ -1,20 +1,21 @@
 package mchorse.mappet.client.gui.nodes.events;
 
 import mchorse.mappet.api.events.nodes.CommandNode;
-import mchorse.mappet.client.gui.nodes.GuiEventNodePanel;
+import mchorse.mappet.client.gui.nodes.GuiEventBaseNodePanel;
+import mchorse.mappet.client.gui.panels.GuiMappetDashboardPanel;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 
-public class GuiCommandNodePanel extends GuiEventNodePanel<CommandNode>
+public class GuiCommandNodePanel extends GuiEventBaseNodePanel<CommandNode>
 {
     public GuiTextElement command;
 
-    public GuiCommandNodePanel(Minecraft mc)
+    public GuiCommandNodePanel(Minecraft mc, GuiMappetDashboardPanel parentPanel)
     {
-        super(mc);
+        super(mc, parentPanel);
 
         this.command = GuiMappetUtils.fullWindowContext(
             new GuiTextElement(mc, 10000, (text) -> this.node.command = text),

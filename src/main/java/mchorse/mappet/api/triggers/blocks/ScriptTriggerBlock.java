@@ -27,7 +27,7 @@ public class ScriptTriggerBlock extends StringTriggerBlock
         {
             try
             {
-                Mappet.scripts.execute(this.string, this.function.isEmpty() ? "main" : this.function.trim(), context);
+                Mappet.scripts.execute(this.string, this.function.trim(), context);
             }
             catch (Exception e)
             {

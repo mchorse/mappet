@@ -266,6 +266,7 @@ mappet.gui.nodes.event.command=Command
 mappet.gui.nodes.event.condition=Condition
 mappet.gui.nodes.event.timer=Timer
 mappet.gui.nodes.event.subject=Subject
+mappet.gui.nodes.event.data=Custom data
 mappet.gui.nodes.event.hotkeys.title=Event hotkey editor
 mappet.gui.nodes.event.hotkeys.key=Keybind
 mappet.gui.nodes.event.hotkeys.enabled=Enabled
@@ -471,6 +472,9 @@ mappet.gui.node_types.command=Command
 mappet.gui.node_types.condition=Condition
 mappet.gui.node_types.switch=Switch
 mappet.gui.node_types.timer=Timer
+mappet.gui.node_types.event=Event
+mappet.gui.node_types.dialogue=Dialogue
+mappet.gui.node_types.script=Script
 
 mappet.gui.condition_types.quest=Quest
 mappet.gui.condition_types.dialogue=Dialogue

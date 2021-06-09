@@ -1,7 +1,7 @@
 package mchorse.mappet.commands.events;
 
 import mchorse.mappet.Mappet;
-import mchorse.mappet.api.events.nodes.EventNode;
+import mchorse.mappet.api.events.nodes.EventBaseNode;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
 import mchorse.mappet.commands.MappetCommandBase;
 import net.minecraft.command.CommandException;
@@ -14,9 +14,9 @@ import java.util.List;
 
 public abstract class CommandEventBase extends MappetCommandBase
 {
-    protected NodeSystem<EventNode> getEvent(String id) throws CommandException
+    protected NodeSystem<EventBaseNode> getEvent(String id) throws CommandException
     {
-        NodeSystem<EventNode> event = Mappet.events.load(id);
+        NodeSystem<EventBaseNode> event = Mappet.events.load(id);
 
         if (event == null)
         {

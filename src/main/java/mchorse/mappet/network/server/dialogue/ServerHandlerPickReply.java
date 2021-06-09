@@ -3,7 +3,7 @@ package mchorse.mappet.network.server.dialogue;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.dialogues.DialogueContext;
 import mchorse.mappet.api.dialogues.Dialogue;
-import mchorse.mappet.api.events.nodes.EventNode;
+import mchorse.mappet.api.events.nodes.EventBaseNode;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.network.common.dialogue.PacketPickReply;
@@ -23,7 +23,7 @@ public class ServerHandlerPickReply extends ServerMessageHandler<PacketPickReply
 
             Dialogue dialogue = character.getDialogue();
             DialogueContext context = character.getDialogueContext();
-            EventNode node = context.crafting;
+            EventBaseNode node = context.crafting;
 
             if (i >= 0 && i < context.replyNodes.size())
             {

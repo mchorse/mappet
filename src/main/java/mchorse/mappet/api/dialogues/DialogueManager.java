@@ -3,7 +3,7 @@ package mchorse.mappet.api.dialogues;
 import mchorse.mappet.CommonProxy;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.crafting.CraftingTable;
-import mchorse.mappet.api.events.nodes.EventNode;
+import mchorse.mappet.api.events.nodes.EventBaseNode;
 import mchorse.mappet.api.utils.manager.BaseManager;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
@@ -114,24 +114,24 @@ public class DialogueManager extends BaseManager<Dialogue>
         return context;
     }
 
-    public void recursiveExecute(Dialogue system, EventNode node, DialogueContext context, boolean skipFirst)
+    public void recursiveExecute(Dialogue system, EventBaseNode node, DialogueContext context, boolean skipFirst)
     {
         if (context.executions >= Mappet.eventMaxExecutions.get())
         {
             return;
         }
 
-        int result = skipFirst ? EventNode.ALL : node.execute(context);
+        int result = skipFirst ? EventBaseNode.ALL : node.execute(context);
 
-        if (result >= EventNode.ALL)
+        if (result >= EventBaseNode.ALL)
         {
             context.nesting += 1;
 
-            List<EventNode> children = system.getChildren(node);
+            List<EventBaseNode> children = system.getChildren(node);
 
-            if (result == EventNode.ALL)
+            if (result == EventBaseNode.ALL)
             {
-                for (EventNode child : children)
+                for (EventBaseNode child : children)
                 {
                     this.recursiveExecute(system, child, context, false);
                 }

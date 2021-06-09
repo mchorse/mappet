@@ -1,17 +1,17 @@
 package mchorse.mappet.api.events;
 
 import mchorse.mappet.Mappet;
-import mchorse.mappet.api.events.nodes.EventNode;
+import mchorse.mappet.api.events.nodes.EventBaseNode;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
 
 public class EventExecutionFork
 {
-    public NodeSystem<EventNode> event;
-    public EventNode node;
+    public NodeSystem<EventBaseNode> event;
+    public EventBaseNode node;
     public EventContext context;
     public int timer;
 
-    public EventExecutionFork(NodeSystem<EventNode> event, EventNode node, EventContext context, int timer)
+    public EventExecutionFork(NodeSystem<EventBaseNode> event, EventBaseNode node, EventContext context, int timer)
     {
         this.event = event;
         this.node = node;

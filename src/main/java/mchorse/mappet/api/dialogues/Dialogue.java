@@ -1,15 +1,15 @@
 package mchorse.mappet.api.dialogues;
 
-import mchorse.mappet.api.events.nodes.EventNode;
+import mchorse.mappet.api.events.nodes.EventBaseNode;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
 import mchorse.mappet.api.utils.factory.IFactory;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class Dialogue extends NodeSystem<EventNode>
+public class Dialogue extends NodeSystem<EventBaseNode>
 {
     public boolean closable = true;
 
-    public Dialogue(IFactory<EventNode> factory)
+    public Dialogue(IFactory<EventBaseNode> factory)
     {
         super(factory);
     }

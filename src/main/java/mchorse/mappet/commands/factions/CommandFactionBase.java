@@ -1,9 +1,7 @@
 package mchorse.mappet.commands.factions;
 
 import mchorse.mappet.Mappet;
-import mchorse.mappet.api.events.nodes.EventNode;
 import mchorse.mappet.api.factions.Faction;
-import mchorse.mappet.api.utils.nodes.NodeSystem;
 import mchorse.mappet.commands.MappetCommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;

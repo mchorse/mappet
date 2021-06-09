@@ -3,7 +3,7 @@ package mchorse.mappet.api.events.nodes;
 import mchorse.mappet.api.events.EventContext;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class CommandNode extends EventNode
+public class CommandNode extends EventBaseNode
 {
     public String command = "";
 

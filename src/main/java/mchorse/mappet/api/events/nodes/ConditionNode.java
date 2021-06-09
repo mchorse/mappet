@@ -6,7 +6,7 @@ import mchorse.mappet.api.conditions.Checker;
 import mchorse.mclib.math.IValue;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class ConditionNode extends EventNode
+public class ConditionNode extends EventBaseNode
 {
     public Checker condition = new Checker();
 

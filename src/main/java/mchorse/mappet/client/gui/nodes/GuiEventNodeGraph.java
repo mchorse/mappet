@@ -1,27 +1,27 @@
 package mchorse.mappet.client.gui.nodes;
 
-import mchorse.mappet.api.events.nodes.EventNode;
+import mchorse.mappet.api.events.nodes.EventBaseNode;
 import mchorse.mappet.api.utils.factory.IFactory;
 import mchorse.mappet.utils.Colors;
 import net.minecraft.client.Minecraft;
 
 import java.util.function.Consumer;
 
-public class GuiEventNodeGraph extends GuiNodeGraph<EventNode>
+public class GuiEventNodeGraph extends GuiNodeGraph<EventBaseNode>
 {
-    public GuiEventNodeGraph(Minecraft mc, IFactory<EventNode> factory, Consumer<EventNode> callback)
+    public GuiEventNodeGraph(Minecraft mc, IFactory<EventBaseNode> factory, Consumer<EventBaseNode> callback)
     {
         super(mc, factory, callback);
     }
 
     @Override
-    protected int getIndexLabelColor(EventNode lastSelected, int i)
+    protected int getIndexLabelColor(EventBaseNode lastSelected, int i)
     {
         return lastSelected.binary && i >= 2 ? 0x666666 : 0xffffff;
     }
 
     @Override
-    protected int getNodeActiveColor(EventNode output, int r)
+    protected int getNodeActiveColor(EventBaseNode output, int r)
     {
         if (output.binary)
         {
@@ -32,7 +32,7 @@ public class GuiEventNodeGraph extends GuiNodeGraph<EventNode>
     }
 
     @Override
-    protected float getNodeActiveColorOpacity(EventNode output, int r)
+    protected float getNodeActiveColorOpacity(EventBaseNode output, int r)
     {
         if (output.binary && r >= 2)
         {

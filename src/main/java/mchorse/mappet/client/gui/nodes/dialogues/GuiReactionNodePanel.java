@@ -2,6 +2,8 @@ package mchorse.mappet.client.gui.nodes.dialogues;
 
 import mchorse.mappet.api.dialogues.nodes.DialogueNode;
 import mchorse.mappet.api.dialogues.nodes.ReactionNode;
+import mchorse.mappet.client.gui.GuiMappetDashboard;
+import mchorse.mappet.client.gui.panels.GuiMappetDashboardPanel;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
 import mchorse.mappet.client.gui.utils.overlays.GuiResourceLocationOverlayPanel;
 import mchorse.mappet.client.gui.utils.overlays.GuiSoundOverlayPanel;
@@ -29,9 +31,11 @@ public class GuiReactionNodePanel extends GuiDialogueNodePanel
     public GuiToggleElement read;
     public GuiTextElement marker;
 
-    public GuiReactionNodePanel(Minecraft mc, Supplier<GuiCreativeMorphsMenu> morphs)
+    public GuiReactionNodePanel(Minecraft mc, GuiMappetDashboardPanel parentPanel)
     {
-        super(mc);
+        super(mc, parentPanel);
+
+        Supplier<GuiCreativeMorphsMenu> morphs = ((GuiMappetDashboard) parentPanel.dashboard)::getMorphMenu;
 
         this.morph = new GuiNestedEdit(mc, (b) -> this.openMorphMenu(b, morphs));
         this.sound = new GuiIconElement(mc, Icons.SOUND, (b) -> this.openPickSoundOverlay());

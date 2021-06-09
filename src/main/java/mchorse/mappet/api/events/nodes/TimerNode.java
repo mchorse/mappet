@@ -3,7 +3,7 @@ package mchorse.mappet.api.events.nodes;
 import mchorse.mappet.api.events.EventContext;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class TimerNode extends EventNode
+public class TimerNode extends EventBaseNode
 {
     public int timer;
 
@@ -14,10 +14,10 @@ public class TimerNode extends EventNode
         {
             context.addExecutionFork(this, this.timer);
 
-            return EventNode.HALT;
+            return EventBaseNode.HALT;
         }
 
-        return EventNode.ALL;
+        return EventBaseNode.ALL;
     }
 
     @Override

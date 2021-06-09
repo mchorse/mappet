@@ -1,7 +1,8 @@
 package mchorse.mappet.client.gui.nodes.dialogues;
 
 import mchorse.mappet.api.dialogues.nodes.DialogueNode;
-import mchorse.mappet.client.gui.nodes.GuiEventNodePanel;
+import mchorse.mappet.client.gui.nodes.GuiEventBaseNodePanel;
+import mchorse.mappet.client.gui.panels.GuiMappetDashboardPanel;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mclib.client.gui.framework.elements.input.GuiColorElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
@@ -9,14 +10,14 @@ import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 
-public class GuiDialogueNodePanel extends GuiEventNodePanel<DialogueNode>
+public class GuiDialogueNodePanel extends GuiEventBaseNodePanel<DialogueNode>
 {
     public GuiTextElement text;
     public GuiColorElement color;
 
-    public GuiDialogueNodePanel(Minecraft mc)
+    public GuiDialogueNodePanel(Minecraft mc, GuiMappetDashboardPanel parentPanel)
     {
-        super(mc);
+        super(mc, parentPanel);
 
         this.text = GuiMappetUtils.fullWindowContext(
             new GuiTextElement(mc, 10000, (text) -> this.node.message.text = text),
