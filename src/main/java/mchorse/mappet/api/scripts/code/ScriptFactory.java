@@ -22,7 +22,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 public class ScriptFactory implements IScriptFactory
 {
     @Override
-    public IScriptBlockState blockState(String blockId, int meta)
+    public IScriptBlockState createBlockState(String blockId, int meta)
     {
         ResourceLocation location = new ResourceLocation(blockId);
         Block block = ForgeRegistries.BLOCKS.getValue(location);
@@ -38,7 +38,7 @@ public class ScriptFactory implements IScriptFactory
     }
 
     @Override
-    public INBTCompound compound(String nbt)
+    public INBTCompound createCompound(String nbt)
     {
         NBTTagCompound tag = new NBTTagCompound();
 
@@ -56,7 +56,7 @@ public class ScriptFactory implements IScriptFactory
     }
 
     @Override
-    public INBTList list(String nbt)
+    public INBTList createList(String nbt)
     {
         NBTTagList list = new NBTTagList();
 
@@ -74,7 +74,7 @@ public class ScriptFactory implements IScriptFactory
     }
 
     @Override
-    public IScriptItemStack itemStack(INBTCompound compound)
+    public IScriptItemStack createItemStack(INBTCompound compound)
     {
         if (compound instanceof ScriptItemStack)
         {
@@ -85,7 +85,7 @@ public class ScriptFactory implements IScriptFactory
     }
 
     @Override
-    public EnumParticleTypes particleType(String type)
+    public EnumParticleTypes getParticleType(String type)
     {
         return EnumParticleTypes.getByName(type);
     }

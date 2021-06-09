@@ -31,7 +31,7 @@ public class ScriptEvent implements IScriptEvent
     }
 
     @Override
-    public IScriptEntity subject()
+    public IScriptEntity getSubject()
     {
         if (this.subject == null && this.context.subject != null)
         {
@@ -42,7 +42,7 @@ public class ScriptEvent implements IScriptEvent
     }
 
     @Override
-    public IScriptEntity object()
+    public IScriptEntity getObject()
     {
         if (this.object == null && this.context.object != null)
         {
@@ -53,7 +53,7 @@ public class ScriptEvent implements IScriptEvent
     }
 
     @Override
-    public IScriptWorld world()
+    public IScriptWorld getWorld()
     {
         if (this.world == null && this.context.world != null)
         {
@@ -64,7 +64,7 @@ public class ScriptEvent implements IScriptEvent
     }
 
     @Override
-    public IScriptServer server()
+    public IScriptServer getServer()
     {
         if (this.server == null && this.context.server != null)
         {
@@ -75,9 +75,21 @@ public class ScriptEvent implements IScriptEvent
     }
 
     @Override
-    public Map<String, Object> values()
+    public Map<String, Object> getValues()
     {
         return this.context.getValues();
+    }
+
+    @Override
+    public Object getValue(String key)
+    {
+        return this.context.getValue(key);
+    }
+
+    @Override
+    public void setValue(String key, Object value)
+    {
+        this.context.getValues().put(key, value);
     }
 
     /* Useful methods */

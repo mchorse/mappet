@@ -19,15 +19,15 @@ public interface IScriptServer
     /**
      * Get all entities matching giving target selector
      */
-    public List<IScriptEntity> query(String targetSelector);
+    public List<IScriptEntity> getEntities(String targetSelector);
 
     /**
      * Get all players on the server
      */
-    public List<IScriptEntity> players();
+    public List<IScriptEntity> getAllPlayers();
 
     /**
      * Get global (server) states
      */
-    public IMappetStates states();
+    public IMappetStates getStates();
 }

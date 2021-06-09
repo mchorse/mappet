@@ -14,27 +14,37 @@ public interface IScriptEvent
     /**
      * Get subject (primary) entity that was passed into the event
      */
-    public IScriptEntity subject();
+    public IScriptEntity getSubject();
 
     /**
      * Get object (secondary) entity that was passed into the event
      */
-    public IScriptEntity object();
+    public IScriptEntity getObject();
 
     /**
      * Get the world in which this event happened
      */
-    public IScriptWorld world();
+    public IScriptWorld getWorld();
 
     /**
      * Get the server in which this event happened
      */
-    public IScriptServer server();
+    public IScriptServer getServer();
 
     /**
      * Get a map of extra context values that was passed into the event
      */
-    public Map<String, Object> values();
+    public Map<String, Object> getValues();
+
+    /**
+     * Get a value for given key (might be a null)
+     */
+    public Object getValue(String key);
+
+    /**
+     * Set a value for given key in extra data
+     */
+    public void setValue(String key, Object value);
 
     /* Useful methods */
 

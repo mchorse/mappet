@@ -30,7 +30,7 @@ public class ScriptServer implements IScriptServer
     }
 
     @Override
-    public List<IScriptEntity> query(String targetSelector)
+    public List<IScriptEntity> getEntities(String targetSelector)
     {
         List<IScriptEntity> entities = new ArrayList<IScriptEntity>();
 
@@ -48,7 +48,7 @@ public class ScriptServer implements IScriptServer
     }
 
     @Override
-    public List<IScriptEntity> players()
+    public List<IScriptEntity> getAllPlayers()
     {
         List<IScriptEntity> entities = new ArrayList<IScriptEntity>();
 
@@ -61,7 +61,7 @@ public class ScriptServer implements IScriptServer
     }
 
     @Override
-    public IMappetStates states()
+    public IMappetStates getStates()
     {
         if (this.states == null)
         {

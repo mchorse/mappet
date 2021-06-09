@@ -121,5 +121,5 @@ public interface IScriptEntity
      *
      * @return states of a player, or null if an entity doesn't have states
      */
-    public IMappetStates states();
+    public IMappetStates getStates();
 }

@@ -19,7 +19,7 @@ public interface IScriptWorld
     public World getMinecraftWorld();
 
     /**
-     * Set a block at XYZ, use {@link IScriptFactory#blockState(String, int)}
+     * Set a block at XYZ, use {@link IScriptFactory#createBlockState(String, int)}
      * to get the block state
      */
     public void setBlock(IScriptBlockState state, int x, int y, int z);
@@ -62,7 +62,7 @@ public interface IScriptWorld
     /**
      * Spawn vanilla particles
      *
-     * @param type Particle type, you can use {@link IScriptFactory#particleType(String)}
+     * @param type Particle type, you can use {@link IScriptFactory#getParticleType(String)}
      *             to get the desired particle type.
      * @param longDistance Whether particles should be spawned regardless of the distance
      * @param x X coordinate of position where particles should be spawned
@@ -83,7 +83,7 @@ public interface IScriptWorld
      * Spawn vanilla particles only to a specific player
      *
      * @param player The player that you want to limit seeing the particle only to
-     * @param type Particle type, you can use {@link IScriptFactory#particleType(String)}
+     * @param type Particle type, you can use {@link IScriptFactory#getParticleType(String)}
      *             to get the desired particle type.
      * @param longDistance Whether particles should be spawned regardless of the distance
      * @param x X coordinate of position where particles should be spawned

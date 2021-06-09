@@ -171,7 +171,7 @@ public class ScriptEntity implements IScriptEntity
     /* Mappet stuff */
 
     @Override
-    public IMappetStates states()
+    public IMappetStates getStates()
     {
         if (this.states == null)
         {
