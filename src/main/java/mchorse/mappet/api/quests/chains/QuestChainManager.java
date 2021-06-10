@@ -33,38 +33,53 @@ public class QuestChainManager extends BaseManager<QuestChain>
 
     public QuestContext evaluate(String id, EntityPlayer player, String subject)
     {
+        ICharacter character = Character.get(player);
         QuestContext context = new QuestContext(player, subject);
         QuestChain chain = this.load(id);
 
-        if (chain == null)
+        if (character == null || chain == null)
         {
             return context;
         }
 
         for (QuestNode node : chain.getRoots())
         {
-            this.evaluateRecursive(node, chain, context);
+            int size = context.quests.size();
+
+            this.evaluateRecursive(context, character, chain, node);
+
+            /* Special case for quest retake */
+            if (node.allowRetake && !context.canceled && context.nesting > 0 && context.nesting == context.completed && size == context.quests.size())
+            {
+                Quest quest = Mappet.quests.load(node.quest);
+
+                if (quest != null)
+                {
+                    QuestInfo info = this.giveNewQuest(context, character, node, quest);
+
+                    if (info != null)
+                    {
+                        context.quests.add(info);
+                    }
+                }
+            }
+
             context.nesting = 0;
             context.completed = 0;
+            context.lastTimesCompleted = 0;
         }
 
         return context;
     }
 
-    private void evaluateRecursive(QuestNode node, QuestChain chain, QuestContext context)
+    private void evaluateRecursive(QuestContext context, ICharacter character, QuestChain chain, QuestNode node)
     {
-        ICharacter character = Character.get(context.player);
-
-        if (character == null)
-        {
-            return;
-        }
-
-        boolean wasCompleted = character.getStates().wasQuestCompleted(node.quest);
+        int timesCompleted = character.getStates().getQuestCompletedTimes(node.quest);
+        boolean wasCompleted = timesCompleted > 0;
+        Quest quest = character.getQuests().getByName(node.quest);
         QuestInfo info = null;
 
-        Quest quest = character.getQuests().getByName(node.quest);
-
+        /* Check present quest */
         if (quest != null)
         {
             if (quest.isComplete(context.player))
@@ -75,6 +90,8 @@ public class QuestChainManager extends BaseManager<QuestChain>
                 }
                 else
                 {
+                    context.canceled = true;
+
                     return;
                 }
             }
@@ -84,32 +101,79 @@ public class QuestChainManager extends BaseManager<QuestChain>
             }
         }
 
-        if (info == null && !wasCompleted)
+        /* Check for possible quests */
+        if (info == null)
         {
             quest = Mappet.quests.load(node.quest);
 
-            if (quest != null && context.subject.equals(node.giver) && context.nesting == context.completed)
+            if (quest != null && this.canTakeQuest(context, node, timesCompleted))
             {
-                info = new QuestInfo(quest, QuestStatus.AVAILABLE);
+                info = this.giveNewQuest(context, character, node, quest);
             }
         }
 
         if (info != null)
         {
             context.quests.add(info);
+            context.canceled = true;
 
             return;
         }
 
-        context.nesting += 1;
-        context.completed += wasCompleted ? 1 : 0;
+        int nesting = context.nesting;
+        int completed = context.completed;
+
+        context.canceled = false;
 
         for (QuestNode child : chain.getChildren(node))
         {
-            this.evaluateRecursive(child, chain, context);
+            context.nesting = nesting + 1;
+            context.completed = completed + (wasCompleted ? 1 : 0);
+            context.lastTimesCompleted = timesCompleted;
+            this.evaluateRecursive(context, character, chain, child);
+        }
+    }
+
+    private boolean canTakeQuest(QuestContext context, QuestNode node, int timesCompleted)
+    {
+        if (!context.subject.equals(node.giver))
+        {
+            return false;
         }
 
-        context.completed -= wasCompleted ? 1 : 0;
-        context.nesting -= 1;
+        if (node.allowRetake)
+        {
+            if (context.nesting == 0)
+            {
+                return timesCompleted == 0;
+            }
+            else
+            {
+                return timesCompleted < context.lastTimesCompleted;
+            }
+        }
+
+        return timesCompleted == 0 && context.nesting == context.completed;
+    }
+
+    private QuestInfo giveNewQuest(QuestContext context, ICharacter character, QuestNode node, Quest quest)
+    {
+        if (node.autoAccept)
+        {
+            character.getQuests().add(quest, context.player);
+
+            if (context.subject.equals(node.giver))
+            {
+                return new QuestInfo(quest, QuestStatus.UNAVAILABLE);
+            }
+        }
+        else
+        {
+            return new QuestInfo(quest, QuestStatus.AVAILABLE);
+        }
+
+        context.canceled = true;
+
+        return null;
     }
 }

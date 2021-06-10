@@ -119,9 +119,14 @@ public class States implements INBTSerializable<NBTTagCompound>
         this.add(QUEST_PREFIX + id, 1);
     }
 
+    public int getQuestCompletedTimes(String id)
+    {
+        return (int) this.getNumber(QUEST_PREFIX + id);
+    }
+
     public boolean wasQuestCompleted(String id)
     {
-        return this.getNumber(QUEST_PREFIX + id) > 0;
+        return this.getQuestCompletedTimes(id) > 0;
     }
 
     /* Faction convenience methods */

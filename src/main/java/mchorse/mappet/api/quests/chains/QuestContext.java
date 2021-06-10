@@ -13,6 +13,8 @@ public class QuestContext
 
     public int nesting;
     public int completed;
+    public int lastTimesCompleted;
+    public boolean canceled;
 
     public QuestContext(EntityPlayer player, String subject)
     {

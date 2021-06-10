@@ -8,8 +8,8 @@ import mchorse.mappet.client.gui.crafting.GuiCrafting;
 import mchorse.mappet.client.gui.crafting.ICraftingScreen;
 import mchorse.mappet.client.gui.quests.GuiQuestCard;
 import mchorse.mappet.client.gui.quests.GuiQuestInfoListElement;
-import mchorse.mappet.client.gui.utils.text.GuiClickableText;
 import mchorse.mappet.client.gui.utils.GuiMorphRenderer;
+import mchorse.mappet.client.gui.utils.text.GuiClickableText;
 import mchorse.mappet.client.gui.utils.text.GuiText;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.crafting.PacketCraftingTable;
@@ -274,9 +274,6 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
         }
         else if (info.status == QuestStatus.COMPLETED)
         {
-            this.quests.remove(info);
-            this.quests.setIndex(-1);
-
             this.quests.setIndex(0);
 
             info = this.quests.getCurrentFirst();

@@ -9,6 +9,9 @@ public class QuestNode extends Node
     public String giver = "";
     public String receiver = "";
 
+    public boolean autoAccept;
+    public boolean allowRetake;
+
     @Override
     protected String getDisplayTitle()
     {
@@ -35,6 +38,16 @@ public class QuestNode extends Node
             tag.setString("Receiver", this.receiver);
         }
 
+        if (this.autoAccept)
+        {
+            tag.setBoolean("AutoAccept", this.autoAccept);
+        }
+
+        if (this.allowRetake)
+        {
+            tag.setBoolean("AllowRetake", this.allowRetake);
+        }
+
         return tag;
     }
 
@@ -56,6 +69,16 @@ public class QuestNode extends Node
         if (tag.hasKey("Receiver"))
         {
             this.receiver = tag.getString("Receiver");
+        }
+
+        if (tag.hasKey("AutoAccept"))
+        {
+            this.autoAccept = tag.getBoolean("AutoAccept");
+        }
+
+        if (tag.hasKey("AllowRetake"))
+        {
+            this.allowRetake = tag.getBoolean("AllowRetake");
         }
     }
 }
