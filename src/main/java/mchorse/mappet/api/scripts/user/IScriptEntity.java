@@ -78,6 +78,16 @@ public interface IScriptEntity
     public float getHp();
 
     /**
+     * Set entity's health points. Given value that is more than max HP will get limited to max HP.
+     */
+    public void setHp(float hp);
+
+    /**
+     * Get maximum health points this entity can have
+     */
+    public float getMaxHp();
+
+    /**
      * Is this entity is sneaking
      */
     public boolean isSneaking();

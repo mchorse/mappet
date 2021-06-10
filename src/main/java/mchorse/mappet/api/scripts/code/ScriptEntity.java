@@ -138,6 +138,26 @@ public class ScriptEntity implements IScriptEntity
     }
 
     @Override
+    public void setHp(float hp)
+    {
+        if (this.entity instanceof EntityLivingBase)
+        {
+            ((EntityLivingBase) this.entity).setHealth(hp);
+        }
+    }
+
+    @Override
+    public float getMaxHp()
+    {
+        if (this.entity instanceof EntityLivingBase)
+        {
+            return ((EntityLivingBase) this.entity).getMaxHealth();
+        }
+
+        return 0;
+    }
+
+    @Override
     public boolean isSneaking()
     {
         return this.entity.isSneaking();
