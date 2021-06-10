@@ -20,7 +20,7 @@ public class StateConditionBlock extends PropertyConditionBlock
             return false;
         }
 
-        return this.compare(states.get(this.id));
+        return this.compare(states.getNumber(this.id));
     }
 
     @Override

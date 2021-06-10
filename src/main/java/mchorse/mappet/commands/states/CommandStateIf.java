@@ -41,7 +41,7 @@ public class CommandStateIf extends CommandStateBase
             throw new CommandException("states.missing", id);
         }
 
-        double previous = states.get(id);
+        Object previous = states.values.get(id);
 
         String expression = String.join(" ", SubCommandBase.dropFirstArguments(args, 2));
         DataContext context;
@@ -55,7 +55,14 @@ public class CommandStateIf extends CommandStateBase
             context = new DataContext(server);
         }
 
-        context.set("value", previous);
+        if (previous instanceof Number)
+        {
+            context.set("value", ((Number) previous).doubleValue());
+        }
+        else if (previous instanceof String)
+        {
+            context.set("value", (String) previous);
+        }
 
         IValue result = Mappet.expressions.set(context).parse(expression);
 

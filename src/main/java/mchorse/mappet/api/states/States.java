@@ -5,7 +5,11 @@ import com.google.gson.reflect.TypeToken;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.events.StateChangedEvent;
 import mchorse.mclib.utils.JsonUtils;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTPrimitive;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 import org.apache.commons.io.FileUtils;
 
@@ -25,7 +29,7 @@ public class States implements INBTSerializable<NBTTagCompound>
     public static final String DIALOGUE_PREFIX = "dialogue.";
     public static final String FACTIONS_PREFIX = "factions.";
 
-    public Map<String, Double> values = new HashMap<String, Double>();
+    public Map<String, Object> values = new HashMap<String, Object>();
 
     private File file;
 
@@ -37,7 +41,7 @@ public class States implements INBTSerializable<NBTTagCompound>
         this.file = file;
     }
 
-    protected void post(String id, Double previous, Double current)
+    protected void post(String id, Object previous, Object current)
     {
         Mappet.EVENT_BUS.post(new StateChangedEvent(this, id, previous, current));
     }
@@ -46,30 +50,49 @@ public class States implements INBTSerializable<NBTTagCompound>
 
     public void add(String id, double value)
     {
-        Double previous = this.values.get(id);
+        Object previous = this.values.get(id);
 
-        this.values.put(id, (previous == null ? 0 : previous) + value);
-        this.post(id, previous, value);
+        if (previous == null || previous instanceof Number)
+        {
+            this.values.put(id, (previous == null ? 0 : ((Number) previous).doubleValue()) + value);
+            this.post(id, previous, value);
+        }
     }
 
-    public void set(String id, double value)
+    public void setNumber(String id, double value)
     {
-        Double previous = this.values.get(id);
+        Object previous = this.values.get(id);
 
         this.values.put(id, value);
         this.post(id, previous, value);
     }
 
-    public double get(String id)
+    public void setString(String id, String value)
     {
-        return this.values.containsKey(id) ? this.values.get(id) : 0;
+        Object previous = this.values.get(id);
+
+        this.values.put(id, value);
+        this.post(id, previous, value);
+    }
+
+    public double getNumber(String id)
+    {
+        Object object = this.values.get(id);
+
+        return object instanceof Number ? ((Number) object).doubleValue() : 0;
+    }
+
+    public String getString(String id)
+    {
+        Object object = this.values.get(id);
+
+        return object instanceof String ? (String) object : "";
     }
 
     public boolean reset(String id)
     {
-        Double previous = this.values.get(id);
+        Object previous = this.values.remove(id);
 
-        this.values.remove(id);
         this.post(id, previous, null);
 
         return previous != null;
@@ -98,7 +121,7 @@ public class States implements INBTSerializable<NBTTagCompound>
 
     public boolean wasQuestCompleted(String id)
     {
-        return this.get(QUEST_PREFIX + id) > 0;
+        return this.getNumber(QUEST_PREFIX + id) > 0;
     }
 
     /* Faction convenience methods */
@@ -111,18 +134,18 @@ public class States implements INBTSerializable<NBTTagCompound>
         }
         else
         {
-            this.set(FACTIONS_PREFIX + id, defaultScore + score);
+            this.setNumber(FACTIONS_PREFIX + id, defaultScore + score);
         }
     }
 
     public void setFactionScore(String id, int score)
     {
-        this.set(FACTIONS_PREFIX + id, score);
+        this.setNumber(FACTIONS_PREFIX + id, score);
     }
 
     public int getFactionScore(String id)
     {
-        return (int) this.get(FACTIONS_PREFIX + id);
+        return (int) this.getNumber(FACTIONS_PREFIX + id);
     }
 
     public boolean clearFactionScore(String id)
@@ -154,7 +177,7 @@ public class States implements INBTSerializable<NBTTagCompound>
 
     public int getReadDialogueTimes(String id, String marker)
     {
-        return (int) this.get(this.getDialogueId(id, marker));
+        return (int) this.getNumber(this.getDialogueId(id, marker));
     }
 
     private String getDialogueId(String id, String marker)
@@ -176,9 +199,16 @@ public class States implements INBTSerializable<NBTTagCompound>
     {
         NBTTagCompound tag = new NBTTagCompound();
 
-        for (Map.Entry<String, Double> entry : this.values.entrySet())
+        for (Map.Entry<String, Object> entry : this.values.entrySet())
         {
-            tag.setDouble(entry.getKey(), entry.getValue());
+            if (entry.getValue() instanceof Number)
+            {
+                tag.setDouble(entry.getKey(), ((Number) entry.getValue()).doubleValue());
+            }
+            else if (entry.getValue() instanceof String)
+            {
+                tag.setString(entry.getKey(), (String) entry.getValue());
+            }
         }
 
         return tag;
@@ -191,7 +221,16 @@ public class States implements INBTSerializable<NBTTagCompound>
 
         for (String key : tag.getKeySet())
         {
-            this.values.put(key, tag.getDouble(key));
+            NBTBase base = tag.getTag(key);
+
+            if (base.getId() == Constants.NBT.TAG_STRING)
+            {
+                this.values.put(key, ((NBTTagString) base).getString());
+            }
+            else if (base instanceof NBTPrimitive)
+            {
+                this.values.put(key, ((NBTPrimitive) base).getDouble());
+            }
         }
     }
 

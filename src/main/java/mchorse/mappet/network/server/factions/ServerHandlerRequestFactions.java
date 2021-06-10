@@ -21,13 +21,13 @@ public class ServerHandlerRequestFactions extends ServerMessageHandler<PacketReq
         Map<String, Double> statesData = new HashMap<String, Double>();
         Map<String, Faction> factions = new HashMap<String, Faction>();
 
-        for (Map.Entry<String, Double> entry : states.values.entrySet())
+        for (Map.Entry<String, Object> entry : states.values.entrySet())
         {
             String key = entry.getKey();
 
-            if (key.startsWith(States.FACTIONS_PREFIX))
+            if (key.startsWith(States.FACTIONS_PREFIX) && entry.getValue() instanceof Number)
             {
-                statesData.put(key.substring(States.FACTIONS_PREFIX.length()), entry.getValue());
+                statesData.put(key.substring(States.FACTIONS_PREFIX.length()), ((Number) entry.getValue()).doubleValue());
             }
         }
 

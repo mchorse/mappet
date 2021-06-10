@@ -19,19 +19,31 @@ public class MappetStates implements IMappetStates
     {
         this.states.add(id, value);
 
-        return this.states.get(id);
+        return this.states.getNumber(id);
     }
 
     @Override
-    public void set(String id, double value)
+    public void setNumber(String id, double value)
     {
-        this.states.set(id, value);
+        this.states.setNumber(id, value);
     }
 
     @Override
-    public double get(String id)
+    public void setString(String id, String value)
     {
-        return this.states.get(id);
+        this.states.setString(id, value);
+    }
+
+    @Override
+    public double getNumber(String id)
+    {
+        return this.states.getNumber(id);
+    }
+
+    @Override
+    public String getString(String id)
+    {
+        return this.states.getString(id);
     }
 
     @Override

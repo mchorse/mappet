@@ -48,7 +48,7 @@ public class CommandStatePrint extends CommandStateBase
 
         for (String key : states.values.keySet())
         {
-            component.appendSibling(new TextComponentString(key + " §7=§r " + states.get(key) + "\n"));
+            component.appendSibling(new TextComponentString(key + " §7=§r " + states.values.get(key) + "\n"));
 
             i++;
         }

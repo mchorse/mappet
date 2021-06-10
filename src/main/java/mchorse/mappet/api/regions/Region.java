@@ -85,7 +85,7 @@ public class Region implements INBTSerializable<NBTTagCompound>
             }
             else
             {
-                states.set(this.state, 1);
+                states.setNumber(this.state, 1);
             }
         }
 

@@ -15,16 +15,28 @@ public interface IMappetStates
     public double add(String id, double value);
 
     /**
-     * Set some value to existing state by ID
+     * Set numeric value to existing state by ID
      */
-    public void set(String id, double value);
+    public void setNumber(String id, double value);
 
     /**
-     * Get a value of a state by given ID
+     * Set string value to existing state by ID
+     */
+    public void setString(String id, String value);
+
+    /**
+     * Get a numeric value of a state by given ID
      *
      * @return state value, or 0 if no state found
      */
-    public double get(String id);
+    public double getNumber(String id);
+
+    /**
+     * Get a string value of a state by given ID
+     *
+     * @return state value, or empty string if no state found
+     */
+    public String getString(String id);
 
     /**
      * Removes a state by given ID

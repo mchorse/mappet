@@ -1,7 +1,7 @@
 package mchorse.mappet.commands.states;
 
 import mchorse.mappet.api.states.States;
-import net.minecraft.command.CommandBase;
+import mchorse.mclib.commands.SubCommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
@@ -23,7 +23,7 @@ public class CommandStateSet extends CommandStateBase
     @Override
     public String getSyntax()
     {
-        return "{l}{6}/{r}mp {8}state set{r} {7}<target> <id> <expression>{r}";
+        return "{l}{6}/{r}mp {8}state set{r} {7}<target> <id> <value>{r}";
     }
 
     @Override
@@ -31,10 +31,16 @@ public class CommandStateSet extends CommandStateBase
     {
         States states = CommandState.getStates(server, sender, args[0]);
         String id = args[1];
-        double value = CommandBase.parseDouble(args[2]);
 
-        states.set(id, value);
+        try
+        {
+            states.setNumber(id, Double.parseDouble(args[1]));
+        }
+        catch (NumberFormatException e)
+        {
+            states.setString(id, String.join(" ", SubCommandBase.dropFirstArguments(args, 2)));
+        }
 
-        this.getL10n().info(sender, "states.set", id, states.get(id));
+        this.getL10n().info(sender, "states.set", id, states.values.get(id));
     }
 }

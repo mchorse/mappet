@@ -8,10 +8,10 @@ public class StateChangedEvent extends Event
 {
     public final States states;
     public final String key;
-    public final Double previous;
-    public final Double current;
+    public final Object previous;
+    public final Object current;
 
-    public StateChangedEvent(States states, String key, Double previous, Double current)
+    public StateChangedEvent(States states, String key, Object previous, Object current)
     {
         this.states = states;
         this.key = key;

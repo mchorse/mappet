@@ -32,11 +32,11 @@ public class CommandStateAdd extends CommandStateBase
         States states = CommandState.getStates(server, sender, args[0]);
         String id = args[1];
         double value = CommandBase.parseDouble(args[2]);
-        double previous = states.get(id);
+        double previous = states.getNumber(id);
 
         states.add(id, this.processValue(value));
 
-        this.getL10n().info(sender, "states.changed", id, previous, states.get(id));
+        this.getL10n().info(sender, "states.changed", id, previous, states.getNumber(id));
     }
 
     protected double processValue(double value)

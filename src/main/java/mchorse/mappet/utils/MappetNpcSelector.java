@@ -85,11 +85,18 @@ public class MappetNpcSelector implements IEntitySelectorFactory
 
                 for (Variable variable : BUILDER.variables.values())
                 {
-                    Double v = states.values.get(variable.getName());
+                    Object v = states.values.get(variable.getName());
 
                     if (v != null)
                     {
-                        variable.set(v);
+                        if (v instanceof String)
+                        {
+                            variable.set((String) v);
+                        }
+                        else if (v instanceof Number)
+                        {
+                            variable.set(((Number) v).doubleValue());
+                        }
                     }
                 }
 

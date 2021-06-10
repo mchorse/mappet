@@ -56,7 +56,7 @@ mappet.commands.mp.state.add=This command adds to value by §7<id>§r key the va
 mappet.commands.mp.state.clear=This command removes value by §7[id]§r key. If §7[id]§r was omitted, then all values will be erased.
 mappet.commands.mp.state.if=This command evaluates §7<expression>§r against value §7<id>§r state, and if resulted §7<expression>§r is a non-zero value it does nothing, but if if outputs zero then the command will error.\n\nThis is useful for command blocks that can stop on errors.
 mappet.commands.mp.state.print=This command prints out all the values §7<target>§r state has.
-mappet.commands.mp.state.set=This command assigns value by §7<id>§r key to value evaluated by §7<expression>§r.
+mappet.commands.mp.state.set=This command assigns value by §7<id>§r key to §7<value>§r (it can be a number or an arbitrary string).
 mappet.commands.mp.state.sub=This command subtracts to value by §7<id>§r key the value evaluated by §7<expression>§r. If §7<id>§r state didn't exist, §7<expression>§r will be subtracted to 0.
 
 mappet.commands.mp.quest.help=Quest management subcommand.
