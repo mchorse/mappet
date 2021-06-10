@@ -45,6 +45,14 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
     }
 
     @Override
+    protected void fillDefaultData(Script data)
+    {
+        super.fillDefaultData(data);
+
+        data.code = "function main(c)\n{\n    // Code...\n}";
+    }
+
+    @Override
     public void fill(Script data, boolean allowed)
     {
         super.fill(data, allowed);

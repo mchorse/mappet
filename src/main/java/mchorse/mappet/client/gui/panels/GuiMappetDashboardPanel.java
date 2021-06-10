@@ -204,6 +204,8 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
             if (data == null)
             {
                 data = (T) this.getType().getManager().create(name);
+                
+                this.fillDefaultData(data);
             }
             else
             {
@@ -215,6 +217,9 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
 
         }
     }
+
+    protected void fillDefaultData(T data)
+    {}
 
     protected void dupeData(GuiIconElement element)
     {
