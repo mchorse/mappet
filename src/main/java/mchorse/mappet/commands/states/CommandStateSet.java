@@ -34,7 +34,7 @@ public class CommandStateSet extends CommandStateBase
 
         try
         {
-            states.setNumber(id, Double.parseDouble(args[1]));
+            states.setNumber(id, Double.parseDouble(args[2]));
         }
         catch (NumberFormatException e)
         {
