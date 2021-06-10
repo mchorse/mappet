@@ -126,15 +126,4 @@ public class ScriptEvent implements IScriptEvent
             player.sendMessage(new TextComponentString(message));
         }
     }
-
-    @Override
-    public boolean sendTo(IScriptEntity entity, String message)
-    {
-        if (entity.isPlayer())
-        {
-            entity.getMinecraftEntity().sendMessage(new TextComponentString(message));
-        }
-
-        return false;
-    }
 }

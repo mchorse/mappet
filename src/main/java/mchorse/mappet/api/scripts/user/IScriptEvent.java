@@ -50,19 +50,31 @@ public interface IScriptEvent
 
     /**
      * Schedule execution of the same script (with same function)
-     * given ticks forward
+     * given ticks forward.
+     *
+     * Read {@link #scheduleScript(String, String, int)} for more information.
      */
     public void scheduleScript(int delay);
 
     /**
      * Schedule execution of the same script with given function
-     * given ticks forward
+     * given ticks forward.
+     *
+     * Read {@link #scheduleScript(String, String, int)} for more information.
      */
     public void scheduleScript(String function, int delay);
 
     /**
      * Schedule execution of given script with specific function
-     * given ticks forward
+     * given ticks forward.
+     *
+     * When scheduling a script, it will use same data which were passed
+     * into current script's function. I.e. subject, object, world, server
+     * and values.
+     *
+     * ProTip: if you put some values into this context using
+     * {@link #setValue(String, Object)}, then that value will be also available
+     * when the scheduled script will be executed.
      */
     public void scheduleScript(String script, String function, int delay);
 
@@ -75,12 +87,4 @@ public interface IScriptEvent
      * Send a message to all players in the chat
      */
     public void send(String message);
-
-    /**
-     * Send a message only to one player
-     *
-     * @return whether event was able to send the message (i.e. if entity
-     *         isn't a player, it will return false)
-     */
-    public boolean sendTo(IScriptEntity entity, String message);
 }

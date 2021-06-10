@@ -3,12 +3,14 @@ package mchorse.mappet.api.scripts.code;
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
 import mchorse.mappet.api.scripts.code.mappet.MappetQuests;
 import mchorse.mappet.api.scripts.code.mappet.MappetStates;
+import mchorse.mappet.api.scripts.code.nbt.ScriptNBTCompound;
 import mchorse.mappet.api.scripts.user.IScriptEntity;
 import mchorse.mappet.api.scripts.user.IScriptRayTrace;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
 import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
+import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.mappet.api.states.States;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.network.Dispatcher;
@@ -22,8 +24,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityTracker;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.WorldServer;
 
 public class ScriptEntity implements IScriptEntity
@@ -245,6 +249,30 @@ public class ScriptEntity implements IScriptEntity
     }
 
     @Override
+    public String getName()
+    {
+        return this.entity.getName();
+    }
+
+    @Override
+    public INBTCompound getFullData()
+    {
+        return new ScriptNBTCompound(this.entity.writeToNBT(new NBTTagCompound()));
+    }
+
+    @Override
+    public void setFullData(INBTCompound data)
+    {
+        this.entity.readFromNBT(data.getNBTTagComound());
+    }
+
+    @Override
+    public INBTCompound getEntityData()
+    {
+        return new ScriptNBTCompound(this.entity.getEntityData());
+    }
+
+    @Override
     public boolean isPlayer()
     {
         return this.entity instanceof EntityPlayer;
@@ -266,6 +294,14 @@ public class ScriptEntity implements IScriptEntity
     public void kill()
     {
         this.entity.onKillCommand();
+    }
+
+    @Override
+    public boolean send(String message)
+    {
+        this.entity.sendMessage(new TextComponentString(message));
+
+        return this.isPlayer();
     }
 
     /* Mappet stuff */

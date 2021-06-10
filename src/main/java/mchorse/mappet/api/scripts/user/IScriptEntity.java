@@ -4,6 +4,7 @@ import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
 import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
+import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import net.minecraft.entity.Entity;
 
 /**
@@ -125,6 +126,16 @@ public interface IScriptEntity
     /* Entity meta */
 
     /**
+     * Check whether entity's AI is enabled
+     */
+    public boolean isAIEnabled();
+
+    /**
+     * Set entity's AI to be enabled or disabled (if it has it)
+     */
+    public void setAIEnabled(boolean enabled);
+
+    /**
      * Get unique ID of this entity, which can be used, if needed, in
      * commands as a target selector
      */
@@ -137,6 +148,32 @@ public interface IScriptEntity
     public String getEntityId();
 
     /**
+     * Get entity name
+     */
+    public String getName();
+
+    /**
+     * Get entity's full (copy of its) NBT data
+     */
+    public INBTCompound getFullData();
+
+    /**
+     * Overwrite NBT data of this entity. <b>WARNING</b>: use it only if you know
+     * what are you doing as this method can corrupt entities.
+     */
+    public void setFullData(INBTCompound data);
+
+    /**
+     * Get Forge's custom tag compound in which you can story any
+     * data you want.
+     *
+     * There is no setter method as you can directly work with returned
+     * NBT compound. Any changes to returned compound <b>will be reflected
+     * upon entity's data</b>.
+     */
+    public INBTCompound getEntityData();
+
+    /**
      * Check whether this entity is a player
      */
     public boolean isPlayer();
@@ -147,16 +184,6 @@ public interface IScriptEntity
     public boolean isLivingBase();
 
     /**
-     * Check whether entity's AI is enabled
-     */
-    public boolean isAIEnabled();
-
-    /**
-     * Set entity's AI to be enabled or disabled (if it has it)
-     */
-    public void setAIEnabled(boolean enabled);
-
-    /**
      * Remove this entity from the server without any dead effects
      */
     public void remove();
@@ -165,6 +192,14 @@ public interface IScriptEntity
      * Kill this entity from the server by inflicting lots of damage (similar to /kill command)
      */
     public void kill();
+
+    /**
+     * Send a message to this entity
+     *
+     * @return whether it was possible to send the message (i.e. if entity
+     *         isn't a player, it will return false)
+     */
+    public boolean send(String message);
 
     /* Mappet stuff */
 
