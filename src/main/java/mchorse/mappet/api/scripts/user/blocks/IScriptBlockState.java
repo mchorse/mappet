@@ -5,8 +5,8 @@ import net.minecraft.block.state.IBlockState;
 /**
  * Scripted block state.
  *
- * This interface represents a block state that can be used
- * to compare or place into the world.
+ * <p>This interface represents a block state that can be used
+ * to compare or place into the world.</p>
  */
 public interface IScriptBlockState
 {

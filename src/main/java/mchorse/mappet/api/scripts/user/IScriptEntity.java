@@ -10,8 +10,8 @@ import net.minecraft.entity.Entity;
 /**
  * Entity interface.
  *
- * This interface represents an entity, it could be a player, NPC,
- * or any other entity.
+ * <p>This interface represents an entity, it could be a player, NPC,
+ * or any other entity.</p>
  */
 public interface IScriptEntity
 {
@@ -167,9 +167,9 @@ public interface IScriptEntity
      * Get Forge's custom tag compound in which you can story any
      * data you want.
      *
-     * There is no setter method as you can directly work with returned
+     * <p>There is no setter method as you can directly work with returned
      * NBT compound. Any changes to returned compound <b>will be reflected
-     * upon entity's data</b>.
+     * upon entity's data</b>.</p>
      */
     public INBTCompound getEntityData();
 

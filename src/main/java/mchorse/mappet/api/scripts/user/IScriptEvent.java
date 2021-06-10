@@ -5,9 +5,9 @@ import java.util.Map;
 /**
  * Script event.
  *
- * This interface represent the event, the only argument that was passed
+ * <p>This interface represent the event, the only argument that was passed
  * into script's function. It contains many different useful methods to
- * interact with Minecraft on the server side.
+ * interact with Minecraft on the server side.</p>
  */
 public interface IScriptEvent
 {
@@ -52,7 +52,7 @@ public interface IScriptEvent
      * Schedule execution of the same script (with same function)
      * given ticks forward.
      *
-     * Read {@link #scheduleScript(String, String, int)} for more information.
+     * <p>Read {@link #scheduleScript(String, String, int)} for more information.</p>
      */
     public void scheduleScript(int delay);
 
@@ -60,7 +60,7 @@ public interface IScriptEvent
      * Schedule execution of the same script with given function
      * given ticks forward.
      *
-     * Read {@link #scheduleScript(String, String, int)} for more information.
+     * <p>Read {@link #scheduleScript(String, String, int)} for more information.</p>
      */
     public void scheduleScript(String function, int delay);
 
@@ -68,13 +68,13 @@ public interface IScriptEvent
      * Schedule execution of given script with specific function
      * given ticks forward.
      *
-     * When scheduling a script, it will use same data which were passed
+     * <p>When scheduling a script, it will use same data which were passed
      * into current script's function. I.e. subject, object, world, server
-     * and values.
+     * and values.</p>
      *
-     * ProTip: if you put some values into this context using
+     * <p><b>ProTip</b>: if you put some values into this context using
      * {@link #setValue(String, Object)}, then that value will be also available
-     * when the scheduled script will be executed.
+     * when the scheduled script will be executed.</p>
      */
     public void scheduleScript(String script, String function, int delay);
 
