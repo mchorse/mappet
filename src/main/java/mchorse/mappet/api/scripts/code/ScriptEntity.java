@@ -8,15 +8,23 @@ import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
 import mchorse.mappet.api.states.States;
+import mchorse.mappet.network.Dispatcher;
+import mchorse.mappet.network.common.scripts.PacketEntityRotations;
 import mchorse.mappet.utils.EntityUtils;
 import mchorse.mclib.utils.RayTracing;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityTracker;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.play.server.SPacketEntity;
+import net.minecraft.network.play.server.SPacketEntityHeadLook;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.WorldServer;
 
 public class ScriptEntity implements IScriptEntity
 {
@@ -65,6 +73,57 @@ public class ScriptEntity implements IScriptEntity
         {
             ((EntityPlayerMP) this.entity).connection.sendPacket(new SPacketEntityVelocity(this.entity.getEntityId(), x, y, z));
         }
+    }
+
+    @Override
+    public ScriptVector getRotations()
+    {
+        return new ScriptVector(this.getPitch(), this.getYaw(), this.getYawHead());
+    }
+
+    @Override
+    public void setRotations(float pitch, float yaw, float yawHead)
+    {
+        this.entity.setLocationAndAngles(this.entity.posX, this.entity.posY, this.entity.posZ, yaw, pitch);
+        this.entity.setRotationYawHead(yawHead);
+
+        if (this.isPlayer())
+        {
+            ((EntityPlayerMP) this.entity).connection.setPlayerLocation(this.entity.posX, this.entity.posY, this.entity.posZ, yaw, pitch);
+        }
+        else
+        {
+            EntityTracker tracker = ((WorldServer) this.entity.world).getEntityTracker();
+
+            for (EntityPlayer player : tracker.getTrackingPlayers(this.entity))
+            {
+                Dispatcher.sendTo(new PacketEntityRotations(this.entity.getEntityId(), yaw, yawHead, pitch), (EntityPlayerMP) player);
+            }
+        }
+    }
+
+    @Override
+    public float getPitch()
+    {
+        return this.entity.rotationPitch;
+    }
+
+    @Override
+    public float getYaw()
+    {
+        return this.entity.rotationYaw;
+    }
+
+    @Override
+    public float getYawHead()
+    {
+        return this.entity.getRotationYawHead();
+    }
+
+    @Override
+    public ScriptVector getLook()
+    {
+        return new ScriptVector(this.entity.getLookVec());
     }
 
     @Override
@@ -129,6 +188,26 @@ public class ScriptEntity implements IScriptEntity
     }
 
     /* Entity meta */
+
+    @Override
+    public boolean isAIEnabled()
+    {
+        if (this.entity instanceof EntityLiving)
+        {
+            return !((EntityLiving) this.entity).isAIDisabled();
+        }
+
+        return false;
+    }
+
+    @Override
+    public void setAIEnabled(boolean enabled)
+    {
+        if (this.entity instanceof EntityLiving)
+        {
+            ((EntityLiving) this.entity).setNoAI(!enabled);
+        }
+    }
 
     @Override
     public String getUniqueId()

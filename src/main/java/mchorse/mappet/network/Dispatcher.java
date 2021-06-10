@@ -17,6 +17,7 @@ import mchorse.mappet.network.client.npc.ClientHandlerNpcMorph;
 import mchorse.mappet.network.client.npc.ClientHandlerNpcState;
 import mchorse.mappet.network.client.quests.ClientHandlerQuest;
 import mchorse.mappet.network.client.quests.ClientHandlerQuests;
+import mchorse.mappet.network.client.scripts.ClientHandlerEntityRotations;
 import mchorse.mappet.network.common.blocks.PacketEditEmitter;
 import mchorse.mappet.network.common.blocks.PacketEditRegion;
 import mchorse.mappet.network.common.blocks.PacketEditTrigger;
@@ -42,6 +43,7 @@ import mchorse.mappet.network.common.npc.PacketNpcTool;
 import mchorse.mappet.network.common.quests.PacketQuest;
 import mchorse.mappet.network.common.quests.PacketQuestAction;
 import mchorse.mappet.network.common.quests.PacketQuests;
+import mchorse.mappet.network.common.scripts.PacketEntityRotations;
 import mchorse.mappet.network.server.blocks.ServerHandlerEditEmitter;
 import mchorse.mappet.network.server.blocks.ServerHandlerEditRegion;
 import mchorse.mappet.network.server.blocks.ServerHandlerEditTrigger;
@@ -131,6 +133,9 @@ public class Dispatcher
             /* Events */
             this.register(PacketEventHotkey.class, ServerHandlerEventHotkey.class, Side.SERVER);
             this.register(PacketEventPlayerHotkeys.class, ClientHandlerEventPlayerHotkeys.class, Side.CLIENT);
+
+            /* Scripts */
+            this.register(PacketEntityRotations.class, ClientHandlerEntityRotations.class, Side.CLIENT);
         }
     };
 

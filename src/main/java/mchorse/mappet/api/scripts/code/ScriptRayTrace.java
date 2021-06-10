@@ -60,16 +60,12 @@ public class ScriptRayTrace implements IScriptRayTrace
     @Override
     public ScriptVector getBlock()
     {
-        BlockPos pos = this.result.getBlockPos();
-
-        return new ScriptVector(pos.getX(), pos.getY(), pos.getZ());
+        return new ScriptVector(this.result.getBlockPos());
     }
 
     @Override
     public ScriptVector getHitPosition()
     {
-        Vec3d vec = this.result.hitVec;
-
-        return new ScriptVector(vec.x, vec.y, vec.z);
+        return new ScriptVector(this.result.hitVec);
     }
 }

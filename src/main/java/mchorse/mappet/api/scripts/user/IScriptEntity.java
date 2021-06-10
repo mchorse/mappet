@@ -42,6 +42,37 @@ public interface IScriptEntity
     public void setMotion(double x, double y, double z);
 
     /**
+     * Get entity's rotation (x is pitch, y is yaw, and z is yaw head, if entity
+     * is living base)
+     */
+    public ScriptVector getRotations();
+
+    /**
+     * Set entity's rotation
+     */
+    public void setRotations(float pitch, float yaw, float yawHead);
+
+    /**
+     * Get entity's pitch (vertical rotation)
+     */
+    public float getPitch();
+
+    /**
+     * Get entity's yaw (horizontal rotation)
+     */
+    public float getYaw();
+
+    /**
+     * Get entity's head yaw
+     */
+    public float getYawHead();
+
+    /**
+     * Get look vector
+     */
+    public ScriptVector getLook();
+
+    /**
      * Get health points of this entity (20 is the max default for players)
      */
     public float getHp();
@@ -103,6 +134,16 @@ public interface IScriptEntity
      * Check whether this entity is living base
      */
     public boolean isLivingBase();
+
+    /**
+     * Check whether entity's AI is enabled
+     */
+    public boolean isAIEnabled();
+
+    /**
+     * Set entity's AI to be enabled or disabled (if it has it)
+     */
+    public void setAIEnabled(boolean enabled);
 
     /**
      * Remove this entity from the server without any dead effects
