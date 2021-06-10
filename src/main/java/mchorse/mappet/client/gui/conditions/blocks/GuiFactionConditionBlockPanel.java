@@ -1,14 +1,11 @@
 package mchorse.mappet.client.gui.conditions.blocks;
 
-import mchorse.mappet.ClientProxy;
 import mchorse.mappet.api.conditions.blocks.FactionConditionBlock;
 import mchorse.mappet.api.conditions.utils.Target;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.conditions.GuiConditionOverlayPanel;
 import mchorse.mappet.client.gui.conditions.utils.GuiPropertyBlockElement;
-import mchorse.mappet.client.gui.utils.overlays.GuiContentNamesOverlayPanel;
-import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
-import mchorse.mclib.client.gui.framework.GuiBase;
+import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiCirculateElement;
 import mchorse.mclib.client.gui.utils.Elements;
@@ -45,13 +42,7 @@ public class GuiFactionConditionBlockPanel extends GuiAbstractConditionBlockPane
 
     private void openFactions()
     {
-        ClientProxy.requestNames(ContentType.FACTION, (names) ->
-        {
-            GuiContentNamesOverlayPanel overlay = new GuiContentNamesOverlayPanel(this.mc, IKey.lang("mappet.gui.overlays.faction"), ContentType.FACTION, names, (name) -> this.block.id = name);
-
-            overlay.set(this.block.id);
-            GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay, 0.5F, 0.7F);
-        });
+        GuiMappetUtils.openPicker(ContentType.FACTION, this.block.id, (name) -> this.block.id = name);
     }
 
     private void toggleFaction(GuiButtonElement b)

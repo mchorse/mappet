@@ -1,11 +1,9 @@
 package mchorse.mappet.client.gui.npc;
 
-import mchorse.mappet.ClientProxy;
 import mchorse.mappet.api.npcs.NpcState;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.npc.utils.GuiNpcDrops;
-import mchorse.mappet.client.gui.utils.overlays.GuiContentNamesOverlayPanel;
-import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
+import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
@@ -44,13 +42,7 @@ public class GuiNpcGeneralPanel extends GuiNpcPanel
 
     private void openFactions()
     {
-        ClientProxy.requestNames(ContentType.FACTION, (names) ->
-        {
-            GuiContentNamesOverlayPanel overlay = new GuiContentNamesOverlayPanel(this.mc, IKey.lang("mappet.gui.overlays.faction"), ContentType.FACTION, names, (name) -> this.state.faction = name);
-
-            overlay.set(this.state.faction);
-            GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay, 0.5F, 0.7F);
-        });
+        GuiMappetUtils.openPicker(ContentType.FACTION, this.state.faction, (name) -> this.state.faction = name);
     }
 
     private void openMorphMenu(boolean editing, Supplier<GuiCreativeMorphsMenu> morphs)

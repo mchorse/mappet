@@ -1,14 +1,10 @@
 package mchorse.mappet.client.gui.nodes.events;
 
-import mchorse.mappet.ClientProxy;
 import mchorse.mappet.api.events.nodes.DataNode;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.nodes.GuiEventBaseNodePanel;
 import mchorse.mappet.client.gui.panels.GuiMappetDashboardPanel;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
-import mchorse.mappet.client.gui.utils.overlays.GuiContentNamesOverlayPanel;
-import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
-import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.utils.Elements;
@@ -41,13 +37,7 @@ public abstract class GuiDataNodePanel <T extends DataNode> extends GuiEventBase
 
     protected void openOverlay()
     {
-        ClientProxy.requestNames(this.getType(), (names) ->
-        {
-            GuiContentNamesOverlayPanel overlay = new GuiContentNamesOverlayPanel(this.mc, this.getLabel(), this.getType(), names, this::setString);
-
-            overlay.set(this.node.dataId);
-            GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay, 0.5F, 0.7F);
-        });
+        GuiMappetUtils.openPicker(this.getType(), this.node.dataId, this::setString);
     }
 
     private void setString(String string)

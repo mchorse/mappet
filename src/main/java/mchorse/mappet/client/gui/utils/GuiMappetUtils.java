@@ -1,5 +1,8 @@
 package mchorse.mappet.client.gui.utils;
 
+import mchorse.mappet.ClientProxy;
+import mchorse.mappet.api.utils.ContentType;
+import mchorse.mappet.client.gui.utils.overlays.GuiContentNamesOverlayPanel;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
 import mchorse.mappet.client.gui.utils.overlays.GuiPromptOverlayPanel;
 import mchorse.mclib.McLib;
@@ -19,6 +22,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.resources.I18n;
 
+import java.util.function.Consumer;
+
 public class GuiMappetUtils
 {
     public static GuiTextElement fullWindowContext(GuiTextElement text, IKey title)
@@ -35,6 +40,17 @@ public class GuiMappetUtils
         }));
 
         return text;
+    }
+
+    public static void openPicker(ContentType type, String value, Consumer<String> callback)
+    {
+        ClientProxy.requestNames(type, (names) ->
+        {
+            GuiContentNamesOverlayPanel overlay = new GuiContentNamesOverlayPanel(Minecraft.getMinecraft(), type.getPickLabel(), type, names, callback);
+
+            overlay.set(value);
+            GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay, 0.5F, 0.7F);
+        });
     }
 
     public static void drawRightClickHere(GuiContext context, Area area)

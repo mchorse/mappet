@@ -4,6 +4,7 @@ import mchorse.mappet.Mappet;
 import mchorse.mappet.api.utils.manager.IManager;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.panels.GuiMappetDashboardPanel;
+import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -26,6 +27,13 @@ public enum ContentType
         {
             return dashboard.quest;
         }
+
+        @Override
+        @SideOnly(Side.CLIENT)
+        public IKey getPickLabel()
+        {
+            return IKey.lang("mappet.gui.overlays.quest");
+        }
     },
     CRAFTING_TABLE()
     {
@@ -40,6 +48,13 @@ public enum ContentType
         public GuiMappetDashboardPanel get(GuiMappetDashboard dashboard)
         {
             return dashboard.crafting;
+        }
+
+        @Override
+        @SideOnly(Side.CLIENT)
+        public IKey getPickLabel()
+        {
+            return IKey.lang("mappet.gui.overlays.crafting");
         }
     },
     EVENT()
@@ -56,6 +71,13 @@ public enum ContentType
         {
             return dashboard.event;
         }
+
+        @Override
+        @SideOnly(Side.CLIENT)
+        public IKey getPickLabel()
+        {
+            return IKey.lang("mappet.gui.overlays.event");
+        }
     },
     DIALOGUE()
     {
@@ -70,6 +92,13 @@ public enum ContentType
         public GuiMappetDashboardPanel get(GuiMappetDashboard dashboard)
         {
             return dashboard.dialogue;
+        }
+
+        @Override
+        @SideOnly(Side.CLIENT)
+        public IKey getPickLabel()
+        {
+            return IKey.lang("mappet.gui.overlays.dialogue");
         }
     },
     NPC()
@@ -86,6 +115,13 @@ public enum ContentType
         {
             return dashboard.npc;
         }
+
+        @Override
+        @SideOnly(Side.CLIENT)
+        public IKey getPickLabel()
+        {
+            return IKey.lang("mappet.gui.overlays.npc");
+        }
     },
     FACTION()
     {
@@ -100,6 +136,13 @@ public enum ContentType
         public GuiMappetDashboardPanel get(GuiMappetDashboard dashboard)
         {
             return dashboard.faction;
+        }
+
+        @Override
+        @SideOnly(Side.CLIENT)
+        public IKey getPickLabel()
+        {
+            return IKey.lang("mappet.gui.overlays.faction");
         }
     },
     CHAINS()
@@ -116,6 +159,13 @@ public enum ContentType
         {
             return dashboard.chain;
         }
+
+        @Override
+        @SideOnly(Side.CLIENT)
+        public IKey getPickLabel()
+        {
+            return IKey.lang("mappet.gui.overlays.chain");
+        }
     },
     SCRIPTS()
     {
@@ -131,6 +181,13 @@ public enum ContentType
         {
             return dashboard.script;
         }
+
+        @Override
+        @SideOnly(Side.CLIENT)
+        public IKey getPickLabel()
+        {
+            return IKey.lang("mappet.gui.overlays.script");
+        }
     };
 
     /* Every Karen be like :D */
@@ -138,4 +195,7 @@ public enum ContentType
 
     @SideOnly(Side.CLIENT)
     public abstract GuiMappetDashboardPanel get(GuiMappetDashboard dashboard);
+
+    @SideOnly(Side.CLIENT)
+    public abstract IKey getPickLabel();
 }

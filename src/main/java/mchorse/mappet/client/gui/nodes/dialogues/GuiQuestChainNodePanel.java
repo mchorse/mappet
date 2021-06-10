@@ -1,13 +1,10 @@
 package mchorse.mappet.client.gui.nodes.dialogues;
 
-import mchorse.mappet.ClientProxy;
 import mchorse.mappet.api.dialogues.nodes.QuestChainNode;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.nodes.GuiEventBaseNodePanel;
 import mchorse.mappet.client.gui.panels.GuiMappetDashboardPanel;
-import mchorse.mappet.client.gui.utils.overlays.GuiContentNamesOverlayPanel;
-import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
-import mchorse.mclib.client.gui.framework.GuiBase;
+import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.utils.Elements;
@@ -32,13 +29,7 @@ public class GuiQuestChainNodePanel extends GuiEventBaseNodePanel<QuestChainNode
 
     private void openQuestChains()
     {
-        ClientProxy.requestNames(ContentType.CHAINS, (names) ->
-        {
-            GuiContentNamesOverlayPanel overlay = new GuiContentNamesOverlayPanel(this.mc, IKey.lang("mappet.gui.overlays.chain"), ContentType.CHAINS, names, (name) -> this.node.chain = name);
-
-            overlay.set(this.node.chain);
-            GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay, 0.5F, 0.7F);
-        });
+        GuiMappetUtils.openPicker(ContentType.CHAINS, this.node.chain, (name) -> this.node.chain = name);
     }
 
     @Override

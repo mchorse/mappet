@@ -1,13 +1,10 @@
 package mchorse.mappet.client.gui.nodes.dialogues;
 
-import mchorse.mappet.ClientProxy;
 import mchorse.mappet.api.dialogues.nodes.CraftingNode;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.nodes.GuiEventBaseNodePanel;
 import mchorse.mappet.client.gui.panels.GuiMappetDashboardPanel;
-import mchorse.mappet.client.gui.utils.overlays.GuiContentNamesOverlayPanel;
-import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
-import mchorse.mclib.client.gui.framework.GuiBase;
+import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
@@ -27,12 +24,6 @@ public class GuiCraftingNodePanel extends GuiEventBaseNodePanel<CraftingNode>
 
     private void openCraftingTables()
     {
-        ClientProxy.requestNames(ContentType.CRAFTING_TABLE, (names) ->
-        {
-            GuiContentNamesOverlayPanel overlay = new GuiContentNamesOverlayPanel(this.mc, IKey.lang("mappet.gui.overlays.crafting"), ContentType.CRAFTING_TABLE, names, (name) -> this.node.table = name);
-
-            overlay.set(this.node.table);
-            GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay, 0.5F, 0.7F);
-        });
+        GuiMappetUtils.openPicker(ContentType.CRAFTING_TABLE, this.node.table, (name) -> this.node.table = name);
     }
 }
