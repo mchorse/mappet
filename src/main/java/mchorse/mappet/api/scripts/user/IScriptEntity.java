@@ -2,6 +2,7 @@ package mchorse.mappet.api.scripts.user;
 
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
+import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
 import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
 import net.minecraft.entity.Entity;
 
@@ -168,9 +169,16 @@ public interface IScriptEntity
     /* Mappet stuff */
 
     /**
-     * Get states of this entity (if it has some, only players have states)
+     * Get entity's states(if it has some, only players have states)
      *
-     * @return states of a player, or null if an entity doesn't have states
+     * @return player's states, or null if this entity doesn't have states
      */
     public IMappetStates getStates();
+
+    /**
+     * Get entity's quests (if it has some, only players have quests)
+     *
+     * @return player's quests, or null if this entity doesn't have quests
+     */
+    public IMappetQuests getQuests();
 }

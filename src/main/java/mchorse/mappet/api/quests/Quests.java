@@ -15,34 +15,6 @@ public class Quests implements INBTSerializable<NBTTagCompound>
 {
     public Map<String, Quest> quests = new LinkedHashMap<String, Quest>();
 
-    @Override
-    public NBTTagCompound serializeNBT()
-    {
-        NBTTagCompound tag = new NBTTagCompound();
-
-        for (Map.Entry<String, Quest> entry : this.quests.entrySet())
-        {
-            tag.setTag(entry.getKey(), entry.getValue().partialSerializeNBT());
-        }
-
-        return tag;
-    }
-
-    @Override
-    public void deserializeNBT(NBTTagCompound tag)
-    {
-        for (String key : tag.getKeySet())
-        {
-            Quest quest = Mappet.quests.load(key);
-
-            if (quest != null)
-            {
-                quest.partialDeserializeNBT(tag.getCompoundTag(key));
-                this.quests.put(key, quest);
-            }
-        }
-    }
-
     public boolean add(Quest quest, EntityPlayer player)
     {
         if (this.has(quest.getId()))
@@ -94,7 +66,7 @@ public class Quests implements INBTSerializable<NBTTagCompound>
             Dispatcher.sendTo(new PacketQuest(id, null), (EntityPlayerMP) player);
         }
 
-        return false;
+        return true;
     }
 
     public boolean has(String id)
@@ -105,5 +77,33 @@ public class Quests implements INBTSerializable<NBTTagCompound>
     public Quest getByName(String id)
     {
         return this.quests.get(id);
+    }
+
+    @Override
+    public NBTTagCompound serializeNBT()
+    {
+        NBTTagCompound tag = new NBTTagCompound();
+
+        for (Map.Entry<String, Quest> entry : this.quests.entrySet())
+        {
+            tag.setTag(entry.getKey(), entry.getValue().partialSerializeNBT());
+        }
+
+        return tag;
+    }
+
+    @Override
+    public void deserializeNBT(NBTTagCompound tag)
+    {
+        for (String key : tag.getKeySet())
+        {
+            Quest quest = Mappet.quests.load(key);
+
+            if (quest != null)
+            {
+                quest.partialDeserializeNBT(tag.getCompoundTag(key));
+                this.quests.put(key, quest);
+            }
+        }
     }
 }

@@ -1,13 +1,16 @@
 package mchorse.mappet.api.scripts.code;
 
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
+import mchorse.mappet.api.scripts.code.mappet.MappetQuests;
 import mchorse.mappet.api.scripts.code.mappet.MappetStates;
 import mchorse.mappet.api.scripts.user.IScriptEntity;
 import mchorse.mappet.api.scripts.user.IScriptRayTrace;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
+import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
 import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
 import mchorse.mappet.api.states.States;
+import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.scripts.PacketEntityRotations;
 import mchorse.mappet.utils.EntityUtils;
@@ -19,17 +22,15 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityTracker;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.play.server.SPacketEntity;
-import net.minecraft.network.play.server.SPacketEntityHeadLook;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.WorldServer;
 
 public class ScriptEntity implements IScriptEntity
 {
     private Entity entity;
     private IMappetStates states;
+    private IMappetQuests quests;
 
     public ScriptEntity(Entity entity)
     {
@@ -283,5 +284,18 @@ public class ScriptEntity implements IScriptEntity
         }
 
         return this.states;
+    }
+
+    @Override
+    public IMappetQuests getQuests()
+    {
+        if (this.quests == null && this.isPlayer())
+        {
+            EntityPlayer player = (EntityPlayer) this.entity;
+
+            this.quests = new MappetQuests(Character.get(player).getQuests(), player);
+        }
+
+        return this.quests;
     }
 }
