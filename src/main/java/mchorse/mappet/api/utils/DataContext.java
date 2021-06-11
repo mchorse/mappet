@@ -142,6 +142,14 @@ public class DataContext
 
     public String process(String text)
     {
+        /* Get rid off slash, even though it can be used, server API's like Mohist
+         * seem to have problem with that, so this should automatically fix command
+         * execution there */
+        if (text.startsWith("/"))
+        {
+            text = text.substring(1);
+        }
+
         if (!text.contains("${"))
         {
             return text;
