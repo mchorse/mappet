@@ -102,12 +102,13 @@ public final class Mappet
     public static ValueInt eventMaxExecutions;
     public static ValueBoolean eventUseServerForCommands;
 
-    public static ValueSyntaxStyle syntaxStyle;
     public static ValueInt nodePulseBackgroundColor;
     public static ValueBoolean nodePulseBackgroundMcLibPrimary;
     public static ValueInt nodeThickness;
-
     public static ValueBoolean questsPreviewRewards;
+
+    public static ValueSyntaxStyle scriptEditorSyntaxStyle;
+    public static ValueBoolean scriptEditorSounds;
 
     public Mappet()
     {
@@ -120,8 +121,6 @@ public final class Mappet
         ConfigBuilder builder = event.createBuilder(MOD_ID);
 
         builder.category("general").register(new ValueButtons("buttons").clientSide());
-        builder.register(syntaxStyle = new ValueSyntaxStyle("syntax_style"));
-        syntaxStyle.clientSide();
 
         npcsPeacefulDamage = builder.category("npc").getBoolean("peaceful_damage", true);
 
@@ -132,7 +131,10 @@ public final class Mappet
         nodePulseBackgroundMcLibPrimary = builder.getBoolean("pulse_background_mclib", false);
         nodeThickness = builder.getInt("node_thickness", 3, 0, 20);
         questsPreviewRewards = builder.getBoolean("quest_preview_rewards", true);
+        builder.getCategory().markClientSide();
 
+        builder.category("script_editor").register(scriptEditorSyntaxStyle = new ValueSyntaxStyle("syntax_style"));
+        scriptEditorSounds = builder.getBoolean("sounds", true);
         builder.getCategory().markClientSide();
     }
 

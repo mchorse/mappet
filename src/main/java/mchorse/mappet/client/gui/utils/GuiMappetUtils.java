@@ -19,8 +19,11 @@ import mchorse.mclib.utils.ColorUtils;
 import mchorse.mclib.utils.Interpolation;
 import mchorse.mclib.utils.Interpolations;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvent;
 
 import java.util.function.Consumer;
 
@@ -78,5 +81,10 @@ public class GuiMappetUtils
 
         GuiDraw.drawVerticalGradientRect(area.x, area.my() + 20, area.ex(), area.my() + 40, 0, 0xff000000);
         Gui.drawRect(area.x, area.my() + 40, area.ex(), area.my() + 90, 0xff000000);
+    }
+
+    public static void playSound(SoundEvent event)
+    {
+        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(event, 1.0F));
     }
 }

@@ -156,7 +156,7 @@ public class GuiThemeEditorOverlayPanel extends GuiEditorOverlayPanel<GuiThemeEd
 
         for (SyntaxStyleEntry entry : this.list.getList())
         {
-            if (entry.file.getName().equals(Mappet.syntaxStyle.getFile()))
+            if (entry.file.getName().equals(Mappet.scriptEditorSyntaxStyle.getFile()))
             {
                 this.pickItem(entry, true);
 
@@ -224,7 +224,7 @@ public class GuiThemeEditorOverlayPanel extends GuiEditorOverlayPanel<GuiThemeEd
     protected void pickItem(SyntaxStyleEntry item, boolean select)
     {
         item.save();
-        Mappet.syntaxStyle.set(item.file.getName(), item.style);
+        Mappet.scriptEditorSyntaxStyle.set(item.file.getName(), item.style);
 
         this.preview.getHighlighter().setStyle(item.style);
         this.preview.resetHighlight();
@@ -257,7 +257,7 @@ public class GuiThemeEditorOverlayPanel extends GuiEditorOverlayPanel<GuiThemeEd
         SyntaxStyleEntry item = this.list.getCurrentFirst();
 
         item.save();
-        Mappet.syntaxStyle.set(item.file.getName(), item.style);
+        Mappet.scriptEditorSyntaxStyle.set(item.file.getName(), item.style);
 
         super.onClose();
     }

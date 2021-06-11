@@ -62,7 +62,7 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
 
         if (data != null)
         {
-            this.code.getHighlighter().setStyle(Mappet.syntaxStyle.get());
+            this.code.getHighlighter().setStyle(Mappet.scriptEditorSyntaxStyle.get());
 
             if (!this.code.getText().equals(data.code))
             {

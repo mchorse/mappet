@@ -1,5 +1,7 @@
 package mchorse.mappet.client.gui.utils.text;
 
+import mchorse.mappet.Mappet;
+import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mappet.client.gui.utils.text.undo.TextEditUndo;
 import mchorse.mappet.client.gui.utils.text.utils.Cursor;
 import mchorse.mappet.client.gui.utils.text.utils.StringGroup;
@@ -16,7 +18,9 @@ import mchorse.mclib.utils.undo.UndoManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ChatAllowedCharacters;
+import net.minecraft.util.SoundEvent;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
@@ -892,10 +896,14 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         /* Undo/redo */
         if (ctrl && context.keyCode == Keyboard.KEY_Z)
         {
+            this.playSound(SoundEvents.BLOCK_CHEST_CLOSE);
+
             return this.undo.undo(this);
         }
         else if (ctrl && context.keyCode == Keyboard.KEY_Y)
         {
+            this.playSound(SoundEvents.BLOCK_CHEST_OPEN);
+
             return this.undo.redo(this);
         }
         /* Select all */
@@ -923,6 +931,8 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
                 this.moveCursor(x, y);
             }
 
+            this.playSound(SoundEvents.BLOCK_CLOTH_STEP);
+
             return true;
         }
         else if (context.keyCode == Keyboard.KEY_HOME)
@@ -930,12 +940,16 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             this.checkSelection(shift);
             this.moveCursorToLineStart();
 
+            this.playSound(SoundEvents.ENTITY_ARROW_SHOOT);
+
             return true;
         }
         else if (context.keyCode == Keyboard.KEY_END)
         {
             this.checkSelection(shift);
             this.moveCursorToLineEnd();
+
+            this.playSound(SoundEvents.ENTITY_ARROW_HIT);
 
             return true;
         }
@@ -950,6 +964,11 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
                 this.deselect();
 
                 undo.ready().post("", this.cursor, this.selection);
+                this.playSound(SoundEvents.BLOCK_ANVIL_USE);
+            }
+            else
+            {
+                this.playSound(SoundEvents.ENTITY_ITEM_PICKUP);
             }
 
             return context.keyCode == Keyboard.KEY_X;
@@ -963,6 +982,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             this.writeString(pasted);
 
             undo.ready().post(pasted, this.cursor, this.selection);
+            this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE);
 
             return true;
         }
@@ -971,6 +991,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         {
             this.keyTab(undo.ready());
             undo.post(undo.postText, this.cursor, this.selection);
+            this.playSound(GuiScreen.isShiftKeyDown() ? SoundEvents.BLOCK_PISTON_CONTRACT : SoundEvents.BLOCK_PISTON_EXTEND);
 
             return true;
         }
@@ -978,6 +999,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         {
             this.keyNewLine(undo.ready());
             undo.post(undo.postText, this.cursor, this.selection);
+            this.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT);
 
             return true;
         }
@@ -987,6 +1009,8 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             {
                 this.deleteSelection();
                 this.deselect();
+
+                this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE);
             }
             else
             {
@@ -999,6 +1023,8 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
                 {
                     this.keyBackspace(undo);
                 }
+
+                this.playSound(SoundEvents.BLOCK_STONE_BREAK);
             }
 
             undo.ready().post("", this.cursor, this.selection);
@@ -1015,11 +1041,20 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             this.moveCursor(1, 0);
 
             undo.ready().post(character, this.cursor, this.selection);
+            this.playSound(SoundEvents.BLOCK_STONE_PLACE);
 
             return true;
         }
 
         return false;
+    }
+
+    private void playSound(SoundEvent event)
+    {
+        if (Mappet.scriptEditorSounds.get())
+        {
+            GuiMappetUtils.playSound(event);
+        }
     }
 
     protected String getFromChar(char typedChar)

@@ -99,8 +99,6 @@ mappet.config.title=Mappet
 mappet.config.general.title=General
 mappet.config.general.tooltip=General mod options
 
-mappet.config.comments.general.syntax_style=This button opens theme editor where you can manage and edit script editor highlighting themes.
-
 mappet.config.npc.title=NPCs
 mappet.config.npc.tooltip=Mod options related to NPCs
 
@@ -126,6 +124,13 @@ mappet.config.gui.node_thickness=Connection thickness
 mappet.config.comments.gui.node_thickness=This option allows to change line thickness of node connections, in pixels (there might be a limit on line width on some hardware).
 mappet.config.gui.quest_preview_rewards=Preview quest rewards
 mappet.config.comments.gui.quest_preview_rewards=This option allows to toggle preview of quest rewards.
+
+mappet.config.script_editor.title=Script editor
+mappet.config.script_editor.tooltip=Options to tweak script editor's GUI preferences
+
+mappet.config.comments.script_editor.syntax_style=This button opens theme editor where you can manage and edit script editor highlighting themes.
+mappet.config.script_editor.sounds=Typing sounds
+mappet.config.comments.script_editor.sounds=Whether Minecraft sounds should be played when you type in code
 
 # GUI
 
