@@ -18,7 +18,6 @@ import mchorse.mappet.entities.ai.EntityAIReturnToPost;
 import mchorse.mappet.entities.utils.NpcDamageSource;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.npc.PacketNpcMorph;
-import mchorse.mappet.network.common.npc.PacketNpcState;
 import mchorse.mclib.utils.Interpolations;
 import mchorse.mclib.utils.MathUtils;
 import mchorse.metamorph.api.Morph;
@@ -221,12 +220,17 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
         if (notify)
         {
-            Dispatcher.sendToTracked(this, new PacketNpcMorph(this));
+            this.sendMorph();
         }
 
         this.faction = state.faction.isEmpty() ? null : Mappet.factions.load(state.faction);
 
         this.initEntityAI();
+    }
+
+    public void sendMorph()
+    {
+        Dispatcher.sendToTracked(this, new PacketNpcMorph(this));
     }
 
     @Override

@@ -13,10 +13,14 @@ import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.mappet.api.states.States;
 import mchorse.mappet.capabilities.character.Character;
+import mchorse.mappet.entities.EntityNpc;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.scripts.PacketEntityRotations;
 import mchorse.mappet.utils.EntityUtils;
 import mchorse.mclib.utils.RayTracing;
+import mchorse.metamorph.api.MorphAPI;
+import mchorse.metamorph.api.MorphUtils;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -333,5 +337,37 @@ public class ScriptEntity implements IScriptEntity
         }
 
         return this.quests;
+    }
+
+    @Override
+    public boolean setMorph(AbstractMorph morph)
+    {
+        if (this.isPlayer())
+        {
+            EntityPlayer player = (EntityPlayer) this.entity;
+
+            if (morph == null)
+            {
+                MorphAPI.demorph(player);
+            }
+            else
+            {
+                MorphAPI.morph(player, morph, true);
+            }
+
+            return true;
+        }
+        else if (this.entity instanceof EntityNpc)
+        {
+            EntityNpc npc = (EntityNpc) this.entity;
+
+            npc.getState().morph = MorphUtils.copy(morph);
+            npc.setMorph(npc.getState().morph);
+            npc.sendMorph();
+
+            return true;
+        }
+
+        return false;
     }
 }

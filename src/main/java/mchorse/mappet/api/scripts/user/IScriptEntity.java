@@ -5,6 +5,7 @@ import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
 import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.Entity;
 
 /**
@@ -216,4 +217,11 @@ public interface IScriptEntity
      * @return player's quests, or null if this entity doesn't have quests
      */
     public IMappetQuests getQuests();
+
+    /**
+     * Set entity's morph (works with player and NPCs)
+     *
+     * @return if entity's morph was changed successfully
+     */
+    public boolean setMorph(AbstractMorph morph);
 }

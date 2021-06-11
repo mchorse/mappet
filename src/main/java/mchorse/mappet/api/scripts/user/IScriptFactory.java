@@ -4,6 +4,7 @@ import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.mappet.api.scripts.user.nbt.INBTList;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.util.EnumParticleTypes;
 
 /**
@@ -62,4 +63,17 @@ public interface IScriptFactory
      * Get Minecraft particle type by its name
      */
     public EnumParticleTypes getParticleType(String type);
+
+    /**
+     * Create a morph out of string NBT
+     */
+    public default AbstractMorph createMorph(String nbt)
+    {
+        return this.createMorph(this.createCompound(nbt));
+    }
+
+    /**
+     * Create a morph out of NBT
+     */
+    public AbstractMorph createMorph(INBTCompound compound);
 }

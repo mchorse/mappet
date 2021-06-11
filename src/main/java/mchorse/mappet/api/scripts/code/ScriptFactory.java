@@ -9,6 +9,8 @@ import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.mappet.api.scripts.user.nbt.INBTList;
+import mchorse.metamorph.api.MorphManager;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -88,5 +90,16 @@ public class ScriptFactory implements IScriptFactory
     public EnumParticleTypes getParticleType(String type)
     {
         return EnumParticleTypes.getByName(type);
+    }
+
+    @Override
+    public AbstractMorph createMorph(INBTCompound compound)
+    {
+        if (compound == null)
+        {
+            return null;
+        }
+
+        return MorphManager.INSTANCE.morphFromNBT(compound.getNBTTagComound());
     }
 }
