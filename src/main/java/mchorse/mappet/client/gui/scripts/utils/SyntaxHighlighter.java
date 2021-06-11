@@ -70,6 +70,7 @@ public class SyntaxHighlighter
         for (int i = 0, c = line.length(); i < c; i++)
         {
             char character = line.charAt(i);
+            char next = i < c - 1 ? line.charAt(i + 1) : '\0';
 
             /* Strings */
             if (character == '\'' || character == '"')
@@ -149,26 +150,38 @@ public class SyntaxHighlighter
             /* Operators */
             if (!isString && OPERATORS.contains(String.valueOf(character)))
             {
-                String sign = String.valueOf(character);
+                boolean isNumericalMinus = character == '-' && Character.isDigit(next);
 
-                list.add(new TextSegment(this.buffer, this.style.other, font.getStringWidth(this.buffer)));
-                list.add(new TextSegment(sign, this.style.primary, font.getStringWidth(sign)));
+                /* Check for numerical minus sign, this condition above makes it possible
+                 * to highlight minus sign as a part of the number literal */
+                if (!isNumericalMinus)
+                {
+                    String sign = String.valueOf(character);
 
-                this.buffer = "";
+                    list.add(new TextSegment(this.buffer, this.style.other, font.getStringWidth(this.buffer)));
+                    list.add(new TextSegment(sign, this.style.primary, font.getStringWidth(sign)));
 
-                continue;
+                    this.buffer = "";
+                    this.last = i;
+
+                    continue;
+                }
             }
 
             this.buffer += character;
 
             /* Keywords */
-            char next = i < c - 1 ? line.charAt(i + 1) : '\0';
-
             if (!isString && ((next != '\0' && !Character.isLetterOrDigit(next)) || i == c - 1))
             {
-                if (this.last < i && !Character.isLetterOrDigit(line.charAt(this.last)))
+                if (this.last < i)
                 {
-                    this.last += 1;
+                    char last = line.charAt(this.last);
+                    boolean predicateForNumbers = (last == '-' || last == '.') && Character.isDigit(line.charAt(this.last + 1));
+
+                    if (!Character.isLetterOrDigit(last) && !predicateForNumbers)
+                    {
+                        this.last += 1;
+                    }
                 }
 
                 String keyword = line.substring(this.last, i + 1);
