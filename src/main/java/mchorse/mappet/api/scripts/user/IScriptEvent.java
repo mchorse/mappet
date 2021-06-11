@@ -49,6 +49,13 @@ public interface IScriptEvent
     /* Useful methods */
 
     /**
+     * Cancel the trigger event. Depending on the type of event, it can prevent the
+     * default behavior (for example for chat trigger, if you cancel it, it won't
+     * send the message into the chat).
+     */
+    public void cancel();
+
+    /**
      * Schedule execution of the same script (with same function)
      * given ticks forward.
      *

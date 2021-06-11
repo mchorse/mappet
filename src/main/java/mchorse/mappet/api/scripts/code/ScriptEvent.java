@@ -95,6 +95,12 @@ public class ScriptEvent implements IScriptEvent
     /* Useful methods */
 
     @Override
+    public void cancel()
+    {
+        this.context.canceled = true;
+    }
+
+    @Override
     public void scheduleScript(int delay)
     {
         this.scheduleScript(this.function, delay);

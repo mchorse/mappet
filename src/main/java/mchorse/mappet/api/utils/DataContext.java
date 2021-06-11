@@ -29,6 +29,8 @@ public class DataContext
     public EntityLivingBase subject;
     public EntityLivingBase object;
 
+    public boolean canceled;
+
     private TriggerSender sender;
     private Map<String, Object> values = new HashMap<String, Object>();
 

@@ -56,6 +56,7 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
         this.editor.removeAll();
         this.editor.add(this.hotkeys);
 
+        /* TODO: add variable tooltips */
         for (Map.Entry<String, Trigger> entry : this.settings.registered.entrySet())
         {
             GuiTriggerElement trigger = new GuiTriggerElement(this.mc, entry.getValue());

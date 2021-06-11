@@ -94,6 +94,11 @@ public class EventHandler
             DataContext context = new DataContext(event.getPlayer());
 
             Mappet.settings.chat.trigger(context.set("message", event.getMessage()));
+
+            if (context.canceled)
+            {
+                event.setCanceled(true);
+            }
         }
     }
 
@@ -111,6 +116,11 @@ public class EventHandler
                 .set("x", event.getPos().getX())
                 .set("y", event.getPos().getY())
                 .set("z", event.getPos().getZ()));
+
+            if (context.canceled)
+            {
+                event.setCanceled(true);
+            }
         }
     }
 
@@ -128,6 +138,11 @@ public class EventHandler
                 .set("x", event.getPos().getX())
                 .set("y", event.getPos().getY())
                 .set("z", event.getPos().getZ()));
+
+            if (context.canceled)
+            {
+                event.setCanceled(true);
+            }
         }
     }
 
@@ -143,6 +158,11 @@ public class EventHandler
                 DataContext context = new DataContext(event.getEntityLiving(), (EntityPlayer) source.getTrueSource());
 
                 Mappet.settings.damageEntity.trigger(context.set("damage", event.getAmount()));
+
+                if (context.canceled)
+                {
+                    event.setCanceled(true);
+                }
             }
         }
     }
@@ -295,6 +315,7 @@ public class EventHandler
             }
 
             Mappet.settings.serverTick.trigger(this.context);
+            this.context.canceled = false;
         }
     }
 

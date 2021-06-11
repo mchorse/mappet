@@ -62,6 +62,11 @@ public class Trigger implements INBTSerializable<NBTTagCompound>
     {
         for (AbstractTriggerBlock block : this.blocks)
         {
+            if (context.canceled)
+            {
+                return;
+            }
+
             block.triggerWithDelay(context);
         }
     }
