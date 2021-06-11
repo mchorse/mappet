@@ -282,6 +282,7 @@ mappet.gui.nodes.dialogue.provider=Quest provider
 mappet.gui.nodes.dialogue.receiver=Quest receiver
 mappet.gui.nodes.dialogue.auto_accept=Auto accept
 mappet.gui.nodes.dialogue.allow_retake=Allow retake
+mappet.gui.nodes.dialogue.condition=This condition determines whether the quest can be offered to the player (afrer it meets quest receiver and quest giver criteria as well)
 mappet.gui.nodes.context.add=Add a node...
 mappet.gui.nodes.context.add_node=Add %s node
 mappet.gui.nodes.context.copy=Copy selected node(s)

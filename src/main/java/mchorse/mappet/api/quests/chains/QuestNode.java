@@ -1,5 +1,6 @@
 package mchorse.mappet.api.quests.chains;
 
+import mchorse.mappet.api.conditions.Checker;
 import mchorse.mappet.api.utils.nodes.Node;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -11,6 +12,7 @@ public class QuestNode extends Node
 
     public boolean autoAccept;
     public boolean allowRetake;
+    public Checker condition = new Checker(true);
 
     @Override
     protected String getDisplayTitle()
@@ -48,6 +50,8 @@ public class QuestNode extends Node
             tag.setBoolean("AllowRetake", this.allowRetake);
         }
 
+        tag.setTag("Condition", this.condition.serializeNBT());
+
         return tag;
     }
 
@@ -80,5 +84,7 @@ public class QuestNode extends Node
         {
             this.allowRetake = tag.getBoolean("AllowRetake");
         }
+
+        this.condition.deserializeNBT(tag.getCompoundTag("Condition"));
     }
 }

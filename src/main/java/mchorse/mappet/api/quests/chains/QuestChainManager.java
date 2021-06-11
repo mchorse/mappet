@@ -3,6 +3,7 @@ package mchorse.mappet.api.quests.chains;
 import mchorse.mappet.CommonProxy;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.quests.Quest;
+import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.manager.BaseManager;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
@@ -42,6 +43,8 @@ public class QuestChainManager extends BaseManager<QuestChain>
             return context;
         }
 
+        context.data = new DataContext(player);
+
         for (QuestNode node : chain.getRoots())
         {
             int size = context.quests.size();
@@ -49,17 +52,20 @@ public class QuestChainManager extends BaseManager<QuestChain>
             this.evaluateRecursive(context, character, chain, node);
 
             /* Special case for quest retake */
-            if (node.allowRetake && !context.canceled && context.nesting > 0 && context.nesting == context.completed && size == context.quests.size())
+            if (node.allowRetake && !context.canceled && context.nesting > 0)
             {
-                Quest quest = Mappet.quests.load(node.quest);
-
-                if (quest != null)
+                if (context.nesting == context.completed && size == context.quests.size() && node.condition.check(context.data))
                 {
-                    QuestInfo info = this.giveNewQuest(context, character, node, quest);
+                    Quest quest = Mappet.quests.load(node.quest);
 
-                    if (info != null)
+                    if (quest != null)
                     {
-                        context.quests.add(info);
+                        QuestInfo info = this.giveNewQuest(context, character, node, quest);
+
+                        if (info != null)
+                        {
+                            context.quests.add(info);
+                        }
                     }
                 }
             }
@@ -137,6 +143,11 @@ public class QuestChainManager extends BaseManager<QuestChain>
     private boolean canTakeQuest(QuestContext context, QuestNode node, int timesCompleted)
     {
         if (!context.subject.equals(node.giver))
+        {
+            return false;
+        }
+
+        if (!node.condition.check(context.data))
         {
             return false;
         }

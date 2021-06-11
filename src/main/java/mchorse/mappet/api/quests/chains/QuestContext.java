@@ -1,5 +1,6 @@
 package mchorse.mappet.api.quests.chains;
 
+import mchorse.mappet.api.utils.DataContext;
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.ArrayList;
@@ -15,6 +16,8 @@ public class QuestContext
     public int completed;
     public int lastTimesCompleted;
     public boolean canceled;
+
+    public DataContext data;
 
     public QuestContext(EntityPlayer player, String subject)
     {
