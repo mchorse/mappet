@@ -412,22 +412,8 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     {
         if (!this.world.isRemote)
         {
-            if (hand == EnumHand.MAIN_HAND)
+            if (!player.getHeldItem(hand).interactWithEntity(player, this, hand))
             {
-                if (player.getHeldItem(hand).getItem() == Mappet.npcTool)
-                {
-                    if (player.isSneaking())
-                    {
-                        this.setDead();
-                    }
-                    else
-                    {
-                        Dispatcher.sendTo(new PacketNpcState(this.getEntityId(), this.state.serializeNBT()), (EntityPlayerMP) player);
-                    }
-
-                    return true;
-                }
-
                 this.state.triggerInteract.trigger(new DataContext(this, player));
             }
         }

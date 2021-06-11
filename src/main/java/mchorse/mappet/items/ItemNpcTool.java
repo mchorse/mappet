@@ -9,6 +9,7 @@ import mchorse.mappet.network.common.npc.PacketNpcList;
 import mchorse.mappet.network.common.npc.PacketNpcState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -40,6 +41,28 @@ public class ItemNpcTool extends Item
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         tooltip.add(I18n.format("item.mappet.npc_tool.tooltip"));
+    }
+
+    @Override
+    public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer player, EntityLivingBase target, EnumHand hand)
+    {
+        if (!player.world.isRemote && target instanceof EntityNpc)
+        {
+            EntityNpc npc = (EntityNpc) target;
+
+            if (player.isSneaking())
+            {
+                npc.setDead();
+            }
+            else
+            {
+                Dispatcher.sendTo(new PacketNpcState(target.getEntityId(), npc.getState().serializeNBT()), (EntityPlayerMP) player);
+            }
+
+            return true;
+        }
+
+        return super.itemInteractionForEntity(stack, player, target, hand);
     }
 
     @Override
