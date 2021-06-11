@@ -112,9 +112,30 @@ public interface IScriptWorld
 
     /**
      * Get entities within the box specified by given coordinates in this world.
-     * This method limits to scanning entities <b>only within 100 blocks radius</b>
+     * This method limits to scanning entities <b>only within 100 blocks</b>
      * in any direction. If the box provided has any of its sizes that is longer
      * than 100 blocks, then it will simply return an empty list.
      */
     public List<IScriptEntity> getEntities(double x1, double y1, double z1, double x2, double y2, double z2);
+
+    /**
+     * Get entities within the sphere specified by given coordinates and radius in
+     * this world. This method limits to scanning entities <b>only within 50 blocks
+     * radius</b> in any direction. If the sphere provided has the radius that is
+     * longer than 100 blocks, then it will simply return an empty list.
+     */
+    public List<IScriptEntity> getEntities(double x, double y, double z, double radius);
+
+    /**
+     * Play a sound event in the world
+     */
+    public default void playSound(String event, double x, double y, double z)
+    {
+        this.playSound(event, x, y, z, 1F, 1F);
+    }
+
+    /**
+     * Play a sound event in the world with volume and pitch
+     */
+    public void playSound(String event, double x, double y, double z, float volume, float pitch);
 }

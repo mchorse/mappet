@@ -21,6 +21,11 @@ public class WorldUtils
 
     public static void playSound(EntityPlayerMP player, String soundEvent)
     {
-        player.connection.sendPacket(new SPacketCustomSound(soundEvent, SoundCategory.MASTER, player.posX, player.posY, player.posZ, 1, 1));
+        playSound(player, soundEvent, player.posX, player.posY, player.posZ, 1F, 1F);
+    }
+
+    public static void playSound(EntityPlayerMP player, String soundEvent, double x, double y, double z, float volume, float pitch)
+    {
+        player.connection.sendPacket(new SPacketCustomSound(soundEvent, SoundCategory.MASTER, x, y, z, volume, pitch));
     }
 }
