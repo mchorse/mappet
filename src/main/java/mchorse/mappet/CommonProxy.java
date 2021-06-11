@@ -13,6 +13,7 @@ import mchorse.mappet.api.dialogues.nodes.CraftingNode;
 import mchorse.mappet.api.dialogues.nodes.QuestChainNode;
 import mchorse.mappet.api.dialogues.nodes.ReactionNode;
 import mchorse.mappet.api.dialogues.nodes.ReplyNode;
+import mchorse.mappet.api.events.nodes.CancelNode;
 import mchorse.mappet.api.events.nodes.CommandNode;
 import mchorse.mappet.api.events.nodes.ConditionNode;
 import mchorse.mappet.api.events.nodes.DialogueNode;
@@ -148,7 +149,8 @@ public class CommonProxy
             .register("timer", TimerNode.class, Colors.TIME)
             .register("event", EventNode.class, Colors.STATE)
             .register("dialogue", DialogueNode.class, Colors.DIALOGUE)
-            .register("script", ScriptNode.class, Colors.ENTITY);
+            .register("script", ScriptNode.class, Colors.ENTITY)
+            .register("cancel", CancelNode.class, Colors.CANCEL);
 
         events = eventNodes;
         Mappet.EVENT_BUS.post(new RegisterEventNodeEvent(eventNodes));

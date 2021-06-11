@@ -4,6 +4,7 @@ import mchorse.mappet.CommonProxy;
 import mchorse.mappet.api.dialogues.nodes.QuestChainNode;
 import mchorse.mappet.api.dialogues.nodes.ReactionNode;
 import mchorse.mappet.api.dialogues.nodes.ReplyNode;
+import mchorse.mappet.api.events.nodes.CancelNode;
 import mchorse.mappet.api.events.nodes.CommandNode;
 import mchorse.mappet.api.events.nodes.ConditionNode;
 import mchorse.mappet.api.events.nodes.DialogueNode;
@@ -19,6 +20,7 @@ import mchorse.mappet.client.gui.nodes.GuiEventBaseNodePanel;
 import mchorse.mappet.client.gui.nodes.GuiEventNodeGraph;
 import mchorse.mappet.client.gui.nodes.dialogues.GuiQuestChainNodePanel;
 import mchorse.mappet.client.gui.nodes.dialogues.GuiReactionNodePanel;
+import mchorse.mappet.client.gui.nodes.events.GuiCancelNodePanel;
 import mchorse.mappet.client.gui.nodes.events.GuiCommandNodePanel;
 import mchorse.mappet.client.gui.nodes.events.GuiConditionNodePanel;
 import mchorse.mappet.client.gui.nodes.events.GuiDialogueNodePanel;
@@ -44,6 +46,7 @@ public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventBaseN
 
     static
     {
+        PANELS.put(CancelNode.class, GuiCancelNodePanel.class);
         PANELS.put(CommandNode.class, GuiCommandNodePanel.class);
         PANELS.put(ConditionNode.class, GuiConditionNodePanel.class);
         PANELS.put(SwitchNode.class, GuiConditionNodePanel.class);
