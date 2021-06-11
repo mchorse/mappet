@@ -94,7 +94,7 @@ public class TextEditUndo implements IUndo<GuiMultiTextElement>
                 }
 
                 /* Undos involving selections can't be merged either */
-                return this.isBackspace() == text.isBackspace() && !text.wasSelecting();
+                return this.isBackspace() == text.isBackspace() && !(text.wasSelecting() || this.wasSelecting());
             }
         }
 
@@ -198,17 +198,24 @@ public class TextEditUndo implements IUndo<GuiMultiTextElement>
                 element.swapSelection();
             }
 
-            /* Handle delete key deletion */
-            boolean backspace = this.isBackspace();
-
-            for (int i = 0; i < this.text.length(); i++)
+            if (element.isSelected())
             {
-                if (backspace)
-                {
-                    element.moveCursor(1, 0);
-                }
+                element.deleteSelection();
+            }
+            else
+            {
+                /* Handle delete key deletion */
+                boolean backspace = this.isBackspace();
 
-                element.deleteCharacter();
+                for (int i = 0; i < this.text.length(); i++)
+                {
+                    if (backspace)
+                    {
+                        element.moveCursor(1, 0);
+                    }
+
+                    element.deleteCharacter();
+                }
             }
         }
 

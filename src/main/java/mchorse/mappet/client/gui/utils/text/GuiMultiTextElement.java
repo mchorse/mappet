@@ -1,5 +1,6 @@
 package mchorse.mappet.client.gui.utils.text;
 
+import com.google.common.collect.ImmutableList;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mappet.client.gui.utils.text.undo.TextEditUndo;
@@ -25,6 +26,7 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.function.Consumer;
@@ -226,15 +228,75 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
     public boolean selectGroup(int direction, boolean select)
     {
-        String line = this.text.get(this.cursor.line);
+        List<Cursor> groups = this.findGroup(direction, this.cursor);
 
-        if (line.isEmpty() || this.cursor.offset >= line.length() - 1)
+        if (groups.isEmpty())
         {
             return false;
         }
 
-        int offset = this.cursor.offset;
-        int first = direction < 0 ? (offset > 0 ? offset - 1 : offset) : offset;
+        Cursor min = groups.get(0);
+        Cursor max = groups.get(1);
+
+        if (select)
+        {
+            if (direction == 0)
+            {
+                this.cursor.offset = max.offset;
+                this.selection.set(this.cursor.line, min.offset);
+            }
+            else
+            {
+                if (!this.isSelected())
+                {
+                    this.selection.copy(this.cursor);
+                }
+
+                this.cursor.offset = direction < 0 ? min.offset : max.offset;
+            }
+        }
+        else
+        {
+            this.deselect();
+            this.cursor.offset = direction < 0 ? min.offset : max.offset;
+        }
+
+        return true;
+    }
+
+    public int measureGroup(int direction, Cursor cursor)
+    {
+        if (direction == 0)
+        {
+            return 0;
+        }
+
+        List<Cursor> group = this.findGroup(direction, cursor);
+
+        if (group.isEmpty())
+        {
+            return 0;
+        }
+
+        Cursor other = group.get(direction < 0 ? 0 : 1);
+
+        return other.offset - cursor.offset;
+    }
+
+    /**
+     * Find a group (two cursors) at given cursor
+     */
+    public List<Cursor> findGroup(int direction, Cursor cursor)
+    {
+        String line = this.text.get(cursor.line);
+
+        if (line.isEmpty() || this.cursor.offset >= line.length() - 1)
+        {
+            return Collections.emptyList();
+        }
+
+        int offset = cursor.offset;
+        int first = direction < 0 && offset > 0 ? offset - 1 : offset;
 
         String character = String.valueOf(line.charAt(first));
         StringGroup group = StringGroup.get(character);
@@ -276,35 +338,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             }
         }
 
-        if (offset == max && offset == min)
-        {
-            return false;
-        }
-
-        if (select)
-        {
-            if (direction == 0)
-            {
-                this.cursor.offset = max;
-                this.selection.set(this.cursor.line, min);
-            }
-            else
-            {
-                if (!this.isSelected())
-                {
-                    this.selection.copy(this.cursor);
-                }
-
-                this.cursor.offset = direction < 0 ? min : max;
-            }
-        }
-        else
-        {
-            this.deselect();
-            this.cursor.offset = direction < 0 ? min : max;
-        }
-
-        return true;
+        return ImmutableList.of(new Cursor(cursor.line, min), new Cursor(cursor.line, max));
     }
 
     private boolean matchSelectGroup(StringGroup group, String character)
@@ -321,12 +355,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
                 this.lastGroup = StringGroup.get(character);
             }
 
-            if (StringGroup.get(character) != this.lastGroup)
-            {
-                return false;
-            }
-
-            return true;
+            return StringGroup.get(character) == this.lastGroup;
         }
 
         return false;
@@ -1047,6 +1076,8 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         }
         else if (context.keyCode == Keyboard.KEY_BACK || context.keyCode == Keyboard.KEY_DELETE)
         {
+            boolean delete = context.keyCode == Keyboard.KEY_DELETE;
+
             if (this.isSelected())
             {
                 this.deleteSelection();
@@ -1056,14 +1087,19 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             }
             else
             {
-                if (context.keyCode == Keyboard.KEY_DELETE)
+                if (delete)
                 {
-                    this.moveCursor(1, 0);
-                    undo.text = this.deleteCharacter();
+                    int measure = ctrl ? Math.max(this.measureGroup(1, this.cursor), 1) : 1;
+
+                    for (int i = 0; i < measure; i++)
+                    {
+                        this.moveCursor(1, 0);
+                        undo.text = undo.text + this.deleteCharacter();
+                    }
                 }
                 else
                 {
-                    this.keyBackspace(undo);
+                    this.keyBackspace(undo, ctrl);
                 }
 
                 this.playSound(SoundEvents.BLOCK_STONE_BREAK);
@@ -1113,9 +1149,14 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         undo.postText += "\n";
     }
 
-    protected void keyBackspace(TextEditUndo undo)
+    protected void keyBackspace(TextEditUndo undo, boolean ctrl)
     {
-        undo.text = this.deleteCharacter();
+        int measure = ctrl ? Math.max(Math.abs(this.measureGroup(-1, this.cursor)), 1) : 1;
+
+        for (int i = 0; i < measure; i++)
+        {
+            undo.text = this.deleteCharacter() + undo.text;
+        }
     }
 
     protected void keyTab(TextEditUndo undo)

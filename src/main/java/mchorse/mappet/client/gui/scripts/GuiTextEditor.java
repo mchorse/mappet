@@ -164,7 +164,7 @@ public class GuiTextEditor extends GuiMultiTextElement
     }
 
     @Override
-    protected void keyBackspace(TextEditUndo undo)
+    protected void keyBackspace(TextEditUndo undo, boolean ctrl)
     {
         String line = this.text.get(this.cursor.line);
 
@@ -186,7 +186,7 @@ public class GuiTextEditor extends GuiMultiTextElement
         }
         else
         {
-            super.keyBackspace(undo);
+            super.keyBackspace(undo, ctrl);
         }
     }
 
