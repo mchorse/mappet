@@ -57,6 +57,8 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
     private long update;
     private long lastUpdate;
 
+    private StringGroup lastGroup;
+
     private UndoManager<GuiMultiTextElement> undo;
 
     public static List<String> splitNewlineString(String string)
@@ -232,18 +234,21 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         }
 
         int offset = this.cursor.offset;
+        int first = direction < 0 ? (offset > 0 ? offset - 1 : offset) : offset;
 
-        String character = String.valueOf(line.charAt(offset));
+        String character = String.valueOf(line.charAt(first));
         StringGroup group = StringGroup.get(character);
 
         int min = offset;
         int max = offset;
 
+        this.lastGroup = null;
+
         if (direction <= 0)
         {
             while (min > 0)
             {
-                if (group.match(String.valueOf(line.charAt(min - 1))))
+                if (this.matchSelectGroup(group, String.valueOf(line.charAt(min - 1))))
                 {
                     min -= 1;
                 }
@@ -254,11 +259,13 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             }
         }
 
+        this.lastGroup = null;
+
         if (direction >= 0)
         {
             while (max < line.length())
             {
-                if (group.match(String.valueOf(line.charAt(max))))
+                if (this.matchSelectGroup(group, String.valueOf(line.charAt(max))))
                 {
                     max += 1;
                 }
@@ -298,6 +305,31 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         }
 
         return true;
+    }
+
+    private boolean matchSelectGroup(StringGroup group, String character)
+    {
+        if (group.match(character))
+        {
+            return this.lastGroup == null;
+        }
+
+        if (group == StringGroup.SPACE)
+        {
+            if (this.lastGroup == null)
+            {
+                this.lastGroup = StringGroup.get(character);
+            }
+
+            if (StringGroup.get(character) != this.lastGroup)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -896,15 +928,25 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         /* Undo/redo */
         if (ctrl && context.keyCode == Keyboard.KEY_Z)
         {
-            this.playSound(SoundEvents.BLOCK_CHEST_CLOSE);
+            boolean result = this.undo.undo(this);
 
-            return this.undo.undo(this);
+            if (result)
+            {
+                this.playSound(SoundEvents.BLOCK_CHEST_CLOSE);
+            }
+
+            return result;
         }
         else if (ctrl && context.keyCode == Keyboard.KEY_Y)
         {
-            this.playSound(SoundEvents.BLOCK_CHEST_OPEN);
+            boolean result = this.undo.redo(this);
 
-            return this.undo.redo(this);
+            if (result)
+            {
+                this.playSound(SoundEvents.BLOCK_CHEST_OPEN);
+            }
+
+            return result;
         }
         /* Select all */
         else if (ctrl && context.keyCode == Keyboard.KEY_A)
