@@ -120,9 +120,19 @@ public interface IScriptEntity
     public IScriptItemStack getMainItem();
 
     /**
+     * Set item held in main hand
+     */
+    public void setMainItem(IScriptItemStack stack);
+
+    /**
      * Get item held in off hand
      */
     public IScriptItemStack getOffItem();
+
+    /**
+     * Set item held in off hand
+     */
+    public void setOffItem(IScriptItemStack stack);
 
     /* Entity meta */
 

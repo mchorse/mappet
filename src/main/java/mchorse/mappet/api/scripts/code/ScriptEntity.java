@@ -31,6 +31,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.WorldServer;
@@ -207,6 +208,12 @@ public class ScriptEntity implements IScriptEntity
     }
 
     @Override
+    public void setMainItem(IScriptItemStack stack)
+    {
+        this.setItem(EnumHand.MAIN_HAND, stack);
+    }
+
+    @Override
     public IScriptItemStack getOffItem()
     {
         if (this.entity instanceof EntityLivingBase)
@@ -215,6 +222,25 @@ public class ScriptEntity implements IScriptEntity
         }
 
         return ScriptItemStack.EMPTY;
+    }
+
+    @Override
+    public void setOffItem(IScriptItemStack stack)
+    {
+        this.setItem(EnumHand.OFF_HAND, stack);
+    }
+
+    private void setItem(EnumHand hand, IScriptItemStack stack)
+    {
+        if (stack == null)
+        {
+            stack = ScriptItemStack.EMPTY;
+        }
+
+        if (this.entity instanceof EntityLivingBase)
+        {
+            ((EntityLivingBase) this.entity).setHeldItem(hand, stack.getMinecraftItemStack().copy());
+        }
     }
 
     /* Entity meta */
