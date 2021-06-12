@@ -243,7 +243,7 @@ public class ScriptWorld implements IScriptWorld
         item.motionY = my;
         item.motionZ = mz;
 
-        boolean result = this.world.spawnEntity(item);
+        this.world.spawnEntity(item);
 
         return new ScriptEntity(item);
     }

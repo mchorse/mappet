@@ -26,6 +26,7 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityTracker;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -217,6 +218,15 @@ public class ScriptEntity implements IScriptEntity
     }
 
     /* Entity meta */
+
+    @Override
+    public void setSpeed(float speed)
+    {
+        if (this.entity instanceof EntityLivingBase)
+        {
+            ((EntityLivingBase) this.entity).getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue((double) speed);
+        }
+    }
 
     @Override
     public boolean isAIEnabled()

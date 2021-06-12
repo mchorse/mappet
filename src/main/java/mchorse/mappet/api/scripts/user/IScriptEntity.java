@@ -127,6 +127,11 @@ public interface IScriptEntity
     /* Entity meta */
 
     /**
+     * Set entity's speed
+     */
+    public void setSpeed(float speed);
+
+    /**
      * Check whether entity's AI is enabled
      */
     public boolean isAIEnabled();
