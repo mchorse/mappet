@@ -4,10 +4,12 @@ import mchorse.mappet.api.scripts.code.blocks.ScriptBlockState;
 import mchorse.mappet.api.scripts.user.IScriptEntity;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
+import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.mappet.utils.WorldUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
@@ -225,5 +227,24 @@ public class ScriptWorld implements IScriptWorld
         {
             WorldUtils.playSound(player, event, x, y, z, volume, pitch);
         }
+    }
+
+    @Override
+    public IScriptEntity dropItemStack(IScriptItemStack stack, double x, double y, double z, double mx, double my, double mz)
+    {
+        if (stack == null || stack.isEmpty())
+        {
+            return null;
+        }
+
+        EntityItem item = new EntityItem(this.world, x, y, z, stack.getMinecraftItemStack().copy());
+
+        item.motionX = mx;
+        item.motionY = my;
+        item.motionZ = mz;
+
+        boolean result = this.world.spawnEntity(item);
+
+        return new ScriptEntity(item);
     }
 }

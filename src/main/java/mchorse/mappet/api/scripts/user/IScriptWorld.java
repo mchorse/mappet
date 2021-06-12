@@ -1,6 +1,7 @@
 package mchorse.mappet.api.scripts.user;
 
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
+import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
@@ -138,4 +139,17 @@ public interface IScriptWorld
      * Play a sound event in the world with volume and pitch
      */
     public void playSound(String event, double x, double y, double z, float volume, float pitch);
+
+    /**
+     * Drop item stack at given XYZ position with no velocity applied
+     */
+    public default IScriptEntity dropItemStack(IScriptItemStack stack, double x, double y, double z)
+    {
+        return this.dropItemStack(stack, x, y, z, 0, 0, 0);
+    }
+
+    /**
+     * Drop an item stack at given XYZ position in this world with desired velocity
+     */
+    public IScriptEntity dropItemStack(IScriptItemStack stack, double x, double y, double z, double mx, double my, double mz);
 }

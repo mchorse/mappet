@@ -78,7 +78,7 @@ public class ScriptFactory implements IScriptFactory
     @Override
     public IScriptItemStack createItemStack(INBTCompound compound)
     {
-        if (compound instanceof ScriptItemStack)
+        if (compound != null)
         {
             return new ScriptItemStack(new ItemStack(compound.getNBTTagComound()));
         }
