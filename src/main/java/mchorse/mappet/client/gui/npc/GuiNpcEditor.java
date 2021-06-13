@@ -2,20 +2,13 @@ package mchorse.mappet.client.gui.npc;
 
 import mchorse.mappet.api.npcs.NpcState;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
-import mchorse.mclib.client.gui.framework.elements.GuiPanelBase;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.IGuiElement;
-import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.utils.Elements;
-import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.ScrollDirection;
 import mchorse.mclib.client.gui.utils.keys.IKey;
-import mchorse.mclib.utils.Direction;
-import mchorse.metamorph.api.morphs.AbstractMorph;
-import mchorse.metamorph.client.gui.creative.GuiCreativeMorphsMenu;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,14 +25,14 @@ public class GuiNpcEditor extends GuiScrollElement
     private GuiNpcMovementPanel movement;
     private GuiNpcBehaviorPanel behavior;
 
-    public GuiNpcEditor(Minecraft mc, boolean id, Supplier<GuiInventoryElement> inventory, Supplier<GuiCreativeMorphsMenu> morphs)
+    public GuiNpcEditor(Minecraft mc, boolean id, Supplier<GuiInventoryElement> inventory)
     {
         super(mc, ScrollDirection.HORIZONTAL);
 
         this.scroll.scrollSpeed *= 2;
 
         this.meta = new GuiNpcMetaPanel(mc, id);
-        this.general = new GuiNpcGeneralPanel(mc, inventory, morphs);
+        this.general = new GuiNpcGeneralPanel(mc, inventory);
         this.health = new GuiNpcHealthPanel(mc);
         this.damage = new GuiNpcDamagePanel(mc);
         this.movement = new GuiNpcMovementPanel(mc);

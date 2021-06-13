@@ -9,6 +9,6 @@ public class GuiCancelNodePanel extends GuiEventBaseNodePanel<CancelNode>
 {
     public GuiCancelNodePanel(Minecraft mc, GuiMappetDashboardPanel parentPanel)
     {
-        super(mc, parentPanel);
+        super(mc);
     }
 }

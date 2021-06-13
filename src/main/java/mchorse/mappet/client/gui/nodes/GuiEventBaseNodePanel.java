@@ -1,7 +1,6 @@
 package mchorse.mappet.client.gui.nodes;
 
 import mchorse.mappet.api.events.nodes.EventBaseNode;
-import mchorse.mappet.client.gui.panels.GuiMappetDashboardPanel;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.Direction;
@@ -11,7 +10,7 @@ public abstract class GuiEventBaseNodePanel <T extends EventBaseNode> extends Gu
 {
     public GuiToggleElement binary;
 
-    public GuiEventBaseNodePanel(Minecraft mc, GuiMappetDashboardPanel parentPanel)
+    public GuiEventBaseNodePanel(Minecraft mc)
     {
         super(mc);
 

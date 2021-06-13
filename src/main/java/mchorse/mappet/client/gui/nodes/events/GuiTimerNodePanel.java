@@ -14,7 +14,7 @@ public class GuiTimerNodePanel extends GuiEventBaseNodePanel<TimerNode>
 
     public GuiTimerNodePanel(Minecraft mc, GuiMappetDashboardPanel parentPanel)
     {
-        super(mc, parentPanel);
+        super(mc);
 
         this.timer = new GuiTrackpadElement(mc, (value) -> this.node.timer = value.intValue());
         this.timer.integer().limit(0);

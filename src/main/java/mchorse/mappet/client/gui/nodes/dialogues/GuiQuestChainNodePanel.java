@@ -18,7 +18,7 @@ public class GuiQuestChainNodePanel extends GuiEventBaseNodePanel<QuestChainNode
 
     public GuiQuestChainNodePanel(Minecraft mc, GuiMappetDashboardPanel parentPanel)
     {
-        super(mc, parentPanel);
+        super(mc);
 
         this.questChain = new GuiButtonElement(mc, IKey.lang("mappet.gui.overlays.chain"), (b) -> this.openQuestChains());
         this.subject = new GuiTextElement(mc, 1000, (t) -> this.node.subject = t);

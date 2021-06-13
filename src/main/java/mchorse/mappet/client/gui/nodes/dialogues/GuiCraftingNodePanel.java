@@ -15,7 +15,7 @@ public class GuiCraftingNodePanel extends GuiEventBaseNodePanel<CraftingNode>
 
     public GuiCraftingNodePanel(Minecraft mc, GuiMappetDashboardPanel parentPanel)
     {
-        super(mc, parentPanel);
+        super(mc);
 
         this.crafting = new GuiButtonElement(mc, IKey.lang("mappet.gui.overlays.crafting"), (b) -> this.openCraftingTables());
 

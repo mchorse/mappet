@@ -17,7 +17,7 @@ public class GuiDialogueNodePanel extends GuiEventBaseNodePanel<DialogueNode>
 
     public GuiDialogueNodePanel(Minecraft mc, GuiMappetDashboardPanel parentPanel)
     {
-        super(mc, parentPanel);
+        super(mc);
 
         this.text = GuiMappetUtils.fullWindowContext(
             new GuiTextElement(mc, 10000, (text) -> this.node.message.text = text),

@@ -8,7 +8,6 @@ import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
 import mchorse.mappet.client.gui.utils.overlays.GuiResourceLocationOverlayPanel;
 import mchorse.mappet.client.gui.utils.overlays.GuiSoundOverlayPanel;
 import mchorse.mclib.client.gui.framework.GuiBase;
-import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
@@ -17,12 +16,10 @@ import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.Direction;
 import mchorse.metamorph.api.MorphUtils;
-import mchorse.metamorph.client.gui.creative.GuiCreativeMorphsMenu;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.creative.GuiNestedEdit;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
-
-import java.util.function.Supplier;
 
 public class GuiReactionNodePanel extends GuiDialogueNodePanel
 {
@@ -35,9 +32,7 @@ public class GuiReactionNodePanel extends GuiDialogueNodePanel
     {
         super(mc, parentPanel);
 
-        Supplier<GuiCreativeMorphsMenu> morphs = ((GuiMappetDashboard) parentPanel.dashboard)::getMorphMenu;
-
-        this.morph = new GuiNestedEdit(mc, (b) -> this.openMorphMenu(b, morphs));
+        this.morph = new GuiNestedEdit(mc, this::openMorphMenu);
         this.sound = new GuiIconElement(mc, Icons.SOUND, (b) -> this.openPickSoundOverlay());
         this.sound.tooltip(IKey.lang("mappet.gui.trigger.sound"));
         this.read = new GuiToggleElement(mc, IKey.lang("mappet.gui.nodes.dialogue.read"), (b) -> this.get().read = b.isToggled());
@@ -67,36 +62,17 @@ public class GuiReactionNodePanel extends GuiDialogueNodePanel
         this.get().sound = location == null ? "" : location.toString();
     }
 
-    private void openMorphMenu(boolean editing, Supplier<GuiCreativeMorphsMenu> morphs)
+    private void openMorphMenu(boolean editing)
     {
-        GuiCreativeMorphsMenu menu = morphs.get();
+        GuiMappetDashboard.get(this.mc).openMorphMenu(this.getParentContainer(), editing, this.get().morph, this::setMorph);
+    }
 
-        if (menu.hasParent())
-        {
-            return;
-        }
+    private void setMorph(AbstractMorph morph)
+    {
+        morph = MorphUtils.copy(morph);
 
-        GuiElement parent = this.getParentContainer();
-
-        GuiBase.getCurrent().unfocus();
-
-        menu.callback = (morph) ->
-        {
-            morph = MorphUtils.copy(morph);
-
-            this.get().morph = morph;
-            this.morph.setMorph(morph);
-        };
-        menu.flex().reset().relative(parent).wh(1F, 1F);
-        menu.resize();
-        menu.setSelected(this.get().morph);
-
-        if (editing)
-        {
-            menu.enterEditMorph();
-        }
-
-        parent.add(menu);
+        this.get().morph = morph;
+        this.morph.setMorph(morph);
     }
 
     public ReactionNode get()

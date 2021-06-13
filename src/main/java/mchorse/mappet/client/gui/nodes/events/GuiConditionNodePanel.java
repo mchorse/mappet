@@ -14,7 +14,7 @@ public class GuiConditionNodePanel extends GuiEventBaseNodePanel<ConditionNode>
 
     public GuiConditionNodePanel(Minecraft mc, GuiMappetDashboardPanel parentPanel)
     {
-        super(mc, parentPanel);
+        super(mc);
 
         this.checker = new GuiCheckerElement(mc);
 

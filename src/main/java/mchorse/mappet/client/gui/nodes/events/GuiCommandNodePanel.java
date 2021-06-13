@@ -15,7 +15,7 @@ public class GuiCommandNodePanel extends GuiEventBaseNodePanel<CommandNode>
 
     public GuiCommandNodePanel(Minecraft mc, GuiMappetDashboardPanel parentPanel)
     {
-        super(mc, parentPanel);
+        super(mc);
 
         this.command = GuiMappetUtils.fullWindowContext(
             new GuiTextElement(mc, 10000, (text) -> this.node.command = text),

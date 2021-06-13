@@ -18,7 +18,7 @@ public abstract class GuiDataNodePanel <T extends DataNode> extends GuiEventBase
 
     public GuiDataNodePanel(Minecraft mc, GuiMappetDashboardPanel parentPanel)
     {
-        super(mc, parentPanel);
+        super(mc);
 
         this.pick = new GuiButtonElement(mc, this.getLabel(), (b) -> this.openOverlay());
 

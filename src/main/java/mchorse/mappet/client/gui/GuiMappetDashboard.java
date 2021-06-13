@@ -13,13 +13,20 @@ import mchorse.mappet.client.gui.panels.GuiScriptPanel;
 import mchorse.mappet.client.gui.panels.GuiServerSettingsPanel;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.content.PacketContentExit;
+import mchorse.mclib.client.gui.framework.GuiBase;
+import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.mclib.GuiAbstractDashboard;
 import mchorse.mclib.client.gui.mclib.GuiDashboardPanels;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.metamorph.api.MorphUtils;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.creative.GuiCreativeMorphsMenu;
 import mchorse.metamorph.util.MMIcons;
 import net.minecraft.client.Minecraft;
+
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class GuiMappetDashboard extends GuiAbstractDashboard
 {
@@ -67,6 +74,25 @@ public class GuiMappetDashboard extends GuiAbstractDashboard
         }
 
         return this.morphs;
+    }
+
+    public void openMorphMenu(GuiElement parent, boolean editing, AbstractMorph morph, Consumer<AbstractMorph> callback)
+    {
+        GuiBase.getCurrent().unfocus();
+
+        GuiCreativeMorphsMenu menu = this.getMorphMenu();
+
+        menu.callback = callback;
+        menu.flex().reset().relative(parent).wh(1F, 1F);
+        menu.resize();
+        menu.setSelected(morph);
+
+        if (editing)
+        {
+            menu.enterEditMorph();
+        }
+
+        parent.add(menu);
     }
 
     @Override
