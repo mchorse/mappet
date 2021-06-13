@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts.code;
 
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import mchorse.mappet.api.scripts.code.blocks.ScriptBlockState;
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
 import mchorse.mappet.api.scripts.code.nbt.ScriptNBTCompound;
@@ -15,8 +16,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagDouble;
+import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -58,6 +63,14 @@ public class ScriptFactory implements IScriptFactory
     }
 
     @Override
+    public INBTCompound createCompoundFromJS(Object jsObject)
+    {
+        NBTBase base = this.convertToNBT(jsObject);
+
+        return base instanceof NBTTagCompound ? new ScriptNBTCompound((NBTTagCompound) base) : null;
+    }
+
+    @Override
     public INBTList createList(String nbt)
     {
         NBTTagList list = new NBTTagList();
@@ -73,6 +86,69 @@ public class ScriptFactory implements IScriptFactory
         }
 
         return new ScriptNBTList(list);
+    }
+
+    @Override
+    public INBTList createListFromJS(Object jsObject)
+    {
+        NBTBase base = this.convertToNBT(jsObject);
+
+        return base instanceof NBTTagList ? new ScriptNBTList((NBTTagList) base) : null;
+    }
+
+    private NBTBase convertToNBT(Object object)
+    {
+        if (object instanceof String)
+        {
+            return new NBTTagString((String) object);
+        }
+        else if (object instanceof Double)
+        {
+            return new NBTTagDouble((Double) object);
+        }
+        else if (object instanceof Integer)
+        {
+            return new NBTTagInt((Integer) object);
+        }
+        else if (object instanceof ScriptObjectMirror)
+        {
+            ScriptObjectMirror mirror = (ScriptObjectMirror) object;
+
+            if (mirror.isArray())
+            {
+                NBTTagList list = new NBTTagList();
+
+                for (int i = 0, c = mirror.size(); i < c; i++)
+                {
+                    NBTBase base = this.convertToNBT(mirror.getSlot(i));
+
+                    if (base != null)
+                    {
+                        list.appendTag(base);
+                    }
+                }
+
+                return list;
+            }
+            else
+            {
+                NBTTagCompound tag = new NBTTagCompound();
+
+                for (String key : mirror.keySet())
+                {
+                    NBTBase base = this.convertToNBT(mirror.get(key));
+
+                    if (base != null)
+                    {
+                        tag.setTag(key, base);
+                    }
+                }
+
+                return tag;
+            }
+        }
+
+        return null;
     }
 
     @Override

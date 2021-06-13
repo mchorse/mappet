@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts.user;
 
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
@@ -33,6 +34,28 @@ public interface IScriptFactory
     public INBTCompound createCompound(String nbt);
 
     /**
+     * Turn a JS object into an NBT compound.
+     *
+     * <p><b>BEWARE</b>: when converting JS object to NBT keep in mind some
+     * limitations of the NBT format:</p>
+     *
+     * <ul>
+     *     <li>NBT supports multiple number storage formats (byte, short, int, long, float,
+     *     double) so the converter will only convert numbers to either integer or
+     *     double NBT tags, depending on how did you got the number, <code>42</code> being
+     *     an integer, and <code>42.0</code> being a double.</li>
+     *     <li>NBT lists support only storage of a <b>single type</b> at once, so if you
+     *     provide an JS array like <code>[0, 1, 2, "test", {a:1,b:2}, 4, [0, 0, 0], 5.5]</code>
+     *     then <b>only the the first element's</b> type will be taken in account, and the
+     *     resulted NBT list will turn out like <code>[0.0d, 1.0d, 2.0d, 4.0d, 5.5d]</code>.
+     *     <b>In case with numbers</b> if you had first integers, and somewhere in the
+     *     middle in the list you got a double, then the integer type <b>will get converted
+     *     to double</b>!</li>
+     * </ul>
+     */
+    public INBTCompound createCompoundFromJS(Object jsObject);
+
+    /**
      * Create an empty NBT list
      */
     public default INBTList createList()
@@ -45,6 +68,14 @@ public interface IScriptFactory
      * invalid then an empty list will be returned
      */
     public INBTList createList(String nbt);
+
+    /**
+     * Turn a JS object into an NBT compound.
+     *
+     * <p><b>Read carefully the description</b> of {@link #createCompoundFromJS(Object)}
+     * for information about JS to NBT object conversion!</p>
+     */
+    public INBTList createListFromJS(Object jsObject);
 
     /**
      * Create an item stack out of string NBT
