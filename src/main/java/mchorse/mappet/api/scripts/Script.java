@@ -1,9 +1,11 @@
 package mchorse.mappet.api.scripts;
 
+import mchorse.mappet.Mappet;
 import mchorse.mappet.api.scripts.code.ScriptEvent;
 import mchorse.mappet.api.scripts.code.ScriptFactory;
 import mchorse.mappet.api.utils.AbstractData;
 import mchorse.mappet.api.utils.DataContext;
+import mchorse.mappet.events.RegisterScriptVariablesEvent;
 import mchorse.mappet.utils.ScriptUtils;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -29,6 +31,9 @@ public class Script extends AbstractData
         {
             this.engine = ScriptUtils.tryCreatingEngine();
             this.engine.getContext().setAttribute("javax.script.filename", this.getId() + ".js", ScriptContext.ENGINE_SCOPE);
+
+            Mappet.EVENT_BUS.post(new RegisterScriptVariablesEvent(this.engine));
+
             this.engine.put("mappet", new ScriptFactory());
 
             /* Remove */
