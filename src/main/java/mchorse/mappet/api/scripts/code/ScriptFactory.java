@@ -14,6 +14,7 @@ import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTBase;
@@ -160,6 +161,22 @@ public class ScriptFactory implements IScriptFactory
         }
 
         return ScriptItemStack.EMPTY;
+    }
+
+    @Override
+    public IScriptItemStack createItemStack(String itemId, int count, int meta)
+    {
+        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemId));
+
+        return item == null ? ScriptItemStack.EMPTY : new ScriptItemStack(new ItemStack(item, count, meta));
+    }
+
+    @Override
+    public IScriptItemStack createBlockItemStack(String blockId, int count, int meta)
+    {
+        Block item = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockId));
+
+        return item == null ? ScriptItemStack.EMPTY : new ScriptItemStack(new ItemStack(item, count, meta));
     }
 
     @Override

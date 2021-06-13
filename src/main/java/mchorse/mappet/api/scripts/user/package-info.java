@@ -26,6 +26,13 @@
  *    }
  * }</pre>
  *
+ * <p>Here are global variable(s) that are provided by Mappet:</p>
+ *
+ * <ul>
+ *     <li><code>mappet</code>, this is {@link mchorse.mappet.api.scripts.user.IScriptFactory}.
+ *     It allows you to create and query different Minecraft or Mappet data structures.</li>
+ * </ul>
+ *
  * <p>Big thanks to TorayLife for scripting API suggestions.</p>
  */
 

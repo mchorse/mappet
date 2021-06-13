@@ -1,6 +1,5 @@
 package mchorse.mappet.api.scripts.user;
 
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
@@ -10,6 +9,18 @@ import net.minecraft.util.EnumParticleTypes;
 
 /**
  * Scripting API factory that allows to initialize/create different stuff.
+ *
+ * <p>You can access it in the script as <code>mappet</code> global variable. Here is a
+ * code example:</p>
+ *
+ * <pre>{@code
+ *    function main(c) {
+ *        // Create a diamond hoe using Mappet's factory
+ *        var item = mappet.createItemStack("minecraft:diamond_hoe");
+ *
+ *        c.getSubject().setMainItem(item);
+ *    }
+ * }</pre>
  */
 public interface IScriptFactory
 {
@@ -41,9 +52,9 @@ public interface IScriptFactory
      *
      * <ul>
      *     <li>NBT supports multiple number storage formats (byte, short, int, long, float,
-     *     double) so the converter will only convert numbers to either integer or
-     *     double NBT tags, depending on how did you got the number, <code>42</code> being
-     *     an integer, and <code>42.0</code> being a double.</li>
+     *     double) so the converter <b>will only be able to convert numbers</b> to either
+     *     integer or double NBT tags, depending on how did you got the number, <code>42</code>
+     *     being an integer, and <code>42.0</code> being a double.</li>
      *     <li>NBT lists support only storage of a <b>single type</b> at once, so if you
      *     provide an JS array like <code>[0, 1, 2, "test", {a:1,b:2}, 4, [0, 0, 0], 5.5]</code>
      *     then <b>only the the first element's</b> type will be taken in account, and the
@@ -73,22 +84,88 @@ public interface IScriptFactory
      * Turn a JS object into an NBT compound.
      *
      * <p><b>Read carefully the description</b> of {@link #createCompoundFromJS(Object)}
-     * for information about JS to NBT object conversion!</p>
+     * for information about JS to NBT object conversion limitations!</p>
      */
     public INBTList createListFromJS(Object jsObject);
 
     /**
      * Create an item stack out of string NBT
+     *
+     * @return an item stack from the string NBT data, or an empty item stack
+     *         if the data doesn't have a valid reference to an existing item
      */
-    public default IScriptItemStack createItemStack(String nbt)
+    public default IScriptItemStack createItemStackFromNBT(String nbt)
     {
         return this.createItemStack(this.createCompound(nbt));
     }
 
     /**
      * Create an item stack out of string NBT
+     *
+     * @return an item stack from the NBT data, or an empty item stack if the
+     *         data doesn't have a valid reference to an existing item
      */
     public IScriptItemStack createItemStack(INBTCompound compound);
+
+    /**
+     * Create an item stack with item ID
+     *
+     * @return an item stack with an item specified by ID, or an empty item
+     *         stack if the block doesn't exist
+     */
+    public default IScriptItemStack createItemStack(String itemId)
+    {
+        return this.createItemStack(itemId, 1);
+    }
+
+    /**
+     * Create an item stack with item ID, count
+     *
+     * @return an item stack with an item specified by ID, or an empty item
+     *         stack if the block doesn't exist
+     */
+    public default IScriptItemStack createItemStack(String itemId, int count)
+    {
+        return this.createItemStack(itemId, count, 0);
+    }
+
+    /**
+     * Create an item stack with item ID, count and meta
+     *
+     * @return an item stack with an item specified by ID, or an empty item
+     *         stack if the block doesn't exist
+     */
+    public IScriptItemStack createItemStack(String itemId, int count, int meta);
+
+    /**
+     * Create an item stack with block ID
+     *
+     * @return an item stack with an item specified by ID, or an empty item
+     *          stack if the block doesn't exist
+     */
+    public default IScriptItemStack createBlockItemStack(String blockId)
+    {
+        return this.createItemStack(blockId, 1);
+    }
+
+    /**
+     * Create an item stack with block ID, count
+     *
+     * @return an item stack with an item specified by ID, or an empty item
+     *         stack if the block doesn't exist
+     */
+    public default IScriptItemStack createBlockItemStack(String blockId, int count)
+    {
+        return this.createItemStack(blockId, count, 0);
+    }
+
+    /**
+     * Create an item stack with block ID, count and meta
+     *
+     * @return an item stack with block specified by ID, or an empty item
+     *         stack if the block doesn't exist
+     */
+    public IScriptItemStack createBlockItemStack(String blockId, int count, int meta);
 
     /**
      * Get Minecraft particle type by its name

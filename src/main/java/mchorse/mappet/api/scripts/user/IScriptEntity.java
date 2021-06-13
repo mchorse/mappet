@@ -234,7 +234,9 @@ public interface IScriptEntity
     public IMappetQuests getQuests();
 
     /**
-     * Set entity's morph (works with player and NPCs)
+     * Set entity's morph (works with player and NPCs). <b>ProTip</b>: use
+     * {@link IScriptFactory#createMorph(String)} to create a morph from
+     * NBT.
      *
      * @return if entity's morph was changed successfully
      */
