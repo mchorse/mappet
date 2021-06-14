@@ -43,6 +43,7 @@ import mchorse.mappet.network.common.npc.PacketNpcTool;
 import mchorse.mappet.network.common.quests.PacketQuest;
 import mchorse.mappet.network.common.quests.PacketQuestAction;
 import mchorse.mappet.network.common.quests.PacketQuests;
+import mchorse.mappet.network.common.scripts.PacketClick;
 import mchorse.mappet.network.common.scripts.PacketEntityRotations;
 import mchorse.mappet.network.server.blocks.ServerHandlerEditEmitter;
 import mchorse.mappet.network.server.blocks.ServerHandlerEditRegion;
@@ -62,6 +63,7 @@ import mchorse.mappet.network.server.npc.ServerHandlerNpcList;
 import mchorse.mappet.network.server.npc.ServerHandlerNpcState;
 import mchorse.mappet.network.server.npc.ServerHandlerNpcTool;
 import mchorse.mappet.network.server.quests.ServerHandlerQuestAction;
+import mchorse.mappet.network.server.scripts.ServerHandlerClick;
 import mchorse.mclib.network.AbstractDispatcher;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityTracker;
@@ -136,6 +138,7 @@ public class Dispatcher
 
             /* Scripts */
             this.register(PacketEntityRotations.class, ClientHandlerEntityRotations.class, Side.CLIENT);
+            this.register(PacketClick.class, ServerHandlerClick.class, Side.SERVER);
         }
     };
 

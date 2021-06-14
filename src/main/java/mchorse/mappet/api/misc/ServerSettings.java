@@ -23,13 +23,15 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
     public final Map<String, Trigger> registered = new LinkedHashMap<String, Trigger>();
     public final TriggerHotkeys hotkeys = new TriggerHotkeys();
 
-    public Trigger chat;
-    public Trigger breakBlock;
-    public Trigger placeBlock;
-    public Trigger damageEntity;
-    public Trigger serverLoad;
-    public Trigger serverTick;
-    public Trigger playerLogIn;
+    public final Trigger chat;
+    public final Trigger breakBlock;
+    public final Trigger placeBlock;
+    public final Trigger damageEntity;
+    public final Trigger serverLoad;
+    public final Trigger serverTick;
+    public final Trigger playerLogIn;
+    public final Trigger playerLeftClick;
+    public final Trigger playerRightClick;
 
     public Trigger register(String key, Trigger trigger)
     {
@@ -54,6 +56,8 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
         this.serverLoad = this.register("server_load", new Trigger());
         this.serverTick = this.register("server_tick", new Trigger());
         this.playerLogIn = this.register("player_login", new Trigger());
+        this.playerLeftClick = this.register("player_lmb", new Trigger());
+        this.playerRightClick = this.register("player_rmb", new Trigger());
 
         Mappet.EVENT_BUS.post(new RegisterServerTriggerEvent(this));
     }

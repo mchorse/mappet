@@ -1,6 +1,5 @@
 package mchorse.mappet;
 
-import mchorse.mappet.api.events.EventExecutionFork;
 import mchorse.mappet.api.quests.Quest;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.IExecutable;
@@ -13,22 +12,27 @@ import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.events.PacketEventPlayerHotkeys;
 import mchorse.mappet.network.common.quests.PacketQuest;
 import mchorse.mappet.network.common.quests.PacketQuests;
+import mchorse.mappet.network.common.scripts.PacketClick;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -167,12 +171,26 @@ public class EventHandler
         }
     }
 
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onPlayerLeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event)
+    {
+        Dispatcher.sendToServer(new PacketClick(EnumHand.MAIN_HAND));
+    }
+
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onPlayerRightClickEmpty(PlayerInteractEvent.RightClickEmpty event)
+    {
+        Dispatcher.sendToServer(new PacketClick(EnumHand.OFF_HAND));
+    }
+
     /* Other cool stuff */
 
     /**
      * Attach player capabilities
      */
-    @SubscribeEvent
+                                  @SubscribeEvent
     public void attachPlayerCapability(AttachCapabilitiesEvent<Entity> event)
     {
         if (event.getObject() instanceof EntityPlayer)
