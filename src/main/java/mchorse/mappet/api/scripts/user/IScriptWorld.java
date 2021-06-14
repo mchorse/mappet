@@ -2,6 +2,7 @@ package mchorse.mappet.api.scripts.user;
 
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
+import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
@@ -115,7 +116,7 @@ public interface IScriptWorld
      *             "iconcrack" particle you can pass item numeric ID to spawn item particle for
      *             a specific item (F3 + H shows the numeric ID of an item)
      */
-    public void spawnParticles(IScriptEntity player, EnumParticleTypes type, boolean longDistance, double x, double y, double z, int n, double dx, double dy, double dz, double speed, int... args);
+    public void spawnParticles(IScriptPlayer player, EnumParticleTypes type, boolean longDistance, double x, double y, double z, int n, double dx, double dy, double dz, double speed, int... args);
 
     /**
      * Spawn an entity at given position

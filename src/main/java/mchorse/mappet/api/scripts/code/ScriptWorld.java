@@ -6,6 +6,7 @@ import mchorse.mappet.api.scripts.code.items.ScriptInventory;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
+import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
@@ -146,14 +147,14 @@ public class ScriptWorld implements IScriptWorld
     }
 
     @Override
-    public void spawnParticles(IScriptEntity entity, EnumParticleTypes type, boolean longDistance, double x, double y, double z, int n, double dx, double dy, double dz, double speed, int... args)
+    public void spawnParticles(IScriptPlayer entity, EnumParticleTypes type, boolean longDistance, double x, double y, double z, int n, double dx, double dy, double dz, double speed, int... args)
     {
-        if (entity == null || !entity.isPlayer())
+        if (entity == null)
         {
             return;
         }
 
-        ((WorldServer) this.world).spawnParticle((EntityPlayerMP) entity.getMinecraftEntity(), type, longDistance, x, y, z, n, dx, dy, dz, speed, args);
+        ((WorldServer) this.world).spawnParticle(entity.getMinecraftPlayer(), type, longDistance, x, y, z, n, dx, dy, dz, speed, args);
     }
 
     @Override

@@ -15,7 +15,9 @@ import net.minecraft.entity.Entity;
  * Entity interface.
  *
  * <p>This interface represents an entity, it could be a player, NPC,
- * or any other entity.</p>
+ * or any other entity. <b>IMPORTANT</b>: any method that marks an argument or return
+ * as of {@link IScriptEntity} type can return also {@link IScriptPlayer} if it's an
+ * actual player!</p>
  */
 public interface IScriptEntity
 {

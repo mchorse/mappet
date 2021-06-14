@@ -89,11 +89,6 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
         this.entity.motionX = x;
         this.entity.motionY = y;
         this.entity.motionZ = z;
-
-        if (this.isPlayer())
-        {
-            ((EntityPlayerMP) this.entity).connection.sendPacket(new SPacketEntityVelocity(this.entity.getEntityId(), x, y, z));
-        }
     }
 
     @Override
@@ -108,11 +103,7 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
         this.entity.setLocationAndAngles(this.entity.posX, this.entity.posY, this.entity.posZ, yaw, pitch);
         this.entity.setRotationYawHead(yawHead);
 
-        if (this.isPlayer())
-        {
-            ((EntityPlayerMP) this.entity).connection.setPlayerLocation(this.entity.posX, this.entity.posY, this.entity.posZ, yaw, pitch);
-        }
-        else
+        if (!this.isPlayer())
         {
             EntityTracker tracker = ((WorldServer) this.entity.world).getEntityTracker();
 
@@ -367,22 +358,7 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Override
     public boolean setMorph(AbstractMorph morph)
     {
-        if (this.isPlayer())
-        {
-            EntityPlayer player = (EntityPlayer) this.entity;
-
-            if (morph == null)
-            {
-                MorphAPI.demorph(player);
-            }
-            else
-            {
-                MorphAPI.morph(player, morph, true);
-            }
-
-            return true;
-        }
-        else if (this.entity instanceof EntityNpc)
+        if (this.entity instanceof EntityNpc)
         {
             EntityNpc npc = (EntityNpc) this.entity;
 

@@ -2,6 +2,7 @@ package mchorse.mappet.api.scripts.user.entities;
 
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
 import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
+import net.minecraft.entity.player.EntityPlayerMP;
 
 /**
  * Player entity interface.
@@ -10,6 +11,12 @@ import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
  */
 public interface IScriptPlayer extends IScriptEntity
 {
+    /**
+     * Get Minecraft player entity instance. <b>BEWARE:</b> you need to know the
+     * MCP mappings in order to directly call methods on this instance!
+     */
+    public EntityPlayerMP getMinecraftPlayer();
+
     /**
      * Get player's inventory
      */

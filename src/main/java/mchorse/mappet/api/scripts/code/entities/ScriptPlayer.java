@@ -6,7 +6,10 @@ import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
 import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
 import mchorse.mappet.capabilities.character.Character;
+import mchorse.metamorph.api.MorphAPI;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.util.text.TextComponentString;
 
 public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScriptPlayer
@@ -19,6 +22,30 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     {
         super(entity);
     }
+
+    @Override
+    public EntityPlayerMP getMinecraftPlayer()
+    {
+        return this.entity;
+    }
+
+    @Override
+    public void setMotion(double x, double y, double z)
+    {
+        super.setMotion(x, y, z);
+
+        this.entity.connection.sendPacket(new SPacketEntityVelocity(this.entity.getEntityId(), x, y, z));
+    }
+
+    @Override
+    public void setRotations(float pitch, float yaw, float yawHead)
+    {
+        super.setRotations(pitch, yaw, yawHead);
+
+        this.entity.connection.setPlayerLocation(this.entity.posX, this.entity.posY, this.entity.posZ, yaw, pitch);
+    }
+
+    /* Items */
 
     @Override
     public IScriptInventory getInventory()
@@ -61,5 +88,20 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
         }
 
         return this.quests;
+    }
+
+    @Override
+    public boolean setMorph(AbstractMorph morph)
+    {
+        if (morph == null)
+        {
+            MorphAPI.demorph(this.entity);
+        }
+        else
+        {
+            MorphAPI.morph(this.entity, morph, true);
+        }
+
+        return true;
     }
 }
