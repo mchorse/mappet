@@ -1,6 +1,7 @@
 mchorse.mappet.api.scripts.user
 mchorse.mappet.api.scripts.user.blocks
 mchorse.mappet.api.scripts.user.data
+mchorse.mappet.api.scripts.user.entities
 mchorse.mappet.api.scripts.user.items
 mchorse.mappet.api.scripts.user.mappet
 mchorse.mappet.api.scripts.user.nbt
