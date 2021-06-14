@@ -7,14 +7,11 @@ import mchorse.mappet.client.gui.npc.utils.GuiNpcDrops;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
-import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.creative.GuiNestedEdit;
 import net.minecraft.client.Minecraft;
-
-import java.util.function.Supplier;
 
 public class GuiNpcGeneralPanel extends GuiNpcPanel
 {
@@ -23,13 +20,13 @@ public class GuiNpcGeneralPanel extends GuiNpcPanel
     public GuiNpcDrops drops;
     public GuiTrackpadElement xp;
 
-    public GuiNpcGeneralPanel(Minecraft mc, Supplier<GuiInventoryElement> inventory)
+    public GuiNpcGeneralPanel(Minecraft mc)
     {
         super(mc);
 
         this.faction = new GuiButtonElement(mc, IKey.lang("mappet.gui.overlays.faction"), (t) -> this.openFactions());
         this.morph = new GuiNestedEdit(mc, this::openMorphMenu);
-        this.drops = new GuiNpcDrops(mc, inventory);
+        this.drops = new GuiNpcDrops(mc);
         this.xp = new GuiTrackpadElement(mc, (v) -> this.state.xp = v.intValue());
         this.xp.limit(0).integer();
 

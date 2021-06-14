@@ -30,11 +30,11 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
         this.states = new GuiIconElement(mc, Icons.MORE, (b) -> this.openNpcStates());
         this.states.flex().relative(this);
 
-        this.npcEditor = new GuiNpcEditor(mc, false, () -> this.inventory);
+        this.npcEditor = new GuiNpcEditor(mc, false);
         this.npcEditor.flex().relative(this).y(10).wTo(this.editor.area, 1F).h(1F, -10);
         this.npcEditor.setVisible(false);
 
-        this.editor.add(this.npcEditor, this.states, this.inventory);
+        this.editor.add(this.npcEditor, this.states);
 
         this.fill(null);
     }

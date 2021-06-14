@@ -3,7 +3,6 @@ package mchorse.mappet.client.gui.conditions.utils;
 import mchorse.mappet.api.conditions.blocks.PropertyConditionBlock;
 import mchorse.mappet.api.conditions.utils.Comparison;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
-import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiCirculateElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
@@ -48,11 +47,11 @@ public class GuiPropertyBlockElement extends GuiTargetBlockElement<PropertyCondi
         this.toggleComparison(this.comparison);
     }
 
-    private void toggleComparison(GuiButtonElement b)
+    private void toggleComparison(GuiCirculateElement b)
     {
         Comparison comparison = this.block.comparison;
 
-        this.block.comparison = Comparison.values()[this.comparison.getValue()];
+        this.block.comparison = Comparison.values()[b.getValue()];
 
         if (
             (comparison == Comparison.EXPRESSION && this.block.comparison != Comparison.EXPRESSION) ||

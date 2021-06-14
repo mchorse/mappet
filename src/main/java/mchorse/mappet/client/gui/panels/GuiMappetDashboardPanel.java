@@ -19,7 +19,6 @@ import mchorse.mclib.client.gui.framework.elements.modals.GuiPromptModal;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDrawable;
-import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.mclib.GuiDashboardPanel;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
@@ -47,7 +46,6 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
     public GuiStringSearchListElement names;
 
     public GuiElement editor;
-    public GuiInventoryElement inventory;
 
     protected boolean update;
     protected T data;
@@ -101,14 +99,6 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
 
         this.editor = new GuiElement(mc);
         this.editor.flex().relative(this).wTo(this.sidebar.area).h(1F);
-
-        this.inventory = new GuiInventoryElement(mc, (stack) ->
-        {
-            this.inventory.linked.acceptStack(stack);
-            this.inventory.unlink();
-        });
-        this.inventory.flex().relative(this.editor).xy(0.5F, 0.5F).anchor(0.5F, 0.5F);
-        this.inventory.setVisible(false);
 
         this.buttons.flex().relative(this.names).x(1F).y(-20).anchorX(1F).row(0).resize();
         this.buttons.add(this.add, this.dupe, this.rename, this.remove);

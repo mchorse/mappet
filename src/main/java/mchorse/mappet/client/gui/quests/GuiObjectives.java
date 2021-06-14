@@ -12,19 +12,16 @@ import mchorse.mappet.client.gui.quests.objectives.GuiStateObjective;
 import mchorse.mappet.utils.Colors;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
-import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 public class GuiObjectives extends GuiElement
 {
     public List<AbstractObjective> objectives;
-    public Supplier<GuiInventoryElement> inventory;
 
     public GuiObjectives(Minecraft mc)
     {
@@ -64,7 +61,7 @@ public class GuiObjectives extends GuiElement
         }
         else if (objective instanceof CollectObjective)
         {
-            element = new GuiCollectObjective(this.mc, (CollectObjective) objective, this.inventory);
+            element = new GuiCollectObjective(this.mc, (CollectObjective) objective);
         }
         else if (objective instanceof StateObjective)
         {
@@ -97,10 +94,9 @@ public class GuiObjectives extends GuiElement
         }
     }
 
-    public void set(List<AbstractObjective> objectives, Supplier<GuiInventoryElement> inventory)
+    public void set(List<AbstractObjective> objectives)
     {
         this.objectives = objectives;
-        this.inventory = inventory;
 
         this.removeAll();
 

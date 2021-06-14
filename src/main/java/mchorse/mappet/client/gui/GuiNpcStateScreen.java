@@ -5,13 +5,11 @@ import mchorse.mappet.client.gui.npc.GuiNpcEditor;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.npc.PacketNpcState;
 import mchorse.mclib.client.gui.framework.GuiBase;
-import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import net.minecraft.client.Minecraft;
 
 public class GuiNpcStateScreen extends GuiBase
 {
     public GuiNpcEditor editor;
-    public GuiInventoryElement inventory;
 
     private int entityId;
 
@@ -19,18 +17,10 @@ public class GuiNpcStateScreen extends GuiBase
     {
         this.entityId = entityId;
 
-        this.inventory = new GuiInventoryElement(mc, (stack) ->
-        {
-            this.inventory.linked.acceptStack(stack);
-            this.inventory.unlink();
-        });
-        this.inventory.flex().relative(this.root).xy(0.5F, 0.5F).anchor(0.5F, 0.5F);
-        this.inventory.setVisible(false);
-
-        this.editor = new GuiNpcEditor(mc, true, () -> this.inventory);
+        this.editor = new GuiNpcEditor(mc, true);
         this.editor.flex().relative(this.root).w(1F).h(1F);
 
-        this.root.add(this.editor, this.inventory);
+        this.root.add(this.editor);
 
         this.editor.set(state);
     }

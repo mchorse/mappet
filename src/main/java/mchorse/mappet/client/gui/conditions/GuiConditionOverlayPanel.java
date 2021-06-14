@@ -28,7 +28,6 @@ import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
-import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
@@ -50,8 +49,6 @@ public class GuiConditionOverlayPanel extends GuiEditorOverlayPanel<AbstractCond
         PANELS = new HashMap<
             Class<? extends AbstractConditionBlock>,
             Class<? extends GuiAbstractConditionBlockPanel<? extends AbstractConditionBlock>>>();
-
-    public GuiInventoryElement inventory;
 
     private Condition condition;
 
@@ -114,15 +111,6 @@ public class GuiConditionOverlayPanel extends GuiEditorOverlayPanel<AbstractCond
 
             return menu;
         });
-        this.inventory = new GuiInventoryElement(mc, (stack) ->
-        {
-            this.inventory.linked.acceptStack(stack);
-            this.inventory.unlink();
-        });
-        this.inventory.flex().relative(this).xy(0.5F, 0.5F).anchor(0.5F, 0.5F);
-        this.inventory.setVisible(false);
-
-        this.content.add(this.inventory);
 
         this.pickItem(this.condition.blocks.isEmpty() ? null : this.condition.blocks.get(0), true);
     }

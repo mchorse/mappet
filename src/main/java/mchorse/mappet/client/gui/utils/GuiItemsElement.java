@@ -4,7 +4,6 @@ import mchorse.mappet.utils.Colors;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiSlotElement;
-import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiLabel;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.Icons;
@@ -13,20 +12,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 public class GuiItemsElement extends GuiElement
 {
     public GuiElement stacks;
 
     private List<ItemStack> items;
-    private Supplier<GuiInventoryElement> inventory;
 
-    public GuiItemsElement(Minecraft mc, IKey title, List<ItemStack> items, Supplier<GuiInventoryElement> inventory)
+    public GuiItemsElement(Minecraft mc, IKey title, List<ItemStack> items)
     {
         super(mc);
-
-        this.inventory = inventory;
 
         GuiLabel label = Elements.label(title);
         GuiIconElement add = new GuiIconElement(mc, Icons.ADD, (b) ->
@@ -67,25 +62,18 @@ public class GuiItemsElement extends GuiElement
 
     public void addItem(ItemStack stack)
     {
-        if (this.inventory == null)
-        {
-            return;
-        }
+        GuiSlotElement slot = new GuiSlotElement(this.mc, 0, null);
 
-        GuiSlotElement slot = new GuiSlotElement(this.mc, 0, this.inventory.get());
-
-        slot.stackCallback((item) ->
+        slot.callback = (item) ->
         {
             int index = this.stacks.getChildren().indexOf(slot);
 
             if (index != -1)
             {
-                item = item.copy();
-                this.items.set(index, item);
-                slot.stack = item;
+                this.items.set(index, item.copy());
             }
-        });
-        slot.stack = stack;
+        };
+        slot.setStack(stack);
         slot.context(() -> slot.createDefaultSlotContextMenu().action(Icons.REMOVE, IKey.lang("mappet.gui.items.context.remove"), () ->
         {
             int index = this.stacks.getChildren().indexOf(slot);

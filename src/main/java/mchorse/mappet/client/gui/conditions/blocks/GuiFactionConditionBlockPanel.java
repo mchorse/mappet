@@ -45,8 +45,8 @@ public class GuiFactionConditionBlockPanel extends GuiAbstractConditionBlockPane
         GuiMappetUtils.openPicker(ContentType.FACTION, this.block.id, (name) -> this.block.id = name);
     }
 
-    private void toggleFaction(GuiButtonElement b)
+    private void toggleFaction(GuiCirculateElement b)
     {
-        this.block.faction = FactionConditionBlock.FactionCheck.values()[this.faction.getValue()];
+        this.block.faction = FactionConditionBlock.FactionCheck.values()[b.getValue()];
     }
 }

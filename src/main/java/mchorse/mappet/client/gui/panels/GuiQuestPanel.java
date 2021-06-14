@@ -76,7 +76,7 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
         scrollEditor.add(Elements.label(IKey.lang("mappet.gui.quests.complete")).background().marginTop(12).marginBottom(4), this.complete);
         scrollEditor.scroll.opposite = true;
 
-        this.editor.add(scrollEditor, this.inventory);
+        this.editor.add(scrollEditor);
 
         this.fill(null);
     }
@@ -111,8 +111,8 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
             this.decline.set(data.decline);
             this.complete.set(data.complete);
 
-            this.objectives.set(data.objectives, () -> this.inventory);
-            this.rewards.set(data.rewards, () -> this.inventory);
+            this.objectives.set(data.objectives);
+            this.rewards.set(data.rewards);
         }
 
         /* Hack: due to grid resizer with custom width can't access

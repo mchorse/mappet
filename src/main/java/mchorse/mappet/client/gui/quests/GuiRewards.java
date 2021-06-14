@@ -7,18 +7,15 @@ import mchorse.mappet.client.gui.quests.rewards.GuiReward;
 import mchorse.mappet.utils.Colors;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
-import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 public class GuiRewards extends GuiElement
 {
     public List<IReward> rewards;
-    public Supplier<GuiInventoryElement> inventory;
 
     public GuiRewards(Minecraft mc)
     {
@@ -39,7 +36,7 @@ public class GuiRewards extends GuiElement
 
         if (reward instanceof ItemStackReward)
         {
-            element = new GuiItemStackReward(this.mc, (ItemStackReward) reward, inventory);
+            element = new GuiItemStackReward(this.mc, (ItemStackReward) reward);
         }
 
         if (element != null)
@@ -68,10 +65,9 @@ public class GuiRewards extends GuiElement
         }
     }
 
-    public void set(List<IReward> rewards, Supplier<GuiInventoryElement> inventory)
+    public void set(List<IReward> rewards)
     {
         this.rewards = rewards;
-        this.inventory = inventory;
 
         this.removeAll();
 

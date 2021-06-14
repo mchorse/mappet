@@ -22,7 +22,6 @@ import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
-import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
@@ -45,8 +44,6 @@ public class GuiTriggerOverlayPanel extends GuiEditorOverlayPanel<AbstractTrigge
         PANELS = new HashMap<
             Class<? extends AbstractTriggerBlock>,
             Class<? extends GuiAbstractTriggerBlockPanel<? extends AbstractTriggerBlock>>>();
-
-    public GuiInventoryElement inventory;
 
     private Trigger trigger;
 
@@ -106,15 +103,6 @@ public class GuiTriggerOverlayPanel extends GuiEditorOverlayPanel<AbstractTrigge
 
             return menu;
         });
-        this.inventory = new GuiInventoryElement(mc, (stack) ->
-        {
-            this.inventory.linked.acceptStack(stack);
-            this.inventory.unlink();
-        });
-        this.inventory.flex().relative(this).xy(0.5F, 0.5F).anchor(0.5F, 0.5F);
-        this.inventory.setVisible(false);
-
-        this.content.add(this.inventory);
 
         this.pickItem(this.trigger.blocks.isEmpty() ? null : this.trigger.blocks.get(0), true);
     }

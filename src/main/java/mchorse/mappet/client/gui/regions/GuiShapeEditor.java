@@ -7,7 +7,6 @@ import mchorse.mappet.api.regions.shapes.CylinderShape;
 import mchorse.mappet.api.regions.shapes.SphereShape;
 import mchorse.mappet.utils.Colors;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
-import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiCirculateElement;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
@@ -107,7 +106,7 @@ public class GuiShapeEditor extends GuiElement
         }
     }
 
-    private void changeShape(GuiButtonElement element)
+    private void changeShape(GuiCirculateElement element)
     {
         int value = this.shapeSwitch.getValue();
         AbstractShape shape = null;

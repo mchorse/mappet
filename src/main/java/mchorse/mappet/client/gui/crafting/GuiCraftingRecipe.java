@@ -2,18 +2,15 @@ package mchorse.mappet.client.gui.crafting;
 
 import mchorse.mappet.api.crafting.CraftingRecipe;
 import mchorse.mappet.client.gui.conditions.GuiCheckerElement;
-import mchorse.mappet.client.gui.utils.GuiItemsElement;
 import mchorse.mappet.client.gui.triggers.GuiTriggerElement;
+import mchorse.mappet.client.gui.utils.GuiItemsElement;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiKeybindElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
-import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
-
-import java.util.function.Supplier;
 
 public class GuiCraftingRecipe extends GuiElement
 {
@@ -26,14 +23,14 @@ public class GuiCraftingRecipe extends GuiElement
 
     public CraftingRecipe recipe;
 
-    public GuiCraftingRecipe(Minecraft mc, Supplier<GuiInventoryElement> inventory)
+    public GuiCraftingRecipe(Minecraft mc)
     {
         super(mc);
 
         this.title = new GuiTextElement(mc, 1000, (text) -> this.recipe.title = text);
-        this.input = new GuiItemsElement(mc, IKey.lang("mappet.gui.crafting.input"), null, inventory);
+        this.input = new GuiItemsElement(mc, IKey.lang("mappet.gui.crafting.input"), null);
         this.input.marginTop(12);
-        this.output = new GuiItemsElement(mc, IKey.lang("mappet.gui.crafting.output"), null, inventory);
+        this.output = new GuiItemsElement(mc, IKey.lang("mappet.gui.crafting.output"), null);
         this.checker = new GuiCheckerElement(mc);
         this.trigger = new GuiTriggerElement(mc);
         this.hotkey = new GuiKeybindElement(mc, (key) ->

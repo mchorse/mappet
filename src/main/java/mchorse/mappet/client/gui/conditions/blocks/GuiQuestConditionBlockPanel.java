@@ -46,8 +46,8 @@ public class GuiQuestConditionBlockPanel extends GuiAbstractConditionBlockPanel<
         GuiMappetUtils.openPicker(ContentType.QUEST, this.block.id, (name) -> this.block.id = name);
     }
 
-    private void toggleQuest(GuiButtonElement b)
+    private void toggleQuest(GuiCirculateElement b)
     {
-        this.block.quest = QuestConditionBlock.QuestCheck.values()[this.quest.getValue()];
+        this.block.quest = QuestConditionBlock.QuestCheck.values()[b.getValue()];
     }
 }

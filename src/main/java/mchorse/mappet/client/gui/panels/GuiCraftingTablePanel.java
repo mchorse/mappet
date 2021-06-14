@@ -46,13 +46,13 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
 
         GuiScrollElement scrollEditor = this.createScrollEditor();
 
-        this.recipe = new GuiCraftingRecipe(mc, () -> this.inventory);
+        this.recipe = new GuiCraftingRecipe(mc);
 
         this.title.flex().relative(this.editor).x(10).y(22).w(1F, -20);
         this.recipes.flex().relative(this.editor).y(52).w(120).h(1F, -55);
         scrollEditor.flex().x(120).y(52).w(1F, -120).h(1F, -55).column(0).padding(0);
 
-        this.editor.add(this.title, this.recipes, scrollEditor, this.inventory);
+        this.editor.add(this.title, this.recipes, scrollEditor);
         scrollEditor.add(this.recipe);
 
         this.fill(null);

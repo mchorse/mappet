@@ -3,7 +3,6 @@ package mchorse.mappet.client.gui.conditions.blocks;
 import mchorse.mappet.api.conditions.blocks.WorldTimeConditionBlock;
 import mchorse.mappet.client.gui.conditions.GuiConditionOverlayPanel;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
-import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiCirculateElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import mchorse.mclib.client.gui.utils.Elements;
@@ -46,9 +45,9 @@ public class GuiWorldTimeConditionBlockPanel extends GuiAbstractConditionBlockPa
         this.toggleMode(this.type);
     }
 
-    private void toggleMode(GuiButtonElement b)
+    private void toggleMode(GuiCirculateElement b)
     {
-        this.block.check = WorldTimeConditionBlock.TimeCheck.values()[this.type.getValue()];
+        this.block.check = WorldTimeConditionBlock.TimeCheck.values()[b.getValue()];
 
         for (GuiElement element : this.elements)
         {

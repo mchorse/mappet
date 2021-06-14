@@ -3,7 +3,6 @@ package mchorse.mappet.client.gui.conditions.utils;
 import mchorse.mappet.api.conditions.blocks.TargetConditionBlock;
 import mchorse.mappet.api.conditions.utils.Target;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
-import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiCirculateElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.utils.Elements;
@@ -53,9 +52,9 @@ public class GuiTargetBlockElement <T extends TargetConditionBlock> extends GuiE
         return this;
     }
 
-    private void toggleTarget(GuiButtonElement b)
+    private void toggleTarget(GuiCirculateElement b)
     {
-        this.block.target = Target.values()[this.target.getValue()];
+        this.block.target = Target.values()[b.getValue()];
 
         this.updateTarget();
     }

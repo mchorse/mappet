@@ -15,8 +15,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 
-import java.util.function.Consumer;
-
 public class GuiQuestCard
 {
     public static void fillQuest(GuiElement element, Quest quest, boolean forceReward)
@@ -56,10 +54,10 @@ public class GuiQuestCard
 
                 for (ItemStack item : stack.stacks)
                 {
-                    GuiSlotElement slot = new GuiSlotElement(mc, 0, (Consumer<GuiSlotElement>) null);
+                    GuiSlotElement slot = new GuiSlotElement(mc, 0, null);
 
                     slot.setEnabled(false);
-                    slot.stack = item;
+                    slot.setStack(item);
                     slot.drawDisabled = false;
                     stacks.add(slot);
                 }
