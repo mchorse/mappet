@@ -509,6 +509,17 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         }
     }
 
+    public void pasteText(String text)
+    {
+        TextEditUndo undo = new TextEditUndo(this);
+
+        this.deleteSelection();
+        this.writeString(text);
+
+        undo.ready().post(text, this.cursor, this.selection);
+        this.undo.pushUndo(undo);
+    }
+
     public String deleteCharacter()
     {
         if (this.hasLine(this.cursor.line))
@@ -930,7 +941,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         boolean ctrl = GuiScreen.isCtrlKeyDown();
         boolean shift = GuiScreen.isShiftKeyDown();
 
-        TextEditUndo undo = new TextEditUndo(this.getSelectedText(), this.cursor, this.selection);
+        TextEditUndo undo = new TextEditUndo(this);
 
         if (this.handleKeys(context, undo, ctrl, shift))
         {

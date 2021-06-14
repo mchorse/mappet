@@ -26,6 +26,11 @@ public class TextEditUndo implements IUndo<GuiMultiTextElement>
 
     public boolean ready;
 
+    public TextEditUndo(GuiMultiTextElement element)
+    {
+        this(element.getSelectedText(), element.cursor, element.selection);
+    }
+
     public TextEditUndo(String text, Cursor cursor, Cursor selection)
     {
         this.text = text;

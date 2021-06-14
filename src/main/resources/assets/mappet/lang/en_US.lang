@@ -462,6 +462,15 @@ mappet.gui.triggers.context.copy=Copy this trigger
 mappet.gui.triggers.context.paste=Paste copied trigger
 mappet.gui.triggers.context.remove=Remove this trigger
 
+mappet.gui.scripts.context.paste_morph=Paste morph NBT...
+mappet.gui.scripts.context.paste_item=Paste item NBT...
+mappet.gui.scripts.context.paste_player_pos=Paste player's position
+mappet.gui.scripts.context.paste_block_pos=Paste block position
+mappet.gui.scripts.overlay.title_morph=Morph
+mappet.gui.scripts.overlay.title_item=Item
+mappet.gui.scripts.overlay.insert=Insert
+mappet.gui.scripts.overlay.pick_morph=Pick a morph...
+
 # GUI enums
 
 mappet.gui.shapes.box=Box
