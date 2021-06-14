@@ -3,6 +3,7 @@ package mchorse.mappet.api.dialogues;
 import mchorse.mappet.CommonProxy;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.crafting.CraftingTable;
+import mchorse.mappet.api.dialogues.nodes.ReactionNode;
 import mchorse.mappet.api.events.nodes.EventBaseNode;
 import mchorse.mappet.api.utils.manager.BaseManager;
 import mchorse.mappet.capabilities.character.Character;
@@ -48,13 +49,18 @@ public class DialogueManager extends BaseManager<Dialogue>
 
             if (context.reactionNode != null)
             {
-                this.handleContext(player, dialogue, context);
+                this.handleContext(player, dialogue, context, null);
             }
         }
     }
 
-    public void handleContext(EntityPlayerMP player, Dialogue dialogue, DialogueContext context)
+    public void handleContext(EntityPlayerMP player, Dialogue dialogue, DialogueContext context, ReactionNode last)
     {
+        if (last != null)
+        {
+            WorldUtils.stopSound(player, last.sound);
+        }
+
         List<DialogueFragment> replies = context.replyNodes.stream().map((r) -> r.message.copy().process(context.data)).collect(Collectors.toList());
         DialogueFragment reaction = context.reactionNode == null ? new DialogueFragment() : context.reactionNode.message.copy();
 

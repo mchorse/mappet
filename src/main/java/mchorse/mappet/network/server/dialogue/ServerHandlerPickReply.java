@@ -3,6 +3,7 @@ package mchorse.mappet.network.server.dialogue;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.dialogues.DialogueContext;
 import mchorse.mappet.api.dialogues.Dialogue;
+import mchorse.mappet.api.dialogues.nodes.ReactionNode;
 import mchorse.mappet.api.events.nodes.EventBaseNode;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
@@ -34,9 +35,11 @@ public class ServerHandlerPickReply extends ServerMessageHandler<PacketPickReply
                 node = context.quest;
             }
 
+            ReactionNode reactionNode = context.reactionNode;
+
             context.reset();
             Mappet.dialogues.recursiveExecute(dialogue, node, context, true);
-            Mappet.dialogues.handleContext(player, dialogue, context);
+            Mappet.dialogues.handleContext(player, dialogue, context, reactionNode);
         }
     }
 }

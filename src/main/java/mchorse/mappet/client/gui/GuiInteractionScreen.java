@@ -289,10 +289,7 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
         {
             super.closeScreen();
 
-            if (this.table != null)
-            {
-                Dispatcher.sendToServer(new PacketCraftingTable(null));
-            }
+            Dispatcher.sendToServer(new PacketCraftingTable(null));
         }
     }
 
