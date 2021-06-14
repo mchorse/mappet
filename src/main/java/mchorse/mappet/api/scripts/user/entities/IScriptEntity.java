@@ -1,6 +1,9 @@
-package mchorse.mappet.api.scripts.user;
+package mchorse.mappet.api.scripts.user.entities;
 
+import mchorse.mappet.api.scripts.user.IScriptFactory;
+import mchorse.mappet.api.scripts.user.IScriptRayTrace;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
+import mchorse.mappet.api.scripts.user.items.IScriptInventory;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
 import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
@@ -209,14 +212,6 @@ public interface IScriptEntity
      */
     public void kill();
 
-    /**
-     * Send a message to this entity
-     *
-     * @return whether it was possible to send the message (i.e. if entity
-     *         isn't a player, it will return false)
-     */
-    public boolean send(String message);
-
     /* Mappet stuff */
 
     /**
@@ -225,13 +220,6 @@ public interface IScriptEntity
      * @return player's states, or null if this entity doesn't have states
      */
     public IMappetStates getStates();
-
-    /**
-     * Get entity's quests (if it has some, only players have quests)
-     *
-     * @return player's quests, or null if this entity doesn't have quests
-     */
-    public IMappetQuests getQuests();
 
     /**
      * Set entity's morph (works with player and NPCs). <b>ProTip</b>: use

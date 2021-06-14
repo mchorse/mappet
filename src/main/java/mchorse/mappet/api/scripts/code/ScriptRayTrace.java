@@ -1,11 +1,10 @@
 package mchorse.mappet.api.scripts.code;
 
-import mchorse.mappet.api.scripts.user.IScriptEntity;
+import mchorse.mappet.api.scripts.code.entities.ScriptEntity;
 import mchorse.mappet.api.scripts.user.IScriptRayTrace;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
-import net.minecraft.util.math.BlockPos;
+import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
 
 public class ScriptRayTrace implements IScriptRayTrace
 {
@@ -51,7 +50,7 @@ public class ScriptRayTrace implements IScriptRayTrace
 
         if (this.entity == null)
         {
-            this.entity = new ScriptEntity(this.result.entityHit);
+            this.entity = ScriptEntity.create(this.result.entityHit);
         }
 
         return this.entity;

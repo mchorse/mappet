@@ -1,17 +1,21 @@
 package mchorse.mappet.api.scripts.code;
 
 import mchorse.mappet.api.scripts.code.blocks.ScriptBlockState;
-import mchorse.mappet.api.scripts.user.IScriptEntity;
+import mchorse.mappet.api.scripts.code.entities.ScriptEntity;
+import mchorse.mappet.api.scripts.code.items.ScriptInventory;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
+import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
+import mchorse.mappet.api.scripts.user.items.IScriptInventory;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.mappet.utils.WorldUtils;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -28,6 +32,7 @@ public class ScriptWorld implements IScriptWorld
     public static final int MAX_VOLUME = 100;
 
     private World world;
+    private BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 
     public ScriptWorld(World world)
     {
@@ -43,15 +48,47 @@ public class ScriptWorld implements IScriptWorld
     @Override
     public void setBlock(IScriptBlockState state, int x, int y, int z)
     {
-        this.world.setBlockState(new BlockPos(x, y, z), state.getMinecraftBlockState());
+        if (!this.world.isBlockLoaded(this.pos.setPos(x, y, z)))
+        {
+            return;
+        }
+
+        this.world.setBlockState(this.pos, state.getMinecraftBlockState());
     }
 
     @Override
     public IScriptBlockState getBlock(int x, int y, int z)
     {
-        IBlockState state = this.world.getBlockState(new BlockPos(x, y, z));
+        if (this.world.isBlockLoaded(this.pos.setPos(x, y, z)))
+        {
+            return null;
+        }
 
-        return new ScriptBlockState(state);
+        return new ScriptBlockState(this.world.getBlockState(this.pos));
+    }
+
+    @Override
+    public boolean hasInventory(int x, int y, int z)
+    {
+        this.pos.setPos(x, y, z);
+
+        return this.world.isBlockLoaded(this.pos) && this.world.getTileEntity(this.pos) instanceof IInventory;
+    }
+
+    @Override
+    public IScriptInventory getInventory(int x, int y, int z)
+    {
+        if (this.world.isBlockLoaded(this.pos.setPos(x, y, z)))
+        {
+            TileEntity tile = this.world.getTileEntity(this.pos);
+
+            if (tile instanceof IInventory)
+            {
+                return new ScriptInventory((IInventory) tile);
+            }
+        }
+
+        return null;
     }
 
     @Override
@@ -128,7 +165,7 @@ public class ScriptWorld implements IScriptWorld
     @Override
     public IScriptEntity spawnEntity(String id, double x, double y, double z, INBTCompound compound)
     {
-        if (!this.world.isBlockLoaded(new BlockPos(x, y, z)))
+        if (!this.world.isBlockLoaded(this.pos.setPos(x, y, z)))
         {
             return null;
         }
@@ -144,7 +181,7 @@ public class ScriptWorld implements IScriptWorld
 
         Entity entity = AnvilChunkLoader.readWorldEntityPos(tag, this.world, x, y, z, true);
 
-        return entity == null ? null : new ScriptEntity(entity);
+        return entity == null ? null : ScriptEntity.create(entity);
     }
 
     @Override
@@ -164,14 +201,14 @@ public class ScriptWorld implements IScriptWorld
             return entities;
         }
 
-        if (!this.world.isBlockLoaded(new BlockPos(minX, minY, minZ)) || !this.world.isBlockLoaded(new BlockPos(maxX, maxY, maxZ)))
+        if (!this.world.isBlockLoaded(this.pos.setPos(minX, minY, minZ)) || !this.world.isBlockLoaded(this.pos.setPos(maxX, maxY, maxZ)))
         {
             return entities;
         }
 
         for (Entity entity : this.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ)))
         {
-            entities.add(new ScriptEntity(entity));
+            entities.add(ScriptEntity.create(entity));
         }
 
         return entities;
@@ -195,7 +232,7 @@ public class ScriptWorld implements IScriptWorld
         double maxY = y + radius;
         double maxZ = z + radius;
 
-        if (!this.world.isBlockLoaded(new BlockPos(minX, minY, minZ)) || !this.world.isBlockLoaded(new BlockPos(maxX, maxY, maxZ)))
+        if (!this.world.isBlockLoaded(this.pos.setPos(minX, minY, minZ)) || !this.world.isBlockLoaded(this.pos.setPos(maxX, maxY, maxZ)))
         {
             return entities;
         }
@@ -213,7 +250,7 @@ public class ScriptWorld implements IScriptWorld
 
             if (dX * dX + dY * dY + dZ * dZ < radius * radius)
             {
-                entities.add(new ScriptEntity(entity));
+                entities.add(ScriptEntity.create(entity));
             }
         }
 
@@ -245,6 +282,6 @@ public class ScriptWorld implements IScriptWorld
 
         this.world.spawnEntity(item);
 
-        return new ScriptEntity(item);
+        return ScriptEntity.create(item);
     }
 }

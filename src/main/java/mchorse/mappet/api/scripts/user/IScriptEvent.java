@@ -1,5 +1,7 @@
 package mchorse.mappet.api.scripts.user;
 
+import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
+
 import java.util.Map;
 
 /**

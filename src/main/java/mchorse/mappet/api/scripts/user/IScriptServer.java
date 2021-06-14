@@ -1,5 +1,7 @@
 package mchorse.mappet.api.scripts.user;
 
+import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
+import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
 import net.minecraft.server.MinecraftServer;
 
@@ -24,7 +26,7 @@ public interface IScriptServer
     /**
      * Get all players on the server
      */
-    public List<IScriptEntity> getAllPlayers();
+    public List<IScriptPlayer> getAllPlayers();
 
     /**
      * Get global (server) states

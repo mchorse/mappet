@@ -1,9 +1,12 @@
 package mchorse.mappet.api.scripts.code;
 
 import mchorse.mappet.Mappet;
+import mchorse.mappet.api.scripts.code.entities.ScriptEntity;
+import mchorse.mappet.api.scripts.code.entities.ScriptPlayer;
 import mchorse.mappet.api.scripts.code.mappet.MappetStates;
-import mchorse.mappet.api.scripts.user.IScriptEntity;
+import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
 import mchorse.mappet.api.scripts.user.IScriptServer;
+import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
 import net.minecraft.command.EntitySelector;
 import net.minecraft.entity.Entity;
@@ -38,7 +41,7 @@ public class ScriptServer implements IScriptServer
         {
             for (Entity entity : EntitySelector.matchEntities(this.server, targetSelector, Entity.class))
             {
-                entities.add(new ScriptEntity(entity));
+                entities.add(ScriptEntity.create(entity));
             }
         }
         catch (Exception e)
@@ -48,13 +51,13 @@ public class ScriptServer implements IScriptServer
     }
 
     @Override
-    public List<IScriptEntity> getAllPlayers()
+    public List<IScriptPlayer> getAllPlayers()
     {
-        List<IScriptEntity> entities = new ArrayList<IScriptEntity>();
+        List<IScriptPlayer> entities = new ArrayList<IScriptPlayer>();
 
         for (EntityPlayerMP player : this.server.getPlayerList().getPlayers())
         {
-            entities.add(new ScriptEntity(player));
+            entities.add(new ScriptPlayer(player));
         }
 
         return entities;

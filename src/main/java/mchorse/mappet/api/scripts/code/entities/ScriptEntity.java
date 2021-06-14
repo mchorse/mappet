@@ -1,12 +1,13 @@
-package mchorse.mappet.api.scripts.code;
+package mchorse.mappet.api.scripts.code.entities;
 
+import mchorse.mappet.api.scripts.code.ScriptRayTrace;
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
 import mchorse.mappet.api.scripts.code.mappet.MappetQuests;
 import mchorse.mappet.api.scripts.code.mappet.MappetStates;
 import mchorse.mappet.api.scripts.code.nbt.ScriptNBTCompound;
-import mchorse.mappet.api.scripts.user.IScriptEntity;
 import mchorse.mappet.api.scripts.user.IScriptRayTrace;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
+import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
 import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
@@ -36,13 +37,22 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.WorldServer;
 
-public class ScriptEntity implements IScriptEntity
+public class ScriptEntity <T extends Entity> implements IScriptEntity
 {
-    private Entity entity;
-    private IMappetStates states;
-    private IMappetQuests quests;
+    protected T entity;
+    protected IMappetStates states;
 
-    public ScriptEntity(Entity entity)
+    public static IScriptEntity create(Entity entity)
+    {
+        if (entity instanceof EntityPlayerMP)
+        {
+            return new ScriptPlayer((EntityPlayerMP) entity);
+        }
+
+        return new ScriptEntity<Entity>(entity);
+    }
+
+    protected ScriptEntity(T entity)
     {
         this.entity = entity;
     }
@@ -336,14 +346,6 @@ public class ScriptEntity implements IScriptEntity
         this.entity.onKillCommand();
     }
 
-    @Override
-    public boolean send(String message)
-    {
-        this.entity.sendMessage(new TextComponentString(message));
-
-        return this.isPlayer();
-    }
-
     /* Mappet stuff */
 
     @Override
@@ -360,19 +362,6 @@ public class ScriptEntity implements IScriptEntity
         }
 
         return this.states;
-    }
-
-    @Override
-    public IMappetQuests getQuests()
-    {
-        if (this.quests == null && this.isPlayer())
-        {
-            EntityPlayer player = (EntityPlayer) this.entity;
-
-            this.quests = new MappetQuests(Character.get(player).getQuests(), player);
-        }
-
-        return this.quests;
     }
 
     @Override

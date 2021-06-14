@@ -2,10 +2,11 @@ package mchorse.mappet.api.scripts.code;
 
 import mchorse.mappet.CommonProxy;
 import mchorse.mappet.api.scripts.ScriptExecutionFork;
-import mchorse.mappet.api.scripts.user.IScriptEntity;
+import mchorse.mappet.api.scripts.code.entities.ScriptEntity;
 import mchorse.mappet.api.scripts.user.IScriptEvent;
 import mchorse.mappet.api.scripts.user.IScriptServer;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
+import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
 import mchorse.mappet.api.utils.DataContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextComponentString;
@@ -35,7 +36,7 @@ public class ScriptEvent implements IScriptEvent
     {
         if (this.subject == null && this.context.subject != null)
         {
-            this.subject = new ScriptEntity(this.context.subject);
+            this.subject = ScriptEntity.create(this.context.subject);
         }
 
         return this.subject;
@@ -46,7 +47,7 @@ public class ScriptEvent implements IScriptEvent
     {
         if (this.object == null && this.context.object != null)
         {
-            this.object = new ScriptEntity(this.context.object);
+            this.object = ScriptEntity.create(this.context.object);
         }
 
         return this.object;

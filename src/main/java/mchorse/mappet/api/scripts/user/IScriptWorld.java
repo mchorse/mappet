@@ -1,6 +1,8 @@
 package mchorse.mappet.api.scripts.user;
 
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
+import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
+import mchorse.mappet.api.scripts.user.items.IScriptInventory;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import net.minecraft.util.EnumParticleTypes;
@@ -26,9 +28,23 @@ public interface IScriptWorld
     public void setBlock(IScriptBlockState state, int x, int y, int z);
 
     /**
-     * Get block state at XYZ
+     * Get block state at given XYZ
+     *
+     * @return a block state at given XYZ, or null if the chunk isn't loaded
      */
     public IScriptBlockState getBlock(int x, int y, int z);
+
+    /**
+     * Checks whether there is an inventory tile entity at given XYZ
+     */
+    public boolean hasInventory(int x, int y, int z);
+
+    /**
+     * Get inventory tile entity at given XYZ
+     *
+     * @return an inventory at given XYZ, or null if an inventory tile entity isn't present
+     */
+    public IScriptInventory getInventory(int x, int y, int z);
 
     /**
      * Check whether it's raining in the world
