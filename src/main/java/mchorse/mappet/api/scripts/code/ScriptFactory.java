@@ -153,7 +153,7 @@ public class ScriptFactory implements IScriptFactory
     }
 
     @Override
-    public IScriptItemStack createItemStack(INBTCompound compound)
+    public IScriptItemStack createItem(INBTCompound compound)
     {
         if (compound != null)
         {
@@ -164,7 +164,7 @@ public class ScriptFactory implements IScriptFactory
     }
 
     @Override
-    public IScriptItemStack createItemStack(String itemId, int count, int meta)
+    public IScriptItemStack createItem(String itemId, int count, int meta)
     {
         Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemId));
 
@@ -172,7 +172,7 @@ public class ScriptFactory implements IScriptFactory
     }
 
     @Override
-    public IScriptItemStack createBlockItemStack(String blockId, int count, int meta)
+    public IScriptItemStack createBlockItem(String blockId, int count, int meta)
     {
         Block item = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockId));
 

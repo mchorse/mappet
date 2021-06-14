@@ -217,9 +217,9 @@ public interface IScriptEntity
     /* Mappet stuff */
 
     /**
-     * Get entity's states(if it has some, only players have states)
+     * Get entity's states (if it has some, only players and NPCs have states)
      *
-     * @return player's states, or null if this entity doesn't have states
+     * @return entity's states, or null if this entity doesn't have states
      */
     public IMappetStates getStates();
 

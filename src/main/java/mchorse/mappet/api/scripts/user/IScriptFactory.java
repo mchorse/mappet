@@ -94,9 +94,9 @@ public interface IScriptFactory
      * @return an item stack from the string NBT data, or an empty item stack
      *         if the data doesn't have a valid reference to an existing item
      */
-    public default IScriptItemStack createItemStackFromNBT(String nbt)
+    public default IScriptItemStack createItemNBT(String nbt)
     {
-        return this.createItemStack(this.createCompound(nbt));
+        return this.createItem(this.createCompound(nbt));
     }
 
     /**
@@ -105,7 +105,7 @@ public interface IScriptFactory
      * @return an item stack from the NBT data, or an empty item stack if the
      *         data doesn't have a valid reference to an existing item
      */
-    public IScriptItemStack createItemStack(INBTCompound compound);
+    public IScriptItemStack createItem(INBTCompound compound);
 
     /**
      * Create an item stack with item ID
@@ -113,9 +113,9 @@ public interface IScriptFactory
      * @return an item stack with an item specified by ID, or an empty item
      *         stack if the block doesn't exist
      */
-    public default IScriptItemStack createItemStack(String itemId)
+    public default IScriptItemStack createItem(String itemId)
     {
-        return this.createItemStack(itemId, 1);
+        return this.createItem(itemId, 1);
     }
 
     /**
@@ -124,9 +124,9 @@ public interface IScriptFactory
      * @return an item stack with an item specified by ID, or an empty item
      *         stack if the block doesn't exist
      */
-    public default IScriptItemStack createItemStack(String itemId, int count)
+    public default IScriptItemStack createItem(String itemId, int count)
     {
-        return this.createItemStack(itemId, count, 0);
+        return this.createItem(itemId, count, 0);
     }
 
     /**
@@ -135,7 +135,7 @@ public interface IScriptFactory
      * @return an item stack with an item specified by ID, or an empty item
      *         stack if the block doesn't exist
      */
-    public IScriptItemStack createItemStack(String itemId, int count, int meta);
+    public IScriptItemStack createItem(String itemId, int count, int meta);
 
     /**
      * Create an item stack with block ID
@@ -143,9 +143,9 @@ public interface IScriptFactory
      * @return an item stack with an item specified by ID, or an empty item
      *          stack if the block doesn't exist
      */
-    public default IScriptItemStack createBlockItemStack(String blockId)
+    public default IScriptItemStack createBlockItem(String blockId)
     {
-        return this.createItemStack(blockId, 1);
+        return this.createItem(blockId, 1);
     }
 
     /**
@@ -154,9 +154,9 @@ public interface IScriptFactory
      * @return an item stack with an item specified by ID, or an empty item
      *         stack if the block doesn't exist
      */
-    public default IScriptItemStack createBlockItemStack(String blockId, int count)
+    public default IScriptItemStack createBlockItem(String blockId, int count)
     {
-        return this.createItemStack(blockId, count, 0);
+        return this.createItem(blockId, count, 0);
     }
 
     /**
@@ -165,7 +165,7 @@ public interface IScriptFactory
      * @return an item stack with block specified by ID, or an empty item
      *         stack if the block doesn't exist
      */
-    public IScriptItemStack createBlockItemStack(String blockId, int count, int meta);
+    public IScriptItemStack createBlockItem(String blockId, int count, int meta);
 
     /**
      * Get Minecraft particle type by its name

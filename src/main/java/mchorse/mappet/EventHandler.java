@@ -190,7 +190,7 @@ public class EventHandler
     /**
      * Attach player capabilities
      */
-                                  @SubscribeEvent
+    @SubscribeEvent
     public void attachPlayerCapability(AttachCapabilitiesEvent<Entity> event)
     {
         if (event.getObject() instanceof EntityPlayer)
