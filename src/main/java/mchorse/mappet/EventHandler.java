@@ -22,6 +22,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.ServerChatEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
@@ -215,15 +216,7 @@ public class EventHandler
                 character.updateLastClear(lastClear);
             }
 
-            if (!character.getQuests().quests.isEmpty())
-            {
-                Dispatcher.sendTo(new PacketQuests(character.getQuests()), player);
-            }
-
-            if (!Mappet.settings.hotkeys.hotkeys.isEmpty())
-            {
-                Dispatcher.sendTo(new PacketEventPlayerHotkeys(Mappet.settings.hotkeys), player);
-            }
+            this.syncData(player, character);
         }
 
         if (!Mappet.settings.playerLogIn.isEmpty())
@@ -231,6 +224,31 @@ public class EventHandler
             DataContext context = new DataContext(event.player);
 
             Mappet.settings.playerLogIn.trigger(context);
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerSpawn(EntityJoinWorldEvent event)
+    {
+        if (event.getEntity() instanceof EntityPlayer && !event.getEntity().world.isRemote)
+        {
+            EntityPlayerMP player = (EntityPlayerMP) event.getEntity();
+            ICharacter character = Character.get(player);
+
+            this.syncData(player, character);
+        }
+    }
+
+    private void syncData(EntityPlayerMP player, ICharacter character)
+    {
+        if (!character.getQuests().quests.isEmpty())
+        {
+            Dispatcher.sendTo(new PacketQuests(character.getQuests()), player);
+        }
+
+        if (!Mappet.settings.hotkeys.hotkeys.isEmpty())
+        {
+            Dispatcher.sendTo(new PacketEventPlayerHotkeys(Mappet.settings.hotkeys), player);
         }
     }
 
