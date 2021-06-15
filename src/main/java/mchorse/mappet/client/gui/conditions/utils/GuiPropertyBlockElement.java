@@ -49,37 +49,34 @@ public class GuiPropertyBlockElement extends GuiTargetBlockElement<PropertyCondi
 
     private void toggleComparison(GuiCirculateElement b)
     {
-        Comparison comparison = this.block.comparison;
-
         this.block.comparison = Comparison.values()[b.getValue()];
 
-        if (
-            (comparison == Comparison.EXPRESSION && this.block.comparison != Comparison.EXPRESSION) ||
-            (comparison != Comparison.EXPRESSION && this.block.comparison == Comparison.EXPRESSION) ||
-            this.compare.getChildren().isEmpty()
-        ) {
-            this.compare.removeAll();
-            this.compare.add(Elements.column(mc, 5,
-                Elements.label(IKey.lang("mappet.gui.conditions.comparison")), this.comparison)
-            );
+        GuiElement insert = this.value;
+        IKey label = IKey.lang("mappet.gui.conditions.expression");
 
-            if (this.block.comparison == Comparison.EXPRESSION)
-            {
-                this.compare.add(Elements.column(mc, 5,
-                    Elements.label(IKey.lang("mappet.gui.conditions.expression")), this.expression)
-                );
-            }
-            else
-            {
-                this.compare.add(Elements.column(mc, 5,
-                    Elements.label(IKey.lang("mappet.gui.conditions.value")), this.value)
-                );
-            }
+        if (this.block.comparison == Comparison.EXPRESSION)
+        {
+            insert = this.expression;
+            label = IKey.lang("mappet.gui.conditions.expression");
+        }
+        else if (this.block.comparison == Comparison.IS_TRUE || this.block.comparison == Comparison.IS_FALSE)
+        {
+            insert = null;
+        }
 
-            if (this.compare.hasParent())
-            {
-                this.compare.getParentContainer().resize();
-            }
+        this.compare.removeAll();
+        this.compare.add(Elements.column(this.mc, 5,
+            Elements.label(IKey.lang("mappet.gui.conditions.comparison")), this.comparison)
+        );
+
+        if (insert != null)
+        {
+            this.compare.add(Elements.column(this.mc, 5, Elements.label(label), insert));
+        }
+
+        if (this.compare.hasParent())
+        {
+            this.compare.getParentContainer().resize();
         }
     }
 }

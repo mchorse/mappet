@@ -26,7 +26,9 @@ public class EntityConditionBlock extends PropertyConditionBlock
             return false;
         }
 
-        return this.compare(EntityUtils.getProperty(entity, this.id));
+        double value = EntityUtils.getProperty(entity, this.id);
+
+        return this.compare(value);
     }
 
     @Override

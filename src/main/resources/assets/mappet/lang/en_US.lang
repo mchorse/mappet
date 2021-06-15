@@ -523,6 +523,8 @@ mappet.gui.entity_property.light_sky=Light (sky)
 mappet.gui.entity_property.sneaking=Is sneaking
 mappet.gui.entity_property.sprinting=Is sprinting
 mappet.gui.entity_property.on_ground=Is on ground
+mappet.gui.entity_property.yaw=Y head rotation (yaw)
+mappet.gui.entity_property.pitch=X head rotation (pitch)
 
 # Keys
 mappet.keys.category=Mappet

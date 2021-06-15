@@ -16,7 +16,7 @@ import java.util.Set;
 
 public class EntityUtils
 {
-    public static final Set<String> ENTITY_PROPERTIES = ImmutableSet.of("xp", "xp_level", "hp", "hunger", "armor", "ticks", "light", "light_sky", "sneaking", "sprinting", "on_ground");
+    public static final Set<String> ENTITY_PROPERTIES = ImmutableSet.of("xp", "xp_level", "hp", "hunger", "armor", "ticks", "light", "light_sky", "sneaking", "sprinting", "on_ground", "yaw", "pitch");
 
     public static States getStates(Entity entity)
     {
@@ -76,6 +76,12 @@ public class EntityUtils
 
             case "on_ground":
                 return entity.onGround ? 1 : 0;
+
+            case "yaw":
+                return MathHelper.wrapDegrees(entity.rotationYaw);
+
+            case "pitch":
+                return entity.rotationPitch;
         }
 
         return 0;
