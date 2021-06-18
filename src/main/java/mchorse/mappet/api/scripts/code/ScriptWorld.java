@@ -1,16 +1,23 @@
 package mchorse.mappet.api.scripts.code;
 
+import mchorse.mappet.Mappet;
+import mchorse.mappet.api.npcs.Npc;
+import mchorse.mappet.api.npcs.NpcState;
 import mchorse.mappet.api.scripts.code.blocks.ScriptBlockState;
 import mchorse.mappet.api.scripts.code.entities.ScriptEntity;
+import mchorse.mappet.api.scripts.code.entities.ScriptNpc;
 import mchorse.mappet.api.scripts.code.items.ScriptInventory;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
+import mchorse.mappet.api.scripts.user.entities.IScriptNpc;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
+import mchorse.mappet.entities.EntityNpc;
 import mchorse.mappet.utils.WorldUtils;
+import net.minecraft.command.CommandException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -158,12 +165,6 @@ public class ScriptWorld implements IScriptWorld
     }
 
     @Override
-    public IScriptEntity spawnEntity(String id, double x, double y, double z)
-    {
-        return this.spawnEntity(id, x, y, z, null);
-    }
-
-    @Override
     public IScriptEntity spawnEntity(String id, double x, double y, double z, INBTCompound compound)
     {
         if (!this.world.isBlockLoaded(this.pos.setPos(x, y, z)))
@@ -183,6 +184,34 @@ public class ScriptWorld implements IScriptWorld
         Entity entity = AnvilChunkLoader.readWorldEntityPos(tag, this.world, x, y, z, true);
 
         return entity == null ? null : ScriptEntity.create(entity);
+    }
+
+    @Override
+    public IScriptNpc spawnNpc(String id, String state, double x, double y, double z)
+    {
+        Npc npc = Mappet.npcs.load(id);
+
+        if (npc == null)
+        {
+            return null;
+        }
+
+        NpcState npcState = npc.states.get(state);
+
+        if (npcState == null)
+        {
+            return null;
+        }
+
+        EntityNpc entity = new EntityNpc(this.world);
+
+        entity.setPosition(x, y, z);
+        entity.setNpc(npc, npcState);
+
+        entity.world.spawnEntity(entity);
+        entity.initialize();
+
+        return new ScriptNpc(entity);
     }
 
     @Override

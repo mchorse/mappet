@@ -2,6 +2,7 @@ package mchorse.mappet.api.scripts.user;
 
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
+import mchorse.mappet.api.scripts.user.entities.IScriptNpc;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
@@ -121,12 +122,28 @@ public interface IScriptWorld
     /**
      * Spawn an entity at given position
      */
-    public IScriptEntity spawnEntity(String id, double x, double y, double z);
+    public default IScriptEntity spawnEntity(String id, double x, double y, double z)
+    {
+        return this.spawnEntity(id, x, y, z, null);
+    }
 
     /**
      * Spawn an entity at given position with additional data
      */
     public IScriptEntity spawnEntity(String id, double x, double y, double z, INBTCompound compound);
+
+    /**
+     * Spawn an NPC at given position with default state
+     */
+    public default IScriptNpc spawnNpc(String id, double x, double y, double z)
+    {
+        return this.spawnNpc(id, "default", x, y, z);
+    }
+
+    /**
+     * Spawn an NPC at given position
+     */
+    public IScriptNpc spawnNpc(String id, String state, double x, double y, double z);
 
     /**
      * Get entities within the box specified by given coordinates in this world.

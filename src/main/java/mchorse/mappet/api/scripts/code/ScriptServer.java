@@ -4,8 +4,9 @@ import mchorse.mappet.Mappet;
 import mchorse.mappet.api.scripts.code.entities.ScriptEntity;
 import mchorse.mappet.api.scripts.code.entities.ScriptPlayer;
 import mchorse.mappet.api.scripts.code.mappet.MappetStates;
-import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
 import mchorse.mappet.api.scripts.user.IScriptServer;
+import mchorse.mappet.api.scripts.user.IScriptWorld;
+import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
 import net.minecraft.command.EntitySelector;
@@ -30,6 +31,12 @@ public class ScriptServer implements IScriptServer
     public MinecraftServer getMinecraftServer()
     {
         return this.server;
+    }
+
+    @Override
+    public IScriptWorld getWorld(int dimension)
+    {
+        return new ScriptWorld(this.server.getWorld(dimension));
     }
 
     @Override

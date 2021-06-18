@@ -19,6 +19,11 @@ public interface IScriptServer
     public MinecraftServer getMinecraftServer();
 
     /**
+     * Get world at dimension ID
+     */
+    public IScriptWorld getWorld(int dimension);
+
+    /**
      * Get all entities matching giving target selector
      */
     public List<IScriptEntity> getEntities(String targetSelector);

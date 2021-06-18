@@ -2,25 +2,20 @@ package mchorse.mappet.api.scripts.code.entities;
 
 import mchorse.mappet.api.scripts.code.ScriptRayTrace;
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
-import mchorse.mappet.api.scripts.code.mappet.MappetQuests;
 import mchorse.mappet.api.scripts.code.mappet.MappetStates;
 import mchorse.mappet.api.scripts.code.nbt.ScriptNBTCompound;
 import mchorse.mappet.api.scripts.user.IScriptRayTrace;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
-import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
 import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.mappet.api.states.States;
-import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.entities.EntityNpc;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.scripts.PacketEntityRotations;
 import mchorse.mappet.utils.EntityUtils;
 import mchorse.mclib.utils.RayTracing;
-import mchorse.metamorph.api.MorphAPI;
-import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -31,10 +26,9 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.play.server.SPacketEntityVelocity;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.WorldServer;
 
 public class ScriptEntity <T extends Entity> implements IScriptEntity
@@ -48,8 +42,16 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
         {
             return new ScriptPlayer((EntityPlayerMP) entity);
         }
+        else if (entity instanceof EntityNpc)
+        {
+            return new ScriptNpc((EntityNpc) entity);
+        }
+        else if (entity != null)
+        {
+            return new ScriptEntity<Entity>(entity);
+        }
 
-        return new ScriptEntity<Entity>(entity);
+        return null;
     }
 
     protected ScriptEntity(T entity)
@@ -141,7 +143,7 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Override
     public float getHp()
     {
-        if (this.entity instanceof EntityLivingBase)
+        if (this.isLivingBase())
         {
             return ((EntityLivingBase) this.entity).getHealth();
         }
@@ -152,7 +154,7 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Override
     public void setHp(float hp)
     {
-        if (this.entity instanceof EntityLivingBase)
+        if (this.isLivingBase())
         {
             ((EntityLivingBase) this.entity).setHealth(hp);
         }
@@ -161,7 +163,7 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Override
     public float getMaxHp()
     {
-        if (this.entity instanceof EntityLivingBase)
+        if (this.isLivingBase())
         {
             return ((EntityLivingBase) this.entity).getMaxHealth();
         }
@@ -200,7 +202,7 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Override
     public IScriptItemStack getMainItem()
     {
-        if (this.entity instanceof EntityLivingBase)
+        if (this.isLivingBase())
         {
             return new ScriptItemStack(((EntityLivingBase) this.entity).getHeldItemMainhand());
         }
@@ -217,7 +219,7 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Override
     public IScriptItemStack getOffItem()
     {
-        if (this.entity instanceof EntityLivingBase)
+        if (this.isLivingBase())
         {
             return new ScriptItemStack(((EntityLivingBase) this.entity).getHeldItemOffhand());
         }
@@ -238,7 +240,7 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
             stack = ScriptItemStack.EMPTY;
         }
 
-        if (this.entity instanceof EntityLivingBase)
+        if (this.isLivingBase())
         {
             ((EntityLivingBase) this.entity).setHeldItem(hand, stack.getMinecraftItemStack().copy());
         }
@@ -249,16 +251,36 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Override
     public void setSpeed(float speed)
     {
-        if (this.entity instanceof EntityLivingBase)
+        if (this.isLivingBase())
         {
             ((EntityLivingBase) this.entity).getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue((double) speed);
         }
     }
 
     @Override
-    public boolean isAIEnabled()
+    public IScriptEntity getTarget()
     {
         if (this.entity instanceof EntityLiving)
+        {
+            return ScriptEntity.create(((EntityLiving) this.entity).getAttackTarget());
+        }
+
+        return null;
+    }
+
+    @Override
+    public void setTarget(IScriptEntity entity)
+    {
+        if (this.entity instanceof EntityLiving && entity != null && entity.isLivingBase())
+        {
+            ((EntityLiving) this.entity).setAttackTarget((EntityLivingBase) entity.getMinecraftEntity());
+        }
+    }
+
+    @Override
+    public boolean isAIEnabled()
+    {
+        if (this.isLivingBase())
         {
             return !((EntityLiving) this.entity).isAIDisabled();
         }
@@ -269,7 +291,7 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Override
     public void setAIEnabled(boolean enabled)
     {
-        if (this.entity instanceof EntityLiving)
+        if (this.isLivingBase())
         {
             ((EntityLiving) this.entity).setNoAI(!enabled);
         }
@@ -287,6 +309,12 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
         ResourceLocation rl = EntityList.getKey(this.entity);
 
         return rl == null ? "" : rl.toString();
+    }
+
+    @Override
+    public int getTicks()
+    {
+        return this.entity.ticksExisted;
     }
 
     @Override
@@ -320,9 +348,24 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     }
 
     @Override
+    public boolean isNpc()
+    {
+        return this.entity instanceof EntityNpc;
+    }
+
+    @Override
     public boolean isLivingBase()
     {
         return this.entity instanceof EntityLivingBase;
+    }
+
+    @Override
+    public void damage(float health)
+    {
+        if (this.isLivingBase())
+        {
+            this.entity.attackEntityFrom(DamageSource.OUT_OF_WORLD, health);
+        }
     }
 
     @Override
@@ -358,17 +401,6 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Override
     public boolean setMorph(AbstractMorph morph)
     {
-        if (this.entity instanceof EntityNpc)
-        {
-            EntityNpc npc = (EntityNpc) this.entity;
-
-            npc.getState().morph = MorphUtils.copy(morph);
-            npc.setMorph(npc.getState().morph);
-            npc.sendMorph();
-
-            return true;
-        }
-
         return false;
     }
 }

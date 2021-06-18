@@ -147,6 +147,16 @@ public interface IScriptEntity
     public void setSpeed(float speed);
 
     /**
+     * Get this entity's attack target
+     */
+    public IScriptEntity getTarget();
+
+    /**
+     * Set this entity's attack target to given entity
+     */
+    public void setTarget(IScriptEntity entity);
+
+    /**
      * Check whether entity's AI is enabled
      */
     public boolean isAIEnabled();
@@ -167,6 +177,11 @@ public interface IScriptEntity
      * "minecraft:zombie"
      */
     public String getEntityId();
+
+    /**
+     * Get how many ticks did this entity existed
+     */
+    public int getTicks();
 
     /**
      * Get entity name
@@ -200,9 +215,19 @@ public interface IScriptEntity
     public boolean isPlayer();
 
     /**
+     * Check whether this entity is an NPC
+     */
+    public boolean isNpc();
+
+    /**
      * Check whether this entity is living base
      */
     public boolean isLivingBase();
+
+    /**
+     * Inflict some damage on this entity (use {@link #kill()} to kill the entity though)
+     */
+    public void damage(float health);
 
     /**
      * Remove this entity from the server without any dead effects
