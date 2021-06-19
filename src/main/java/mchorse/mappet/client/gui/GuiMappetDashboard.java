@@ -92,6 +92,7 @@ public class GuiMappetDashboard extends GuiAbstractDashboard
             menu.enterEditMorph();
         }
 
+        menu.removeFromParent();
         parent.add(menu);
     }
 
