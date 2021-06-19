@@ -62,7 +62,7 @@ public abstract class TargetConditionBlock extends AbstractConditionBlock
         }
         else if (this.target == Target.NPC)
         {
-            return context.getNPC();
+            return context.getNpc();
         }
         else if (this.target == Target.SELECTOR)
         {
