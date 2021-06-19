@@ -40,7 +40,7 @@ public class ExpressionManager
 
     public ExpressionManager()
     {
-        this.builder = new MathBuilder();
+        this.builder = new MathBuilder().lenient();
 
         /* Functions */
         this.builder.functions.put("quest_present", QuestPresent.class);
