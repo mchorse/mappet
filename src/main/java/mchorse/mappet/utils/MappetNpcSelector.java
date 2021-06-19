@@ -98,6 +98,10 @@ public class MappetNpcSelector implements IEntitySelectorFactory
                             variable.set(((Number) v).doubleValue());
                         }
                     }
+                    else
+                    {
+                        variable.set(0);
+                    }
                 }
 
                 return value.booleanValue();
