@@ -16,6 +16,7 @@ import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiLabel;
 import mchorse.mclib.client.gui.mclib.GuiDashboardPanel;
 import mchorse.mclib.client.gui.utils.Elements;
+import mchorse.mclib.client.gui.utils.ScrollDirection;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,7 +34,7 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
     {
         super(mc, dashboard);
 
-        this.editor = new GuiScrollElement(mc);
+        this.editor = new GuiScrollElement(mc, ScrollDirection.HORIZONTAL);
         this.editor.flex().relative(this).wh(1F, 1F).column(5).scroll().width(180).padding(15);
 
         this.hotkeys = new GuiButtonElement(mc, IKey.str("Edit trigger hotkeys..."), (b) -> this.openHotkeysEditor());
