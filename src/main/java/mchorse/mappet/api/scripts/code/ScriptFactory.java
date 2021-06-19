@@ -1,6 +1,7 @@
 package mchorse.mappet.api.scripts.code;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import mchorse.mappet.Mappet;
 import mchorse.mappet.api.scripts.code.blocks.ScriptBlockState;
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
 import mchorse.mappet.api.scripts.code.nbt.ScriptNBTCompound;
@@ -194,5 +195,17 @@ public class ScriptFactory implements IScriptFactory
         }
 
         return MorphManager.INSTANCE.morphFromNBT(compound.getNBTTagComound());
+    }
+
+    @Override
+    public Object get(String key)
+    {
+        return Mappet.scripts.objects.get(key);
+    }
+
+    @Override
+    public void set(String key, Object object)
+    {
+        Mappet.scripts.objects.put(key, object);
     }
 }

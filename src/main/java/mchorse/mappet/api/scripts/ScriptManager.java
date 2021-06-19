@@ -15,6 +15,8 @@ import java.util.Map;
 
 public class ScriptManager extends BaseManager<Script>
 {
+    public final Map<String, Object> objects = new HashMap<String, Object>();
+
     private Map<String, Script> uniqueScripts = new HashMap<String, Script>();
 
     public ScriptManager(File folder)

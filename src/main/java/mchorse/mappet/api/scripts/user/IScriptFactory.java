@@ -16,7 +16,7 @@ import net.minecraft.util.EnumParticleTypes;
  * <pre>{@code
  *    function main(c) {
  *        // Create a diamond hoe using Mappet's factory
- *        var item = mappet.createItemStack("minecraft:diamond_hoe");
+ *        var item = mappet.createItem("minecraft:diamond_hoe");
  *
  *        c.getSubject().setMainItem(item);
  *    }
@@ -184,4 +184,15 @@ public interface IScriptFactory
      * Create a morph out of NBT
      */
     public AbstractMorph createMorph(INBTCompound compound);
+
+    /**
+     * Get a global arbitrary object
+     */
+    public Object get(String key);
+
+    /**
+     * Set a global arbitrary object during server's existence (other scripts
+     * can access this data)
+     */
+    public void set(String key, Object object);
 }
