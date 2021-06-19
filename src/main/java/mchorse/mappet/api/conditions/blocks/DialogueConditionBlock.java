@@ -35,11 +35,7 @@ public class DialogueConditionBlock extends TargetConditionBlock
     @SideOnly(Side.CLIENT)
     public String stringify()
     {
-        String key = this.not
-            ? "mappet.gui.conditions.dialogue.wasnt_read"
-            : "mappet.gui.conditions.dialogue.was_read";
-
-        return I18n.format(key, this.id);
+        return I18n.format("mappet.gui.conditions.dialogue.was_read", this.id);
     }
 
     @Override

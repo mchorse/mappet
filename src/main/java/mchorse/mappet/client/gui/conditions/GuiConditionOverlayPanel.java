@@ -23,6 +23,7 @@ import mchorse.mappet.client.gui.conditions.blocks.GuiWorldTimeConditionBlockPan
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mappet.client.gui.utils.overlays.GuiEditorOverlayPanel;
 import mchorse.mappet.utils.Colors;
+import mchorse.mclib.McLib;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
@@ -30,9 +31,11 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.mclib.utils.ColorUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -181,6 +184,23 @@ public class GuiConditionOverlayPanel extends GuiEditorOverlayPanel<AbstractCond
         public GuiAbstractBlockListElement(Minecraft mc, Consumer<List<AbstractConditionBlock>> callback)
         {
             super(mc, callback);
+
+            this.postDraw = true;
+            this.scroll.scrollItemSize = 24;
+        }
+
+        @Override
+        public void drawPostListElement(AbstractConditionBlock element, int i, int x, int y, boolean hover, boolean selected)
+        {
+            if (i < this.getList().size() - 1)
+            {
+                String label = I18n.format(element.or ? "mappet.gui.conditions.label_or" : "mappet.gui.conditions.label_and");
+
+                y += this.scroll.scrollItemSize - 4;
+                int w = this.font.getStringWidth(label);
+
+                GuiDraw.drawTextBackground(this.font, label, this.scroll.mx(w), y,0xffffff, ColorUtils.HALF_BLACK, 2);
+            }
         }
 
         @Override
@@ -190,6 +210,11 @@ public class GuiConditionOverlayPanel extends GuiEditorOverlayPanel<AbstractCond
 
             Gui.drawRect(x, y, x + 4, y + this.scroll.scrollItemSize, 0xff000000 + color);
             GuiDraw.drawHorizontalGradientRect(x + 4, y, x + 24, y + this.scroll.scrollItemSize, 0x44000000 + color, color);
+
+            if (element.not)
+            {
+                GuiDraw.drawTextBackground(this.font, "!", x + 6, y + this.scroll.scrollItemSize / 2 - this.font.FONT_HEIGHT / 2,0xffffff, ColorUtils.HALF_BLACK, 2);
+            }
 
             super.drawElementPart(element, i, x + 4, y, hover, selected);
         }
