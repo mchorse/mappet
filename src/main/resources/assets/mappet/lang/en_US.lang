@@ -52,12 +52,12 @@ mappet.success.data.loaded=§fData by ID §7%s§f was loaded.
 mappet.commands.mp.help=Main Mappet command that provides subcommands for working with Mappet's features.
 
 mappet.commands.mp.state.help=State management subcommand.\n\n§7<target>§r argument is used to determine where to edit the state. You can either specify player's name to edit player's states or §7~§r for global state.
-mappet.commands.mp.state.add=This command adds to value by §7<id>§r key the value evaluated by §7<expression>§r. If §7<id>§r state doesn't exist, §7<expression>§r will be added to 0.
-mappet.commands.mp.state.clear=This command removes value by §7[id]§r key. If §7[id]§r was omitted, then all values will be erased.
+mappet.commands.mp.state.add=This command adds §7<value>§r to state by §7<id>§r key. If §7<id>§r state doesn't exist or was a string, §7<value>§r will be added to 0.
+mappet.commands.mp.state.clear=This command removes state by §7[id]§r key. If §7[id]§r was omitted, then all values will be erased.
 mappet.commands.mp.state.if=This command evaluates §7<expression>§r against value §7<id>§r state, and if resulted §7<expression>§r is a non-zero value it does nothing, but if if outputs zero then the command will error.\n\nThis is useful for command blocks that can stop on errors.
 mappet.commands.mp.state.print=This command prints out all the values §7<target>§r state has.
-mappet.commands.mp.state.set=This command assigns value by §7<id>§r key to §7<value>§r (it can be a number or an arbitrary string).
-mappet.commands.mp.state.sub=This command subtracts to value by §7<id>§r key the value evaluated by §7<expression>§r. If §7<id>§r state didn't exist, §7<expression>§r will be subtracted to 0.
+mappet.commands.mp.state.set=This command assigns §7<value>§r (it can be a number or an arbitrary string) to §7<id>§r key.
+mappet.commands.mp.state.sub=This command subtracts §7<value>§r from state by §7<id>§r. If §7<id>§r state didn't exist or was a string, §7<value>§r will be subtracted from 0.
 
 mappet.commands.mp.quest.help=Quest management subcommand.
 mappet.commands.mp.quest.accept=This command gives a quest by §7<id>§r from quest database to one or multiple §7<player>§r(s). If §7<player>§r(s) has this quest, then it will be ignored.

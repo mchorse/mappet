@@ -23,7 +23,7 @@ public class CommandStateAdd extends CommandStateBase
     @Override
     public String getSyntax()
     {
-        return "{l}{6}/{r}mp {8}state add{r} {7}<target> <id> <expression>{r}";
+        return "{l}{6}/{r}mp {8}state add{r} {7}<target> <id> <number>{r}";
     }
 
     @Override
