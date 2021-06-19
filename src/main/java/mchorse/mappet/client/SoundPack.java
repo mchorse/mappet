@@ -82,11 +82,11 @@ public class SoundPack implements IResourcePack
                 sound.add("sounds", elements);
                 elements.add("mp.sounds:" + prefix + id);
 
-                object.add(prefix + id, sound);
+                object.add(prefix.replaceAll("/", ".") + id, sound);
             }
             else if (file.isDirectory())
             {
-                this.generateJson(folder, prefix + name + ".", object);
+                this.generateJson(file, prefix + name + "/", object);
             }
         }
 
