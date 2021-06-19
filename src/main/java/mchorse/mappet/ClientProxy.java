@@ -34,6 +34,8 @@ public class ClientProxy extends CommonProxy
     private static int requestId = 0;
     private static Map<Integer, Consumer<List<String>>> consumers = new HashMap<Integer, Consumer<List<String>>>();
 
+    public static File sounds;
+
     public static void requestNames(ContentType type, Consumer<List<String>> consumer)
     {
         consumers.put(requestId, consumer);
@@ -65,7 +67,7 @@ public class ClientProxy extends CommonProxy
 
         RenderingRegistry.registerEntityRenderingHandler(EntityNpc.class, new RenderNpc.Factory());
 
-        ReflectionUtils.registerResourcePack(new SoundPack(new File(CommonProxy.configFolder, "sounds")));
+        ReflectionUtils.registerResourcePack(new SoundPack(sounds = new File(CommonProxy.configFolder, "sounds")));
 
         Themes.initiate();
     }

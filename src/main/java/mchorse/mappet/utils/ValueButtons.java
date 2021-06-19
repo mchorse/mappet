@@ -1,5 +1,6 @@
 package mchorse.mappet.utils;
 
+import mchorse.mappet.ClientProxy;
 import mchorse.mappet.client.gui.utils.text.GuiText;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
@@ -33,7 +34,8 @@ public class ValueButtons extends ValueGUI
                 Elements.row(mc, 5,
                     new GuiButtonElement(mc, IKey.lang("mappet.translation.wiki"), (b) -> GuiUtils.openWebLink(I18n.format("mappet.translation.wiki_url"))),
                     new GuiButtonElement(mc, IKey.lang("mappet.translation.community"), (b) -> GuiUtils.openWebLink(I18n.format("mappet.translation.community_url")))
-                )
+                ),
+                new GuiButtonElement(mc, IKey.lang("mappet.translation.sounds"), (b) -> GuiUtils.openWebLink(ClientProxy.sounds.toURI()))
             ).marginTop(6)
         );
     }
