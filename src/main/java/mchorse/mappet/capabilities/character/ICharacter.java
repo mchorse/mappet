@@ -8,6 +8,7 @@ import mchorse.mappet.api.states.States;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.utils.CurrentSession;
 import mchorse.mappet.utils.PositionCache;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -46,4 +47,6 @@ public interface ICharacter extends INBTSerializable<NBTTagCompound>
     /* Admin editing */
 
     public CurrentSession getCurrentSession();
+
+    public void copy(ICharacter character, EntityPlayer player);
 }

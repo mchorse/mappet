@@ -102,6 +102,14 @@ public class Character implements ICharacter
     }
 
     @Override
+    public void copy(ICharacter character, EntityPlayer player)
+    {
+        this.quests.copy(character.getQuests());
+        this.states.copy(character.getStates());
+        this.lastClear = character.getLastClear();
+    }
+
+    @Override
     public NBTTagCompound serializeNBT()
     {
         NBTTagCompound tag = new NBTTagCompound();

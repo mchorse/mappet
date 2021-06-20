@@ -79,6 +79,19 @@ public class Quests implements INBTSerializable<NBTTagCompound>
         return this.quests.get(id);
     }
 
+    public void copy(Quests quests)
+    {
+        this.quests.clear();
+
+        for (Map.Entry<String, Quest> entry : quests.quests.entrySet())
+        {
+            Quest quest = Mappet.quests.load(entry.getKey());
+
+            quest.partialDeserializeNBT(entry.getValue().partialSerializeNBT());
+            this.quests.put(entry.getKey(), quest);
+        }
+    }
+
     @Override
     public NBTTagCompound serializeNBT()
     {

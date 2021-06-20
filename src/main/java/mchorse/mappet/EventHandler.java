@@ -14,6 +14,9 @@ import mchorse.mappet.network.common.quests.PacketQuest;
 import mchorse.mappet.network.common.quests.PacketQuests;
 import mchorse.mappet.network.common.scripts.PacketClick;
 import mchorse.mappet.utils.ScriptUtils;
+import mchorse.metamorph.Metamorph;
+import mchorse.metamorph.capabilities.morphing.IMorphing;
+import mchorse.metamorph.capabilities.morphing.Morphing;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -246,6 +249,19 @@ public class EventHandler
         {
             player.sendMessage(new TextComponentTranslation("mappet.nashorn_error"));
         }
+    }
+
+    /**
+     * Copy data from dead player (or player returning from end) to the new player
+     */
+    @SubscribeEvent
+    public void onPlayerClone(net.minecraftforge.event.entity.player.PlayerEvent.Clone event)
+    {
+        EntityPlayer player = event.getEntityPlayer();
+        ICharacter character = Character.get(player);
+        ICharacter oldCharacter = Character.get(event.getOriginal());
+
+        character.copy(oldCharacter, player);
     }
 
     @SubscribeEvent
