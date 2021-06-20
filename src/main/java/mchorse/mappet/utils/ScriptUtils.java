@@ -1,13 +1,19 @@
 package mchorse.mappet.utils;
 
 import com.google.common.collect.ImmutableSet;
+import mchorse.mappet.ClientProxy;
+import org.apache.commons.io.FileUtils;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
+import java.io.File;
 import java.lang.reflect.Method;
 
 public class ScriptUtils
 {
+    public static boolean copiedNashorn;
+    public static boolean errorNashorn;
+
     private static ScriptEngineManager manager;
 
     /**
@@ -36,9 +42,39 @@ public class ScriptUtils
         catch (Exception e)
         {
             e.printStackTrace();
+
+            tryCopyingNashorn();
         }
 
+        errorNashorn = true;
+
         return null;
+    }
+
+    private static void tryCopyingNashorn()
+    {
+        if (copiedNashorn)
+        {
+            return;
+        }
+
+        File home = new File(System.getProperty("java.home"));
+        File nashorn = new File(home, "lib/ext/nashorn.jar");
+        File modsNashorn = new File(ClientProxy.configFolder.getParentFile().getParentFile(), "mods/nashorn.jar");
+
+        if (nashorn.isFile() && !modsNashorn.isFile())
+        {
+            try
+            {
+                FileUtils.copyFile(nashorn, modsNashorn);
+
+                copiedNashorn = true;
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static ScriptEngineManager getManager()

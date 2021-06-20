@@ -13,6 +13,7 @@ import mchorse.mappet.network.common.events.PacketEventPlayerHotkeys;
 import mchorse.mappet.network.common.quests.PacketQuest;
 import mchorse.mappet.network.common.quests.PacketQuests;
 import mchorse.mappet.network.common.scripts.PacketClick;
+import mchorse.mappet.utils.ScriptUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,6 +21,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -234,6 +236,15 @@ public class EventHandler
             DataContext context = new DataContext(event.player);
 
             Mappet.settings.playerLogIn.trigger(context);
+        }
+
+        if (ScriptUtils.copiedNashorn)
+        {
+            player.sendMessage(new TextComponentTranslation("mappet.nashorn_copied"));
+        }
+        else if (ScriptUtils.errorNashorn)
+        {
+            player.sendMessage(new TextComponentTranslation("mappet.nashorn_error"));
         }
     }
 
