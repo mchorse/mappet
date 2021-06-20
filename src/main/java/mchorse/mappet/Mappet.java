@@ -202,21 +202,24 @@ public final class Mappet
     @Mod.EventHandler
     public void serverStopped(FMLServerStoppedEvent event)
     {
-        settings.save();
-        settings = null;
-        states.save();
-        states = null;
+        if (settings != null)
+        {
+            settings.save();
+            settings = null;
+            states.save();
+            states = null;
 
-        quests = null;
-        crafting = null;
-        events = null;
-        dialogues = null;
-        expressions = null;
-        npcs = null;
-        factions = null;
-        data = null;
-        chains = null;
-        scripts = null;
+            quests = null;
+            crafting = null;
+            events = null;
+            dialogues = null;
+            expressions = null;
+            npcs = null;
+            factions = null;
+            data = null;
+            chains = null;
+            scripts = null;
+        }
 
         CommonProxy.eventHandler.reset();
     }
