@@ -99,8 +99,6 @@ mappet.config.title=Маппет
 mappet.config.general.title=General
 mappet.config.general.tooltip=General mod options
 
-mappet.config.comments.general.syntax_style=This button opens theme editor where you can manage and edit script editor highlighting themes.
-
 mappet.config.npc.title=NPCs
 mappet.config.npc.tooltip=Mod options related to NPCs
 
@@ -112,6 +110,8 @@ mappet.config.events.tooltip=Настройки мода, относящиеся
 
 mappet.config.events.max_executions=Максимальное количество выполнений
 mappet.config.comments.events.max_executions=Эта опция отвечает за максимальное количество выполнений нодов за событие (дабы избежать бесконечной рекурсии)
+mappet.config.events.use_server_for_commands=Use server for commands
+mappet.config.comments.events.use_server_for_commands=Instead of using a dedicated trigger (which supports position based target selectors), use directly server for event commands (and scripts)
 
 mappet.config.gui.title=Интерфейс
 mappet.config.gui.tooltip=Настройки интерфейса
@@ -125,6 +125,13 @@ mappet.config.comments.gui.node_thickness=Эта опция позволяет �
 mappet.config.gui.quest_preview_rewards=Предпросмотр квестовых наград
 mappet.config.comments.gui.quest_preview_rewards=Эта настройка позволяет включить или выключить предпросмотр наград за выполнение квестов.
 
+mappet.config.script_editor.title=Script editor
+mappet.config.script_editor.tooltip=Options to tweak script editor's GUI preferences
+
+mappet.config.comments.script_editor.syntax_style=This button opens theme editor where you can manage and edit script editor highlighting themes.
+mappet.config.script_editor.sounds=Typing sounds
+mappet.config.comments.script_editor.sounds=Whether Minecraft sounds should be played when you type in code
+
 # GUI
 
 mappet.gui.none=<none>
@@ -134,24 +141,24 @@ mappet.gui.overlays.entities.main=Выберите ID сущности...
 mappet.gui.overlays.sounds.main=Выберите звуковое событие...
 mappet.gui.overlays.event=Выберите событие...
 mappet.gui.overlays.dialogue=Выберите диалог...
+mappet.gui.overlays.npc=Pick an NPC...
 mappet.gui.overlays.faction=Выберите фракцию...
 mappet.gui.overlays.chain=Выберите цепочку квестов...
 mappet.gui.overlays.crafting=Выберите таблицу рецептов...
 mappet.gui.overlays.quest=Выберите квест...
+mappet.gui.overlays.script=Pick a script...
 mappet.gui.overlays.text_fullscreen=Редактировать в полноэкранном режиме...
 mappet.gui.block_pos.context.paste=Вставить ваше текущее местоположение
 mappet.gui.block_pos.context.remove=Удалить позицию блока
 mappet.gui.items.context.remove=Удалить предмет
 mappet.gui.trigger.sound=Звуковое событие
-mappet.gui.trigger.event=Событие-триггер
-mappet.gui.trigger.command=Команда
-mappet.gui.trigger.dialogue=Диалог
 mappet.gui.checker.edit=Редактировать условие...
 mappet.gui.checker.expression=Выражение
 mappet.gui.checker.toggle=Переключиться между редактором выражений и условий
 
-mappet.gui.panels.quests=Квесты
+mappet.gui.panels.settings=Server settings
 mappet.gui.panels.crafting=Таблицы рецептов
+mappet.gui.panels.quests=Квесты
 mappet.gui.panels.events=События
 mappet.gui.panels.dialogues=Диалоги
 mappet.gui.panels.regions=Регионы
@@ -167,6 +174,16 @@ mappet.gui.panels.context.copy=Скопировать
 mappet.gui.panels.context.paste=Вставить...
 mappet.gui.panels.keys.category=Клавиши панели Маппета
 mappet.gui.panels.keys.toggle_sidebar=Вкл/Выкл боковое меню
+
+mappet.gui.settings.triggers.chat=On chat message
+mappet.gui.settings.triggers.break_block=On block break
+mappet.gui.settings.triggers.place_block=On block place
+mappet.gui.settings.triggers.damage_entity=On entity hit
+mappet.gui.settings.triggers.server_load=On server load
+mappet.gui.settings.triggers.server_tick=On server tick
+mappet.gui.settings.triggers.player_login=On player log in
+mappet.gui.settings.triggers.player_lmb=On player left click
+mappet.gui.settings.triggers.player_rmb=On player right click
 
 mappet.gui.quests.cancelable=Отменяемый
 mappet.gui.quests.instant=Instant
@@ -213,6 +230,7 @@ mappet.gui.trigger_block.right=Триггер на правом клике
 
 mappet.gui.emitter_block.expression=Выражение
 mappet.gui.emitter_block.radius=Радиус
+mappet.gui.emitter_block.update=Update frequency
 
 mappet.gui.npc_tool.title=Инструмент настройки NPC
 mappet.gui.npc_tool.npc=NPC
@@ -230,13 +248,15 @@ mappet.gui.crafting.context.add=Добавить рецепт крафта
 mappet.gui.crafting.context.remove=Удалить текущий рецепт
 mappet.gui.crafting.info.empty=Чтобы начать редактирование, создайте или выберите рецепт крафта из списка справа...
 mappet.gui.crafting.info.empty_recipe=Создайте или выберите новый рецепт крафта из списка слева...
+mappet.gui.crafting.keys.craft=Craft %s
 
 mappet.gui.region.passable=Проходимый
 mappet.gui.region.enabled=Выражение при активации
 mappet.gui.region.delay=Задержка триггера
+mappet.gui.region.update=Update frequency
 mappet.gui.region.on_enter=Триггер при входе игрока
 mappet.gui.region.on_exit=Триггер при выходе игрока
-mappet.gui.region.shape=Форма
+mappet.gui.region.shapes=Shapes
 mappet.gui.region.offset=Смещение
 mappet.gui.region.box_size=Радиус
 mappet.gui.region.ellipse_size=Радиус эллипсоида
@@ -245,6 +265,7 @@ mappet.gui.region.info.empty=Чтобы начать редактировани�
 mappet.gui.region.write_states=Write state
 mappet.gui.region.additive=Additive
 mappet.gui.region.additive_tooltip=Instead of adding §71§r upon entering, and removing the state upon exiting, with additive enabled, it will add §71§r every time player enters without removing the state upon exiting.
+mappet.gui.region.context.remove=Remove this shape
 
 mappet.gui.nodes.node.title=Название
 mappet.gui.nodes.event.binary=Бинарный
@@ -253,6 +274,7 @@ mappet.gui.nodes.event.command=Команда
 mappet.gui.nodes.event.condition=Условие
 mappet.gui.nodes.event.timer=Таймер
 mappet.gui.nodes.event.subject=Субъект
+mappet.gui.nodes.event.data=Custom data
 mappet.gui.nodes.event.hotkeys.title=Редактор горячей клавиши события
 mappet.gui.nodes.event.hotkeys.key=Клавиша
 mappet.gui.nodes.event.hotkeys.enabled=Включена
@@ -265,6 +287,9 @@ mappet.gui.nodes.dialogue.closable=Можно закрыть
 mappet.gui.nodes.dialogue.content=Содержание
 mappet.gui.nodes.dialogue.provider=Квестодатель
 mappet.gui.nodes.dialogue.receiver=Квестополучатель
+mappet.gui.nodes.dialogue.auto_accept=Auto accept
+mappet.gui.nodes.dialogue.allow_retake=Allow retake
+mappet.gui.nodes.dialogue.condition=This condition determines whether the quest can be offered to the player (afrer it meets quest receiver and quest giver criteria as well)
 mappet.gui.nodes.context.add=Добавьте нод...
 mappet.gui.nodes.context.add_node=Добавить нод %s
 mappet.gui.nodes.context.copy=Скопировать выбранные ноды
@@ -321,9 +346,14 @@ mappet.gui.npcs.general.xp=Дроп опыта
 mappet.gui.npcs.drops.title=Дропы NPC
 mappet.gui.npcs.drops.context.remove=Удалить дроп
 mappet.gui.npcs.modals.add=Впишите название для нового состояния NPC:
+mappet.gui.npcs.modals.paste=Type in a name for a pasted NPC state:
+mappet.gui.npcs.modals.rename=Type in a new name for this NPC state:
 mappet.gui.npcs.modals.remove=Уверены, что хотите удалить это состояние NPC?
 mappet.gui.npcs.overlay.title=Состояния NPC
 mappet.gui.npcs.context.add=Добавить состояние
+mappet.gui.npcs.context.copy=Copy this state
+mappet.gui.npcs.context.paste=Paste a state...
+mappet.gui.npcs.context.rename=Rename this state...
 mappet.gui.npcs.context.remove=Удалить состояние
 mappet.gui.npcs.info.empty=Чтобы начать редактирование, создайте или выберите NPC из списка справа...
 
@@ -350,15 +380,14 @@ mappet.gui.factions.info.empty=Чтобы начать редактирован�
 mappet.gui.conditions.title=Редактор условий
 mappet.gui.conditions.or=Отметить этот блок, чтобы он руководствовался аргументом OR вместо AND (означая, что условие будет равнятся §2true§r если один из этих блоков равняется §2true§r)
 mappet.gui.conditions.not=Отметить этот блок, чтобы он инверсировал полученный результат (§2true§r становится §cfalse§r и §cfalse§r становится §2true§r)
+mappet.gui.conditions.label_and=and
+mappet.gui.conditions.label_or=or
 mappet.gui.conditions.target=Цель
 mappet.gui.conditions.comparison=Сравнение
 mappet.gui.conditions.selector=Селектор цели
 mappet.gui.conditions.value=Значение
-mappet.gui.conditions.context.add=Добавить условие
-mappet.gui.conditions.context.add_condition=Добавить условие %s
-mappet.gui.conditions.context.copy=Скопировать это условие
-mappet.gui.conditions.context.paste=Вставить скопированное условие
-mappet.gui.conditions.context.remove=Удалить условие
+mappet.gui.conditions.expression=Expression
+mappet.gui.conditions.expression_tooltip=You can input here comparison expression. §6value§r (or §6x§r) variable can be used to compare.
 mappet.gui.conditions.quest.id=ID Квеста
 mappet.gui.conditions.quest.check=Завершение
 mappet.gui.conditions.quest.is_absent=%s отсутствует
@@ -371,7 +400,6 @@ mappet.gui.conditions.state.id=ID Состояния
 mappet.gui.conditions.dialogue.id=ID Диалога
 mappet.gui.conditions.dialogue.marker=ID Маркера
 mappet.gui.conditions.dialogue.was_read=%s прочитан
-mappet.gui.conditions.dialogue.wasnt_read=%s не прочитан
 mappet.gui.conditions.faction.id=ID Фракции
 mappet.gui.conditions.faction.check=Сравнение фракций
 mappet.gui.conditions.faction.score=Очки
@@ -389,11 +417,22 @@ mappet.gui.conditions.world_time.range=Диапазон
 mappet.gui.conditions.world_time.types.day=Днём?
 mappet.gui.conditions.world_time.types.night=Ночью?
 mappet.gui.conditions.world_time.types.range=Между...
+mappet.gui.conditions.entity.id=Pick property...
+mappet.gui.conditions.entity.overlay.main=Entity properties
 mappet.gui.conditions.condition.string=Вложено %s блок(ов)
 mappet.gui.conditions.targets.global=Глобальынй
 mappet.gui.conditions.targets.subject=Субъект
 mappet.gui.conditions.targets.object=Объект
 mappet.gui.conditions.targets.selector=Селектор
+mappet.gui.conditions.targets.player=Player
+mappet.gui.conditions.targets.npc=NPC
+mappet.gui.conditions.comparisons.is_true=Is true
+mappet.gui.conditions.comparisons.is_false=Is false
+mappet.gui.conditions.context.add=Добавить условие
+mappet.gui.conditions.context.add_condition=Добавить условие %s
+mappet.gui.conditions.context.copy=Скопировать это условие
+mappet.gui.conditions.context.paste=Вставить скопированное условие
+mappet.gui.conditions.context.remove=Удалить условие
 
 mappet.gui.syntax_theme.main=Theme editor
 mappet.gui.syntax_theme.edit=Edit themes...
@@ -416,6 +455,25 @@ mappet.gui.syntax_theme.context.add=Add a theme...
 mappet.gui.syntax_theme.context.remove=Remove this theme
 mappet.gui.syntax_theme.modal.add=Type into a name for new theme:
 
+mappet.gui.triggers.title=Trigger editor
+mappet.gui.triggers.delay=Delay
+mappet.gui.triggers.function=Function
+mappet.gui.triggers.script.function_tooltip=Script entry function (§7main§r is default function name)
+mappet.gui.triggers.context.add=Add a trigger...
+mappet.gui.triggers.context.add_trigger=Add %s trigger
+mappet.gui.triggers.context.copy=Copy this trigger
+mappet.gui.triggers.context.paste=Paste copied trigger
+mappet.gui.triggers.context.remove=Remove this trigger
+
+mappet.gui.scripts.context.paste_morph=Paste morph NBT...
+mappet.gui.scripts.context.paste_item=Paste item NBT...
+mappet.gui.scripts.context.paste_player_pos=Paste player's position
+mappet.gui.scripts.context.paste_block_pos=Paste block position
+mappet.gui.scripts.overlay.title_morph=Morph
+mappet.gui.scripts.overlay.title_item=Item
+mappet.gui.scripts.overlay.insert=Insert
+mappet.gui.scripts.overlay.pick_morph=Pick a morph...
+
 # GUI enums
 
 mappet.gui.shapes.box=Куб
@@ -431,19 +489,43 @@ mappet.gui.node_types.reaction=Реакция
 mappet.gui.node_types.crafting=Крафт
 mappet.gui.node_types.quest=Квест
 mappet.gui.node_types.quest_chain=Цепочка квестов
+mappet.gui.node_types.cancel=Cancel
 mappet.gui.node_types.command=Команда
 mappet.gui.node_types.condition=Условие
 mappet.gui.node_types.switch=Переключатель
 mappet.gui.node_types.timer=Таймер
+mappet.gui.node_types.event=Event
+mappet.gui.node_types.dialogue=Dialogue
+mappet.gui.node_types.script=Script
 
 mappet.gui.condition_types.quest=Квест
 mappet.gui.condition_types.dialogue=Диалог
 mappet.gui.condition_types.state=Состояние
 mappet.gui.condition_types.faction=Фракция
 mappet.gui.condition_types.item=Предмет
-mappet.gui.condition_types.entity=Сущность
 mappet.gui.condition_types.world_time=Мировое время
+mappet.gui.condition_types.entity=Сущность
 mappet.gui.condition_types.condition=Условие
+
+mappet.gui.trigger_types.command=Command
+mappet.gui.trigger_types.sound=Sound event
+mappet.gui.trigger_types.event=Event
+mappet.gui.trigger_types.dialogue=Dialogue
+mappet.gui.trigger_types.script=Script
+
+mappet.gui.entity_property.xp=Total experience
+mappet.gui.entity_property.xp_level=Experience level
+mappet.gui.entity_property.hp=Health
+mappet.gui.entity_property.hunger=Hunger
+mappet.gui.entity_property.armor=Armor
+mappet.gui.entity_property.ticks=Ticks existed
+mappet.gui.entity_property.light=Light (torch)
+mappet.gui.entity_property.light_sky=Light (sky)
+mappet.gui.entity_property.sneaking=Is sneaking
+mappet.gui.entity_property.sprinting=Is sprinting
+mappet.gui.entity_property.on_ground=Is on ground
+mappet.gui.entity_property.yaw=Y head rotation (yaw)
+mappet.gui.entity_property.pitch=X head rotation (pitch)
 
 # Keys
 mappet.keys.category=Маппет
@@ -470,3 +552,4 @@ mappet.translation.wiki=Вики
 mappet.translation.wiki_url=https://github.com/Andruxioid/mappet_ru/wiki
 mappet.translation.community=Дискорд
 mappet.translation.community_url=https://discord.gg/QhvbgSWpYn
+mappet.translation.sounds=Open sounds folder

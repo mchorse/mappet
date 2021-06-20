@@ -99,8 +99,6 @@ mappet.config.title=Mappet
 mappet.config.general.title=General
 mappet.config.general.tooltip=General mod options
 
-mappet.config.comments.general.syntax_style=This button opens theme editor where you can manage and edit script editor highlighting themes.
-
 mappet.config.npc.title=NPCs
 mappet.config.npc.tooltip=Mod options related to NPCs
 
@@ -112,6 +110,8 @@ mappet.config.events.tooltip=与事件相关的模组选项
 
 mappet.config.events.max_executions=最大事件执行量
 mappet.config.comments.events.max_executions=这是每个事件可以执行的最大节点数量（以避免无限递归）。
+mappet.config.events.use_server_for_commands=Use server for commands
+mappet.config.comments.events.use_server_for_commands=Instead of using a dedicated trigger (which supports position based target selectors), use directly server for event commands (and scripts)
 
 mappet.config.gui.title=GUI
 mappet.config.gui.tooltip=调整 GUI 偏好的选项
@@ -125,6 +125,13 @@ mappet.config.comments.gui.node_thickness=该选项用于修改节点连接线�
 mappet.config.gui.quest_preview_rewards=预览任务奖励
 mappet.config.comments.gui.quest_preview_rewards=该选项用于开关任务奖励的预览。
 
+mappet.config.script_editor.title=Script editor
+mappet.config.script_editor.tooltip=Options to tweak script editor's GUI preferences
+
+mappet.config.comments.script_editor.syntax_style=This button opens theme editor where you can manage and edit script editor highlighting themes.
+mappet.config.script_editor.sounds=Typing sounds
+mappet.config.comments.script_editor.sounds=Whether Minecraft sounds should be played when you type in code
+
 # GUI
 
 mappet.gui.none=<无>
@@ -134,24 +141,24 @@ mappet.gui.overlays.entities.main=选取实体 ID...
 mappet.gui.overlays.sounds.main=选取声音事件...
 mappet.gui.overlays.event=选取事件...
 mappet.gui.overlays.dialogue=选取对话...
+mappet.gui.overlays.npc=Pick an NPC...
 mappet.gui.overlays.faction=选取阵营...
 mappet.gui.overlays.chain=选取任务链...
 mappet.gui.overlays.crafting=选取合成表...
 mappet.gui.overlays.quest=选取任务...
+mappet.gui.overlays.script=Pick a script...
 mappet.gui.overlays.text_fullscreen=全屏编辑...
 mappet.gui.block_pos.context.paste=粘贴你当前的位置
 mappet.gui.block_pos.context.remove=移除方块位置
 mappet.gui.items.context.remove=移除物品
 mappet.gui.trigger.sound=声音事件
-mappet.gui.trigger.event=触发事件
-mappet.gui.trigger.command=命令
-mappet.gui.trigger.dialogue=对话
 mappet.gui.checker.edit=编辑条件...
 mappet.gui.checker.expression=表达式
 mappet.gui.checker.toggle=切换为表达式或条件编辑器
 
-mappet.gui.panels.quests=任务
+mappet.gui.panels.settings=Server settings
 mappet.gui.panels.crafting=合成表
+mappet.gui.panels.quests=任务
 mappet.gui.panels.events=事件
 mappet.gui.panels.dialogues=对话
 mappet.gui.panels.regions=区域
@@ -167,6 +174,16 @@ mappet.gui.panels.context.copy=拷贝
 mappet.gui.panels.context.paste=粘贴...
 mappet.gui.panels.keys.category=Mappet 面板快捷键
 mappet.gui.panels.keys.toggle_sidebar=开关侧边栏
+
+mappet.gui.settings.triggers.chat=On chat message
+mappet.gui.settings.triggers.break_block=On block break
+mappet.gui.settings.triggers.place_block=On block place
+mappet.gui.settings.triggers.damage_entity=On entity hit
+mappet.gui.settings.triggers.server_load=On server load
+mappet.gui.settings.triggers.server_tick=On server tick
+mappet.gui.settings.triggers.player_login=On player log in
+mappet.gui.settings.triggers.player_lmb=On player left click
+mappet.gui.settings.triggers.player_rmb=On player right click
 
 mappet.gui.quests.cancelable=可以取消
 mappet.gui.quests.instant=Instant
@@ -213,6 +230,7 @@ mappet.gui.trigger_block.right=右键触发事件
 
 mappet.gui.emitter_block.expression=表达式
 mappet.gui.emitter_block.radius=半径
+mappet.gui.emitter_block.update=Update frequency
 
 mappet.gui.npc_tool.title=NPC 编辑工具
 mappet.gui.npc_tool.npc=NPC
@@ -230,13 +248,15 @@ mappet.gui.crafting.context.add=添加合成配方
 mappet.gui.crafting.context.remove=移除当前配方
 mappet.gui.crafting.info.empty=在右侧的列表中选择或创建一个合成表以开始编辑...
 mappet.gui.crafting.info.empty_recipe=在左侧的列表中选择或创建一条合成配方，右键进行管理...
+mappet.gui.crafting.keys.craft=Craft %s
 
 mappet.gui.region.passable=能否通过
 mappet.gui.region.enabled=启用的表达式
 mappet.gui.region.delay=触发延迟
+mappet.gui.region.update=Update frequency
 mappet.gui.region.on_enter=当玩家进入时触发
 mappet.gui.region.on_exit=当玩家离开时触发
-mappet.gui.region.shape=形状
+mappet.gui.region.shapes=Shapes
 mappet.gui.region.offset=偏移
 mappet.gui.region.box_size=半尺寸
 mappet.gui.region.ellipse_size=椭球半径
@@ -245,6 +265,7 @@ mappet.gui.region.info.empty=在右右侧列表中选择一个区域方块，或
 mappet.gui.region.write_states=Write state
 mappet.gui.region.additive=Additive
 mappet.gui.region.additive_tooltip=Instead of adding §71§r upon entering, and removing the state upon exiting, with additive enabled, it will add §71§r every time player enters without removing the state upon exiting.
+mappet.gui.region.context.remove=Remove this shape
 
 mappet.gui.nodes.node.title=标题
 mappet.gui.nodes.event.binary=二进制
@@ -253,6 +274,7 @@ mappet.gui.nodes.event.command=命令
 mappet.gui.nodes.event.condition=条件
 mappet.gui.nodes.event.timer=计时器
 mappet.gui.nodes.event.subject=主对象(Subject)
+mappet.gui.nodes.event.data=Custom data
 mappet.gui.nodes.event.hotkeys.title=时间快捷键编辑器
 mappet.gui.nodes.event.hotkeys.key=快捷键
 mappet.gui.nodes.event.hotkeys.enabled=启用
@@ -265,6 +287,9 @@ mappet.gui.nodes.dialogue.closable=允许被关闭
 mappet.gui.nodes.dialogue.content=内容
 mappet.gui.nodes.dialogue.provider=任务发布对象
 mappet.gui.nodes.dialogue.receiver=任务提交对象
+mappet.gui.nodes.dialogue.auto_accept=Auto accept
+mappet.gui.nodes.dialogue.allow_retake=Allow retake
+mappet.gui.nodes.dialogue.condition=This condition determines whether the quest can be offered to the player (afrer it meets quest receiver and quest giver criteria as well)
 mappet.gui.nodes.context.add=添加节点...
 mappet.gui.nodes.context.add_node=添加 %s 节点
 mappet.gui.nodes.context.copy=拷贝选中节点
@@ -321,9 +346,14 @@ mappet.gui.npcs.general.xp=XP 掉落
 mappet.gui.npcs.drops.title=NPC 掉落
 mappet.gui.npcs.drops.context.remove=移除掉落
 mappet.gui.npcs.modals.add=输入新 NPC 状态的名称：
+mappet.gui.npcs.modals.paste=Type in a name for a pasted NPC state:
+mappet.gui.npcs.modals.rename=Type in a new name for this NPC state:
 mappet.gui.npcs.modals.remove=您确定要移除该 NPC 状态吗？
 mappet.gui.npcs.overlay.title=NPC 状态
 mappet.gui.npcs.context.add=添加状态
+mappet.gui.npcs.context.copy=Copy this state
+mappet.gui.npcs.context.paste=Paste a state...
+mappet.gui.npcs.context.rename=Rename this state...
 mappet.gui.npcs.context.remove=移除状态
 mappet.gui.npcs.info.empty=在右侧的列表中选择或创建一个 NPC 以开始编辑...
 
@@ -350,15 +380,14 @@ mappet.gui.factions.info.empty=在右侧的列表中选择或创建一个阵营�
 mappet.gui.conditions.title=条件编辑器
 mappet.gui.conditions.or=将该语句块标记为“或”来代替“与”（即判断这些语句块中是否有一个的结果为 §2true§r，若有则该条件的结果为 §2true§r）
 mappet.gui.conditions.not=将该语句块标记为输出相反结果（§2true§r 变为 §cfalse§r，而 §cfalse§r 变为 §2true§r)
+mappet.gui.conditions.label_and=and
+mappet.gui.conditions.label_or=or
 mappet.gui.conditions.target=目标
 mappet.gui.conditions.comparison=比较
 mappet.gui.conditions.selector=目标选择器
 mappet.gui.conditions.value=值
-mappet.gui.conditions.context.add=添加条件
-mappet.gui.conditions.context.add_condition=添加 %s 条件
-mappet.gui.conditions.context.copy=拷贝该条件
-mappet.gui.conditions.context.paste=粘贴该条件
-mappet.gui.conditions.context.remove=移除该条件
+mappet.gui.conditions.expression=Expression
+mappet.gui.conditions.expression_tooltip=You can input here comparison expression. §6value§r (or §6x§r) variable can be used to compare.
 mappet.gui.conditions.quest.id=任务 ID
 mappet.gui.conditions.quest.check=完成
 mappet.gui.conditions.quest.is_absent=%s 不存在
@@ -371,7 +400,6 @@ mappet.gui.conditions.state.id=状态键
 mappet.gui.conditions.dialogue.id=对话 ID
 mappet.gui.conditions.dialogue.marker=标记 ID
 mappet.gui.conditions.dialogue.was_read=%s 已被阅读
-mappet.gui.conditions.dialogue.wasnt_read=%s 未被阅读
 mappet.gui.conditions.faction.id=阵营 ID
 mappet.gui.conditions.faction.check=比较阵营
 mappet.gui.conditions.faction.score=积分
@@ -389,11 +417,22 @@ mappet.gui.conditions.world_time.range=范围
 mappet.gui.conditions.world_time.types.day=白天？
 mappet.gui.conditions.world_time.types.night=夜晚？
 mappet.gui.conditions.world_time.types.range=介于...
+mappet.gui.conditions.entity.id=Pick property...
+mappet.gui.conditions.entity.overlay.main=Entity properties
 mappet.gui.conditions.condition.string=Nested %s block(s)
 mappet.gui.conditions.targets.global=全局
 mappet.gui.conditions.targets.subject=主对象(Subject)
 mappet.gui.conditions.targets.object=次对象(Object)
 mappet.gui.conditions.targets.selector=选择器
+mappet.gui.conditions.targets.player=Player
+mappet.gui.conditions.targets.npc=NPC
+mappet.gui.conditions.comparisons.is_true=Is true
+mappet.gui.conditions.comparisons.is_false=Is false
+mappet.gui.conditions.context.add=添加条件
+mappet.gui.conditions.context.add_condition=添加 %s 条件
+mappet.gui.conditions.context.copy=拷贝该条件
+mappet.gui.conditions.context.paste=粘贴该条件
+mappet.gui.conditions.context.remove=移除该条件
 
 mappet.gui.syntax_theme.main=Theme editor
 mappet.gui.syntax_theme.edit=Edit themes...
@@ -416,6 +455,25 @@ mappet.gui.syntax_theme.context.add=Add a theme...
 mappet.gui.syntax_theme.context.remove=Remove this theme
 mappet.gui.syntax_theme.modal.add=Type into a name for new theme:
 
+mappet.gui.triggers.title=Trigger editor
+mappet.gui.triggers.delay=Delay
+mappet.gui.triggers.function=Function
+mappet.gui.triggers.script.function_tooltip=Script entry function (§7main§r is default function name)
+mappet.gui.triggers.context.add=Add a trigger...
+mappet.gui.triggers.context.add_trigger=Add %s trigger
+mappet.gui.triggers.context.copy=Copy this trigger
+mappet.gui.triggers.context.paste=Paste copied trigger
+mappet.gui.triggers.context.remove=Remove this trigger
+
+mappet.gui.scripts.context.paste_morph=Paste morph NBT...
+mappet.gui.scripts.context.paste_item=Paste item NBT...
+mappet.gui.scripts.context.paste_player_pos=Paste player's position
+mappet.gui.scripts.context.paste_block_pos=Paste block position
+mappet.gui.scripts.overlay.title_morph=Morph
+mappet.gui.scripts.overlay.title_item=Item
+mappet.gui.scripts.overlay.insert=Insert
+mappet.gui.scripts.overlay.pick_morph=Pick a morph...
+
 # GUI enums
 
 mappet.gui.shapes.box=立方体
@@ -431,19 +489,43 @@ mappet.gui.node_types.reaction=反应
 mappet.gui.node_types.crafting=合成表
 mappet.gui.node_types.quest=任务
 mappet.gui.node_types.quest_chain=Quest chain
+mappet.gui.node_types.cancel=Cancel
 mappet.gui.node_types.command=命令
 mappet.gui.node_types.condition=条件
 mappet.gui.node_types.switch=Switch
 mappet.gui.node_types.timer=计时器
+mappet.gui.node_types.event=Event
+mappet.gui.node_types.dialogue=Dialogue
+mappet.gui.node_types.script=Script
 
 mappet.gui.condition_types.quest=任务
 mappet.gui.condition_types.dialogue=对话
 mappet.gui.condition_types.state=状态
 mappet.gui.condition_types.faction=阵营
 mappet.gui.condition_types.item=物品
-mappet.gui.condition_types.entity=实体
 mappet.gui.condition_types.world_time=世界时间
+mappet.gui.condition_types.entity=实体
 mappet.gui.condition_types.condition=条件
+
+mappet.gui.trigger_types.command=Command
+mappet.gui.trigger_types.sound=Sound event
+mappet.gui.trigger_types.event=Event
+mappet.gui.trigger_types.dialogue=Dialogue
+mappet.gui.trigger_types.script=Script
+
+mappet.gui.entity_property.xp=Total experience
+mappet.gui.entity_property.xp_level=Experience level
+mappet.gui.entity_property.hp=Health
+mappet.gui.entity_property.hunger=Hunger
+mappet.gui.entity_property.armor=Armor
+mappet.gui.entity_property.ticks=Ticks existed
+mappet.gui.entity_property.light=Light (torch)
+mappet.gui.entity_property.light_sky=Light (sky)
+mappet.gui.entity_property.sneaking=Is sneaking
+mappet.gui.entity_property.sprinting=Is sprinting
+mappet.gui.entity_property.on_ground=Is on ground
+mappet.gui.entity_property.yaw=Y head rotation (yaw)
+mappet.gui.entity_property.pitch=X head rotation (pitch)
 
 # Keys
 mappet.keys.category=Mappet
@@ -470,3 +552,4 @@ mappet.translation.wiki=Wiki
 mappet.translation.wiki_url=https://github.com/mchorse/mappet/wiki
 mappet.translation.community=Discord
 mappet.translation.community_url=https://discord.gg/QhvbgSWpYn
+mappet.translation.sounds=Open sounds folder

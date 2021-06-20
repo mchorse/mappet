@@ -34,7 +34,9 @@ public class ScriptUtils
             return (ScriptEngine) getScriptEnging.invoke(factory);
         }
         catch (Exception e)
-        {}
+        {
+            e.printStackTrace();
+        }
 
         return null;
     }
