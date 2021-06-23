@@ -539,7 +539,7 @@ item.mappet.npc_tool.name=Инструмент NPC
 item.mappet.npc_tool.tooltip=Этот инструмент позволяет призывать и редактировать NPC.
 
 tile.mappet.emitter.name=Блок-излучатель
-tile.mappet.emitter.tooltip=Проверяет условие выражения и излучает сигнал красного камени при значении больше нуля
+tile.mappet.emitter.tooltip=Проверяет условие выражения и излучает сигнал красного камня при значении больше нуля
 tile.mappet.trigger.name=Блок-триггер
 tile.mappet.trigger.tooltip=Включает заданные события при нажатии на блок игроком ПКМ или ЛКМ
 tile.mappet.region.name=Блок-регион

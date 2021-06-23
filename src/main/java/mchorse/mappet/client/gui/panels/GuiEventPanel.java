@@ -28,6 +28,7 @@ import mchorse.mappet.client.gui.nodes.events.GuiConditionNodePanel;
 import mchorse.mappet.client.gui.nodes.events.GuiDialogueNodePanel;
 import mchorse.mappet.client.gui.nodes.events.GuiEventNodePanel;
 import mchorse.mappet.client.gui.nodes.events.GuiScriptNodePanel;
+import mchorse.mappet.client.gui.nodes.events.GuiSwitchNodePanel;
 import mchorse.mappet.client.gui.nodes.events.GuiTimerNodePanel;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
@@ -51,7 +52,7 @@ public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventBaseN
         PANELS.put(CancelNode.class, GuiCancelNodePanel.class);
         PANELS.put(CommandNode.class, GuiCommandNodePanel.class);
         PANELS.put(ConditionNode.class, GuiConditionNodePanel.class);
-        PANELS.put(SwitchNode.class, GuiConditionNodePanel.class);
+        PANELS.put(SwitchNode.class, GuiSwitchNodePanel.class);
         PANELS.put(TimerNode.class, GuiTimerNodePanel.class);
         PANELS.put(EventNode.class, GuiEventNodePanel.class);
         PANELS.put(DialogueNode.class, GuiDialogueNodePanel.class);
