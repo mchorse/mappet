@@ -134,13 +134,15 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
     private boolean targetCheck(EntityLivingBase entity)
     {
+        Faction faction = this.getFaction();
+
         if (entity instanceof EntityNpc)
         {
             EntityNpc npc = (EntityNpc) entity;
 
-            if (this.faction != null)
+            if (faction != null)
             {
-                return this.faction.get(npc.getState().faction) == FactionAttitude.AGGRESSIVE;
+                return faction.get(npc.getState().faction) == FactionAttitude.AGGRESSIVE;
             }
         }
 
@@ -155,13 +157,13 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
             ICharacter character = Character.get(player);
 
-            if (this.faction != null && character != null)
+            if (faction != null && character != null)
             {
-                return this.faction.get(character.getStates()) == FactionAttitude.AGGRESSIVE;
+                return faction.get(character.getStates()) == FactionAttitude.AGGRESSIVE;
             }
         }
 
-        return this.faction != null && this.faction.othersAttitude == FactionAttitude.AGGRESSIVE;
+        return faction != null && faction.othersAttitude == FactionAttitude.AGGRESSIVE;
     }
 
     public void initialize()
@@ -174,6 +176,18 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     public States getStates()
     {
         return this.states;
+    }
+
+    public Faction getFaction()
+    {
+        if (this.faction == null)
+        {
+            String faction = this.state.faction;
+
+            this.faction = faction.isEmpty() ? null : Mappet.factions.load(faction);
+        }
+
+        return this.faction;
     }
 
     public void setNpc(Npc npc, NpcState state)
@@ -223,7 +237,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
             this.sendMorph();
         }
 
-        this.faction = state.faction.isEmpty() ? null : Mappet.factions.load(state.faction);
+        this.faction = null;
 
         this.initEntityAI();
     }
