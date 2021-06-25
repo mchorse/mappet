@@ -56,7 +56,7 @@ public class DialogueManager extends BaseManager<Dialogue>
 
     public void handleContext(EntityPlayerMP player, Dialogue dialogue, DialogueContext context, ReactionNode last)
     {
-        if (last != null)
+        if (last != null && !last.sound.isEmpty())
         {
             WorldUtils.stopSound(player, last.sound);
         }

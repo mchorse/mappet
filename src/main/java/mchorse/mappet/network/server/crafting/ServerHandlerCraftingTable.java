@@ -23,7 +23,7 @@ public class ServerHandlerCraftingTable extends ServerMessageHandler<PacketCraft
             {
                 ReactionNode node = character.getDialogueContext().reactionNode;
 
-                if (node != null)
+                if (node != null && !node.sound.isEmpty())
                 {
                     WorldUtils.stopSound(player, node.sound);
                 }
