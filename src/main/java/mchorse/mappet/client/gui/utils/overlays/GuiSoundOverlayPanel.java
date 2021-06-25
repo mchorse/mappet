@@ -2,6 +2,7 @@ package mchorse.mappet.client.gui.utils.overlays;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import mchorse.mappet.utils.Utils;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
@@ -15,8 +16,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import org.apache.commons.io.IOUtils;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -52,7 +51,7 @@ public class GuiSoundOverlayPanel extends GuiResourceLocationOverlayPanel
         try
         {
             IResource resource = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation(rp, "sounds.json"));
-            JsonElement element = new JsonParser().parse(IOUtils.toString(resource.getInputStream(), Charset.defaultCharset()));
+            JsonElement element = new JsonParser().parse(IOUtils.toString(resource.getInputStream(), Utils.getCharset()));
 
             if (element.isJsonObject())
             {

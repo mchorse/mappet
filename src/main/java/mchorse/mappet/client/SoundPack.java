@@ -3,6 +3,7 @@ package mchorse.mappet.client;
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import mchorse.mappet.utils.Utils;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.client.resources.data.IMetadataSection;
 import net.minecraft.client.resources.data.MetadataSerializer;
@@ -17,7 +18,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.Set;
 
 /**
@@ -42,7 +42,7 @@ public class SoundPack implements IResourcePack
         {
             JsonObject object = this.generateJson(this.folder, "", new JsonObject());
 
-            return IOUtils.toInputStream(object.toString(), Charset.defaultCharset());
+            return IOUtils.toInputStream(object.toString(), Utils.getCharset());
         }
 
         File file = this.getFile(location.getResourcePath());

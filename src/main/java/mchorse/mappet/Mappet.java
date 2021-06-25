@@ -25,6 +25,7 @@ import mchorse.mclib.commands.utils.L10n;
 import mchorse.mclib.config.ConfigBuilder;
 import mchorse.mclib.config.values.ValueBoolean;
 import mchorse.mclib.config.values.ValueInt;
+import mchorse.mclib.config.values.ValueString;
 import mchorse.mclib.events.RegisterConfigEvent;
 import mchorse.mclib.events.RemoveDashboardPanels;
 import net.minecraft.creativetab.CreativeTabs;
@@ -97,6 +98,8 @@ public final class Mappet
     public static ScriptManager scripts;
 
     /* Configuration */
+    public static ValueString generalEncoding;
+
     public static ValueBoolean npcsPeacefulDamage;
 
     public static ValueInt eventMaxExecutions;
@@ -121,6 +124,8 @@ public final class Mappet
         ConfigBuilder builder = event.createBuilder(MOD_ID);
 
         builder.category("general").register(new ValueButtons("buttons").clientSide());
+        generalEncoding = builder.getString("encoding", "UTF-8");
+        generalEncoding.invisible();
 
         npcsPeacefulDamage = builder.category("npc").getBoolean("peaceful_damage", true);
 

@@ -8,7 +8,6 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
 
 /**
  * NBT to JSON-like utility
@@ -113,7 +112,7 @@ public class NBTToJsonLike
      */
     public static void write(File file, NBTTagCompound tag) throws IOException
     {
-        FileUtils.writeStringToFile(file, NBTToJsonLike.toJson(tag), Charset.defaultCharset());
+        FileUtils.writeStringToFile(file, NBTToJsonLike.toJson(tag), Utils.getCharset());
     }
 
     /**
@@ -121,7 +120,7 @@ public class NBTToJsonLike
      */
     public static NBTTagCompound read(File file) throws IOException
     {
-        String json = FileUtils.readFileToString(file, Charset.defaultCharset());
+        String json = FileUtils.readFileToString(file, Utils.getCharset());
 
         return NBTToJsonLike.fromJson(json);
     }

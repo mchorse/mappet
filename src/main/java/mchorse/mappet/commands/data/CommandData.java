@@ -9,6 +9,7 @@ public class CommandData extends MappetSubCommandBase
     {
         this.add(new CommandDataClear());
         this.add(new CommandDataLoad());
+        this.add(new CommandDataRencode());
         this.add(new CommandDataSave());
     }
 

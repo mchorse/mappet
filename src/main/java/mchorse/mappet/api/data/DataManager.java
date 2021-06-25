@@ -1,11 +1,11 @@
 package mchorse.mappet.api.data;
 
 import mchorse.mappet.api.utils.manager.BaseManager;
+import mchorse.mappet.utils.Utils;
 import net.minecraft.nbt.NBTTagCompound;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.nio.charset.Charset;
 import java.time.Instant;
 
 public class DataManager extends BaseManager<Data>
@@ -29,7 +29,7 @@ public class DataManager extends BaseManager<Data>
         {
             try
             {
-                this.lastClear = Instant.parse(FileUtils.readFileToString(this.date, Charset.defaultCharset()).trim());
+                this.lastClear = Instant.parse(FileUtils.readFileToString(this.date, Utils.getCharset()).trim());
             }
             catch (Exception e)
             {
@@ -46,7 +46,7 @@ public class DataManager extends BaseManager<Data>
 
         try
         {
-            FileUtils.writeStringToFile(this.date, this.lastClear.toString(), Charset.defaultCharset());
+            FileUtils.writeStringToFile(this.date, this.lastClear.toString(), Utils.getCharset());
         }
         catch (Exception e)
         {}

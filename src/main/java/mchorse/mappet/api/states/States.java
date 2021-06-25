@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.events.StateChangedEvent;
+import mchorse.mappet.utils.Utils;
 import mchorse.mclib.utils.JsonUtils;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTPrimitive;
@@ -250,7 +251,7 @@ public class States implements INBTSerializable<NBTTagCompound>
 
         try
         {
-            String json = FileUtils.readFileToString(this.file, Charset.defaultCharset());
+            String json = FileUtils.readFileToString(this.file, Utils.getCharset());
 
             this.values = new Gson().fromJson(json, new TypeToken<Map<String, Double>>(){}.getType());
         }
@@ -266,7 +267,7 @@ public class States implements INBTSerializable<NBTTagCompound>
         {
             String json = JsonUtils.jsonToPretty(new Gson().toJsonTree(this.values));
 
-            FileUtils.writeStringToFile(this.file, json, Charset.defaultCharset());
+            FileUtils.writeStringToFile(this.file, json, Utils.getCharset());
 
             return true;
         }

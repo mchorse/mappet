@@ -2,14 +2,12 @@ package mchorse.mappet.api.scripts;
 
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.manager.BaseManager;
-import mchorse.mappet.utils.ScriptUtils;
+import mchorse.mappet.utils.Utils;
 import net.minecraft.nbt.NBTTagCompound;
 import org.apache.commons.io.FileUtils;
 
-import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import java.io.File;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -76,7 +74,7 @@ public class ScriptManager extends BaseManager<Script>
         {
             try
             {
-                String code = FileUtils.readFileToString(js, Charset.defaultCharset());
+                String code = FileUtils.readFileToString(js, Utils.getCharset());
 
                 if (script == null)
                 {
@@ -105,7 +103,7 @@ public class ScriptManager extends BaseManager<Script>
         {
             try
             {
-                FileUtils.writeStringToFile(this.getJSFile(id), code, Charset.defaultCharset());
+                FileUtils.writeStringToFile(this.getJSFile(id), code, Utils.getCharset());
 
                 result = true;
             }

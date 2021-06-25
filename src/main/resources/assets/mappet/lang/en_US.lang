@@ -21,6 +21,7 @@ mappet.error.npc.invalid_property=§fNPC state property §7%s§f does not exist!
 mappet.error.npc.cant_edit=§fGiven value for §7%s§f property: §7%s§f is in invalid format!
 
 mappet.error.data.missing=§fData by ID §7%s§f is missing!
+mappet.error.data.empty_charset=§fCharacter set %s§f cannot be found or used!
 
 mappet.error.script.empty=§fScript by ID §7%s§f is either missing or has no §7main§r function! Error message:\n\n%s§r
 mappet.error.script.error=§fScript by ID §7%s§f failed to execute. An error at %s§r:%s§r occurred!\n\n%s§r
@@ -39,6 +40,7 @@ mappet.info.factions.set=§fFaction score by ID §7%s§f was set to §7%s§r.
 mappet.info.factions.changed=§fFaction score by ID §7%s§f was §7%s§r, and it became §7%s§r.
 
 mappet.info.data.cleared=§fGlobal states, player states and inventories were cleared.
+mappet.info.data.rencoded=§fRe-encoded all the data from %s§f to %s§f.
 
 # Success
 mappet.success.quest.accepted=§fQuest by ID §7%s§f was given to player §7%s§f.
@@ -88,6 +90,7 @@ mappet.commands.mp.data.help=Data utility subcommand that provides an ability to
 mappet.commands.mp.data.clear=Clears all global and player states, and also all player inventories.
 mappet.commands.mp.data.load=Loads saved data by §7<id>§r. §7[global]§r determines whether global states should be loaded too (it's §7true§r (enabled) by default). §7[players]§r allows to pick another player whose inventory and player states should be loaded to.
 mappet.commands.mp.data.save=Saves global states, and current player's states and inventory to data by §7<id>§r.
+mappet.commands.mp.data.rencode=Re-encode all data files within world's §7mappet/§f folder from §7<from>§r character set, to §7<to>§r character set.
 
 mappet.commands.mp.script.help=Scripts subcommand.
 mappet.commands.mp.script.eval=This command evaluates script by §7<id>§r (from world's §7mappet/scripts/§r folder, without file extension) upon players found by §7<player>§r target selector. Script's §7[function]§r (§7main§r if omitted) function will be called. You can also pass arbitrary NBT data to the event using §7[data]§r argument.
@@ -98,6 +101,9 @@ mappet.config.title=Mappet
 
 mappet.config.general.title=General
 mappet.config.general.tooltip=General mod options
+
+mappet.config.general.encoding=Encoding
+mappet.config.comments.encoding=The encoding that will be used to read and write Mappet files
 
 mappet.config.npc.title=NPCs
 mappet.config.npc.tooltip=Mod options related to NPCs
