@@ -21,12 +21,20 @@ public class GuiTextEditor extends GuiMultiTextElement
     private SyntaxHighlighter highlighter;
     private List<List<TextSegment>> segments = new ArrayList<List<TextSegment>>();
     private int placements;
+    private boolean lines = true;
 
     public GuiTextEditor(Minecraft mc, Consumer<String> callback)
     {
         super(mc, callback);
 
         this.highlighter = new SyntaxHighlighter();
+    }
+
+    public GuiTextEditor disableLines()
+    {
+        this.lines = false;
+
+        return this;
     }
 
     public SyntaxHighlighter getHighlighter()
@@ -312,7 +320,7 @@ public class GuiTextEditor extends GuiMultiTextElement
     @Override
     protected int getShiftX()
     {
-        return 10 + this.placements;
+        return this.lines ? 10 + this.placements : 0;
     }
 
     @Override
@@ -324,8 +332,13 @@ public class GuiTextEditor extends GuiMultiTextElement
     @Override
     protected void drawForeground(GuiContext context)
     {
+        if (!this.lines)
+        {
+            return;
+        }
+
         /* Draw line numbers background */
-        int x = this.area.x + 10 + this.placements;
+        int x = this.area.x + this.getShiftX();
 
         Gui.drawRect(this.area.x, this.area.y, x, this.area.ey(), 0xff000000 + this.highlighter.getStyle().background);
 
@@ -356,11 +369,5 @@ public class GuiTextEditor extends GuiMultiTextElement
         {
             GuiDraw.drawHorizontalGradientRect(x, this.area.y, x + 10, this.area.ey(), a << 24, 0);
         }
-    }
-
-    @Override
-    protected int getHorizontalSize(int w)
-    {
-        return super.getHorizontalSize(w) + 10 + this.placements;
     }
 }

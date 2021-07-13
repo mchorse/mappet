@@ -29,21 +29,12 @@ public class Script extends AbstractData
     {
         if (this.engine == null)
         {
-            this.engine = ScriptUtils.tryCreatingEngine();
+            this.engine = ScriptUtils.sanitize(ScriptUtils.tryCreatingEngine());
             this.engine.getContext().setAttribute("javax.script.filename", this.getId() + ".js", ScriptContext.ENGINE_SCOPE);
 
             Mappet.EVENT_BUS.post(new RegisterScriptVariablesEvent(this.engine));
 
             this.engine.put("mappet", new ScriptFactory());
-
-            /* Remove */
-            Bindings bindings = this.engine.getBindings(ScriptContext.ENGINE_SCOPE);
-
-            bindings.remove("load");
-            bindings.remove("loadWithNewGlobal");
-            bindings.remove("exit");
-            bindings.remove("quit");
-
             this.engine.eval(this.code);
         }
     }

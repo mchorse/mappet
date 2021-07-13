@@ -100,7 +100,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         this.vertical.cancelScrollEdge = true;
         this.vertical.scrollSpeed = this.lineHeight * 2;
 
-        this.setText("");
+        this.clear();
     }
 
     public GuiMultiTextElement background()
@@ -144,6 +144,11 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
     public String getText()
     {
         return String.join("\n", this.text);
+    }
+
+    public List<String> getLines()
+    {
+        return this.text;
     }
 
     /* Selection API */
@@ -411,6 +416,11 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
     }
 
     /* Writing API */
+
+    public void clear()
+    {
+        this.setText("");
+    }
 
     protected void changedLine(int i)
     {}
@@ -1248,7 +1258,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
     protected int getHorizontalSize(int w)
     {
-        return w + this.padding * 2;
+        return w + this.padding * 2 + this.getShiftX();
     }
 
     protected void drawTextLine(String line, int i, int nx, int ny, int sw)

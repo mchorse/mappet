@@ -15,6 +15,7 @@ public class GuiText extends GuiElement
     private int color = 0xffffff;
     private int hoverColor = 0xffffff;
     private boolean shadow = true;
+    private int padding;
 
     private int lines;
 
@@ -29,7 +30,7 @@ public class GuiText extends GuiElement
     {
         int height = Math.max(this.lines, 1) * this.lineHeight - (this.lineHeight - this.font.FONT_HEIGHT);
 
-        return height;
+        return height + this.padding * 2;
     }
 
     public GuiText text(String text)
@@ -68,6 +69,13 @@ public class GuiText extends GuiElement
         return this;
     }
 
+    public GuiText padding(int padding)
+    {
+        this.padding = padding;
+
+        return this;
+    }
+
     @Override
     public void resize()
     {
@@ -83,7 +91,7 @@ public class GuiText extends GuiElement
         {
             if (this.text == null)
             {
-                List<String> text = this.font.listFormattedStringToWidth(this.temp.get(), this.area.w);
+                List<String> text = this.font.listFormattedStringToWidth(this.temp.get(), this.area.w - this.padding * 2);
 
                 this.lines = text.size();
                 this.getParentContainer().resize();
@@ -92,18 +100,18 @@ public class GuiText extends GuiElement
                 this.lines = text.size();
             }
 
-            int y = 0;
+            int y = this.padding;
             int color = this.area.isInside(context) ? this.hoverColor : this.color;
 
             for (String line : this.text)
             {
                 if (this.shadow)
                 {
-                    this.font.drawStringWithShadow(line, this.area.x, this.area.y + y, color);
+                    this.font.drawStringWithShadow(line, this.area.x + this.padding, this.area.y + y, color);
                 }
                 else
                 {
-                    this.font.drawString(line, this.area.x, this.area.y + y, color);
+                    this.font.drawString(line, this.area.x + this.padding, this.area.y + y, color);
                 }
 
                 y += this.lineHeight;

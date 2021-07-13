@@ -1,11 +1,17 @@
 package mchorse.mappet.api.scripts;
 
+import mchorse.mappet.api.scripts.code.ScriptEvent;
+import mchorse.mappet.api.scripts.code.ScriptFactory;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.manager.BaseManager;
+import mchorse.mappet.utils.ScriptUtils;
 import mchorse.mappet.utils.Utils;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.TextFormatting;
 import org.apache.commons.io.FileUtils;
 
+import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 import java.io.File;
 import java.util.HashMap;
@@ -16,10 +22,53 @@ public class ScriptManager extends BaseManager<Script>
     public final Map<String, Object> objects = new HashMap<String, Object>();
 
     private Map<String, Script> uniqueScripts = new HashMap<String, Script>();
+    private Map<EntityPlayer, ScriptEngine> repls = new HashMap<EntityPlayer, ScriptEngine>();
+    private String replOutput = "";
 
     public ScriptManager(File folder)
     {
         super(folder);
+    }
+
+    /**
+     * Execute a REPL code that came from a player
+     */
+    public String executeRepl(EntityPlayer player, String code) throws ScriptException
+    {
+        ScriptEngine engine = this.repls.get(player);
+
+        this.replOutput = "";
+
+        if (engine == null)
+        {
+            engine = ScriptUtils.sanitize(ScriptUtils.tryCreatingEngine());
+
+            engine.put("____manager____", this);
+            engine.put("mappet", new ScriptFactory());
+            engine.put("c", new ScriptEvent(new DataContext(player), "", ""));
+            engine.eval("var __p__ = print; print = function(message) { ____manager____.replPrint(message); __p__(message); };");
+
+            this.repls.put(player, engine);
+        }
+
+        Object object = engine.eval(code);
+
+        if (this.replOutput.isEmpty())
+        {
+            this.replPrint(object);
+        }
+
+        return this.replOutput;
+    }
+
+    public void replPrint(Object object)
+    {
+        if (object == null)
+        {
+            object = TextFormatting.GRAY + "undefined";
+        }
+
+        this.replOutput += object.toString() + "\n";
     }
 
     /**

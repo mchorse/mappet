@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableSet;
 import mchorse.mappet.ClientProxy;
 import org.apache.commons.io.FileUtils;
 
+import javax.script.Bindings;
+import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import java.io.File;
@@ -92,5 +94,18 @@ public class ScriptUtils
         }
 
         return manager;
+    }
+
+    public static ScriptEngine sanitize(ScriptEngine engine)
+    {
+        /* Remove */
+        Bindings bindings = engine.getBindings(ScriptContext.ENGINE_SCOPE);
+
+        bindings.remove("load");
+        bindings.remove("loadWithNewGlobal");
+        bindings.remove("exit");
+        bindings.remove("quit");
+
+        return engine;
     }
 }
