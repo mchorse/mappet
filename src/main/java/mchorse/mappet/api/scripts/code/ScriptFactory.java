@@ -40,10 +40,10 @@ public class ScriptFactory implements IScriptFactory
         {
             IBlockState state = block.getStateFromMeta(meta);
 
-            return new ScriptBlockState(state);
+            return ScriptBlockState.create(state);
         }
 
-        return null;
+        return ScriptBlockState.create(null);
     }
 
     @Override

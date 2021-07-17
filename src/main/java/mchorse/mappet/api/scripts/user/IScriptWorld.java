@@ -14,6 +14,15 @@ import java.util.List;
 
 /**
  * This interface represent a world passed in the event.
+ *
+ * <pre>{@code
+ *    function main(c)
+ *    {
+ *        var world = c.getWorld();
+ *
+ *        // Do something with world...
+ *    }
+ * }</pre>
  */
 public interface IScriptWorld
 {
@@ -25,61 +34,166 @@ public interface IScriptWorld
 
     /**
      * Set a block at XYZ, use {@link IScriptFactory#createBlockState(String, int)}
-     * to get the block state
+     * to get the block state.
+     *
+     * <pre>{@code
+     *    var coarse_dirt = mappet.createBlockState("minecraft:dirt", 1);
+     *
+     *    c.getWorld().setBlock(coarse_dirt, 214, 3, 509);
+     * }</pre>
      */
     public void setBlock(IScriptBlockState state, int x, int y, int z);
 
     /**
-     * Get block state at given XYZ
+     * Get block state at given XYZ.
+     *
+     * <pre>{@code
+     *    var block = c.getWorld().getBlock(214, 3, 509);
+     *
+     *    c.send("Block at (214, 3, 509) is " + block.getBlockId());
+     * }</pre>
      *
      * @return a block state at given XYZ, or null if the chunk isn't loaded
      */
     public IScriptBlockState getBlock(int x, int y, int z);
 
     /**
-     * Checks whether there is an inventory tile entity at given XYZ
+     * Checks whether there is an inventory tile entity at given XYZ.
+     *
+     * <pre>{@code
+     *    var world = c.getWorld();
+     *
+     *    if (world.hasInventory(214, 4, 512))
+     *    {
+     *        var inventory = world.getInventory(214, 4, 512);
+     *
+     *        inventory.setStack(0, mappet.createItem("minecraft:diamond_hoe"));
+     *        c.send("There is a surprise for you in chest at (214, 4, 512) :)");
+     *    }
+     *    else
+     *    {
+     *        c.send("There is no chest at (214, 4, 512)...");
+     *    }
+     * }</pre>
      */
     public boolean hasInventory(int x, int y, int z);
 
     /**
-     * Get inventory tile entity at given XYZ
+     * Get inventory tile entity at given XYZ.
      *
-     * @return an inventory at given XYZ, or null if an inventory tile entity isn't present
+     * <pre>{@code
+     *    var world = c.getWorld();
+     *    var inventory = world.getInventory(214, 4, 512);
+     *
+     *    if (world.hasInventory(214, 4, 512))
+     *    {
+     *        var inventory = world.getInventory(214, 4, 512);
+     *
+     *        inventory.clear();
+     *    }
+     * }</pre>
+     *
+     * @return an inventory at given XYZ, or <code>null</code> if an inventory tile entity isn't present.
      */
     public IScriptInventory getInventory(int x, int y, int z);
 
     /**
-     * Check whether it's raining in the world
+     * Check whether it's raining in the world.
+     *
+     * <pre>{@code
+     *    var world = c.getWorld();
+     *    var pos = c.getSubject().getPosition();
+     *
+     *    // If it's raining in the world, then drop a diamond
+     *    // If not, then drop a dirt block
+     *    if (world.isRaining())
+     *    {
+     *        world.dropItemStack(mappet.createItem("minecraft:diamond"), pos.x, pos.y + 3, pos.z);
+     *    }
+     *    else
+     *    {
+     *        world.dropItemStack(mappet.createItem("minecraft:dirt"), pos.x, pos.y + 3, pos.z);
+     *    }
+     * }</pre>
      */
     public boolean isRaining();
 
     /**
-     * Set raining state
+     * Set raining state.
+     *
+     * <pre>{@code
+     *    c.getWorld().setRaining(true);
+     *    c.send("The ritual dance got successfully completed!");
+     * }</pre>
      */
     public void setRaining(boolean raining);
 
     /**
-     * Get current time of day
+     * Get current time of day (the one that is set by <code>/time set</code> command).
+     *
+     * <pre>{@code
+     *    if (c.getWorld().getTime() % 24000 > 12000)
+     *    {
+     *        c.getSubject().send("Good night!");
+     *    }
+     *    else
+     *    {
+     *        c.getSubject().send("Good day!");
+     *    }
+     * }</pre>
      */
     public long getTime();
 
     /**
-     * Set current time of day
+     * Set current time of day.
+     *
+     * <pre>{@code
+     *    c.getWorld().setTime(14000);
+     *    c.send("Another ritual dance got successfully completed!");
+     * }</pre>
      */
     public void setTime(long time);
 
     /**
-     * Get total time that this world existed for
+     * Get total time that this world existed for (in ticks).
+     *
+     * <pre>{@code
+     *    if (c.getWorld().getTotalTime() > 20 * 600)
+     *    {
+     *        c.send("You had only 10 minutes to complete the map...");
+     *        c.send("Initiating SELF-DESTRUCT mode!");
+     *
+     *        // TODO: implement self-destruction
+     *    }
+     * }</pre>
      */
     public long getTotalTime();
 
     /**
-     * Get world's dimension ID
+     * Get world's dimension ID.
+     *
+     * <pre>{@code
+     *    if (c.getWorld().getDimensionId() == 0)
+     *    {
+     *        c.getSubject().send("You're in overworld!");
+     *    }
+     *    else
+     *    {
+     *        c.getSubject().send("*shrugs*");
+     *    }
+     * }</pre>
      */
     public int getDimensionId();
 
     /**
-     * Spawn vanilla particles
+     * Spawn vanilla particles.
+     *
+     * <pre>{@code
+     *    var explode = mappet.getParticleType("explode");
+     *    var pos = c.getSubject().getPosition();
+     *
+     *    c.getWorld().spawnParticles(explode, false, pos.x, pos.y, pos.z, 10, 0.1, 0.1, 0.1, 0.1);
+     * }</pre>
      *
      * @param type Particle type, you can use {@link IScriptFactory#getParticleType(String)}
      *             to get the desired particle type.
@@ -99,7 +213,14 @@ public interface IScriptWorld
     public void spawnParticles(EnumParticleTypes type, boolean longDistance, double x, double y, double z, int n, double dx, double dy, double dz, double speed, int... args);
 
     /**
-     * Spawn vanilla particles only to a specific player
+     * Spawn vanilla particles only to a specific player.
+     *
+     * <pre>{@code
+     *    var explode = mappet.getParticleType("explode");
+     *    var pos = c.getSubject().getPosition();
+     *
+     *    c.getWorld().spawnParticles(c.getSubject(), explode, false, pos.x, pos.y, pos.z, 10, 0.1, 0.1, 0.1, 0.1);
+     * }</pre>
      *
      * @param player The player that you want to limit seeing the particle only to
      * @param type Particle type, you can use {@link IScriptFactory#getParticleType(String)}
@@ -120,7 +241,14 @@ public interface IScriptWorld
     public void spawnParticles(IScriptPlayer player, EnumParticleTypes type, boolean longDistance, double x, double y, double z, int n, double dx, double dy, double dz, double speed, int... args);
 
     /**
-     * Spawn an entity at given position
+     * Spawn an entity at given position.
+     *
+     * <pre>{@code
+     *    var pos = c.getSubject().getPosition();
+     *
+     *    // Make an explosion at player's feet
+     *    c.getWorld().spawnEntity("minecraft:tnt", pos.x, pos.y, pos.z);
+     * }</pre>
      */
     public default IScriptEntity spawnEntity(String id, double x, double y, double z)
     {
@@ -128,12 +256,25 @@ public interface IScriptWorld
     }
 
     /**
-     * Spawn an entity at given position with additional data
+     * Spawn an entity at given position with additional data.
+     *
+     * <pre>{@code
+     *    var pos = c.getSubject().getPosition();
+     *
+     *    // Spawn a baby zombie
+     *    c.getWorld().spawnEntity("minecraft:zombie", pos.x, pos.y + 3, pos.z, mappet.createCompound("{IsBaby:1b}"));
+     * }</pre>
      */
     public IScriptEntity spawnEntity(String id, double x, double y, double z, INBTCompound compound);
 
     /**
-     * Spawn an NPC at given position with default state
+     * Spawn an NPC at given position with default state.
+     *
+     * <pre>{@code
+     *    var pos = c.getSubject().getPosition();
+     *
+     *    c.getWorld().spawnNpc("herobrine", pos.x, pos.y, pos.z);
+     * }</pre>
      */
     public default IScriptNpc spawnNpc(String id, double x, double y, double z)
     {
@@ -141,28 +282,74 @@ public interface IScriptWorld
     }
 
     /**
-     * Spawn an NPC at given position
+     * Spawn an NPC at given position with given state.
+     *
+     * <pre>{@code
+     *    var pos = c.getSubject().getPosition();
+     *
+     *    c.getWorld().spawnNpc("herobrine", "dabbing", pos.x, pos.y, pos.z);
+     * }</pre>
      */
     public IScriptNpc spawnNpc(String id, String state, double x, double y, double z);
 
     /**
      * Get entities within the box specified by given coordinates in this world.
-     * This method limits to scanning entities <b>only within 100 blocks</b>
+     * This method limits to scanning entities only within <b>100 blocks</b>
      * in any direction. If the box provided has any of its sizes that is longer
      * than 100 blocks, then it will simply return an empty list.
+     *
+     * <pre>{@code
+     *    // Y position is at the feet, while X and Z is at center
+     *    var pos = c.getSubject().getPosition();
+     *    var entities = c.getWorld().getEntities(pos.x - 2, pos.y - 1, pos.z - 2, pos.x + 2, pos.y + 3, pos.z + 2);
+     *
+     *    for (var i in entities)
+     *    {
+     *        var entity = entities[i];
+     *
+     *        if (!entity.isSame(c.getSubject()))
+     *        {
+     *            entity.damage(2.0);
+     *        }
+     *    }
+     * }</pre>
      */
     public List<IScriptEntity> getEntities(double x1, double y1, double z1, double x2, double y2, double z2);
 
     /**
      * Get entities within the sphere specified by given coordinates and radius in
-     * this world. This method limits to scanning entities <b>only within 50 blocks
+     * this world. This method limits to scanning entities only within <b>50 blocks
      * radius</b> in any direction. If the sphere provided has the radius that is
      * longer than 100 blocks, then it will simply return an empty list.
+     *
+     * <pre>{@code
+     *    var pos = c.getSubject().getPosition();
+     *    var entities = c.getWorld().getEntities(pos.x, pos.y + 1, pos.z, 3);
+     *
+     *    for (var i in entities)
+     *    {
+     *        var entity = entities[i];
+     *
+     *        if (!entity.isSame(c.getSubject()))
+     *        {
+     *            entity.damage(2.0);
+     *        }
+     *    }
+     * }</pre>
      */
     public List<IScriptEntity> getEntities(double x, double y, double z, double radius);
 
     /**
-     * Play a sound event in the world
+     * Play a sound event in the world.
+     *
+     * <p>For all possible sound event IDs, please refer to either <code>/playsound</code>
+     * command, or script editor's sound picker.</p>
+     *
+     * <pre>{@code
+     *    var pos = c.getSubject().getPosition();
+     *
+     *    c.getWorld().playSound("minecraft:entity.pig.ambient", pos.x, pos.y, pos.z);
+     * }</pre>
      */
     public default void playSound(String event, double x, double y, double z)
     {
@@ -170,12 +357,25 @@ public interface IScriptWorld
     }
 
     /**
-     * Play a sound event in the world with volume and pitch
+     * Play a sound event in the world with volume and pitch.
+     *
+     * <pre>{@code
+     *    var pos = c.getSubject().getPosition();
+     *
+     *    c.getWorld().playSound("minecraft:entity.pig.ambient", pos.x, pos.y, pos.z, 1.0, 0.8);
+     * }</pre>
      */
     public void playSound(String event, double x, double y, double z, float volume, float pitch);
 
     /**
-     * Drop item stack at given XYZ position with no velocity applied
+     * Drop item stack at given XYZ position with no velocity applied.
+     *
+     * <pre>{@code
+     *    var item = mappet.createItem("minecraft:diamond_hoe");
+     *    var pos = c.getSubject().getPosition();
+     *
+     *    c.getWorld().dropItemStack(item, pos.x, pos.y + 3, pos.z);
+     * }</pre>
      */
     public default IScriptEntity dropItemStack(IScriptItemStack stack, double x, double y, double z)
     {
@@ -183,7 +383,14 @@ public interface IScriptWorld
     }
 
     /**
-     * Drop an item stack at given XYZ position in this world with desired velocity
+     * Drop an item stack at given XYZ position in this world with desired velocity.
+     *
+     * <pre>{@code
+     *    var item = mappet.createItem("minecraft:diamond_hoe");
+     *    var pos = c.getSubject().getPosition();
+     *
+     *    c.getWorld().dropItemStack(item, pos.x, pos.y + 3, pos.z, 0, 1, 0);
+     * }</pre>
      */
     public IScriptEntity dropItemStack(IScriptItemStack stack, double x, double y, double z, double mx, double my, double mz);
 }

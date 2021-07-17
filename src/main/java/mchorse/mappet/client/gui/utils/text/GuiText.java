@@ -15,7 +15,8 @@ public class GuiText extends GuiElement
     private int color = 0xffffff;
     private int hoverColor = 0xffffff;
     private boolean shadow = true;
-    private int padding;
+    private int paddingH;
+    private int paddingV;
 
     private int lines;
 
@@ -30,7 +31,7 @@ public class GuiText extends GuiElement
     {
         int height = Math.max(this.lines, 1) * this.lineHeight - (this.lineHeight - this.font.FONT_HEIGHT);
 
-        return height + this.padding * 2;
+        return height + this.paddingV * 2;
     }
 
     public GuiText text(String text)
@@ -71,7 +72,13 @@ public class GuiText extends GuiElement
 
     public GuiText padding(int padding)
     {
-        this.padding = padding;
+        return this.padding(padding, padding);
+    }
+
+    public GuiText padding(int horizontal, int vertical)
+    {
+        this.paddingH = horizontal;
+        this.paddingV = vertical;
 
         return this;
     }
@@ -91,7 +98,7 @@ public class GuiText extends GuiElement
         {
             if (this.text == null)
             {
-                List<String> text = this.font.listFormattedStringToWidth(this.temp.get(), this.area.w - this.padding * 2);
+                List<String> text = this.font.listFormattedStringToWidth(this.temp.get(), this.area.w - this.paddingH * 2);
 
                 this.lines = text.size();
                 this.getParentContainer().resize();
@@ -100,18 +107,18 @@ public class GuiText extends GuiElement
                 this.lines = text.size();
             }
 
-            int y = this.padding;
+            int y = this.paddingV;
             int color = this.area.isInside(context) ? this.hoverColor : this.color;
 
             for (String line : this.text)
             {
                 if (this.shadow)
                 {
-                    this.font.drawStringWithShadow(line, this.area.x + this.padding, this.area.y + y, color);
+                    this.font.drawStringWithShadow(line, this.area.x + this.paddingH, this.area.y + y, color);
                 }
                 else
                 {
-                    this.font.drawString(line, this.area.x + this.padding, this.area.y + y, color);
+                    this.font.drawString(line, this.area.x + this.paddingH, this.area.y + y, color);
                 }
 
                 y += this.lineHeight;

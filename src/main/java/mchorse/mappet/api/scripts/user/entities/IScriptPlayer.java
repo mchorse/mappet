@@ -8,6 +8,16 @@ import net.minecraft.entity.player.EntityPlayerMP;
  * Player entity interface.
  *
  * <p>This interface represents a player entity.</p>
+ *
+ * <pre>{@code
+ *    function main(c)
+ *    {
+ *        if (c.getSubject().isPlayer())
+ *        {
+ *            // Do something with the player...
+ *        }
+ *    }
+ * }</pre>
  */
 public interface IScriptPlayer extends IScriptEntity
 {
@@ -18,29 +28,58 @@ public interface IScriptPlayer extends IScriptEntity
     public EntityPlayerMP getMinecraftPlayer();
 
     /**
-     * Get player's inventory
+     * Get player's inventory.
+     *
+     * <pre>{@code
+     *    // Assuming that c.getSubject() is a player
+     *    var inventory = c.getSubject().getInventory();
+     *    var item = mappet.createItem("minecraft:diamond_sword");
+     *
+     *    // This will change the first slot in the hotbar to a diamond sword
+     *    inventory.setStack(0, item);
+     * }</pre>
      */
     public IScriptInventory getInventory();
 
     /**
-     * Get player's ender chest inventory
+     * Get player's ender chest inventory.
+     *
+     * <pre>{@code
+     *    // Assuming that c.getSubject() is a player
+     *    var inventory = c.getSubject().getEnderChest();
+     *    var item = mappet.createItem("minecraft:diamond_sword");
+     *
+     *    // This will change the first slot in player's ender chest to a diamond sword
+     *    inventory.setStack(0, item);
+     * }</pre>
      */
     public IScriptInventory getEnderChest();
 
     /**
-     * Send a message to this entity
+     * Send a message to this entity.
      *
-     * @return whether it was possible to send the message (i.e. if entity
-     *         isn't a player, it will return false)
+     * <pre>{@code
+     *    // Assuming that c.getSubject() is a player
+     *    c.send("I love all my players equally.");
+     *    c.getSubject().send("...but between you and me, you're my favorite player ;)");
+     * }</pre>
      */
-    public boolean send(String message);
+    public void send(String message);
 
     /* Mappet stuff */
 
     /**
-     * Get entity's quests (if it has some, only players have quests)
+     * Get entity's quests (if it has some, only players have quests).
      *
-     * @return player's quests, or null if this entity doesn't have quests
+     * <pre>{@code
+     *    // Assuming that c.getSubject() is a player
+     *    var quests = c.getSubject().getQuests();
+     *
+     *    if (!quests.has("important_quest"))
+     *    {
+     *        c.getSubject().send("I think you should complete the main quest chain before attempting side quests...");
+     *    }
+     * }</pre>
      */
     public IMappetQuests getQuests();
 }

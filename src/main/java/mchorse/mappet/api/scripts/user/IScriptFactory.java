@@ -52,7 +52,7 @@ public interface IScriptFactory
      *
      * <ul>
      *     <li>NBT supports multiple number storage formats (byte, short, int, long, float,
-     *     double) so the converter <b>will only be able to convert numbers</b> to either
+     *     double) so the converter will only be able to convert numbers to either
      *     integer or double NBT tags, depending on how did you got the number, <code>42</code>
      *     being an integer, and <code>42.0</code> being a double.</li>
      *     <li>NBT lists support only storage of a <b>single type</b> at once, so if you

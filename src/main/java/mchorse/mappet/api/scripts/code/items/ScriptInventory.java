@@ -64,6 +64,15 @@ public class ScriptInventory implements IScriptInventory
         }
     }
 
+    @Override
+    public void clear()
+    {
+        for (int i = 0, c = this.inventory.getSizeInventory(); i < c; i++)
+        {
+            this.inventory.setInventorySlotContents(i, ItemStack.EMPTY);
+        }
+    }
+
     /* Basic inventory */
 
     @Override

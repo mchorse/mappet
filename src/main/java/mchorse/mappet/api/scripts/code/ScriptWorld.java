@@ -17,7 +17,6 @@ import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.mappet.entities.EntityNpc;
 import mchorse.mappet.utils.WorldUtils;
-import net.minecraft.command.CommandException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -67,12 +66,12 @@ public class ScriptWorld implements IScriptWorld
     @Override
     public IScriptBlockState getBlock(int x, int y, int z)
     {
-        if (this.world.isBlockLoaded(this.pos.setPos(x, y, z)))
+        if (!this.world.isBlockLoaded(this.pos.setPos(x, y, z)))
         {
-            return null;
+            return ScriptBlockState.AIR;
         }
 
-        return new ScriptBlockState(this.world.getBlockState(this.pos));
+        return ScriptBlockState.create(this.world.getBlockState(this.pos));
     }
 
     @Override

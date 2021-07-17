@@ -360,6 +360,12 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     }
 
     @Override
+    public boolean isSame(IScriptEntity entity)
+    {
+        return this.entity == entity.getMinecraftEntity();
+    }
+
+    @Override
     public void damage(float health)
     {
         if (this.isLivingBase())

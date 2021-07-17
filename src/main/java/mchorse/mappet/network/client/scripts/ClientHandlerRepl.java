@@ -14,6 +14,6 @@ public class ClientHandlerRepl extends ClientMessageHandler<PacketRepl>
     @SideOnly(Side.CLIENT)
     public void run(EntityPlayerSP player, PacketRepl message)
     {
-        GuiMappetDashboard.get(Minecraft.getMinecraft()).script.replBlock.log(message.code);
+        GuiMappetDashboard.get(Minecraft.getMinecraft()).script.repl.log(message.code);
     }
 }

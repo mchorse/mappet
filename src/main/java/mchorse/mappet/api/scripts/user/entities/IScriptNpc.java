@@ -2,6 +2,19 @@ package mchorse.mappet.api.scripts.user.entities;
 
 import mchorse.mappet.entities.EntityNpc;
 
+/**
+ * Mappet's NPC entity interface.
+ *
+ * <pre>{@code
+ *    function main(c)
+ *    {
+ *        if (c.getSubject().isNpc())
+ *        {
+ *            // Do something with the NPC...
+ *        }
+ *    }
+ * }</pre>
+ */
 public interface IScriptNpc extends IScriptEntity
 {
     /**
@@ -15,7 +28,16 @@ public interface IScriptNpc extends IScriptEntity
     public EntityNpc getMappetNpc();
 
     /**
-     * Get NPC's NPC ID
+     * Get NPC's NPC ID.
+     *
+     * <pre>{@code
+     *    var pos = c.getSubject().getPosition();
+     *    var npc = c.getWorld().spawnNpc("test", pos.x, pos.y + 2, pos.z);
+     *
+     *    // This will output "true" as long as you have an NPC configured
+     *    // in Mappet's NPC dashboard panel
+     *    c.send(npc.getNpcId() === "test");
+     * }</pre>
      */
     public String getNpcId();
 }

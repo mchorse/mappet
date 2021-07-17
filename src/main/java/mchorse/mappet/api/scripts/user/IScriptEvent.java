@@ -14,46 +14,60 @@ import java.util.Map;
 public interface IScriptEvent
 {
     /**
-     * Get subject (primary) entity that was passed into the event
+     * Get subject (primary) entity that was passed into the event.
      */
     public IScriptEntity getSubject();
 
     /**
-     * Get object (secondary) entity that was passed into the event
+     * Get object (secondary) entity that was passed into the event.
      */
     public IScriptEntity getObject();
 
     /**
-     * Get the world in which this event happened
+     * Get the world in which this event happened.
      */
     public IScriptWorld getWorld();
 
     /**
-     * Get the server in which this event happened
+     * Get the server in which this event happened.
      */
     public IScriptServer getServer();
 
     /**
-     * Get a map of extra context values that was passed into the event
+     * Get a map of extra context values that was passed into the event.
      */
     public Map<String, Object> getValues();
 
     /**
-     * Get a value for given key (might be a null)
+     * Get a value for given key (might be a null).
      */
     public Object getValue(String key);
 
     /**
-     * Set a value for given key in extra data
+     * Set a value for given key in extra data.
      */
     public void setValue(String key, Object value);
 
     /* Useful methods */
 
     /**
-     * Cancel the trigger event. Depending on the type of event, it can prevent the
+     * Cancel the trigger event.
+     *
+     * <p>Depending on the type of event, it can prevent the
      * default behavior (for example for chat trigger, if you cancel it, it won't
-     * send the message into the chat).
+     * send the message into the chat).</p>
+     *
+     * <pre>{@code
+     *    // Assuming this script was attached to global trigger "On block placed,"
+     *    // this script will cancel placing of the block by a player
+     *    function main(c)
+     *    {
+     *        if (c.getValue("block") === "minecraft:stone")
+     *        {
+     *            c.cancel();
+     *        }
+     *    }
+     * }</pre>
      */
     public void cancel();
 
@@ -62,6 +76,27 @@ public interface IScriptEvent
      * given ticks forward.
      *
      * <p>Read {@link #scheduleScript(String, String, int)} for more information.</p>
+     *
+     * <pre>{@code
+     *    function main(c)
+     *    {
+     *        var states = c.getServer().getStates();
+     *        var counter = states.getNumber("counter");
+     *
+     *        if (counter < 10)
+     *        {
+     *            c.send(counter + " Mississippi...");
+     *            states.add("counter", 1);
+     *
+     *            c.scheduleScript(20);
+     *        }
+     *        else
+     *        {
+     *            states.remove("counter");
+     *            c.send("Here I go!");
+     *        }
+     *    }
+     * }</pre>
      */
     public void scheduleScript(int delay);
 
@@ -70,6 +105,20 @@ public interface IScriptEvent
      * given ticks forward.
      *
      * <p>Read {@link #scheduleScript(String, String, int)} for more information.</p>
+     *
+     * <pre>{@code
+     *    function main(c)
+     *    {
+     *        // Schedule script execution of function other
+     *        // within same script a second later
+     *        c.scheduleScript("other", 20);
+     *    }
+     *
+     *    function other(c)
+     *    {
+     *        c.send("A second ago, function \"main\" told me to say \"hi\" to you... :)")
+     *    }
+     * }</pre>
      */
     public void scheduleScript(String function, int delay);
 
@@ -84,16 +133,43 @@ public interface IScriptEvent
      * <p><b>ProTip</b>: if you put some values into this context using
      * {@link #setValue(String, Object)}, then that value will be also available
      * when the scheduled script will be executed.</p>
+     *
+     * <pre>{@code
+     *    // Script "a"
+     *    function main(c)
+     *    {
+     *        // As ProTip states, you can pass some value using
+     *        // setValue() and getValue() event's functions
+     *        c.setValue("message", "Hello!");
+     *
+     *        // Schedule script "b" execution a second later
+     *        c.scheduleScript("b", "main", 20);
+     *    }
+     *
+     *    // Script "b"
+     *    function main(c)
+     *    {
+     *        c.send("A second ago, script \"a\" told me deliver this message: " + c.getValue("message"));
+     *    }
+     * }</pre>
      */
     public void scheduleScript(String script, String function, int delay);
 
     /**
-     * Execute a command
+     * Execute a command.
+     *
+     * <pre>{@code
+     *    c.executeCommand("/kick Creeper501");
+     * }</pre>
      */
     public void executeCommand(String command);
 
     /**
-     * Send a message to all players in the chat
+     * Send a message to all players in the chat.
+     *
+     * <pre>{@code
+     *    c.send("Hi :)");
+     * }</pre>
      */
     public void send(String message);
 }

@@ -1,4 +1,6 @@
-buildscript 
+import java.nio.charset.Charset
+
+buildscript
 {
     repositories 
     {
@@ -88,6 +90,21 @@ task scriptingJavadocs(type: Javadoc) {
 
     include "mchorse/mappet/api/scripts/user/**"
 }
+
+task scriptingJavadocsJson(type: Exec) {
+    // Writing gradle tasks is PAIN, if you'll ever would need to run this, clone and build:
+    // https://github.com/mchorse/jsonDoclet
+    //
+    // Rename it to jsonDoclet.jar, and place it in the run/ folder
+    executable "javadoc"
+    args "-doclet", "mchorse.utils.doclets.JsonDoclet", "-docletpath", "./run/jsonDoclet.jar", "-sourcepath", "./src/main/java/", "-subpackages", "mchorse.mappet.api.scripts.user"
+
+    doLast {
+        file("src/main/resources/assets/mappet/docs.json").setText(file("docs.json").text)
+    }
+}
+
+tasks.processResources.dependsOn(scriptingJavadocsJson)
 
 /* Comparing keys */
 task compareLangFiles {

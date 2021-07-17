@@ -70,11 +70,9 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     }
 
     @Override
-    public boolean send(String message)
+    public void send(String message)
     {
         this.entity.sendMessage(new TextComponentString(message));
-
-        return this.isPlayer();
     }
 
     /* Mappet stuff */
@@ -82,7 +80,7 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     @Override
     public IMappetQuests getQuests()
     {
-        if (this.quests == null && this.isPlayer())
+        if (this.quests == null)
         {
             this.quests = new MappetQuests(Character.get(this.entity).getQuests(), this.entity);
         }

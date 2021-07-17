@@ -9,6 +9,15 @@ import java.util.List;
 
 /**
  * This interface represent the server passed in the event.
+ *
+ * <pre>{@code
+ *    function main(c)
+ *    {
+ *        var server = c.getServer();
+ *
+ *        // Do something with server...
+ *    }
+ * }</pre>
  */
 public interface IScriptServer
 {
@@ -19,22 +28,57 @@ public interface IScriptServer
     public MinecraftServer getMinecraftServer();
 
     /**
-     * Get world at dimension ID
+     * Get world at dimension ID.
+     *
+     * <pre>{@code
+     *    var overworld = c.getServer().getWorld(0);
+     *
+     *    // Do something with the world...
+     * }</pre>
      */
     public IScriptWorld getWorld(int dimension);
 
     /**
-     * Get all entities matching giving target selector
+     * Get all entities matching giving target selector.
+     *
+     * <pre>{@code
+     *    var cows = c.getServer().getEntities("@e[type=minecraft:cow]");
+     *
+     *    // Despawn all cows
+     *    for (var i in cows)
+     *    {
+     *        cows[i].remove();
+     *    }
+     * }</pre>
      */
     public List<IScriptEntity> getEntities(String targetSelector);
 
     /**
-     * Get all players on the server
+     * Get all players on the server.
+     *
+     * <pre>{@code
+     *    var players = c.getServer().getAllPlayers();
+     *
+     *    for (var i in players)
+     *    {
+     *        // Surprise :)
+     *        players[i].setMotion(0, 0.5, 0);
+     *    }
+     * }</pre>
      */
     public List<IScriptPlayer> getAllPlayers();
 
     /**
-     * Get global (server) states
+     * Get global (server) states.
+     *
+     * <pre>{@code
+     *    var states = c.getServer().getStates();
+     *
+     *    if (states.getNumber("total_money_earned") > 1000000000)
+     *    {
+     *        // Give all players an achievement or something...
+     *    }
+     * }</pre>
      */
     public IMappetStates getStates();
 }

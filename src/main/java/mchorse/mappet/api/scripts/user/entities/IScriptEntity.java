@@ -225,6 +225,11 @@ public interface IScriptEntity
     public boolean isLivingBase();
 
     /**
+     * Check whether this entity is same as given entity
+     */
+    public boolean isSame(IScriptEntity entity);
+
+    /**
      * Inflict some damage on this entity (use {@link #kill()} to kill the entity though)
      */
     public void damage(float health);

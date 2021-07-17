@@ -21,7 +21,7 @@ import org.lwjgl.input.Keyboard;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiReplPanel extends GuiElement
+public class GuiRepl extends GuiElement
 {
     public GuiTextEditor repl;
     public GuiScrollElement log;
@@ -29,12 +29,12 @@ public class GuiReplPanel extends GuiElement
     private List<String> history = new ArrayList<String>();
     private int index = 0;
 
-    public GuiReplPanel(Minecraft mc)
+    public GuiRepl(Minecraft mc)
     {
         super(mc);
 
         this.repl = new GuiTextEditor(mc, null);
-        this.repl.disableLines().background().flex().relative(this).y(1F).w(1F).h(100).anchorY(1F);
+        this.repl.background().flex().relative(this).y(1F).w(1F).h(100).anchorY(1F);
         this.repl.context(() ->
         {
             return new GuiSimpleContextMenu(this.mc)
@@ -114,9 +114,10 @@ public class GuiReplPanel extends GuiElement
             return;
         }
 
-        boolean odd = (this.log.getChildren().size() + 1) % 2 == 1;
+        int size = this.log.getChildren().size();
+        boolean odd = (size + 1) % 2 == 1;
 
-        this.log.add(new GuiReplText(this.mc, odd).text(code));
+        this.log.add(new GuiReplText(this.mc, odd, size == 0 ? 10 : 5).text(code));
         this.resize();
 
         this.log.scroll.scrollTo(this.log.scroll.scrollSize);
@@ -126,13 +127,13 @@ public class GuiReplPanel extends GuiElement
     {
         private boolean odd;
 
-        public GuiReplText(Minecraft mc, boolean odd)
+        public GuiReplText(Minecraft mc, boolean odd, int vertical)
         {
             super(mc);
 
             this.odd = odd;
 
-            this.padding(10);
+            this.padding(10, vertical);
         }
 
         @Override

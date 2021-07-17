@@ -916,7 +916,17 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             return true;
         }
 
-        return GuiScreen.isShiftKeyDown() ? this.horizontal.mouseScroll(context) : this.vertical.mouseScroll(context);
+        if (GuiScreen.isShiftKeyDown())
+        {
+            return this.horizontal.mouseScroll(context);
+        }
+
+        if (this.vertical.scrollSize < this.area.h)
+        {
+            return false;
+        }
+
+        return this.vertical.mouseScroll(context);
     }
 
     @Override

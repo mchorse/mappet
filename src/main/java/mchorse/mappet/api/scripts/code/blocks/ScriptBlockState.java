@@ -2,13 +2,26 @@ package mchorse.mappet.api.scripts.code.blocks;
 
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 
 public class ScriptBlockState implements IScriptBlockState
 {
+    public static ScriptBlockState AIR = new ScriptBlockState(Blocks.AIR.getDefaultState());
+
     private IBlockState state;
 
-    public ScriptBlockState(IBlockState state)
+    public static IScriptBlockState create(IBlockState state)
+    {
+        if (state == Blocks.AIR.getDefaultState() || state == null)
+        {
+            return AIR;
+        }
+
+        return new ScriptBlockState(state);
+    }
+
+    private ScriptBlockState(IBlockState state)
     {
         this.state = state;
     }
