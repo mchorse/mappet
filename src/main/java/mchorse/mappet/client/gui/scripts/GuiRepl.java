@@ -41,7 +41,8 @@ public class GuiRepl extends GuiElement
                 .action(Icons.POSE, IKey.lang("mappet.gui.scripts.context.paste_morph"), () -> GuiScriptPanel.openMorphPicker(this.repl))
                 .action(MMIcons.ITEM, IKey.lang("mappet.gui.scripts.context.paste_item"), () -> GuiScriptPanel.openItemPicker(this.repl))
                 .action(Icons.BLOCK, IKey.lang("mappet.gui.scripts.context.paste_player_pos"), () -> GuiScriptPanel.pastePlayerPosition(this.repl))
-                .action(Icons.VISIBLE, IKey.lang("mappet.gui.scripts.context.paste_block_pos"), () -> GuiScriptPanel.pasteBlockPosition(this.repl));
+                .action(Icons.VISIBLE, IKey.lang("mappet.gui.scripts.context.paste_block_pos"), () -> GuiScriptPanel.pasteBlockPosition(this.repl))
+                .action(Icons.SOUND, IKey.lang("mappet.gui.scripts.context.paste_sound"), () -> GuiScriptPanel.openSoundPicker(this.repl));
         });
 
         this.log = new GuiScrollElement(mc);

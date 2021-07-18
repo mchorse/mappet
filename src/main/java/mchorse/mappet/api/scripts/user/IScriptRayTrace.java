@@ -24,7 +24,7 @@ import net.minecraft.util.math.RayTraceResult;
  *            // Ray hit an entity, so we'll throw it in the air
  *            result.getEntity().setMotion(0, 1, 0);
  *        }
- *        else
+ *        else // if (result.isMissed())
  *        {
  *            c.send("Good luck next time!");
  *        }
@@ -40,32 +40,32 @@ public interface IScriptRayTrace
     public RayTraceResult getMinecraftRayTraceResult();
 
     /**
-     * Check whether this ray trace result didn't capture anything
+     * Check whether this ray trace result didn't capture anything.
      */
     public boolean isMissed();
 
     /**
-     * Check whether this ray trace result hit a block
+     * Check whether this ray trace result hit a block.
      */
     public boolean isBlock();
 
     /**
-     * Check whether this ray trace result hit an entity
+     * Check whether this ray trace result hit an entity.
      */
     public boolean isEntity();
 
     /**
-     * Get entity that was captured by this ray trace result (it can be null)
+     * Get entity that was captured by this ray trace result (it can be null).
      */
     public IScriptEntity getEntity();
 
     /**
-     * Get block position it hit
+     * Get block position it hit.
      */
     public ScriptVector getBlock();
 
     /**
-     * Get precise position where it hit
+     * Get precise position where it hit.
      */
     public ScriptVector getHitPosition();
 }

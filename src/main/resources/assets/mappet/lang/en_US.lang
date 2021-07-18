@@ -471,6 +471,7 @@ mappet.gui.triggers.context.copy=Copy this trigger
 mappet.gui.triggers.context.paste=Paste copied trigger
 mappet.gui.triggers.context.remove=Remove this trigger
 
+mappet.gui.scripts.documentation.title=Scripting documentation
 mappet.gui.scripts.repl.title=REPL (interactive console)
 mappet.gui.scripts.repl.hello_world=Hello, world!
 mappet.gui.scripts.repl.welcome=This is Mappet's Read-Eval-Print Loop (REPL). You can type in §6JS§r code, and execute it by pressing Enter key. You can cycle through eval history by holding §6Ctrl§r key and arrow §6Up§r or §6Down§r.\n\nFollowing variables are available:\n\n- §6c§r is a IScriptEvent that has player as a subject\n- §6mappet§r is a IScriptFactory
@@ -478,6 +479,7 @@ mappet.gui.scripts.context.paste_morph=Paste morph NBT...
 mappet.gui.scripts.context.paste_item=Paste item NBT...
 mappet.gui.scripts.context.paste_player_pos=Paste player's position
 mappet.gui.scripts.context.paste_block_pos=Paste block position
+mappet.gui.scripts.context.paste_sound=Paste sound event...
 mappet.gui.scripts.overlay.title_morph=Morph
 mappet.gui.scripts.overlay.title_item=Item
 mappet.gui.scripts.overlay.insert=Insert

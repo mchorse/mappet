@@ -9,8 +9,10 @@ import mchorse.mappet.client.gui.scripts.GuiRepl;
 import mchorse.mappet.client.gui.scripts.GuiTextEditor;
 import mchorse.mappet.client.gui.scripts.utils.GuiItemStackOverlayPanel;
 import mchorse.mappet.client.gui.scripts.utils.GuiMorphOverlayPanel;
+import mchorse.mappet.client.gui.scripts.utils.GuiScriptSoundOverlayPanel;
 import mchorse.mappet.client.gui.scripts.utils.SyntaxStyle;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
+import mchorse.mappet.client.gui.utils.overlays.GuiSoundOverlayPanel;
 import mchorse.mappet.utils.MPIcons;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
@@ -19,6 +21,7 @@ import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.mclib.utils.Direction;
 import mchorse.mclib.utils.RayTracing;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
@@ -109,14 +112,23 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
         }
     }
 
+    public static void openSoundPicker(GuiTextEditor editor)
+    {
+        GuiSoundOverlayPanel panel = new GuiScriptSoundOverlayPanel(Minecraft.getMinecraft(), editor);
+
+        GuiOverlay.addOverlay(GuiBase.getCurrent(), panel, 0.5F, 0.9F);
+    }
+
     public GuiScriptPanel(Minecraft mc, GuiMappetDashboard dashboard)
     {
         super(mc, dashboard);
 
         this.toggleRepl = new GuiIconElement(mc, MPIcons.REPL, (b) -> this.setRepl(!this.repl.isVisible()));
         this.toggleRepl.flex().relative(this.toggleSidebar).y(20);
+        this.toggleRepl.tooltip(IKey.lang("mappet.gui.scripts.repl.title"), Direction.LEFT);
         this.docs = new GuiIconElement(mc, Icons.HELP, this::openDocumentation);
         this.docs.flex().relative(this.toggleRepl).y(20);
+        this.docs.tooltip(IKey.lang("mappet.gui.scripts.documentation.title"), Direction.LEFT);
 
         this.code = new GuiTextEditor(mc, null);
         this.code.background().context(() ->
@@ -126,7 +138,8 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
                 .action(Icons.POSE, IKey.lang("mappet.gui.scripts.context.paste_morph"), () -> openMorphPicker(this.code))
                 .action(MMIcons.ITEM, IKey.lang("mappet.gui.scripts.context.paste_item"), () -> openItemPicker(this.code))
                 .action(Icons.BLOCK, IKey.lang("mappet.gui.scripts.context.paste_player_pos"), () -> pastePlayerPosition(this.code))
-                .action(Icons.VISIBLE, IKey.lang("mappet.gui.scripts.context.paste_block_pos"), () -> pasteBlockPosition(this.code));
+                .action(Icons.VISIBLE, IKey.lang("mappet.gui.scripts.context.paste_block_pos"), () -> pasteBlockPosition(this.code))
+                .action(Icons.SOUND, IKey.lang("mappet.gui.scripts.context.paste_sound"), () -> openSoundPicker(this.code));
         });
 
         this.repl = new GuiRepl(mc);

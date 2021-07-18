@@ -26,12 +26,31 @@ public interface IScriptFactory
 {
     /**
      * Get a block state that can be used to place and compare blocks in
-     * the {@link IScriptWorld}
+     * the {@link IScriptWorld}.
+     *
+     * <pre>{@code
+     *    var fence = mappet.createBlockState("minecraft:fence", 0);
+     *
+     *    // minecraft:fence 0
+     *    c.send(fence.getBlockId() + " " + fence.getMeta());
+     * }</pre>
      */
     public IScriptBlockState createBlockState(String blockId, int meta);
 
     /**
-     * Create an empty NBT compound
+     * Create an empty NBT compound.
+     *
+     * <pre>{@code
+     *    var tag = mappet.createCompound();
+     *
+     *    tag.setString("id", "minecraft:diamond_hoe");
+     *    tag.setByte("Count", 1);
+     *
+     *    var item = mappet.createItemNBT(tag);
+     *
+     *    // {id:"minecraft:diamond_hoe",Count:1b,Damage:0s}
+     *    c.send(item.serialize());
+     * }</pre>
      */
     public default INBTCompound createCompound()
     {
@@ -40,7 +59,15 @@ public interface IScriptFactory
 
     /**
      * Parse an NBT compound data out of given string, if string NBT was
-     * invalid then an empty compound will be returned
+     * invalid then an empty compound will be returned.
+     *
+     * <pre>{@code
+     *    var tag = mappet.createCompound("{id:\"minecraft:diamond_hoe\",Count:1b}");
+     *    var item = mappet.createItemNBT(tag);
+     *
+     *    // {id:"minecraft:diamond_hoe",Count:1b,Damage:0s}
+     *    c.send(item.serialize());
+     * }</pre>
      */
     public INBTCompound createCompound(String nbt);
 
@@ -63,11 +90,33 @@ public interface IScriptFactory
      *     middle in the list you got a double, then the integer type <b>will get converted
      *     to double</b>!</li>
      * </ul>
+     *
+     * <pre>{@code
+     *    var tag = mappet.createCompoundFromJS({id:"minecraft:diamond_hoe",Count:1});
+     *    var item = mappet.createItemNBT(tag);
+     *
+     *    // {id:"minecraft:diamond_hoe",Count:1b,Damage:0s}
+     *    c.send(item.serialize());
+     * }</pre>
      */
     public INBTCompound createCompoundFromJS(Object jsObject);
 
     /**
-     * Create an empty NBT list
+     * Create an empty NBT list.
+     *
+     * <pre>{@code
+     *    var list = mappet.createList();
+     *
+     *    list.addInt(1);
+     *    list.addInt(2);
+     *    list.addInt(3);
+     *    list.addInt(4);
+     *    list.addInt(5);
+     *    list.addInt(6);
+     *
+     *    // [1,2,3,4,5,6]
+     *    c.send(list.stringify());
+     * }</pre>
      */
     public default INBTList createList()
     {
@@ -76,7 +125,14 @@ public interface IScriptFactory
 
     /**
      * Parse an NBT list data out of given string, if string NBT was
-     * invalid then an empty list will be returned
+     * invalid then an empty list will be returned.
+     *
+     * <pre>{@code
+     *    var list = mappet.createList("[1, 2, 3, 4, 5, 6]");
+     *
+     *    // [1,2,3,4,5,6]
+     *    c.send(list.stringify());
+     * }</pre>
      */
     public INBTList createList(String nbt);
 
@@ -85,11 +141,25 @@ public interface IScriptFactory
      *
      * <p><b>Read carefully the description</b> of {@link #createCompoundFromJS(Object)}
      * for information about JS to NBT object conversion limitations!</p>
+     *
+     * <pre>{@code
+     *    var list = mappet.createListFromJS([1, 2, 3, 4, 5, 6]);
+     *
+     *    // [1,2,3,4,5,6]
+     *    c.send(list.stringify());
+     * }</pre>
      */
     public INBTList createListFromJS(Object jsObject);
 
     /**
-     * Create an item stack out of string NBT
+     * Create an item stack out of string NBT.
+     *
+     * <pre>{@code
+     *    var item = mappet.createItemNBT("{id:\"minecraft:enchanted_book\",Count:1b,tag:{StoredEnchantments:[{lvl:4s,id:4s}]},Damage:0s}");
+     *
+     *    // It will output "minecraft:enchanted_book"
+     *    c.send(item.getItem().getId());
+     * }</pre>
      *
      * @return an item stack from the string NBT data, or an empty item stack
      *         if the data doesn't have a valid reference to an existing item
@@ -100,7 +170,15 @@ public interface IScriptFactory
     }
 
     /**
-     * Create an item stack out of string NBT
+     * Create an item stack out of string NBT.
+     *
+     * <pre>{@code
+     *    var tag = mappet.createCompound("{id:\"minecraft:diamond_hoe\",Count:1b}");
+     *    var item = mappet.createItemNBT(tag);
+     *
+     *    // {id:"minecraft:diamond_hoe",Count:1b,Damage:0s}
+     *    c.send(item.serialize());
+     * }</pre>
      *
      * @return an item stack from the NBT data, or an empty item stack if the
      *         data doesn't have a valid reference to an existing item
@@ -108,7 +186,14 @@ public interface IScriptFactory
     public IScriptItemStack createItem(INBTCompound compound);
 
     /**
-     * Create an item stack with item ID
+     * Create an item stack with item ID.
+     *
+     * <pre>{@code
+     *    var item = mappet.createItem("minecraft:diamond");
+     *
+     *    // {id:"minecraft:diamond",Count:1b,Damage:0s}
+     *    c.send(item.serialize());
+     * }</pre>
      *
      * @return an item stack with an item specified by ID, or an empty item
      *         stack if the block doesn't exist
@@ -121,6 +206,13 @@ public interface IScriptFactory
     /**
      * Create an item stack with item ID, count
      *
+     * <pre>{@code
+     *    var item = mappet.createItem("minecraft:diamond", 64);
+     *
+     *    // {id:"minecraft:diamond",Count:64b,Damage:0s}
+     *    c.send(item.serialize());
+     * }</pre>
+     *
      * @return an item stack with an item specified by ID, or an empty item
      *         stack if the block doesn't exist
      */
@@ -132,13 +224,27 @@ public interface IScriptFactory
     /**
      * Create an item stack with item ID, count and meta
      *
+     * <pre>{@code
+     *    var damaged_hoe = mappet.createItem("minecraft:diamond_hoe", 64, 5);
+     *
+     *    // {id:"minecraft:diamond_hoe",Count:64b,Damage:5s}
+     *    c.send(damaged_hoe.serialize());
+     * }</pre>
+     *
      * @return an item stack with an item specified by ID, or an empty item
      *         stack if the block doesn't exist
      */
     public IScriptItemStack createItem(String itemId, int count, int meta);
 
     /**
-     * Create an item stack with block ID
+     * Create an item stack with block ID.
+     *
+     * <pre>{@code
+     *    var stone = mappet.createBlockItem("minecraft:stone");
+     *
+     *    // {id:"minecraft:stone",Count:1b,Damage:0s}
+     *    c.send(stone.serialize());
+     * }</pre>
      *
      * @return an item stack with an item specified by ID, or an empty item
      *          stack if the block doesn't exist
@@ -149,7 +255,14 @@ public interface IScriptFactory
     }
 
     /**
-     * Create an item stack with block ID, count
+     * Create an item stack with block ID and count.
+     *
+     * <pre>{@code
+     *    var stone = mappet.createBlockItem("minecraft:stone", 64);
+     *
+     *    // {id:"minecraft:stone",Count:64b,Damage:0s}
+     *    c.send(stone.serialize());
+     * }</pre>
      *
      * @return an item stack with an item specified by ID, or an empty item
      *         stack if the block doesn't exist
@@ -160,7 +273,14 @@ public interface IScriptFactory
     }
 
     /**
-     * Create an item stack with block ID, count and meta
+     * Create an item stack with block ID, count and meta.
+     *
+     * <pre>{@code
+     *    var andesite = mappet.createBlockItem("minecraft:stone", 64, 5);
+     *
+     *    // {id:"minecraft:stone",Count:64b,Damage:5s}
+     *    c.send(andesite.serialize());
+     * }</pre>
      *
      * @return an item stack with block specified by ID, or an empty item
      *         stack if the block doesn't exist
@@ -168,12 +288,30 @@ public interface IScriptFactory
     public IScriptItemStack createBlockItem(String blockId, int count, int meta);
 
     /**
-     * Get Minecraft particle type by its name
+     * Get Minecraft particle type by its name.
+     *
+     * <p>You can find out all of the particle types by typing in <code>/particle</code>
+     * command, and looking up the completion of the first argument (i.e. press tab after
+     * typing in <code>/particle</code> and a space).</p>
+     *
+     * <pre>{@code
+     *    var explode = mappet.getParticleType("explode");
+     *    var pos = c.getSubject().getPosition();
+     *
+     *    c.getWorld().spawnParticles(explode, true, pos.x, pos.y + 1, pos.z, 50, 0.5, 0.5, 0.5, 0.1);
+     * }</pre>
      */
     public EnumParticleTypes getParticleType(String type);
 
     /**
-     * Create a morph out of string NBT
+     * Create a morph out of string NBT.
+     *
+     * <pre>{@code
+     *    var morph = mappet.createMorph("{Name:\"blockbuster.alex\"}");
+     *
+     *    // Assuming c.getSubject() is a player
+     *    c.getSubject().setMorph(morph);
+     * }</pre>
      */
     public default AbstractMorph createMorph(String nbt)
     {
@@ -181,18 +319,79 @@ public interface IScriptFactory
     }
 
     /**
-     * Create a morph out of NBT
+     * Create a morph out of NBT.
+     *
+     * <pre>{@code
+     *    var tag = mappet.createCompound();
+     *
+     *    tag.setString("Name", "blockbuster.alex");
+     *
+     *    var morph = mappet.createMorph(tag);
+     *
+     *    // Assuming c.getSubject() is a player
+     *    c.getSubject().setMorph(morph);
+     * }</pre>
      */
     public AbstractMorph createMorph(INBTCompound compound);
 
     /**
-     * Get a global arbitrary object
+     * Get a global arbitrary object.
+     *
+     * <pre>{@code
+     *    var number = mappet.get("number");
+     *
+     *    if (number === null || number === undefined)
+     *    {
+     *        number = 42;
+     *        mappet.set("number", number);
+     *    }
+     * }</pre>
      */
     public Object get(String key);
 
     /**
      * Set a global arbitrary object during server's existence (other scripts
-     * can access this data)
+     * can access this data too).
+     *
+     * <pre>{@code
+     *    var number = mappet.get("number");
+     *
+     *    if (number === null || number === undefined)
+     *    {
+     *        number = 42;
+     *        mappet.set("number", number);
+     *    }
+     * }</pre>
      */
     public void set(String key, Object object);
+
+    /**
+     * Dump the simple representation of given non-JS object into the string (to see
+     * what fields and methods are available for use).
+     *
+     * <pre>{@code
+     *    var morph = mappet.createMorph("{Name:\"blockbuster.alex\"}");
+     *
+     *    c.send(mapppet.dump(morph));
+     * }</pre>
+     */
+    public default String dump(Object object)
+    {
+        return this.dump(object, true);
+    }
+
+    /**
+     * Dump given non-JS object into the string (to see what fields and methods are
+     * available for use).
+     *
+     * <pre>{@code
+     *    var morph = mappet.createMorph("{Name:\"blockbuster.alex\"}");
+     *
+     *    c.send(mapppet.dump(morph, true));
+     * }</pre>
+     *
+     * @param simple Whether you want to see simple or full information about
+     *               the object.
+     */
+    public String dump(Object object, boolean simple);
 }

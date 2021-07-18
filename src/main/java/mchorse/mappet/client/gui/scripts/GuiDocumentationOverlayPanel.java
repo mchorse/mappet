@@ -12,6 +12,7 @@ import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
+import net.minecraft.launchwrapper.Launch;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -22,18 +23,19 @@ import java.util.function.Consumer;
 
 public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
 {
+    private static Docs docs;
+    private static DocClass currentClass;
+    private static DocEntry entry;
+
     public GuiDocEntryList list;
     public GuiScrollElement documentation;
 
     private Map<String, DocClass> data = new HashMap<String, DocClass>();
     private DocPackage topPackage;
 
-    private DocClass currentClass;
-    private DocEntry entry;
-
     public GuiDocumentationOverlayPanel(Minecraft mc)
     {
-        super(mc, IKey.str("Scripting documentation"));
+        super(mc, IKey.lang("mappet.gui.scripts.documentation.title"));
 
         this.list = new GuiDocEntryList(mc, (l) -> this.pick(l.get(0)));
         this.documentation = new GuiScrollElement(mc);
@@ -46,23 +48,28 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
         this.parseDocumentation();
     }
 
-    private void pick(DocEntry entry)
+    private void pick(DocEntry entryIn)
     {
-        if (entry instanceof DocPackage)
+        if (entry == entryIn)
         {
-            this.currentClass = null;
-            this.fill(entry);
+            return;
+        }
+
+        if (entryIn instanceof DocPackage)
+        {
+            currentClass = null;
+            this.fill(entryIn);
             this.fillList();
         }
-        else if (entry instanceof DocClass)
+        else if (entryIn instanceof DocClass)
         {
-            this.currentClass = (DocClass) entry;
-            this.fill(entry);
+            currentClass = (DocClass) entryIn;
+            this.fill(entryIn);
             this.fillList();
         }
         else
         {
-            this.fill(entry);
+            this.fill(entryIn);
         }
     }
 
@@ -70,14 +77,14 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
     {
         this.list.clear();
 
-        if (this.entry == this.topPackage)
+        if (entry == this.topPackage)
         {
             for (DocClass docClass : this.data.values())
             {
                 this.list.add(docClass);
             }
         }
-        else if (this.currentClass != null)
+        else if (currentClass != null)
         {
             this.list.add(this.topPackage);
 
@@ -90,36 +97,37 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
         this.list.sort();
     }
 
-    private void fill(DocEntry entry)
+    private void fill(DocEntry entryIn)
     {
-        if (this.entry == entry)
-        {
-            return;
-        }
-
-        this.entry = entry;
+        entry = entryIn;
 
         this.documentation.scroll.scrollTo(0);
         this.documentation.removeAll();
-        this.entry.fillIn(this.mc, this.documentation);
+        entry.fillIn(this.mc, this.documentation);
 
         this.resize();
     }
 
     private void parseDocumentation()
     {
-        InputStream docs = this.getClass().getResourceAsStream("/assets/mappet/docs.json");
-        Gson gson = new GsonBuilder().create();
-        Scanner scanner = new Scanner(docs, "UTF-8");
+        /* Update the docs data only if it's in dev environment */
+        final boolean dev = (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 
-        Docs data = gson.fromJson(scanner.useDelimiter("\\A").next(), Docs.class);
+        if (dev || docs == null)
+        {
+            InputStream stream = this.getClass().getResourceAsStream("/assets/mappet/docs.json");
+            Gson gson = new GsonBuilder().create();
+            Scanner scanner = new Scanner(stream, "UTF-8");
 
-        for (DocClass docClass : data.classes)
+            docs = gson.fromJson(scanner.useDelimiter("\\A").next(), Docs.class);
+        }
+
+        for (DocClass docClass : docs.classes)
         {
             this.data.put(docClass.getName(), docClass);
         }
 
-        for (DocPackage docPackage : data.packages)
+        for (DocPackage docPackage : docs.packages)
         {
             if (!docPackage.doc.isEmpty())
             {
@@ -129,8 +137,19 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
             }
         }
 
-        this.fill(this.topPackage);
+        if (entry == null)
+        {
+            currentClass = null;
+            entry = this.topPackage;
+        }
+
+        this.fill(entry);
         this.fillList();
+
+        if (entry instanceof DocMethod)
+        {
+            this.list.setCurrentScroll(entry);
+        }
     }
 
     public static class GuiDocEntryList extends GuiListElement<DocEntry>
@@ -140,6 +159,7 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
             super(mc, callback);
 
             this.scroll.scrollItemSize = 16;
+            this.scroll.scrollSpeed *= 2;
         }
 
         @Override

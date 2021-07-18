@@ -28,6 +28,11 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.TypeVariable;
+
 public class ScriptFactory implements IScriptFactory
 {
     @Override
@@ -207,5 +212,118 @@ public class ScriptFactory implements IScriptFactory
     public void set(String key, Object object)
     {
         Mappet.scripts.objects.put(key, object);
+    }
+
+    @Override
+    public String dump(Object object, boolean simple)
+    {
+        if (object instanceof ScriptObjectMirror)
+        {
+            return object.toString();
+        }
+
+        Class<?> clazz = object.getClass();
+        StringBuilder output = new StringBuilder(simple ? clazz.getSimpleName() : clazz.getTypeName());
+
+        output.append(" {\n");
+
+        for (Field field : clazz.getDeclaredFields())
+        {
+            if (Modifier.isStatic(field.getModifiers()))
+            {
+                continue;
+            }
+
+            output.append("    ");
+
+            if (!simple)
+            {
+                output.append(this.getModifier(field.getModifiers()));
+            }
+
+            output.append(field.getName());
+
+            if (!simple)
+            {
+                output.append(" (");
+                output.append(simple ? field.getType().getSimpleName() : field.getType().getTypeName());
+                output.append(")");
+            }
+
+            String value = "";
+
+            try
+            {
+                field.setAccessible(true);
+                Object o = field.get(object);
+
+                value = o == null ? "null" : o.toString();
+            }
+            catch (Exception e)
+            {}
+
+            output.append(": ").append(value).append("\n");
+        }
+
+        output.append("\n");
+
+        for (Method method : clazz.getDeclaredMethods())
+        {
+            if (Modifier.isStatic(method.getModifiers()))
+            {
+                continue;
+            }
+
+            output.append("    ");
+
+            if (!simple)
+            {
+                output.append(this.getModifier(method.getModifiers()));
+            }
+
+            output.append(simple ? method.getReturnType().getSimpleName() : method.getReturnType().getTypeName());
+            output.append(" ");
+            output.append(method.getName()).append("(");
+
+            int size = method.getParameterCount();
+
+            for (int i = 0; i < size; i++)
+            {
+                Class<?> arg = method.getParameterTypes()[i];
+
+                output.append(simple ? arg.getSimpleName() : arg.getTypeName());
+
+                if (i < size - 1)
+                {
+                    output.append(", ");
+                }
+            }
+
+            output.append(")").append("\n");
+        }
+
+        output.append("}");
+
+        return output.toString();
+    }
+
+    private String getModifier(int m)
+    {
+        String modifier = Modifier.isFinal(m) ? "final " : "";
+
+        if (Modifier.isPublic(m))
+        {
+            modifier += "public ";
+        }
+        else if (Modifier.isProtected(m))
+        {
+            modifier += "protected ";
+        }
+        else if (Modifier.isPrivate(m))
+        {
+            modifier += "private ";
+        }
+
+        return modifier;
     }
 }
