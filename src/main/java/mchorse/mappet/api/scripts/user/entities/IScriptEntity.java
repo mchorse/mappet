@@ -17,7 +17,25 @@ import net.minecraft.entity.Entity;
  * <p>This interface represents an entity, it could be a player, NPC,
  * or any other entity. <b>IMPORTANT</b>: any method that marks an argument or return
  * as of {@link IScriptEntity} type can return also {@link IScriptPlayer} if it's an
- * actual player!</p>
+ * actual player, or {@link IScriptNpc} if it's a Mappet NPC!</p>
+ *
+ * <pre>{@code
+ *    function main(c)
+ *    {
+ *        if (c.getSubject().isPlayer())
+ *        {
+ *            // Do something with the player...
+ *        }
+ *        if (c.getSubject().isNpc())
+ *        {
+ *            // Do something with the NPC...
+ *        }
+ *        else
+ *        {
+ *            // Do something with the entity...
+ *        }
+ *    }
+ * }</pre>
  */
 public interface IScriptEntity
 {
@@ -30,166 +48,288 @@ public interface IScriptEntity
     /* Entity properties */
 
     /**
-     * Get entity's position
+     * Get entity's position.
+     *
+     * <pre>{@code
+     *    var pos = c.getSubject().getPosition();
+     *
+     *    c.send(c.getSubject().getName() + "'s position is (" + pos.x + ", " + pos.y + ", " + pos.z + ")");
+     * }</pre>
      */
     public ScriptVector getPosition();
 
     /**
-     * Set entity's position (teleport)
+     * Set entity's position (teleport).
+     *
+     * <pre>{@code
+     *    c.getSubject().setPosition(800, 8, -135);
+     * }</pre>
      */
     public void setPosition(double x, double y, double z);
 
     /**
-     * Get entity's motion
+     * Get entity's motion.
+     *
+     * <pre>{@code
+     *    var motion = c.getSubject().getMotion();
+     *
+     *    c.send(c.getSubject().getName() + "'s motion is (" + motion.x + ", " + motion.y + ", " + motion.z + ")");
+     * }</pre>
      */
     public ScriptVector getMotion();
 
     /**
-     * Set entity's motion
+     * Set entity's motion.
+     *
+     * <pre>{@code
+     *    var motion = c.getSubject().getMotion();
+     *
+     *    if (motion.y < 0)
+     *    {
+     *        // Reverse the falling motion into a jumping up motion
+     *        c.getSubject().setMotion(motion.x, -motion.y, motion.z);
+     *    }
+     * }</pre>
      */
     public void setMotion(double x, double y, double z);
 
     /**
      * Get entity's rotation (x is pitch, y is yaw, and z is yaw head, if entity
-     * is living base)
+     * is living base).
+     *
+     * <pre>{@code
+     *    var rotations = c.getSubject().getRotations();
+     *    var pitch = rotations.x;
+     *    var yaw = rotations.y;
+     *    var yaw_head = rotations.z;
+     *
+     *    c.send(c.getSubject().getName() + "'s rotations are (" + pitch + ", " + yaw + ", " + yaw_head + ")");
+     * }</pre>
      */
     public ScriptVector getRotations();
 
     /**
-     * Set entity's rotation
+     * Set entity's rotation.
+     *
+     * <pre>{@code
+     *    // Make entity look at west
+     *    c.getSubject().setRotations(0, 0, 0);
+     * }</pre>
      */
     public void setRotations(float pitch, float yaw, float yawHead);
 
     /**
-     * Get entity's pitch (vertical rotation)
+     * Get entity's pitch (vertical rotation).
      */
     public float getPitch();
 
     /**
-     * Get entity's yaw (horizontal rotation)
+     * Get entity's yaw (horizontal rotation).
      */
     public float getYaw();
 
     /**
-     * Get entity's head yaw
+     * Get entity's head yaw.
      */
     public float getYawHead();
 
     /**
-     * Get look vector
+     * Get a vector in which direction entity looks.
+     *
+     * <pre>{@code
+     *    var look = c.getSubject().getLook();
+     *
+     *    c.getSubject().setMotion(look.x * 0.5, look.y * 0.5, look.z * 0.5);
+     * }</pre>
      */
     public ScriptVector getLook();
 
     /**
-     * Get health points of this entity (20 is the max default for players)
+     * Get health points of this entity (20 is the max default for players).
+     *
+     * <pre>{@code
+     *    var subject = c.getSubject();
+     *
+     *    if (subject.getHp() < 10)
+     *    {
+     *        subject.send("Man, you need to replenish your health!");
+     *    }
+     * }</pre>
      */
     public float getHp();
 
     /**
      * Set entity's health points. Given value that is more than max HP will get limited to max HP.
+     *
+     * <pre>{@code
+     *    // If entity's health goes below 5 hearts, restore to max
+     *    var subject = c.getSubject();
+     *
+     *    if (subject.getHp() < 10)
+     *    {
+     *        subject.setHp(subject.getMaxHp());
+     *    }
+     * }</pre>
      */
     public void setHp(float hp);
 
     /**
-     * Get maximum health points this entity can have
+     * Get maximum health points this entity can have.
+     *
+     * <pre>{@code
+     *    var subject = c.getSubject();
+     *
+     *    subject.send(subject.getName() + " can have up to " + subject.getMaxHp() + " HP!);
+     * }</pre>
      */
     public float getMaxHp();
 
     /**
-     * Is this entity is sneaking
+     * Is this entity is sneaking.
+     *
+     * <pre>{@code
+     *    var subject = c.getSubject();
+     *
+     *    if (subject.isSneaking())
+     *    {
+     *        subject.send("You completed Simon's task!");
+     *    }
+     * }</pre>
      */
     public boolean isSneaking();
 
     /**
-     * Is this entity is sprinting
+     * Is this entity is sprinting.
+     *
+     * <pre>{@code
+     *    var subject = c.getSubject();
+     *
+     *    if (subject.isSprinting())
+     *    {
+     *        subject.send("This way, you'll run away way faster from zombies!");
+     *    }
+     * }</pre>
      */
     public boolean isSprinting();
 
     /* Ray tracing */
 
     /**
-     * Ray trace from entity's looking direction (including any entity intersection)
+     * Ray trace from entity's looking direction (including any entity intersection).
+     * Check {@link IScriptRayTrace} for an example.
      */
     public IScriptRayTrace rayTrace(double maxDistance);
 
     /**
-     * Ray trace from entity's looking direction (excluding entities)
+     * Ray trace from entity's looking direction (excluding entities).
+     * Check {@link IScriptRayTrace} for an example.
      */
     public IScriptRayTrace rayTraceBlock(double maxDistance);
 
     /* Items */
 
     /**
-     * Get item held in main hand
+     * Get item held in main hand.
+     *
+     * <pre>{@code
+     *    var subject = c.getSubject();
+     *    var item = subject.getMainItem();
+     *
+     *    // Lightning bolt admin stick idk I didn't play on servers
+     *    if (item.getItem().getId() === "minecraft:stick")
+     *    {
+     *        c.executeCommand("/summon lightning_bolt ~ ~ ~");
+     *    }
+     * }</pre>
      */
     public IScriptItemStack getMainItem();
 
     /**
-     * Set item held in main hand
+     * Set item held in main hand.
+     *
+     * <pre>{@code
+     *    // We did a little bit of trolling
+     *    c.getSubject().setMainItem(mappet.createItem("minecraft:diamond_hoe"));
+     * }</pre>
      */
     public void setMainItem(IScriptItemStack stack);
 
     /**
-     * Get item held in off hand
+     * Get item held in off hand.
+     *
+     * <pre>{@code
+     *    var subject = c.getSubject();
+     *    var item = subject.getOffItem();
+     *
+     *    // Lightning bolt admin stick (but in off hand) idk I didn't play on servers
+     *    if (item.getItem().getId() === "minecraft:stick")
+     *    {
+     *        c.executeCommand("/summon lightning_bolt ~ ~ ~");
+     *    }
+     * }</pre>
      */
     public IScriptItemStack getOffItem();
 
     /**
-     * Set item held in off hand
+     * Set item held in off hand.
+     *
+     * <pre>{@code
+     *    c.getSubject().setMainItem(mappet.createItem("minecraft:shield"));
+     * }</pre>
      */
     public void setOffItem(IScriptItemStack stack);
 
     /* Entity meta */
 
     /**
-     * Set entity's speed
+     * Set entity's speed.
      */
     public void setSpeed(float speed);
 
     /**
-     * Get this entity's attack target
+     * Get this entity's attack target.
      */
     public IScriptEntity getTarget();
 
     /**
-     * Set this entity's attack target to given entity
+     * Set this entity's attack target to given entity.
      */
     public void setTarget(IScriptEntity entity);
 
     /**
-     * Check whether entity's AI is enabled
+     * Check whether entity's AI is enabled.
      */
     public boolean isAIEnabled();
 
     /**
-     * Set entity's AI to be enabled or disabled (if it has it)
+     * Set entity's AI to be enabled or disabled (if it has it).
      */
     public void setAIEnabled(boolean enabled);
 
     /**
      * Get unique ID of this entity, which can be used, if needed, in
-     * commands as a target selector
+     * commands as a target selector.
      */
     public String getUniqueId();
 
     /**
      * Get entity's resource location ID, like "minecraft:pig" or
-     * "minecraft:zombie"
+     * <code>minecraft:zombie</code>.
      */
     public String getEntityId();
 
     /**
-     * Get how many ticks did this entity existed
+     * Get how many ticks did this entity existed.
      */
     public int getTicks();
 
     /**
-     * Get entity name
+     * Get entity name.
      */
     public String getName();
 
     /**
-     * Get entity's full (copy of its) NBT data
+     * Get entity's full (copy of its) NBT data.
      */
     public INBTCompound getFullData();
 
@@ -210,55 +350,61 @@ public interface IScriptEntity
     public INBTCompound getEntityData();
 
     /**
-     * Check whether this entity is a player
+     * Check whether this entity is a player.
      */
     public boolean isPlayer();
 
     /**
-     * Check whether this entity is an NPC
+     * Check whether this entity is an NPC.
      */
     public boolean isNpc();
 
     /**
-     * Check whether this entity is living base
+     * Check whether this entity is living base.
      */
     public boolean isLivingBase();
 
     /**
-     * Check whether this entity is same as given entity
+     * Check whether this entity is same as given entity.
      */
     public boolean isSame(IScriptEntity entity);
 
     /**
-     * Inflict some damage on this entity (use {@link #kill()} to kill the entity though)
+     * Inflict some damage on this entity (use {@link #kill()} to kill the entity though).
      */
     public void damage(float health);
 
     /**
-     * Remove this entity from the server without any dead effects
+     * Remove this entity from the server without any dead effects (essentially despawn).
      */
     public void remove();
 
     /**
-     * Kill this entity from the server by inflicting lots of damage (similar to /kill command)
+     * Kill this entity from the server by inflicting lots of damage
+     * (similar to <code>/kill</code> command).
      */
     public void kill();
 
     /* Mappet stuff */
 
     /**
-     * Get entity's states (if it has some, only players and NPCs have states)
+     * Get entity's states (if it has some, only players and NPCs have states).
      *
-     * @return entity's states, or null if this entity doesn't have states
+     * @return entity's states, or null if this entity doesn't have states.
      */
     public IMappetStates getStates();
 
     /**
-     * Set entity's morph (works with player and NPCs). <b>ProTip</b>: use
-     * {@link IScriptFactory#createMorph(String)} to create a morph from
-     * NBT.
+     * Set entity's morph (works with player and NPCs).
      *
-     * @return if entity's morph was changed successfully
+     * <pre>{@code
+     *    var morph = mappet.createMorph("{Name:\"blockbuster.alex\"}");
+     *
+     *    // Assuming c.getSubject() is a player or an NPC
+     *    c.getSubject().setMorph(morph);
+     * }</pre>
+     *
+     * @return if entity's morph was changed successfully.
      */
     public boolean setMorph(AbstractMorph morph);
 }
