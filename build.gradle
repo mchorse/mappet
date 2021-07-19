@@ -18,7 +18,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 
 if (project.hasProperty("dev")) 
 {
-    version += "-dev" + dev
+    version += "-" + dev
 }
 
 group = "mchorse.mappet"
