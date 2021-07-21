@@ -17,7 +17,9 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * States allow to store values of the world that can be
@@ -97,6 +99,30 @@ public class States implements INBTSerializable<NBTTagCompound>
         this.post(id, previous, null);
 
         return previous != null;
+    }
+
+    public boolean maskedReset(String id)
+    {
+        if (id.contains("*"))
+        {
+            id = id.replaceAll("\\*", ".*");
+
+            Pattern pattern = Pattern.compile("^" + id + "$");
+            int size = this.values.size();
+
+            this.values.keySet().removeIf(key -> pattern.matcher(key).matches());
+
+            if (this.values.size() != size)
+            {
+                this.post(null, null, null);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        return this.reset(id);
     }
 
     public void clear()

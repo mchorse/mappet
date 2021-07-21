@@ -55,7 +55,7 @@ mappet.commands.mp.help=Main Mappet command that provides subcommands for workin
 
 mappet.commands.mp.state.help=State management subcommand.\n\n§7<target>§r argument is used to determine where to edit the state. You can either specify player's name to edit player's states or §7~§r for global state.
 mappet.commands.mp.state.add=This command adds §7<value>§r to state by §7<id>§r key. If §7<id>§r state doesn't exist or was a string, §7<value>§r will be added to 0.
-mappet.commands.mp.state.clear=This command removes state by §7[id]§r key. If §7[id]§r was omitted, then all values will be erased.
+mappet.commands.mp.state.clear=This command removes state by §7[id]§r key. If §7[id]§r was omitted, then all values will be erased. You can use §7*§r as a wildcard in §7[id]§r to remove multiple keys.
 mappet.commands.mp.state.if=This command evaluates §7<expression>§r against value §7<id>§r state, and if resulted §7<expression>§r is a non-zero value it does nothing, but if if outputs zero then the command will error.\n\nThis is useful for command blocks that can stop on errors.
 mappet.commands.mp.state.print=This command prints out all the values §7<target>§r state has.
 mappet.commands.mp.state.set=This command assigns §7<value>§r (it can be a number or an arbitrary string) to §7<id>§r key.
