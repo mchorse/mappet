@@ -2,7 +2,10 @@ package mchorse.mappet.client.gui.states;
 
 import mchorse.mappet.api.states.States;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 
 import java.util.Comparator;
 
@@ -69,5 +72,19 @@ public class GuiStatesEditor extends GuiScrollElement
         this.sortElements();
 
         this.getParentContainer().resize();
+    }
+
+    @Override
+    public void draw(GuiContext context)
+    {
+        super.draw(context);
+
+        if (this.states != null && this.states.values.isEmpty())
+        {
+            int w = this.area.w / 2;
+            int x = this.area.mx(w);
+
+            GuiDraw.drawMultiText(this.font, I18n.format("mappet.gui.states.empty"), x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
+        }
     }
 }

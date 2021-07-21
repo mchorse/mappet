@@ -181,6 +181,7 @@ mappet.gui.panels.context.paste=Paste...
 mappet.gui.panels.keys.category=Mappet panel keybinds
 mappet.gui.panels.keys.toggle_sidebar=Toggle sidebar
 
+mappet.gui.settings.title=Global triggers
 mappet.gui.settings.hotkeys=Edit trigger hotkeys...
 mappet.gui.settings.triggers.chat=On chat message
 mappet.gui.settings.triggers.break_block=On block break
@@ -489,6 +490,7 @@ mappet.gui.scripts.overlay.pick_morph=Pick a morph...
 mappet.gui.states.server=Server states
 mappet.gui.states.player=%s's states
 mappet.gui.states.pick=Pick states target
+mappet.gui.states.empty=There are no states to edit. Create one by pressing "+" button...
 
 # GUI enums
 

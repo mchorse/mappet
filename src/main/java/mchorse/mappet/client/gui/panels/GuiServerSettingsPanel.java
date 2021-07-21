@@ -19,13 +19,16 @@ import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiLabel;
 import mchorse.mclib.client.gui.mclib.GuiDashboardPanel;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.ScrollDirection;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.mclib.utils.ColorUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -55,8 +58,8 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
         this.states.flex().relative(this).wh(0.5F, 1F);
 
         this.statesEditor = new GuiStatesEditor(mc);
-        this.statesEditor.flex().relative(this.states).y(20).w(1F).h(1F, -20);
-        this.statesTitle = Elements.label(IKey.str("")).anchor(0, 0.5F);
+        this.statesEditor.flex().relative(this.states).y(25).w(1F).h(1F, -25);
+        this.statesTitle = Elements.label(IKey.str("")).anchor(0, 0.5F).background();
         this.statesTitle.flex().relative(this.states).xy(10, 10).wh(120, 20);
         this.statesSwitch = new GuiIconElement(mc, Icons.SEARCH, this::openSearch);
         this.statesSwitch.flex().relative(this.states).x(1F, -50).y(10);
@@ -64,12 +67,16 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
         this.statesAdd.flex().relative(this.states).x(1F, -30).y(10);
 
         this.editor = new GuiScrollElement(mc, ScrollDirection.HORIZONTAL);
-        this.editor.flex().relative(this).x(0.5F).wh(0.5F, 1F).column(5).scroll().width(180).padding(15);
+        this.editor.flex().relative(this).x(0.5F).y(25).w(0.5F).h(1F, -25).column(5).scroll().width(180).padding(10);
 
         this.hotkeys = new GuiButtonElement(mc, IKey.lang("mappet.gui.settings.hotkeys"), (b) -> this.openHotkeysEditor());
 
+        GuiLabel triggers = Elements.label(IKey.lang("mappet.gui.settings.title")).anchor(0, 0.5F).background();
+
+        triggers.flex().relative(this).x(0.5F, 10).y(10).wh(120, 20);
+
         this.states.add(this.statesTitle, this.statesSwitch, this.statesAdd, this.statesEditor);
-        this.add(this.states, this.editor);
+        this.add(this.states, triggers, this.editor);
     }
 
     private void openSearch(GuiIconElement element)
@@ -178,5 +185,15 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
 
         this.save();
         this.statesEditor.set(null);
+    }
+
+    @Override
+    public void draw(GuiContext context)
+    {
+        super.draw(context);
+
+        int x = this.editor.area.x;
+
+        Gui.drawRect(x - 1, this.area.y, x + 1, this.area.ey(), ColorUtils.HALF_BLACK);
     }
 }
