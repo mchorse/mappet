@@ -21,15 +21,11 @@ import org.lwjgl.opengl.GL11;
 import javax.vecmath.Matrix3d;
 import javax.vecmath.Matrix3f;
 import javax.vecmath.Vector3d;
-import java.util.ArrayList;
-import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class TileRegionRenderer extends TileBaseBlockRenderer<TileRegion>
 {
     public static final float SEGMENTS = 16;
-    public static List<TileRegion> regions = new ArrayList<TileRegion>();
-    public static boolean cache;
 
     private static final Color SELECTED = new Color(0, 0.5F, 1F, 0.5F);
     private static final Color NOT_SELECTED = new Color(1F, 1F, 1F, 1F);
@@ -90,28 +86,6 @@ public class TileRegionRenderer extends TileBaseBlockRenderer<TileRegion>
         this.selected = null;
 
         return super.canRender(mc, te);
-    }
-
-    @Override
-    public void render(TileRegion te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
-    {
-        super.render(te, x, y, z, partialTicks, destroyStage, alpha);
-
-        if (cache)
-        {
-            if (regions.contains(te))
-            {
-                cache = false;
-            }
-            else
-            {
-                regions.add(te);
-            }
-        }
-        else
-        {
-            regions.clear();
-        }
     }
 
     @Override

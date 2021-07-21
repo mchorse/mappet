@@ -6,6 +6,7 @@ import mchorse.mappet.client.renders.tile.TileRegionRenderer;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.blocks.PacketEditRegion;
 import mchorse.mappet.tile.TileRegion;
+import mchorse.mappet.utils.ReflectionUtils;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
@@ -20,9 +21,11 @@ import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import org.lwjgl.input.Keyboard;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -35,7 +38,6 @@ public class GuiRegionPanel extends GuiDashboardPanel<GuiMappetDashboard>
     public GuiScrollElement editor;
     public GuiRegionEditor region;
 
-    protected boolean update;
     protected TileRegion tile;
 
     public GuiRegionPanel(Minecraft mc, GuiMappetDashboard dashboard)
@@ -117,10 +119,23 @@ public class GuiRegionPanel extends GuiDashboardPanel<GuiMappetDashboard>
         }
     }
 
-    public void fillTiles(List<TileRegion> regions)
+    public void fillTiles(Collection<TileEntity> tiles)
     {
         this.tiles.clear();
-        this.tiles.add(regions);
+
+        if (tiles == null)
+        {
+            return;
+        }
+
+        for (TileEntity tile : tiles)
+        {
+            if (tile instanceof TileRegion)
+            {
+                this.tiles.add((TileRegion) tile);
+            }
+        }
+
         this.tiles.setCurrentScroll(this.tile);
     }
 
@@ -135,9 +150,7 @@ public class GuiRegionPanel extends GuiDashboardPanel<GuiMappetDashboard>
     {
         super.open();
 
-        this.update = true;
-        this.tiles.clear();
-        TileRegionRenderer.regions.clear();
+        this.fillTiles(ReflectionUtils.getGlobalTiles(this.mc.renderGlobal));
     }
 
     @Override
@@ -149,11 +162,6 @@ public class GuiRegionPanel extends GuiDashboardPanel<GuiMappetDashboard>
         {
             this.fill(null);
         }
-
-        if (this.update)
-        {
-            TileRegionRenderer.cache = true;
-        }
     }
 
     @Override
@@ -161,7 +169,7 @@ public class GuiRegionPanel extends GuiDashboardPanel<GuiMappetDashboard>
     {
         super.close();
 
-        if (!this.update && this.tile != null)
+        if (this.tile != null)
         {
             Dispatcher.sendToServer(new PacketEditRegion(this.tile.getPos(), this.tile.region.serializeNBT()));
         }
@@ -170,12 +178,6 @@ public class GuiRegionPanel extends GuiDashboardPanel<GuiMappetDashboard>
     @Override
     public void draw(GuiContext context)
     {
-        if (this.update && !TileRegionRenderer.regions.isEmpty())
-        {
-            this.fillTiles(TileRegionRenderer.regions);
-            this.update = false;
-        }
-
         if (this.editor.isVisible())
         {
             Gui.drawRect(this.editor.area.x, this.editor.area.y, this.editor.area.mx(), this.editor.area.ey(), 0xbb000000);
