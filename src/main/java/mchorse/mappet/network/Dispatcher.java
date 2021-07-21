@@ -7,6 +7,7 @@ import mchorse.mappet.network.client.blocks.ClientHandlerEditTrigger;
 import mchorse.mappet.network.client.content.ClientHandlerContentData;
 import mchorse.mappet.network.client.content.ClientHandlerContentNames;
 import mchorse.mappet.network.client.content.ClientHandlerServerSettings;
+import mchorse.mappet.network.client.content.ClientHandlerStates;
 import mchorse.mappet.network.client.crafting.ClientHandlerCraft;
 import mchorse.mappet.network.client.crafting.ClientHandlerCraftingTable;
 import mchorse.mappet.network.client.dialogue.ClientHandlerDialogueFragment;
@@ -28,7 +29,9 @@ import mchorse.mappet.network.common.content.PacketContentNames;
 import mchorse.mappet.network.common.content.PacketContentRequestData;
 import mchorse.mappet.network.common.content.PacketContentRequestNames;
 import mchorse.mappet.network.common.content.PacketRequestServerSettings;
+import mchorse.mappet.network.common.content.PacketRequestStates;
 import mchorse.mappet.network.common.content.PacketServerSettings;
+import mchorse.mappet.network.common.content.PacketStates;
 import mchorse.mappet.network.common.crafting.PacketCraft;
 import mchorse.mappet.network.common.crafting.PacketCraftingTable;
 import mchorse.mappet.network.common.dialogue.PacketDialogueFragment;
@@ -55,7 +58,9 @@ import mchorse.mappet.network.server.content.ServerHandlerContentExit;
 import mchorse.mappet.network.server.content.ServerHandlerContentRequestData;
 import mchorse.mappet.network.server.content.ServerHandlerContentRequestNames;
 import mchorse.mappet.network.server.content.ServerHandlerRequestServerSettings;
+import mchorse.mappet.network.server.content.ServerHandlerRequestStates;
 import mchorse.mappet.network.server.content.ServerHandlerServerSettings;
+import mchorse.mappet.network.server.content.ServerHandlerStates;
 import mchorse.mappet.network.server.crafting.ServerHandlerCraft;
 import mchorse.mappet.network.server.crafting.ServerHandlerCraftingTable;
 import mchorse.mappet.network.server.dialogue.ServerHandlerPickReply;
@@ -117,6 +122,9 @@ public class Dispatcher
             this.register(PacketServerSettings.class, ClientHandlerServerSettings.class, Side.CLIENT);
             this.register(PacketServerSettings.class, ServerHandlerServerSettings.class, Side.SERVER);
             this.register(PacketRequestServerSettings.class, ServerHandlerRequestServerSettings.class, Side.SERVER);
+            this.register(PacketStates.class, ClientHandlerStates.class, Side.CLIENT);
+            this.register(PacketStates.class, ServerHandlerStates.class, Side.SERVER);
+            this.register(PacketRequestStates.class, ServerHandlerRequestStates.class, Side.SERVER);
 
             /* NPCs */
             this.register(PacketNpcMorph.class, ClientHandlerNpcMorph.class, Side.CLIENT);
