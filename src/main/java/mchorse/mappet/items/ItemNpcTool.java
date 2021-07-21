@@ -7,6 +7,8 @@ import mchorse.mappet.entities.EntityNpc;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.npc.PacketNpcList;
 import mchorse.mappet.network.common.npc.PacketNpcState;
+import mchorse.metamorph.api.MorphManager;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
@@ -123,6 +125,16 @@ public class ItemNpcTool extends Item
             {
                 entity.setNpc(npc, state);
             }
+        }
+        else
+        {
+            tag = new NBTTagCompound();
+            tag.setString("Name", "blockbuster.fred");
+
+            AbstractMorph morph = MorphManager.INSTANCE.morphFromNBT(tag);
+
+            entity.getState().morph = morph;
+            entity.setMorph(morph);
         }
     }
 
