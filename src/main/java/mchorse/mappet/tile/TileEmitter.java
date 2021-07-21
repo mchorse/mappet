@@ -17,6 +17,7 @@ public class TileEmitter extends TileEntity implements ITickable
     private Checker checker = new Checker();
     private float radius;
     private int update = 5;
+    private boolean disable;
 
     private int tick = 0;
 
@@ -38,11 +39,17 @@ public class TileEmitter extends TileEntity implements ITickable
         return this.update;
     }
 
+    public boolean getDisable()
+    {
+        return this.disable;
+    }
+
     public void setExpression(PacketEditEmitter message)
     {
         this.checker.deserializeNBT(message.checker);
         this.radius = message.radius;
         this.update = Math.max(message.update, 1);
+        this.disable = message.disable;
         this.updateExpression();
         this.markDirty();
     }
@@ -88,12 +95,23 @@ public class TileEmitter extends TileEntity implements ITickable
 
             if (!playerIn)
             {
+                if (this.disable)
+                {
+                    this.updateState(false);
+                }
+
                 return;
             }
         }
 
-        IBlockState state = this.world.getBlockState(this.pos);
         boolean result = this.checker.check(new DataContext(this.world, this.getPos()));
+
+        this.updateState(result);
+    }
+
+    private void updateState(boolean result)
+    {
+        IBlockState state = this.world.getBlockState(this.pos);
 
         if (state.getValue(BlockEmitter.POWERED) != result)
         {
@@ -114,6 +132,11 @@ public class TileEmitter extends TileEntity implements ITickable
         if (this.update > 0)
         {
             tag.setInteger("Update", this.update);
+        }
+
+        if (this.disable)
+        {
+            tag.setBoolean("Disable", this.disable);
         }
 
         return super.writeToNBT(tag);
@@ -137,6 +160,11 @@ public class TileEmitter extends TileEntity implements ITickable
         if (tag.hasKey("Update"))
         {
             this.update = tag.getInteger("Update");
+        }
+
+        if (tag.hasKey("Disable"))
+        {
+            this.disable = tag.getBoolean("Disable");
         }
     }
 }

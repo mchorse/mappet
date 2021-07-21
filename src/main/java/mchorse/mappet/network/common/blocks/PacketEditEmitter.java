@@ -14,21 +14,23 @@ public class PacketEditEmitter implements IMessage
     public NBTTagCompound checker;
     public float radius;
     public int update;
+    public boolean disable;
 
     public PacketEditEmitter()
     {}
 
     public PacketEditEmitter(TileEmitter tile)
     {
-        this(tile.getPos(), tile.getChecker().toNBT(), tile.getRadius(), tile.getUpdate());
+        this(tile.getPos(), tile.getChecker().toNBT(), tile.getRadius(), tile.getUpdate(), tile.getDisable());
     }
 
-    public PacketEditEmitter(BlockPos pos, NBTTagCompound checker, float radius, int update)
+    public PacketEditEmitter(BlockPos pos, NBTTagCompound checker, float radius, int update, boolean disable)
     {
         this.pos = pos;
         this.checker = checker;
         this.radius = radius;
         this.update = update;
+        this.disable = disable;
     }
 
     public Checker createChecker()
@@ -47,6 +49,7 @@ public class PacketEditEmitter implements IMessage
         this.checker = ByteBufUtils.readTag(buf);
         this.radius = buf.readFloat();
         this.update = buf.readInt();
+        this.disable = buf.readBoolean();
     }
 
     @Override
@@ -58,5 +61,6 @@ public class PacketEditEmitter implements IMessage
         ByteBufUtils.writeTag(buf, this.checker);
         buf.writeFloat(this.radius);
         buf.writeInt(this.update);
+        buf.writeBoolean(this.disable);
     }
 }
