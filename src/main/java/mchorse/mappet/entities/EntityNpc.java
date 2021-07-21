@@ -54,7 +54,6 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
     private Morph morph = new Morph();
     private NpcState state = new NpcState();
-    private States states = new States();
 
     private int lastDamageTime;
     private boolean unkillableFailsafe = true;
@@ -175,7 +174,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
     public States getStates()
     {
-        return this.states;
+        return this.state.states;
     }
 
     public Faction getFaction()
@@ -447,7 +446,6 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         super.writeEntityToNBT(tag);
 
         tag.setTag("State", this.state.serializeNBT());
-        tag.setTag("States", this.states.serializeNBT());
     }
 
     @Override
@@ -458,14 +456,19 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         NpcState state = new NpcState();
 
         state.deserializeNBT(tag.getCompoundTag("State"));
+
+        /* gamma -> public alpha */
+        if (tag.hasKey("States"))
+        {
+            state.states.deserializeNBT(tag.getCompoundTag("States"));
+        }
+
         this.setState(state, false);
 
         if (tag.hasKey("NpcId"))
         {
             state.id = tag.getString("NpcId");
         }
-
-        this.states.deserializeNBT(tag.getCompoundTag("States"));
     }
 
     /* Network (de)serialization */

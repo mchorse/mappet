@@ -317,6 +317,8 @@ mappet.gui.nodes.info.empty_nodes=Right click here, and add a node, to start wor
 
 mappet.gui.npcs.meta.title=Meta
 mappet.gui.npcs.meta.id=NPC ID
+mappet.gui.npcs.meta.states.pick=Edit states...
+mappet.gui.npcs.meta.states.title=Edit NPC's states
 mappet.gui.npcs.meta.unique=Unique
 mappet.gui.npcs.meta.path_distance=Path finding distance
 mappet.gui.npcs.behavior.title=Behavior

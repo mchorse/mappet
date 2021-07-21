@@ -1,5 +1,6 @@
 package mchorse.mappet.api.npcs;
 
+import mchorse.mappet.api.states.States;
 import mchorse.mappet.api.triggers.Trigger;
 import mchorse.mappet.utils.NBTUtils;
 import mchorse.metamorph.api.MorphManager;
@@ -19,6 +20,8 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     /* Meta */
 
     public String id = "";
+
+    public States states = new States();
 
     /**
      * Unique
@@ -51,8 +54,6 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
      * How frequently will an NPC regenerate one heart (in ticks)
      */
     public int regenFrequency = 20;
-
-    /* Faction (coming soon...) */
 
     /* Damage */
 
@@ -384,6 +385,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
 
         /* Meta */
         if (all || options.contains("id")) tag.setString("Id", this.id);
+        if (all || options.contains("states")) tag.setTag("States", this.states.serializeNBT());
         if (all || options.contains("unique")) tag.setBoolean("Unique", this.unique);
         if (all || options.contains("path_distance")) tag.setFloat("PathDistance", this.pathDistance);
 
@@ -467,6 +469,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     {
         /* Meta */
         if (tag.hasKey("Id")) this.id = tag.getString("Id");
+        if (tag.hasKey("States")) this.states.deserializeNBT(tag.getCompoundTag("States"));
         if (tag.hasKey("Unique")) this.unique = tag.getBoolean("Unique");
         if (tag.hasKey("PathDistance")) this.pathDistance = tag.getFloat("PathDistance");
 
