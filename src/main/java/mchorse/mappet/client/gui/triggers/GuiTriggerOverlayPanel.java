@@ -91,7 +91,10 @@ public class GuiTriggerOverlayPanel extends GuiEditorOverlayPanel<AbstractTrigge
             {
                 NBTTagCompound tag = JsonToNBT.getTagFromJson(GuiScreen.getClipboardString());
 
-                menu.action(Icons.PASTE, IKey.lang("mappet.gui.triggers.context.paste"), () -> this.pasteTrigger(tag));
+                if (tag.hasKey("_TriggerType"))
+                {
+                    menu.action(Icons.PASTE, IKey.lang("mappet.gui.triggers.context.paste"), () -> this.pasteTrigger(tag));
+                }
             }
             catch (Exception e)
             {}
@@ -127,13 +130,13 @@ public class GuiTriggerOverlayPanel extends GuiEditorOverlayPanel<AbstractTrigge
         AbstractTriggerBlock block = this.list.getCurrentFirst();
         NBTTagCompound tag = block.serializeNBT();
 
-        tag.setString("Type", CommonProxy.getTriggerBlocks().getType(block));
+        tag.setString("_TriggerType", CommonProxy.getTriggerBlocks().getType(block));
         GuiScreen.setClipboardString(tag.toString());
     }
 
     private void pasteTrigger(NBTTagCompound tag)
     {
-        AbstractTriggerBlock block = CommonProxy.getTriggerBlocks().create(tag.getString("Type"));
+        AbstractTriggerBlock block = CommonProxy.getTriggerBlocks().create(tag.getString("_TriggerType"));
 
         block.deserializeNBT(tag);
         this.trigger.blocks.add(block);

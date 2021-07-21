@@ -85,7 +85,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
             {
                 NBTTagCompound tag = JsonToNBT.getTagFromJson(GuiScreen.getClipboardString());
 
-                if (tag.getInteger("ContentType") == this.getType().ordinal())
+                if (tag.getInteger("_ContentType") == this.getType().ordinal())
                 {
                     menu.action(Icons.PASTE, IKey.lang("mappet.gui.panels.context.paste"), () -> this.paste(tag));
                 }
@@ -113,7 +113,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
     {
         NBTTagCompound tag = this.data.serializeNBT();
 
-        tag.setInteger("ContentType", this.getType().ordinal());
+        tag.setInteger("_ContentType", this.getType().ordinal());
         GuiScreen.setClipboardString(tag.toString());
     }
 

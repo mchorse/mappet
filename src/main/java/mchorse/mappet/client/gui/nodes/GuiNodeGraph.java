@@ -191,6 +191,7 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
             }
         }
 
+        tag.setBoolean("_CopyNodes", true);
         tag.setTag("Nodes", list);
         tag.setTag("Relations", relations);
         GuiScreen.setClipboardString(tag.toString());
@@ -201,6 +202,12 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
         String json = GuiScreen.getClipboardString();
 
         NBTTagCompound tag = JsonToNBT.getTagFromJson(json);
+
+        if (!tag.getBoolean("_CopyNodes"))
+        {
+            return;
+        }
+
         NBTTagList nodesTag = tag.getTagList("Nodes", Constants.NBT.TAG_COMPOUND);
         NBTTagCompound relationsTag = tag.getCompoundTag("Relations");
 

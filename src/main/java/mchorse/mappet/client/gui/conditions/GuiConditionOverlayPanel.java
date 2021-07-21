@@ -102,7 +102,10 @@ public class GuiConditionOverlayPanel extends GuiEditorOverlayPanel<AbstractCond
             {
                 NBTTagCompound tag = JsonToNBT.getTagFromJson(GuiScreen.getClipboardString());
 
-                menu.action(Icons.PASTE, IKey.lang("mappet.gui.conditions.context.paste"), () -> this.pasteCondition(tag));
+                if (tag.getBoolean("_ConditionCopy"))
+                {
+                    menu.action(Icons.PASTE, IKey.lang("mappet.gui.conditions.context.paste"), () -> this.pasteCondition(tag));
+                }
             }
             catch (Exception e)
             {}
@@ -138,6 +141,7 @@ public class GuiConditionOverlayPanel extends GuiEditorOverlayPanel<AbstractCond
         AbstractConditionBlock block = this.list.getCurrentFirst();
         NBTTagCompound tag = block.serializeNBT();
 
+        tag.setBoolean("_ConditionCopy", true);
         tag.setString("Type", CommonProxy.getConditionBlocks().getType(block));
         GuiScreen.setClipboardString(tag.toString());
     }
