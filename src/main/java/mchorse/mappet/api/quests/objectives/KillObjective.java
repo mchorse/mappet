@@ -87,7 +87,7 @@ public class KillObjective extends AbstractObjective
 
     @Override
     @SideOnly(Side.CLIENT)
-    public String stringify(EntityPlayer player)
+    public String stringifyObjective(EntityPlayer player)
     {
         String entity = EntityList.getTranslationName(this.entity);
         int count = Math.min(this.killed, this.count);

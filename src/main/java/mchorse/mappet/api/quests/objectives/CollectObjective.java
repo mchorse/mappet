@@ -39,7 +39,7 @@ public class CollectObjective extends AbstractObjective
 
     @Override
     @SideOnly(Side.CLIENT)
-    public String stringify(EntityPlayer player)
+    public String stringifyObjective(EntityPlayer player)
     {
         String name = this.stack.getDisplayName();
         int count = Math.min(this.countItems(player), this.stack.getCount());

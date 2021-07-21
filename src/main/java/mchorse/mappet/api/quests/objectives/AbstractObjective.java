@@ -1,6 +1,7 @@
 package mchorse.mappet.api.quests.objectives;
 
 import mchorse.mappet.api.quests.INBTPartialSerializable;
+import mchorse.mclib.utils.TextUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -34,7 +35,13 @@ public abstract class AbstractObjective implements INBTSerializable<NBTTagCompou
     public abstract void complete(EntityPlayer player);
 
     @SideOnly(Side.CLIENT)
-    public abstract String stringify(EntityPlayer player);
+    public String stringify(EntityPlayer player)
+    {
+        return TextUtils.processColoredText(this.stringifyObjective(player));
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected abstract String stringifyObjective(EntityPlayer player);
 
     public abstract String getType();
 

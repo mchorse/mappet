@@ -30,7 +30,7 @@ public class StateObjective extends AbstractObjective
     {}
 
     @Override
-    public String stringify(EntityPlayer player)
+    public String stringifyObjective(EntityPlayer player)
     {
         return this.message;
     }
