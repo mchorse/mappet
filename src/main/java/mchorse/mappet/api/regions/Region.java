@@ -42,9 +42,9 @@ public class Region implements INBTSerializable<NBTTagCompound>
     public Target target = Target.GLOBAL;
     public boolean additive = true;
 
-    public boolean isEnabled(World world, BlockPos pos)
+    public boolean isEnabled(EntityPlayer player)
     {
-        return this.enabled.check(new DataContext(world, pos));
+        return this.enabled.check(new DataContext(player));
     }
 
     public boolean isPlayerInside(EntityPlayer player, BlockPos pos)

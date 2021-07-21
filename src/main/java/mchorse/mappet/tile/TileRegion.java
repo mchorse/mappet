@@ -92,14 +92,9 @@ public class TileRegion extends TileEntity implements ITickable
 
     private void checkRegion()
     {
-        if (!this.region.isEnabled(this.world, this.getPos()))
-        {
-            return;
-        }
-
         for (EntityPlayer player : this.world.playerEntities)
         {
-            if (player.isSpectator())
+            if (player.isSpectator() || !this.region.isEnabled(player))
             {
                 continue;
             }
