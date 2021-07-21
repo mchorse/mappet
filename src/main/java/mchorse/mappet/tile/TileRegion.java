@@ -183,12 +183,22 @@ public class TileRegion extends TileEntity implements ITickable
             vec = vec.normalize();
             vec = vec.scale(-0.5D);
 
+            double x = player.posX;
+            double y = player.posY;
+            double z = player.posZ;
+
             while (this.region.isPlayerInside(player, this.getPos()))
             {
                 player.posX += vec.x;
                 player.posY += vec.y;
                 player.posZ += vec.z;
             }
+
+            vec = new Vec3d(x, y, z);
+
+            player.posX = x;
+            player.posY = y;
+            player.posZ = z;
 
             this.teleportPlayer(player, vec, last);
         }
@@ -201,6 +211,12 @@ public class TileRegion extends TileEntity implements ITickable
         player.setPositionAndUpdate(vec.x, vec.y, vec.z);
 
         Vec3d motion = last.subtract(player.getPositionVector()).scale(-0.5);
+
+        if (motion.distanceTo(Vec3d.ZERO) < 0.5 * 0.5)
+        {
+            motion = motion.normalize();
+        }
+
         double y = Math.abs(motion.y) < 0.01 ? 0.2 : motion.y;
 
         ((EntityPlayerMP) player).connection.sendPacket(new SPacketEntityVelocity(player.getEntityId(), motion.x, y, motion.z));
