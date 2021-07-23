@@ -50,14 +50,14 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
 
         this.recipe = new GuiCraftingRecipeEditor(mc);
 
-        int y = 52 + 25 + 12;
+        int y = 52;
 
-        this.title.flex().relative(this.editor).x(10).y(22).w(1F, -20);
-        this.action.flex().relative(this.editor).x(10).y(22 + 25 + 12).w(1F, -20);
+        this.title.flex().relative(this.editor).x(10).y(22).wTo(this.action.area, -5);
+        this.action.flex().relative(this.editor).x(0.65F).y(22).wTo(this.editor.area, 1F, -10);
         this.recipes.flex().relative(this.editor).y(y).w(120).h(1F, -y);
         scrollEditor.flex().x(120).y(y).w(1F, -120).h(1F, -y).column(0).padding(0);
 
-        this.editor.add(this.title, this.action, this.recipes, scrollEditor);
+        this.editor.add(this.action, this.title, this.recipes, scrollEditor);
         scrollEditor.add(this.recipe);
 
         this.fill(null);
@@ -129,24 +129,13 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
         if (data != null)
         {
             this.title.setText(this.data.title);
+            this.action.setText(this.data.action);
 
             this.recipes.setList(this.data.recipes);
             this.pickRecipe(this.data.recipes.isEmpty() ? null : this.data.recipes.get(0), true);
 
             this.resize();
         }
-    }
-
-    @Override
-    protected void toggleWithSidebar()
-    {
-        this.editor.flex().wTo(this.sidebar.area, 0);
-    }
-
-    @Override
-    protected void toggleFull()
-    {
-        this.editor.flex().w(1F, -120);
     }
 
     @Override

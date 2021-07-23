@@ -20,6 +20,7 @@ import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiLabel;
 import mchorse.mclib.client.gui.mclib.GuiDashboardPanel;
 import mchorse.mclib.client.gui.utils.Elements;
@@ -190,10 +191,13 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
     @Override
     public void draw(GuiContext context)
     {
-        super.draw(context);
-
         int x = this.editor.area.x;
+        int y = this.area.y;
+        int h = this.editor.area.ey();
 
-        Gui.drawRect(x - 1, this.area.y, x + 1, this.area.ey(), ColorUtils.HALF_BLACK);
+        GuiDraw.drawHorizontalGradientRect(x - 40, y, x, h, 0, ColorUtils.HALF_BLACK);
+        GuiDraw.drawHorizontalGradientRect(x, y, x + 40, h, ColorUtils.HALF_BLACK, 0);
+
+        super.draw(context);
     }
 }

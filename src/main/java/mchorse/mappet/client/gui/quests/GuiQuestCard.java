@@ -41,6 +41,11 @@ public class GuiQuestCard
             return;
         }
 
+        if (quest.rewards.isEmpty())
+        {
+            return;
+        }
+
         element.add(Elements.label(IKey.lang("mappet.gui.quests.rewards.title")).marginTop(12));
 
         for (IReward reward : quest.rewards)
