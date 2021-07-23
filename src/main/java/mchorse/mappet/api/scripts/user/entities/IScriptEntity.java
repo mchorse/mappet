@@ -1,11 +1,8 @@
 package mchorse.mappet.api.scripts.user.entities;
 
-import mchorse.mappet.api.scripts.user.IScriptFactory;
 import mchorse.mappet.api.scripts.user.IScriptRayTrace;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
-import mchorse.mappet.api.scripts.user.items.IScriptInventory;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
-import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
 import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.metamorph.api.morphs.AbstractMorph;
@@ -183,6 +180,37 @@ public interface IScriptEntity
      * }</pre>
      */
     public float getMaxHp();
+
+    /**
+     * Check whether this entity is on fire.
+     *
+     * <pre>{@code
+     *    var subject = c.getSubject();
+     *
+     *    // Extinguish the entity if it's on fire
+     *    if (subject.isBurning())
+     *    {
+     *        subject.setBurning(0);
+     *    }
+     * }</pre>
+     */
+    public boolean isBurning();
+
+    /**
+     * Set entity on fire for given amount of ticks. If <code>0</code> will be
+     * provided as the sole argument, then entity's fire will be extinguished.
+     *
+     * <pre>{@code
+     *    var subject = c.getSubject();
+     *    var ray = subject.rayTrace(32);
+     *
+     *    if (ray.isEntity())
+     *    {
+     *        ray.getEntity().setBurning(2);
+     *    }
+     * }</pre>
+     */
+    public void setBurning(int seconds);
 
     /**
      * Is this entity is sneaking.

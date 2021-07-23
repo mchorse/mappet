@@ -172,6 +172,25 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     }
 
     @Override
+    public boolean isBurning()
+    {
+        return this.entity.isBurning();
+    }
+
+    @Override
+    public void setBurning(int seconds)
+    {
+        if (seconds <= 0)
+        {
+            this.entity.extinguish();
+        }
+        else
+        {
+            this.entity.setFire(seconds);
+        }
+    }
+
+    @Override
     public boolean isSneaking()
     {
         return this.entity.isSneaking();
