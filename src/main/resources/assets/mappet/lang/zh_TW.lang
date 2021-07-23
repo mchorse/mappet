@@ -38,7 +38,7 @@ mappet.info.factions.clear_all=§f已移除 §7%s§f 的所有陣營積分。
 mappet.info.factions.set=§fID 為 §7%s§f 的陣營積分已設為 §7%s§r。
 mappet.info.factions.changed=§fID 為 §7%s§f 的陣營積分為 §7%s§r，現已更改為 §7%s§r。
 
-mappet.info.data.cleared=§f全局狀態、玩家狀態和清單已清除。
+mappet.info.data.cleared_inventory=§f全局狀態、玩家狀態和清單已清除。
 
 # Success
 mappet.success.quest.accepted=§fID 為 §7%s§f 的任務已分配為玩家 §7%s§f。

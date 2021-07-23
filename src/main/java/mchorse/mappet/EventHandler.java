@@ -226,7 +226,7 @@ public class EventHandler
         {
             if (character.getLastClear().isBefore(lastClear))
             {
-                CommandDataClear.clear(player);
+                CommandDataClear.clear(player, Mappet.data.getLastInventory());
 
                 character.updateLastClear(lastClear);
             }

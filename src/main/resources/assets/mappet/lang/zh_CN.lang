@@ -38,7 +38,7 @@ mappet.info.factions.clear_all=§f已移除 §7%s§f 的所有阵营积分。
 mappet.info.factions.set=§fID 为 §7%s§f 的阵营积分已设为 §7%s§r。
 mappet.info.factions.changed=§fID 为 §7%s§f 的阵营积分为 §7%s§r，现已更改为 §7%s§r。
 
-mappet.info.data.cleared=§f全局状态、玩家状态和清单已清除。
+mappet.info.data.cleared_inventory=§f全局状态、玩家状态和清单已清除。
 
 # Success
 mappet.success.quest.accepted=§fID 为 §7%s§f 的任务已分配为玩家 §7%s§f。

@@ -39,7 +39,8 @@ mappet.info.factions.clear_all=§fAll faction scores were removed from §7%s§f.
 mappet.info.factions.set=§fFaction score by ID §7%s§f was set to §7%s§r.
 mappet.info.factions.changed=§fFaction score by ID §7%s§f was §7%s§r, and it became §7%s§r.
 
-mappet.info.data.cleared=§fGlobal states, player states and inventories were cleared.
+mappet.info.data.cleared=§fGlobal states and player states were cleared.
+mappet.info.data.cleared_inventory=§fGlobal states, player states and inventories were cleared.
 mappet.info.data.rencoded=§fRe-encoded all the data from %s§f to %s§f.
 
 # Success
@@ -88,7 +89,7 @@ mappet.commands.mp.faction.clear=This command removes faction score of a faction
 mappet.commands.mp.faction.set=This command assigns faction score evaluated by §7<expression>§r to faction by §7<id>§r.
 
 mappet.commands.mp.data.help=Data utility subcommand that provides an ability to manage player inventory and states, and global state.
-mappet.commands.mp.data.clear=Clears all global and player states, and also all player inventories.
+mappet.commands.mp.data.clear=Clears all global and player states, and optionally all player inventories. If §7[inventory]§r is omitted, then player inventories won't be cleared.
 mappet.commands.mp.data.load=Loads saved data by §7<id>§r. §7[global]§r determines whether global states should be loaded too (it's §7true§r (enabled) by default). §7[players]§r allows to pick another player whose inventory and player states should be loaded to.
 mappet.commands.mp.data.save=Saves global states, and current player's states and inventory to data by §7<id>§r.
 mappet.commands.mp.data.rencode=Re-encode all data files within world's §7mappet/§f folder from §7<from>§r character set, to §7<to>§r character set.
