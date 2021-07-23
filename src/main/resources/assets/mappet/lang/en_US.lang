@@ -80,6 +80,7 @@ mappet.commands.mp.npc.help=NPC management subcommand.
 mappet.commands.mp.npc.edit=This command allows to change an individual §7<property>§r to given §7<value>§r of NPC(s) found by §7<target>§r selector.
 mappet.commands.mp.npc.state=This command allows to switch the §7<state>§r of NPC(s) found by §7<target>§r selector.\n\n§7<state>§r argument supports following format: §7[npc_id@]state[:properties]§r, where §7npc_id§r and §7properties§r are optional.\n\nWith this format, you can change the state from another NPC blueprint, or even change only certain properties from another state.
 mappet.commands.mp.npc.summon=This command spawns an NPC with §7<id>§r with optional §7[state]§r (§7default§r is the default name of the state) at §7[x] [y] [z]§r. If §7[x] [y] [z]§r are omitted, then NPC will be spawned at place of command sender. Relative §7~§r is supported.
+mappet.commands.mp.npc.despawn=This command despawns all NPCs found by §7<target>§r.
 
 mappet.commands.mp.faction.help=Faction management subcommand. This command allows to manage faction score of individual or multiple players.
 mappet.commands.mp.faction.add=This command adds faction score evaluated by §7<expression>§r to faction by §7<id>§r. If §7<id>§r doesn't exist, §7<expression>§r will be added to 0.

@@ -7,6 +7,7 @@ public class CommandNpc extends MappetSubCommandBase
 {
     public CommandNpc()
     {
+        this.add(new CommandNpcDespawn());
         this.add(new CommandNpcEdit());
         this.add(new CommandNpcState());
         this.add(new CommandNpcSummon());
