@@ -6,6 +6,7 @@ import mchorse.mappet.api.regions.shapes.AbstractShape;
 import mchorse.mappet.api.regions.shapes.BoxShape;
 import mchorse.mappet.client.gui.conditions.GuiCheckerElement;
 import mchorse.mappet.client.gui.triggers.GuiTriggerElement;
+import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiCirculateElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
@@ -52,12 +53,10 @@ public class GuiRegionEditor extends GuiElement
         this.writeState = new GuiToggleElement(mc, IKey.lang("mappet.gui.region.write_states"), (b) -> this.toggleStates());
         this.stateOptions = Elements.column(mc, 5);
         this.state = new GuiTextElement(mc, (t) -> this.region.state = t);
-        this.target = new GuiCirculateElement(mc, (b) -> this.region.target = Target.values()[this.target.getValue()]);
+        this.target = GuiMappetUtils.createTargetCirculate(mc, Target.GLOBAL, (target) -> this.region.target = target);
 
         for (Target target : Target.values())
         {
-            this.target.addLabel(IKey.lang("mappet.gui.conditions.targets." + target.name().toLowerCase()));
-
             if (!(target == Target.SUBJECT || target == Target.GLOBAL))
             {
                 this.target.disable(target.ordinal());

@@ -1,6 +1,7 @@
 package mchorse.mappet.client.gui.utils;
 
 import mchorse.mappet.ClientProxy;
+import mchorse.mappet.api.conditions.utils.Target;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.utils.overlays.GuiContentNamesOverlayPanel;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
@@ -8,6 +9,7 @@ import mchorse.mappet.client.gui.utils.overlays.GuiPromptOverlayPanel;
 import mchorse.mclib.McLib;
 import mchorse.mclib.client.InputRenderer;
 import mchorse.mclib.client.gui.framework.GuiBase;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiCirculateElement;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
@@ -81,6 +83,26 @@ public class GuiMappetUtils
 
         GuiDraw.drawVerticalGradientRect(area.x, area.my() + 20, area.ex(), area.my() + 40, 0, 0xff000000);
         Gui.drawRect(area.x, area.my() + 40, area.ex(), area.my() + 90, 0xff000000);
+    }
+
+    public static GuiCirculateElement createTargetCirculate(Minecraft mc, Target defaultTarget, Consumer<Target> callback)
+    {
+        GuiCirculateElement button = new GuiCirculateElement(mc, (b) ->
+        {
+            if (callback != null)
+            {
+                callback.accept(Target.values()[b.getValue()]);
+            }
+        });
+
+        for (Target target : Target.values())
+        {
+            button.addLabel(IKey.lang("mappet.gui.conditions.targets." + target.name().toLowerCase()));
+        }
+
+        button.setValue(defaultTarget.ordinal());
+
+        return button;
     }
 
     public static void playSound(SoundEvent event)

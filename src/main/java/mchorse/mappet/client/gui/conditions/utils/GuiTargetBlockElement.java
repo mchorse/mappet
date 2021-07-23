@@ -2,6 +2,8 @@ package mchorse.mappet.client.gui.conditions.utils;
 
 import mchorse.mappet.api.conditions.blocks.TargetConditionBlock;
 import mchorse.mappet.api.conditions.utils.Target;
+import mchorse.mappet.client.gui.GuiMappetDashboard;
+import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiCirculateElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
@@ -24,14 +26,7 @@ public class GuiTargetBlockElement <T extends TargetConditionBlock> extends GuiE
         this.block = block;
 
         this.targeter = new GuiElement(mc);
-        this.target = new GuiCirculateElement(mc, this::toggleTarget);
-
-        for (Target target : Target.values())
-        {
-            this.target.addLabel(IKey.lang("mappet.gui.conditions.targets." + target.name().toLowerCase()));
-        }
-
-        this.target.setValue(block.target.ordinal());
+        this.target = GuiMappetUtils.createTargetCirculate(mc, block.target, this::toggleTarget);
 
         this.selector = new GuiTextElement(mc, 1000, (t) -> this.block.selector = t);
         this.selector.setText(block.selector);
@@ -52,9 +47,9 @@ public class GuiTargetBlockElement <T extends TargetConditionBlock> extends GuiE
         return this;
     }
 
-    private void toggleTarget(GuiCirculateElement b)
+    private void toggleTarget(Target target)
     {
-        this.block.target = Target.values()[b.getValue()];
+        this.block.target = target;
 
         this.updateTarget();
     }
