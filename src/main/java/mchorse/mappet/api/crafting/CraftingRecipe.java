@@ -18,6 +18,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
 {
     public String title = "";
+    public String description = "";
     public NonNullList<ItemStack> input = NonNullList.create();
     public NonNullList<ItemStack> output = NonNullList.create();
     public Checker visible = new Checker(true);
@@ -107,6 +108,11 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
             tag.setString("Title", this.title);
         }
 
+        if (!this.description.isEmpty())
+        {
+            tag.setString("Description", this.description);
+        }
+
         if (input != null)
         {
             tag.setTag("Input", input);
@@ -155,6 +161,11 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("Title"))
         {
             this.title = tag.getString("Title");
+        }
+
+        if (tag.hasKey("Description"))
+        {
+            this.description = tag.getString("Description");
         }
 
         if (tag.hasKey("Input"))

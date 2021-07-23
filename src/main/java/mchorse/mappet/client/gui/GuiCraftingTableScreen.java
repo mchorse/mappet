@@ -21,7 +21,7 @@ public class GuiCraftingTableScreen extends GuiBase implements ICraftingScreen
 
         this.crafting = new GuiCrafting(mc);
         this.crafting.set(table);
-        this.crafting.flex().relative(this.viewport).y(40).w(1F).h(1F, -40);
+        this.crafting.flex().relative(this.viewport).y(20).w(1F).h(1F, -20);
 
         this.root.add(this.crafting);
     }
@@ -53,9 +53,6 @@ public class GuiCraftingTableScreen extends GuiBase implements ICraftingScreen
 
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        this.drawCenteredString(this.fontRenderer, this.crafting.get().title, this.viewport.mx(), 10, 0xffffff);
-        this.fontRenderer.drawStringWithShadow(I18n.format("mappet.gui.interaction.crafting.recipe_title"), this.crafting.recipes.area.x + 4, this.crafting.recipes.area.y - 12, 0xffffff);
-        this.fontRenderer.drawStringWithShadow(I18n.format("mappet.gui.crafting.input"), this.crafting.recipes.area.x(0.33F), this.crafting.recipes.area.y - 12, 0xffffff);
-        this.fontRenderer.drawStringWithShadow(I18n.format("mappet.gui.crafting.output"), this.crafting.recipes.area.x(0.66F), this.crafting.recipes.area.y - 12, 0xffffff);
+        this.drawCenteredString(this.fontRenderer, this.crafting.get().title, this.viewport.mx(), 11, 0xffffff);
     }
 }

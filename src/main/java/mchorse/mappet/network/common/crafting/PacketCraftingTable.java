@@ -27,6 +27,7 @@ public class PacketCraftingTable implements IMessage
 
             this.table = new CraftingTable();
             this.table.deserializeNBT(tag);
+            this.table.setId(ByteBufUtils.readUTF8String(buf));
         }
     }
 
@@ -38,6 +39,7 @@ public class PacketCraftingTable implements IMessage
         if (this.table != null)
         {
             ByteBufUtils.writeTag(buf, this.table.serializeNBT());
+            ByteBufUtils.writeUTF8String(buf, this.table.getId());
         }
     }
 }

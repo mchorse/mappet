@@ -12,6 +12,7 @@ import java.util.List;
 public class CraftingTable extends AbstractData
 {
     public String title = "";
+    public String action = "";
     public List<CraftingRecipe> recipes = new ArrayList<CraftingRecipe>();
 
     @Override
@@ -35,6 +36,11 @@ public class CraftingTable extends AbstractData
             tag.setString("Title", this.title);
         }
 
+        if (!this.action.isEmpty())
+        {
+            tag.setString("Action", this.action);
+        }
+
         if (recipes.tagCount() > 0)
         {
             tag.setTag("Recipes", recipes);
@@ -49,6 +55,11 @@ public class CraftingTable extends AbstractData
         if (tag.hasKey("Title"))
         {
             this.title = tag.getString("Title");
+        }
+
+        if (tag.hasKey("Action"))
+        {
+            this.action = tag.getString("Action");
         }
 
         if (tag.hasKey("Recipes"))

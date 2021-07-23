@@ -4,7 +4,7 @@ import mchorse.mappet.api.crafting.CraftingRecipe;
 import mchorse.mappet.api.crafting.CraftingTable;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
-import mchorse.mappet.client.gui.crafting.GuiCraftingRecipe;
+import mchorse.mappet.client.gui.crafting.GuiCraftingRecipeEditor;
 import mchorse.mappet.client.gui.crafting.GuiCraftingRecipeList;
 import mchorse.mappet.utils.Colors;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
@@ -20,8 +20,9 @@ import net.minecraft.client.resources.I18n;
 public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable>
 {
     public GuiTextElement title;
+    public GuiTextElement action;
 
-    public GuiCraftingRecipe recipe;
+    public GuiCraftingRecipeEditor recipe;
     public GuiCraftingRecipeList recipes;
 
     public GuiCraftingTablePanel(Minecraft mc, GuiMappetDashboard dashboard)
@@ -29,6 +30,7 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
         super(mc, dashboard);
 
         this.title = new GuiTextElement(mc, 1000, (text) -> this.data.title = text);
+        this.action = new GuiTextElement(mc, 1000, (text) -> this.data.action = text);
 
         this.recipes = new GuiCraftingRecipeList(mc, (list) -> this.pickRecipe(list.get(0), false));
         this.recipes.sorting().context(() ->
@@ -46,13 +48,16 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
 
         GuiScrollElement scrollEditor = this.createScrollEditor();
 
-        this.recipe = new GuiCraftingRecipe(mc);
+        this.recipe = new GuiCraftingRecipeEditor(mc);
+
+        int y = 52 + 25 + 12;
 
         this.title.flex().relative(this.editor).x(10).y(22).w(1F, -20);
-        this.recipes.flex().relative(this.editor).y(52).w(120).h(1F, -55);
-        scrollEditor.flex().x(120).y(52).w(1F, -120).h(1F, -55).column(0).padding(0);
+        this.action.flex().relative(this.editor).x(10).y(22 + 25 + 12).w(1F, -20);
+        this.recipes.flex().relative(this.editor).y(y).w(120).h(1F, -y);
+        scrollEditor.flex().x(120).y(y).w(1F, -120).h(1F, -y).column(0).padding(0);
 
-        this.editor.add(this.title, this.recipes, scrollEditor);
+        this.editor.add(this.title, this.action, this.recipes, scrollEditor);
         scrollEditor.add(this.recipe);
 
         this.fill(null);
@@ -117,6 +122,7 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
         super.fill(data, allowed);
 
         this.title.setVisible(data != null);
+        this.action.setVisible(data != null);
         this.editor.setVisible(data != null);
         this.recipes.setVisible(data != null);
 
@@ -154,6 +160,7 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
         if (this.title.isVisible())
         {
             this.font.drawStringWithShadow(I18n.format("mappet.gui.crafting.title"), this.title.area.x, this.title.area.y - 12, 0xffffff);
+            this.font.drawStringWithShadow(I18n.format("mappet.gui.crafting.action"), this.action.area.x, this.action.area.y - 12, 0xffffff);
         }
 
         if (!this.editor.isVisible())

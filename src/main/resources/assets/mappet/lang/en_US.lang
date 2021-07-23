@@ -228,7 +228,6 @@ mappet.gui.quests.info.empty=Select or create a quest in the list on the right, 
 mappet.gui.interaction.back=Back
 mappet.gui.interaction.accept=Accept
 mappet.gui.interaction.complete=Complete
-mappet.gui.interaction.crafting.recipe_title=Title
 mappet.gui.interaction.info.no_quests=There are no more available quests for you here...
 mappet.gui.interaction.info.no_replies=Press Esc key to close the dialogue...
 
@@ -247,7 +246,9 @@ mappet.gui.npc_tool.npc=NPC
 mappet.gui.npc_tool.state=State
 
 mappet.gui.crafting.title=Crafting table's title
+mappet.gui.crafting.action="Craft" button's title
 mappet.gui.crafting.recipe.title=Recipe's title
+mappet.gui.crafting.recipe.description=Recipe's description
 mappet.gui.crafting.recipe.visible=Visible
 mappet.gui.crafting.recipe.hotkey=Crafting hotkey
 mappet.gui.crafting.recipe.trigger=Crafting trigger
