@@ -97,19 +97,14 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     public float speed = 1F;
 
     /**
-     * Can NPC walk on the ground
-     */
-    public boolean canWalk = true;
-
-    /**
      * Can NPC move around in the water
      */
     public boolean canSwim = true;
 
     /**
-     * Can NPC move around on Y axis, i.e. fly
+     * Can NPC be pushed by players moving through an NPC
      */
-    public boolean canFly;
+    public boolean immovable;
 
     /**
      * Whether post options
@@ -280,17 +275,13 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         {
             this.speed = Float.parseFloat(value);
         }
-        else if (property.equals("can_walk"))
-        {
-            this.canWalk = Boolean.parseBoolean(value);
-        }
         else if (property.equals("can_swim"))
         {
             this.canSwim = Boolean.parseBoolean(value);
         }
-        else if (property.equals("can_fly"))
+        else if (property.equals("immovable"))
         {
-            this.canFly = Boolean.parseBoolean(value);
+            this.immovable = Boolean.parseBoolean(value);
         }
         else if (property.equals("has_post"))
         {
@@ -405,9 +396,8 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
 
         /* Movement */
         if (all || options.contains("speed")) tag.setFloat("Speed", this.speed);
-        if (all || options.contains("can_walk")) tag.setBoolean("CanWalk", this.canWalk);
         if (all || options.contains("can_swim")) tag.setBoolean("CanSwim", this.canSwim);
-        if (all || options.contains("can_fly")) tag.setBoolean("CanFly", this.canFly);
+        if (all || options.contains("immovable")) tag.setBoolean("Immovable", this.immovable);
         if (all || options.contains("has_post")) tag.setBoolean("HasPost", this.hasPost);
         if ((all || options.contains("post")))
         {
@@ -489,9 +479,8 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
 
         /* Movement */
         if (tag.hasKey("Speed")) this.speed = tag.getFloat("Speed");
-        if (tag.hasKey("CanWalk")) this.canWalk = tag.getBoolean("CanWalk");
         if (tag.hasKey("CanSwim")) this.canSwim = tag.getBoolean("CanSwim");
-        if (tag.hasKey("CanFly")) this.canFly = tag.getBoolean("CanFly");
+        if (tag.hasKey("Immovable")) this.immovable = tag.getBoolean("Immovable");
         if (tag.hasKey("HasPost")) this.hasPost = tag.getBoolean("HasPost");
         if (tag.hasKey("Post", Constants.NBT.TAG_LIST))
         {

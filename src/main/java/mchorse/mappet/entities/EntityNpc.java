@@ -78,6 +78,24 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     }
 
     @Override
+    public void applyEntityCollision(Entity entityIn)
+    {
+        if (!this.state.immovable)
+        {
+            super.applyEntityCollision(entityIn);
+        }
+    }
+
+    @Override
+    protected void collideWithEntity(Entity entityIn)
+    {
+        if (!this.state.immovable)
+        {
+            super.collideWithEntity(entityIn);
+        }
+    }
+
+    @Override
     protected void initEntityAI()
     {
         super.initEntityAI();
@@ -154,15 +172,31 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
                 return false;
             }
 
-            ICharacter character = Character.get(player);
+            FactionAttitude attitude = this.getPlayerAttitude(faction, entity);
 
-            if (faction != null && character != null)
+            if (attitude != null)
             {
-                return faction.get(character.getStates()) == FactionAttitude.AGGRESSIVE;
+                return attitude == FactionAttitude.AGGRESSIVE;
             }
         }
 
         return faction != null && faction.othersAttitude == FactionAttitude.AGGRESSIVE;
+    }
+
+    private FactionAttitude getPlayerAttitude(Faction faction, Entity entity)
+    {
+        if (entity instanceof EntityPlayerMP)
+        {
+            EntityPlayerMP player = (EntityPlayerMP) entity;
+            ICharacter character = Character.get(player);
+
+            if (faction != null && character != null)
+            {
+                return faction.get(character.getStates());
+            }
+        }
+
+        return null;
     }
 
     public void initialize()
@@ -297,6 +331,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     public void onUpdate()
     {
         this.healthFailsafe();
+        this.updateAttackTarget();
 
         super.onUpdate();
 
@@ -330,6 +365,31 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         else
         {
             this.state.triggerTick.trigger(this);
+        }
+    }
+
+    /**
+     * If player's attitude has switched, then NPC should stop chasing
+     */
+    private void updateAttackTarget()
+    {
+        if (this.faction == null || this.ticksExisted % 10 != 0)
+        {
+            return;
+        }
+
+        Entity entity = this.getAttackTarget();
+
+        if (entity instanceof EntityPlayerMP)
+        {
+            EntityPlayerMP player = (EntityPlayerMP) entity;
+            Faction faction = this.getFaction();
+            FactionAttitude attitude = this.getPlayerAttitude(faction, player);
+
+            if (attitude == FactionAttitude.FRIENDLY || player.isCreative())
+            {
+                this.setAttackTarget(null);
+            }
         }
     }
 
@@ -381,6 +441,25 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     @Override
     public boolean isEntityInvulnerable(DamageSource source)
     {
+        if (this.world.isRemote)
+        {
+            return true;
+        }
+
+        Entity entity = source.getTrueSource();
+
+        if (entity instanceof EntityPlayerMP)
+        {
+            EntityPlayerMP player = (EntityPlayerMP) entity;
+            Faction faction = this.getFaction();
+            FactionAttitude attitude = this.getPlayerAttitude(faction, player);
+
+            if (attitude == FactionAttitude.FRIENDLY && !player.isCreative())
+            {
+                return true;
+            }
+        }
+
         if (this.state.invincible)
         {
             return !(source.isCreativePlayer() || source == DamageSource.OUT_OF_WORLD);

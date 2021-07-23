@@ -21,7 +21,7 @@ public class NpcLexer
         "id", "unique", "path_distance",
         "max_health", "health", "regen_delay", "regen_frequency",
         "damage", "can_ranged", "can_fall_damage", "can_get_burned", "invincible", "killable",
-        "speed", "can_walk", "can_swim", "can_fly", "has_post", "post", "post_radius", "fallback", "patrol_circulate", "patrol", "follow",
+        "speed", "can_swim", "immovable", "has_post", "post", "post_radius", "fallback", "patrol_circulate", "patrol", "follow",
         "faction", "morph", "sight_distance", "sight_radius", "drops", "xp",
         "look_at_player", "look_around", "wander", "flee",
         "trigger_died", "trigger_damaged", "trigger_interact", "trigger_tick", "trigger_target", "trigger_initialize"

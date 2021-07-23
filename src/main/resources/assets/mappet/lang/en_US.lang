@@ -353,6 +353,7 @@ mappet.gui.npcs.damage.killable=Killable
 mappet.gui.npcs.movement.title=Movement
 mappet.gui.npcs.movement.speed=Speed
 mappet.gui.npcs.movement.can_swim=Can swim
+mappet.gui.npcs.movement.immovable=Immovable
 mappet.gui.npcs.movement.post=Post point
 mappet.gui.npcs.movement.patrol_circulate=Circular patrol
 mappet.gui.npcs.movement.patrol_points=Patrol points
