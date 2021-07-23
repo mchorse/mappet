@@ -8,6 +8,7 @@ public class CommandScript extends MappetSubCommandBase
     public CommandScript()
     {
         this.add(new CommandScriptEval());
+        this.add(new CommandScriptExec());
     }
 
     @Override

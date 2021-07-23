@@ -7,7 +7,9 @@ import mchorse.mappet.api.utils.manager.BaseManager;
 import mchorse.mappet.utils.ScriptUtils;
 import mchorse.mappet.utils.Utils;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextFormatting;
 import org.apache.commons.io.FileUtils;
 
@@ -22,7 +24,7 @@ public class ScriptManager extends BaseManager<Script>
     public final Map<String, Object> objects = new HashMap<String, Object>();
 
     private Map<String, Script> uniqueScripts = new HashMap<String, Script>();
-    private Map<EntityPlayer, ScriptEngine> repls = new HashMap<EntityPlayer, ScriptEngine>();
+    private Map<Object, ScriptEngine> repls = new HashMap<Object, ScriptEngine>();
     private String replOutput = "";
 
     public ScriptManager(File folder)
@@ -33,9 +35,9 @@ public class ScriptManager extends BaseManager<Script>
     /**
      * Execute a REPL code that came from a player
      */
-    public String executeRepl(EntityPlayer player, String code) throws ScriptException
+    public String executeRepl(Object key, String code) throws ScriptException
     {
-        ScriptEngine engine = this.repls.get(player);
+        ScriptEngine engine = this.repls.get(key);
 
         this.replOutput = "";
 
@@ -43,12 +45,28 @@ public class ScriptManager extends BaseManager<Script>
         {
             engine = ScriptUtils.sanitize(ScriptUtils.tryCreatingEngine());
 
+            DataContext context = null;
+
+            if (key instanceof EntityPlayerMP)
+            {
+                context = new DataContext((EntityPlayerMP) key);
+            }
+            else if (key instanceof MinecraftServer)
+            {
+                context = new DataContext((MinecraftServer) key);
+            }
+
             engine.put("____manager____", this);
             engine.put("mappet", new ScriptFactory());
-            engine.put("c", new ScriptEvent(new DataContext(player), "", ""));
+
+            if (context != null)
+            {
+                engine.put("c", new ScriptEvent(context, "", ""));
+            }
+
             engine.eval("var __p__ = print; print = function(message) { ____manager____.replPrint(message); __p__(message); };");
 
-            this.repls.put(player, engine);
+            this.repls.put(key, engine);
         }
 
         Object object = engine.eval(code);

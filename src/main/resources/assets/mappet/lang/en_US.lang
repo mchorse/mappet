@@ -95,7 +95,8 @@ mappet.commands.mp.data.save=Saves global states, and current player's states an
 mappet.commands.mp.data.rencode=Re-encode all data files within world's §7mappet/§f folder from §7<from>§r character set, to §7<to>§r character set.
 
 mappet.commands.mp.script.help=Scripts subcommand.
-mappet.commands.mp.script.eval=This command evaluates script by §7<id>§r (from world's §7mappet/scripts/§r folder, without file extension) upon players found by §7<player>§r target selector. Script's §7[function]§r (§7main§r if omitted) function will be called. You can also pass arbitrary NBT data to the event using §7[data]§r argument.
+mappet.commands.mp.script.eval=This command executes JS code snippet provided in  §7<code...>§r. Variable §7c§r is provided which is a §7IScriptEvent§r which has either player subject (if the command was executed from player) or with server.
+mappet.commands.mp.script.exec=This command executes script by §7<id>§r (from world's §7mappet/scripts/§r folder, without file extension) upon players found by §7<player>§r target selector. Script's §7[function]§r (§7main§r if omitted) function will be called. You can also pass arbitrary NBT data to the event using §7[data]§r argument.
 
 # Config
 
