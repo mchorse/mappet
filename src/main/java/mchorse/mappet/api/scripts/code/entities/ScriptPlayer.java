@@ -11,6 +11,7 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.GameType;
 
 public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScriptPlayer
 {
@@ -45,7 +46,24 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
         this.entity.connection.setPlayerLocation(this.entity.posX, this.entity.posY, this.entity.posZ, yaw, pitch);
     }
 
-    /* Items */
+    /* Player's methods */
+
+    @Override
+    public int getGameMode()
+    {
+        return this.entity.interactionManager.getGameType().getID();
+    }
+
+    @Override
+    public void setGameMode(int gameMode)
+    {
+        GameType type = GameType.getByID(gameMode);
+
+        if (type.getID() >= 0)
+        {
+            this.entity.setGameType(type);
+        }
+    }
 
     @Override
     public IScriptInventory getInventory()

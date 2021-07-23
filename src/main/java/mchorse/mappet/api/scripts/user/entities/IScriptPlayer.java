@@ -28,6 +28,45 @@ public interface IScriptPlayer extends IScriptEntity
     public EntityPlayerMP getMinecraftPlayer();
 
     /**
+     * Get player's game mode.
+     *
+     * <pre>{@code
+     *    // Assuming that c.getSubject() is a player
+     *    var player = c.getSubject();
+     *    var gamemode = player.getGameMode();
+     *
+     *    if (gamemode === 0)
+     *    {
+     *        player.send("You're in survival mode!");
+     *    }
+     * }</pre>
+     *
+     * @return Player's game mode as an integer, <code>0</code> is survival, <code>1</code>
+     * is creative, <code>2</code> is adventure , and <code>3</code> is spectator.
+     */
+    public int getGameMode();
+
+    /**
+     * Set player's game mode.
+     *
+     * <pre>{@code
+     *    // Assuming that c.getSubject() is a player
+     *    var player = c.getSubject();
+     *    var gamemode = c.getSubject().getGameMode();
+     *
+     *    // When player exits the mining region, set their game mode back to adventure
+     *    if (gamemode === 0 && !player.getStates().has("region.mining_factory"))
+     *    {
+     *        player.setGameMode(2);
+     *    }
+     * }</pre>
+     *
+     * @param gameMode Player's game mode <code>0</code> is survival, <code>1</code>
+     * is creative, <code>2</code> is adventure , and <code>3</code> is spectator.
+     */
+    public void setGameMode(int gameMode);
+
+    /**
      * Get player's inventory.
      *
      * <pre>{@code
