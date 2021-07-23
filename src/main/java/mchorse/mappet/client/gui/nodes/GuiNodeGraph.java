@@ -69,6 +69,9 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
     private Color b = new Color();
 
     private boolean notifyAboutMain;
+    private long tick;
+    private int average;
+    private int prevAverage;
 
     private Consumer<T> callback;
 
@@ -560,6 +563,19 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
     }
 
     @Override
+    protected void startDragging(GuiContext context)
+    {
+        /* Fake middle mouse click to add an ability to navigate
+         * with Ctrl + click dragging */
+        if (context.mouseButton == 0 && GuiScreen.isCtrlKeyDown())
+        {
+            this.mouse = 2;
+        }
+
+        super.startDragging(context);
+    }
+
+    @Override
     public void mouseReleased(GuiContext context)
     {
         super.mouseReleased(context);
@@ -645,6 +661,35 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
     @Override
     public void draw(GuiContext context)
     {
+        if (this.area.isInside(context) && !context.isFocused())
+        {
+            float steps = this.prevAverage <= 0 ? 1 : this.prevAverage;
+            float step = 15 / steps;
+            float x = Keyboard.isKeyDown(Keyboard.KEY_LEFT) ? -step : (Keyboard.isKeyDown(Keyboard.KEY_RIGHT) ? step : 0);
+            float y = Keyboard.isKeyDown(Keyboard.KEY_UP) ? -step : (Keyboard.isKeyDown(Keyboard.KEY_DOWN) ? step : 0);
+
+            if (x != 0)
+            {
+                this.scaleX.setShift(x / this.scaleX.getZoom() + this.scaleX.getShift());
+            }
+
+            if (y != 0)
+            {
+                this.scaleY.setShift(y / this.scaleY.getZoom() + this.scaleY.getShift());
+            }
+
+            /* Limiting speed so it wouldn't go crazy fast for people who play on
+             * absurd frame rates (like 300 or something like that) */
+            this.average += 1;
+
+            if (this.tick < context.tick)
+            {
+                this.tick = context.tick;
+                this.prevAverage = this.average;
+                this.average = 0;
+            }
+        }
+
         super.draw(context);
 
         if (this.system.nodes.isEmpty())
