@@ -94,7 +94,14 @@ public class TileRegion extends TileEntity implements ITickable
     {
         for (EntityPlayer player : this.world.playerEntities)
         {
-            if (player.isSpectator() || !this.region.isEnabled(player))
+            boolean enabled = this.region.isEnabled(player);
+
+            if (!this.region.passable)
+            {
+                enabled = !enabled;
+            }
+
+            if (player.isSpectator() || !enabled)
             {
                 continue;
             }
