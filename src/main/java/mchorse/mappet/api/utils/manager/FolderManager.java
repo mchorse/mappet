@@ -1,12 +1,15 @@
 package mchorse.mappet.api.utils.manager;
 
+import mchorse.mappet.Mappet;
 import mchorse.mappet.api.utils.AbstractData;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -14,7 +17,9 @@ import java.util.Set;
  */
 public abstract class FolderManager <T extends AbstractData> implements IManager<T>
 {
+    protected Map<String, ManagerCache> cache = new HashMap<String, ManagerCache>();
     protected File folder;
+    protected long lastCheck;
 
     public FolderManager(File folder)
     {
@@ -22,6 +27,21 @@ public abstract class FolderManager <T extends AbstractData> implements IManager
         {
             this.folder = folder;
             this.folder.mkdirs();
+        }
+    }
+
+    protected void doExpirationCheck()
+    {
+        final int threshold = 1000 * 30;
+        long current = System.currentTimeMillis();
+
+        /* Check every 30 seconds all cached entries and remove those that weren't used in
+         * last 30 seconds */
+        if (current - this.lastCheck > threshold)
+        {
+            this.cache.values().removeIf((cache) -> current - cache.lastUsed > threshold);
+
+            this.lastCheck = current;
         }
     }
 
@@ -38,7 +58,15 @@ public abstract class FolderManager <T extends AbstractData> implements IManager
 
         if (file != null && file.exists())
         {
-            return file.renameTo(this.getFile(newId));
+            if (file.renameTo(this.getFile(newId)))
+            {
+                if (Mappet.generalDataCaching.get())
+                {
+                    this.cache.put(newId, this.cache.remove(id));
+                }
+
+                return true;
+            }
         }
 
         return false;
@@ -49,7 +77,14 @@ public abstract class FolderManager <T extends AbstractData> implements IManager
     {
         File file = this.getFile(name);
 
-        return file != null && file.delete();
+        if (file != null && file.delete())
+        {
+            this.cache.remove(name);
+
+            return true;
+        }
+
+        return false;
     }
 
     @Override

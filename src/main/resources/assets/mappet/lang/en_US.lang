@@ -105,7 +105,9 @@ mappet.config.general.title=General
 mappet.config.general.tooltip=General mod options
 
 mappet.config.general.encoding=Encoding
-mappet.config.comments.encoding=The encoding that will be used to read and write Mappet files
+mappet.config.comments.general.encoding=The encoding that will be used to read and write Mappet files
+mappet.config.general.data_caching=Data caching
+mappet.config.comments.general.data_caching=Whether data should be cached instead of being read from files every time
 
 mappet.config.npc.title=NPCs
 mappet.config.npc.tooltip=Mod options related to NPCs

@@ -99,6 +99,7 @@ public final class Mappet
 
     /* Configuration */
     public static ValueString generalEncoding;
+    public static ValueBoolean generalDataCaching;
 
     public static ValueBoolean npcsPeacefulDamage;
 
@@ -126,6 +127,7 @@ public final class Mappet
         builder.category("general").register(new ValueButtons("buttons").clientSide());
         generalEncoding = builder.getString("encoding", "UTF-8");
         generalEncoding.invisible();
+        generalDataCaching = builder.getBoolean("data_caching", true);
 
         npcsPeacefulDamage = builder.category("npc").getBoolean("peaceful_damage", true);
 
