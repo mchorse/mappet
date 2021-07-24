@@ -421,7 +421,9 @@ public interface IScriptEntity
      * Apply given potion effect on the entity for given duration, with given amplifier,
      * and optionally with particles.
      *
-     * <p>You can get the potion effect using {@link IScriptFactory#getPotion(String)}.</p>
+     * <p><b>Attention</b>: potion effects work only with living base entities, so check for
+     * {@link #isLivingBase()}! You can get the potion effect using
+     * {@link IScriptFactory#getPotion(String)}.</p>
      *
      * <pre>{@code
      *    var slowness = mappet.getPotion("slowness");
@@ -429,13 +431,20 @@ public interface IScriptEntity
      *
      *    subject.applyPotion(slowness, 200, 1, false);
      * }</pre>
+     *
+     * @param potion Potion that should be applied.
+     * @param duration Duration of the effect in ticks (<code>20</code> ticks = <code>1</code> second).
+     * @param amplifier How strong is potion effect.
+     * @param particles Whether potion effect's particles should be emitted.
      */
     public void applyPotion(Potion potion, int duration, int amplifier, boolean particles);
 
     /**
      * Check whether given potion effect is present on this entity.
      *
-     * <p>You can get the potion effect using {@link IScriptFactory#getPotion(String)}.</p>
+     * <p><b>Attention</b>: potion effects work only with living base entities, so check for
+     * {@link #isLivingBase()}! You can get the potion effect using
+     * {@link IScriptFactory#getPotion(String)}.</p>
      *
      * <pre>{@code
      *    var slowness = mappet.getPotion("slowness");
@@ -452,7 +461,9 @@ public interface IScriptEntity
     /**
      * Remove given potion effect from this entity.
      *
-     * <p>You can get the potion effect using {@link IScriptFactory#getPotion(String)}.</p>
+     * <p><b>Attention</b>: potion effects work only with living base entities, so check for
+     * {@link #isLivingBase()}! You can get the potion effect using
+     * {@link IScriptFactory#getPotion(String)}.</p>
      *
      * <pre>{@code
      *    var slowness = mappet.getPotion("slowness");
@@ -471,6 +482,10 @@ public interface IScriptEntity
 
     /**
      * Remove all potion effects from this entity.
+     *
+     * <p><b>Attention</b>: potion effects work only with living base entities, so check for
+     * {@link #isLivingBase()}! You can get the potion effect using
+     * {@link IScriptFactory#getPotion(String)}.</p>
      *
      * <pre>{@code
      *    var subject = c.getSubject();

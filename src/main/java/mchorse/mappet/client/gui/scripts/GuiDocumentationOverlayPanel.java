@@ -120,6 +120,8 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
             Scanner scanner = new Scanner(stream, "UTF-8");
 
             docs = gson.fromJson(scanner.useDelimiter("\\A").next(), Docs.class);
+
+            entry = null;
         }
 
         for (DocClass docClass : docs.classes)
