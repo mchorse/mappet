@@ -1,6 +1,6 @@
 package mchorse.mappet.api.triggers.blocks;
 
-import mchorse.mappet.api.conditions.utils.Target;
+import mchorse.mappet.api.utils.TargetMode;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.utils.EnumUtils;
 import mchorse.mappet.utils.WorldUtils;
@@ -10,7 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class SoundTriggerBlock extends StringTriggerBlock
 {
-    public Target target = Target.GLOBAL;
+    public TargetMode target = TargetMode.GLOBAL;
 
     public SoundTriggerBlock()
     {
@@ -30,7 +30,7 @@ public class SoundTriggerBlock extends StringTriggerBlock
             return;
         }
 
-        if (this.target == Target.GLOBAL)
+        if (this.target == TargetMode.GLOBAL)
         {
             for (EntityPlayerMP player : context.server.getPlayerList().getPlayers())
             {
@@ -69,6 +69,6 @@ public class SoundTriggerBlock extends StringTriggerBlock
     {
         super.deserializeNBT(tag);
 
-        this.target = EnumUtils.getValue(tag.getInteger("Target"), Target.values(), Target.GLOBAL);
+        this.target = EnumUtils.getValue(tag.getInteger("Target"), TargetMode.values(), TargetMode.GLOBAL);
     }
 }

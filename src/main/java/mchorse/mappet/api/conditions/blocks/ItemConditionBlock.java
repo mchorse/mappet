@@ -1,7 +1,7 @@
 package mchorse.mappet.api.conditions.blocks;
 
-import mchorse.mappet.api.conditions.utils.Target;
 import mchorse.mappet.api.utils.DataContext;
+import mchorse.mappet.api.utils.TargetMode;
 import mchorse.mappet.utils.EnumUtils;
 import mchorse.mappet.utils.InventoryUtils;
 import net.minecraft.client.resources.I18n;
@@ -20,9 +20,9 @@ public class ItemConditionBlock extends TargetConditionBlock
     @Override
     public boolean evaluateBlock(DataContext context)
     {
-        if (this.target != Target.GLOBAL)
+        if (this.target.mode != TargetMode.GLOBAL)
         {
-            EntityPlayer player = this.getPlayer(context);
+            EntityPlayer player = this.target.getPlayer(context);
 
             if (player != null)
             {
@@ -49,9 +49,9 @@ public class ItemConditionBlock extends TargetConditionBlock
     }
 
     @Override
-    protected Target getDefaultTarget()
+    protected TargetMode getDefaultTarget()
     {
-        return Target.SUBJECT;
+        return TargetMode.SUBJECT;
     }
 
     @Override

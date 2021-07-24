@@ -1,6 +1,6 @@
 package mchorse.mappet.client.gui.triggers.panels;
 
-import mchorse.mappet.api.conditions.utils.Target;
+import mchorse.mappet.api.utils.TargetMode;
 import mchorse.mappet.api.triggers.blocks.SoundTriggerBlock;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.triggers.GuiTriggerOverlayPanel;
@@ -25,9 +25,9 @@ public class GuiSoundTriggerBlockPanel extends GuiStringTriggerBlockPanel<SoundT
 
         this.target = GuiMappetUtils.createTargetCirculate(mc, block.target, (target) -> this.block.target = target);
 
-        for (Target target : Target.values())
+        for (TargetMode target : TargetMode.values())
         {
-            if (!(target == Target.PLAYER || target == Target.GLOBAL))
+            if (!(target == TargetMode.PLAYER || target == TargetMode.GLOBAL))
             {
                 this.target.disable(target.ordinal());
             }

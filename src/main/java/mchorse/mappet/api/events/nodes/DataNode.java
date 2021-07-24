@@ -3,6 +3,8 @@ package mchorse.mappet.api.events.nodes;
 import mchorse.mappet.api.events.EventContext;
 import mchorse.mappet.api.utils.DataContext;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class DataNode extends EventBaseNode
 {
@@ -10,6 +12,7 @@ public abstract class DataNode extends EventBaseNode
     public String customData = "";
 
     @Override
+    @SideOnly(Side.CLIENT)
     protected String getDisplayTitle()
     {
         return this.dataId;

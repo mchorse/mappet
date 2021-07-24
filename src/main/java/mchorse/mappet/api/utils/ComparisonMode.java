@@ -1,11 +1,11 @@
-package mchorse.mappet.api.conditions.utils;
+package mchorse.mappet.api.utils;
 
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.math.Operation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public enum Comparison
+public enum ComparisonMode
 {
     LESS(Operation.LESS), LESS_THAN(Operation.LESS_THAN), EQUALS(Operation.EQUALS), GREATER_THAN(Operation.GREATER_THAN), GREATER(Operation.GREATER),
     IS_TRUE(null)
@@ -69,7 +69,7 @@ public enum Comparison
 
     public final Operation operation;
 
-    private Comparison(Operation operation)
+    private ComparisonMode(Operation operation)
     {
         this.operation = operation;
     }

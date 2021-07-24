@@ -1,10 +1,12 @@
 package mchorse.mappet.api.events.nodes;
 
 import mchorse.mappet.Mappet;
-import mchorse.mappet.api.events.EventContext;
 import mchorse.mappet.api.conditions.Checker;
+import mchorse.mappet.api.events.EventContext;
 import mchorse.mclib.math.IValue;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ConditionNode extends EventBaseNode
 {
@@ -14,6 +16,7 @@ public class ConditionNode extends EventBaseNode
     {}
 
     @Override
+    @SideOnly(Side.CLIENT)
     protected String getDisplayTitle()
     {
         return this.condition.mode == Checker.Mode.CONDITION ? "" : this.condition.expression;

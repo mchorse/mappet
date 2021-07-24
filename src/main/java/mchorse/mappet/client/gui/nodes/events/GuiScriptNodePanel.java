@@ -2,7 +2,6 @@ package mchorse.mappet.client.gui.nodes.events;
 
 import mchorse.mappet.api.events.nodes.ScriptNode;
 import mchorse.mappet.api.utils.ContentType;
-import mchorse.mappet.client.gui.panels.GuiMappetDashboardPanel;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;
@@ -12,9 +11,9 @@ public class GuiScriptNodePanel extends GuiDataNodePanel<ScriptNode>
 {
     public GuiTextElement function;
 
-    public GuiScriptNodePanel(Minecraft mc, GuiMappetDashboardPanel parentPanel)
+    public GuiScriptNodePanel(Minecraft mc)
     {
-        super(mc, parentPanel);
+        super(mc);
 
         this.function = new GuiTextElement(mc, 100, (text) -> this.node.function = text);
         this.function.tooltip(IKey.lang("mappet.gui.triggers.script.function_tooltip"));

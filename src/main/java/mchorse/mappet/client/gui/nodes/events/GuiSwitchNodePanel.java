@@ -2,7 +2,6 @@ package mchorse.mappet.client.gui.nodes.events;
 
 import mchorse.mappet.api.events.nodes.SwitchNode;
 import mchorse.mappet.client.gui.nodes.GuiEventBaseNodePanel;
-import mchorse.mappet.client.gui.panels.GuiMappetDashboardPanel;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;
@@ -12,7 +11,7 @@ public class GuiSwitchNodePanel extends GuiEventBaseNodePanel<SwitchNode>
 {
     public GuiTextElement expression;
 
-    public GuiSwitchNodePanel(Minecraft mc, GuiMappetDashboardPanel parentPanel)
+    public GuiSwitchNodePanel(Minecraft mc)
     {
         super(mc);
 

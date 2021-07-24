@@ -2,7 +2,8 @@ package mchorse.mappet.client.gui.conditions.blocks;
 
 import mchorse.mappet.api.conditions.blocks.EntityConditionBlock;
 import mchorse.mappet.client.gui.conditions.GuiConditionOverlayPanel;
-import mchorse.mappet.client.gui.conditions.utils.GuiPropertyBlockElement;
+import mchorse.mappet.client.gui.utils.GuiComparisonElement;
+import mchorse.mappet.client.gui.utils.GuiTargetElement;
 import mchorse.mappet.client.gui.utils.overlays.GuiLabelOverlayPanel;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
 import mchorse.mappet.utils.EntityUtils;
@@ -18,18 +19,18 @@ import java.util.Set;
 public class GuiEntityConditionBlockPanel extends GuiAbstractConditionBlockPanel<EntityConditionBlock>
 {
     public GuiButtonElement id;
-    public GuiPropertyBlockElement property;
+    public GuiTargetElement target;
+    public GuiComparisonElement comparison;
 
     public GuiEntityConditionBlockPanel(Minecraft mc, GuiConditionOverlayPanel overlay, EntityConditionBlock block)
     {
         super(mc, overlay, block);
 
         this.id = new GuiButtonElement(mc, IKey.lang("mappet.gui.conditions.entity.id"), this::openProperties);
-        this.property = new GuiPropertyBlockElement(mc, block);
-        this.property.skipGlobal();
+        this.target = new GuiTargetElement(mc, block.target).skipGlobal();
+        this.comparison = new GuiComparisonElement(mc, block.comparison);
 
-        this.add(this.id, this.property.targeter.marginTop(12));
-        this.add(this.property.compare.marginTop(12));
+        this.add(this.id, this.target.marginTop(12), this.comparison.marginTop(12));
     }
 
     private void openProperties(GuiButtonElement b)

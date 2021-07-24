@@ -1,7 +1,10 @@
 package mchorse.mappet.api.events.nodes;
 
 import mchorse.mappet.api.events.EventContext;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TimerNode extends EventBaseNode
 {
@@ -21,9 +24,10 @@ public class TimerNode extends EventBaseNode
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     protected String getDisplayTitle()
     {
-        return this.timer + " ticks";
+        return I18n.format("mappet.gui.nodes.event.ticks", this.timer);
     }
 
     @Override

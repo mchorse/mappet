@@ -4,6 +4,8 @@ import mchorse.mappet.api.dialogues.DialogueContext;
 import mchorse.mappet.api.events.EventContext;
 import mchorse.mappet.api.events.nodes.EventBaseNode;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class CraftingNode extends EventBaseNode
 {
@@ -18,6 +20,7 @@ public class CraftingNode extends EventBaseNode
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     protected String getDisplayTitle()
     {
         return this.table;

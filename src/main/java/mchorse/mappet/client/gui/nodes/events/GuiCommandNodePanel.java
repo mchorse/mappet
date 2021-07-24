@@ -2,7 +2,6 @@ package mchorse.mappet.client.gui.nodes.events;
 
 import mchorse.mappet.api.events.nodes.CommandNode;
 import mchorse.mappet.client.gui.nodes.GuiEventBaseNodePanel;
-import mchorse.mappet.client.gui.panels.GuiMappetDashboardPanel;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.utils.Elements;
@@ -13,7 +12,7 @@ public class GuiCommandNodePanel extends GuiEventBaseNodePanel<CommandNode>
 {
     public GuiTextElement command;
 
-    public GuiCommandNodePanel(Minecraft mc, GuiMappetDashboardPanel parentPanel)
+    public GuiCommandNodePanel(Minecraft mc)
     {
         super(mc);
 

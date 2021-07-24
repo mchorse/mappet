@@ -1,7 +1,7 @@
 package mchorse.mappet.client.gui.utils;
 
 import mchorse.mappet.ClientProxy;
-import mchorse.mappet.api.conditions.utils.Target;
+import mchorse.mappet.api.utils.TargetMode;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.utils.overlays.GuiContentNamesOverlayPanel;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
@@ -24,7 +24,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.util.SoundEvent;
 
 import java.util.function.Consumer;
@@ -85,17 +84,17 @@ public class GuiMappetUtils
         Gui.drawRect(area.x, area.my() + 40, area.ex(), area.my() + 90, 0xff000000);
     }
 
-    public static GuiCirculateElement createTargetCirculate(Minecraft mc, Target defaultTarget, Consumer<Target> callback)
+    public static GuiCirculateElement createTargetCirculate(Minecraft mc, TargetMode defaultTarget, Consumer<TargetMode> callback)
     {
         GuiCirculateElement button = new GuiCirculateElement(mc, (b) ->
         {
             if (callback != null)
             {
-                callback.accept(Target.values()[b.getValue()]);
+                callback.accept(TargetMode.values()[b.getValue()]);
             }
         });
 
-        for (Target target : Target.values())
+        for (TargetMode target : TargetMode.values())
         {
             button.addLabel(IKey.lang("mappet.gui.conditions.targets." + target.name().toLowerCase()));
         }

@@ -1,6 +1,6 @@
 package mchorse.mappet.client.gui.regions;
 
-import mchorse.mappet.api.conditions.utils.Target;
+import mchorse.mappet.api.utils.TargetMode;
 import mchorse.mappet.api.regions.Region;
 import mchorse.mappet.api.regions.shapes.AbstractShape;
 import mchorse.mappet.api.regions.shapes.BoxShape;
@@ -53,11 +53,11 @@ public class GuiRegionEditor extends GuiElement
         this.writeState = new GuiToggleElement(mc, IKey.lang("mappet.gui.region.write_states"), (b) -> this.toggleStates());
         this.stateOptions = Elements.column(mc, 5);
         this.state = new GuiTextElement(mc, (t) -> this.region.state = t);
-        this.target = GuiMappetUtils.createTargetCirculate(mc, Target.GLOBAL, (target) -> this.region.target = target);
+        this.target = GuiMappetUtils.createTargetCirculate(mc, TargetMode.GLOBAL, (target) -> this.region.target = target);
 
-        for (Target target : Target.values())
+        for (TargetMode target : TargetMode.values())
         {
-            if (!(target == Target.SUBJECT || target == Target.GLOBAL))
+            if (!(target == TargetMode.SUBJECT || target == TargetMode.GLOBAL))
             {
                 this.target.disable(target.ordinal());
             }

@@ -1,10 +1,11 @@
 package mchorse.mappet.client.gui.conditions.blocks;
 
 import mchorse.mappet.api.conditions.blocks.FactionConditionBlock;
-import mchorse.mappet.api.conditions.utils.Target;
+import mchorse.mappet.api.utils.TargetMode;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.conditions.GuiConditionOverlayPanel;
-import mchorse.mappet.client.gui.conditions.utils.GuiPropertyBlockElement;
+import mchorse.mappet.client.gui.utils.GuiComparisonElement;
+import mchorse.mappet.client.gui.utils.GuiTargetElement;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiCirculateElement;
@@ -15,7 +16,8 @@ import net.minecraft.client.Minecraft;
 public class GuiFactionConditionBlockPanel extends GuiAbstractConditionBlockPanel<FactionConditionBlock>
 {
     public GuiButtonElement id;
-    public GuiPropertyBlockElement property;
+    public GuiTargetElement target;
+    public GuiComparisonElement comparison;
     public GuiCirculateElement faction;
 
     public GuiFactionConditionBlockPanel(Minecraft mc, GuiConditionOverlayPanel overlay, FactionConditionBlock block)
@@ -23,8 +25,8 @@ public class GuiFactionConditionBlockPanel extends GuiAbstractConditionBlockPane
         super(mc, overlay, block);
 
         this.id = new GuiButtonElement(mc, IKey.lang("mappet.gui.overlays.faction"), (t) -> this.openFactions());
-        this.property = new GuiPropertyBlockElement(mc, block);
-        this.property.skipGlobal().skip(Target.NPC);
+        this.comparison = new GuiComparisonElement(mc, block.comparison);
+        this.target = new GuiTargetElement(mc, block.target).skipGlobal().skip(TargetMode.NPC);
         this.faction = new GuiCirculateElement(mc, this::toggleFaction);
         this.faction.addLabel(IKey.lang("mappet.gui.faction_attitudes.aggressive"));
         this.faction.addLabel(IKey.lang("mappet.gui.faction_attitudes.passive"));
@@ -36,8 +38,8 @@ public class GuiFactionConditionBlockPanel extends GuiAbstractConditionBlockPane
             Elements.column(mc, 5, Elements.label(IKey.lang("mappet.gui.conditions.faction.id")).marginTop(12), this.id),
             Elements.column(mc, 5, Elements.label(IKey.lang("mappet.gui.conditions.faction.check")).marginTop(12), this.faction)
         ));
-        this.add(this.property.targeter.marginTop(12));
-        this.add(this.property.compare.marginTop(12));
+        this.add(this.target.marginTop(12));
+        this.add(this.comparison.marginTop(12));
     }
 
     private void openFactions()

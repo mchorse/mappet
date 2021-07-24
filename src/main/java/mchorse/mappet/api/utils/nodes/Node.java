@@ -2,6 +2,8 @@ package mchorse.mappet.api.utils.nodes;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.UUID;
 
@@ -28,6 +30,7 @@ public abstract class Node implements INBTSerializable<NBTTagCompound>
         }
     }
 
+    @SideOnly(Side.CLIENT)
     public String getTitle()
     {
         if (this.title.isEmpty())
@@ -38,6 +41,7 @@ public abstract class Node implements INBTSerializable<NBTTagCompound>
         return this.title;
     }
 
+    @SideOnly(Side.CLIENT)
     protected String getDisplayTitle()
     {
         return "";

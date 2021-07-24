@@ -13,7 +13,7 @@ public class StateConditionBlock extends PropertyConditionBlock
     @Override
     public boolean evaluateBlock(DataContext context)
     {
-        States states = this.getStates(context);
+        States states = this.target.getStates(context);
 
         if (states == null)
         {
@@ -27,6 +27,6 @@ public class StateConditionBlock extends PropertyConditionBlock
     @SideOnly(Side.CLIENT)
     public String stringify()
     {
-        return this.comparison.stringify(this.id, this.value, this.expression);
+        return this.comparison.stringify(this.id);
     }
 }

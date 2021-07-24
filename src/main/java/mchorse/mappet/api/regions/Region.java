@@ -1,7 +1,7 @@
 package mchorse.mappet.api.regions;
 
 import mchorse.mappet.Mappet;
-import mchorse.mappet.api.conditions.utils.Target;
+import mchorse.mappet.api.utils.TargetMode;
 import mchorse.mappet.api.regions.shapes.AbstractShape;
 import mchorse.mappet.api.regions.shapes.BoxShape;
 import mchorse.mappet.api.states.States;
@@ -14,7 +14,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -39,7 +38,7 @@ public class Region implements INBTSerializable<NBTTagCompound>
     /* Automatic state writing */
     public boolean writeState;
     public String state = "";
-    public Target target = Target.GLOBAL;
+    public TargetMode target = TargetMode.GLOBAL;
     public boolean additive = true;
 
     public boolean isEnabled(EntityPlayer player)
@@ -77,7 +76,7 @@ public class Region implements INBTSerializable<NBTTagCompound>
     {
         if (this.writeState && !this.state.isEmpty())
         {
-            States states = this.target == Target.GLOBAL ? Mappet.states : EntityUtils.getStates(player);
+            States states = this.target == TargetMode.GLOBAL ? Mappet.states : EntityUtils.getStates(player);
 
             if (this.additive)
             {
@@ -96,7 +95,7 @@ public class Region implements INBTSerializable<NBTTagCompound>
     {
         if (this.writeState && !this.state.isEmpty())
         {
-            States states = this.target == Target.GLOBAL ? Mappet.states : EntityUtils.getStates(player);
+            States states = this.target == TargetMode.GLOBAL ? Mappet.states : EntityUtils.getStates(player);
 
             if (!this.additive)
             {
@@ -204,7 +203,7 @@ public class Region implements INBTSerializable<NBTTagCompound>
 
         this.writeState = tag.getBoolean("WriteState");
         this.state = tag.getString("State");
-        this.target = EnumUtils.getValue(tag.getInteger("Target"), Target.values(), Target.GLOBAL);
+        this.target = EnumUtils.getValue(tag.getInteger("Target"), TargetMode.values(), TargetMode.GLOBAL);
         this.additive = tag.getBoolean("Additive");
     }
 

@@ -1,11 +1,11 @@
 package mchorse.mappet.api.conditions.blocks;
 
 import mchorse.mappet.Mappet;
-import mchorse.mappet.api.conditions.utils.Target;
 import mchorse.mappet.api.factions.Faction;
 import mchorse.mappet.api.factions.FactionAttitude;
 import mchorse.mappet.api.states.States;
 import mchorse.mappet.api.utils.DataContext;
+import mchorse.mappet.api.utils.TargetMode;
 import mchorse.mappet.utils.EnumUtils;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,17 +22,17 @@ public class FactionConditionBlock extends PropertyConditionBlock
     }
 
     @Override
-    protected Target getDefaultTarget()
+    protected TargetMode getDefaultTarget()
     {
-        return Target.SUBJECT;
+        return TargetMode.SUBJECT;
     }
 
     @Override
     public boolean evaluateBlock(DataContext context)
     {
-        if (this.target != Target.GLOBAL)
+        if (this.target.mode != TargetMode.GLOBAL)
         {
-            States states = this.getStates(context);
+            States states = this.target.getStates(context);
 
             if (states == null)
             {
@@ -68,7 +68,7 @@ public class FactionConditionBlock extends PropertyConditionBlock
     {
         if (this.faction == FactionCheck.SCORE)
         {
-            return this.comparison.stringify(this.id, this.value, this.expression);
+            return this.comparison.stringify(this.id);
         }
         else if (this.faction == FactionCheck.AGGRESSIVE)
         {

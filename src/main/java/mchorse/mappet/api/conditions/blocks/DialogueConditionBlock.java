@@ -1,7 +1,7 @@
 package mchorse.mappet.api.conditions.blocks;
 
-import mchorse.mappet.api.conditions.utils.Target;
 import mchorse.mappet.api.utils.DataContext;
+import mchorse.mappet.api.utils.TargetMode;
 import mchorse.mappet.capabilities.character.ICharacter;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,9 +15,9 @@ public class DialogueConditionBlock extends TargetConditionBlock
     @Override
     public boolean evaluateBlock(DataContext context)
     {
-        if (this.target != Target.GLOBAL)
+        if (this.target.mode != TargetMode.GLOBAL)
         {
-            ICharacter character = this.getCharacter(context);
+            ICharacter character = this.target.getCharacter(context);
 
             return character != null && character.getStates().hasReadDialogue(this.id, this.marker);
         }
@@ -26,9 +26,9 @@ public class DialogueConditionBlock extends TargetConditionBlock
     }
 
     @Override
-    protected Target getDefaultTarget()
+    protected TargetMode getDefaultTarget()
     {
-        return Target.SUBJECT;
+        return TargetMode.SUBJECT;
     }
 
     @Override

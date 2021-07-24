@@ -3,6 +3,8 @@ package mchorse.mappet.api.quests.chains;
 import mchorse.mappet.api.conditions.Checker;
 import mchorse.mappet.api.utils.nodes.Node;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class QuestNode extends Node
 {
@@ -15,6 +17,7 @@ public class QuestNode extends Node
     public Checker condition = new Checker(true);
 
     @Override
+    @SideOnly(Side.CLIENT)
     protected String getDisplayTitle()
     {
         return this.quest;

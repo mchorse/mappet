@@ -3,7 +3,6 @@ package mchorse.mappet.client.gui.nodes.events;
 import mchorse.mappet.api.events.nodes.DataNode;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.nodes.GuiEventBaseNodePanel;
-import mchorse.mappet.client.gui.panels.GuiMappetDashboardPanel;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
@@ -16,7 +15,7 @@ public abstract class GuiDataNodePanel <T extends DataNode> extends GuiEventBase
     public GuiButtonElement pick;
     public GuiTextElement data;
 
-    public GuiDataNodePanel(Minecraft mc, GuiMappetDashboardPanel parentPanel)
+    public GuiDataNodePanel(Minecraft mc)
     {
         super(mc);
 

@@ -290,8 +290,11 @@ mappet.gui.nodes.event.binary_tooltip=When enabled, it allows to limit execution
 mappet.gui.nodes.event.command=Command
 mappet.gui.nodes.event.condition=Condition
 mappet.gui.nodes.event.timer=Timer
+mappet.gui.nodes.event.ticks=%s ticks
 mappet.gui.nodes.event.subject=Subject
 mappet.gui.nodes.event.data=Custom data
+mappet.gui.nodes.item.take=Take %s
+mappet.gui.nodes.item.give=Give %s
 mappet.gui.nodes.event.hotkeys.title=Trigger hotkeys editor
 mappet.gui.nodes.event.hotkeys.key=Keybind
 mappet.gui.nodes.event.hotkeys.enabled=Enabled
@@ -527,6 +530,7 @@ mappet.gui.node_types.timer=Timer
 mappet.gui.node_types.event=Event
 mappet.gui.node_types.dialogue=Dialogue
 mappet.gui.node_types.script=Script
+mappet.gui.node_types.item=Item
 
 mappet.gui.condition_types.quest=Quest
 mappet.gui.condition_types.dialogue=Dialogue
@@ -556,6 +560,9 @@ mappet.gui.entity_property.sprinting=Is sprinting
 mappet.gui.entity_property.on_ground=Is on ground
 mappet.gui.entity_property.yaw=Y head rotation (yaw)
 mappet.gui.entity_property.pitch=X head rotation (pitch)
+
+mappet.gui.item_node.mode.take=Take item
+mappet.gui.item_node.mode.give=Give item
 
 # Keys
 mappet.keys.category=Mappet

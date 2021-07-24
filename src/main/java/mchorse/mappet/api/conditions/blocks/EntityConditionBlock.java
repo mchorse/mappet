@@ -1,7 +1,7 @@
 package mchorse.mappet.api.conditions.blocks;
 
-import mchorse.mappet.api.conditions.utils.Target;
 import mchorse.mappet.api.utils.DataContext;
+import mchorse.mappet.api.utils.TargetMode;
 import mchorse.mappet.utils.EntityUtils;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
@@ -11,15 +11,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class EntityConditionBlock extends PropertyConditionBlock
 {
     @Override
-    protected Target getDefaultTarget()
+    protected TargetMode getDefaultTarget()
     {
-        return Target.SUBJECT;
+        return TargetMode.SUBJECT;
     }
 
     @Override
     protected boolean evaluateBlock(DataContext context)
     {
-        Entity entity = this.getEntity(context);
+        Entity entity = this.target.getEntity(context);
 
         if (entity == null)
         {
@@ -42,6 +42,6 @@ public class EntityConditionBlock extends PropertyConditionBlock
             id = I18n.format("mappet.gui.entity_property." + this.id);
         }
 
-        return this.comparison.stringify(id, this.value, this.expression);
+        return this.comparison.stringify(id);
     }
 }

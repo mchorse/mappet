@@ -3,12 +3,15 @@ package mchorse.mappet.api.events.nodes;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.events.EventContext;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ScriptNode extends DataNode
 {
     public String function = "";
 
     @Override
+    @SideOnly(Side.CLIENT)
     protected String getDisplayTitle()
     {
         return super.getDisplayTitle() + (this.function.isEmpty() ? "" : " (§7" + this.function + "§r)");

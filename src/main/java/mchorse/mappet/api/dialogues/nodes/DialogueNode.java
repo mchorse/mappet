@@ -4,12 +4,15 @@ import mchorse.mappet.api.dialogues.DialogueFragment;
 import mchorse.mappet.api.events.nodes.EventBaseNode;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class DialogueNode extends EventBaseNode
 {
     public DialogueFragment message = new DialogueFragment();
 
     @Override
+    @SideOnly(Side.CLIENT)
     protected String getDisplayTitle()
     {
         return this.message.getProcessedText();

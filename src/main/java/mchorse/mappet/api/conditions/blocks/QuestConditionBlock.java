@@ -1,8 +1,8 @@
 package mchorse.mappet.api.conditions.blocks;
 
-import mchorse.mappet.api.conditions.utils.Target;
 import mchorse.mappet.api.states.States;
 import mchorse.mappet.api.utils.DataContext;
+import mchorse.mappet.api.utils.TargetMode;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.utils.EnumUtils;
@@ -19,9 +19,9 @@ public class QuestConditionBlock extends TargetConditionBlock
     @Override
     public boolean evaluateBlock(DataContext context)
     {
-        if (this.target == Target.GLOBAL)
+        if (this.target.mode == TargetMode.GLOBAL)
         {
-            States states = this.getStates(context);
+            States states = this.target.getStates(context);
 
             if (this.quest == QuestCheck.ABSENT)
             {
@@ -38,7 +38,7 @@ public class QuestConditionBlock extends TargetConditionBlock
         }
         else
         {
-            ICharacter character = this.getCharacter(context);
+            ICharacter character = this.target.getCharacter(context);
 
             if (character != null)
             {
@@ -74,9 +74,9 @@ public class QuestConditionBlock extends TargetConditionBlock
     }
 
     @Override
-    protected Target getDefaultTarget()
+    protected TargetMode getDefaultTarget()
     {
-        return Target.SUBJECT;
+        return TargetMode.SUBJECT;
     }
 
     @Override
