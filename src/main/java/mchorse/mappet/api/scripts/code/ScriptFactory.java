@@ -24,6 +24,7 @@ import net.minecraft.nbt.NBTTagDouble;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -189,6 +190,12 @@ public class ScriptFactory implements IScriptFactory
     public EnumParticleTypes getParticleType(String type)
     {
         return EnumParticleTypes.getByName(type);
+    }
+
+    @Override
+    public Potion getPotion(String type)
+    {
+        return Potion.getPotionFromResourceLocation(type);
     }
 
     @Override

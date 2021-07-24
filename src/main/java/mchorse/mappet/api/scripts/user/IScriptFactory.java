@@ -5,6 +5,7 @@ import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.mappet.api.scripts.user.nbt.INBTList;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumParticleTypes;
 
 /**
@@ -302,6 +303,21 @@ public interface IScriptFactory
      * }</pre>
      */
     public EnumParticleTypes getParticleType(String type);
+
+    /**
+     * Get Minecraft potion effect by its name.
+     *
+     * <p>You can find out all of the particle types by typing in <code>/effect</code>
+     * command, and looking up the completion of the second argument (i.e. press tab after
+     * typing in <code>/particle Player</code> and a space).</p>
+     *
+     * <pre>{@code
+     *    var slowness = mappet.getPotion("slowness");
+     *
+     *    c.getSubject().applyPotion(slowness, 200, 1, false);
+     * }</pre>
+     */
+    public Potion getPotion(String type);
 
     /**
      * Create a morph out of string NBT.

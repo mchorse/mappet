@@ -26,6 +26,8 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
@@ -403,6 +405,55 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     public void kill()
     {
         this.entity.onKillCommand();
+    }
+
+    /* Potion effects */
+
+    @Override
+    public void applyPotion(Potion potion, int duration, int amplifier, boolean particles)
+    {
+        if (this.isLivingBase())
+        {
+            PotionEffect effect = new PotionEffect(potion, duration, amplifier, false, particles);
+
+            ((EntityLivingBase) this.entity).addPotionEffect(effect);
+        }
+    }
+
+    @Override
+    public boolean hasPotion(Potion potion)
+    {
+        if (this.isLivingBase())
+        {
+            return ((EntityLivingBase) this.entity).isPotionActive(potion);
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean removePotion(Potion potion)
+    {
+        if (this.isLivingBase())
+        {
+            EntityLivingBase entity = (EntityLivingBase) this.entity;
+            int size = entity.getActivePotionMap().size();
+
+            entity.removePotionEffect(potion);
+
+            return size != entity.getActivePotionMap().size();
+        }
+
+        return false;
+    }
+
+    @Override
+    public void clearPotions()
+    {
+        if (this.isLivingBase())
+        {
+            ((EntityLivingBase) this.entity).clearActivePotions();
+        }
     }
 
     /* Mappet stuff */

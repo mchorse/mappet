@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts.user.entities;
 
+import mchorse.mappet.api.scripts.user.IScriptFactory;
 import mchorse.mappet.api.scripts.user.IScriptRayTrace;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
@@ -7,6 +8,7 @@ import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.Entity;
+import net.minecraft.potion.Potion;
 
 /**
  * Entity interface.
@@ -412,6 +414,72 @@ public interface IScriptEntity
      * (similar to <code>/kill</code> command).
      */
     public void kill();
+
+    /* Potion effects */
+
+    /**
+     * Apply given potion effect on the entity for given duration, with given amplifier,
+     * and optionally with particles.
+     *
+     * <p>You can get the potion effect using {@link IScriptFactory#getPotion(String)}.</p>
+     *
+     * <pre>{@code
+     *    var slowness = mappet.getPotion("slowness");
+     *    var subject = c.getSubject();
+     *
+     *    subject.applyPotion(slowness, 200, 1, false);
+     * }</pre>
+     */
+    public void applyPotion(Potion potion, int duration, int amplifier, boolean particles);
+
+    /**
+     * Check whether given potion effect is present on this entity.
+     *
+     * <p>You can get the potion effect using {@link IScriptFactory#getPotion(String)}.</p>
+     *
+     * <pre>{@code
+     *    var slowness = mappet.getPotion("slowness");
+     *    var subject = c.getSubject();
+     *
+     *    if (subject.hasPotion(slowness))
+     *    {
+     *        subject.send("You're kind of slow, my dude...");
+     *    }
+     * }</pre>
+     */
+    public boolean hasPotion(Potion potion);
+
+    /**
+     * Remove given potion effect from this entity.
+     *
+     * <p>You can get the potion effect using {@link IScriptFactory#getPotion(String)}.</p>
+     *
+     * <pre>{@code
+     *    var slowness = mappet.getPotion("slowness");
+     *    var subject = c.getSubject();
+     *
+     *    if (subject.removePotion(slowness))
+     *    {
+     *        subject.send("I made you faster, no need to thank me ;)");
+     *    }
+     * }</pre>
+     *
+     * @return <code>true</code> if there was effect, and it was successfully removed,
+     *         <code>false</code> if had no given effect present.
+     */
+    public boolean removePotion(Potion potion);
+
+    /**
+     * Remove all potion effects from this entity.
+     *
+     * <pre>{@code
+     *    var subject = c.getSubject();
+     *
+     *    subject.clearPotions();
+     *    subject.send("You've been freed from all potion effects!");
+     * }</pre>
+     */
+    public void clearPotions();
 
     /* Mappet stuff */
 
