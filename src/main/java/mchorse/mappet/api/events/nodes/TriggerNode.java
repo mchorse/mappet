@@ -24,15 +24,15 @@ public class TriggerNode extends EventBaseNode
 
         if (this.cancel)
         {
-            if (!context.data.canceled)
+            if (!context.data.isCanceled())
             {
-                context.data.canceled = newContext.canceled;
+                context.data.cancel(newContext.isCanceled());
             }
 
             return this.booleanToExecutionCode(true);
         }
 
-        return this.booleanToExecutionCode(!newContext.canceled);
+        return this.booleanToExecutionCode(!newContext.isCanceled());
     }
 
     public DataContext apply(EventContext event)

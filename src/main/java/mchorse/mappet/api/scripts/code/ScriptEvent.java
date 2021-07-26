@@ -98,7 +98,7 @@ public class ScriptEvent implements IScriptEvent
     @Override
     public void cancel()
     {
-        this.context.canceled = true;
+        this.context.cancel();
     }
 
     @Override

@@ -7,16 +7,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class CraftingNode extends EventBaseNode
+public class QuestDialogueNode extends EventBaseNode
 {
-    public String table = "";
+    public String quest = "";
 
     @Override
     public int execute(EventContext context)
     {
         if (context instanceof DialogueContext)
         {
-            ((DialogueContext) context).setCrafting(this);
+            ((DialogueContext) context).setQuest(this);
         }
 
         return EventBaseNode.HALT;
@@ -26,7 +26,7 @@ public class CraftingNode extends EventBaseNode
     @SideOnly(Side.CLIENT)
     protected String getDisplayTitle()
     {
-        return this.table;
+        return this.quest;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class CraftingNode extends EventBaseNode
     {
         NBTTagCompound tag = super.serializeNBT();
 
-        tag.setString("CraftingTable", this.table);
+        tag.setString("Quest", this.quest);
 
         return tag;
     }
@@ -44,9 +44,9 @@ public class CraftingNode extends EventBaseNode
     {
         super.deserializeNBT(tag);
 
-        if (tag.hasKey("CraftingTable"))
+        if (tag.hasKey("Quest"))
         {
-            this.table = tag.getString("CraftingTable");
+            this.quest = tag.getString("Quest");
         }
     }
 }

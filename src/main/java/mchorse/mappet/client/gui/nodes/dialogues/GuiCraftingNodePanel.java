@@ -3,7 +3,6 @@ package mchorse.mappet.client.gui.nodes.dialogues;
 import mchorse.mappet.api.dialogues.nodes.CraftingNode;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.nodes.GuiEventBaseNodePanel;
-import mchorse.mappet.client.gui.panels.GuiMappetDashboardPanel;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.utils.keys.IKey;
@@ -13,7 +12,7 @@ public class GuiCraftingNodePanel extends GuiEventBaseNodePanel<CraftingNode>
 {
     public GuiButtonElement crafting;
 
-    public GuiCraftingNodePanel(Minecraft mc, GuiMappetDashboardPanel parentPanel)
+    public GuiCraftingNodePanel(Minecraft mc)
     {
         super(mc);
 

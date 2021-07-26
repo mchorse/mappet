@@ -45,7 +45,7 @@ public class ItemTriggerBlock extends AbstractTriggerBlock
 
         if (this.stack.isEmpty() || (player = this.target.getPlayer(context)) == null)
         {
-            context.canceled = true;
+            context.cancel();
 
             return;
         }
@@ -69,7 +69,7 @@ public class ItemTriggerBlock extends AbstractTriggerBlock
         }
         else
         {
-            context.canceled = true;
+            context.cancel();
         }
     }
 

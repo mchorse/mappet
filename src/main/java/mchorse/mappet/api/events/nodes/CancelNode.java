@@ -7,7 +7,7 @@ public class CancelNode extends EventBaseNode
     @Override
     public int execute(EventContext context)
     {
-        context.data.canceled = true;
+        context.data.cancel();
 
         return EventBaseNode.HALT;
     }

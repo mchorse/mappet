@@ -62,7 +62,7 @@ public class Trigger implements INBTSerializable<NBTTagCompound>
     {
         for (AbstractTriggerBlock block : this.blocks)
         {
-            if (context.canceled)
+            if (context.isCanceled())
             {
                 return;
             }

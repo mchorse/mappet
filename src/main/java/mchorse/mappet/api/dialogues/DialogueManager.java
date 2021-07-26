@@ -5,6 +5,9 @@ import mchorse.mappet.Mappet;
 import mchorse.mappet.api.crafting.CraftingTable;
 import mchorse.mappet.api.dialogues.nodes.ReactionNode;
 import mchorse.mappet.api.events.nodes.EventBaseNode;
+import mchorse.mappet.api.quests.Quest;
+import mchorse.mappet.api.quests.chains.QuestInfo;
+import mchorse.mappet.api.quests.chains.QuestStatus;
 import mchorse.mappet.api.utils.manager.BaseManager;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
@@ -76,7 +79,23 @@ public class DialogueManager extends BaseManager<Dialogue>
 
         if (context.quest != null)
         {
-            packet.addQuests(Mappet.chains.evaluate(context.quest.chain, player, context.data.process(context.quest.subject)));
+            Quest quest = Mappet.quests.load(context.quest.quest);
+
+            if (quest != null)
+            {
+                QuestStatus status = QuestStatus.AVAILABLE;
+
+                if (character.getQuests().has(quest.getId()))
+                {
+                    status = quest.isComplete(player) ? QuestStatus.COMPLETED : QuestStatus.UNAVAILABLE;
+                }
+
+                packet.addQuest(new QuestInfo(quest, status));
+            }
+        }
+        else if (context.questChain != null)
+        {
+            packet.addQuests(Mappet.chains.evaluate(context.questChain.chain, player, context.data.process(context.questChain.subject)));
         }
         else if (context.crafting != null)
         {

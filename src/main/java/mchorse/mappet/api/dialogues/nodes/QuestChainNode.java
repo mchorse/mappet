@@ -15,7 +15,10 @@ public class QuestChainNode extends EventBaseNode
     @Override
     public int execute(EventContext context)
     {
-        ((DialogueContext) context).quest = this;
+        if (context instanceof DialogueContext)
+        {
+            ((DialogueContext) context).setQuestChain(this);
+        }
 
         return EventBaseNode.HALT;
     }

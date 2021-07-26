@@ -29,7 +29,7 @@ public class DataContext
     public EntityLivingBase subject;
     public EntityLivingBase object;
 
-    public boolean canceled;
+    private boolean canceled;
 
     private TriggerSender sender;
     private Map<String, Object> values = new HashMap<String, Object>();
@@ -70,6 +70,21 @@ public class DataContext
         this.server = server;
 
         this.setup();
+    }
+
+    public void cancel()
+    {
+        this.cancel(true);
+    }
+
+    public void cancel(boolean canceled)
+    {
+        this.canceled = canceled;
+    }
+
+    public boolean isCanceled()
+    {
+        return this.canceled;
     }
 
     private void setup()

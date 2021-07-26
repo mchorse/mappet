@@ -18,7 +18,7 @@ public class ReplyNode extends DialogueNode
     {
         if (context instanceof DialogueContext)
         {
-            ((DialogueContext) context).replyNodes.add(this);
+            ((DialogueContext) context).addReply(this);
         }
 
         return -1;

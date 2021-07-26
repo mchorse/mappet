@@ -27,6 +27,8 @@ public class ConditionConditionBlock extends AbstractConditionBlock
     @Override
     public void serializeNBT(NBTTagCompound tag)
     {
+        super.serializeNBT(tag);
+
         tag.setTag("Condition", this.condition.serializeNBT());
     }
 

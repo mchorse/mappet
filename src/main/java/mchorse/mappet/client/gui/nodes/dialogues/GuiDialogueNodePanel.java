@@ -2,7 +2,6 @@ package mchorse.mappet.client.gui.nodes.dialogues;
 
 import mchorse.mappet.api.dialogues.nodes.DialogueNode;
 import mchorse.mappet.client.gui.nodes.GuiEventBaseNodePanel;
-import mchorse.mappet.client.gui.panels.GuiMappetDashboardPanel;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mclib.client.gui.framework.elements.input.GuiColorElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
@@ -15,7 +14,7 @@ public class GuiDialogueNodePanel extends GuiEventBaseNodePanel<DialogueNode>
     public GuiTextElement text;
     public GuiColorElement color;
 
-    public GuiDialogueNodePanel(Minecraft mc, GuiMappetDashboardPanel parentPanel)
+    public GuiDialogueNodePanel(Minecraft mc)
     {
         super(mc);
 

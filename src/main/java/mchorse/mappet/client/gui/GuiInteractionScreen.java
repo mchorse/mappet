@@ -132,6 +132,17 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
 
         if (this.questInfos != null)
         {
+            this.quests.setVisible(!this.fragment.singleQuest);
+
+            if (this.fragment.singleQuest)
+            {
+                this.questArea.flex().relative(this.quest).y(0);
+            }
+            else
+            {
+                this.questArea.flex().relative(this.quest).y(66);
+            }
+
             this.reaction.flex().hTo(this.quest.area);
 
             this.back.flex().reset().relative(this.quest).x(10).y(1F, -10).wh(80, 20).anchorY(1F);
@@ -265,6 +276,13 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
         QuestInfo info = this.quests.getCurrentFirst();
 
         Dispatcher.sendToServer(new PacketQuestAction(info.quest.getId(), info.status));
+
+        if (this.fragment.singleQuest)
+        {
+            this.back.clickItself(GuiBase.getCurrent());
+
+            return;
+        }
 
         if (info.status == QuestStatus.AVAILABLE)
         {

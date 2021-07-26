@@ -1,6 +1,7 @@
 package mchorse.mappet.network.server.quests;
 
 import mchorse.mappet.Mappet;
+import mchorse.mappet.api.dialogues.DialogueContext;
 import mchorse.mappet.api.quests.Quest;
 import mchorse.mappet.api.quests.chains.QuestStatus;
 import mchorse.mappet.capabilities.character.Character;
@@ -34,7 +35,12 @@ public class ServerHandlerQuestAction extends ServerMessageHandler<PacketQuestAc
                 character.getQuests().complete(message.id, player);
 
                 /* Update quests, because there might be some new quests down the chain */
-                Mappet.dialogues.handleContext(player, character.getDialogue(), character.getDialogueContext(), null);
+                DialogueContext context = character.getDialogueContext();
+
+                if (context.questChain != null)
+                {
+                    Mappet.dialogues.handleContext(player, character.getDialogue(), context, null);
+                }
             }
         }
         else if (message.status == QuestStatus.CANCELED)

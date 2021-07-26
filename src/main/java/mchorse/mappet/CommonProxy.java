@@ -11,6 +11,7 @@ import mchorse.mappet.api.conditions.blocks.StateConditionBlock;
 import mchorse.mappet.api.conditions.blocks.WorldTimeConditionBlock;
 import mchorse.mappet.api.dialogues.nodes.CraftingNode;
 import mchorse.mappet.api.dialogues.nodes.QuestChainNode;
+import mchorse.mappet.api.dialogues.nodes.QuestDialogueNode;
 import mchorse.mappet.api.dialogues.nodes.ReactionNode;
 import mchorse.mappet.api.dialogues.nodes.ReplyNode;
 import mchorse.mappet.api.events.nodes.CancelNode;
@@ -161,7 +162,8 @@ public class CommonProxy
             .register("reply", ReplyNode.class, Colors.REPLY)
             .register("reaction", ReactionNode.class, Colors.STATE)
             .register("crafting", CraftingNode.class, Colors.CRAFTING)
-            .register("quest_chain", QuestChainNode.class, Colors.QUEST).alias("quest_chain", "quest")
+            .register("quest_chain", QuestChainNode.class, Colors.QUEST)
+            .register("quest", QuestDialogueNode.class, Colors.QUEST)
             .unregister("timer");
 
         dialogues = dialogueNodes;

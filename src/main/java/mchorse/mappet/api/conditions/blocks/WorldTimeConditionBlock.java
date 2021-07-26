@@ -54,6 +54,8 @@ public class WorldTimeConditionBlock extends AbstractConditionBlock
     @Override
     public void serializeNBT(NBTTagCompound tag)
     {
+        super.serializeNBT(tag);
+
         tag.setInteger("Check", this.check.ordinal());
         tag.setInteger("Min", this.min);
         tag.setInteger("Max", this.max);

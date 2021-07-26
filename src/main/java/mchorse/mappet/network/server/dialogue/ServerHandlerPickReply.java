@@ -30,6 +30,10 @@ public class ServerHandlerPickReply extends ServerMessageHandler<PacketPickReply
             {
                 node = context.replyNodes.get(i);
             }
+            else if (context.questChain != null)
+            {
+                node = context.questChain;
+            }
             else if (context.quest != null)
             {
                 node = context.quest;
@@ -37,7 +41,7 @@ public class ServerHandlerPickReply extends ServerMessageHandler<PacketPickReply
 
             ReactionNode reactionNode = context.reactionNode;
 
-            context.reset();
+            context.resetAll();
             Mappet.dialogues.recursiveExecute(dialogue, node, context, true);
             Mappet.dialogues.handleContext(player, dialogue, context, reactionNode);
         }

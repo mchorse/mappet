@@ -3,7 +3,6 @@ package mchorse.mappet.client.gui.nodes.dialogues;
 import mchorse.mappet.api.dialogues.nodes.QuestChainNode;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.nodes.GuiEventBaseNodePanel;
-import mchorse.mappet.client.gui.panels.GuiMappetDashboardPanel;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
@@ -16,7 +15,7 @@ public class GuiQuestChainNodePanel extends GuiEventBaseNodePanel<QuestChainNode
     public GuiButtonElement questChain;
     public GuiTextElement subject;
 
-    public GuiQuestChainNodePanel(Minecraft mc, GuiMappetDashboardPanel parentPanel)
+    public GuiQuestChainNodePanel(Minecraft mc)
     {
         super(mc);
 

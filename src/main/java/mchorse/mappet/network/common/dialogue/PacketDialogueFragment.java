@@ -23,6 +23,7 @@ public class PacketDialogueFragment implements IMessage
     public List<DialogueFragment> replies = new ArrayList<DialogueFragment>();
     public CraftingTable table;
     public boolean hasQuests;
+    public boolean singleQuest;
     public List<QuestInfo> quests = new ArrayList<QuestInfo>();
 
     public PacketDialogueFragment()
@@ -51,6 +52,13 @@ public class PacketDialogueFragment implements IMessage
         this.quests.addAll(context.quests);
     }
 
+    public void addQuest(QuestInfo questInfo)
+    {
+        this.hasQuests = true;
+        this.singleQuest = true;
+        this.quests.add(questInfo);
+    }
+
     @Override
     public void fromBytes(ByteBuf buf)
     {
@@ -75,6 +83,7 @@ public class PacketDialogueFragment implements IMessage
         }
 
         this.hasQuests = buf.readBoolean();
+        this.singleQuest = buf.readBoolean();
 
         for (int i = 0, c = buf.readInt(); i < c; i++)
         {
@@ -109,6 +118,7 @@ public class PacketDialogueFragment implements IMessage
         }
 
         buf.writeBoolean(this.hasQuests);
+        buf.writeBoolean(this.singleQuest);
         buf.writeInt(this.quests.size());
 
         for (QuestInfo info : this.quests)

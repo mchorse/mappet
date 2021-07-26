@@ -17,6 +17,8 @@ public abstract class TargetConditionBlock extends AbstractConditionBlock
     @Override
     public void serializeNBT(NBTTagCompound tag)
     {
+        super.serializeNBT(tag);
+
         tag.setString("Id", this.id.trim());
         tag.merge(this.target.serializeNBT());
     }
