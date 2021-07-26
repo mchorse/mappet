@@ -1,12 +1,10 @@
 package mchorse.mappet.api.conditions.blocks;
 
+import mchorse.mappet.api.utils.AbstractBlock;
 import mchorse.mappet.api.utils.DataContext;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class AbstractConditionBlock implements INBTSerializable<NBTTagCompound>
+public abstract class AbstractConditionBlock extends AbstractBlock
 {
     public boolean not;
     public boolean or;
@@ -20,23 +18,12 @@ public abstract class AbstractConditionBlock implements INBTSerializable<NBTTagC
 
     protected abstract boolean evaluateBlock(DataContext context);
 
-    @SideOnly(Side.CLIENT)
-    public abstract String stringify();
-
     @Override
-    public NBTTagCompound serializeNBT()
+    protected void serializeNBT(NBTTagCompound tag)
     {
-        NBTTagCompound tag = new NBTTagCompound();
-
         tag.setBoolean("Not", this.not);
         tag.setBoolean("Or", this.or);
-
-        this.serializeNBT(tag);
-
-        return tag;
     }
-
-    public abstract void serializeNBT(NBTTagCompound tag);
 
     @Override
     public void deserializeNBT(NBTTagCompound tag)

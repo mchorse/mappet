@@ -492,6 +492,7 @@ mappet.gui.scripts.documentation.title=Scripting documentation
 mappet.gui.scripts.repl.title=REPL (interactive console)
 mappet.gui.scripts.repl.hello_world=Hello, world!
 mappet.gui.scripts.repl.welcome=This is Mappet's Read-Eval-Print Loop (REPL). You can type in §6JS§r code, and execute it by pressing Enter key. You can cycle through eval history by holding §6Ctrl§r key and arrow §6Up§r or §6Down§r.\n\nFollowing variables are available:\n\n- §6c§r is a IScriptEvent that has player as a subject\n- §6mappet§r is a IScriptFactory
+mappet.gui.scripts.repl.context.clear=Clear
 mappet.gui.scripts.context.paste_morph=Paste morph NBT...
 mappet.gui.scripts.context.paste_item=Paste item NBT...
 mappet.gui.scripts.context.paste_player_pos=Paste player's position
@@ -530,7 +531,6 @@ mappet.gui.node_types.timer=Timer
 mappet.gui.node_types.event=Event
 mappet.gui.node_types.dialogue=Dialogue
 mappet.gui.node_types.script=Script
-mappet.gui.node_types.item=Item
 
 mappet.gui.condition_types.quest=Quest
 mappet.gui.condition_types.dialogue=Dialogue
@@ -546,6 +546,7 @@ mappet.gui.trigger_types.sound=Sound event
 mappet.gui.trigger_types.event=Event
 mappet.gui.trigger_types.dialogue=Dialogue
 mappet.gui.trigger_types.script=Script
+mappet.gui.trigger_types.item=Item
 
 mappet.gui.entity_property.xp=Total experience
 mappet.gui.entity_property.xp_level=Experience level

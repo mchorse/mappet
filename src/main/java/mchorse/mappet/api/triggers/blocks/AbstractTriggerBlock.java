@@ -1,14 +1,25 @@
 package mchorse.mappet.api.triggers.blocks;
 
+import mchorse.mappet.CommonProxy;
+import mchorse.mappet.api.utils.AbstractBlock;
 import mchorse.mappet.api.utils.DataContext;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class AbstractTriggerBlock implements INBTSerializable<NBTTagCompound>
+public abstract class AbstractTriggerBlock extends AbstractBlock
 {
     public int delay = 1;
 
     private int tick;
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public String stringify()
+    {
+        return I18n.format("mappet.gui.trigger_types." + CommonProxy.getTriggerBlocks().getType(this));
+    }
 
     public void triggerWithDelay(DataContext context)
     {
@@ -26,18 +37,10 @@ public abstract class AbstractTriggerBlock implements INBTSerializable<NBTTagCom
     public abstract boolean isEmpty();
 
     @Override
-    public NBTTagCompound serializeNBT()
+    protected void serializeNBT(NBTTagCompound tag)
     {
-        NBTTagCompound tag = new NBTTagCompound();
-
         tag.setInteger("Delay", this.delay);
-
-        this.serializeNBT(tag);
-
-        return tag;
     }
-
-    protected abstract void serializeNBT(NBTTagCompound tag);
 
     @Override
     public void deserializeNBT(NBTTagCompound tag)

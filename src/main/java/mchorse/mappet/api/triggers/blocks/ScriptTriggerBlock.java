@@ -3,6 +3,7 @@ package mchorse.mappet.api.triggers.blocks;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.utils.DataContext;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.TextFormatting;
 
 public class ScriptTriggerBlock extends StringTriggerBlock
 {
@@ -18,6 +19,17 @@ public class ScriptTriggerBlock extends StringTriggerBlock
         super(string);
 
         this.function = function;
+    }
+
+    @Override
+    public String stringify()
+    {
+        if (!this.string.isEmpty() && !this.function.isEmpty())
+        {
+            return this.string + " (" + TextFormatting.GRAY + this.function + TextFormatting.RESET + ")";
+        }
+
+        return super.stringify();
     }
 
     @Override

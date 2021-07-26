@@ -19,17 +19,17 @@ import mchorse.mappet.api.events.nodes.ConditionNode;
 import mchorse.mappet.api.events.nodes.DialogueNode;
 import mchorse.mappet.api.events.nodes.EventBaseNode;
 import mchorse.mappet.api.events.nodes.EventNode;
-import mchorse.mappet.api.events.nodes.ItemNode;
 import mchorse.mappet.api.events.nodes.ScriptNode;
 import mchorse.mappet.api.events.nodes.SwitchNode;
 import mchorse.mappet.api.events.nodes.TimerNode;
+import mchorse.mappet.api.quests.chains.QuestNode;
 import mchorse.mappet.api.triggers.blocks.AbstractTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.CommandTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.DialogueTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.EventTriggerBlock;
+import mchorse.mappet.api.triggers.blocks.ItemTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.ScriptTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.SoundTriggerBlock;
-import mchorse.mappet.api.quests.chains.QuestNode;
 import mchorse.mappet.api.utils.factory.IFactory;
 import mchorse.mappet.api.utils.factory.MapFactory;
 import mchorse.mappet.capabilities.character.Character;
@@ -151,8 +151,7 @@ public class CommonProxy
             .register("event", EventNode.class, Colors.STATE)
             .register("dialogue", DialogueNode.class, Colors.DIALOGUE)
             .register("script", ScriptNode.class, Colors.ENTITY)
-            .register("cancel", CancelNode.class, Colors.CANCEL)
-            .register("item", ItemNode.class, Colors.CRAFTING);
+            .register("cancel", CancelNode.class, Colors.CANCEL);
 
         events = eventNodes;
         Mappet.EVENT_BUS.post(new RegisterEventNodeEvent(eventNodes));
@@ -192,10 +191,11 @@ public class CommonProxy
         /* Register condition blocks */
         MapFactory<AbstractTriggerBlock> triggers = new MapFactory<AbstractTriggerBlock>()
             .register("command", CommandTriggerBlock.class, Colors.COMMAND)
-            .register("sound", SoundTriggerBlock.class, Colors.CRAFTING)
+            .register("sound", SoundTriggerBlock.class, Colors.REPLY)
             .register("event", EventTriggerBlock.class, Colors.STATE)
             .register("dialogue", DialogueTriggerBlock.class, Colors.DIALOGUE)
-            .register("script", ScriptTriggerBlock.class, Colors.ENTITY);
+            .register("script", ScriptTriggerBlock.class, Colors.ENTITY)
+            .register("item", ItemTriggerBlock.class, Colors.CRAFTING);
 
         triggerBlocks = triggers;
         Mappet.EVENT_BUS.post(new RegisterTriggerBlockEvent(triggers));

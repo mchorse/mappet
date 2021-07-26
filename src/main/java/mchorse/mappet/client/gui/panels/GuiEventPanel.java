@@ -11,7 +11,6 @@ import mchorse.mappet.api.events.nodes.ConditionNode;
 import mchorse.mappet.api.events.nodes.DialogueNode;
 import mchorse.mappet.api.events.nodes.EventBaseNode;
 import mchorse.mappet.api.events.nodes.EventNode;
-import mchorse.mappet.api.events.nodes.ItemNode;
 import mchorse.mappet.api.events.nodes.ScriptNode;
 import mchorse.mappet.api.events.nodes.SwitchNode;
 import mchorse.mappet.api.events.nodes.TimerNode;
@@ -28,7 +27,6 @@ import mchorse.mappet.client.gui.nodes.events.GuiCommandNodePanel;
 import mchorse.mappet.client.gui.nodes.events.GuiConditionNodePanel;
 import mchorse.mappet.client.gui.nodes.events.GuiDialogueNodePanel;
 import mchorse.mappet.client.gui.nodes.events.GuiEventNodePanel;
-import mchorse.mappet.client.gui.nodes.events.GuiItemNodePanel;
 import mchorse.mappet.client.gui.nodes.events.GuiScriptNodePanel;
 import mchorse.mappet.client.gui.nodes.events.GuiSwitchNodePanel;
 import mchorse.mappet.client.gui.nodes.events.GuiTimerNodePanel;
@@ -59,7 +57,6 @@ public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventBaseN
         PANELS.put(EventNode.class, GuiEventNodePanel.class);
         PANELS.put(DialogueNode.class, GuiDialogueNodePanel.class);
         PANELS.put(ScriptNode.class, GuiScriptNodePanel.class);
-        PANELS.put(ItemNode.class, GuiItemNodePanel.class);
 
         PANELS.put(ReactionNode.class, GuiReactionNodePanel.class);
         PANELS.put(ReplyNode.class, mchorse.mappet.client.gui.nodes.dialogues.GuiDialogueNodePanel.class);

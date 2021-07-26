@@ -6,12 +6,14 @@ import mchorse.mappet.api.triggers.blocks.AbstractTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.CommandTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.DialogueTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.EventTriggerBlock;
+import mchorse.mappet.api.triggers.blocks.ItemTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.ScriptTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.SoundTriggerBlock;
 import mchorse.mappet.client.gui.triggers.panels.GuiAbstractTriggerBlockPanel;
 import mchorse.mappet.client.gui.triggers.panels.GuiCommandTriggerBlockPanel;
 import mchorse.mappet.client.gui.triggers.panels.GuiDialogueTriggerBlockPanel;
 import mchorse.mappet.client.gui.triggers.panels.GuiEventTriggerBlockPanel;
+import mchorse.mappet.client.gui.triggers.panels.GuiItemTriggerBlockPanel;
 import mchorse.mappet.client.gui.triggers.panels.GuiScriptTriggerBlockPanel;
 import mchorse.mappet.client.gui.triggers.panels.GuiSoundTriggerBlockPanel;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
@@ -27,7 +29,6 @@ import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -54,6 +55,7 @@ public class GuiTriggerOverlayPanel extends GuiEditorOverlayPanel<AbstractTrigge
         PANELS.put(EventTriggerBlock.class, GuiEventTriggerBlockPanel.class);
         PANELS.put(DialogueTriggerBlock.class, GuiDialogueTriggerBlockPanel.class);
         PANELS.put(ScriptTriggerBlock.class, GuiScriptTriggerBlockPanel.class);
+        PANELS.put(ItemTriggerBlock.class, GuiItemTriggerBlockPanel.class);
     }
 
     public GuiTriggerOverlayPanel(Minecraft mc, Trigger trigger)
@@ -192,7 +194,7 @@ public class GuiTriggerOverlayPanel extends GuiEditorOverlayPanel<AbstractTrigge
         @Override
         protected String elementToString(AbstractTriggerBlock element)
         {
-            return I18n.format("mappet.gui.trigger_types." + CommonProxy.getTriggerBlocks().getType(element));
+            return element.stringify();
         }
     }
 }

@@ -1,6 +1,8 @@
 package mchorse.mappet.api.triggers.blocks;
 
 import mchorse.mappet.api.utils.DataContext;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class CommandTriggerBlock extends StringTriggerBlock
 {
@@ -12,6 +14,18 @@ public class CommandTriggerBlock extends StringTriggerBlock
     public CommandTriggerBlock(String string)
     {
         super(string);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public String stringify()
+    {
+        if (this.string.startsWith("/"))
+        {
+            return "/" + this.string;
+        }
+
+        return this.string;
     }
 
     @Override

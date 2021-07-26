@@ -1,6 +1,8 @@
 package mchorse.mappet.api.triggers.blocks;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class StringTriggerBlock extends AbstractTriggerBlock
 {
@@ -12,6 +14,18 @@ public abstract class StringTriggerBlock extends AbstractTriggerBlock
     public StringTriggerBlock(String string)
     {
         this.string = string;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public String stringify()
+    {
+        if (this.string.isEmpty())
+        {
+            return super.stringify();
+        }
+
+        return this.string;
     }
 
     @Override

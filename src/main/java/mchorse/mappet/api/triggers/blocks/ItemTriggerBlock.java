@@ -1,6 +1,6 @@
-package mchorse.mappet.api.events.nodes;
+package mchorse.mappet.api.triggers.blocks;
 
-import mchorse.mappet.api.events.EventContext;
+import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.Target;
 import mchorse.mappet.api.utils.TargetMode;
 import mchorse.mappet.utils.EnumUtils;
@@ -13,18 +13,15 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemNode extends EventBaseNode
+public class ItemTriggerBlock extends AbstractTriggerBlock
 {
     public Target target = new Target(TargetMode.SUBJECT);
     public ItemStack stack = ItemStack.EMPTY;
     public ItemMode mode = ItemMode.TAKE;
 
-    public ItemNode()
-    {}
-
     @Override
     @SideOnly(Side.CLIENT)
-    protected String getDisplayTitle()
+    public String stringify()
     {
         String displayName = this.stack.getDisplayName();
 
@@ -42,13 +39,15 @@ public class ItemNode extends EventBaseNode
     }
 
     @Override
-    public int execute(EventContext context)
+    public void trigger(DataContext context)
     {
         EntityPlayer player;
 
-        if (this.stack.isEmpty() || (player = this.target.getPlayer(context.data)) == null)
+        if (this.stack.isEmpty() || (player = this.target.getPlayer(context)) == null)
         {
-            return this.booleanToExecutionCode(false);
+            context.canceled = true;
+
+            return;
         }
 
         /* Give the item stack to player */
@@ -61,29 +60,31 @@ public class ItemNode extends EventBaseNode
                 player.dropItem(copy, false);
             }
 
-            return this.booleanToExecutionCode(true);
+            return;
         }
 
         if (InventoryUtils.countItems(player, this.stack) >= this.stack.getCount())
         {
             player.inventory.clearMatchingItems(this.stack.getItem(), -1, this.stack.getCount(), null);
-
-            return this.booleanToExecutionCode(true);
         }
-
-        return this.booleanToExecutionCode(false);
+        else
+        {
+            context.canceled = true;
+        }
     }
 
     @Override
-    public NBTTagCompound serializeNBT()
+    public boolean isEmpty()
     {
-        NBTTagCompound tag = super.serializeNBT();
+        return this.stack.isEmpty();
+    }
 
+    @Override
+    protected void serializeNBT(NBTTagCompound tag)
+    {
         tag.setTag("Target", this.target.serializeNBT());
         tag.setTag("Stack", this.stack.serializeNBT());
         tag.setInteger("Mode", this.mode.ordinal());
-
-        return tag;
     }
 
     @Override

@@ -47,6 +47,11 @@ public class GuiRepl extends GuiElement
 
         this.log = new GuiScrollElement(mc);
         this.log.flex().relative(this).w(1F).h(1F, -100).column(0).vertical().stretch().scroll();
+        this.log.context(() ->
+        {
+            return new GuiSimpleContextMenu(this.mc)
+                .action(Icons.CLOSE, IKey.lang("mappet.gui.scripts.repl.context.clear"), () -> this.log.removeAll());
+        });
 
         this.add(this.repl, this.log);
 
