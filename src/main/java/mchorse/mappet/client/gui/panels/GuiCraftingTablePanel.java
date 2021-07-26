@@ -15,10 +15,14 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 
 public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable>
 {
+    public static final IKey ACTION = IKey.lang("mappet.gui.crafting.action");
+    public static final IKey TITLE = IKey.lang("mappet.gui.crafting.title");
+    public static final IKey EMPTY_TABLE = IKey.lang("mappet.gui.crafting.info.empty");
+    public static final IKey EMPTY_RECIPE = IKey.lang("mappet.gui.crafting.info.empty_recipe");
+
     public GuiTextElement title;
     public GuiTextElement action;
 
@@ -148,8 +152,8 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
 
         if (this.title.isVisible())
         {
-            this.font.drawStringWithShadow(I18n.format("mappet.gui.crafting.title"), this.title.area.x, this.title.area.y - 12, 0xffffff);
-            this.font.drawStringWithShadow(I18n.format("mappet.gui.crafting.action"), this.action.area.x, this.action.area.y - 12, 0xffffff);
+            this.font.drawStringWithShadow(TITLE.get(), this.title.area.x, this.title.area.y - 12, 0xffffff);
+            this.font.drawStringWithShadow(ACTION.get(), this.action.area.x, this.action.area.y - 12, 0xffffff);
         }
 
         if (!this.editor.isVisible())
@@ -157,7 +161,7 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
             int w = (this.editor.area.ex() - this.area.x) / 2;
             int x = (this.area.x + this.editor.area.ex()) / 2 - w / 2;
 
-            GuiDraw.drawMultiText(this.font, I18n.format("mappet.gui.crafting.info.empty"), x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
+            GuiDraw.drawMultiText(this.font, EMPTY_TABLE.get(), x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
         }
 
         if (this.editor.isVisible() && !this.recipe.isVisible())
@@ -165,7 +169,7 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
             int w = this.editor.area.w / 2;
             int x = this.editor.area.mx(w);
 
-            GuiDraw.drawMultiText(this.font, I18n.format("mappet.gui.crafting.info.empty_recipe"), x, this.editor.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
+            GuiDraw.drawMultiText(this.font, EMPTY_RECIPE.get(), x, this.editor.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
         }
 
         super.draw(context);

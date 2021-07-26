@@ -5,6 +5,7 @@ import mchorse.mappet.api.utils.factory.IFactory;
 import mchorse.mappet.api.utils.nodes.Node;
 import mchorse.mappet.api.utils.nodes.NodeRelation;
 import mchorse.mappet.api.utils.nodes.NodeSystem;
+import mchorse.mappet.api.utils.nodes.NodeUtils;
 import mchorse.mappet.utils.Colors;
 import mchorse.mclib.McLib;
 import mchorse.mclib.client.gui.framework.GuiBase;
@@ -165,9 +166,8 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
 
         for (T node : this.selected)
         {
-            NBTTagCompound nodeTag = node.serializeNBT();
+            NBTTagCompound nodeTag = NodeUtils.nodeToNBT(this.system, node);
 
-            nodeTag.setString("Type", this.system.getFactory().getType(node));
             list.appendTag(nodeTag);
 
             List<T> children = this.system.getChildren(node);
@@ -220,11 +220,13 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
         for (int i = 0; i < nodesTag.tagCount(); i++)
         {
             NBTTagCompound nodeTag = nodesTag.getCompoundTagAt(i);
-            T node = this.system.getFactory().create(nodeTag.getString("Type"));
+            String id = nodeTag.getString("Id");
 
-            mapping.put(nodeTag.getString("Id"), node);
             nodeTag.removeTag("Id");
-            node.deserializeNBT(nodeTag);
+
+            T node = NodeUtils.nodeFromNBT(this.system, nodeTag);
+
+            mapping.put(id, node);
             nodes.add(node);
         }
 

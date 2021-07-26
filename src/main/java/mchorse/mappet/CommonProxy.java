@@ -16,12 +16,10 @@ import mchorse.mappet.api.dialogues.nodes.ReplyNode;
 import mchorse.mappet.api.events.nodes.CancelNode;
 import mchorse.mappet.api.events.nodes.CommandNode;
 import mchorse.mappet.api.events.nodes.ConditionNode;
-import mchorse.mappet.api.events.nodes.DialogueNode;
 import mchorse.mappet.api.events.nodes.EventBaseNode;
-import mchorse.mappet.api.events.nodes.EventNode;
-import mchorse.mappet.api.events.nodes.ScriptNode;
 import mchorse.mappet.api.events.nodes.SwitchNode;
 import mchorse.mappet.api.events.nodes.TimerNode;
+import mchorse.mappet.api.events.nodes.TriggerNode;
 import mchorse.mappet.api.quests.chains.QuestNode;
 import mchorse.mappet.api.triggers.blocks.AbstractTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.CommandTriggerBlock;
@@ -148,9 +146,11 @@ public class CommonProxy
             .register("condition", ConditionNode.class, Colors.CONDITION)
             .register("switch", SwitchNode.class, Colors.FACTION)
             .register("timer", TimerNode.class, Colors.TIME)
-            .register("event", EventNode.class, Colors.STATE)
-            .register("dialogue", DialogueNode.class, Colors.DIALOGUE)
-            .register("script", ScriptNode.class, Colors.ENTITY)
+            .register("trigger", TriggerNode.class, Colors.STATE)
+                /* Backward compatibility with gamma build */
+                .alias("trigger", "event")
+                .alias("trigger", "dialogue")
+                .alias("trigger", "script")
             .register("cancel", CancelNode.class, Colors.CANCEL);
 
         events = eventNodes;

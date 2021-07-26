@@ -9,7 +9,7 @@ public class Colors
     public static final int INACTIVE = 0xffbb00;
 
     /* Data element colors */
-    public static final int CANCEL = 0xff2200;
+    public static final int CANCEL = 0xeeeeee;
     public static final int COMMAND = 0x942aff;
     public static final int CONDITION = 0xff1493;
     public static final int CRAFTING = 0xff6600;

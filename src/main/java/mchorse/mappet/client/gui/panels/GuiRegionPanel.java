@@ -2,7 +2,6 @@ package mchorse.mappet.client.gui.panels;
 
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.regions.GuiRegionEditor;
-import mchorse.mappet.client.renders.tile.TileRegionRenderer;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.blocks.PacketEditRegion;
 import mchorse.mappet.tile.TileRegion;
@@ -31,6 +30,8 @@ import java.util.function.Consumer;
 
 public class GuiRegionPanel extends GuiDashboardPanel<GuiMappetDashboard>
 {
+    public static final IKey EMPTY = IKey.lang("mappet.gui.region.info.empty");
+
     public GuiIconElement toggleSidebar;
     public GuiElement sidebar;
     public GuiTileRegionListElement tiles;
@@ -196,7 +197,7 @@ public class GuiRegionPanel extends GuiDashboardPanel<GuiMappetDashboard>
             int w = (this.sidebar.isVisible() ? this.sidebar.area.x - this.area.x : this.area.w) / 2;
             int x = this.area.x + w / 2;
 
-            GuiDraw.drawMultiText(this.font, I18n.format("mappet.gui.region.info.empty"), x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
+            GuiDraw.drawMultiText(this.font, EMPTY.get(), x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
         }
     }
 

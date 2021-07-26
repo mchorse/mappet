@@ -1,7 +1,5 @@
-package mchorse.mappet.api.events;
+package mchorse.mappet.api.utils.nodes;
 
-import mchorse.mappet.api.utils.nodes.Node;
-import mchorse.mappet.api.utils.nodes.NodeSystem;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class NodeUtils
@@ -16,8 +14,12 @@ public class NodeUtils
         return node;
     }
 
-    public static <T extends Node> NBTTagCompound nodeToNBT(T node)
+    public static <T extends Node> NBTTagCompound nodeToNBT(NodeSystem<T> system, T node)
     {
-        return node.serializeNBT();
+        NBTTagCompound tag = node.serializeNBT();
+
+        tag.setString("Type", system.getFactory().getType(node));
+
+        return tag;
     }
 }

@@ -5,8 +5,8 @@ import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.quests.GuiObjectives;
 import mchorse.mappet.client.gui.quests.GuiRewards;
-import mchorse.mappet.client.gui.utils.text.GuiMultiTextElement;
 import mchorse.mappet.client.gui.triggers.GuiTriggerElement;
+import mchorse.mappet.client.gui.utils.text.GuiMultiTextElement;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
@@ -19,10 +19,10 @@ import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 
 public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
 {
+    public static final IKey EMPTY = IKey.lang("mappet.gui.quests.info.empty");
     public GuiTextElement title;
     public GuiMultiTextElement story;
     public GuiToggleElement cancelable;
@@ -133,7 +133,7 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
             int w = this.editor.area.w / 2;
             int x = this.editor.area.mx() - w / 2;
 
-            GuiDraw.drawMultiText(this.font, I18n.format("mappet.gui.quests.info.empty"), x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
+            GuiDraw.drawMultiText(this.font, EMPTY.get(), x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
         }
     }
 }

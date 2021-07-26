@@ -10,11 +10,13 @@ import mchorse.mappet.client.gui.nodes.GuiNodePanel;
 import mchorse.mappet.client.gui.nodes.quests.GuiQuestNodePanel;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
+import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 
 public class GuiQuestChainPanel extends GuiMappetDashboardPanel<QuestChain>
 {
+    public static final IKey EMPTY = IKey.lang("mappet.gui.nodes.info.empty_chain");
+
     public GuiNodeGraph<QuestNode> graph;
     public GuiNodePanel panel;
 
@@ -95,7 +97,7 @@ public class GuiQuestChainPanel extends GuiMappetDashboardPanel<QuestChain>
             int w = this.editor.area.w / 2;
             int x = this.editor.area.mx() - w / 2;
 
-            GuiDraw.drawMultiText(this.font, I18n.format("mappet.gui.nodes.info.empty_chain"), x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
+            GuiDraw.drawMultiText(this.font, EMPTY.get(), x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
         }
     }
 }

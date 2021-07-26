@@ -12,10 +12,11 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 
 public class GuiDialoguePanel extends GuiMappetDashboardPanel<Dialogue>
 {
+    public static final IKey EMPTY = IKey.lang("mappet.gui.nodes.info.empty_dialogue");
+
     public GuiEventNodeGraph graph;
     public GuiEventBaseNodePanel panel;
     public GuiToggleElement closable;
@@ -53,8 +54,8 @@ public class GuiDialoguePanel extends GuiMappetDashboardPanel<Dialogue>
             try
             {
                 panel = GuiEventPanel.PANELS.get(node.getClass())
-                    .getConstructor(Minecraft.class, GuiMappetDashboardPanel.class)
-                    .newInstance(this.mc, this);
+                    .getConstructor(Minecraft.class)
+                    .newInstance(this.mc);
 
                 panel.set(node);
             }
@@ -112,7 +113,7 @@ public class GuiDialoguePanel extends GuiMappetDashboardPanel<Dialogue>
             int w = this.editor.area.w / 2;
             int x = this.editor.area.mx() - w / 2;
 
-            GuiDraw.drawMultiText(this.font, I18n.format("mappet.gui.nodes.info.empty_dialogue"), x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
+            GuiDraw.drawMultiText(this.font, EMPTY.get(), x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
         }
     }
 }

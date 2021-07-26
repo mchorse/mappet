@@ -194,6 +194,30 @@ public class NodeSystem <T extends Node> extends AbstractData
         return children;
     }
 
+    public List<T> getRoots()
+    {
+        List<T> roots = new ArrayList<T>();
+
+        main:
+        for (T node : this.nodes.values())
+        {
+            for (List<NodeRelation<T>> relations : this.relations.values())
+            {
+                for (NodeRelation<T> relation : relations)
+                {
+                    if (relation.input == node)
+                    {
+                        continue main;
+                    }
+                }
+            }
+
+            roots.add(node);
+        }
+
+        return roots;
+    }
+
     /* Serialization / deserialization */
 
     @Override
@@ -204,9 +228,7 @@ public class NodeSystem <T extends Node> extends AbstractData
 
         for (T node : this.nodes.values())
         {
-            NBTTagCompound nodeTag = node.serializeNBT();
-
-            nodeTag.setString("Type", this.factory.getType(node));
+            NBTTagCompound nodeTag = NodeUtils.nodeToNBT(this, node);
 
             if (this.relations.containsKey(node.getId()))
             {
@@ -248,9 +270,7 @@ public class NodeSystem <T extends Node> extends AbstractData
             for (int i = 0; i < nodes.tagCount(); i++)
             {
                 NBTTagCompound nodeTag = nodes.getCompoundTagAt(i);
-                T node = this.factory.create(nodeTag.getString("Type"));
-
-                node.deserializeNBT(nodeTag);
+                T node = NodeUtils.nodeFromNBT(this, nodeTag);
 
                 /* Relations are not serialized by nodes themselves */
                 if (nodeTag.hasKey("Relations"))
@@ -291,29 +311,5 @@ public class NodeSystem <T extends Node> extends AbstractData
         {
             this.main = this.nodes.get(UUID.fromString(tag.getString("Main")));
         }
-    }
-
-    public List<T> getRoots()
-    {
-        List<T> roots = new ArrayList<T>();
-
-        main:
-        for (T node : this.nodes.values())
-        {
-            for (List<NodeRelation<T>> relations : this.relations.values())
-            {
-                for (NodeRelation<T> relation : relations)
-                {
-                    if (relation.input == node)
-                    {
-                        continue main;
-                    }
-                }
-            }
-
-            roots.add(node);
-        }
-
-        return roots;
     }
 }

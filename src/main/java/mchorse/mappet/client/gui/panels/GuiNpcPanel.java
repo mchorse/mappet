@@ -12,12 +12,14 @@ import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.Icons;
+import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.ColorUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 
 public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
 {
+    public static final IKey EMPTY = IKey.lang("mappet.gui.npcs.info.empty");
+
     public GuiIconElement states;
     public GuiNpcEditor npcEditor;
 
@@ -107,7 +109,7 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
             int w = (this.editor.area.ex() - this.area.x) / 2;
             int x = (this.area.x + this.editor.area.ex()) / 2 - w / 2;
 
-            GuiDraw.drawMultiText(this.font, I18n.format("mappet.gui.npcs.info.empty"), x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
+            GuiDraw.drawMultiText(this.font, EMPTY.get(), x, this.area.my(), 0xffffff, w, 12, 0.5F, 0.5F);
         }
 
         super.draw(context);

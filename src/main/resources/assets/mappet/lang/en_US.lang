@@ -528,9 +528,7 @@ mappet.gui.node_types.command=Command
 mappet.gui.node_types.condition=Condition
 mappet.gui.node_types.switch=Switch
 mappet.gui.node_types.timer=Timer
-mappet.gui.node_types.event=Event
-mappet.gui.node_types.dialogue=Dialogue
-mappet.gui.node_types.script=Script
+mappet.gui.node_types.trigger=Trigger
 
 mappet.gui.condition_types.quest=Quest
 mappet.gui.condition_types.dialogue=Dialogue
