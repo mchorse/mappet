@@ -29,6 +29,7 @@ import mchorse.mappet.api.triggers.blocks.EventTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.ItemTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.ScriptTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.SoundTriggerBlock;
+import mchorse.mappet.api.triggers.blocks.StateTriggerBlock;
 import mchorse.mappet.api.utils.factory.IFactory;
 import mchorse.mappet.api.utils.factory.MapFactory;
 import mchorse.mappet.capabilities.character.Character;
@@ -197,7 +198,8 @@ public class CommonProxy
             .register("event", EventTriggerBlock.class, Colors.STATE)
             .register("dialogue", DialogueTriggerBlock.class, Colors.DIALOGUE)
             .register("script", ScriptTriggerBlock.class, Colors.ENTITY)
-            .register("item", ItemTriggerBlock.class, Colors.CRAFTING);
+            .register("item", ItemTriggerBlock.class, Colors.CRAFTING)
+            .register("state", StateTriggerBlock.class, Colors.STATE);
 
         triggerBlocks = triggers;
         Mappet.EVENT_BUS.post(new RegisterTriggerBlockEvent(triggers));

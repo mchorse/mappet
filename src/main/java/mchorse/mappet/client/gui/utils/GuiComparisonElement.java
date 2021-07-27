@@ -48,7 +48,7 @@ public class GuiComparisonElement extends GuiElement
         this.comparison.comparison = ComparisonMode.values()[b.getValue()];
 
         GuiElement insert = this.value;
-        IKey label = IKey.lang("mappet.gui.conditions.expression");
+        IKey label = IKey.lang("mappet.gui.conditions.value");
 
         if (this.comparison.comparison == ComparisonMode.EXPRESSION)
         {

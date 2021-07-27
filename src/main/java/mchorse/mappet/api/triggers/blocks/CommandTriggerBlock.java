@@ -20,7 +20,7 @@ public class CommandTriggerBlock extends StringTriggerBlock
     @SideOnly(Side.CLIENT)
     public String stringify()
     {
-        if (this.string.startsWith("/"))
+        if (!this.string.startsWith("/"))
         {
             return "/" + this.string;
         }

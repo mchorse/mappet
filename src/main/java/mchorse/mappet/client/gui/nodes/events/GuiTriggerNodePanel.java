@@ -26,8 +26,8 @@ public class GuiTriggerNodePanel extends GuiEventBaseNodePanel<TriggerNode>
             new GuiTextElement(mc, 10000, (text) -> this.node.customData = text),
             IKey.lang("mappet.gui.nodes.event.data")
         );
-        this.cancel = new GuiToggleElement(mc, IKey.str("Cancel"), (b) -> this.node.cancel = b.isToggled());
-        this.cancel.tooltip(IKey.str("Use cancel of any of the triggers as a result of the node's execution"), Direction.TOP);
+        this.cancel = new GuiToggleElement(mc, IKey.lang("mappet.gui.nodes.event.cancel"), (b) -> this.node.cancel = b.isToggled());
+        this.cancel.tooltip(IKey.lang("mappet.gui.nodes.event.cancel_tooltip"), Direction.TOP);
 
         this.add(this.trigger);
         this.add(Elements.label(IKey.lang("mappet.gui.nodes.event.data")).marginTop(12), this.customData, this.cancel, this.binary);

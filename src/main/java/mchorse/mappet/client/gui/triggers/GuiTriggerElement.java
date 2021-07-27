@@ -23,7 +23,7 @@ public class GuiTriggerElement extends GuiElement
     {
         super(mc);
 
-        this.open = new GuiButtonElement(mc, IKey.str("Edit triggers..."), (b) -> this.openTriggerEditor());
+        this.open = new GuiButtonElement(mc, IKey.lang("mappet.gui.trigger.edit"), (b) -> this.openTriggerEditor());
         this.open.flex().relative(this).wh(1F, 1F);
 
         this.flex().h(20);

@@ -12,7 +12,7 @@ import net.minecraft.client.Minecraft;
 public class GuiItemTriggerBlockPanel extends GuiAbstractTriggerBlockPanel<ItemTriggerBlock>
 {
     public GuiTargetElement target;
-    public GuiCirculateElement check;
+    public GuiCirculateElement mode;
     public GuiSlotElement slot;
 
     public GuiItemTriggerBlockPanel(Minecraft mc, GuiTriggerOverlayPanel overlay, ItemTriggerBlock block)
@@ -20,21 +20,21 @@ public class GuiItemTriggerBlockPanel extends GuiAbstractTriggerBlockPanel<ItemT
         super(mc, overlay, block);
 
         this.target = new GuiTargetElement(mc, null).skipGlobal();
-        this.check = new GuiCirculateElement(mc, this::toggleItemCheck);
+        this.mode = new GuiCirculateElement(mc, this::toggleItemCheck);
 
         for (ItemTriggerBlock.ItemMode mode : ItemTriggerBlock.ItemMode.values())
         {
-            this.check.addLabel(IKey.lang("mappet.gui.item_node.mode." + mode.name().toLowerCase()));
+            this.mode.addLabel(IKey.lang("mappet.gui.item_trigger.mode." + mode.name().toLowerCase()));
         }
 
         this.slot = new GuiSlotElement(mc, 0, (stack) -> this.block.stack = stack.copy());
         this.slot.marginTop(-2).marginBottom(-2);
 
         this.target.setTarget(block.target);
-        this.check.setValue(block.mode.ordinal());
+        this.mode.setValue(block.mode.ordinal());
         this.slot.setStack(block.stack);
 
-        this.add(Elements.row(mc, 5, this.slot, this.check));
+        this.add(Elements.row(mc, 5, this.slot, this.mode));
         this.add(this.target.marginTop(12));
     }
 

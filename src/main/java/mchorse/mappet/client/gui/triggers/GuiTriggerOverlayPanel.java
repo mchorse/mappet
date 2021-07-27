@@ -9,6 +9,7 @@ import mchorse.mappet.api.triggers.blocks.EventTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.ItemTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.ScriptTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.SoundTriggerBlock;
+import mchorse.mappet.api.triggers.blocks.StateTriggerBlock;
 import mchorse.mappet.client.gui.triggers.panels.GuiAbstractTriggerBlockPanel;
 import mchorse.mappet.client.gui.triggers.panels.GuiCommandTriggerBlockPanel;
 import mchorse.mappet.client.gui.triggers.panels.GuiDialogueTriggerBlockPanel;
@@ -16,6 +17,7 @@ import mchorse.mappet.client.gui.triggers.panels.GuiEventTriggerBlockPanel;
 import mchorse.mappet.client.gui.triggers.panels.GuiItemTriggerBlockPanel;
 import mchorse.mappet.client.gui.triggers.panels.GuiScriptTriggerBlockPanel;
 import mchorse.mappet.client.gui.triggers.panels.GuiSoundTriggerBlockPanel;
+import mchorse.mappet.client.gui.triggers.panels.GuiStateTriggerBlockPanel;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mappet.client.gui.utils.overlays.GuiEditorOverlayPanel;
 import mchorse.mappet.utils.Colors;
@@ -56,6 +58,7 @@ public class GuiTriggerOverlayPanel extends GuiEditorOverlayPanel<AbstractTrigge
         PANELS.put(DialogueTriggerBlock.class, GuiDialogueTriggerBlockPanel.class);
         PANELS.put(ScriptTriggerBlock.class, GuiScriptTriggerBlockPanel.class);
         PANELS.put(ItemTriggerBlock.class, GuiItemTriggerBlockPanel.class);
+        PANELS.put(StateTriggerBlock.class, GuiStateTriggerBlockPanel.class);
     }
 
     public GuiTriggerOverlayPanel(Minecraft mc, Trigger trigger)

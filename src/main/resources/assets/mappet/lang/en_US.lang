@@ -164,6 +164,7 @@ mappet.gui.block_pos.context.paste=Paste your current position
 mappet.gui.block_pos.context.remove=Remove block position
 mappet.gui.items.context.remove=Remove item
 mappet.gui.trigger.sound=Sound event
+mappet.gui.trigger.edit=Edit triggers...
 mappet.gui.checker.edit=Edit condition...
 mappet.gui.checker.expression=Expression
 mappet.gui.checker.toggle=Toggle between expression and condition editor
@@ -293,6 +294,8 @@ mappet.gui.nodes.event.timer=Timer
 mappet.gui.nodes.event.ticks=%s ticks
 mappet.gui.nodes.event.subject=Subject
 mappet.gui.nodes.event.data=Custom data
+mappet.gui.nodes.event.cancel=Cancel
+mappet.gui.nodes.event.cancel_tooltip=Use cancel of any of the triggers as a result of the node's execution
 mappet.gui.nodes.item.take=Take %s
 mappet.gui.nodes.item.give=Give %s
 mappet.gui.nodes.event.hotkeys.title=Trigger hotkeys editor
@@ -545,6 +548,7 @@ mappet.gui.trigger_types.event=Event
 mappet.gui.trigger_types.dialogue=Dialogue
 mappet.gui.trigger_types.script=Script
 mappet.gui.trigger_types.item=Item
+mappet.gui.trigger_types.state=State
 
 mappet.gui.entity_property.xp=Total experience
 mappet.gui.entity_property.xp_level=Experience level
@@ -560,8 +564,12 @@ mappet.gui.entity_property.on_ground=Is on ground
 mappet.gui.entity_property.yaw=Y head rotation (yaw)
 mappet.gui.entity_property.pitch=X head rotation (pitch)
 
-mappet.gui.item_node.mode.take=Take item
-mappet.gui.item_node.mode.give=Give item
+mappet.gui.item_trigger.mode.take=Take item
+mappet.gui.item_trigger.mode.give=Give item
+
+mappet.gui.state_trigger.mode.add=Add
+mappet.gui.state_trigger.mode.set=Set
+mappet.gui.state_trigger.mode.remove=Remove
 
 # Keys
 mappet.keys.category=Mappet

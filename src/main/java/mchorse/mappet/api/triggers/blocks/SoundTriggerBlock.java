@@ -55,13 +55,11 @@ public class SoundTriggerBlock extends StringTriggerBlock
     }
 
     @Override
-    public NBTTagCompound serializeNBT()
+    protected void serializeNBT(NBTTagCompound tag)
     {
-        NBTTagCompound tag = super.serializeNBT();
+        super.serializeNBT(tag);
 
         tag.setInteger("Target", this.target.ordinal());
-
-        return tag;
     }
 
     @Override

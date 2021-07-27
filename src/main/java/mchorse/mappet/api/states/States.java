@@ -103,6 +103,18 @@ public class States implements INBTSerializable<NBTTagCompound>
 
     public boolean maskedReset(String id)
     {
+        if (id.trim().equals("*"))
+        {
+            boolean wasEmpty = this.values.isEmpty();
+
+            if (!wasEmpty)
+            {
+                this.clear();
+            }
+
+            return !wasEmpty;
+        }
+
         if (id.contains("*"))
         {
             id = id.replaceAll("\\*", ".*");
