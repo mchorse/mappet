@@ -27,6 +27,8 @@ public class HUDMorph implements INBTSerializable<NBTTagCompound>
     @SideOnly(Side.CLIENT)
     private DummyEntity entity;
 
+    private int tick;
+
     @SideOnly(Side.CLIENT)
     public DummyEntity getEntity()
     {
@@ -74,7 +76,7 @@ public class HUDMorph implements INBTSerializable<NBTTagCompound>
     }
 
     @SideOnly(Side.CLIENT)
-    public boolean update()
+    public boolean update(boolean expire)
     {
         DummyEntity entity = this.getEntity();
 
@@ -84,9 +86,14 @@ public class HUDMorph implements INBTSerializable<NBTTagCompound>
         }
 
         entity.ticksExisted += 1;
-        this.expire -= 1;
+        this.tick += 1;
 
-        return this.expire <= 0;
+        if (!expire)
+        {
+            return false;
+        }
+
+        return this.expire > 0 && this.tick >= this.expire;
     }
 
     @Override

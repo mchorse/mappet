@@ -15,11 +15,11 @@ public class HUDScene extends AbstractData
     public List<HUDMorph> morphs = new ArrayList<HUDMorph>();
 
     @SideOnly(Side.CLIENT)
-    public boolean update()
+    public boolean update(boolean expire)
     {
-        this.morphs.removeIf(HUDMorph::update);
+        this.morphs.removeIf((morph) -> morph.update(expire));
 
-        return this.morphs.isEmpty();
+        return expire && this.morphs.isEmpty();
     }
 
     public void fill(List<HUDMorph> perspective, List<HUDMorph> ortho)

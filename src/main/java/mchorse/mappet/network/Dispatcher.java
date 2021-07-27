@@ -13,6 +13,8 @@ import mchorse.mappet.network.client.crafting.ClientHandlerCraftingTable;
 import mchorse.mappet.network.client.dialogue.ClientHandlerDialogueFragment;
 import mchorse.mappet.network.client.events.ClientHandlerEventPlayerHotkeys;
 import mchorse.mappet.network.client.factions.ClientHandlerFactions;
+import mchorse.mappet.network.client.hud.ClientHandlerHUDMorph;
+import mchorse.mappet.network.client.hud.ClientHandlerHUDScene;
 import mchorse.mappet.network.client.npc.ClientHandlerNpcList;
 import mchorse.mappet.network.client.npc.ClientHandlerNpcMorph;
 import mchorse.mappet.network.client.npc.ClientHandlerNpcState;
@@ -40,6 +42,8 @@ import mchorse.mappet.network.common.events.PacketEventHotkey;
 import mchorse.mappet.network.common.events.PacketEventPlayerHotkeys;
 import mchorse.mappet.network.common.factions.PacketFactions;
 import mchorse.mappet.network.common.factions.PacketRequestFactions;
+import mchorse.mappet.network.common.hud.PacketHUDMorph;
+import mchorse.mappet.network.common.hud.PacketHUDScene;
 import mchorse.mappet.network.common.npc.PacketNpcList;
 import mchorse.mappet.network.common.npc.PacketNpcMorph;
 import mchorse.mappet.network.common.npc.PacketNpcState;
@@ -152,6 +156,10 @@ public class Dispatcher
             this.register(PacketClick.class, ServerHandlerClick.class, Side.SERVER);
             this.register(PacketRepl.class, ClientHandlerRepl.class, Side.CLIENT);
             this.register(PacketRepl.class, ServerHandlerRepl.class, Side.SERVER);
+
+            /* HUD */
+            this.register(PacketHUDScene.class, ClientHandlerHUDScene.class, Side.CLIENT);
+            this.register(PacketHUDMorph.class, ClientHandlerHUDMorph.class, Side.CLIENT);
         }
     };
 

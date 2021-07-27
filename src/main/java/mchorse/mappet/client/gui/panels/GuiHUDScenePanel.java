@@ -13,6 +13,7 @@ import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTransformations;
 import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
@@ -37,6 +38,7 @@ public class GuiHUDScenePanel extends GuiMappetDashboardPanel<HUDScene>
 
     private HUDStage stage = new HUDStage();
     private HUDMorph current;
+    private long lastTick;
 
     public GuiHUDScenePanel(Minecraft mc, GuiMappetDashboard dashboard)
     {
@@ -160,7 +162,7 @@ public class GuiHUDScenePanel extends GuiMappetDashboardPanel<HUDScene>
 
         if (data != null)
         {
-            this.stage.scenes.clear();
+            this.stage.reset();
             this.stage.scenes.put(data.getId(), data);
 
             this.morphs.setList(data.morphs);
@@ -205,6 +207,19 @@ public class GuiHUDScenePanel extends GuiMappetDashboardPanel<HUDScene>
         super.disappear();
 
         RenderingHandler.currentStage = null;
+    }
+
+    @Override
+    public void draw(GuiContext context)
+    {
+        if (this.lastTick < context.tick)
+        {
+            this.stage.update(false);
+
+            this.lastTick = context.tick;
+        }
+
+        super.draw(context);
     }
 
     public static class GuiHUDMorphListElement extends GuiListElement<HUDMorph>

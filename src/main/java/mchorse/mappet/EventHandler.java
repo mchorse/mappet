@@ -414,7 +414,7 @@ public class EventHandler
     @SideOnly(Side.CLIENT)
     private void onPlayerTickClient(TickEvent.PlayerTickEvent event)
     {
-        RenderingHandler.stage.update();
+        RenderingHandler.stage.update(true);
     }
 
     @SubscribeEvent

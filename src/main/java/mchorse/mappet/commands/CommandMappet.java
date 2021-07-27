@@ -5,6 +5,7 @@ import mchorse.mappet.commands.data.CommandData;
 import mchorse.mappet.commands.dialogues.CommandDialogue;
 import mchorse.mappet.commands.events.CommandEvent;
 import mchorse.mappet.commands.factions.CommandFaction;
+import mchorse.mappet.commands.hud.CommandHud;
 import mchorse.mappet.commands.npc.CommandNpc;
 import mchorse.mappet.commands.quests.CommandQuest;
 import mchorse.mappet.commands.scripts.CommandScript;
@@ -20,6 +21,7 @@ public class CommandMappet extends MappetSubCommandBase
         this.add(new CommandDialogue());
         this.add(new CommandEvent());
         this.add(new CommandFaction());
+        this.add(new CommandHud());
         this.add(new CommandNpc());
         this.add(new CommandQuest());
         this.add(new CommandScript());

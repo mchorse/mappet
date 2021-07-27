@@ -28,9 +28,9 @@ public class HUDStage
         this.scenes.clear();
     }
 
-    public void update()
+    public void update(boolean expire)
     {
-        this.scenes.values().removeIf(HUDScene::update);
+        this.scenes.values().removeIf((scene) -> scene.update(expire));
     }
 
     public void render(ScaledResolution resolution, float partialTicks)
