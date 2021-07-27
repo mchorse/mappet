@@ -6,6 +6,7 @@ import mchorse.mappet.api.utils.IExecutable;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.CharacterProvider;
 import mchorse.mappet.capabilities.character.ICharacter;
+import mchorse.mappet.client.RenderingHandler;
 import mchorse.mappet.commands.data.CommandDataClear;
 import mchorse.mappet.events.StateChangedEvent;
 import mchorse.mappet.network.Dispatcher;
@@ -392,12 +393,28 @@ public class EventHandler
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event)
     {
+        if (event.phase == TickEvent.Phase.START)
+        {
+            return;
+        }
+
         ICharacter character = Character.get(event.player);
 
         if (character != null && !event.player.world.isRemote)
         {
             character.getPositionCache().updatePlayer(event.player);
         }
+
+        if (event.player.world.isRemote)
+        {
+            this.onPlayerTickClient(event);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    private void onPlayerTickClient(TickEvent.PlayerTickEvent event)
+    {
+        RenderingHandler.stage.update();
     }
 
     @SubscribeEvent

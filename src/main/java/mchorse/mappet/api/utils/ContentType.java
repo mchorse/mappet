@@ -188,6 +188,26 @@ public enum ContentType
         {
             return IKey.lang("mappet.gui.overlays.script");
         }
+    },
+    HUDS()
+    {
+        @Override
+        public IManager<? extends AbstractData> getManager()
+        {
+            return Mappet.huds;
+        }
+
+        @Override
+        public GuiMappetDashboardPanel get(GuiMappetDashboard dashboard)
+        {
+            return dashboard.hud;
+        }
+
+        @Override
+        public IKey getPickLabel()
+        {
+            return IKey.lang("mappet.gui.overlays.hud");
+        }
     };
 
     /* Every Karen be like :D */

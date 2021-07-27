@@ -4,6 +4,7 @@ import mchorse.mappet.api.crafting.CraftingManager;
 import mchorse.mappet.api.dialogues.DialogueManager;
 import mchorse.mappet.api.events.EventManager;
 import mchorse.mappet.api.factions.FactionManager;
+import mchorse.mappet.api.hud.HUDManager;
 import mchorse.mappet.api.npcs.NpcManager;
 import mchorse.mappet.api.quests.QuestManager;
 import mchorse.mappet.api.quests.chains.QuestChainManager;
@@ -12,6 +13,7 @@ import mchorse.mappet.blocks.BlockEmitter;
 import mchorse.mappet.blocks.BlockRegion;
 import mchorse.mappet.blocks.BlockTrigger;
 import mchorse.mappet.client.KeyboardHandler;
+import mchorse.mappet.client.RenderingHandler;
 import mchorse.mappet.entities.EntityNpc;
 import mchorse.mappet.items.ItemNpcTool;
 import mchorse.mappet.tile.TileEmitter;
@@ -49,6 +51,7 @@ public class RegisterHandler
             Mappet.factions = new FactionManager(null);
             Mappet.chains = new QuestChainManager(null);
             Mappet.scripts = new ScriptManager(null);
+            Mappet.huds = new HUDManager(null);
         }
     }
 
@@ -64,8 +67,11 @@ public class RegisterHandler
         Mappet.factions = null;
         Mappet.chains = null;
         Mappet.scripts = null;
+        Mappet.huds = null;
 
         KeyboardHandler.hotkeys.clear();
+        RenderingHandler.stage.reset();
+        RenderingHandler.currentStage = null;
     }
 
     @SubscribeEvent

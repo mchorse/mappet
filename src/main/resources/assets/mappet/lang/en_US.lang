@@ -159,6 +159,7 @@ mappet.gui.overlays.chain=Pick a quest chain...
 mappet.gui.overlays.crafting=Pick a crafting table...
 mappet.gui.overlays.quest=Pick a quest...
 mappet.gui.overlays.script=Pick a script...
+mappet.gui.overlays.hud=Pick an HUD scene...
 mappet.gui.overlays.text_fullscreen=Edit in fullscreen...
 mappet.gui.block_pos.context.paste=Paste your current position
 mappet.gui.block_pos.context.remove=Remove block position
@@ -179,6 +180,7 @@ mappet.gui.panels.npcs=NPCs
 mappet.gui.panels.factions=Factions
 mappet.gui.panels.chains=Quest chains
 mappet.gui.panels.scripts=Scripts
+mappet.gui.panels.huds=HUD scenes
 mappet.gui.panels.modals.add=Type in a name:
 mappet.gui.panels.modals.dupe=Type in a new name for a duplicate:
 mappet.gui.panels.modals.rename=Type in a new name:
@@ -510,6 +512,13 @@ mappet.gui.states.server=Server states
 mappet.gui.states.player=%s's states
 mappet.gui.states.pick=Pick states target
 mappet.gui.states.empty=There are no states to edit. Create one by pressing "+" button...
+
+mappet.gui.huds.ortho=Orthographic
+mappet.gui.huds.expire=Expiration
+mappet.gui.huds.context.add=Add a HUD morph
+mappet.gui.huds.context.copy=Copy this HUD morph
+mappet.gui.huds.context.paste=Paste copied HUD morph
+mappet.gui.huds.context.remove=Remove this HUD morph
 
 # GUI enums
 

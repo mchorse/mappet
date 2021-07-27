@@ -1,9 +1,11 @@
 package mchorse.mappet.client.gui;
 
+import mchorse.mappet.client.RenderingHandler;
 import mchorse.mappet.client.gui.panels.GuiCraftingTablePanel;
 import mchorse.mappet.client.gui.panels.GuiDialoguePanel;
 import mchorse.mappet.client.gui.panels.GuiEventPanel;
 import mchorse.mappet.client.gui.panels.GuiFactionPanel;
+import mchorse.mappet.client.gui.panels.GuiHUDScenePanel;
 import mchorse.mappet.client.gui.panels.GuiMappetDashboardPanel;
 import mchorse.mappet.client.gui.panels.GuiNpcPanel;
 import mchorse.mappet.client.gui.panels.GuiQuestChainPanel;
@@ -42,6 +44,7 @@ public class GuiMappetDashboard extends GuiAbstractDashboard
     public GuiFactionPanel faction;
     public GuiQuestChainPanel chain;
     public GuiScriptPanel script;
+    public GuiHUDScenePanel hud;
 
     public GuiCreativeMorphsMenu morphs;
 
@@ -109,6 +112,7 @@ public class GuiMappetDashboard extends GuiAbstractDashboard
         this.faction = new GuiFactionPanel(mc, this);
         this.chain = new GuiQuestChainPanel(mc, this);
         this.script = new GuiScriptPanel(mc, this);
+        this.hud = new GuiHUDScenePanel(mc, this);
 
         this.panels.registerPanel(this.settings, IKey.lang("mappet.gui.panels.settings"), Icons.GEAR);
         this.panels.registerPanel(this.crafting, IKey.lang("mappet.gui.panels.crafting"), Icons.WRENCH);
@@ -120,6 +124,7 @@ public class GuiMappetDashboard extends GuiAbstractDashboard
         this.panels.registerPanel(this.faction, IKey.lang("mappet.gui.panels.factions"), Icons.BOOKMARK);
         this.panels.registerPanel(this.chain, IKey.lang("mappet.gui.panels.chains"), Icons.FOLDER);
         this.panels.registerPanel(this.script, IKey.lang("mappet.gui.panels.scripts"), MMIcons.PROPERTIES);
+        this.panels.registerPanel(this.hud, IKey.lang("mappet.gui.panels.huds"), Icons.POSE);
 
         this.panels.setPanel(this.settings);
     }
@@ -130,5 +135,6 @@ public class GuiMappetDashboard extends GuiAbstractDashboard
         super.closeScreen();
 
         Dispatcher.sendToServer(new PacketContentExit());
+        RenderingHandler.currentStage = null;
     }
 }

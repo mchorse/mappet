@@ -6,6 +6,7 @@ import mchorse.mappet.api.dialogues.DialogueManager;
 import mchorse.mappet.api.events.EventManager;
 import mchorse.mappet.api.expressions.ExpressionManager;
 import mchorse.mappet.api.factions.FactionManager;
+import mchorse.mappet.api.hud.HUDManager;
 import mchorse.mappet.api.misc.ServerSettings;
 import mchorse.mappet.api.npcs.NpcManager;
 import mchorse.mappet.api.quests.QuestManager;
@@ -96,6 +97,7 @@ public final class Mappet
     public static DataManager data;
     public static QuestChainManager chains;
     public static ScriptManager scripts;
+    public static HUDManager huds;
 
     /* Configuration */
     public static ValueString generalEncoding;
@@ -198,6 +200,7 @@ public final class Mappet
         data = new DataManager(new File(mappetWorldFolder, "data"));
         chains = new QuestChainManager(new File(mappetWorldFolder, "chains"));
         scripts = new ScriptManager(new File(mappetWorldFolder, "scripts"));
+        huds = new HUDManager(new File(mappetWorldFolder, "huds"));
 
         /* Initiate */
         if (!settings.serverLoad.isEmpty())
@@ -226,6 +229,7 @@ public final class Mappet
             data = null;
             chains = null;
             scripts = null;
+            huds = null;
         }
 
         CommonProxy.eventHandler.reset();

@@ -13,6 +13,7 @@ import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.content.PacketContentRequestNames;
 import mchorse.mappet.tile.TileRegion;
 import mchorse.mappet.tile.TileTrigger;
+import mchorse.mclib.McLib;
 import mchorse.mclib.utils.ReflectionUtils;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -59,8 +60,11 @@ public class ClientProxy extends CommonProxy
     {
         super.preInit(event);
 
+        RenderingHandler handler = new RenderingHandler();
+
         MinecraftForge.EVENT_BUS.register(new KeyboardHandler());
-        MinecraftForge.EVENT_BUS.register(new RenderingHandler());
+        MinecraftForge.EVENT_BUS.register(handler);
+        McLib.EVENT_BUS.register(handler);
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileTrigger.class, new TileTriggerRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileRegion.class, new TileRegionRenderer());
