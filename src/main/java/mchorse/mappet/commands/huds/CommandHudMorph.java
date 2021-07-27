@@ -1,7 +1,7 @@
-package mchorse.mappet.commands.hud;
+package mchorse.mappet.commands.huds;
 
 import mchorse.mappet.network.Dispatcher;
-import mchorse.mappet.network.common.hud.PacketHUDMorph;
+import mchorse.mappet.network.common.huds.PacketHUDMorph;
 import mchorse.mclib.commands.SubCommandBase;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;

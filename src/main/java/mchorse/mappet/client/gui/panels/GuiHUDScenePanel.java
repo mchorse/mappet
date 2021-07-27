@@ -1,18 +1,18 @@
 package mchorse.mappet.client.gui.panels;
 
-import mchorse.mappet.api.hud.HUDMorph;
-import mchorse.mappet.api.hud.HUDScene;
-import mchorse.mappet.api.hud.HUDStage;
+import mchorse.mappet.api.huds.HUDMorph;
+import mchorse.mappet.api.huds.HUDScene;
+import mchorse.mappet.api.huds.HUDStage;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.RenderingHandler;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
+import mchorse.mappet.client.gui.huds.GuiHUDMorphListElement;
+import mchorse.mappet.client.gui.huds.GuiHUDMorphTransformations;
 import mchorse.mappet.utils.Colors;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
-import mchorse.mclib.client.gui.framework.elements.input.GuiTransformations;
-import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.Icons;
@@ -24,19 +24,21 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 
-import java.util.List;
-import java.util.function.Consumer;
-
 public class GuiHUDScenePanel extends GuiMappetDashboardPanel<HUDScene>
 {
     public GuiHUDMorphListElement morphs;
     public GuiElement column;
     public GuiNestedEdit morph;
     public GuiToggleElement ortho;
+    public GuiTrackpadElement orthoX;
+    public GuiTrackpadElement orthoY;
     public GuiTrackpadElement expire;
     public GuiHUDMorphTransformations transformations;
 
-    private HUDStage stage = new HUDStage();
+    public GuiTrackpadElement fov;
+    public GuiToggleElement hide;
+
+    private HUDStage stage = new HUDStage(true);
     private HUDMorph current;
     private long lastTick;
 
@@ -77,16 +79,23 @@ public class GuiHUDScenePanel extends GuiMappetDashboardPanel<HUDScene>
         });
         this.morph = new GuiNestedEdit(mc, this::openMorphMenu);
         this.ortho = new GuiToggleElement(mc, IKey.lang("mappet.gui.huds.ortho"), (b) -> this.current.ortho = b.isToggled());
+        this.orthoX = new GuiTrackpadElement(mc, (v) -> this.current.orthoX = v.floatValue());
+        this.orthoY = new GuiTrackpadElement(mc, (v) -> this.current.orthoY = v.floatValue());
         this.expire = new GuiTrackpadElement(mc, (v) -> this.current.expire = v.intValue());
         this.expire.limit(0).integer();
         this.transformations = new GuiHUDMorphTransformations(mc);
         this.column = Elements.column(mc, 5, 10);
 
+        this.fov = new GuiTrackpadElement(mc, (v) -> this.data.fov = v.floatValue());
+        this.fov.limit(0, 180);
+        this.hide = new GuiToggleElement(mc, IKey.lang("mappet.gui.huds.hide"), (b) -> this.data.hide = b.isToggled());
+
         this.column.flex().relative(this.editor).y(1F).w(130).anchorY(1F);
         this.morphs.flex().relative(this.column).w(1F).h(100).anchorY(1F);
         this.transformations.flex().relative(this.editor).x(0.5F).y(1F, -10).wh(190, 70).anchor(0.5F, 1F);
 
-        this.column.add(this.morph, this.ortho, Elements.label(IKey.lang("mappet.gui.huds.expire")).marginTop(12), this.expire);
+        this.column.add(this.morph, this.ortho, this.orthoX, this.orthoY, Elements.label(IKey.lang("mappet.gui.huds.expire")).marginTop(12), this.expire);
+        this.column.add(Elements.label(IKey.lang("mappet.gui.huds.fov")).marginTop(12), this.fov, this.hide);
         this.editor.add(this.column, this.morphs, this.transformations);
 
         this.fill(null);
@@ -167,6 +176,8 @@ public class GuiHUDScenePanel extends GuiMappetDashboardPanel<HUDScene>
 
             this.morphs.setList(data.morphs);
             this.morphs.setIndex(0);
+            this.fov.setValue(data.fov);
+            this.hide.toggled(data.hide);
 
             this.pickMorph(this.morphs.getCurrentFirst(), true);
         }
@@ -183,6 +194,8 @@ public class GuiHUDScenePanel extends GuiMappetDashboardPanel<HUDScene>
         {
             this.morph.setMorph(current.morph);
             this.ortho.toggled(current.ortho);
+            this.orthoX.setValue(current.orthoX);
+            this.orthoY.setValue(current.orthoY);
             this.expire.setValue(current.expire);
             this.transformations.setMorph(current);
 
@@ -220,66 +233,5 @@ public class GuiHUDScenePanel extends GuiMappetDashboardPanel<HUDScene>
         }
 
         super.draw(context);
-    }
-
-    public static class GuiHUDMorphListElement extends GuiListElement<HUDMorph>
-    {
-        public GuiHUDMorphListElement(Minecraft mc, Consumer<List<HUDMorph>> callback)
-        {
-            super(mc, callback);
-        }
-
-        @Override
-        protected String elementToString(HUDMorph element)
-        {
-            return element.morph == null ? "-" : element.morph.getDisplayName();
-        }
-    }
-
-    /**
-     * HUD morph transformation editor
-     */
-    public static class GuiHUDMorphTransformations extends GuiTransformations
-    {
-        public HUDMorph morph;
-
-        public GuiHUDMorphTransformations(Minecraft mc)
-        {
-            super(mc);
-        }
-
-        public void setMorph(HUDMorph morph)
-        {
-            this.morph = morph;
-
-            if (morph != null)
-            {
-                this.fillT(morph.translate.x, morph.translate.y, morph.translate.z);
-                this.fillS(morph.scale.x, morph.scale.y, morph.scale.z);
-                this.fillR(morph.rotate.x, morph.rotate.y, morph.rotate.z);
-            }
-
-        }
-
-        public void setT(double x, double y, double z)
-        {
-            this.morph.translate.x = (float) x;
-            this.morph.translate.y = (float) y;
-            this.morph.translate.z = (float) z;
-        }
-
-        public void setS(double x, double y, double z)
-        {
-            this.morph.scale.x = (float) x;
-            this.morph.scale.y = (float) y;
-            this.morph.scale.z = (float) z;
-        }
-
-        public void setR(double x, double y, double z)
-        {
-            this.morph.rotate.x = (float) x;
-            this.morph.rotate.y = (float) y;
-            this.morph.rotate.z = (float) z;
-        }
     }
 }

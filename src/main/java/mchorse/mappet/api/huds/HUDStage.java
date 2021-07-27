@@ -1,4 +1,4 @@
-package mchorse.mappet.api.hud;
+package mchorse.mappet.api.huds;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -20,30 +20,32 @@ public class HUDStage
 {
     public Map<String, HUDScene> scenes = new LinkedHashMap<String, HUDScene>();
 
-    private List<HUDMorph> renderPerspective = new ArrayList<HUDMorph>();
     private List<HUDMorph> renderOrtho = new ArrayList<HUDMorph>();
+    private boolean ignoreF1;
+
+    public HUDStage(boolean ignoreF1)
+    {
+        this.ignoreF1 = ignoreF1;
+    }
 
     public void reset()
     {
         this.scenes.clear();
     }
 
-    public void update(boolean expire)
+    public void update(boolean allowExpiring)
     {
-        this.scenes.values().removeIf((scene) -> scene.update(expire));
+        this.scenes.values().removeIf((scene) -> scene.update(allowExpiring));
     }
 
     public void render(ScaledResolution resolution, float partialTicks)
     {
-        this.renderPerspective.clear();
+        Minecraft mc = Minecraft.getMinecraft();
+
         this.renderOrtho.clear();
 
-        for (HUDScene scene : this.scenes.values())
-        {
-            scene.fill(this.renderPerspective, this.renderOrtho);
-        }
+        this.enableGLStates();
 
-        Minecraft mc = Minecraft.getMinecraft();
         int w = resolution.getScaledWidth();
         int h = resolution.getScaledHeight();
 
@@ -60,12 +62,83 @@ public class HUDStage
         int vw = (int) (w * rx);
         int vh = (int) (h * ry);
 
+        float aspect = (float) vw / (float) vh;
+        float lastFov = Float.MIN_VALUE;
+
         GlStateManager.viewport(vx, vy, vw, vh);
+
+        /* Default camera transformations */
+        GlStateManager.pushMatrix();
+        GlStateManager.loadIdentity();
+        GlStateManager.translate(0, -1, -2);
+
+        /* Drawing begins */
+        for (HUDScene scene : this.scenes.values())
+        {
+            if (mc.gameSettings.hideGUI && scene.hide && !this.ignoreF1)
+            {
+                continue;
+            }
+
+            if (lastFov != scene.fov)
+            {
+                GlStateManager.matrixMode(GL11.GL_PROJECTION);
+                GlStateManager.loadIdentity();
+                Project.gluPerspective(scene.fov, aspect, 0.05F, 1000);
+                GlStateManager.matrixMode(GL11.GL_MODELVIEW);
+
+                lastFov = scene.fov;
+            }
+
+            for (HUDMorph morph : scene.morphs)
+            {
+                if (morph.ortho)
+                {
+                    this.renderOrtho.add(morph);
+                }
+                else
+                {
+                    morph.render(resolution, partialTicks);
+                }
+            }
+        }
+
+        GlStateManager.popMatrix();
+
+        this.setupOrtho(mc, w, h, true);
+
+        GlStateManager.clear(GL11.GL_DEPTH_BUFFER_BIT);
+
+        for (HUDMorph morph : this.renderOrtho)
+        {
+            morph.render(resolution, partialTicks);
+        }
+
+        this.disableGLStates();
+        this.setupOrtho(mc, w, h, false);
+    }
+
+    private void setupOrtho(Minecraft mc, int w, int h, boolean flip)
+    {
+        /* Return back to orthographic projection */
+        GlStateManager.viewport(0, 0, mc.displayWidth, mc.displayHeight);
         GlStateManager.matrixMode(GL11.GL_PROJECTION);
         GlStateManager.loadIdentity();
-        Project.gluPerspective(70, (float) vw / (float) vh, 0.05F, 1000);
-        GlStateManager.matrixMode(GL11.GL_MODELVIEW);
 
+        if (flip)
+        {
+            GlStateManager.ortho(0, w, 0, h, 1000, 3000000);
+        }
+        else
+        {
+            GlStateManager.ortho(0, w, h, 0, 1000, 3000000);
+        }
+
+        GlStateManager.matrixMode(GL11.GL_MODELVIEW);
+    }
+
+    private void enableGLStates()
+    {
         /* Enable rendering states */
         RenderHelper.enableStandardItemLighting();
         GlStateManager.enableAlpha();
@@ -73,34 +146,10 @@ public class HUDStage
         GlStateManager.enableDepth();
         GlStateManager.disableCull();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+    }
 
-        /* Setup transformations */
-        GlStateManager.pushMatrix();
-        GlStateManager.loadIdentity();
-        GlStateManager.translate(0, -1, -2);
-
-        /* Drawing begins */
-        for (HUDMorph morph : this.renderPerspective)
-        {
-            morph.render(partialTicks);
-        }
-
-        GlStateManager.popMatrix();
-
-        /* Return back to orthographic projection */
-        GlStateManager.viewport(0, 0, mc.displayWidth, mc.displayHeight);
-        GlStateManager.matrixMode(GL11.GL_PROJECTION);
-        GlStateManager.loadIdentity();
-        GlStateManager.ortho(0, w, 0, h, 1000, 3000000);
-        GlStateManager.matrixMode(GL11.GL_MODELVIEW);
-
-        GlStateManager.clear(GL11.GL_DEPTH_BUFFER_BIT);
-
-        for (HUDMorph morph : this.renderOrtho)
-        {
-            morph.render(partialTicks);
-        }
-
+    private void disableGLStates()
+    {
         /* Disable rendering states */
         GlStateManager.enableCull();
         GlStateManager.disableDepth();
@@ -111,12 +160,5 @@ public class HUDStage
         GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
         GlStateManager.disableTexture2D();
         GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
-
-        /* Return back to orthographic projection */
-        GlStateManager.viewport(0, 0, mc.displayWidth, mc.displayHeight);
-        GlStateManager.matrixMode(GL11.GL_PROJECTION);
-        GlStateManager.loadIdentity();
-        GlStateManager.ortho(0, w, h, 0, 1000, 3000000);
-        GlStateManager.matrixMode(GL11.GL_MODELVIEW);
     }
 }

@@ -1,4 +1,4 @@
-package mchorse.mappet.api.hud;
+package mchorse.mappet.api.huds;
 
 import mchorse.mclib.utils.DummyEntity;
 import mchorse.mclib.utils.NBTUtils;
@@ -6,6 +6,7 @@ import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -23,6 +24,8 @@ public class HUDMorph implements INBTSerializable<NBTTagCompound>
     public Vector3f translate = new Vector3f();
     public Vector3f scale = new Vector3f(1, 1, 1);
     public Vector3f rotate = new Vector3f();
+    public float orthoX = 0F;
+    public float orthoY = 0F;
 
     @SideOnly(Side.CLIENT)
     private DummyEntity entity;
@@ -46,7 +49,7 @@ public class HUDMorph implements INBTSerializable<NBTTagCompound>
     }
 
     @SideOnly(Side.CLIENT)
-    public void render(float partialTicks)
+    public void render(ScaledResolution resolution, float partialTicks)
     {
         if (this.morph == null)
         {
@@ -63,6 +66,12 @@ public class HUDMorph implements INBTSerializable<NBTTagCompound>
         float ry = this.rotate.y;
         float rz = this.rotate.z;
 
+        if (this.ortho)
+        {
+            tx = resolution.getScaledWidth() * this.orthoX + tx;
+            ty = resolution.getScaledHeight() * this.orthoY + ty;
+        }
+
         GlStateManager.pushMatrix();
         GlStateManager.translate(tx, ty, tz);
         GlStateManager.rotate(rz, 0, 0, 1);
@@ -76,7 +85,7 @@ public class HUDMorph implements INBTSerializable<NBTTagCompound>
     }
 
     @SideOnly(Side.CLIENT)
-    public boolean update(boolean expire)
+    public boolean update(boolean allowExpiring)
     {
         DummyEntity entity = this.getEntity();
 
@@ -88,7 +97,7 @@ public class HUDMorph implements INBTSerializable<NBTTagCompound>
         entity.ticksExisted += 1;
         this.tick += 1;
 
-        if (!expire)
+        if (!allowExpiring)
         {
             return false;
         }
@@ -125,6 +134,9 @@ public class HUDMorph implements INBTSerializable<NBTTagCompound>
             tag.setTag("Rotate", NBTUtils.writeFloatList(new NBTTagList(), this.rotate));
         }
 
+        tag.setFloat("OrthoX", this.orthoX);
+        tag.setFloat("OrthoY", this.orthoY);
+
         return tag;
     }
 
@@ -142,5 +154,8 @@ public class HUDMorph implements INBTSerializable<NBTTagCompound>
         NBTUtils.readFloatList(tag.getTagList("Translate", 5), this.translate);
         NBTUtils.readFloatList(tag.getTagList("Scale", 5), this.scale);
         NBTUtils.readFloatList(tag.getTagList("Rotate", 5), this.rotate);
+
+        this.orthoX = tag.getFloat("OrthoX");
+        this.orthoY = tag.getFloat("OrthoY");
     }
 }

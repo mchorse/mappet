@@ -1,4 +1,4 @@
-package mchorse.mappet.commands.hud;
+package mchorse.mappet.commands.huds;
 
 import mchorse.mappet.commands.MappetSubCommandBase;
 import net.minecraft.command.ICommandSender;

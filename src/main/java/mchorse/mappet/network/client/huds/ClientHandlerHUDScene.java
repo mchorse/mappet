@@ -1,9 +1,9 @@
-package mchorse.mappet.network.client.hud;
+package mchorse.mappet.network.client.huds;
 
 import mchorse.mappet.Mappet;
-import mchorse.mappet.api.hud.HUDScene;
+import mchorse.mappet.api.huds.HUDScene;
 import mchorse.mappet.client.RenderingHandler;
-import mchorse.mappet.network.common.hud.PacketHUDScene;
+import mchorse.mappet.network.common.huds.PacketHUDScene;
 import mchorse.mclib.network.ClientMessageHandler;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraftforge.fml.relauncher.Side;
@@ -17,7 +17,14 @@ public class ClientHandlerHUDScene extends ClientMessageHandler<PacketHUDScene>
     {
         if (message.tag == null)
         {
-            RenderingHandler.stage.scenes.remove(message.id);
+            if (message.id.isEmpty())
+            {
+                RenderingHandler.stage.scenes.clear();
+            }
+            else
+            {
+                RenderingHandler.stage.scenes.remove(message.id);
+            }
         }
         else
         {

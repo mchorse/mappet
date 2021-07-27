@@ -5,7 +5,7 @@ import mchorse.mappet.commands.data.CommandData;
 import mchorse.mappet.commands.dialogues.CommandDialogue;
 import mchorse.mappet.commands.events.CommandEvent;
 import mchorse.mappet.commands.factions.CommandFaction;
-import mchorse.mappet.commands.hud.CommandHud;
+import mchorse.mappet.commands.huds.CommandHud;
 import mchorse.mappet.commands.npc.CommandNpc;
 import mchorse.mappet.commands.quests.CommandQuest;
 import mchorse.mappet.commands.scripts.CommandScript;

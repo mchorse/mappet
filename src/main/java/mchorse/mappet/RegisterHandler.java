@@ -4,7 +4,7 @@ import mchorse.mappet.api.crafting.CraftingManager;
 import mchorse.mappet.api.dialogues.DialogueManager;
 import mchorse.mappet.api.events.EventManager;
 import mchorse.mappet.api.factions.FactionManager;
-import mchorse.mappet.api.hud.HUDManager;
+import mchorse.mappet.api.huds.HUDManager;
 import mchorse.mappet.api.npcs.NpcManager;
 import mchorse.mappet.api.quests.QuestManager;
 import mchorse.mappet.api.quests.chains.QuestChainManager;

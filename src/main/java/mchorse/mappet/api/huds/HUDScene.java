@@ -1,4 +1,4 @@
-package mchorse.mappet.api.hud;
+package mchorse.mappet.api.huds;
 
 import mchorse.mappet.api.utils.AbstractData;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,21 +13,15 @@ import java.util.List;
 public class HUDScene extends AbstractData
 {
     public List<HUDMorph> morphs = new ArrayList<HUDMorph>();
+    public float fov = 70F;
+    public boolean hide;
 
     @SideOnly(Side.CLIENT)
-    public boolean update(boolean expire)
+    public boolean update(boolean allowExpiring)
     {
-        this.morphs.removeIf((morph) -> morph.update(expire));
+        this.morphs.removeIf((morph) -> morph.update(allowExpiring));
 
-        return expire && this.morphs.isEmpty();
-    }
-
-    public void fill(List<HUDMorph> perspective, List<HUDMorph> ortho)
-    {
-        for (HUDMorph morph : this.morphs)
-        {
-            (morph.ortho ? ortho : perspective).add(morph);
-        }
+        return allowExpiring && this.morphs.isEmpty();
     }
 
     @Override
@@ -42,6 +36,8 @@ public class HUDScene extends AbstractData
         }
 
         tag.setTag("Morphs", morphs);
+        tag.setFloat("Fov", this.fov);
+        tag.setBoolean("Hide", this.hide);
 
         return tag;
     }
@@ -60,6 +56,16 @@ public class HUDScene extends AbstractData
                 morph.deserializeNBT(list.getCompoundTagAt(i));
                 this.morphs.add(morph);
             }
+        }
+
+        if (tag.hasKey("Fov"))
+        {
+            this.fov = tag.getFloat("Fov");
+        }
+
+        if (tag.hasKey("Hide"))
+        {
+            this.hide = tag.getBoolean("Hide");
         }
     }
 }

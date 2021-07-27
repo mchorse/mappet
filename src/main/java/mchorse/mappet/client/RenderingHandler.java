@@ -1,6 +1,6 @@
 package mchorse.mappet.client;
 
-import mchorse.mappet.api.hud.HUDStage;
+import mchorse.mappet.api.huds.HUDStage;
 import mchorse.mappet.client.gui.GuiQuestTracker;
 import mchorse.mclib.events.RenderOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -11,7 +11,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderingHandler
 {
-    public static HUDStage stage = new HUDStage();
+    public static HUDStage stage = new HUDStage(false);
     public static HUDStage currentStage;
 
     @SubscribeEvent

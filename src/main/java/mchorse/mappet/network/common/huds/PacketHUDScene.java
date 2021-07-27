@@ -1,4 +1,4 @@
-package mchorse.mappet.network.common.hud;
+package mchorse.mappet.network.common.huds;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;

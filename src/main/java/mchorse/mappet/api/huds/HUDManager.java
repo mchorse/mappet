@@ -1,4 +1,4 @@
-package mchorse.mappet.api.hud;
+package mchorse.mappet.api.huds;
 
 import mchorse.mappet.api.utils.manager.BaseManager;
 import net.minecraft.nbt.NBTTagCompound;
