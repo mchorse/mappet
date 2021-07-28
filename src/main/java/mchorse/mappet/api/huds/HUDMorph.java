@@ -20,12 +20,12 @@ public class HUDMorph implements INBTSerializable<NBTTagCompound>
 {
     public AbstractMorph morph;
     public boolean ortho;
+    public float orthoX;
+    public float orthoY;
     public int expire;
     public Vector3f translate = new Vector3f();
     public Vector3f scale = new Vector3f(1, 1, 1);
     public Vector3f rotate = new Vector3f();
-    public float orthoX = 0F;
-    public float orthoY = 0F;
 
     @SideOnly(Side.CLIENT)
     private DummyEntity entity;
@@ -117,6 +117,8 @@ public class HUDMorph implements INBTSerializable<NBTTagCompound>
         }
 
         tag.setBoolean("Ortho", this.ortho);
+        tag.setFloat("OrthoX", this.orthoX);
+        tag.setFloat("OrthoY", this.orthoY);
         tag.setInteger("Expire", this.expire);
 
         if (this.translate.x != 0 || this.translate.y != 0 || this.translate.z != 0)
@@ -134,9 +136,6 @@ public class HUDMorph implements INBTSerializable<NBTTagCompound>
             tag.setTag("Rotate", NBTUtils.writeFloatList(new NBTTagList(), this.rotate));
         }
 
-        tag.setFloat("OrthoX", this.orthoX);
-        tag.setFloat("OrthoY", this.orthoY);
-
         return tag;
     }
 
@@ -149,13 +148,12 @@ public class HUDMorph implements INBTSerializable<NBTTagCompound>
         }
 
         this.ortho = tag.getBoolean("Ortho");
+        this.orthoX = tag.getFloat("OrthoX");
+        this.orthoY = tag.getFloat("OrthoY");
         this.expire = tag.getInteger("Expire");
 
         NBTUtils.readFloatList(tag.getTagList("Translate", 5), this.translate);
         NBTUtils.readFloatList(tag.getTagList("Scale", 5), this.scale);
         NBTUtils.readFloatList(tag.getTagList("Rotate", 5), this.rotate);
-
-        this.orthoX = tag.getFloat("OrthoX");
-        this.orthoY = tag.getFloat("OrthoY");
     }
 }

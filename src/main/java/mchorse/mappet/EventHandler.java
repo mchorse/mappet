@@ -1,5 +1,6 @@
 package mchorse.mappet;
 
+import mchorse.mappet.api.huds.HUDStage;
 import mchorse.mappet.api.quests.Quest;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.IExecutable;
@@ -414,7 +415,9 @@ public class EventHandler
     @SideOnly(Side.CLIENT)
     private void onPlayerTickClient(TickEvent.PlayerTickEvent event)
     {
-        RenderingHandler.stage.update(true);
+        HUDStage stage = RenderingHandler.currentStage == null ? RenderingHandler.stage : RenderingHandler.currentStage;
+
+        stage.update(stage == RenderingHandler.stage);
     }
 
     @SubscribeEvent
