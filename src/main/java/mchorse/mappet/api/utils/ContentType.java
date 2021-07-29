@@ -198,6 +198,7 @@ public enum ContentType
         }
 
         @Override
+        @SideOnly(Side.CLIENT)
         public GuiMappetDashboardPanel get(GuiMappetDashboard dashboard)
         {
             return dashboard.hud;

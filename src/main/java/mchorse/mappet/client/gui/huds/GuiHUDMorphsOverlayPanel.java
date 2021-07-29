@@ -59,7 +59,7 @@ public class GuiHUDMorphsOverlayPanel extends GuiOverlayPanel
                 menu.action(Icons.REMOVE, IKey.lang("mappet.gui.huds.context.remove"), this::removeMorph, Colors.NEGATIVE);
             }
 
-            return menu;
+            return menu.shadow();
         });
         this.morphs.flex().relative(this.content).wh(1F, 1F);
 
