@@ -23,7 +23,7 @@ public class ClientHandlerDialogueFragment extends ClientMessageHandler<PacketDi
 
             dialogue.pickReply(message);
         }
-        else
+        else if (!message.reaction.text.isEmpty() || !message.isEmpty())
         {
             Minecraft.getMinecraft().displayGuiScreen(new GuiInteractionScreen(message));
         }
