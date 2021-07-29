@@ -26,6 +26,8 @@ mappet.error.data.empty_charset=§fCharacter set %s§f cannot be found or used!
 mappet.error.script.empty=§fScript by ID §7%s§f is either missing or has no §7main§r function! Error message:\n\n%s§r
 mappet.error.script.error=§fScript by ID §7%s§f failed to execute. An error at %s§r:%s§r occurred!\n\n%s§r
 
+mappet.error.hud.missing=§fHUD scene by ID §7%s§f is missing!
+
 # Info
 mappet.info.states.clear=§fValue by key §7%s§f was removed from states.
 mappet.info.states.clear_all=§fAll values were removed from §7%s§f's states.
@@ -95,8 +97,13 @@ mappet.commands.mp.data.save=Saves global states, and current player's states an
 mappet.commands.mp.data.rencode=Re-encode all data files within world's §7mappet/§f folder from §7<from>§r character set, to §7<to>§r character set.
 
 mappet.commands.mp.script.help=Scripts subcommand.
-mappet.commands.mp.script.eval=This command executes JS code snippet provided in  §7<code...>§r. Variable §7c§r is provided which is a §7IScriptEvent§r which has either player subject (if the command was executed from player) or with server.
+mappet.commands.mp.script.eval=This command executes JS code snippet provided in §7<code...>§r. Variable §7c§r is provided which is a §7IScriptEvent§r which has either player subject (if the command was executed from player) or with server.
 mappet.commands.mp.script.exec=This command executes script by §7<id>§r (from world's §7mappet/scripts/§r folder, without file extension) upon players found by §7<player>§r target selector. Script's §7[function]§r (§7main§r if omitted) function will be called. You can also pass arbitrary NBT data to the event using §7[data]§r argument.
+
+mappet.commands.mp.hud.help=HUD scenes management command.
+mappet.commands.mp.hud.close=Closes an HUD scene by §7[id]§r of all players found by §7<target>§r selector. If player(s) didn't have such HUD scene by §7[id]§r nothing will happen. If §7[id]§r was omitted, then all HUD scenes will be removed from players by §7<target>§r selector.
+mappet.commands.mp.hud.morph=Changes the morph in player's scene by §7<id>§r for all players matching §7<target>§r selector at given §7<index>§r in the scene with a morph constructed from §7<nbt>§r. If the player won't have the scene, or a HUD morph at given §7<index>§r, nothing will happen.
+mappet.commands.mp.hud.setup=Adds an HUD scene by §7<id>§r which will display to all players found by §7<target>§r selector. If scene by given §7<id>§r was already added earlier, and didn't expire, then it will be started over again.
 
 # Config
 
