@@ -54,6 +54,8 @@ public class EventHandler
      */
     public static final ResourceLocation CAPABILITY = new ResourceLocation(Mappet.MOD_ID, "character");
 
+    private static Boolean isMohist;
+
     /**
      * Players that must be checked
      */
@@ -74,6 +76,27 @@ public class EventHandler
      * Server data context which is used by server tick global trigger
      */
     private DataContext context;
+
+    private static boolean isMohist()
+    {
+        if (isMohist != null)
+        {
+            return isMohist;
+        }
+
+        try
+        {
+            Class.forName("com.mohistmc.MohistMC");
+
+            isMohist = true;
+        }
+        catch (Exception e)
+        {
+            isMohist = false;
+        }
+
+        return isMohist;
+    }
 
     public void addExecutables(List<IExecutable> executionForks)
     {
@@ -260,7 +283,10 @@ public class EventHandler
         ICharacter character = Character.get(player);
         ICharacter oldCharacter = Character.get(event.getOriginal());
 
-        character.copy(oldCharacter, player);
+        if (!isMohist())
+        {
+            character.copy(oldCharacter, player);
+        }
     }
 
     @SubscribeEvent
