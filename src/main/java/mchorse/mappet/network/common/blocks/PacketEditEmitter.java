@@ -3,6 +3,7 @@ package mchorse.mappet.network.common.blocks;
 import io.netty.buffer.ByteBuf;
 import mchorse.mappet.api.conditions.Checker;
 import mchorse.mappet.tile.TileEmitter;
+import mchorse.mclib.utils.NBTUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -46,7 +47,7 @@ public class PacketEditEmitter implements IMessage
     public void fromBytes(ByteBuf buf)
     {
         this.pos = new BlockPos(buf.readInt(), buf.readInt(), buf.readInt());
-        this.checker = ByteBufUtils.readTag(buf);
+        this.checker = NBTUtils.readInfiniteTag(buf);
         this.radius = buf.readFloat();
         this.update = buf.readInt();
         this.disable = buf.readBoolean();

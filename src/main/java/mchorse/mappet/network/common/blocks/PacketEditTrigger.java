@@ -2,8 +2,8 @@ package mchorse.mappet.network.common.blocks;
 
 import io.netty.buffer.ByteBuf;
 import mchorse.mappet.blocks.BlockTrigger;
-import mchorse.mappet.tile.TileEmitter;
 import mchorse.mappet.tile.TileTrigger;
+import mchorse.mclib.utils.NBTUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -36,8 +36,8 @@ public class PacketEditTrigger implements IMessage
     public void fromBytes(ByteBuf buf)
     {
         this.pos = new BlockPos(buf.readInt(), buf.readInt(), buf.readInt());
-        this.left = ByteBufUtils.readTag(buf);
-        this.right = ByteBufUtils.readTag(buf);
+        this.left = NBTUtils.readInfiniteTag(buf);
+        this.right = NBTUtils.readInfiniteTag(buf);
         this.collidable = buf.readBoolean();
     }
 

@@ -1,6 +1,7 @@
 package mchorse.mappet.network.common.content;
 
 import io.netty.buffer.ByteBuf;
+import mchorse.mclib.utils.NBTUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -20,7 +21,7 @@ public class PacketServerSettings implements IMessage
     @Override
     public void fromBytes(ByteBuf buf)
     {
-        this.tag = ByteBufUtils.readTag(buf);
+        this.tag = NBTUtils.readInfiniteTag(buf);
     }
 
     @Override

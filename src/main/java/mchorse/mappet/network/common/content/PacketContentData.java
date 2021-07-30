@@ -2,6 +2,7 @@ package mchorse.mappet.network.common.content;
 
 import io.netty.buffer.ByteBuf;
 import mchorse.mappet.api.utils.ContentType;
+import mchorse.mclib.utils.NBTUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
@@ -54,7 +55,7 @@ public class PacketContentData extends PacketContentBase
 
         if (buf.readBoolean())
         {
-            this.data = ByteBufUtils.readTag(buf);
+            this.data = NBTUtils.readInfiniteTag(buf);
         }
 
         if (buf.readBoolean())

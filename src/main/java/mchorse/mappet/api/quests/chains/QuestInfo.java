@@ -3,6 +3,7 @@ package mchorse.mappet.api.quests.chains;
 import io.netty.buffer.ByteBuf;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.quests.Quest;
+import mchorse.mclib.utils.NBTUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -27,7 +28,7 @@ public class QuestInfo implements IMessage
         this.status = QuestStatus.values()[buf.readInt()];
 
         String id = ByteBufUtils.readUTF8String(buf);
-        NBTTagCompound tag = ByteBufUtils.readTag(buf);
+        NBTTagCompound tag = NBTUtils.readInfiniteTag(buf);
 
         this.quest = Mappet.quests.create(id, tag);
     }

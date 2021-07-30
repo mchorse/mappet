@@ -1,6 +1,7 @@
 package mchorse.mappet.network.common.huds;
 
 import io.netty.buffer.ByteBuf;
+import mchorse.mclib.utils.NBTUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -26,7 +27,7 @@ public class PacketHUDMorph implements IMessage
     {
         this.id = ByteBufUtils.readUTF8String(buf);
         this.index = buf.readInt();
-        this.morph = ByteBufUtils.readTag(buf);
+        this.morph = NBTUtils.readInfiniteTag(buf);
     }
 
     @Override

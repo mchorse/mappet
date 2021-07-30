@@ -2,6 +2,7 @@ package mchorse.mappet.network.common.crafting;
 
 import io.netty.buffer.ByteBuf;
 import mchorse.mappet.api.crafting.CraftingTable;
+import mchorse.mclib.utils.NBTUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -23,7 +24,7 @@ public class PacketCraftingTable implements IMessage
     {
         if (buf.readBoolean())
         {
-            NBTTagCompound tag = ByteBufUtils.readTag(buf);
+            NBTTagCompound tag = NBTUtils.readInfiniteTag(buf);
 
             this.table = new CraftingTable();
             this.table.deserializeNBT(tag);

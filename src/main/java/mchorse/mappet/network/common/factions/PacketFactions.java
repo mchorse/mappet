@@ -3,6 +3,7 @@ package mchorse.mappet.network.common.factions;
 import io.netty.buffer.ByteBuf;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.factions.Faction;
+import mchorse.mclib.utils.NBTUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -30,7 +31,7 @@ public class PacketFactions implements IMessage
         for (int i = 0, c = buf.readInt(); i < c; i++)
         {
             String key = ByteBufUtils.readUTF8String(buf);
-            NBTTagCompound tag = ByteBufUtils.readTag(buf);
+            NBTTagCompound tag = NBTUtils.readInfiniteTag(buf);
             Faction faction = Mappet.factions.create(key, tag);
 
             if (faction != null)

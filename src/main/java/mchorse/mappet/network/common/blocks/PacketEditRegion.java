@@ -2,6 +2,7 @@ package mchorse.mappet.network.common.blocks;
 
 import io.netty.buffer.ByteBuf;
 import mchorse.mappet.tile.TileRegion;
+import mchorse.mclib.utils.NBTUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -30,7 +31,7 @@ public class PacketEditRegion implements IMessage
     public void fromBytes(ByteBuf buf)
     {
         this.pos = new BlockPos(buf.readInt(), buf.readInt(), buf.readInt());
-        this.tag = ByteBufUtils.readTag(buf);
+        this.tag = NBTUtils.readInfiniteTag(buf);
     }
 
     @Override

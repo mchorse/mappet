@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.quests.Quest;
 import mchorse.mappet.api.quests.Quests;
+import mchorse.mclib.utils.NBTUtils;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
@@ -29,7 +30,7 @@ public class PacketQuests implements IMessage
         {
             String id = ByteBufUtils.readUTF8String(buf);
 
-            this.quests.put(id, Mappet.quests.create(id, ByteBufUtils.readTag(buf)));
+            this.quests.put(id, Mappet.quests.create(id, NBTUtils.readInfiniteTag(buf)));
         }
     }
 

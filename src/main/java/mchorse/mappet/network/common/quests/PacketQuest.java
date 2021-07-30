@@ -3,6 +3,7 @@ package mchorse.mappet.network.common.quests;
 import io.netty.buffer.ByteBuf;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.quests.Quest;
+import mchorse.mclib.utils.NBTUtils;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
@@ -27,7 +28,7 @@ public class PacketQuest implements IMessage
 
         if (buf.readBoolean())
         {
-            this.quest = Mappet.quests.create(this.id, ByteBufUtils.readTag(buf));
+            this.quest = Mappet.quests.create(this.id, NBTUtils.readInfiniteTag(buf));
         }
     }
 

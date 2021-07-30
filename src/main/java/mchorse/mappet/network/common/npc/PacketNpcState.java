@@ -1,6 +1,7 @@
 package mchorse.mappet.network.common.npc;
 
 import io.netty.buffer.ByteBuf;
+import mchorse.mclib.utils.NBTUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -23,7 +24,7 @@ public class PacketNpcState implements IMessage
     public void fromBytes(ByteBuf buf)
     {
         this.entityId = buf.readInt();
-        this.state = ByteBufUtils.readTag(buf);
+        this.state = NBTUtils.readInfiniteTag(buf);
     }
 
     @Override

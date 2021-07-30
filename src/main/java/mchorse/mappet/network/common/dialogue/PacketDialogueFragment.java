@@ -6,6 +6,7 @@ import mchorse.mappet.api.crafting.CraftingTable;
 import mchorse.mappet.api.dialogues.DialogueFragment;
 import mchorse.mappet.api.quests.chains.QuestContext;
 import mchorse.mappet.api.quests.chains.QuestInfo;
+import mchorse.mclib.utils.NBTUtils;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -65,13 +66,13 @@ public class PacketDialogueFragment implements IMessage
         this.title = ByteBufUtils.readUTF8String(buf);
         this.closable = buf.readBoolean();
         this.morph = MorphUtils.morphFromBuf(buf);
-        this.reaction.deserializeNBT(ByteBufUtils.readTag(buf));
+        this.reaction.deserializeNBT(NBTUtils.readInfiniteTag(buf));
 
         for (int i = 0, c = buf.readInt(); i < c; i++)
         {
             DialogueFragment fragment = new DialogueFragment();
 
-            fragment.deserializeNBT(ByteBufUtils.readTag(buf));
+            fragment.deserializeNBT(NBTUtils.readInfiniteTag(buf));
             this.replies.add(fragment);
         }
 
@@ -79,7 +80,7 @@ public class PacketDialogueFragment implements IMessage
         {
             String id = ByteBufUtils.readUTF8String(buf);
 
-            this.table = Mappet.crafting.create(id, ByteBufUtils.readTag(buf));
+            this.table = Mappet.crafting.create(id, NBTUtils.readInfiniteTag(buf));
         }
 
         this.hasQuests = buf.readBoolean();
