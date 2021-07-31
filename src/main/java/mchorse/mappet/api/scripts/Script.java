@@ -7,6 +7,7 @@ import mchorse.mappet.api.utils.AbstractData;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.events.RegisterScriptVariablesEvent;
 import mchorse.mappet.utils.ScriptUtils;
+import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
 
 import javax.script.Bindings;
@@ -55,7 +56,7 @@ public class Script extends AbstractData
         NBTTagCompound tag = new NBTTagCompound();
 
         tag.setBoolean("Unique", this.unique);
-        tag.setString("Code", this.code);
+        tag.setByteArray("Code", this.code.getBytes());
 
         return tag;
     }
@@ -64,6 +65,6 @@ public class Script extends AbstractData
     public void deserializeNBT(NBTTagCompound tag)
     {
         this.unique = tag.getBoolean("Unique");
-        this.code = tag.getString("Code");
+        this.code = new String(tag.getByteArray("Code"));
     }
 }

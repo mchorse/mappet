@@ -9,6 +9,7 @@ import mchorse.mappet.utils.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextFormatting;
 import org.apache.commons.io.FileUtils;
@@ -160,7 +161,7 @@ public class ScriptManager extends BaseManager<Script>
     @Override
     public boolean save(String id, NBTTagCompound tag)
     {
-        String code = tag.getString("Code");
+        String code = new String(tag.getByteArray("Code"));
 
         tag.removeTag("Code");
 
