@@ -17,6 +17,6 @@ public class GuiHUDMorphListElement extends GuiListElement<HUDMorph>
     @Override
     protected String elementToString(HUDMorph element)
     {
-        return element.morph == null ? "-" : element.morph.getDisplayName();
+        return element.morph.isEmpty() ? "-" : element.morph.get().getDisplayName();
     }
 }

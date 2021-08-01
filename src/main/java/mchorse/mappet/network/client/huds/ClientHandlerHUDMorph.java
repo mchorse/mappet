@@ -22,7 +22,7 @@ public class ClientHandlerHUDMorph extends ClientMessageHandler<PacketHUDMorph>
         {
             HUDMorph morph = scene.morphs.get(message.index);
 
-            morph.morph = MorphManager.INSTANCE.morphFromNBT(message.morph);
+            morph.morph.set(MorphManager.INSTANCE.morphFromNBT(message.morph));
         }
     }
 }

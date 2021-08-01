@@ -82,12 +82,12 @@ public class GuiHUDScenePanel extends GuiMappetDashboardPanel<HUDScene>
 
     private void openMorphMenu(boolean editing)
     {
-        GuiMappetDashboard.get(this.mc).openMorphMenu(this.getParentContainer(), editing, this.current.morph, this::setMorph);
+        GuiMappetDashboard.get(this.mc).openMorphMenu(this.getParentContainer(), editing, this.current.morph.get(), this::setMorph);
     }
 
     private void setMorph(AbstractMorph morph)
     {
-        this.current.morph = morph;
+        this.current.morph.setDirect(morph);
         this.morph.setMorph(morph);
     }
 
@@ -137,7 +137,7 @@ public class GuiHUDScenePanel extends GuiMappetDashboardPanel<HUDScene>
 
         if (current != null)
         {
-            this.morph.setMorph(current.morph);
+            this.morph.setMorph(current.morph.get());
             this.ortho.toggled(current.ortho);
             this.orthoX.setValue(current.orthoX);
             this.orthoY.setValue(current.orthoY);
@@ -165,9 +165,9 @@ public class GuiHUDScenePanel extends GuiMappetDashboardPanel<HUDScene>
     @Override
     public void draw(GuiContext context)
     {
-        if (this.editor.isVisible() && this.current != null && this.current.morph != null)
+        if (this.editor.isVisible() && this.current != null && !this.current.morph.isEmpty())
         {
-            GuiDraw.drawTextBackground(this.font, this.current.morph.getDisplayName(), this.morphs.area.ex() + 3, this.morphs.area.my() - 4, 0xffffff, ColorUtils.HALF_BLACK, 2);
+            GuiDraw.drawTextBackground(this.font, this.current.morph.get().getDisplayName(), this.morphs.area.ex() + 3, this.morphs.area.my() - 4, 0xffffff, ColorUtils.HALF_BLACK, 2);
         }
 
         super.draw(context);

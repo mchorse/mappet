@@ -2,9 +2,7 @@ package mchorse.mappet.api.huds;
 
 import mchorse.mclib.utils.DummyEntity;
 import mchorse.mclib.utils.NBTUtils;
-import mchorse.metamorph.api.MorphManager;
-import mchorse.metamorph.api.MorphUtils;
-import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.api.Morph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -18,7 +16,7 @@ import javax.vecmath.Vector3f;
 
 public class HUDMorph implements INBTSerializable<NBTTagCompound>
 {
-    public AbstractMorph morph;
+    public Morph morph = new Morph();
     public boolean ortho;
     public float orthoX;
     public float orthoY;
@@ -51,7 +49,7 @@ public class HUDMorph implements INBTSerializable<NBTTagCompound>
     @SideOnly(Side.CLIENT)
     public void render(ScaledResolution resolution, float partialTicks)
     {
-        if (this.morph == null)
+        if (this.morph.isEmpty())
         {
             return;
         }
@@ -79,7 +77,7 @@ public class HUDMorph implements INBTSerializable<NBTTagCompound>
         GlStateManager.rotate(rx, 1, 0, 0);
         GlStateManager.scale(sx, sy, sz);
 
-        this.morph.render(this.getEntity(), 0, 0, 0, 0, partialTicks);
+        this.morph.get().render(this.getEntity(), 0, 0, 0, 0, partialTicks);
 
         GlStateManager.popMatrix();
     }
@@ -89,9 +87,9 @@ public class HUDMorph implements INBTSerializable<NBTTagCompound>
     {
         DummyEntity entity = this.getEntity();
 
-        if (this.morph != null)
+        if (!this.morph.isEmpty())
         {
-            this.morph.update(entity);
+            this.morph.get().update(entity);
         }
 
         entity.ticksExisted += 1;
@@ -109,7 +107,7 @@ public class HUDMorph implements INBTSerializable<NBTTagCompound>
     public NBTTagCompound serializeNBT()
     {
         NBTTagCompound tag = new NBTTagCompound();
-        NBTTagCompound morph = MorphUtils.toNBT(this.morph);
+        NBTTagCompound morph = this.morph.toNBT();
 
         if (morph != null)
         {
@@ -144,7 +142,7 @@ public class HUDMorph implements INBTSerializable<NBTTagCompound>
     {
         if (tag.hasKey("Morph"))
         {
-            this.morph = MorphManager.INSTANCE.morphFromNBT(tag.getCompoundTag("Morph"));
+            this.morph.fromNBT(tag.getCompoundTag("Morph"));
         }
 
         this.ortho = tag.getBoolean("Ortho");
