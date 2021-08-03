@@ -3,6 +3,7 @@ package mchorse.mappet.api.ui.components;
 import mchorse.mappet.api.ui.UIContext;
 import mchorse.mappet.api.ui.utils.UIUnit;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
+import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
@@ -14,6 +15,7 @@ import java.util.List;
 public abstract class UIBaseComponent implements IUIComponent
 {
     public String id = "";
+    public String tooltip = "";
     public int marginTop;
     public int marginBotom;
     public int marginLeft;
@@ -24,19 +26,26 @@ public abstract class UIBaseComponent implements IUIComponent
     public UIUnit w = new UIUnit();
     public UIUnit h = new UIUnit();
 
+    public UIBaseComponent id(String id)
+    {
+        this.id = id;
+
+        return this;
+    }
+
+    public UIBaseComponent tooltip(String tooltip)
+    {
+        this.tooltip = tooltip;
+
+        return this;
+    }
+
     public UIBaseComponent margin(int margin)
     {
         this.marginTop = margin;
         this.marginBotom = margin;
         this.marginLeft = margin;
         this.marginRight = margin;
-
-        return this;
-    }
-
-    public UIBaseComponent id(String id)
-    {
-        this.id = id;
 
         return this;
     }
@@ -226,6 +235,11 @@ public abstract class UIBaseComponent implements IUIComponent
 
     protected GuiElement apply(GuiElement element, UIContext context)
     {
+        if (!this.tooltip.isEmpty())
+        {
+            element.tooltip(IKey.str(this.tooltip));
+        }
+
         element.marginTop(this.marginTop);
         element.marginBottom(this.marginBotom);
         element.marginLeft(this.marginLeft);
@@ -258,6 +272,7 @@ public abstract class UIBaseComponent implements IUIComponent
         margins.appendTag(new NBTTagInt(this.marginRight));
 
         tag.setString("Id", this.id);
+        tag.setString("Tooltip", this.tooltip);
         tag.setTag("Margin", margins);
         tag.setTag("X", this.x.serializeNBT());
         tag.setTag("Y", this.y.serializeNBT());
@@ -279,6 +294,7 @@ public abstract class UIBaseComponent implements IUIComponent
         }
 
         this.id = tag.getString("Id");
+        this.tooltip = tag.getString("Tooltip");
         this.x.deserializeNBT(tag.getCompoundTag("X"));
         this.y.deserializeNBT(tag.getCompoundTag("Y"));
         this.w.deserializeNBT(tag.getCompoundTag("W"));

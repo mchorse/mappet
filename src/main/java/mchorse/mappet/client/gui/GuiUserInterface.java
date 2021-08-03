@@ -11,9 +11,12 @@ import net.minecraft.client.Minecraft;
 public class GuiUserInterface extends GuiBase
 {
     private UIContext context = new UIContext();
+    private UI ui;
 
     public GuiUserInterface(Minecraft mc, UI ui)
     {
+        this.ui = ui;
+
         GuiElement element = ui.root.create(mc, this.context);
 
         element.flex().relative(this.root).wh(1F, 1F);
@@ -32,5 +35,16 @@ public class GuiUserInterface extends GuiBase
         super.closeScreen();
 
         Dispatcher.sendToServer(new PacketUI());
+    }
+
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    {
+        if (this.ui.background)
+        {
+            this.drawDefaultBackground();
+        }
+
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 }

@@ -2,6 +2,7 @@ package mchorse.mappet.api.scripts.code.entities;
 
 import mchorse.mappet.api.scripts.code.items.ScriptInventory;
 import mchorse.mappet.api.scripts.code.mappet.MappetQuests;
+import mchorse.mappet.api.scripts.code.mappet.MappetUIBuilder;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
 import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
@@ -13,7 +14,6 @@ import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.ui.PacketUI;
 import mchorse.metamorph.api.MorphAPI;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.util.text.TextComponentString;
@@ -128,18 +128,20 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     }
 
     @Override
-    public boolean openUI(IMappetUIBuilder builder)
+    public boolean openUI(IMappetUIBuilder in)
     {
-        if (builder == null)
+        if (!(in instanceof MappetUIBuilder))
         {
             return false;
         }
+
+        MappetUIBuilder builder = (MappetUIBuilder) in;
 
         ICharacter character = Character.get(this.entity);
 
         if (character.getUIContext() == null)
         {
-            UIContext context = new UIContext(this.entity);
+            UIContext context = new UIContext(this.entity, builder.getScript(), builder.getFunction());
 
             character.setUIContext(context);
             Dispatcher.sendTo(new PacketUI(builder.getUI()), this.getMinecraftPlayer());

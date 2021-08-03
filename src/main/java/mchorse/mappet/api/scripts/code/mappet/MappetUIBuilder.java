@@ -4,15 +4,42 @@ import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.ui.UI;
 import mchorse.mappet.api.ui.components.UIButtonComponent;
 import mchorse.mappet.api.ui.components.UILabelComponent;
+import mchorse.mappet.api.ui.components.UITextComponent;
 
 public class MappetUIBuilder implements IMappetUIBuilder
 {
     private UI ui = new UI();
+    private String script;
+    private String function;
 
-    @Override
     public UI getUI()
     {
         return this.ui;
+    }
+
+    public String getScript()
+    {
+        return this.script;
+    }
+
+    public String getFunction()
+    {
+        return this.function;
+    }
+
+    @Override
+    public void setHandler(String script, String function)
+    {
+        this.script = script;
+        this.function = function;
+    }
+
+    @Override
+    public IMappetUIBuilder background()
+    {
+        this.ui.background = true;
+
+        return this;
     }
 
     @Override
@@ -33,6 +60,17 @@ public class MappetUIBuilder implements IMappetUIBuilder
 
         this.ui.root.getChildComponents().add(element);
         element.label(label);
+
+        return element;
+    }
+
+    @Override
+    public UITextComponent text(String text)
+    {
+        UITextComponent element = new UITextComponent();
+
+        this.ui.root.getChildComponents().add(element);
+        element.label(text);
 
         return element;
     }

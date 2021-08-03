@@ -32,6 +32,18 @@ public class ScriptEvent implements IScriptEvent
     }
 
     @Override
+    public String getScript()
+    {
+        return this.script == null ? "" : this.script;
+    }
+
+    @Override
+    public String getFunction()
+    {
+        return this.function == null ? "" : this.function;
+    }
+
+    @Override
     public IScriptEntity getSubject()
     {
         if (this.subject == null && this.context.subject != null)

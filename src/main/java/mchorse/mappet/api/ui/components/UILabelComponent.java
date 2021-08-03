@@ -14,6 +14,8 @@ public class UILabelComponent extends UILabelBaseComponent
 {
     public Integer color;
     public Integer background;
+    public float anchorX;
+    public float anchorY;
 
     public UILabelComponent()
     {}
@@ -28,6 +30,14 @@ public class UILabelComponent extends UILabelBaseComponent
     public UILabelComponent background(int color)
     {
         this.background = color;
+
+        return this;
+    }
+
+    public UILabelComponent labelAnchor(float anchorX, float anchorY)
+    {
+        this.anchorX = anchorX;
+        this.anchorY = anchorY;
 
         return this;
     }
@@ -48,6 +58,8 @@ public class UILabelComponent extends UILabelBaseComponent
             label.background(this.background);
         }
 
+        label.anchor(this.anchorX, this.anchorY);
+
         return this.apply(label, context);
     }
 
@@ -65,6 +77,9 @@ public class UILabelComponent extends UILabelBaseComponent
         {
             tag.setInteger("Background", this.background);
         }
+
+        tag.setFloat("AnchorX", this.anchorX);
+        tag.setFloat("AnchorY", this.anchorY);
     }
 
     @Override
@@ -81,5 +96,8 @@ public class UILabelComponent extends UILabelBaseComponent
         {
             this.background = tag.getInteger("Background");
         }
+
+        this.anchorX = tag.getFloat("AnchorX");
+        this.anchorY = tag.getFloat("AnchorY");
     }
 }

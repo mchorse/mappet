@@ -14,6 +14,16 @@ import java.util.Map;
 public interface IScriptEvent
 {
     /**
+     * Get script's ID to which this event was passed to.
+     */
+    public String getScript();
+
+    /**
+     * Get script's function name.
+     */
+    public String getFunction();
+
+    /**
      * Get subject (primary) entity that was passed into the event.
      */
     public IScriptEntity getSubject();

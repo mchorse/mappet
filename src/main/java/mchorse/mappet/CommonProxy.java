@@ -33,6 +33,7 @@ import mchorse.mappet.api.triggers.blocks.ScriptTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.SoundTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.StateTriggerBlock;
 import mchorse.mappet.api.ui.components.UILabelComponent;
+import mchorse.mappet.api.ui.components.UITextComponent;
 import mchorse.mappet.api.utils.factory.IFactory;
 import mchorse.mappet.api.utils.factory.MapFactory;
 import mchorse.mappet.capabilities.character.Character;
@@ -215,7 +216,8 @@ public class CommonProxy
         /* Register UI components */
         MapFactory<IUIComponent> ui = new MapFactory<IUIComponent>()
             .register("button", UIButtonComponent.class, 0xffffff)
-            .register("label", UILabelComponent.class, 0xffffff);
+            .register("label", UILabelComponent.class, 0xffffff)
+            .register("text", UITextComponent.class, 0xffffff);
 
         uiComponents = ui;
     }

@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public class UI extends AbstractData
 {
     public UIRootComponent root = new UIRootComponent();
+    public boolean background;
 
     @Override
     public NBTTagCompound serializeNBT()
@@ -14,6 +15,7 @@ public class UI extends AbstractData
         NBTTagCompound tag = new NBTTagCompound();
 
         tag.setTag("Root", this.root.serializeNBT());
+        tag.setBoolean("Background", this.background);
 
         return tag;
     }
@@ -22,5 +24,6 @@ public class UI extends AbstractData
     public void deserializeNBT(NBTTagCompound tag)
     {
         this.root.deserializeNBT(tag.getCompoundTag("Root"));
+        this.background = tag.getBoolean("Background");
     }
 }
