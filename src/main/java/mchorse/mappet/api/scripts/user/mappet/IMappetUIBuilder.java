@@ -4,6 +4,7 @@ import mchorse.mappet.api.scripts.user.IScriptEvent;
 import mchorse.mappet.api.ui.components.UIButtonComponent;
 import mchorse.mappet.api.ui.components.UILabelComponent;
 import mchorse.mappet.api.ui.components.UITextComponent;
+import mchorse.mappet.api.ui.components.UITextboxComponent;
 
 /**
  * This is user interface builder interface. You can create GUIs with this thing.
@@ -26,4 +27,11 @@ public interface IMappetUIBuilder
     public UILabelComponent label(String label);
 
     public UITextComponent text(String text);
+
+    public default UITextboxComponent textbox()
+    {
+        return this.textbox("");
+    }
+
+    public UITextboxComponent textbox(String text);
 }

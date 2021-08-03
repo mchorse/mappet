@@ -40,6 +40,11 @@ public class GuiUserInterface extends GuiBase
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
+        if (this.context.isDirty())
+        {
+            this.context.sendToServer();
+        }
+
         if (this.ui.background)
         {
             this.drawDefaultBackground();

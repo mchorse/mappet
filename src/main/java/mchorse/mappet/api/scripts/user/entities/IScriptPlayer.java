@@ -3,6 +3,7 @@ package mchorse.mappet.api.scripts.user.entities;
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
+import mchorse.mappet.api.scripts.user.mappet.IMappetUIContext;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 /**
@@ -129,4 +130,11 @@ public interface IScriptPlayer extends IScriptEntity
      * TODO: example
      */
     public boolean openUI(IMappetUIBuilder builder);
+
+    /**
+     * Get the UI context of currently opened user UI.
+     *
+     * TODO: example
+     */
+    public IMappetUIContext getUIContext();
 }

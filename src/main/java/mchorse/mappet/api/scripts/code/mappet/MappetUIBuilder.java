@@ -5,6 +5,7 @@ import mchorse.mappet.api.ui.UI;
 import mchorse.mappet.api.ui.components.UIButtonComponent;
 import mchorse.mappet.api.ui.components.UILabelComponent;
 import mchorse.mappet.api.ui.components.UITextComponent;
+import mchorse.mappet.api.ui.components.UITextboxComponent;
 
 public class MappetUIBuilder implements IMappetUIBuilder
 {
@@ -68,6 +69,17 @@ public class MappetUIBuilder implements IMappetUIBuilder
     public UITextComponent text(String text)
     {
         UITextComponent element = new UITextComponent();
+
+        this.ui.root.getChildComponents().add(element);
+        element.label(text);
+
+        return element;
+    }
+
+    @Override
+    public UITextboxComponent textbox(String text)
+    {
+        UITextboxComponent element = new UITextboxComponent();
 
         this.ui.root.getChildComponents().add(element);
         element.label(text);

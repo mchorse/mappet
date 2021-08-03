@@ -3,10 +3,12 @@ package mchorse.mappet.api.scripts.code.entities;
 import mchorse.mappet.api.scripts.code.items.ScriptInventory;
 import mchorse.mappet.api.scripts.code.mappet.MappetQuests;
 import mchorse.mappet.api.scripts.code.mappet.MappetUIBuilder;
+import mchorse.mappet.api.scripts.code.mappet.MappetUIContext;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
 import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
+import mchorse.mappet.api.scripts.user.mappet.IMappetUIContext;
 import mchorse.mappet.api.ui.UIContext;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
@@ -150,5 +152,14 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
         }
 
         return false;
+    }
+
+    @Override
+    public IMappetUIContext getUIContext()
+    {
+        ICharacter character = Character.get(this.entity);
+        UIContext context = character.getUIContext();
+
+        return context == null ? null : new MappetUIContext(context);
     }
 }

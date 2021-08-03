@@ -26,6 +26,7 @@ public class UIContext
 
     private String last = "";
     private boolean closed;
+    private Long dirty;
 
     public UIContext()
     {}
@@ -42,13 +43,51 @@ public class UIContext
         return this.last;
     }
 
+    public void setLast(String id)
+    {
+        this.last = id;
+    }
+
     public boolean isClosed()
     {
         return this.closed;
     }
 
+    public boolean isDirty()
+    {
+        if (this.dirty == null)
+        {
+            return false;
+        }
+
+        return System.currentTimeMillis() >= this.dirty;
+    }
+
+    public void dirty(long delay)
+    {
+        this.dirty = System.currentTimeMillis() + delay;
+    }
+
+    public void handleNewData(NBTTagCompound data)
+    {
+        if (this.player == null)
+        {
+            return;
+        }
+
+        this.data = data.getCompoundTag("Data");
+        this.last = data.getString("Last");
+
+        this.handleScript(new DataContext(this.player));
+    }
+
     public void close()
     {
+        if (this.player == null)
+        {
+            return;
+        }
+
         this.closed = true;
 
         this.handleScript(new DataContext(this.player));
@@ -68,8 +107,10 @@ public class UIContext
     }
 
     @SideOnly(Side.CLIENT)
-    private void sendToServer()
+    public void sendToServer()
     {
+        this.dirty = null;
+
         NBTTagCompound tag = new NBTTagCompound();
 
         tag.setTag("Data", this.data.copy());
@@ -78,19 +119,8 @@ public class UIContext
         Dispatcher.sendToServer(new PacketUIData(tag));
     }
 
-    public void handleNewData(NBTTagCompound data)
-    {
-        this.data = data.getCompoundTag("Data");
-        this.last = data.getString("Last");
-
-        this.handleScript(new DataContext(this.player));
-    }
-
     private void handleScript(DataContext context)
     {
-        context.set("last", this.last);
-        context.set("closed", this.closed ? 1 : 0);
-
         if (!this.script.isEmpty() && !this.function.isEmpty())
         {
             try
