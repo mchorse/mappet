@@ -87,6 +87,7 @@ task scriptingJavadocs(type: Javadoc) {
     source = sourceSets.main.allJava
 
     include "mchorse/mappet/api/scripts/user/**"
+    include "mchorse/mappet/api/gui/components/**"
 }
 
 task scriptingJavadocsJson(type: Exec) {

@@ -5,9 +5,15 @@ import mchorse.mappet.api.scripts.code.mappet.MappetQuests;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
 import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
+import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
+import mchorse.mappet.api.ui.UIContext;
 import mchorse.mappet.capabilities.character.Character;
+import mchorse.mappet.capabilities.character.ICharacter;
+import mchorse.mappet.network.Dispatcher;
+import mchorse.mappet.network.common.ui.PacketUI;
 import mchorse.metamorph.api.MorphAPI;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.util.text.TextComponentString;
@@ -119,5 +125,28 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
         }
 
         return true;
+    }
+
+    @Override
+    public boolean openUI(IMappetUIBuilder builder)
+    {
+        if (builder == null)
+        {
+            return false;
+        }
+
+        ICharacter character = Character.get(this.entity);
+
+        if (character.getUIContext() == null)
+        {
+            UIContext context = new UIContext(this.entity);
+
+            character.setUIContext(context);
+            Dispatcher.sendTo(new PacketUI(builder.getUI()), this.getMinecraftPlayer());
+
+            return true;
+        }
+
+        return false;
     }
 }

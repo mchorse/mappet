@@ -22,6 +22,7 @@ import mchorse.mappet.network.client.quests.ClientHandlerQuest;
 import mchorse.mappet.network.client.quests.ClientHandlerQuests;
 import mchorse.mappet.network.client.scripts.ClientHandlerEntityRotations;
 import mchorse.mappet.network.client.scripts.ClientHandlerRepl;
+import mchorse.mappet.network.client.ui.ClientHandlerUI;
 import mchorse.mappet.network.common.blocks.PacketEditEmitter;
 import mchorse.mappet.network.common.blocks.PacketEditRegion;
 import mchorse.mappet.network.common.blocks.PacketEditTrigger;
@@ -54,6 +55,8 @@ import mchorse.mappet.network.common.quests.PacketQuests;
 import mchorse.mappet.network.common.scripts.PacketClick;
 import mchorse.mappet.network.common.scripts.PacketEntityRotations;
 import mchorse.mappet.network.common.scripts.PacketRepl;
+import mchorse.mappet.network.common.ui.PacketUI;
+import mchorse.mappet.network.common.ui.PacketUIData;
 import mchorse.mappet.network.server.blocks.ServerHandlerEditEmitter;
 import mchorse.mappet.network.server.blocks.ServerHandlerEditRegion;
 import mchorse.mappet.network.server.blocks.ServerHandlerEditTrigger;
@@ -76,6 +79,8 @@ import mchorse.mappet.network.server.npc.ServerHandlerNpcTool;
 import mchorse.mappet.network.server.quests.ServerHandlerQuestAction;
 import mchorse.mappet.network.server.scripts.ServerHandlerClick;
 import mchorse.mappet.network.server.scripts.ServerHandlerRepl;
+import mchorse.mappet.network.server.ui.ServerHandlerUI;
+import mchorse.mappet.network.server.ui.ServerHandlerUIData;
 import mchorse.mclib.network.AbstractDispatcher;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityTracker;
@@ -157,9 +162,13 @@ public class Dispatcher
             this.register(PacketRepl.class, ClientHandlerRepl.class, Side.CLIENT);
             this.register(PacketRepl.class, ServerHandlerRepl.class, Side.SERVER);
 
-            /* HUD */
+            /* HUD & UI*/
             this.register(PacketHUDScene.class, ClientHandlerHUDScene.class, Side.CLIENT);
             this.register(PacketHUDMorph.class, ClientHandlerHUDMorph.class, Side.CLIENT);
+
+            this.register(PacketUI.class, ClientHandlerUI.class, Side.CLIENT);
+            this.register(PacketUI.class, ServerHandlerUI.class, Side.SERVER);
+            this.register(PacketUIData.class, ServerHandlerUIData.class, Side.SERVER);
         }
     };
 

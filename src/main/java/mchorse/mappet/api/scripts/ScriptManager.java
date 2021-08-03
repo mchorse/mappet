@@ -95,6 +95,13 @@ public class ScriptManager extends BaseManager<Script>
      */
     public Object execute(String id, String function, DataContext context) throws ScriptException, NoSuchMethodException
     {
+        Script script = getScript(id);
+
+        return script == null ? null : script.execute(function, context);
+    }
+
+    private Script getScript(String id) throws ScriptException
+    {
         Script script = this.uniqueScripts.get(id);
 
         if (script == null)
@@ -114,7 +121,7 @@ public class ScriptManager extends BaseManager<Script>
 
         script.start();
 
-        return script.execute(function, context);
+        return script;
     }
 
     @Override

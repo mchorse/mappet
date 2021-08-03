@@ -1,6 +1,7 @@
 package mchorse.mappet.api.scripts.user.entities;
 
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
+import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
 import net.minecraft.entity.player.EntityPlayerMP;
 
@@ -121,4 +122,11 @@ public interface IScriptPlayer extends IScriptEntity
      * }</pre>
      */
     public IMappetQuests getQuests();
+
+    /**
+     * Open UI for this player.
+     *
+     * TODO: example
+     */
+    public boolean openUI(IMappetUIBuilder builder);
 }

@@ -21,6 +21,8 @@ import mchorse.mappet.api.events.nodes.EventBaseNode;
 import mchorse.mappet.api.events.nodes.SwitchNode;
 import mchorse.mappet.api.events.nodes.TimerNode;
 import mchorse.mappet.api.events.nodes.TriggerNode;
+import mchorse.mappet.api.ui.components.IUIComponent;
+import mchorse.mappet.api.ui.components.UIButtonComponent;
 import mchorse.mappet.api.quests.chains.QuestNode;
 import mchorse.mappet.api.triggers.blocks.AbstractTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.CommandTriggerBlock;
@@ -30,6 +32,7 @@ import mchorse.mappet.api.triggers.blocks.ItemTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.ScriptTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.SoundTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.StateTriggerBlock;
+import mchorse.mappet.api.ui.components.UILabelComponent;
 import mchorse.mappet.api.utils.factory.IFactory;
 import mchorse.mappet.api.utils.factory.MapFactory;
 import mchorse.mappet.capabilities.character.Character;
@@ -65,6 +68,7 @@ public class CommonProxy
     private static IFactory<QuestNode> chains;
     private static IFactory<AbstractConditionBlock> conditionBlocks;
     private static IFactory<AbstractTriggerBlock> triggerBlocks;
+    private static IFactory<IUIComponent> uiComponents;
 
     public static IFactory<EventBaseNode> getEvents()
     {
@@ -85,6 +89,10 @@ public class CommonProxy
     public static IFactory<AbstractTriggerBlock> getTriggerBlocks()
     {
         return triggerBlocks;
+    }
+    public static IFactory<IUIComponent> getUiComponents()
+    {
+        return uiComponents;
     }
 
     /**
@@ -203,5 +211,12 @@ public class CommonProxy
 
         triggerBlocks = triggers;
         Mappet.EVENT_BUS.post(new RegisterTriggerBlockEvent(triggers));
+
+        /* Register UI components */
+        MapFactory<IUIComponent> ui = new MapFactory<IUIComponent>()
+            .register("button", UIButtonComponent.class, 0xffffff)
+            .register("label", UILabelComponent.class, 0xffffff);
+
+        uiComponents = ui;
     }
 }

@@ -3,9 +3,9 @@ package mchorse.mappet.capabilities.character;
 import mchorse.mappet.api.crafting.CraftingTable;
 import mchorse.mappet.api.dialogues.Dialogue;
 import mchorse.mappet.api.dialogues.DialogueContext;
+import mchorse.mappet.api.ui.UIContext;
 import mchorse.mappet.api.quests.Quests;
 import mchorse.mappet.api.states.States;
-import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.utils.CurrentSession;
 import mchorse.mappet.utils.PositionCache;
 import net.minecraft.entity.player.EntityPlayer;
@@ -49,4 +49,10 @@ public interface ICharacter extends INBTSerializable<NBTTagCompound>
     public CurrentSession getCurrentSession();
 
     public void copy(ICharacter character, EntityPlayer player);
+
+    /* GUIs */
+
+    public UIContext getUIContext();
+
+    public void setUIContext(UIContext context);
 }

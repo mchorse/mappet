@@ -1,7 +1,9 @@
 package mchorse.mappet.api.scripts.user;
 
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
+import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
+import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.mappet.api.scripts.user.nbt.INBTList;
 import mchorse.metamorph.api.morphs.AbstractMorph;
@@ -349,6 +351,14 @@ public interface IScriptFactory
      * }</pre>
      */
     public AbstractMorph createMorph(INBTCompound compound);
+
+    /**
+     * Create a UI. You can send it to the player by using
+     * {@link IScriptPlayer#openUI(IMappetUIBuilder)} method.
+     *
+     * TODO: example
+     */
+    public IMappetUIBuilder createUI();
 
     /**
      * Get a global arbitrary object.

@@ -1,17 +1,16 @@
 package mchorse.mappet.capabilities.character;
 
 import mchorse.mappet.api.crafting.CraftingTable;
-import mchorse.mappet.api.dialogues.DialogueContext;
 import mchorse.mappet.api.dialogues.Dialogue;
+import mchorse.mappet.api.dialogues.DialogueContext;
 import mchorse.mappet.api.quests.Quests;
 import mchorse.mappet.api.states.States;
+import mchorse.mappet.api.ui.UIContext;
 import mchorse.mappet.utils.CurrentSession;
 import mchorse.mappet.utils.PositionCache;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.Vec3d;
 
-import javax.vecmath.Vector3d;
 import java.time.Instant;
 
 public class Character implements ICharacter
@@ -33,6 +32,8 @@ public class Character implements ICharacter
 
     private PositionCache positionCache = new PositionCache();
     private CurrentSession session = new CurrentSession();
+
+    private UIContext uiContext;
 
     @Override
     public States getStates()
@@ -143,5 +144,19 @@ public class Character implements ICharacter
             catch (Exception e)
             {}
         }
+    }
+
+    /* GUIs */
+
+    @Override
+    public UIContext getUIContext()
+    {
+        return this.uiContext;
+    }
+
+    @Override
+    public void setUIContext(UIContext context)
+    {
+        this.uiContext = context;
     }
 }
