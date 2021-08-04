@@ -13,6 +13,7 @@ import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.mappet.api.scripts.user.nbt.INBTList;
+import mchorse.mappet.api.ui.UI;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.block.Block;
@@ -211,9 +212,12 @@ public class ScriptFactory implements IScriptFactory
     }
 
     @Override
-    public IMappetUIBuilder createUI()
+    public IMappetUIBuilder createUI(String script, String function)
     {
-        return new MappetUIBuilder();
+        script = script == null ? "" : script;
+        function = function == null ? "" : function;
+
+        return new MappetUIBuilder(new UI(), script, function);
     }
 
     @Override

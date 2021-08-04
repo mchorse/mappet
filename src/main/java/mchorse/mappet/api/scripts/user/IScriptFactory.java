@@ -4,6 +4,7 @@ import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
+import mchorse.mappet.api.scripts.user.mappet.IMappetUIContext;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.mappet.api.scripts.user.nbt.INBTList;
 import mchorse.metamorph.api.morphs.AbstractMorph;
@@ -358,7 +359,29 @@ public interface IScriptFactory
      *
      * TODO: example
      */
-    public IMappetUIBuilder createUI();
+    public default IMappetUIBuilder createUI()
+    {
+        return this.createUI("", "");
+    }
+
+    /**
+     * Create a UI with a script handler. You can send it to the
+     * player by using {@link IScriptPlayer#openUI(IMappetUIBuilder)} method.
+     *
+     * TODO: example
+     */
+    public default IMappetUIBuilder createUI(IScriptEvent event, String function)
+    {
+        return this.createUI(event.getScript(), function);
+    }
+
+    /**
+     * Create a UI with a script handler. You can send it to the
+     * player by using {@link IScriptPlayer#openUI(IMappetUIBuilder)} method.
+     *
+     * TODO: example
+     */
+    public IMappetUIBuilder createUI(String script, String function);
 
     /**
      * Get a global arbitrary object.

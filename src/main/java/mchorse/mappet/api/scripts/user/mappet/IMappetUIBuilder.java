@@ -1,9 +1,10 @@
 package mchorse.mappet.api.scripts.user.mappet;
 
-import mchorse.mappet.api.scripts.user.IScriptEvent;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
+import mchorse.mappet.api.ui.components.IUIComponent;
 import mchorse.mappet.api.ui.components.UIButtonComponent;
 import mchorse.mappet.api.ui.components.UILabelComponent;
+import mchorse.mappet.api.ui.components.UILayoutComponent;
 import mchorse.mappet.api.ui.components.UIStackComponent;
 import mchorse.mappet.api.ui.components.UIStringListComponent;
 import mchorse.mappet.api.ui.components.UITextComponent;
@@ -20,12 +21,7 @@ import java.util.List;
  */
 public interface IMappetUIBuilder
 {
-    public default void setHandler(IScriptEvent event, String function)
-    {
-        this.setHandler(event.getScript(), function);
-    }
-
-    public void setHandler(String script, String function);
+    public IUIComponent getCurrent();
 
     public IMappetUIBuilder background();
 
@@ -69,4 +65,12 @@ public interface IMappetUIBuilder
     }
 
     public UIStackComponent item(IScriptItemStack stack);
+
+    public IMappetUIBuilder layout();
+
+    public IMappetUIBuilder column(int margin, int padding);
+
+    public IMappetUIBuilder row(int margin, int padding);
+
+    public IMappetUIBuilder grid(int margin, int padding);
 }
