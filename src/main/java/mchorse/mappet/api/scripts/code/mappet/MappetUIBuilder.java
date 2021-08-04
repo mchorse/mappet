@@ -6,6 +6,7 @@ import mchorse.mappet.api.ui.components.UIButtonComponent;
 import mchorse.mappet.api.ui.components.UILabelComponent;
 import mchorse.mappet.api.ui.components.UITextComponent;
 import mchorse.mappet.api.ui.components.UITextboxComponent;
+import mchorse.mappet.api.ui.components.UIToggleComponent;
 
 public class MappetUIBuilder implements IMappetUIBuilder
 {
@@ -83,6 +84,17 @@ public class MappetUIBuilder implements IMappetUIBuilder
 
         this.ui.root.getChildComponents().add(element);
         element.label(text);
+
+        return element;
+    }
+
+    @Override
+    public UIToggleComponent toggle(String label, boolean state)
+    {
+        UIToggleComponent element = new UIToggleComponent();
+
+        this.ui.root.getChildComponents().add(element);
+        element.state(state).label(label);
 
         return element;
     }

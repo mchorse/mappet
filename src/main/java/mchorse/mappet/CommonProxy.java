@@ -35,6 +35,7 @@ import mchorse.mappet.api.ui.components.UIButtonComponent;
 import mchorse.mappet.api.ui.components.UILabelComponent;
 import mchorse.mappet.api.ui.components.UITextComponent;
 import mchorse.mappet.api.ui.components.UITextboxComponent;
+import mchorse.mappet.api.ui.components.UIToggleComponent;
 import mchorse.mappet.api.utils.factory.IFactory;
 import mchorse.mappet.api.utils.factory.MapFactory;
 import mchorse.mappet.capabilities.character.Character;
@@ -219,7 +220,8 @@ public class CommonProxy
             .register("button", UIButtonComponent.class, 0xffffff)
             .register("label", UILabelComponent.class, 0xffffff)
             .register("text", UITextComponent.class, 0xffffff)
-            .register("textbox", UITextboxComponent.class, 0xffffff);
+            .register("textbox", UITextboxComponent.class, 0xffffff)
+            .register("toggle", UIToggleComponent.class, 0xffffff);
 
         uiComponents = ui;
     }

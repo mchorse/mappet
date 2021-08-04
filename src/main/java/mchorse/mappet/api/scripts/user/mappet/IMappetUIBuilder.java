@@ -5,6 +5,7 @@ import mchorse.mappet.api.ui.components.UIButtonComponent;
 import mchorse.mappet.api.ui.components.UILabelComponent;
 import mchorse.mappet.api.ui.components.UITextComponent;
 import mchorse.mappet.api.ui.components.UITextboxComponent;
+import mchorse.mappet.api.ui.components.UIToggleComponent;
 
 /**
  * This is user interface builder interface. You can create GUIs with this thing.
@@ -34,4 +35,11 @@ public interface IMappetUIBuilder
     }
 
     public UITextboxComponent textbox(String text);
+
+    public default UIToggleComponent toggle(String label)
+    {
+        return this.toggle(label, false);
+    }
+
+    public UIToggleComponent toggle(String label, boolean state);
 }
