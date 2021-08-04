@@ -24,7 +24,7 @@ public class UIToggleComponent extends UILabelBaseComponent
     @SideOnly(Side.CLIENT)
     public GuiElement create(Minecraft mc, UIContext context)
     {
-        GuiToggleElement toggle = new GuiToggleElement(mc, IKey.str(this.label), (b) ->
+        GuiToggleElement toggle = new GuiToggleElement(mc, IKey.str(this.getLabel()), (b) ->
         {
             if (!this.id.isEmpty())
             {

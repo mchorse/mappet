@@ -1,5 +1,6 @@
 package mchorse.mappet.api.ui.components;
 
+import mchorse.mclib.utils.TextUtils;
 import net.minecraft.nbt.NBTTagCompound;
 
 public abstract class UILabelBaseComponent extends UIBaseComponent
@@ -11,6 +12,11 @@ public abstract class UILabelBaseComponent extends UIBaseComponent
         this.label = label;
 
         return this;
+    }
+
+    protected String getLabel()
+    {
+        return TextUtils.processColoredText(this.label);
     }
 
     @Override

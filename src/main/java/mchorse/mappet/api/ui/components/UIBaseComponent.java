@@ -4,6 +4,7 @@ import mchorse.mappet.api.ui.UIContext;
 import mchorse.mappet.api.ui.utils.UIUnit;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.mclib.utils.TextUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
@@ -253,7 +254,7 @@ public abstract class UIBaseComponent implements IUIComponent
     {
         if (!this.tooltip.isEmpty())
         {
-            element.tooltip(IKey.str(this.tooltip));
+            element.tooltip(IKey.str(TextUtils.processColoredText(this.tooltip)));
         }
 
         element.marginTop(this.marginTop);

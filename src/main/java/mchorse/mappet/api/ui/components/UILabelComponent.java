@@ -46,7 +46,7 @@ public class UILabelComponent extends UILabelBaseComponent
     @SideOnly(Side.CLIENT)
     public GuiElement create(Minecraft mc, UIContext context)
     {
-        GuiLabel label = Elements.label(IKey.str(this.label));
+        GuiLabel label = Elements.label(IKey.str(this.getLabel()));
 
         if (this.color != null)
         {

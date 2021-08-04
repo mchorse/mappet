@@ -17,7 +17,7 @@ public class UIButtonComponent extends UILabelBaseComponent
     @SideOnly(Side.CLIENT)
     public GuiElement create(Minecraft mc, UIContext context)
     {
-        GuiButtonElement button = new GuiButtonElement(mc, IKey.str(this.label), (b) ->
+        GuiButtonElement button = new GuiButtonElement(mc, IKey.str(this.getLabel()), (b) ->
         {
             if (!this.id.isEmpty())
             {
