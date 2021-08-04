@@ -3,10 +3,13 @@ package mchorse.mappet.api.scripts.user.mappet;
 import mchorse.mappet.api.scripts.user.IScriptEvent;
 import mchorse.mappet.api.ui.components.UIButtonComponent;
 import mchorse.mappet.api.ui.components.UILabelComponent;
+import mchorse.mappet.api.ui.components.UIStringListComponent;
 import mchorse.mappet.api.ui.components.UITextComponent;
 import mchorse.mappet.api.ui.components.UITextboxComponent;
 import mchorse.mappet.api.ui.components.UIToggleComponent;
 import mchorse.mappet.api.ui.components.UITrackpadComponent;
+
+import java.util.List;
 
 /**
  * This is user interface builder interface. You can create GUIs with this thing.
@@ -50,4 +53,11 @@ public interface IMappetUIBuilder
     }
 
     public UITrackpadComponent trackpad(int value);
+
+    public default UIStringListComponent stringList(List<String> values)
+    {
+        return this.stringList(values, -1);
+    }
+
+    public UIStringListComponent stringList(List<String> values, int selected);
 }

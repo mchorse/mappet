@@ -4,10 +4,13 @@ import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.ui.UI;
 import mchorse.mappet.api.ui.components.UIButtonComponent;
 import mchorse.mappet.api.ui.components.UILabelComponent;
+import mchorse.mappet.api.ui.components.UIStringListComponent;
 import mchorse.mappet.api.ui.components.UITextComponent;
 import mchorse.mappet.api.ui.components.UITextboxComponent;
 import mchorse.mappet.api.ui.components.UIToggleComponent;
 import mchorse.mappet.api.ui.components.UITrackpadComponent;
+
+import java.util.List;
 
 public class MappetUIBuilder implements IMappetUIBuilder
 {
@@ -107,6 +110,22 @@ public class MappetUIBuilder implements IMappetUIBuilder
 
         this.ui.root.getChildComponents().add(element);
         element.value(value);
+
+        return element;
+    }
+
+    @Override
+    public UIStringListComponent stringList(List<String> values, int selected)
+    {
+        UIStringListComponent element = new UIStringListComponent();
+
+        this.ui.root.getChildComponents().add(element);
+        element.values(values);
+
+        if (selected >= 0)
+        {
+            element.selected(selected);
+        }
 
         return element;
     }
