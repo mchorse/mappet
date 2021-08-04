@@ -43,11 +43,6 @@ public class UIContext
         return this.last;
     }
 
-    public void setLast(String id)
-    {
-        this.last = id;
-    }
-
     public boolean isClosed()
     {
         return this.closed;
@@ -63,6 +58,9 @@ public class UIContext
         return System.currentTimeMillis() >= this.dirty;
     }
 
+    /* Client side code */
+
+    @SideOnly(Side.CLIENT)
     public void dirty(String id, long delay)
     {
         this.last = id;
@@ -76,31 +74,6 @@ public class UIContext
         {
             this.dirty = System.currentTimeMillis() + delay;
         }
-    }
-
-    public void handleNewData(NBTTagCompound data)
-    {
-        if (this.player == null)
-        {
-            return;
-        }
-
-        this.data.merge(data.getCompoundTag("Data"));
-        this.last = data.getString("Last");
-
-        this.handleScript(new DataContext(this.player));
-    }
-
-    public void close()
-    {
-        if (this.player == null)
-        {
-            return;
-        }
-
-        this.closed = true;
-
-        this.handleScript(new DataContext(this.player));
     }
 
     @SideOnly(Side.CLIENT)
@@ -118,18 +91,47 @@ public class UIContext
         Dispatcher.sendToServer(new PacketUIData(tag));
     }
 
-    private void handleScript(DataContext context)
+    /* Server side code */
+
+    public void handleNewData(NBTTagCompound data)
     {
-        if (!this.script.isEmpty() && !this.function.isEmpty())
+        if (this.player == null)
         {
-            try
-            {
-                Mappet.scripts.execute(this.script, this.function, context);
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
+            return;
+        }
+
+        this.data.merge(data.getCompoundTag("Data"));
+        this.last = data.getString("Last");
+
+        this.handleScript(this.player);
+    }
+
+    public void close()
+    {
+        if (this.player == null)
+        {
+            return;
+        }
+
+        this.closed = true;
+
+        this.handleScript(this.player);
+    }
+
+    private void handleScript(EntityPlayer player)
+    {
+        if (this.script.isEmpty() || this.function.isEmpty())
+        {
+            return;
+        }
+
+        try
+        {
+            Mappet.scripts.execute(this.script, this.function, new DataContext(player));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
     }
 }
