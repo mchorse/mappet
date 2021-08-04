@@ -96,7 +96,7 @@ task scriptingJavadocsJson(type: Exec) {
     //
     // Rename it to jsonDoclet.jar, and place it in the run/ folder
     executable "javadoc"
-    args "-doclet", "mchorse.utils.doclets.JsonDoclet", "-docletpath", "./run/jsonDoclet.jar", "-sourcepath", "./src/main/java/", "-subpackages", "mchorse.mappet.api.scripts.user", "-subpackages", "mchorse.mappet.api.gui.components"
+    args "-doclet", "mchorse.utils.doclets.JsonDoclet", "-docletpath", "./run/jsonDoclet.jar", "-sourcepath", "./src/main/java/", "-subpackages", "mchorse.mappet.api.scripts.user:mchorse.mappet.api.ui.components"
 
     doLast {
         file("src/main/resources/assets/mappet/docs.json").setText(file("docs.json").text)
