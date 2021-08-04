@@ -29,8 +29,7 @@ public class UIToggleComponent extends UILabelBaseComponent
             if (!this.id.isEmpty())
             {
                 context.data.setBoolean(this.id, b.isToggled());
-                context.setLast(this.id);
-                context.sendToServer();
+                context.dirty(this.id, this.updateDelay);
             }
         });
 

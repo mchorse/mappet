@@ -7,6 +7,7 @@ import mchorse.mappet.api.ui.components.UILabelComponent;
 import mchorse.mappet.api.ui.components.UITextComponent;
 import mchorse.mappet.api.ui.components.UITextboxComponent;
 import mchorse.mappet.api.ui.components.UIToggleComponent;
+import mchorse.mappet.api.ui.components.UITrackpadComponent;
 
 public class MappetUIBuilder implements IMappetUIBuilder
 {
@@ -95,6 +96,17 @@ public class MappetUIBuilder implements IMappetUIBuilder
 
         this.ui.root.getChildComponents().add(element);
         element.state(state).label(label);
+
+        return element;
+    }
+
+    @Override
+    public UITrackpadComponent trackpad(int value)
+    {
+        UITrackpadComponent element = new UITrackpadComponent();
+
+        this.ui.root.getChildComponents().add(element);
+        element.value(value);
 
         return element;
     }

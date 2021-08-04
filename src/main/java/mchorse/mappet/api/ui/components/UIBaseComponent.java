@@ -26,6 +26,8 @@ public abstract class UIBaseComponent implements IUIComponent
     public UIUnit w = new UIUnit();
     public UIUnit h = new UIUnit();
 
+    public int updateDelay = this.getDefaultUpdateDelay();
+
     public UIBaseComponent id(String id)
     {
         this.id = id;
@@ -233,6 +235,18 @@ public abstract class UIBaseComponent implements IUIComponent
 
     /* Subclass utilities */
 
+    protected int getDefaultUpdateDelay()
+    {
+        return 0;
+    }
+
+    public UIBaseComponent updateDelay(int updateDelay)
+    {
+        this.updateDelay = updateDelay;
+
+        return this;
+    }
+
     protected GuiElement apply(GuiElement element, UIContext context)
     {
         if (!this.tooltip.isEmpty())
@@ -278,6 +292,7 @@ public abstract class UIBaseComponent implements IUIComponent
         tag.setTag("Y", this.y.serializeNBT());
         tag.setTag("W", this.w.serializeNBT());
         tag.setTag("H", this.h.serializeNBT());
+        tag.setInteger("UpdateDelay", this.updateDelay);
     }
 
     @Override
@@ -299,5 +314,10 @@ public abstract class UIBaseComponent implements IUIComponent
         this.y.deserializeNBT(tag.getCompoundTag("Y"));
         this.w.deserializeNBT(tag.getCompoundTag("W"));
         this.h.deserializeNBT(tag.getCompoundTag("H"));
+
+        if (tag.hasKey("UpdateDelay"))
+        {
+            this.updateDelay = tag.getInteger("UpdateDelay");
+        }
     }
 }

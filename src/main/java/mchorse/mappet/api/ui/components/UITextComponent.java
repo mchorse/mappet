@@ -13,8 +13,6 @@ public class UITextComponent extends UILabelBaseComponent
     @SideOnly(Side.CLIENT)
     public GuiElement create(Minecraft mc, UIContext context)
     {
-        GuiText text = new GuiText(mc).text(this.label);
-
-        return this.apply(text, context);
+        return this.apply(new GuiText(mc).text(this.label), context);
     }
 }

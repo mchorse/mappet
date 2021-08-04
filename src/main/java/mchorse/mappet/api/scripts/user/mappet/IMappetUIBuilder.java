@@ -6,6 +6,7 @@ import mchorse.mappet.api.ui.components.UILabelComponent;
 import mchorse.mappet.api.ui.components.UITextComponent;
 import mchorse.mappet.api.ui.components.UITextboxComponent;
 import mchorse.mappet.api.ui.components.UIToggleComponent;
+import mchorse.mappet.api.ui.components.UITrackpadComponent;
 
 /**
  * This is user interface builder interface. You can create GUIs with this thing.
@@ -42,4 +43,11 @@ public interface IMappetUIBuilder
     }
 
     public UIToggleComponent toggle(String label, boolean state);
+
+    public default UITrackpadComponent trackpad()
+    {
+        return this.trackpad(0);
+    }
+
+    public UITrackpadComponent trackpad(int value);
 }

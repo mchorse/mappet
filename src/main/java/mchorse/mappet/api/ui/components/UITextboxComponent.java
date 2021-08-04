@@ -13,6 +13,12 @@ public class UITextboxComponent extends UILabelBaseComponent
     public int maxLength = 32;
 
     @Override
+    protected int getDefaultUpdateDelay()
+    {
+        return 200;
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public GuiElement create(Minecraft mc, UIContext context)
     {
@@ -21,8 +27,7 @@ public class UITextboxComponent extends UILabelBaseComponent
             if (!this.id.isEmpty())
             {
                 context.data.setString(this.id, t);
-                context.setLast(this.id);
-                context.dirty(100);
+                context.dirty(this.id, this.updateDelay);
             }
         });
 

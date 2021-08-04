@@ -63,9 +63,19 @@ public class UIContext
         return System.currentTimeMillis() >= this.dirty;
     }
 
-    public void dirty(long delay)
+    public void dirty(String id, long delay)
     {
-        this.dirty = System.currentTimeMillis() + delay;
+        this.last = id;
+
+        if (delay <= 0)
+        {
+            this.dirty = null;
+            this.sendToServer();
+        }
+        else
+        {
+            this.dirty = System.currentTimeMillis() + delay;
+        }
     }
 
     public void handleNewData(NBTTagCompound data)
@@ -91,19 +101,6 @@ public class UIContext
         this.closed = true;
 
         this.handleScript(new DataContext(this.player));
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void buttonPressed(String id)
-    {
-        if (id.isEmpty())
-        {
-            return;
-        }
-
-        this.last = id;
-        this.data.setInteger(id, this.data.getInteger(id) + 1);
-        this.sendToServer();
     }
 
     @SideOnly(Side.CLIENT)
