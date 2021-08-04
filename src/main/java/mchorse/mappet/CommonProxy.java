@@ -33,6 +33,7 @@ import mchorse.mappet.api.triggers.blocks.StateTriggerBlock;
 import mchorse.mappet.api.ui.components.IUIComponent;
 import mchorse.mappet.api.ui.components.UIButtonComponent;
 import mchorse.mappet.api.ui.components.UILabelComponent;
+import mchorse.mappet.api.ui.components.UIStackComponent;
 import mchorse.mappet.api.ui.components.UIStringListComponent;
 import mchorse.mappet.api.ui.components.UITextComponent;
 import mchorse.mappet.api.ui.components.UITextboxComponent;
@@ -225,7 +226,8 @@ public class CommonProxy
             .register("textbox", UITextboxComponent.class, 0xffffff)
             .register("toggle", UIToggleComponent.class, 0xffffff)
             .register("trackpad", UITrackpadComponent.class, 0xffffff)
-            .register("strings", UIStringListComponent.class, 0xffffff);
+            .register("strings", UIStringListComponent.class, 0xffffff)
+            .register("item", UIStackComponent.class, 0xffffff);
 
         uiComponents = ui;
     }

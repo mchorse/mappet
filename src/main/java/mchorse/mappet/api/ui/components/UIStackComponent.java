@@ -2,15 +2,16 @@ package mchorse.mappet.api.ui.components;
 
 import mchorse.mappet.api.ui.UIContext;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
-import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiSlotElement;
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class UITextboxComponent extends UILabelBaseComponent
+public class UIStackComponent extends UIBaseComponent
 {
-    public int maxLength = 32;
+    public ItemStack stack = ItemStack.EMPTY;
 
     @Override
     protected int getDefaultUpdateDelay()
@@ -22,16 +23,16 @@ public class UITextboxComponent extends UILabelBaseComponent
     @SideOnly(Side.CLIENT)
     public GuiElement create(Minecraft mc, UIContext context)
     {
-        GuiTextElement element = new GuiTextElement(mc, this.maxLength, (t) ->
+        GuiSlotElement element = new GuiSlotElement(mc, 0, (stack) ->
         {
             if (!this.id.isEmpty())
             {
-                context.data.setString(this.id, t);
+                context.data.setTag(this.id, stack.serializeNBT());
                 context.dirty(this.id, this.updateDelay);
             }
         });
 
-        element.setText(this.label);
+        element.setStack(this.stack);
 
         return this.apply(element, context);
     }
@@ -41,7 +42,7 @@ public class UITextboxComponent extends UILabelBaseComponent
     {
         super.serializeNBT(tag);
 
-        tag.setInteger("MaxLength", this.maxLength);
+        tag.setTag("Stack", this.stack.serializeNBT());
     }
 
     @Override
@@ -49,6 +50,13 @@ public class UITextboxComponent extends UILabelBaseComponent
     {
         super.deserializeNBT(tag);
 
-        this.maxLength = tag.getInteger("MaxLength");
+        this.stack = new ItemStack(tag.getCompoundTag("Stack"));
+    }
+
+    public UIStackComponent stack(ItemStack stack)
+    {
+        this.stack = stack.copy();
+
+        return this;
     }
 }

@@ -1,9 +1,11 @@
 package mchorse.mappet.api.scripts.code.mappet;
 
+import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.ui.UI;
 import mchorse.mappet.api.ui.components.UIButtonComponent;
 import mchorse.mappet.api.ui.components.UILabelComponent;
+import mchorse.mappet.api.ui.components.UIStackComponent;
 import mchorse.mappet.api.ui.components.UIStringListComponent;
 import mchorse.mappet.api.ui.components.UITextComponent;
 import mchorse.mappet.api.ui.components.UITextboxComponent;
@@ -125,6 +127,21 @@ public class MappetUIBuilder implements IMappetUIBuilder
         if (selected >= 0)
         {
             element.selected(selected);
+        }
+
+        return element;
+    }
+
+    @Override
+    public UIStackComponent item(IScriptItemStack stack)
+    {
+        UIStackComponent element = new UIStackComponent();
+
+        this.ui.root.getChildComponents().add(element);
+
+        if (stack != null && !stack.isEmpty())
+        {
+            element.stack(stack.getMinecraftItemStack());
         }
 
         return element;

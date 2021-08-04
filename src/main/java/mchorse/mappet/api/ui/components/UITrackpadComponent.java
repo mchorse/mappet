@@ -61,7 +61,7 @@ public class UITrackpadComponent extends UIBaseComponent
     @Override
     protected int getDefaultUpdateDelay()
     {
-        return 200;
+        return UIBaseComponent.DELAY;
     }
 
     @Override

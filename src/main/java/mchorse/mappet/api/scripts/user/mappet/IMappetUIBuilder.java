@@ -1,8 +1,10 @@
 package mchorse.mappet.api.scripts.user.mappet;
 
 import mchorse.mappet.api.scripts.user.IScriptEvent;
+import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.ui.components.UIButtonComponent;
 import mchorse.mappet.api.ui.components.UILabelComponent;
+import mchorse.mappet.api.ui.components.UIStackComponent;
 import mchorse.mappet.api.ui.components.UIStringListComponent;
 import mchorse.mappet.api.ui.components.UITextComponent;
 import mchorse.mappet.api.ui.components.UITextboxComponent;
@@ -60,4 +62,11 @@ public interface IMappetUIBuilder
     }
 
     public UIStringListComponent stringList(List<String> values, int selected);
+
+    public default UIStackComponent item()
+    {
+        return this.item(null);
+    }
+
+    public UIStackComponent item(IScriptItemStack stack);
 }

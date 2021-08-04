@@ -14,6 +14,8 @@ import java.util.List;
 
 public abstract class UIBaseComponent implements IUIComponent
 {
+    public static final int DELAY = 200;
+
     public String id = "";
     public String tooltip = "";
     public int marginTop;
