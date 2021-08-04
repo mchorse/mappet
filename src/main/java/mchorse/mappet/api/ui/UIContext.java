@@ -85,7 +85,7 @@ public class UIContext
             return;
         }
 
-        this.data = data.getCompoundTag("Data");
+        this.data.merge(data.getCompoundTag("Data"));
         this.last = data.getString("Last");
 
         this.handleScript(new DataContext(this.player));
@@ -110,8 +110,10 @@ public class UIContext
 
         NBTTagCompound tag = new NBTTagCompound();
 
-        tag.setTag("Data", this.data.copy());
+        tag.setTag("Data", this.data);
         tag.setString("Last", this.last);
+
+        this.data = new NBTTagCompound();
 
         Dispatcher.sendToServer(new PacketUIData(tag));
     }
