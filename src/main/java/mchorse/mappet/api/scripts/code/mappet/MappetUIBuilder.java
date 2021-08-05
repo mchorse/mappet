@@ -6,6 +6,7 @@ import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.ui.UI;
 import mchorse.mappet.api.ui.components.IUIComponent;
 import mchorse.mappet.api.ui.components.UIButtonComponent;
+import mchorse.mappet.api.ui.components.UIGraphicsComponent;
 import mchorse.mappet.api.ui.components.UILabelComponent;
 import mchorse.mappet.api.ui.components.UILayoutComponent;
 import mchorse.mappet.api.ui.components.UIMorphComponent;
@@ -81,6 +82,16 @@ public class MappetUIBuilder implements IMappetUIBuilder
         {
             return null;
         }
+
+        this.current.getChildComponents().add(component);
+
+        return component;
+    }
+
+    @Override
+    public UIGraphicsComponent graphics()
+    {
+        UIGraphicsComponent component = new UIGraphicsComponent();
 
         this.current.getChildComponents().add(component);
 

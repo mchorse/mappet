@@ -3,6 +3,7 @@ package mchorse.mappet.api.scripts.user.mappet;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.ui.components.IUIComponent;
 import mchorse.mappet.api.ui.components.UIButtonComponent;
+import mchorse.mappet.api.ui.components.UIGraphicsComponent;
 import mchorse.mappet.api.ui.components.UILabelComponent;
 import mchorse.mappet.api.ui.components.UIMorphComponent;
 import mchorse.mappet.api.ui.components.UIStackComponent;
@@ -28,6 +29,8 @@ public interface IMappetUIBuilder
     public IMappetUIBuilder background();
 
     public IUIComponent create(String id);
+
+    public UIGraphicsComponent graphics();
 
     public UIButtonComponent button(String label);
 
