@@ -8,6 +8,7 @@ import mchorse.mappet.api.ui.components.UIMorphComponent;
 import mchorse.mappet.api.ui.components.UIStackComponent;
 import mchorse.mappet.api.ui.components.UIStringListComponent;
 import mchorse.mappet.api.ui.components.UITextComponent;
+import mchorse.mappet.api.ui.components.UITextareaComponent;
 import mchorse.mappet.api.ui.components.UITextboxComponent;
 import mchorse.mappet.api.ui.components.UIToggleComponent;
 import mchorse.mappet.api.ui.components.UITrackpadComponent;
@@ -40,6 +41,13 @@ public interface IMappetUIBuilder
     }
 
     public UITextboxComponent textbox(String text);
+
+    public default UITextareaComponent textarea()
+    {
+        return this.textarea("");
+    }
+
+    public UITextareaComponent textarea(String text);
 
     public default UIToggleComponent toggle(String label)
     {
