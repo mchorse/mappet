@@ -115,6 +115,7 @@ public final class Mappet
 
     public static ValueSyntaxStyle scriptEditorSyntaxStyle;
     public static ValueBoolean scriptEditorSounds;
+    public static ValueBoolean scriptUIDebug;
 
     public Mappet()
     {
@@ -144,6 +145,7 @@ public final class Mappet
 
         builder.category("script_editor").register(scriptEditorSyntaxStyle = new ValueSyntaxStyle("syntax_style"));
         scriptEditorSounds = builder.getBoolean("sounds", true);
+        scriptUIDebug = builder.getBoolean("ui_debug", false);
         builder.getCategory().markClientSide();
     }
 

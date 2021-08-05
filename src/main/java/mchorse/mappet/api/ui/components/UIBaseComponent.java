@@ -4,11 +4,14 @@ import mchorse.mappet.api.ui.UIContext;
 import mchorse.mappet.api.ui.utils.UIUnit;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.mclib.utils.Direction;
 import mchorse.mclib.utils.TextUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,6 +22,7 @@ public abstract class UIBaseComponent implements IUIComponent
 
     public String id = "";
     public String tooltip = "";
+    public int tooltipDirection;
     public int marginTop;
     public int marginBotom;
     public int marginLeft;
@@ -40,10 +44,17 @@ public abstract class UIBaseComponent implements IUIComponent
 
     public UIBaseComponent tooltip(String tooltip)
     {
+        return this.tooltip(tooltip, 0);
+    }
+
+    public UIBaseComponent tooltip(String tooltip, int direction)
+    {
         this.tooltip = tooltip;
+        this.tooltipDirection = direction;
 
         return this;
     }
+
 
     public UIBaseComponent margin(int margin)
     {
@@ -250,11 +261,27 @@ public abstract class UIBaseComponent implements IUIComponent
         return this;
     }
 
+    @SideOnly(Side.CLIENT)
     protected GuiElement apply(GuiElement element, UIContext context)
     {
         if (!this.tooltip.isEmpty())
         {
-            element.tooltip(IKey.str(TextUtils.processColoredText(this.tooltip)));
+            Direction direction = Direction.BOTTOM;
+
+            if (this.tooltipDirection == 1)
+            {
+                direction = Direction.TOP;
+            }
+            else if (this.tooltipDirection == 2)
+            {
+                direction = Direction.RIGHT;
+            }
+            else if (this.tooltipDirection == 3)
+            {
+                direction = Direction.LEFT;
+            }
+
+            element.tooltip(IKey.str(TextUtils.processColoredText(this.tooltip)), direction);
         }
 
         element.marginTop(this.marginTop);
@@ -290,6 +317,7 @@ public abstract class UIBaseComponent implements IUIComponent
 
         tag.setString("Id", this.id);
         tag.setString("Tooltip", this.tooltip);
+        tag.setInteger("TooltipDirection", this.tooltipDirection);
         tag.setTag("Margin", margins);
         tag.setTag("X", this.x.serializeNBT());
         tag.setTag("Y", this.y.serializeNBT());
@@ -313,6 +341,7 @@ public abstract class UIBaseComponent implements IUIComponent
 
         this.id = tag.getString("Id");
         this.tooltip = tag.getString("Tooltip");
+        this.tooltipDirection = tag.getInteger("TooltipDirection");
         this.x.deserializeNBT(tag.getCompoundTag("X"));
         this.y.deserializeNBT(tag.getCompoundTag("Y"));
         this.w.deserializeNBT(tag.getCompoundTag("W"));

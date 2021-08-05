@@ -34,6 +34,7 @@ import mchorse.mappet.api.ui.components.IUIComponent;
 import mchorse.mappet.api.ui.components.UIButtonComponent;
 import mchorse.mappet.api.ui.components.UILabelComponent;
 import mchorse.mappet.api.ui.components.UILayoutComponent;
+import mchorse.mappet.api.ui.components.UIMorphComponent;
 import mchorse.mappet.api.ui.components.UIStackComponent;
 import mchorse.mappet.api.ui.components.UIStringListComponent;
 import mchorse.mappet.api.ui.components.UITextComponent;
@@ -50,6 +51,7 @@ import mchorse.mappet.events.RegisterDialogueNodeEvent;
 import mchorse.mappet.events.RegisterEventNodeEvent;
 import mchorse.mappet.events.RegisterQuestChainNodeEvent;
 import mchorse.mappet.events.RegisterTriggerBlockEvent;
+import mchorse.mappet.events.RegisterUIComponentEvent;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.utils.Colors;
 import mchorse.mappet.utils.MappetNpcSelector;
@@ -229,8 +231,10 @@ public class CommonProxy
             .register("trackpad", UITrackpadComponent.class, 0xffffff)
             .register("strings", UIStringListComponent.class, 0xffffff)
             .register("item", UIStackComponent.class, 0xffffff)
-            .register("layout", UILayoutComponent.class, 0xffffff);
+            .register("layout", UILayoutComponent.class, 0xffffff)
+            .register("morph", UIMorphComponent.class, 0xffffff);
 
         uiComponents = ui;
+        Mappet.EVENT_BUS.post(new RegisterUIComponentEvent(ui));
     }
 }

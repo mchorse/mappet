@@ -1,5 +1,6 @@
 package mchorse.mappet.api.ui.components;
 
+import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.ui.UIContext;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiSlotElement;
@@ -12,6 +13,18 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class UIStackComponent extends UIBaseComponent
 {
     public ItemStack stack = ItemStack.EMPTY;
+
+    public UIStackComponent stack(IScriptItemStack stack)
+    {
+        return this.stack(stack == null ? null : stack.getMinecraftItemStack());
+    }
+
+    public UIStackComponent stack(ItemStack stack)
+    {
+        this.stack = stack == null ? ItemStack.EMPTY : stack.copy();
+
+        return this;
+    }
 
     @Override
     protected int getDefaultUpdateDelay()
@@ -51,12 +64,5 @@ public class UIStackComponent extends UIBaseComponent
         super.deserializeNBT(tag);
 
         this.stack = new ItemStack(tag.getCompoundTag("Stack"));
-    }
-
-    public UIStackComponent stack(ItemStack stack)
-    {
-        this.stack = stack.copy();
-
-        return this;
     }
 }

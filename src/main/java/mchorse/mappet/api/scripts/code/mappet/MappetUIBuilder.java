@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts.code.mappet;
 
+import mchorse.mappet.CommonProxy;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.ui.UI;
@@ -7,12 +8,14 @@ import mchorse.mappet.api.ui.components.IUIComponent;
 import mchorse.mappet.api.ui.components.UIButtonComponent;
 import mchorse.mappet.api.ui.components.UILabelComponent;
 import mchorse.mappet.api.ui.components.UILayoutComponent;
+import mchorse.mappet.api.ui.components.UIMorphComponent;
 import mchorse.mappet.api.ui.components.UIStackComponent;
 import mchorse.mappet.api.ui.components.UIStringListComponent;
 import mchorse.mappet.api.ui.components.UITextComponent;
 import mchorse.mappet.api.ui.components.UITextboxComponent;
 import mchorse.mappet.api.ui.components.UIToggleComponent;
 import mchorse.mappet.api.ui.components.UITrackpadComponent;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 
 import java.util.List;
 
@@ -69,100 +72,131 @@ public class MappetUIBuilder implements IMappetUIBuilder
     }
 
     @Override
+    public IUIComponent create(String id)
+    {
+        IUIComponent component = CommonProxy.getUiComponents().create(id);
+
+        if (component == null)
+        {
+            return null;
+        }
+
+        this.current.getChildComponents().add(component);
+
+        return component;
+    }
+
+    @Override
     public UIButtonComponent button(String label)
     {
-        UIButtonComponent element = new UIButtonComponent();
+        UIButtonComponent component = new UIButtonComponent();
 
-        this.current.getChildComponents().add(element);
-        element.label(label);
+        this.current.getChildComponents().add(component);
+        component.label(label);
 
-        return element;
+        return component;
     }
 
     @Override
     public UILabelComponent label(String label)
     {
-        UILabelComponent element = new UILabelComponent();
+        UILabelComponent component = new UILabelComponent();
 
-        this.current.getChildComponents().add(element);
-        element.label(label);
+        this.current.getChildComponents().add(component);
+        component.label(label);
 
-        return element;
+        return component;
     }
 
     @Override
     public UITextComponent text(String text)
     {
-        UITextComponent element = new UITextComponent();
+        UITextComponent component = new UITextComponent();
 
-        this.current.getChildComponents().add(element);
-        element.label(text);
+        this.current.getChildComponents().add(component);
+        component.label(text);
 
-        return element;
+        return component;
     }
 
     @Override
     public UITextboxComponent textbox(String text)
     {
-        UITextboxComponent element = new UITextboxComponent();
+        UITextboxComponent component = new UITextboxComponent();
 
-        this.current.getChildComponents().add(element);
-        element.label(text);
+        this.current.getChildComponents().add(component);
+        component.label(text);
 
-        return element;
+        return component;
     }
 
     @Override
     public UIToggleComponent toggle(String label, boolean state)
     {
-        UIToggleComponent element = new UIToggleComponent();
+        UIToggleComponent component = new UIToggleComponent();
 
-        this.current.getChildComponents().add(element);
-        element.state(state).label(label);
+        this.current.getChildComponents().add(component);
+        component.state(state).label(label);
 
-        return element;
+        return component;
     }
 
     @Override
     public UITrackpadComponent trackpad(int value)
     {
-        UITrackpadComponent element = new UITrackpadComponent();
+        UITrackpadComponent component = new UITrackpadComponent();
 
-        this.current.getChildComponents().add(element);
-        element.value(value);
+        this.current.getChildComponents().add(component);
+        component.value(value);
 
-        return element;
+        return component;
     }
 
     @Override
     public UIStringListComponent stringList(List<String> values, int selected)
     {
-        UIStringListComponent element = new UIStringListComponent();
+        UIStringListComponent component = new UIStringListComponent();
 
-        this.current.getChildComponents().add(element);
-        element.values(values);
+        this.current.getChildComponents().add(component);
+        component.values(values);
 
         if (selected >= 0)
         {
-            element.selected(selected);
+            component.selected(selected);
         }
 
-        return element;
+        return component;
     }
 
     @Override
     public UIStackComponent item(IScriptItemStack stack)
     {
-        UIStackComponent element = new UIStackComponent();
+        UIStackComponent component = new UIStackComponent();
 
-        this.current.getChildComponents().add(element);
+        this.current.getChildComponents().add(component);
 
         if (stack != null && !stack.isEmpty())
         {
-            element.stack(stack.getMinecraftItemStack());
+            component.stack(stack.getMinecraftItemStack());
         }
 
-        return element;
+        return component;
+    }
+
+    @Override
+    public UIMorphComponent morph(AbstractMorph morph, boolean editing)
+    {
+        UIMorphComponent component = new UIMorphComponent();
+
+        this.current.getChildComponents().add(component);
+        component.morph(morph);
+
+        if (editing)
+        {
+            component.editing();
+        }
+
+        return component;
     }
 
     @Override

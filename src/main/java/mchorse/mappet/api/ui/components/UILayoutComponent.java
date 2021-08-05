@@ -27,7 +27,12 @@ public class UILayoutComponent extends UIParentComponent
 
     public UILayoutComponent scroll()
     {
-        this.scroll = true;
+        return this.scroll(true);
+    }
+
+    public UILayoutComponent scroll(boolean scroll)
+    {
+        this.scroll = scroll;
 
         return this;
     }
@@ -41,7 +46,12 @@ public class UILayoutComponent extends UIParentComponent
 
     public UILayoutComponent horizontal()
     {
-        this.horizontal = true;
+        return this.horizontal(true);
+    }
+
+    public UILayoutComponent horizontal(boolean horizontal)
+    {
+        this.horizontal = horizontal;
 
         return this;
     }

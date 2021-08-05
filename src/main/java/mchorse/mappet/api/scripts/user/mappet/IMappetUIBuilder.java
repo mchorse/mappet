@@ -4,12 +4,14 @@ import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.ui.components.IUIComponent;
 import mchorse.mappet.api.ui.components.UIButtonComponent;
 import mchorse.mappet.api.ui.components.UILabelComponent;
+import mchorse.mappet.api.ui.components.UIMorphComponent;
 import mchorse.mappet.api.ui.components.UIStackComponent;
 import mchorse.mappet.api.ui.components.UIStringListComponent;
 import mchorse.mappet.api.ui.components.UITextComponent;
 import mchorse.mappet.api.ui.components.UITextboxComponent;
 import mchorse.mappet.api.ui.components.UIToggleComponent;
 import mchorse.mappet.api.ui.components.UITrackpadComponent;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 
 import java.util.List;
 
@@ -23,6 +25,8 @@ public interface IMappetUIBuilder
     public IUIComponent getCurrent();
 
     public IMappetUIBuilder background();
+
+    public IUIComponent create(String id);
 
     public UIButtonComponent button(String label);
 
@@ -64,6 +68,13 @@ public interface IMappetUIBuilder
     }
 
     public UIStackComponent item(IScriptItemStack stack);
+
+    public default UIMorphComponent morph(AbstractMorph morph)
+    {
+        return this.morph(morph, false);
+    }
+
+    public UIMorphComponent morph(AbstractMorph morph, boolean editing);
 
     public IMappetUIBuilder layout();
 
