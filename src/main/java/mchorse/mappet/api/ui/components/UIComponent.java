@@ -265,7 +265,12 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
 
     public UIComponent anchor(float anchor)
     {
-        return this.anchorX(anchor).anchorY(anchor);
+        return this.anchor(anchor, anchor);
+    }
+
+    public UIComponent anchor(float anchorX, float anchorY)
+    {
+        return this.anchorX(anchorX).anchorY(anchorY);
     }
 
     public UIComponent anchorX(float anchor)
