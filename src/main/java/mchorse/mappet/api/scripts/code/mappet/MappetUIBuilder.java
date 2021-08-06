@@ -7,6 +7,7 @@ import mchorse.mappet.api.ui.UI;
 import mchorse.mappet.api.ui.components.UIButtonComponent;
 import mchorse.mappet.api.ui.components.UIComponent;
 import mchorse.mappet.api.ui.components.UIGraphicsComponent;
+import mchorse.mappet.api.ui.components.UIIconButtonComponent;
 import mchorse.mappet.api.ui.components.UILabelComponent;
 import mchorse.mappet.api.ui.components.UILayoutComponent;
 import mchorse.mappet.api.ui.components.UIMorphComponent;
@@ -105,6 +106,17 @@ public class MappetUIBuilder implements IMappetUIBuilder
 
         this.current.getChildComponents().add(component);
         component.label(label);
+
+        return component;
+    }
+
+    @Override
+    public UIIconButtonComponent icon(String icon)
+    {
+        UIIconButtonComponent component = new UIIconButtonComponent();
+
+        this.current.getChildComponents().add(component);
+        component.icon(icon);
 
         return component;
     }

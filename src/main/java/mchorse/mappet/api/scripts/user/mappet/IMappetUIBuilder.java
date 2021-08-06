@@ -4,6 +4,7 @@ import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.ui.components.UIButtonComponent;
 import mchorse.mappet.api.ui.components.UIComponent;
 import mchorse.mappet.api.ui.components.UIGraphicsComponent;
+import mchorse.mappet.api.ui.components.UIIconButtonComponent;
 import mchorse.mappet.api.ui.components.UILabelComponent;
 import mchorse.mappet.api.ui.components.UIMorphComponent;
 import mchorse.mappet.api.ui.components.UIStackComponent;
@@ -33,6 +34,8 @@ public interface IMappetUIBuilder
     public UIGraphicsComponent graphics();
 
     public UIButtonComponent button(String label);
+
+    public UIIconButtonComponent icon(String icon);
 
     public UILabelComponent label(String label);
 
