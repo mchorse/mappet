@@ -2,6 +2,7 @@ package mchorse.mappet.api.scripts.user.mappet;
 
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.ui.components.UIButtonComponent;
+import mchorse.mappet.api.ui.components.UIClickComponent;
 import mchorse.mappet.api.ui.components.UIComponent;
 import mchorse.mappet.api.ui.components.UIGraphicsComponent;
 import mchorse.mappet.api.ui.components.UIIconButtonComponent;
@@ -89,6 +90,8 @@ public interface IMappetUIBuilder
     }
 
     public UIMorphComponent morph(AbstractMorph morph, boolean editing);
+
+    public UIClickComponent click();
 
     public IMappetUIBuilder layout();
 

@@ -30,6 +30,7 @@ import mchorse.mappet.api.triggers.blocks.ItemTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.ScriptTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.SoundTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.StateTriggerBlock;
+import mchorse.mappet.api.ui.components.UIClickComponent;
 import mchorse.mappet.api.ui.components.UIComponent;
 import mchorse.mappet.api.ui.components.UIButtonComponent;
 import mchorse.mappet.api.ui.components.UIGraphicsComponent;
@@ -238,7 +239,8 @@ public class CommonProxy
             .register("strings", UIStringListComponent.class, 0xffffff)
             .register("item", UIStackComponent.class, 0xffffff)
             .register("layout", UILayoutComponent.class, 0xffffff)
-            .register("morph", UIMorphComponent.class, 0xffffff);
+            .register("morph", UIMorphComponent.class, 0xffffff)
+            .register("clickarea", UIClickComponent.class, 0xffffff);
 
         uiComponents = ui;
         Mappet.EVENT_BUS.post(new RegisterUIComponentEvent(ui));

@@ -5,6 +5,7 @@ import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.ui.UI;
 import mchorse.mappet.api.ui.components.UIButtonComponent;
+import mchorse.mappet.api.ui.components.UIClickComponent;
 import mchorse.mappet.api.ui.components.UIComponent;
 import mchorse.mappet.api.ui.components.UIGraphicsComponent;
 import mchorse.mappet.api.ui.components.UIIconButtonComponent;
@@ -230,6 +231,16 @@ public class MappetUIBuilder implements IMappetUIBuilder
         {
             component.editing();
         }
+
+        return component;
+    }
+
+    @Override
+    public UIClickComponent click()
+    {
+        UIClickComponent component = new UIClickComponent();
+
+        this.current.getChildComponents().add(component);
 
         return component;
     }
