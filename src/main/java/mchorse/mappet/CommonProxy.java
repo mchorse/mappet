@@ -30,7 +30,7 @@ import mchorse.mappet.api.triggers.blocks.ItemTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.ScriptTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.SoundTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.StateTriggerBlock;
-import mchorse.mappet.api.ui.components.IUIComponent;
+import mchorse.mappet.api.ui.components.UIComponent;
 import mchorse.mappet.api.ui.components.UIButtonComponent;
 import mchorse.mappet.api.ui.components.UIGraphicsComponent;
 import mchorse.mappet.api.ui.components.UILabelComponent;
@@ -79,7 +79,7 @@ public class CommonProxy
     private static IFactory<QuestNode> chains;
     private static IFactory<AbstractConditionBlock> conditionBlocks;
     private static IFactory<AbstractTriggerBlock> triggerBlocks;
-    private static IFactory<IUIComponent> uiComponents;
+    private static IFactory<UIComponent> uiComponents;
 
     public static IFactory<EventBaseNode> getEvents()
     {
@@ -101,7 +101,7 @@ public class CommonProxy
     {
         return triggerBlocks;
     }
-    public static IFactory<IUIComponent> getUiComponents()
+    public static IFactory<UIComponent> getUiComponents()
     {
         return uiComponents;
     }
@@ -224,7 +224,7 @@ public class CommonProxy
         Mappet.EVENT_BUS.post(new RegisterTriggerBlockEvent(triggers));
 
         /* Register UI components */
-        MapFactory<IUIComponent> ui = new MapFactory<IUIComponent>()
+        MapFactory<UIComponent> ui = new MapFactory<UIComponent>()
             .register("graphics", UIGraphicsComponent.class, 0xffffff)
             .register("button", UIButtonComponent.class, 0xffffff)
             .register("label", UILabelComponent.class, 0xffffff)

@@ -12,7 +12,7 @@ public class UITextareaComponent extends UILabelBaseComponent
     @Override
     protected int getDefaultUpdateDelay()
     {
-        return UIBaseComponent.DELAY;
+        return UIComponent.DELAY;
     }
 
     @Override
@@ -32,5 +32,17 @@ public class UITextareaComponent extends UILabelBaseComponent
         element.background();
 
         return this.apply(element, context);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected void applyProperty(UIContext context, String key, GuiElement element)
+    {
+        super.applyProperty(context, key, element);
+
+        if (key.equals("Label"))
+        {
+            ((GuiMultiTextElement) element).setText(this.label);
+        }
     }
 }

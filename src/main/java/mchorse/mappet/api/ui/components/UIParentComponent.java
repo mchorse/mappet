@@ -8,12 +8,12 @@ import net.minecraftforge.common.util.Constants;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class UIParentComponent extends UIBaseComponent
+public abstract class UIParentComponent extends UIComponent
 {
-    public List<IUIComponent> children = new ArrayList<IUIComponent>();
+    public List<UIComponent> children = new ArrayList<UIComponent>();
 
     @Override
-    public List<IUIComponent> getChildComponents()
+    public List<UIComponent> getChildComponents()
     {
         return this.children;
     }
@@ -25,7 +25,7 @@ public abstract class UIParentComponent extends UIBaseComponent
 
         NBTTagList list = new NBTTagList();
 
-        for (IUIComponent component : this.children)
+        for (UIComponent component : this.children)
         {
             NBTTagCompound componentTag = component.serializeNBT();
 
@@ -46,7 +46,7 @@ public abstract class UIParentComponent extends UIBaseComponent
         for (int i = 0, c = list.tagCount(); i < c; i++)
         {
             NBTTagCompound componentTag = list.getCompoundTagAt(i);
-            IUIComponent component = CommonProxy.getUiComponents().create(componentTag.getString("Type"));
+            UIComponent component = CommonProxy.getUiComponents().create(componentTag.getString("Type"));
 
             if (component != null)
             {

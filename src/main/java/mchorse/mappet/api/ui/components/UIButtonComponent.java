@@ -28,4 +28,18 @@ public class UIButtonComponent extends UILabelBaseComponent
 
         return this.apply(button, context);
     }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected void applyProperty(UIContext context, String key, GuiElement element)
+    {
+        super.applyProperty(context, key, element);
+
+        GuiButtonElement button = (GuiButtonElement) element;
+
+        if (key.equals("Label"))
+        {
+            button.label = IKey.str(this.getLabel());
+        }
+    }
 }

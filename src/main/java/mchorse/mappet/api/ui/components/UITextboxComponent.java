@@ -15,7 +15,7 @@ public class UITextboxComponent extends UILabelBaseComponent
     @Override
     protected int getDefaultUpdateDelay()
     {
-        return UIBaseComponent.DELAY;
+        return UIComponent.DELAY;
     }
 
     @Override
@@ -37,6 +37,18 @@ public class UITextboxComponent extends UILabelBaseComponent
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    protected void applyProperty(UIContext context, String key, GuiElement element)
+    {
+        super.applyProperty(context, key, element);
+
+        if (key.equals("Label"))
+        {
+            ((GuiTextElement) element).setText(this.label);
+        }
+    }
+
+    @Override
     public void serializeNBT(NBTTagCompound tag)
     {
         super.serializeNBT(tag);
@@ -49,6 +61,9 @@ public class UITextboxComponent extends UILabelBaseComponent
     {
         super.deserializeNBT(tag);
 
-        this.maxLength = tag.getInteger("MaxLength");
+        if (tag.hasKey("MaxLength"))
+        {
+            this.maxLength = tag.getInteger("MaxLength");
+        }
     }
 }

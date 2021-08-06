@@ -39,6 +39,8 @@ public class UILayoutComponent extends UIParentComponent
 
     public UILayoutComponent scrollSize(int scrollSize)
     {
+        this.change("ScrollSize");
+
         this.scrollSize = scrollSize;
 
         return this;
@@ -92,7 +94,7 @@ public class UILayoutComponent extends UIParentComponent
             element = new GuiElement(mc);
         }
 
-        for (IUIComponent component : this.getChildComponents())
+        for (UIComponent component : this.getChildComponents())
         {
             GuiElement created = component.create(mc, context);
 
@@ -112,6 +114,7 @@ public class UILayoutComponent extends UIParentComponent
         return this.apply(element, context);
     }
 
+    @SideOnly(Side.CLIENT)
     private void applyLayout(GuiElement element, LayoutType type)
     {
         if (type == LayoutType.COLUMN)
@@ -165,6 +168,18 @@ public class UILayoutComponent extends UIParentComponent
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    protected void applyProperty(UIContext context, String key, GuiElement element)
+    {
+        super.applyProperty(context, key, element);
+
+        if (key.equals("ScrollSize") && element instanceof GuiScrollElement)
+        {
+            ((GuiScrollElement) element).scroll.scrollSize = this.scrollSize;
+        }
+    }
+
+    @Override
     public void serializeNBT(NBTTagCompound tag)
     {
         super.serializeNBT(tag);
@@ -202,14 +217,9 @@ public class UILayoutComponent extends UIParentComponent
     {
         super.deserializeNBT(tag);
 
-        this.scroll = tag.getBoolean("Scroll");
-
-        if (tag.hasKey("ScrollSize"))
-        {
-            this.scrollSize = tag.getInteger("ScrollSize");
-        }
-
-        this.horizontal = tag.getBoolean("Horizontal");
+        if (tag.hasKey("Scroll")) this.scroll = tag.getBoolean("Scroll");
+        if (tag.hasKey("ScrollSize")) this.scrollSize = tag.getInteger("ScrollSize");
+        if (tag.hasKey("Horizontal")) this.horizontal = tag.getBoolean("Horizontal");
 
         if (tag.hasKey("LayoutType"))
         {
@@ -221,18 +231,10 @@ public class UILayoutComponent extends UIParentComponent
             }
         }
 
-        this.margin = tag.getInteger("Margin");
-        this.padding = tag.getInteger("Padding");
-
-        if (tag.hasKey("Width"))
-        {
-            this.width = tag.getInteger("Width");
-        }
-
-        if (tag.hasKey("Items"))
-        {
-            this.items = tag.getInteger("Items");
-        }
+        if (tag.hasKey("Margin")) this.margin = tag.getInteger("Margin");
+        if (tag.hasKey("Padding")) this.padding = tag.getInteger("Padding");
+        if (tag.hasKey("Width")) this.width = tag.getInteger("Width");
+        if (tag.hasKey("Items")) this.items = tag.getInteger("Items");
     }
 
     public static enum LayoutType

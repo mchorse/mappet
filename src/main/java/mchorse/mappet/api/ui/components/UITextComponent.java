@@ -15,4 +15,16 @@ public class UITextComponent extends UILabelBaseComponent
     {
         return this.apply(new GuiText(mc).text(this.getLabel()), context);
     }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected void applyProperty(UIContext context, String key, GuiElement element)
+    {
+        super.applyProperty(context, key, element);
+
+        if (key.equals("Label"))
+        {
+            ((GuiText) element).text(this.getLabel());
+        }
+    }
 }

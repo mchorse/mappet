@@ -10,7 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class UIStackComponent extends UIBaseComponent
+public class UIStackComponent extends UIComponent
 {
     public ItemStack stack = ItemStack.EMPTY;
 
@@ -21,6 +21,8 @@ public class UIStackComponent extends UIBaseComponent
 
     public UIStackComponent stack(ItemStack stack)
     {
+        this.change("Stack");
+
         this.stack = stack == null ? ItemStack.EMPTY : stack.copy();
 
         return this;
@@ -29,7 +31,7 @@ public class UIStackComponent extends UIBaseComponent
     @Override
     protected int getDefaultUpdateDelay()
     {
-        return UIBaseComponent.DELAY;
+        return UIComponent.DELAY;
     }
 
     @Override
@@ -51,6 +53,18 @@ public class UIStackComponent extends UIBaseComponent
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    protected void applyProperty(UIContext context, String key, GuiElement element)
+    {
+        super.applyProperty(context, key, element);
+
+        if (key.equals("Stack"))
+        {
+            ((GuiSlotElement) element).setStack(this.stack);
+        }
+    }
+
+    @Override
     public void serializeNBT(NBTTagCompound tag)
     {
         super.serializeNBT(tag);
@@ -63,6 +77,9 @@ public class UIStackComponent extends UIBaseComponent
     {
         super.deserializeNBT(tag);
 
-        this.stack = new ItemStack(tag.getCompoundTag("Stack"));
+        if (tag.hasKey("Stack"))
+        {
+            this.stack = new ItemStack(tag.getCompoundTag("Stack"));
+        }
     }
 }

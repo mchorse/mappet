@@ -26,7 +26,7 @@ import javax.vecmath.Vector2f;
 import javax.vecmath.Vector3f;
 import java.text.DecimalFormat;
 
-public class UIMorphComponent extends UIBaseComponent
+public class UIMorphComponent extends UIComponent
 {
     public NBTTagCompound morph;
     public boolean editing;
@@ -38,6 +38,8 @@ public class UIMorphComponent extends UIBaseComponent
 
     public UIMorphComponent morph(AbstractMorph morph)
     {
+        this.change("Morph");
+
         this.morph = MorphUtils.toNBT(morph);
 
         return this;
@@ -45,6 +47,8 @@ public class UIMorphComponent extends UIBaseComponent
 
     public UIMorphComponent editing()
     {
+        this.change("Editing");
+
         this.editing = true;
 
         return this;
@@ -52,6 +56,8 @@ public class UIMorphComponent extends UIBaseComponent
 
     public UIMorphComponent position(float x, float y, float z)
     {
+        this.change("Position");
+
         this.pos = new Vector3f(x, y, z);
 
         return this;
@@ -59,6 +65,8 @@ public class UIMorphComponent extends UIBaseComponent
 
     public UIMorphComponent rotation(float pitch, float yaw)
     {
+        this.change("Rotation");
+
         this.rot = new Vector2f(pitch, yaw);
 
         return this;
@@ -66,6 +74,8 @@ public class UIMorphComponent extends UIBaseComponent
 
     public UIMorphComponent scale(float scale)
     {
+        this.change("Scale");
+
         this.scale = scale;
 
         return this;
@@ -73,6 +83,8 @@ public class UIMorphComponent extends UIBaseComponent
 
     public UIMorphComponent fov(float fov)
     {
+        this.change("Fov");
+
         this.fov = fov;
 
         return this;
@@ -81,7 +93,7 @@ public class UIMorphComponent extends UIBaseComponent
     @Override
     protected int getDefaultUpdateDelay()
     {
-        return UIBaseComponent.DELAY;
+        return UIComponent.DELAY;
     }
 
     @Override
@@ -95,24 +107,27 @@ public class UIMorphComponent extends UIBaseComponent
             renderer.morph.set(MorphManager.INSTANCE.morphFromNBT(this.morph));
         }
 
-        if (this.editing && !this.id.isEmpty())
+        GuiNestedEdit edit = new GuiNestedEdit(mc, (editing) ->
         {
-            GuiNestedEdit edit = new GuiNestedEdit(mc, (editing) ->
+            GuiMappetDashboard.get(mc).openMorphMenu(renderer.getRoot(), editing, renderer.morph.copy(), (morph) ->
             {
-                GuiMappetDashboard.get(mc).openMorphMenu(renderer.getRoot(), editing, renderer.morph.copy(), (morph) ->
+                if (this.id.isEmpty())
                 {
-                    AbstractMorph copy = MorphUtils.copy(morph);
-                    NBTTagCompound copyTag = MorphUtils.toNBT(copy);
+                    return;
+                }
 
-                    renderer.morph.setDirect(copy);
-                    context.data.setTag(this.id, copyTag == null ? new NBTTagCompound() : copyTag);
-                    context.dirty(this.id, this.updateDelay);
-                });
+                AbstractMorph copy = MorphUtils.copy(morph);
+                NBTTagCompound copyTag = MorphUtils.toNBT(copy);
+
+                renderer.morph.setDirect(copy);
+                context.data.setTag(this.id, copyTag == null ? new NBTTagCompound() : copyTag);
+                context.dirty(this.id, this.updateDelay);
             });
+        });
 
-            edit.flex().relative(renderer).x(0.5F).y(1F, -30).wh(100, 20).anchorX(0.5F);
-            renderer.add(edit);
-        }
+        edit.flex().relative(renderer).x(0.5F).y(1F, -30).wh(100, 20).anchorX(0.5F);
+        edit.setVisible(this.editing);
+        renderer.add(edit);
 
         if (Mappet.scriptUIDebug.get())
         {
@@ -148,6 +163,40 @@ public class UIMorphComponent extends UIBaseComponent
         renderer.fov = this.fov;
 
         return this.apply(renderer, context);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected void applyProperty(UIContext context, String key, GuiElement element)
+    {
+        super.applyProperty(context, key, element);
+
+        GuiMorphRenderer renderer = (GuiMorphRenderer) element;
+
+        if (key.equals("Morph"))
+        {
+            renderer.morph.set(MorphManager.INSTANCE.morphFromNBT(this.morph));
+        }
+        else if (key.equals("Editing"))
+        {
+            renderer.getChildren(GuiNestedEdit.class).get(0).setVisible(this.editing);
+        }
+        else if (key.equals("Position") && this.pos != null)
+        {
+            renderer.setPosition(this.pos.x, this.pos.y, this.pos.z);
+        }
+        else if (key.equals("Rotation") && this.rot != null)
+        {
+            renderer.setRotation(this.rot.y, this.rot.x);
+        }
+        else if (key.equals("Scale"))
+        {
+            renderer.scale = this.scale;
+        }
+        else if (key.equals("Fov"))
+        {
+            renderer.fov = this.fov;
+        }
     }
 
     @Override
@@ -193,7 +242,10 @@ public class UIMorphComponent extends UIBaseComponent
             this.morph = tag.getCompoundTag("Morph");
         }
 
-        this.editing = tag.getBoolean("Editing");
+        if (tag.hasKey("Editing"))
+        {
+            this.editing = tag.getBoolean("Editing");
+        }
 
         if (tag.hasKey("Position"))
         {

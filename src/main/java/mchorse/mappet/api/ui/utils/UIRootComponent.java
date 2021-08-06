@@ -1,7 +1,7 @@
 package mchorse.mappet.api.ui.utils;
 
 import mchorse.mappet.api.ui.UIContext;
-import mchorse.mappet.api.ui.components.IUIComponent;
+import mchorse.mappet.api.ui.components.UIComponent;
 import mchorse.mappet.api.ui.components.UIParentComponent;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import net.minecraft.client.Minecraft;
@@ -16,7 +16,7 @@ public class UIRootComponent extends UIParentComponent
     {
         GuiElement element = new GuiElement(mc);
 
-        for (IUIComponent component : this.getChildComponents())
+        for (UIComponent component : this.getChildComponents())
         {
             GuiElement created = component.create(mc, context);
 

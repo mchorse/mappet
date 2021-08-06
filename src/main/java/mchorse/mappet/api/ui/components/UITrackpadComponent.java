@@ -5,10 +5,12 @@ import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.function.Consumer;
 
-public class UITrackpadComponent extends UIBaseComponent
+public class UITrackpadComponent extends UIComponent
 {
     public Double value;
     public Double min;
@@ -17,6 +19,8 @@ public class UITrackpadComponent extends UIBaseComponent
 
     public UITrackpadComponent value(double value)
     {
+        this.change("Value");
+
         this.value = value;
 
         return this;
@@ -24,6 +28,8 @@ public class UITrackpadComponent extends UIBaseComponent
 
     public UITrackpadComponent min(double min)
     {
+        this.change("Min");
+
         this.min = min;
 
         return this;
@@ -31,6 +37,8 @@ public class UITrackpadComponent extends UIBaseComponent
 
     public UITrackpadComponent max(double max)
     {
+        this.change("Max");
+
         this.max = max;
 
         return this;
@@ -43,6 +51,8 @@ public class UITrackpadComponent extends UIBaseComponent
 
     public UITrackpadComponent integer(boolean integer)
     {
+        this.change("Integer");
+
         this.integer = integer;
 
         return this;
@@ -61,7 +71,7 @@ public class UITrackpadComponent extends UIBaseComponent
     @Override
     protected int getDefaultUpdateDelay()
     {
-        return UIBaseComponent.DELAY;
+        return UIComponent.DELAY;
     }
 
     @Override
@@ -96,6 +106,32 @@ public class UITrackpadComponent extends UIBaseComponent
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    protected void applyProperty(UIContext context, String key, GuiElement element)
+    {
+        super.applyProperty(context, key, element);
+
+        GuiTrackpadElement trackpad = (GuiTrackpadElement) element;
+
+        if (key.equals("Value") && this.value != null)
+        {
+            trackpad.setValue(this.value);
+        }
+        if (key.equals("Min") && this.min != null)
+        {
+            trackpad.min = this.min;
+        }
+        if (key.equals("Max") && this.max != null)
+        {
+            trackpad.max = this.max;
+        }
+        if (key.equals("Integer"))
+        {
+            trackpad.integer = this.integer;
+        }
+    }
+
+    @Override
     public void serializeNBT(NBTTagCompound tag)
     {
         super.serializeNBT(tag);
@@ -115,7 +151,6 @@ public class UITrackpadComponent extends UIBaseComponent
         if (tag.hasKey("Value")) this.value = tag.getDouble("Value");
         if (tag.hasKey("Min")) this.min = tag.getDouble("Min");
         if (tag.hasKey("Max")) this.max = tag.getDouble("Max");
-
-        this.integer = tag.getBoolean("Integer");
+        if (tag.hasKey("Integer")) this.integer = tag.getBoolean("Integer");
     }
 }

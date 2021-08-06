@@ -1,6 +1,7 @@
 package mchorse.mappet.api.ui.components;
 
 import mchorse.mappet.api.ui.UIContext;
+import mchorse.mappet.client.gui.utils.text.GuiText;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.utils.keys.IKey;
@@ -15,6 +16,8 @@ public class UIToggleComponent extends UILabelBaseComponent
 
     public UIToggleComponent state(boolean state)
     {
+        this.change("State");
+
         this.state = state;
 
         return this;
@@ -39,6 +42,24 @@ public class UIToggleComponent extends UILabelBaseComponent
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    protected void applyProperty(UIContext context, String key, GuiElement element)
+    {
+        super.applyProperty(context, key, element);
+
+        GuiToggleElement toggle = (GuiToggleElement) element;
+
+        if (key.equals("Label"))
+        {
+            toggle.label = IKey.str(this.getLabel());
+        }
+        else if (key.equals("State"))
+        {
+            toggle.toggled(this.state);
+        }
+    }
+
+    @Override
     public void serializeNBT(NBTTagCompound tag)
     {
         super.serializeNBT(tag);
@@ -51,6 +72,9 @@ public class UIToggleComponent extends UILabelBaseComponent
     {
         super.deserializeNBT(tag);
 
-        this.state = tag.getBoolean("State");
+        if (tag.hasKey("State"))
+        {
+            this.state = tag.getBoolean("State");
+        }
     }
 }

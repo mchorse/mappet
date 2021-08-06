@@ -9,6 +9,7 @@ import mchorse.mappet.api.scripts.user.items.IScriptInventory;
 import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIContext;
+import mchorse.mappet.api.ui.UI;
 import mchorse.mappet.api.ui.UIContext;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
@@ -143,10 +144,13 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
 
         if (character.getUIContext() == null)
         {
-            UIContext context = new UIContext(this.entity, builder.getScript(), builder.getFunction());
+            UI ui = builder.getUI();
+            UIContext context = new UIContext(ui, this.entity, builder.getScript(), builder.getFunction());
 
             character.setUIContext(context);
-            Dispatcher.sendTo(new PacketUI(builder.getUI()), this.getMinecraftPlayer());
+            Dispatcher.sendTo(new PacketUI(ui), this.getMinecraftPlayer());
+
+            context.clearChanges();
 
             return true;
         }

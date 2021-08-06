@@ -4,8 +4,8 @@ import mchorse.mappet.CommonProxy;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.ui.UI;
-import mchorse.mappet.api.ui.components.IUIComponent;
 import mchorse.mappet.api.ui.components.UIButtonComponent;
+import mchorse.mappet.api.ui.components.UIComponent;
 import mchorse.mappet.api.ui.components.UIGraphicsComponent;
 import mchorse.mappet.api.ui.components.UILabelComponent;
 import mchorse.mappet.api.ui.components.UILayoutComponent;
@@ -24,7 +24,7 @@ import java.util.List;
 public class MappetUIBuilder implements IMappetUIBuilder
 {
     private UI ui;
-    private IUIComponent current;
+    private UIComponent current;
     private String script;
     private String function;
 
@@ -36,13 +36,13 @@ public class MappetUIBuilder implements IMappetUIBuilder
         this.function = function;
     }
 
-    public MappetUIBuilder(IUIComponent component)
+    public MappetUIBuilder(UIComponent component)
     {
         this.current = component;
     }
 
     @Override
-    public IUIComponent getCurrent()
+    public UIComponent getCurrent()
     {
         return this.current;
     }
@@ -74,9 +74,9 @@ public class MappetUIBuilder implements IMappetUIBuilder
     }
 
     @Override
-    public IUIComponent create(String id)
+    public UIComponent create(String id)
     {
-        IUIComponent component = CommonProxy.getUiComponents().create(id);
+        UIComponent component = CommonProxy.getUiComponents().create(id);
 
         if (component == null)
         {

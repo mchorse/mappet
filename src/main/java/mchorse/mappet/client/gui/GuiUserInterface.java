@@ -7,20 +7,33 @@ import mchorse.mappet.network.common.ui.PacketUI;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class GuiUserInterface extends GuiBase
 {
-    private UIContext context = new UIContext();
-    private UI ui;
+    private UIContext context;
 
     public GuiUserInterface(Minecraft mc, UI ui)
     {
-        this.ui = ui;
+        this.context = new UIContext(ui);
 
         GuiElement element = ui.root.create(mc, this.context);
 
         element.flex().relative(this.root).wh(1F, 1F);
         this.root.add(element);
+    }
+
+    public void handleUIChanges(NBTTagCompound data)
+    {
+        for (String key : data.getKeySet())
+        {
+            NBTTagCompound tag = data.getCompoundTag(key);
+            GuiElement element = this.context.elements.get(key);
+
+            this.context.getById(key).handleChanges(this.context, tag, element);
+        }
+
+        this.root.resize();
     }
 
     @Override
@@ -45,7 +58,7 @@ public class GuiUserInterface extends GuiBase
             this.context.sendToServer();
         }
 
-        if (this.ui.background)
+        if (this.context.ui.background)
         {
             this.drawDefaultBackground();
         }

@@ -15,13 +15,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class UIStringListComponent extends UIBaseComponent
+public class UIStringListComponent extends UIComponent
 {
     public List<String> values = new ArrayList<String>();
     public Integer selected;
 
     public UIStringListComponent values(String... values)
     {
+        this.change("Values");
+
         this.values.clear();
         this.values.addAll(Arrays.asList(values));
 
@@ -30,6 +32,8 @@ public class UIStringListComponent extends UIBaseComponent
 
     public UIStringListComponent values(List<String> values)
     {
+        this.change("Values");
+
         this.values.clear();
         this.values.addAll(values);
 
@@ -38,6 +42,8 @@ public class UIStringListComponent extends UIBaseComponent
 
     public UIStringListComponent selected(int selected)
     {
+        this.change("Selected");
+
         this.selected = selected;
 
         return this;
@@ -64,6 +70,25 @@ public class UIStringListComponent extends UIBaseComponent
         }
 
         return this.apply(element, context);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected void applyProperty(UIContext context, String key, GuiElement element)
+    {
+        super.applyProperty(context, key, element);
+
+        GuiStringListElement list = (GuiStringListElement) element;
+
+        if (key.equals("Values"))
+        {
+            list.clear();
+            list.add(this.values);
+        }
+        else if (key.equals("Selected") && this.selected != null)
+        {
+            list.setIndex(this.selected);
+        }
     }
 
     @Override
@@ -94,13 +119,16 @@ public class UIStringListComponent extends UIBaseComponent
     {
         super.deserializeNBT(tag);
 
-        NBTTagList list = tag.getTagList("Values", Constants.NBT.TAG_STRING);
-
-        this.values.clear();
-
-        for (int i = 0, c = list.tagCount(); i < c; i++)
+        if (tag.hasKey("Values"))
         {
-            this.values.add(list.getStringTagAt(i));
+            NBTTagList list = tag.getTagList("Values", Constants.NBT.TAG_STRING);
+
+            this.values.clear();
+
+            for (int i = 0, c = list.tagCount(); i < c; i++)
+            {
+                this.values.add(list.getStringTagAt(i));
+            }
         }
 
         if (tag.hasKey("Selected"))

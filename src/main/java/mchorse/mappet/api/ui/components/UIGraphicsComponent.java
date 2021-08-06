@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UIGraphicsComponent extends UIBaseComponent
+public class UIGraphicsComponent extends UIComponent
 {
     public List<Graphic> graphics = new ArrayList<Graphic>();
 
@@ -54,6 +54,8 @@ public class UIGraphicsComponent extends UIBaseComponent
 
     private UIGraphicsComponent addGraphic(Graphic graphic)
     {
+        this.change("Graphics");
+
         this.graphics.add(graphic);
 
         return this;
@@ -68,6 +70,21 @@ public class UIGraphicsComponent extends UIBaseComponent
         element.graphics.addAll(this.graphics);
 
         return this.apply(element, context);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected void applyProperty(UIContext context, String key, GuiElement element)
+    {
+        super.applyProperty(context, key, element);
+
+        if (key.equals("Graphics"))
+        {
+            GuiGraphics graphics = (GuiGraphics) element;
+
+            graphics.graphics.clear();
+            graphics.graphics.addAll(this.graphics);
+        }
     }
 
     @Override
@@ -90,17 +107,20 @@ public class UIGraphicsComponent extends UIBaseComponent
     {
         super.deserializeNBT(tag);
 
-        NBTTagList list = tag.getTagList("Graphics", Constants.NBT.TAG_COMPOUND);
-
-        this.graphics.clear();
-
-        for (int i = 0, c = list.tagCount(); i < c; i++)
+        if (tag.hasKey("Graphics"))
         {
-            Graphic graphic = Graphic.fromNBT(list.getCompoundTagAt(i));
+            NBTTagList list = tag.getTagList("Graphics", Constants.NBT.TAG_COMPOUND);
 
-            if (graphic != null)
+            this.graphics.clear();
+
+            for (int i = 0, c = list.tagCount(); i < c; i++)
             {
-                this.graphics.add(graphic);
+                Graphic graphic = Graphic.fromNBT(list.getCompoundTagAt(i));
+
+                if (graphic != null)
+                {
+                    this.graphics.add(graphic);
+                }
             }
         }
     }

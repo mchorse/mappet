@@ -22,6 +22,8 @@ public class UILabelComponent extends UILabelBaseComponent
 
     public UILabelComponent color(int color)
     {
+        this.change("Color");
+
         this.color = color;
 
         return this;
@@ -29,6 +31,8 @@ public class UILabelComponent extends UILabelBaseComponent
 
     public UILabelComponent background(int color)
     {
+        this.change("Background");
+
         this.background = color;
 
         return this;
@@ -36,6 +40,8 @@ public class UILabelComponent extends UILabelBaseComponent
 
     public UILabelComponent labelAnchor(float anchorX, float anchorY)
     {
+        this.change("AnchorX", "AnchorY");
+
         this.anchorX = anchorX;
         this.anchorY = anchorY;
 
@@ -61,6 +67,36 @@ public class UILabelComponent extends UILabelBaseComponent
         label.anchor(this.anchorX, this.anchorY);
 
         return this.apply(label, context);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected void applyProperty(UIContext context, String key, GuiElement element)
+    {
+        super.applyProperty(context, key, element);
+
+        GuiLabel label = (GuiLabel) element;
+
+        if (key.equals("Label"))
+        {
+            label.label = IKey.str(this.getLabel());
+        }
+        else if (key.equals("Color"))
+        {
+            label.color = this.color;
+        }
+        else if (key.equals("Background"))
+        {
+            label.background = this.background;
+        }
+        else if (key.equals("AnchorX"))
+        {
+            label.anchorX = this.anchorX;
+        }
+        else if (key.equals("AnchorY"))
+        {
+            label.anchorY = this.anchorY;
+        }
     }
 
     @Override
@@ -97,7 +133,14 @@ public class UILabelComponent extends UILabelBaseComponent
             this.background = tag.getInteger("Background");
         }
 
-        this.anchorX = tag.getFloat("AnchorX");
-        this.anchorY = tag.getFloat("AnchorY");
+        if (tag.hasKey("AnchorX"))
+        {
+            this.anchorX = tag.getFloat("AnchorX");
+        }
+
+        if (tag.hasKey("AnchorY"))
+        {
+            this.anchorY = tag.getFloat("AnchorY");
+        }
     }
 }

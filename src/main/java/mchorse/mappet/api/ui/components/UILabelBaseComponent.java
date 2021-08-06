@@ -3,12 +3,14 @@ package mchorse.mappet.api.ui.components;
 import mchorse.mclib.utils.TextUtils;
 import net.minecraft.nbt.NBTTagCompound;
 
-public abstract class UILabelBaseComponent extends UIBaseComponent
+public abstract class UILabelBaseComponent extends UIComponent
 {
     public String label = "";
 
     public UILabelBaseComponent label(String label)
     {
+        this.change("Label");
+
         this.label = label;
 
         return this;
@@ -32,6 +34,9 @@ public abstract class UILabelBaseComponent extends UIBaseComponent
     {
         super.deserializeNBT(tag);
 
-        this.label = tag.getString("Label");
+        if (tag.hasKey("Label"))
+        {
+            this.label = tag.getString("Label");
+        }
     }
 }

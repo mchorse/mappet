@@ -23,6 +23,7 @@ import mchorse.mappet.network.client.quests.ClientHandlerQuests;
 import mchorse.mappet.network.client.scripts.ClientHandlerEntityRotations;
 import mchorse.mappet.network.client.scripts.ClientHandlerRepl;
 import mchorse.mappet.network.client.ui.ClientHandlerUI;
+import mchorse.mappet.network.client.ui.ClientHandlerUIData;
 import mchorse.mappet.network.common.blocks.PacketEditEmitter;
 import mchorse.mappet.network.common.blocks.PacketEditRegion;
 import mchorse.mappet.network.common.blocks.PacketEditTrigger;
@@ -168,6 +169,7 @@ public class Dispatcher
 
             this.register(PacketUI.class, ClientHandlerUI.class, Side.CLIENT);
             this.register(PacketUI.class, ServerHandlerUI.class, Side.SERVER);
+            this.register(PacketUIData.class, ClientHandlerUIData.class, Side.CLIENT);
             this.register(PacketUIData.class, ServerHandlerUIData.class, Side.SERVER);
         }
     };
