@@ -92,7 +92,7 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
 
     public UIComponent margin(int margin)
     {
-        this.change("Margins");
+        this.change("Margin");
 
         this.marginTop = margin;
         this.marginBotom = margin;
@@ -104,7 +104,7 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
 
     public UIComponent marginTop(int margin)
     {
-        this.change("Margins");
+        this.change("Margin");
 
         this.marginTop = margin;
 
@@ -113,7 +113,7 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
 
     public UIComponent marginBotom(int margin)
     {
-        this.change("Margins");
+        this.change("Margin");
 
         this.marginBotom = margin;
 
@@ -122,7 +122,7 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
 
     public UIComponent marginLeft(int margin)
     {
-        this.change("Margins");
+        this.change("Margin");
 
         this.marginLeft = margin;
 
@@ -131,7 +131,7 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
 
     public UIComponent marginRight(int margin)
     {
-        this.change("Margins");
+        this.change("Margin");
 
         this.marginRight = margin;
 
@@ -472,7 +472,7 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         {
             element.setEnabled(this.enabled);
         }
-        else if (key.equals("Margins"))
+        else if (key.equals("Margin"))
         {
             element.marginTop(this.marginTop);
             element.marginBottom(this.marginBotom);
@@ -583,9 +583,9 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
             this.enabled = tag.getBoolean("Enabled");
         }
 
-        if (tag.hasKey("Margins"))
+        if (tag.hasKey("Margin"))
         {
-            NBTTagList margins = tag.getTagList("Margins", Constants.NBT.TAG_INT);
+            NBTTagList margins = tag.getTagList("Margin", Constants.NBT.TAG_INT);
 
             if (margins.tagCount() >= 4)
             {
