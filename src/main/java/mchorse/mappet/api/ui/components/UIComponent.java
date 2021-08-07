@@ -1,8 +1,10 @@
 package mchorse.mappet.api.ui.components;
 
 import mchorse.mappet.api.ui.UIContext;
+import mchorse.mappet.api.ui.utils.UIKeybind;
 import mchorse.mappet.api.ui.utils.UIUnit;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
+import mchorse.mclib.client.gui.utils.Keybind;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.Direction;
 import mchorse.mclib.utils.TextUtils;
@@ -14,7 +16,9 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -42,6 +46,7 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
     public UIUnit h = new UIUnit();
 
     public int updateDelay = this.getDefaultUpdateDelay();
+    public List<UIKeybind> keybinds = new ArrayList<UIKeybind>();
 
     protected Set<String> changedProperties = new HashSet<String>();
 
@@ -129,6 +134,28 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         this.change("Margins");
 
         this.marginRight = margin;
+
+        return this;
+    }
+
+    public UIComponent keybind(int keyCode, String action, String label)
+    {
+        return this.keybind(keyCode, action, label, false, false, false);
+    }
+
+    public UIComponent keybind(int keyCode, String action, String label, boolean ctrl)
+    {
+        return this.keybind(keyCode, action, label, ctrl, false, false);
+    }
+
+    public UIComponent keybind(int keyCode, String action, String label, boolean ctrl, boolean shift)
+    {
+        return this.keybind(keyCode, action, label, ctrl, shift, false);
+    }
+
+    public UIComponent keybind(int keyCode, String action, String label, boolean ctrl, boolean shift, boolean alt)
+    {
+        this.keybinds.add(new UIKeybind(keyCode, action, label, UIKeybind.createModifier(shift, ctrl, alt)));
 
         return this;
     }
@@ -353,6 +380,25 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
             context.registerElement(this.id, element, this.isDataReserved());
         }
 
+        for (UIKeybind keybind : this.keybinds)
+        {
+            Keybind key = element.keys().register(IKey.str(keybind.label), keybind.keyCode, () ->
+            {
+                context.sendKey(keybind.action);
+            });
+
+            List<Integer> held = new ArrayList<Integer>();
+
+            if (keybind.isCtrl()) held.add(Keyboard.KEY_LCONTROL);
+            if (keybind.isShift()) held.add(Keyboard.KEY_LSHIFT);
+            if (keybind.isAlt()) held.add(Keyboard.KEY_LMENU);
+
+            if (!held.isEmpty())
+            {
+                key.held(held.stream().mapToInt(i -> i).toArray());
+            }
+        }
+
         return element;
     }
 
@@ -497,6 +543,18 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         tag.setTag("W", this.w.serializeNBT());
         tag.setTag("H", this.h.serializeNBT());
         tag.setInteger("UpdateDelay", this.updateDelay);
+
+        if (!this.keybinds.isEmpty())
+        {
+            NBTTagList keybinds = new NBTTagList();
+
+            for (UIKeybind keybind : this.keybinds)
+            {
+                keybinds.appendTag(keybind.serializeNBT());
+            }
+
+            tag.setTag("Keybinds", keybinds);
+        }
     }
 
     @Override
@@ -546,6 +604,21 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("UpdateDelay"))
         {
             this.updateDelay = tag.getInteger("UpdateDelay");
+        }
+
+        if (tag.hasKey("Keybinds"))
+        {
+            this.keybinds.clear();
+
+            NBTTagList keybinds = tag.getTagList("Keybinds", Constants.NBT.TAG_COMPOUND);
+
+            for (int i = 0, c = keybinds.tagCount(); i < c; i++)
+            {
+                UIKeybind keybind = new UIKeybind();
+
+                keybind.deserializeNBT(keybinds.getCompoundTagAt(i));
+                this.keybinds.add(keybind);
+            }
         }
     }
 }

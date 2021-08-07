@@ -40,6 +40,12 @@ public class MappetUIContext implements IMappetUIContext
     }
 
     @Override
+    public String getHotkey()
+    {
+        return this.context.getHotkey();
+    }
+
+    @Override
     public UIComponent get(String id)
     {
         return this.context.getById(id);

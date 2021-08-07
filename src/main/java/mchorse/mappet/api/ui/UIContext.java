@@ -34,6 +34,7 @@ public class UIContext
 
     private String last = "";
     private boolean closed;
+    private String hotkey = "";
     private Long dirty;
 
     public UIContext(UI ui)
@@ -143,6 +144,11 @@ public class UIContext
         return this.last;
     }
 
+    public String getHotkey()
+    {
+        return this.hotkey;
+    }
+
     public boolean isClosed()
     {
         return this.closed;
@@ -159,6 +165,51 @@ public class UIContext
     }
 
     /* Client side code */
+
+    @SideOnly(Side.CLIENT)
+    public void registerElement(String id, GuiElement element, boolean reserved)
+    {
+        if (this.elements == null)
+        {
+            this.elements = new HashMap<String, GuiElement>();
+        }
+
+        this.elements.put(id, element);
+
+        if (reserved)
+        {
+            if (this.reservedData == null)
+            {
+                this.reservedData = new HashSet<String>();
+            }
+
+            this.reservedData.add(id);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public GuiElement getElement(String target)
+    {
+        return this.elements == null ? null : this.elements.get(target);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void sendKey(String action)
+    {
+        if (this.dirty != null)
+        {
+            this.sendToServer();
+        }
+        else
+        {
+            NBTTagCompound tag = new NBTTagCompound();
+
+            tag.setString("Last", "");
+            tag.setString("Hotkey", action);
+
+            Dispatcher.sendToServer(new PacketUIData(tag));
+        }
+    }
 
     @SideOnly(Side.CLIENT)
     public void dirty(String id, long delay)
@@ -185,6 +236,7 @@ public class UIContext
 
         tag.setTag("Data", this.data);
         tag.setString("Last", this.last);
+        tag.setString("Hotkey", this.hotkey);
 
         NBTTagCompound oldData = this.data;
 
@@ -203,6 +255,8 @@ public class UIContext
             }
         }
 
+        this.hotkey = "";
+
         Dispatcher.sendToServer(new PacketUIData(tag));
     }
 
@@ -217,6 +271,7 @@ public class UIContext
 
         this.data.merge(data.getCompoundTag("Data"));
         this.last = data.getString("Last");
+        this.hotkey = data.getString("Hotkey");
 
         if (this.handleScript(this.player))
         {
@@ -271,32 +326,5 @@ public class UIContext
         }
 
         return false;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void registerElement(String id, GuiElement element, boolean reserved)
-    {
-        if (this.elements == null)
-        {
-            this.elements = new HashMap<String, GuiElement>();
-        }
-
-        this.elements.put(id, element);
-
-        if (reserved)
-        {
-            if (this.reservedData == null)
-            {
-                this.reservedData = new HashSet<String>();
-            }
-
-            this.reservedData.add(id);
-        }
-    }
-
-    @SideOnly(Side.CLIENT)
-    public GuiElement getElement(String target)
-    {
-        return this.elements == null ? null : this.elements.get(target);
     }
 }

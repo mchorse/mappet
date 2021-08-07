@@ -143,6 +143,11 @@ public interface IMappetUIContext
      */
     public String getLast();
 
+    /**
+     * Get the ID of the last pressed hot key.
+     */
+    public String getHotkey();
+
     /* Server side modification */
 
     /**
