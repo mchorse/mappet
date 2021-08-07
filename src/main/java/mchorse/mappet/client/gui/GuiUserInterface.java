@@ -28,7 +28,7 @@ public class GuiUserInterface extends GuiBase
         for (String key : data.getKeySet())
         {
             NBTTagCompound tag = data.getCompoundTag(key);
-            GuiElement element = this.context.elements.get(key);
+            GuiElement element = this.context.getElement(key);
 
             this.context.getById(key).handleChanges(this.context, tag, element);
         }

@@ -13,6 +13,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,7 +27,10 @@ public class UIContext
     private String function = "";
 
     @SideOnly(Side.CLIENT)
-    public Map<String, GuiElement> elements = new HashMap<String, GuiElement>();
+    private Map<String, GuiElement> elements;
+
+    @SideOnly(Side.CLIENT)
+    private Set<String> reservedData;
 
     private String last = "";
     private boolean closed;
@@ -182,7 +186,22 @@ public class UIContext
         tag.setTag("Data", this.data);
         tag.setString("Last", this.last);
 
+        NBTTagCompound oldData = this.data;
+
         this.data = new NBTTagCompound();
+
+        if (this.reservedData != null)
+        {
+            for (String key : this.reservedData)
+            {
+                if (!oldData.hasKey(key))
+                {
+                    continue;
+                }
+
+                this.data.setTag(key, oldData.getTag(key));
+            }
+        }
 
         Dispatcher.sendToServer(new PacketUIData(tag));
     }
@@ -252,5 +271,32 @@ public class UIContext
         }
 
         return false;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void registerElement(String id, GuiElement element, boolean reserved)
+    {
+        if (this.elements == null)
+        {
+            this.elements = new HashMap<String, GuiElement>();
+        }
+
+        this.elements.put(id, element);
+
+        if (reserved)
+        {
+            if (this.reservedData == null)
+            {
+                this.reservedData = new HashSet<String>();
+            }
+
+            this.reservedData.add(id);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public GuiElement getElement(String target)
+    {
+        return this.elements == null ? null : this.elements.get(target);
     }
 }

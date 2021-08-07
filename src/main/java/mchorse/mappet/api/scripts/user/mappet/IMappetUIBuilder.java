@@ -95,9 +95,24 @@ public interface IMappetUIBuilder
 
     public IMappetUIBuilder layout();
 
+    public default IMappetUIBuilder column(int margin)
+    {
+        return this.column(margin, 0);
+    }
+
     public IMappetUIBuilder column(int margin, int padding);
 
+    public default IMappetUIBuilder row(int margin)
+    {
+        return this.row(margin, 0);
+    }
+
     public IMappetUIBuilder row(int margin, int padding);
+
+    public default IMappetUIBuilder grid(int margin)
+    {
+        return this.grid(margin, 0);
+    }
 
     public IMappetUIBuilder grid(int margin, int padding);
 }

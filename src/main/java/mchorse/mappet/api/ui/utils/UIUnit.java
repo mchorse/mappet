@@ -21,7 +21,7 @@ public class UIUnit implements INBTSerializable<NBTTagCompound>
     @SideOnly(Side.CLIENT)
     public void apply(Flex.Unit unit, UIContext context)
     {
-        GuiElement target = context.elements.get(this.target);
+        GuiElement target = context.getElement(this.target);
 
         unit.set(this.value, this.percentage ? Flex.Measure.RELATIVE : Flex.Measure.PIXELS);
         unit.offset = this.offset;

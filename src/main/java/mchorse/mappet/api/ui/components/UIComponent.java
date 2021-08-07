@@ -350,10 +350,16 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
 
         if (!this.id.isEmpty())
         {
-            context.elements.put(this.id, element);
+            context.registerElement(this.id, element, this.isDataReserved());
         }
 
         return element;
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected boolean isDataReserved()
+    {
+        return false;
     }
 
     @SideOnly(Side.CLIENT)

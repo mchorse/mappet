@@ -31,6 +31,13 @@ public class UIButtonComponent extends UILabelBaseComponent
 
     @Override
     @SideOnly(Side.CLIENT)
+    protected boolean isDataReserved()
+    {
+        return true;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
     protected void applyProperty(UIContext context, String key, GuiElement element)
     {
         super.applyProperty(context, key, element);
