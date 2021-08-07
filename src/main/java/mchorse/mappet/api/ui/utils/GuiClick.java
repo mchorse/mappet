@@ -37,6 +37,7 @@ public class GuiClick extends GuiElement
             list.appendTag(new NBTTagFloat(context.mouseY - this.area.y));
             list.appendTag(new NBTTagFloat((context.mouseX - this.area.x) / (float) this.area.w));
             list.appendTag(new NBTTagFloat((context.mouseY - this.area.y) / (float) this.area.h));
+            list.appendTag(new NBTTagFloat(context.mouseButton));
 
             this.context.data.setTag(this.component.id, list);
             this.context.dirty(this.component.id, this.component.updateDelay);

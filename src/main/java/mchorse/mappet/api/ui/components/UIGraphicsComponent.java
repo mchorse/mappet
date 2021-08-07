@@ -4,8 +4,10 @@ import mchorse.mappet.api.ui.UIContext;
 import mchorse.mappet.client.gui.utils.GuiGraphics;
 import mchorse.mappet.client.gui.utils.graphics.GradientGraphic;
 import mchorse.mappet.client.gui.utils.graphics.Graphic;
+import mchorse.mappet.client.gui.utils.graphics.IconGraphic;
 import mchorse.mappet.client.gui.utils.graphics.ImageGraphic;
 import mchorse.mappet.client.gui.utils.graphics.RectGraphic;
+import mchorse.mappet.client.gui.utils.graphics.TextGraphic;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
@@ -58,6 +60,26 @@ public class UIGraphicsComponent extends UIComponent
     public UIGraphicsComponent image(String image, int x, int y, int w, int h, int textureWidth, int textureHeight, int primary)
     {
         return this.addGraphic(new ImageGraphic(new ResourceLocation(image), x, y, w, h, textureWidth, textureHeight, primary));
+    }
+
+    public UIGraphicsComponent text(String text, int x, int y, int color)
+    {
+        return this.text(text, x, y, color, 0, 0);
+    }
+
+    public UIGraphicsComponent text(String text, int x, int y, int color, float anchorX, float anchorY)
+    {
+        return this.addGraphic(new TextGraphic(text, x, y, color, anchorX, anchorY));
+    }
+
+    public UIGraphicsComponent icon(String icon, int x, int y, int color)
+    {
+        return this.icon(icon, x, y, color, 0, 0);
+    }
+
+    public UIGraphicsComponent icon(String icon, int x, int y, int color, float anchorX, float anchorY)
+    {
+        return this.addGraphic(new IconGraphic(icon, x, y, color, anchorX, anchorY));
     }
 
     private UIGraphicsComponent addGraphic(Graphic graphic)

@@ -28,6 +28,14 @@ public abstract class Graphic implements INBTSerializable<NBTTagCompound>
         {
             graphic = new ImageGraphic();
         }
+        else if (type.equals("text"))
+        {
+            graphic = new TextGraphic();
+        }
+        else if (type.equals("icon"))
+        {
+            graphic = new IconGraphic();
+        }
 
         if (graphic != null)
         {
@@ -49,6 +57,14 @@ public abstract class Graphic implements INBTSerializable<NBTTagCompound>
         else if (graphic instanceof ImageGraphic)
         {
             type = "image";
+        }
+        else if (graphic instanceof TextGraphic)
+        {
+            type = "text";
+        }
+        else if (graphic instanceof IconGraphic)
+        {
+            type = "icon";
         }
 
         tag.setString("Type", type);

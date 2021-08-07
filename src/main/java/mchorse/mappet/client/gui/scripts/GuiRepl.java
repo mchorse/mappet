@@ -62,7 +62,7 @@ public class GuiRepl extends GuiElement
     @Override
     public boolean keyTyped(GuiContext context)
     {
-        if (context.keyCode == Keyboard.KEY_RETURN && !GuiScreen.isShiftKeyDown())
+        if (this.repl.isFocused() && context.keyCode == Keyboard.KEY_RETURN && !GuiScreen.isShiftKeyDown())
         {
             String text = this.repl.getText();
 
