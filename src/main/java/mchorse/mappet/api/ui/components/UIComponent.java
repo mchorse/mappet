@@ -27,6 +27,9 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
 
     public String id = "";
     public String tooltip = "";
+    public boolean visible = true;
+    public boolean enabled = true;
+
     public int tooltipDirection;
     public int marginTop;
     public int marginBotom;
@@ -64,6 +67,23 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         return this;
     }
 
+    public UIComponent visible(boolean visible)
+    {
+        this.change("Visible");
+
+        this.visible = visible;
+
+        return this;
+    }
+
+    public UIComponent enabled(boolean enabled)
+    {
+        this.change("Enabled");
+
+        this.enabled = enabled;
+
+        return this;
+    }
 
     public UIComponent margin(int margin)
     {
@@ -315,6 +335,9 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
             applyTooltip(element);
         }
 
+        element.setVisible(this.visible);
+        element.setEnabled(this.enabled);
+
         element.marginTop(this.marginTop);
         element.marginBottom(this.marginBotom);
         element.marginLeft(this.marginLeft);
@@ -385,16 +408,24 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
     @SideOnly(Side.CLIENT)
     protected void applyProperty(UIContext context, String key, GuiElement element)
     {
-        if (key.equals("Margins"))
+        if (key.equals("Tooltip"))
+        {
+            this.applyTooltip(element);
+        }
+        else if (key.equals("Visible"))
+        {
+            element.setVisible(this.visible);
+        }
+        else if (key.equals("Enabled"))
+        {
+            element.setEnabled(this.enabled);
+        }
+        else if (key.equals("Margins"))
         {
             element.marginTop(this.marginTop);
             element.marginBottom(this.marginBotom);
             element.marginLeft(this.marginLeft);
             element.marginRight(this.marginRight);
-        }
-        else if (key.equals("Tooltip"))
-        {
-            this.applyTooltip(element);
         }
         else if (key.equals("X"))
         {
@@ -435,13 +466,6 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
 
     public void serializeNBT(NBTTagCompound tag)
     {
-        NBTTagList margins = new NBTTagList();
-
-        margins.appendTag(new NBTTagInt(this.marginTop));
-        margins.appendTag(new NBTTagInt(this.marginBotom));
-        margins.appendTag(new NBTTagInt(this.marginLeft));
-        margins.appendTag(new NBTTagInt(this.marginRight));
-
         tag.setString("Id", this.id);
 
         NBTTagCompound tooltip = new NBTTagCompound();
@@ -450,6 +474,17 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         tooltip.setInteger("Direction", this.tooltipDirection);
 
         tag.setTag("Tooltip", tooltip);
+
+        tag.setBoolean("Visible", this.visible);
+        tag.setBoolean("Enabled", this.enabled);
+
+        NBTTagList margins = new NBTTagList();
+
+        margins.appendTag(new NBTTagInt(this.marginTop));
+        margins.appendTag(new NBTTagInt(this.marginBotom));
+        margins.appendTag(new NBTTagInt(this.marginLeft));
+        margins.appendTag(new NBTTagInt(this.marginRight));
+
         tag.setTag("Margin", margins);
         tag.setTag("X", this.x.serializeNBT());
         tag.setTag("Y", this.y.serializeNBT());
@@ -461,19 +496,6 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
     @Override
     public void deserializeNBT(NBTTagCompound tag)
     {
-        if (tag.hasKey("Margins"))
-        {
-            NBTTagList margins = tag.getTagList("Margins", Constants.NBT.TAG_INT);
-
-            if (margins.tagCount() >= 4)
-            {
-                this.marginTop = margins.getIntAt(0);
-                this.marginBotom = margins.getIntAt(1);
-                this.marginLeft = margins.getIntAt(2);
-                this.marginRight = margins.getIntAt(3);
-            }
-        }
-
         if (tag.hasKey("Id"))
         {
             this.id = tag.getString("Id");
@@ -485,6 +507,29 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
 
             this.tooltip = tooltip.getString("Label");
             this.tooltipDirection = tooltip.getInteger("Direction");
+        }
+
+        if (tag.hasKey("Visible"))
+        {
+            this.visible = tag.getBoolean("Visible");
+        }
+
+        if (tag.hasKey("Enabled"))
+        {
+            this.enabled = tag.getBoolean("Enabled");
+        }
+
+        if (tag.hasKey("Margins"))
+        {
+            NBTTagList margins = tag.getTagList("Margins", Constants.NBT.TAG_INT);
+
+            if (margins.tagCount() >= 4)
+            {
+                this.marginTop = margins.getIntAt(0);
+                this.marginBotom = margins.getIntAt(1);
+                this.marginLeft = margins.getIntAt(2);
+                this.marginRight = margins.getIntAt(3);
+            }
         }
 
         if (tag.hasKey("X")) this.x.deserializeNBT(tag.getCompoundTag("X"));

@@ -22,6 +22,14 @@ public class UIGraphicsComponent extends UIComponent
 {
     public List<Graphic> graphics = new ArrayList<Graphic>();
 
+    public UIGraphicsComponent removeAll()
+    {
+        this.change("Graphics");
+        this.graphics.clear();
+
+        return this;
+    }
+
     public UIGraphicsComponent rect(int x, int y, int w, int h, int color)
     {
         return this.addGraphic(new RectGraphic(x, y, w, h, color));
@@ -55,7 +63,6 @@ public class UIGraphicsComponent extends UIComponent
     private UIGraphicsComponent addGraphic(Graphic graphic)
     {
         this.change("Graphics");
-
         this.graphics.add(graphic);
 
         return this;

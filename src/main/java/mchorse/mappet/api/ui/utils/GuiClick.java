@@ -5,6 +5,8 @@ import mchorse.mappet.api.ui.components.UIComponent;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.NBTTagFloat;
+import net.minecraft.nbt.NBTTagList;
 
 public class GuiClick extends GuiElement
 {
@@ -29,10 +31,14 @@ public class GuiClick extends GuiElement
 
         if (this.area.isInside(context) && !this.component.id.isEmpty())
         {
-            this.context.data.setInteger(this.component.id + ".x", context.mouseX - this.area.x);
-            this.context.data.setInteger(this.component.id + ".y", context.mouseY - this.area.y);
-            this.context.data.setFloat(this.component.id + ".fx", (context.mouseX - this.area.x) / (float) this.area.w);
-            this.context.data.setFloat(this.component.id + ".fy", (context.mouseY - this.area.y) / (float) this.area.h);
+            NBTTagList list = new NBTTagList();
+
+            list.appendTag(new NBTTagFloat(context.mouseX - this.area.x));
+            list.appendTag(new NBTTagFloat(context.mouseY - this.area.y));
+            list.appendTag(new NBTTagFloat((context.mouseX - this.area.x) / (float) this.area.w));
+            list.appendTag(new NBTTagFloat((context.mouseY - this.area.y) / (float) this.area.h));
+
+            this.context.data.setTag(this.component.id, list);
             this.context.dirty(this.component.id, this.component.updateDelay);
 
             return true;
