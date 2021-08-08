@@ -1,8 +1,8 @@
 package mchorse.mappet.api.ui.components;
 
+import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.ui.UIContext;
 import mchorse.mappet.api.ui.utils.DiscardMethod;
-import mchorse.mappet.client.gui.utils.text.GuiText;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.utils.keys.IKey;
@@ -11,10 +11,51 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+/**
+ * Toggle UI component.
+ *
+ * <p>This component allows users to input boolean value (yes/no, true/false,
+ * <code>1</code>/<code>0</code>). The value that gets written to UI context's data
+ * (if ID is present) is boolean.</p>
+ *
+ * <p>This component can be created using {@link IMappetUIBuilder#toggle(String)} method.</p>
+ *
+ * <pre>{@code
+ *    function main(c)
+ *    {
+ *        var ui = mappet.createUI(c, "handler").background();
+ *        var trackpad = ui.toggle("Show", false).id("toggle");
+ *        var label = ui.label("You can see this label").id("label");
+ *
+ *        trackpad.rxy(0.5, 0.5).wh(160, 20).anchor(0.5);
+ *        label.rx(0.5).ry(0.5, 25).wh(160, 20).anchor(0.5).labelAnchor(0.5);
+ *        c.getSubject().openUI(ui);
+ *    }
+ *
+ *    function handler(c)
+ *    {
+ *        var uiContext = c.getSubject().getUIContext();
+ *        var data = uiContext.getData();
+ *
+ *        if (uiContext.getLast() === "toggle")
+ *        {
+ *            uiContext.get("label").visible(uiContext.getData().getBoolean("toggle"));
+ *        }
+ *    }
+ * }</pre>
+ */
 public class UIToggleComponent extends UILabelBaseComponent
 {
     public boolean state;
 
+    /**
+     * Change component's toggled state.
+     *
+     * <pre>{@code
+     *    // Assuming that uiContext is a IMappetUIContext
+     *    uiContext.get("toggle").state(true);
+     * }</pre>
+     */
     public UIToggleComponent state(boolean state)
     {
         this.change("State");

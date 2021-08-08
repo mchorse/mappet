@@ -20,6 +20,10 @@ import java.util.function.Consumer;
  * arrow buttons on the side to increment and decrement the value, and
  * type in value manually.</p>
  *
+ * <p>The value that gets written to UI context's data (if ID is present) is
+ * the number displayed in the field, if integer option is enabled, then an
+ * integer will be written, or double if it's disabled.</p>
+ *
  * <p>This component can be created using {@link IMappetUIBuilder#trackpad()} method.</p>
  *
  * <pre>{@code
@@ -39,6 +43,8 @@ import java.util.function.Consumer;
  *
  *        if (uiContext.getLast() === "number")
  *        {
+ *            // If integer wasn't enabled, you would use:
+ *            // data.getDouble("number")
  *            if (data.getInt("number") === 19)
  *            {
  *                c.getSubject().send("21");
