@@ -14,6 +14,7 @@ import mchorse.mappet.api.ui.UIContext;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.network.Dispatcher;
+import mchorse.mappet.network.common.ui.PacketCloseUI;
 import mchorse.mappet.network.common.ui.PacketUI;
 import mchorse.metamorph.api.MorphAPI;
 import mchorse.metamorph.api.morphs.AbstractMorph;
@@ -161,6 +162,12 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
         }
 
         return false;
+    }
+
+    @Override
+    public void closeUI()
+    {
+        Dispatcher.sendTo(new PacketCloseUI(), this.getMinecraftPlayer());
     }
 
     @Override

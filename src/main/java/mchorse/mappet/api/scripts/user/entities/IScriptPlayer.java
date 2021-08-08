@@ -188,6 +188,11 @@ public interface IScriptPlayer extends IScriptEntity
     public boolean openUI(IMappetUIBuilder builder, boolean defaultData);
 
     /**
+     * Close the user interface
+     */
+    public void closeUI();
+
+    /**
      * Get the UI context of currently opened user UI. See {@link MappetUIContext}
      * for code examples.
      */

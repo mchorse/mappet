@@ -45,7 +45,16 @@ public class GuiUserInterface extends GuiBase
     @Override
     protected void closeScreen()
     {
-        super.closeScreen();
+        if (this.context.ui.closable)
+        {
+            super.closeScreen();
+        }
+    }
+
+    @Override
+    public void onGuiClosed()
+    {
+        super.onGuiClosed();
 
         Dispatcher.sendToServer(new PacketUI());
     }

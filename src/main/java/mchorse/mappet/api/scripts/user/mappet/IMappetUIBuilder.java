@@ -30,6 +30,13 @@ public interface IMappetUIBuilder
 
     public IMappetUIBuilder background();
 
+    public default IMappetUIBuilder notClosable()
+    {
+        return this.closable(false);
+    }
+
+    public IMappetUIBuilder closable(boolean closable);
+
     public UIComponent create(String id);
 
     public UIGraphicsComponent graphics();

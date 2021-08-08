@@ -77,6 +77,17 @@ public class MappetUIBuilder implements IMappetUIBuilder
     }
 
     @Override
+    public IMappetUIBuilder closable(boolean closable)
+    {
+        if (this.ui != null)
+        {
+            this.ui.closable = closable;
+        }
+
+        return this;
+    }
+
+    @Override
     public UIComponent create(String id)
     {
         UIComponent component = CommonProxy.getUiComponents().create(id);

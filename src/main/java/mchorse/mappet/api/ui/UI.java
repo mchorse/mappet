@@ -8,6 +8,7 @@ public class UI extends AbstractData
 {
     public UIRootComponent root = new UIRootComponent();
     public boolean background;
+    public boolean closable = true;
 
     @Override
     public NBTTagCompound serializeNBT()
@@ -16,6 +17,7 @@ public class UI extends AbstractData
 
         tag.setTag("Root", this.root.serializeNBT());
         tag.setBoolean("Background", this.background);
+        tag.setBoolean("Closeable", this.closable);
 
         return tag;
     }
@@ -24,6 +26,15 @@ public class UI extends AbstractData
     public void deserializeNBT(NBTTagCompound tag)
     {
         this.root.deserializeNBT(tag.getCompoundTag("Root"));
-        this.background = tag.getBoolean("Background");
+
+        if (tag.hasKey("Background"))
+        {
+            this.background = tag.getBoolean("Background");
+        }
+
+        if (tag.hasKey("Closeable"))
+        {
+            this.closable = tag.getBoolean("Closeable");
+        }
     }
 }
