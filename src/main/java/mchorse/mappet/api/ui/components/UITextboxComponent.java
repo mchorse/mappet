@@ -18,6 +18,25 @@ public class UITextboxComponent extends UILabelBaseComponent
         return UIComponent.DELAY;
     }
 
+    public UITextboxComponent maxLength(int maxLength)
+    {
+        this.maxLength = maxLength;
+
+        return this;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected void applyProperty(UIContext context, String key, GuiElement element)
+    {
+        super.applyProperty(context, key, element);
+
+        if (key.equals("Label"))
+        {
+            ((GuiTextElement) element).setText(this.label);
+        }
+    }
+
     @Override
     @SideOnly(Side.CLIENT)
     public GuiElement create(Minecraft mc, UIContext context)
@@ -37,14 +56,13 @@ public class UITextboxComponent extends UILabelBaseComponent
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    protected void applyProperty(UIContext context, String key, GuiElement element)
+    public void populateData(NBTTagCompound tag)
     {
-        super.applyProperty(context, key, element);
+        super.populateData(tag);
 
-        if (key.equals("Label"))
+        if (!this.id.isEmpty())
         {
-            ((GuiTextElement) element).setText(this.label);
+            tag.setString(this.id, this.label);
         }
     }
 

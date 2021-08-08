@@ -29,22 +29,6 @@ public class UIIconButtonComponent extends UIComponent
 
     @Override
     @SideOnly(Side.CLIENT)
-    public GuiElement create(Minecraft mc, UIContext context)
-    {
-        GuiIconElement button = new GuiIconElement(mc, this.getIcon(), (b) ->
-        {
-            if (!this.id.isEmpty())
-            {
-                context.data.setInteger(this.id, context.data.getInteger(this.id) + 1);
-                context.dirty(this.id, this.updateDelay);
-            }
-        });
-
-        return this.apply(button, context);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
     protected boolean isDataReserved()
     {
         return true;
@@ -64,6 +48,22 @@ public class UIIconButtonComponent extends UIComponent
         }
     }
 
+    @Override
+    @SideOnly(Side.CLIENT)
+    public GuiElement create(Minecraft mc, UIContext context)
+    {
+        GuiIconElement button = new GuiIconElement(mc, this.getIcon(), (b) ->
+        {
+            if (!this.id.isEmpty())
+            {
+                this.populateData(context.data);
+                context.dirty(this.id, this.updateDelay);
+            }
+        });
+
+        return this.apply(button, context);
+    }
+
     @SideOnly(Side.CLIENT)
     private Icon getIcon()
     {
@@ -75,6 +75,17 @@ public class UIIconButtonComponent extends UIComponent
         }
 
         return icon;
+    }
+
+    @Override
+    public void populateData(NBTTagCompound tag)
+    {
+        super.populateData(tag);
+
+        if (!this.id.isEmpty())
+        {
+            tag.setInteger(this.id, tag.getInteger(this.id) + 1);
+        }
     }
 
     @Override

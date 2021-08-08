@@ -98,6 +98,40 @@ public class UIMorphComponent extends UIComponent
 
     @Override
     @SideOnly(Side.CLIENT)
+    protected void applyProperty(UIContext context, String key, GuiElement element)
+    {
+        super.applyProperty(context, key, element);
+
+        GuiMorphRenderer renderer = (GuiMorphRenderer) element;
+
+        if (key.equals("Morph"))
+        {
+            renderer.morph.set(MorphManager.INSTANCE.morphFromNBT(this.morph));
+        }
+        else if (key.equals("Editing"))
+        {
+            renderer.getChildren(GuiNestedEdit.class).get(0).setVisible(this.editing);
+        }
+        else if (key.equals("Position") && this.pos != null)
+        {
+            renderer.setPosition(this.pos.x, this.pos.y, this.pos.z);
+        }
+        else if (key.equals("Rotation") && this.rot != null)
+        {
+            renderer.setRotation(this.rot.y, this.rot.x);
+        }
+        else if (key.equals("Scale"))
+        {
+            renderer.scale = this.scale;
+        }
+        else if (key.equals("Fov"))
+        {
+            renderer.fov = this.fov;
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
     public GuiElement create(Minecraft mc, UIContext context)
     {
         GuiMorphRenderer renderer = new GuiMorphRenderer(mc);
@@ -166,36 +200,13 @@ public class UIMorphComponent extends UIComponent
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    protected void applyProperty(UIContext context, String key, GuiElement element)
+    public void populateData(NBTTagCompound tag)
     {
-        super.applyProperty(context, key, element);
+        super.populateData(tag);
 
-        GuiMorphRenderer renderer = (GuiMorphRenderer) element;
-
-        if (key.equals("Morph"))
+        if (!this.id.isEmpty())
         {
-            renderer.morph.set(MorphManager.INSTANCE.morphFromNBT(this.morph));
-        }
-        else if (key.equals("Editing"))
-        {
-            renderer.getChildren(GuiNestedEdit.class).get(0).setVisible(this.editing);
-        }
-        else if (key.equals("Position") && this.pos != null)
-        {
-            renderer.setPosition(this.pos.x, this.pos.y, this.pos.z);
-        }
-        else if (key.equals("Rotation") && this.rot != null)
-        {
-            renderer.setRotation(this.rot.y, this.rot.x);
-        }
-        else if (key.equals("Scale"))
-        {
-            renderer.scale = this.scale;
-        }
-        else if (key.equals("Fov"))
-        {
-            renderer.fov = this.fov;
+            tag.setTag(this.id, this.morph.copy());
         }
     }
 

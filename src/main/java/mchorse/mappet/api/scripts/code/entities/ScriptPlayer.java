@@ -131,7 +131,7 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     }
 
     @Override
-    public boolean openUI(IMappetUIBuilder in)
+    public boolean openUI(IMappetUIBuilder in, boolean defaultData)
     {
         if (!(in instanceof MappetUIBuilder))
         {
@@ -149,6 +149,11 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
 
             character.setUIContext(context);
             Dispatcher.sendTo(new PacketUI(ui), this.getMinecraftPlayer());
+
+            if (defaultData)
+            {
+                context.populateDefaultData();
+            }
 
             context.clearChanges();
 

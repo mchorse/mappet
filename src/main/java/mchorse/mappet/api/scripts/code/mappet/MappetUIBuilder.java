@@ -145,12 +145,12 @@ public class MappetUIBuilder implements IMappetUIBuilder
     }
 
     @Override
-    public UITextboxComponent textbox(String text)
+    public UITextboxComponent textbox(String text, int maxLength)
     {
         UITextboxComponent component = new UITextboxComponent();
 
         this.current.getChildComponents().add(component);
-        component.label(text);
+        component.maxLength(maxLength).label(text);
 
         return component;
     }

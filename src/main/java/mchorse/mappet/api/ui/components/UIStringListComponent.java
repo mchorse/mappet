@@ -51,6 +51,25 @@ public class UIStringListComponent extends UIComponent
 
     @Override
     @SideOnly(Side.CLIENT)
+    protected void applyProperty(UIContext context, String key, GuiElement element)
+    {
+        super.applyProperty(context, key, element);
+
+        GuiStringListElement list = (GuiStringListElement) element;
+
+        if (key.equals("Values"))
+        {
+            list.clear();
+            list.add(this.values);
+        }
+        else if (key.equals("Selected") && this.selected != null)
+        {
+            list.setIndex(this.selected);
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
     public GuiElement create(Minecraft mc, UIContext context)
     {
         GuiStringListElement element = new GuiStringListElement(mc, (v) ->
@@ -73,21 +92,20 @@ public class UIStringListComponent extends UIComponent
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    protected void applyProperty(UIContext context, String key, GuiElement element)
+    public void populateData(NBTTagCompound tag)
     {
-        super.applyProperty(context, key, element);
+        super.populateData(tag);
 
-        GuiStringListElement list = (GuiStringListElement) element;
+        if (!this.id.isEmpty())
+        {
+            String value = "";
 
-        if (key.equals("Values"))
-        {
-            list.clear();
-            list.add(this.values);
-        }
-        else if (key.equals("Selected") && this.selected != null)
-        {
-            list.setIndex(this.selected);
+            if (this.selected != null && this.selected >= 0 && this.selected < this.values.size())
+            {
+                value = this.values.get(this.selected);
+            }
+
+            tag.setString(this.id, value);
         }
     }
 

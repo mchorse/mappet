@@ -25,6 +25,24 @@ public class UIToggleComponent extends UILabelBaseComponent
 
     @Override
     @SideOnly(Side.CLIENT)
+    protected void applyProperty(UIContext context, String key, GuiElement element)
+    {
+        super.applyProperty(context, key, element);
+
+        GuiToggleElement toggle = (GuiToggleElement) element;
+
+        if (key.equals("Label"))
+        {
+            toggle.label = IKey.str(this.getLabel());
+        }
+        else if (key.equals("State"))
+        {
+            toggle.toggled(this.state);
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
     public GuiElement create(Minecraft mc, UIContext context)
     {
         GuiToggleElement toggle = new GuiToggleElement(mc, IKey.str(this.getLabel()), (b) ->
@@ -42,20 +60,13 @@ public class UIToggleComponent extends UILabelBaseComponent
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    protected void applyProperty(UIContext context, String key, GuiElement element)
+    public void populateData(NBTTagCompound tag)
     {
-        super.applyProperty(context, key, element);
+        super.populateData(tag);
 
-        GuiToggleElement toggle = (GuiToggleElement) element;
-
-        if (key.equals("Label"))
+        if (!this.id.isEmpty())
         {
-            toggle.label = IKey.str(this.getLabel());
-        }
-        else if (key.equals("State"))
-        {
-            toggle.toggled(this.state);
+            tag.setBoolean(this.id, this.state);
         }
     }
 

@@ -75,6 +75,32 @@ public class UITrackpadComponent extends UIComponent
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    protected void applyProperty(UIContext context, String key, GuiElement element)
+    {
+        super.applyProperty(context, key, element);
+
+        GuiTrackpadElement trackpad = (GuiTrackpadElement) element;
+
+        if (key.equals("Value") && this.value != null)
+        {
+            trackpad.setValue(this.value);
+        }
+        if (key.equals("Min") && this.min != null)
+        {
+            trackpad.min = this.min;
+        }
+        if (key.equals("Max") && this.max != null)
+        {
+            trackpad.max = this.max;
+        }
+        if (key.equals("Integer"))
+        {
+            trackpad.integer = this.integer;
+        }
+    }
+
+    @Override
     public GuiElement create(Minecraft mc, UIContext context)
     {
         GuiTrackpadElement element = new GuiTrackpadElement(mc, (Consumer<Double>) null);
@@ -106,28 +132,20 @@ public class UITrackpadComponent extends UIComponent
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    protected void applyProperty(UIContext context, String key, GuiElement element)
+    public void populateData(NBTTagCompound tag)
     {
-        super.applyProperty(context, key, element);
+        super.populateData(tag);
 
-        GuiTrackpadElement trackpad = (GuiTrackpadElement) element;
-
-        if (key.equals("Value") && this.value != null)
+        if (!this.id.isEmpty())
         {
-            trackpad.setValue(this.value);
-        }
-        if (key.equals("Min") && this.min != null)
-        {
-            trackpad.min = this.min;
-        }
-        if (key.equals("Max") && this.max != null)
-        {
-            trackpad.max = this.max;
-        }
-        if (key.equals("Integer"))
-        {
-            trackpad.integer = this.integer;
+            if (this.integer)
+            {
+                tag.setInteger(this.id, this.value == null ? 0 : this.value.intValue());
+            }
+            else
+            {
+                tag.setDouble(this.id, this.value == null ? 0 : this.value);
+            }
         }
     }
 

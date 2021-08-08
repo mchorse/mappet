@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts.user.entities;
 
+import mchorse.mappet.api.scripts.code.mappet.MappetUIContext;
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
@@ -127,14 +128,68 @@ public interface IScriptPlayer extends IScriptEntity
     /**
      * Open UI for this player.
      *
-     * TODO: example
+     * <pre>{@code
+     *    function main(c)
+     *    {
+     *        var ui = mappet.createUI().background();
+     *        var button = ui.button("Push me").id("button");
+     *
+     *        // Place a button in the middle of the screen
+     *        button.rxy(0.5, 0.5).wh(80, 20).anchor(0.5);
+     *        c.getSubject().openUI(ui);
+     *    }
+     * }</pre>
      */
-    public boolean openUI(IMappetUIBuilder builder);
+    public default void openUI(IMappetUIBuilder builder)
+    {
+        this.openUI(builder, false);
+    }
 
     /**
-     * Get the UI context of currently opened user UI.
+     * Open UI for this player with default data populated.
      *
-     * TODO: example
+     * <p>By default, default data population is disabled, meaning that
+     * once the UI was opened, UI context's data will be empty. By enabling
+     * default data population, UI context's data gets filled with all
+     * component's default data.</p>
+     *
+     * <p>This is useful when you need to data to be present in the handler
+     * at start, so you wouldn't need to do extra checks.</p>
+     *
+     * <pre>{@code
+     *    function main(c)
+     *    {
+     *        var ui = mappet.createUI(c, "handler").background();
+     *        var button = ui.button("Push me").id("button");
+     *        var name = ui.textbox("John").id("name");
+     *        var lastname = ui.textbox("Smith").id("lastname");
+     *
+     *        // Place a button in the middle of the screen
+     *        button.rxy(0.5, 0.5).wh(80, 20).anchor(0.5);
+     *        name.rx(0.5).ry(0.5, 25).wh(80, 20).anchor(0.5);
+     *        lastname.rx(0.5).ry(0.5, 50).wh(80, 20).anchor(0.5);
+     *
+     *        // Open the UI with default data populated
+     *        c.getSubject().openUI(ui, true);
+     *    }
+     *
+     *    function handler(c)
+     *    {
+     *        var uiContext = c.getSubject().getUIContext();
+     *        var data = uiContext.getData();
+     *
+     *        // If false was passed into openUI as second argument
+     *        // Then name or last name wouldn't be immediately populated
+     *        // as John Smith
+     *        c.send("Your name is: " + data.getString("name") + " " + data.getString("lastname"));
+     *    }
+     * }</pre>
+     */
+    public boolean openUI(IMappetUIBuilder builder, boolean defaultData);
+
+    /**
+     * Get the UI context of currently opened user UI. See {@link MappetUIContext}
+     * for code examples.
      */
     public IMappetUIContext getUIContext();
 }

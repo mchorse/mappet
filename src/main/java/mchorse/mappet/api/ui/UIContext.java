@@ -2,6 +2,7 @@ package mchorse.mappet.api.ui;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.ui.components.UIComponent;
+import mchorse.mappet.api.ui.utils.UIRootComponent;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.ui.PacketUIData;
@@ -135,6 +136,21 @@ public class UIContext
         }
 
         tag.setTag(component.id, partial);
+    }
+
+    public void populateDefaultData()
+    {
+        this.populateDefaultDataRecursive(this.ui.root);
+    }
+
+    private void populateDefaultDataRecursive(UIComponent component)
+    {
+        for (UIComponent child : component.getChildComponents())
+        {
+            child.populateData(this.data);
+
+            this.populateDefaultDataRecursive(child);
+        }
     }
 
     /* Getters */

@@ -502,6 +502,9 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
     @SideOnly(Side.CLIENT)
     public abstract GuiElement create(Minecraft mc, UIContext context);
 
+    public void populateData(NBTTagCompound tag)
+    {}
+
     public List<UIComponent> getChildComponents()
     {
         return Collections.emptyList();

@@ -36,6 +36,18 @@ public class UIStackComponent extends UIComponent
 
     @Override
     @SideOnly(Side.CLIENT)
+    protected void applyProperty(UIContext context, String key, GuiElement element)
+    {
+        super.applyProperty(context, key, element);
+
+        if (key.equals("Stack"))
+        {
+            ((GuiSlotElement) element).setStack(this.stack);
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
     public GuiElement create(Minecraft mc, UIContext context)
     {
         GuiSlotElement element = new GuiSlotElement(mc, 0, (stack) ->
@@ -53,14 +65,13 @@ public class UIStackComponent extends UIComponent
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    protected void applyProperty(UIContext context, String key, GuiElement element)
+    public void populateData(NBTTagCompound tag)
     {
-        super.applyProperty(context, key, element);
+        super.populateData(tag);
 
-        if (key.equals("Stack"))
+        if (!this.id.isEmpty())
         {
-            ((GuiSlotElement) element).setStack(this.stack);
+            tag.setTag(this.id, this.stack.serializeNBT());
         }
     }
 

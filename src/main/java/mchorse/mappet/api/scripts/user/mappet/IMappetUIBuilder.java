@@ -47,7 +47,12 @@ public interface IMappetUIBuilder
         return this.textbox("");
     }
 
-    public UITextboxComponent textbox(String text);
+    public default UITextboxComponent textbox(String text)
+    {
+        return this.textbox(text, 32);
+    }
+
+    public UITextboxComponent textbox(String text, int maxLength);
 
     public default UITextareaComponent textarea()
     {
