@@ -126,6 +126,8 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
 
         for (DocClass docClass : docs.classes)
         {
+            docClass.removeDisabledMethods();
+
             this.data.put(docClass.getName(), docClass);
         }
 

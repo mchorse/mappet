@@ -19,6 +19,7 @@ import mchorse.mappet.api.ui.components.UITextareaComponent;
 import mchorse.mappet.api.ui.components.UITextboxComponent;
 import mchorse.mappet.api.ui.components.UIToggleComponent;
 import mchorse.mappet.api.ui.components.UITrackpadComponent;
+import mchorse.mappet.api.ui.utils.LayoutType;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 
 import java.util.List;
@@ -267,7 +268,7 @@ public class MappetUIBuilder implements IMappetUIBuilder
     {
         UILayoutComponent layout = this.layout(margin, padding);
 
-        layout.layoutType = UILayoutComponent.LayoutType.COLUMN;
+        layout.layoutType = LayoutType.COLUMN;
 
         return new MappetUIBuilder(layout);
     }
@@ -277,7 +278,7 @@ public class MappetUIBuilder implements IMappetUIBuilder
     {
         UILayoutComponent layout = this.layout(margin, padding);
 
-        layout.layoutType = UILayoutComponent.LayoutType.ROW;
+        layout.layoutType = LayoutType.ROW;
 
         return new MappetUIBuilder(layout);
     }
@@ -287,7 +288,7 @@ public class MappetUIBuilder implements IMappetUIBuilder
     {
         UILayoutComponent layout = this.layout(margin, padding);
 
-        layout.layoutType = UILayoutComponent.LayoutType.GRID;
+        layout.layoutType = LayoutType.GRID;
 
         return new MappetUIBuilder(layout);
     }

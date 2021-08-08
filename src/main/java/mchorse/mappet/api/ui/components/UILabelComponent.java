@@ -38,6 +38,11 @@ public class UILabelComponent extends UILabelBaseComponent
         return this;
     }
 
+    public UILabelComponent labelAnchor(float anchor)
+    {
+        return this.labelAnchor(anchor, anchor);
+    }
+
     public UILabelComponent labelAnchor(float anchorX, float anchorY)
     {
         this.change("AnchorX", "AnchorY");

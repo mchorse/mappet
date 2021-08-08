@@ -1,6 +1,8 @@
 package mchorse.mappet.api.ui.components;
 
+import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.ui.UIContext;
+import mchorse.mappet.api.ui.utils.DiscardMethod;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import net.minecraft.client.Minecraft;
@@ -10,6 +12,41 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.function.Consumer;
 
+/**
+ * Trackpad UI component.
+ *
+ * <p>This component allows users to input numerical values (integer and double),
+ * with optionally a limit range between min and max. Users can also use
+ * arrow buttons on the side to increment and decrement the value, and
+ * type in value manually.</p>
+ *
+ * <p>This component can be created using {@link IMappetUIBuilder#trackpad()} method.</p>
+ *
+ * <pre>{@code
+ *    function main(c)
+ *    {
+ *        var ui = mappet.createUI(c, "handler").background();
+ *        var trackpad = ui.trackpad(5).id("number").limit(0, 25, true);
+ *
+ *        trackpad.rxy(0.5, 0.5).wh(160, 20).anchor(0.5);
+ *        c.getSubject().openUI(ui);
+ *    }
+ *
+ *    function handler(c)
+ *    {
+ *        var uiContext = c.getSubject().getUIContext();
+ *        var data = uiContext.getData();
+ *
+ *        if (uiContext.getLast() === "number")
+ *        {
+ *            if (data.getInt("number") === 19)
+ *            {
+ *                c.getSubject().send("21");
+ *            }
+ *        }
+ *    }
+ * }</pre>
+ */
 public class UITrackpadComponent extends UIComponent
 {
     public Double value;
@@ -17,6 +54,9 @@ public class UITrackpadComponent extends UIComponent
     public Double max;
     public boolean integer;
 
+    /**
+     * Set the value that of trackpad component.
+     */
     public UITrackpadComponent value(double value)
     {
         this.change("Value");
@@ -26,6 +66,9 @@ public class UITrackpadComponent extends UIComponent
         return this;
     }
 
+    /**
+     * Set the minimum that this trackpad component can let the user pick.
+     */
     public UITrackpadComponent min(double min)
     {
         this.change("Min");
@@ -35,6 +78,9 @@ public class UITrackpadComponent extends UIComponent
         return this;
     }
 
+    /**
+     * Set the maximum that this trackpad component can let the user pick.
+     */
     public UITrackpadComponent max(double max)
     {
         this.change("Max");
@@ -44,11 +90,19 @@ public class UITrackpadComponent extends UIComponent
         return this;
     }
 
+    /**
+     * Set this trackpad component to accept only whole numbers.
+     */
     public UITrackpadComponent integer()
     {
         return this.integer(true);
     }
 
+    /**
+     * Toggle integer option, when passed <code>true</code> then this trackpad
+     * component will accept only whole numbers, and when passed <code>false</code>,
+     * then both whole and floating point numbers can be accepted by this trackpad.
+     */
     public UITrackpadComponent integer(boolean integer)
     {
         this.change("Integer");
@@ -58,23 +112,33 @@ public class UITrackpadComponent extends UIComponent
         return this;
     }
 
+    /**
+     * Convenience method that allows to set minimum and maximum, i.e. value range,
+     * that this trackpad field can accept.
+     */
     public UITrackpadComponent limit(double min, double max)
     {
         return this.min(min).max(max);
     }
 
+    /**
+     * Convenience method that allows to set minimum, maximum, and integer options
+     * that this trackpad field can accept.
+     */
     public UITrackpadComponent limit(double min, double max, boolean integer)
     {
         return this.min(min).max(max).integer(integer);
     }
 
     @Override
+    @DiscardMethod
     protected int getDefaultUpdateDelay()
     {
         return UIComponent.DELAY;
     }
 
     @Override
+    @DiscardMethod
     @SideOnly(Side.CLIENT)
     protected void applyProperty(UIContext context, String key, GuiElement element)
     {
@@ -101,6 +165,8 @@ public class UITrackpadComponent extends UIComponent
     }
 
     @Override
+    @DiscardMethod
+    @SideOnly(Side.CLIENT)
     public GuiElement create(Minecraft mc, UIContext context)
     {
         GuiTrackpadElement element = new GuiTrackpadElement(mc, (Consumer<Double>) null);
@@ -132,6 +198,7 @@ public class UITrackpadComponent extends UIComponent
     }
 
     @Override
+    @DiscardMethod
     public void populateData(NBTTagCompound tag)
     {
         super.populateData(tag);
@@ -150,6 +217,7 @@ public class UITrackpadComponent extends UIComponent
     }
 
     @Override
+    @DiscardMethod
     public void serializeNBT(NBTTagCompound tag)
     {
         super.serializeNBT(tag);
@@ -162,6 +230,7 @@ public class UITrackpadComponent extends UIComponent
     }
 
     @Override
+    @DiscardMethod
     public void deserializeNBT(NBTTagCompound tag)
     {
         super.deserializeNBT(tag);

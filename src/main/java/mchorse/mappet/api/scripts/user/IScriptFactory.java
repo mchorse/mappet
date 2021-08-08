@@ -357,7 +357,17 @@ public interface IScriptFactory
      * Create a UI. You can send it to the player by using
      * {@link IScriptPlayer#openUI(IMappetUIBuilder)} method.
      *
-     * TODO: example
+     * <pre>{@code
+     *    function main(c)
+     *    {
+     *        var ui = mappet.createUI().background();
+     *        var label = ui.label("Hello, world!").background(0x88000000);
+     *
+     *        label.rxy(0.5, 0.5).wh(80, 20).anchor(0.5).labelAnchor(0.5);
+     *
+     *        c.getSubject().openUI(ui);
+     *    }
+     * }</pre>
      */
     public default IMappetUIBuilder createUI()
     {
@@ -368,7 +378,34 @@ public interface IScriptFactory
      * Create a UI with a script handler. You can send it to the
      * player by using {@link IScriptPlayer#openUI(IMappetUIBuilder)} method.
      *
-     * TODO: example
+     *
+     *
+     * <pre>{@code
+     *    function main(c)
+     *    {
+     *        var ui = mappet.createUI(c, "handler").background();
+     *        var label = ui.label("Hello, world!").background(0x88000000);
+     *        var button = ui.button("Push me!").id("button");
+     *
+     *        label.rxy(0.5, 0.5).wh(80, 20).anchor(0.5).labelAnchor(0.5);
+     *        label.rx(0.5).y(0.5, 25).wh(80, 20).anchor(0.5);
+     *
+     *        c.getSubject().openUI(ui);
+     *    }
+     *
+     *    function handler(c)
+     *    {
+     *        var uiContext = c.getSubject().getUIContext();
+     *
+     *        if (uiContext.getLast() === "button")
+     *        {
+     *            // Button was pressed
+     *        }
+     *    }
+     * }</pre>
+     *
+     * @param event Script event (whose script ID will be used for UI's user input handler).
+     * @param function Given script's function that will be used as UI's user input handler.
      */
     public default IMappetUIBuilder createUI(IScriptEvent event, String function)
     {
@@ -379,7 +416,41 @@ public interface IScriptFactory
      * Create a UI with a script handler. You can send it to the
      * player by using {@link IScriptPlayer#openUI(IMappetUIBuilder)} method.
      *
-     * TODO: example
+     * <p>Script and function arguments allow to point to the function in some
+     * script, which it will be responsible for handling the user input from
+     * scripted UI.</p>
+     *
+     * <p>In the UI handler, you can access subject's UI context ({@link IMappetUIContext})
+     * which has all the necessary methods to handle user's input.</p>
+     *
+     * <pre>{@code
+     *    // ui.js
+     *    function main(c)
+     *    {
+     *        var ui = mappet.createUI("handler", "main").background();
+     *        var label = ui.label("Hello, world!").background(0x88000000);
+     *        var button = ui.button("Push me!").id("button");
+     *
+     *        label.rxy(0.5, 0.5).wh(80, 20).anchor(0.5).labelAnchor(0.5);
+     *        label.rx(0.5).y(0.5, 25).wh(80, 20).anchor(0.5);
+     *
+     *        c.getSubject().openUI(ui);
+     *    }
+     *
+     *    // handler.js
+     *    function main(c)
+     *    {
+     *        var uiContext = c.getSubject().getUIContext();
+     *
+     *        if (uiContext.getLast() === "button")
+     *        {
+     *            // Button was pressed
+     *        }
+     *    }
+     * }</pre>
+     *
+     * @param script The script which will be used as UI's user input handler.
+     * @param function Given script's function that will be used as UI's user input handler.
      */
     public IMappetUIBuilder createUI(String script, String function);
 

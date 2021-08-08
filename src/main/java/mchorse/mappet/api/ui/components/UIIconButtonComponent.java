@@ -1,6 +1,7 @@
 package mchorse.mappet.api.ui.components;
 
 import mchorse.mappet.api.ui.UIContext;
+import mchorse.mappet.api.ui.utils.DiscardMethod;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.utils.Icon;
@@ -28,6 +29,7 @@ public class UIIconButtonComponent extends UIComponent
     }
 
     @Override
+    @DiscardMethod
     @SideOnly(Side.CLIENT)
     protected boolean isDataReserved()
     {
@@ -35,6 +37,7 @@ public class UIIconButtonComponent extends UIComponent
     }
 
     @Override
+    @DiscardMethod
     @SideOnly(Side.CLIENT)
     protected void applyProperty(UIContext context, String key, GuiElement element)
     {
@@ -49,6 +52,7 @@ public class UIIconButtonComponent extends UIComponent
     }
 
     @Override
+    @DiscardMethod
     @SideOnly(Side.CLIENT)
     public GuiElement create(Minecraft mc, UIContext context)
     {
@@ -64,6 +68,7 @@ public class UIIconButtonComponent extends UIComponent
         return this.apply(button, context);
     }
 
+    @DiscardMethod
     @SideOnly(Side.CLIENT)
     private Icon getIcon()
     {
@@ -78,6 +83,7 @@ public class UIIconButtonComponent extends UIComponent
     }
 
     @Override
+    @DiscardMethod
     public void populateData(NBTTagCompound tag)
     {
         super.populateData(tag);
@@ -89,6 +95,7 @@ public class UIIconButtonComponent extends UIComponent
     }
 
     @Override
+    @DiscardMethod
     public void serializeNBT(NBTTagCompound tag)
     {
         super.serializeNBT(tag);
@@ -97,6 +104,7 @@ public class UIIconButtonComponent extends UIComponent
     }
 
     @Override
+    @DiscardMethod
     public void deserializeNBT(NBTTagCompound tag)
     {
         super.deserializeNBT(tag);

@@ -14,6 +14,7 @@ public class DocMethod extends DocEntry
 {
     public DocReturn returns;
     public List<DocParameter> arguments = new ArrayList<DocParameter>();
+    public List<String> annotations = new ArrayList<String>();
 
     @Override
     public String getName()

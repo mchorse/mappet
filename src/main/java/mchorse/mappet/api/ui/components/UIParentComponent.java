@@ -1,6 +1,7 @@
 package mchorse.mappet.api.ui.components;
 
 import mchorse.mappet.CommonProxy;
+import mchorse.mappet.api.ui.utils.DiscardMethod;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
@@ -13,12 +14,14 @@ public abstract class UIParentComponent extends UIComponent
     public List<UIComponent> children = new ArrayList<UIComponent>();
 
     @Override
+    @DiscardMethod
     public List<UIComponent> getChildComponents()
     {
         return this.children;
     }
 
     @Override
+    @DiscardMethod
     public void serializeNBT(NBTTagCompound tag)
     {
         super.serializeNBT(tag);
@@ -37,6 +40,7 @@ public abstract class UIParentComponent extends UIComponent
     }
 
     @Override
+    @DiscardMethod
     public void deserializeNBT(NBTTagCompound tag)
     {
         super.deserializeNBT(tag);

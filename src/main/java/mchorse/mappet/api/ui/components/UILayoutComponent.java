@@ -1,6 +1,8 @@
 package mchorse.mappet.api.ui.components;
 
 import mchorse.mappet.api.ui.UIContext;
+import mchorse.mappet.api.ui.utils.DiscardMethod;
+import mchorse.mappet.api.ui.utils.LayoutType;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.utils.ScrollDirection;
@@ -73,6 +75,7 @@ public class UILayoutComponent extends UIParentComponent
     }
 
     @Override
+    @DiscardMethod
     @SideOnly(Side.CLIENT)
     public GuiElement create(Minecraft mc, UIContext context)
     {
@@ -114,6 +117,7 @@ public class UILayoutComponent extends UIParentComponent
         return this.apply(element, context);
     }
 
+    @DiscardMethod
     @SideOnly(Side.CLIENT)
     private void applyLayout(GuiElement element, LayoutType type)
     {
@@ -168,6 +172,7 @@ public class UILayoutComponent extends UIParentComponent
     }
 
     @Override
+    @DiscardMethod
     @SideOnly(Side.CLIENT)
     protected void applyProperty(UIContext context, String key, GuiElement element)
     {
@@ -180,6 +185,7 @@ public class UILayoutComponent extends UIParentComponent
     }
 
     @Override
+    @DiscardMethod
     public void serializeNBT(NBTTagCompound tag)
     {
         super.serializeNBT(tag);
@@ -213,6 +219,7 @@ public class UILayoutComponent extends UIParentComponent
     }
 
     @Override
+    @DiscardMethod
     public void deserializeNBT(NBTTagCompound tag)
     {
         super.deserializeNBT(tag);
@@ -235,10 +242,5 @@ public class UILayoutComponent extends UIParentComponent
         if (tag.hasKey("Padding")) this.padding = tag.getInteger("Padding");
         if (tag.hasKey("Width")) this.width = tag.getInteger("Width");
         if (tag.hasKey("Items")) this.items = tag.getInteger("Items");
-    }
-
-    public static enum LayoutType
-    {
-        COLUMN, ROW, GRID
     }
 }

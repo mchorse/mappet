@@ -1,6 +1,7 @@
 package mchorse.mappet.api.ui.components;
 
 import mchorse.mappet.api.ui.UIContext;
+import mchorse.mappet.api.ui.utils.DiscardMethod;
 import mchorse.mappet.client.gui.utils.text.GuiMultiTextElement;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import net.minecraft.client.Minecraft;
@@ -11,12 +12,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class UITextareaComponent extends UILabelBaseComponent
 {
     @Override
+    @DiscardMethod
     protected int getDefaultUpdateDelay()
     {
         return UIComponent.DELAY;
     }
 
     @Override
+    @DiscardMethod
     @SideOnly(Side.CLIENT)
     protected void applyProperty(UIContext context, String key, GuiElement element)
     {
@@ -29,6 +32,7 @@ public class UITextareaComponent extends UILabelBaseComponent
     }
 
     @Override
+    @DiscardMethod
     @SideOnly(Side.CLIENT)
     public GuiElement create(Minecraft mc, UIContext context)
     {
@@ -48,6 +52,7 @@ public class UITextareaComponent extends UILabelBaseComponent
     }
 
     @Override
+    @DiscardMethod
     public void populateData(NBTTagCompound tag)
     {
         super.populateData(tag);

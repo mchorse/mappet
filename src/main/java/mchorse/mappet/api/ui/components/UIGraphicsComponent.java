@@ -1,6 +1,7 @@
 package mchorse.mappet.api.ui.components;
 
 import mchorse.mappet.api.ui.UIContext;
+import mchorse.mappet.api.ui.utils.DiscardMethod;
 import mchorse.mappet.client.gui.utils.GuiGraphics;
 import mchorse.mappet.client.gui.utils.graphics.GradientGraphic;
 import mchorse.mappet.client.gui.utils.graphics.Graphic;
@@ -82,6 +83,7 @@ public class UIGraphicsComponent extends UIComponent
         return this.addGraphic(new IconGraphic(icon, x, y, color, anchorX, anchorY));
     }
 
+    @DiscardMethod
     private UIGraphicsComponent addGraphic(Graphic graphic)
     {
         this.change("Graphics");
@@ -91,6 +93,7 @@ public class UIGraphicsComponent extends UIComponent
     }
 
     @Override
+    @DiscardMethod
     @SideOnly(Side.CLIENT)
     public GuiElement create(Minecraft mc, UIContext context)
     {
@@ -102,6 +105,7 @@ public class UIGraphicsComponent extends UIComponent
     }
 
     @Override
+    @DiscardMethod
     @SideOnly(Side.CLIENT)
     protected void applyProperty(UIContext context, String key, GuiElement element)
     {
@@ -117,6 +121,7 @@ public class UIGraphicsComponent extends UIComponent
     }
 
     @Override
+    @DiscardMethod
     public void serializeNBT(NBTTagCompound tag)
     {
         super.serializeNBT(tag);
@@ -132,6 +137,7 @@ public class UIGraphicsComponent extends UIComponent
     }
 
     @Override
+    @DiscardMethod
     public void deserializeNBT(NBTTagCompound tag)
     {
         super.deserializeNBT(tag);

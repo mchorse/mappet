@@ -1,6 +1,7 @@
 package mchorse.mappet.api.ui.components;
 
 import mchorse.mappet.api.ui.UIContext;
+import mchorse.mappet.api.ui.utils.DiscardMethod;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.utils.keys.IKey;
@@ -15,6 +16,7 @@ public class UIButtonComponent extends UILabelBaseComponent
     {}
 
     @Override
+    @DiscardMethod
     @SideOnly(Side.CLIENT)
     protected boolean isDataReserved()
     {
@@ -22,6 +24,7 @@ public class UIButtonComponent extends UILabelBaseComponent
     }
 
     @Override
+    @DiscardMethod
     @SideOnly(Side.CLIENT)
     protected void applyProperty(UIContext context, String key, GuiElement element)
     {
@@ -36,6 +39,7 @@ public class UIButtonComponent extends UILabelBaseComponent
     }
 
     @Override
+    @DiscardMethod
     @SideOnly(Side.CLIENT)
     public GuiElement create(Minecraft mc, UIContext context)
     {
@@ -52,6 +56,7 @@ public class UIButtonComponent extends UILabelBaseComponent
     }
 
     @Override
+    @DiscardMethod
     public void populateData(NBTTagCompound tag)
     {
         super.populateData(tag);

@@ -2,6 +2,7 @@ package mchorse.mappet.api.ui.components;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.ui.UIContext;
+import mchorse.mappet.api.ui.utils.DiscardMethod;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.utils.GuiMorphRenderer;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
@@ -91,12 +92,14 @@ public class UIMorphComponent extends UIComponent
     }
 
     @Override
+    @DiscardMethod
     protected int getDefaultUpdateDelay()
     {
         return UIComponent.DELAY;
     }
 
     @Override
+    @DiscardMethod
     @SideOnly(Side.CLIENT)
     protected void applyProperty(UIContext context, String key, GuiElement element)
     {
@@ -131,6 +134,7 @@ public class UIMorphComponent extends UIComponent
     }
 
     @Override
+    @DiscardMethod
     @SideOnly(Side.CLIENT)
     public GuiElement create(Minecraft mc, UIContext context)
     {
@@ -200,6 +204,7 @@ public class UIMorphComponent extends UIComponent
     }
 
     @Override
+    @DiscardMethod
     public void populateData(NBTTagCompound tag)
     {
         super.populateData(tag);
@@ -211,6 +216,7 @@ public class UIMorphComponent extends UIComponent
     }
 
     @Override
+    @DiscardMethod
     public void serializeNBT(NBTTagCompound tag)
     {
         super.serializeNBT(tag);
@@ -244,6 +250,7 @@ public class UIMorphComponent extends UIComponent
     }
 
     @Override
+    @DiscardMethod
     public void deserializeNBT(NBTTagCompound tag)
     {
         super.deserializeNBT(tag);

@@ -1,6 +1,7 @@
 package mchorse.mappet.api.ui.components;
 
 import mchorse.mappet.api.ui.UIContext;
+import mchorse.mappet.api.ui.utils.DiscardMethod;
 import mchorse.mappet.api.ui.utils.UIKeybind;
 import mchorse.mappet.api.ui.utils.UIUnit;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
@@ -340,6 +341,7 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
 
     /* Subclass utilities */
 
+    @DiscardMethod
     protected int getDefaultUpdateDelay()
     {
         return 0;
@@ -354,6 +356,7 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         return this;
     }
 
+    @DiscardMethod
     @SideOnly(Side.CLIENT)
     protected GuiElement apply(GuiElement element, UIContext context)
     {
@@ -402,12 +405,14 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         return element;
     }
 
+    @DiscardMethod
     @SideOnly(Side.CLIENT)
     protected boolean isDataReserved()
     {
         return false;
     }
 
+    @DiscardMethod
     @SideOnly(Side.CLIENT)
     private void applyTooltip(GuiElement element)
     {
@@ -431,21 +436,25 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
 
     /* Changes API (to being able to update data from the server on the client) */
 
+    @DiscardMethod
     protected void change(String... properties)
     {
         this.changedProperties.addAll(Arrays.asList(properties));
     }
 
+    @DiscardMethod
     public void clearChanges()
     {
         this.changedProperties.clear();
     }
 
+    @DiscardMethod
     public Set<String> getChanges()
     {
         return Collections.unmodifiableSet(this.changedProperties);
     }
 
+    @DiscardMethod
     @SideOnly(Side.CLIENT)
     public void handleChanges(UIContext context, NBTTagCompound changes, GuiElement element)
     {
@@ -457,6 +466,7 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         }
     }
 
+    @DiscardMethod
     @SideOnly(Side.CLIENT)
     protected void applyProperty(UIContext context, String key, GuiElement element)
     {
@@ -499,17 +509,21 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
 
     /* Main implementation */
 
+    @DiscardMethod
     @SideOnly(Side.CLIENT)
     public abstract GuiElement create(Minecraft mc, UIContext context);
 
+    @DiscardMethod
     public void populateData(NBTTagCompound tag)
     {}
 
+    @DiscardMethod
     public List<UIComponent> getChildComponents()
     {
         return Collections.emptyList();
     }
 
+    @DiscardMethod
     public NBTTagCompound serializeNBT()
     {
         NBTTagCompound tag = new NBTTagCompound();
@@ -519,6 +533,7 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         return tag;
     }
 
+    @DiscardMethod
     public void serializeNBT(NBTTagCompound tag)
     {
         tag.setString("Id", this.id);
@@ -561,6 +576,7 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
     }
 
     @Override
+    @DiscardMethod
     public void deserializeNBT(NBTTagCompound tag)
     {
         if (tag.hasKey("Id"))
