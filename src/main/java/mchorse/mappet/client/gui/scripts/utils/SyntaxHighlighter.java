@@ -6,6 +6,7 @@ import net.minecraft.client.gui.FontRenderer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 public class SyntaxHighlighter
 {
@@ -288,6 +289,20 @@ public class SyntaxHighlighter
         }
         catch (NumberFormatException e)
         {}
+
+        int length = keyword.trim().length();
+
+        if (keyword.startsWith("0x") && length >= 3 && length <= 10)
+        {
+            try
+            {
+                Long.parseLong(keyword.substring(2), 16);
+
+                return true;
+            }
+            catch (Exception e)
+            {}
+        }
 
         return false;
     }
