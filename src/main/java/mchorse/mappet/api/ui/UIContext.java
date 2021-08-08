@@ -319,6 +319,7 @@ public class UIContext
         }
 
         this.closed = true;
+        this.last = "";
 
         this.handleScript(this.player);
     }
