@@ -100,6 +100,10 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
             docs = gson.fromJson(scanner.useDelimiter("\\A").next(), Docs.class);
             entry = null;
 
+            docs.copyMethods("UILabelBaseComponent", "UIButtonComponent", "UILabelComponent", "UITextComponent", "UITextareaComponent", "UITextboxComponent", "UIToggleComponent");
+            docs.remove("UIParentComponent");
+            docs.remove("UILabelBaseComponent");
+
             DocList top = new DocList();
             DocList scripting = new DocList();
             DocList ui = new DocList();
