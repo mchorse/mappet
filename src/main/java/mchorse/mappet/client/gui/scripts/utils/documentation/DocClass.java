@@ -7,6 +7,16 @@ public class DocClass extends DocEntry
 {
     public List<DocMethod> methods = new ArrayList<DocMethod>();
 
+    @Override
+    public List<DocEntry> getEntries()
+    {
+        List<DocEntry> entries = new ArrayList<DocEntry>();
+
+        entries.addAll(this.methods);
+
+        return entries;
+    }
+
     public DocMethod getMethod(String name)
     {
         for (DocMethod method : this.methods)

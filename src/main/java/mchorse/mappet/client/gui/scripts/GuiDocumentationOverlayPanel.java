@@ -3,9 +3,9 @@ package mchorse.mappet.client.gui.scripts;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import mchorse.mappet.client.gui.scripts.utils.documentation.DocClass;
+import mchorse.mappet.client.gui.scripts.utils.documentation.DocDelegate;
 import mchorse.mappet.client.gui.scripts.utils.documentation.DocEntry;
-import mchorse.mappet.client.gui.scripts.utils.documentation.DocMethod;
-import mchorse.mappet.client.gui.scripts.utils.documentation.DocPackage;
+import mchorse.mappet.client.gui.scripts.utils.documentation.DocList;
 import mchorse.mappet.client.gui.scripts.utils.documentation.Docs;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlayPanel;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
@@ -15,23 +15,19 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.launchwrapper.Launch;
 
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Consumer;
 
 public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
 {
     private static Docs docs;
-    private static DocClass currentClass;
     private static DocEntry entry;
 
     public GuiDocEntryList list;
     public GuiScrollElement documentation;
 
-    private Map<String, DocClass> data = new HashMap<String, DocClass>();
-    private DocPackage topPackage;
+    private DocEntry topPackage;
 
     public GuiDocumentationOverlayPanel(Minecraft mc)
     {
@@ -50,60 +46,36 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
 
     private void pick(DocEntry entryIn)
     {
-        if (entry == entryIn)
-        {
-            return;
-        }
+        entryIn = entryIn.getEntry();
 
-        if (entryIn instanceof DocPackage)
-        {
-            currentClass = null;
-            this.fill(entryIn);
-            this.fillList();
-        }
-        else if (entryIn instanceof DocClass)
-        {
-            currentClass = (DocClass) entryIn;
-            this.fill(entryIn);
-            this.fillList();
-        }
-        else
-        {
-            this.fill(entryIn);
-        }
-    }
+        List<DocEntry> entries = entryIn.getEntries();
 
-    private void fillList()
-    {
-        this.list.clear();
-
-        if (entry == this.topPackage)
+        if (!entries.isEmpty())
         {
-            for (DocClass docClass : this.data.values())
+            this.list.clear();
+
+            if (entryIn.parent != null)
             {
-                this.list.add(docClass);
+                this.list.add(new DocDelegate(entryIn.parent));
             }
-        }
-        else if (currentClass != null)
-        {
-            this.list.add(this.topPackage);
 
-            for (DocMethod docMethod : this.currentClass.methods)
-            {
-                this.list.add(docMethod);
-            }
+            this.list.add(entries);
+            this.list.sort();
         }
 
-        this.list.sort();
+        this.fill(entryIn);
     }
 
     private void fill(DocEntry entryIn)
     {
-        entry = entryIn;
+        if (!entry.getEntries().isEmpty())
+        {
+            entry = entryIn;
+        }
 
         this.documentation.scroll.scrollTo(0);
         this.documentation.removeAll();
-        entry.fillIn(this.mc, this.documentation);
+        entryIn.fillIn(this.mc, this.documentation);
 
         this.resize();
     }
@@ -120,40 +92,47 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
             Scanner scanner = new Scanner(stream, "UTF-8");
 
             docs = gson.fromJson(scanner.useDelimiter("\\A").next(), Docs.class);
-
             entry = null;
-        }
 
-        for (DocClass docClass : docs.classes)
-        {
-            docClass.removeDisabledMethods();
+            DocList top = new DocList();
+            DocList scripting = new DocList();
+            DocList ui = new DocList();
 
-            this.data.put(docClass.getName(), docClass);
-        }
+            top.doc = docs.getPackage("mchorse.mappet.api.scripts.user.mappet").doc;
+            scripting.name = "Scripting API";
+            scripting.doc = docs.getPackage("mchorse.mappet.api.scripts.user").doc;
+            scripting.parent = top;
+            ui.name = "UI API";
+            ui.doc = docs.getPackage("mchorse.mappet.api.ui.components").doc;
+            ui.parent = top;
 
-        for (DocPackage docPackage : docs.packages)
-        {
-            if (!docPackage.doc.isEmpty())
+            for (DocClass docClass : docs.classes)
             {
-                this.topPackage = docPackage;
+                docClass.removeDisabledMethods();
 
-                break;
+                if (docClass.name.contains("ui.components"))
+                {
+                    ui.entries.add(docClass);
+                    docClass.parent = ui;
+                }
+                else
+                {
+                    scripting.entries.add(docClass);
+                    docClass.parent = scripting;
+                }
             }
+
+            top.entries.add(scripting);
+            top.entries.add(ui);
+            this.topPackage = top;
         }
 
         if (entry == null)
         {
-            currentClass = null;
             entry = this.topPackage;
         }
 
-        this.fill(entry);
-        this.fillList();
-
-        if (entry instanceof DocMethod)
-        {
-            this.list.setCurrentScroll(entry);
-        }
+        this.pick(entry);
     }
 
     public static class GuiDocEntryList extends GuiListElement<DocEntry>

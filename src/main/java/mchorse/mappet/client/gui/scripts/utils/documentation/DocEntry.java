@@ -10,10 +10,13 @@ import net.minecraft.util.text.TextFormatting;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class DocEntry
 {
+    public DocEntry parent;
+
     public String name = "";
     public String doc = "";
 
@@ -146,5 +149,15 @@ public abstract class DocEntry
     public void fillIn(Minecraft mc, GuiScrollElement target)
     {
         process(this.doc, mc, target);
+    }
+
+    public List<DocEntry> getEntries()
+    {
+        return Collections.emptyList();
+    }
+
+    public DocEntry getEntry()
+    {
+        return this;
     }
 }
