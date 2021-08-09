@@ -22,7 +22,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * <pre>{@code
  *    function main(c)
  *    {
- *        var ui = mappet.createUI(c, "handler").background();
+ *        var ui = mappet.createUI().background();
  *        var scroll = ui.column(5, 10);
  *
  *        scroll.getCurrent().scroll().rxy(0.5, 0.5).w(200).rh(0.8).anchor(0.5);
