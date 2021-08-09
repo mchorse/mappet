@@ -1,9 +1,11 @@
 package mchorse.mappet.api.ui.components;
 
+import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.ui.UIContext;
 import mchorse.mappet.api.ui.utils.DiscardMethod;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.list.GuiStringListElement;
+import mchorse.mclib.utils.ColorUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -16,11 +18,59 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * String list UI component.
+ *
+ * <p>This component allows users to pick a string out of a list of strings
+ * that you provided.</p>
+ *
+ * <p>The value that gets written to UI context's data (if ID is present) is
+ * the selected string that picked in the list.</p>
+ *
+ * <p>This component can be created using {@link IMappetUIBuilder#stringList(List)} method.</p>
+ *
+ * <pre>{@code
+ *    function main(c)
+ *    {
+ *        var s = c.getSubject();
+ *        var ui = mappet.createUI(c, "handler").background();
+ *        var strings = ui.stringList(["Apple", "Orange", "Pineapple", "Avocado"]).id("strings").tooltip("Pick a fruit...");
+ *        var label = ui.label("...").id("fruit").visible(false);
+ *
+ *        strings.background(0x88000000).rxy(0.5, 0.5).wh(100, 240).anchor(0.5);
+ *        label.rx(0.5).ry(0.5, -160).anchor(0.5, 0.5);
+ *        label.background(0x88000000).labelAnchor(0.5, 0.5);
+ *        s.openUI(ui);
+ *    }
+ *
+ *    function handler(c)
+ *    {
+ *        var uiContext = c.getSubject().getUIContext();
+ *        var data = uiContext.getData();
+ *
+ *        if (uiContext.getLast() === "strings")
+ *        {
+ *            uiContext.get("fruit").label(data.getString("strings")).visible(true);
+ *        }
+ *    }
+ * }</pre>
+ */
 public class UIStringListComponent extends UIComponent
 {
     public List<String> values = new ArrayList<String>();
     public Integer selected;
+    public Integer background;
 
+    /**
+     * Replace values within this string list.
+     *
+     * <pre>{@code
+     *    // Assuming that uiContext is a IMappetUIContext
+     *
+     *    // Replace values in strings
+     *    uiContext.get("strings").values("Tomato", "Cucumber", "Pepper", "Cabbage");
+     * }</pre>
+     */
     public UIStringListComponent values(String... values)
     {
         this.change("Values");
@@ -31,6 +81,17 @@ public class UIStringListComponent extends UIComponent
         return this;
     }
 
+    /**
+     * Replace values within this string list.
+     *
+     * <pre>{@code
+     *    // Assuming that uiContext is a IMappetUIContext
+     *    var vegetables = ["Tomato", "Cucumber", "Pepper", "Cabbage"];
+     *
+     *    // Replace values in strings
+     *    uiContext.get("strings").values(vegetables);
+     * }</pre>
+     */
     public UIStringListComponent values(List<String> values)
     {
         this.change("Values");
@@ -41,11 +102,55 @@ public class UIStringListComponent extends UIComponent
         return this;
     }
 
+    /**
+     * Set the currently selected element.
+     *
+     * <pre>{@code
+     *    // Assuming that uiContext is a IMappetUIContext
+     *
+     *    // Set first string in the list to be selected
+     *    uiContext.get("strings").selected(0);
+     * }</pre>
+     */
     public UIStringListComponent selected(int selected)
     {
         this.change("Selected");
 
         this.selected = selected;
+
+        return this;
+    }
+
+    /**
+     * Set component's solid color background.
+     *
+     * <pre>{@code
+     *    // Assuming that uiContext is a IMappetUIContext
+     *
+     *    // Set half transparent black background
+     *    uiContext.get("strings").background();
+     * }</pre>
+     */
+    public UIStringListComponent background()
+    {
+        return this.background(ColorUtils.HALF_BLACK);
+    }
+
+    /**
+     * Set component's solid color background.
+     *
+     * <pre>{@code
+     *    // Assuming that uiContext is a IMappetUIContext
+     *
+     *    // Set half transparent toxic green background
+     *    uiContext.get("strings").background(0x8800ff00);
+     * }</pre>
+     */
+    public UIStringListComponent background(int background)
+    {
+        this.change("Background");
+
+        this.background = background;
 
         return this;
     }
@@ -68,6 +173,10 @@ public class UIStringListComponent extends UIComponent
         {
             list.setIndex(this.selected);
         }
+        else if (key.equals("Background") && this.background != null)
+        {
+            list.background(this.background);
+        }
     }
 
     @Override
@@ -89,6 +198,11 @@ public class UIStringListComponent extends UIComponent
         if (this.selected != null)
         {
             element.setIndex(this.selected);
+        }
+
+        if (this.background != null)
+        {
+            element.background(this.background);
         }
 
         return this.apply(element, context);
@@ -135,6 +249,11 @@ public class UIStringListComponent extends UIComponent
         {
             tag.setInteger("Selected", this.selected);
         }
+
+        if (this.background != null)
+        {
+            tag.setInteger("Background", this.background);
+        }
     }
 
     @Override
@@ -158,6 +277,11 @@ public class UIStringListComponent extends UIComponent
         if (tag.hasKey("Selected"))
         {
             this.selected = tag.getInteger("Selected");
+        }
+
+        if (tag.hasKey("Background"))
+        {
+            this.background = tag.getInteger("Background");
         }
     }
 }

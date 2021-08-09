@@ -15,8 +15,10 @@ import mchorse.mappet.network.common.events.PacketEventPlayerHotkeys;
 import mchorse.mappet.network.common.quests.PacketQuest;
 import mchorse.mappet.network.common.quests.PacketQuests;
 import mchorse.mappet.network.common.scripts.PacketClick;
+import mchorse.mappet.network.common.scripts.PacketPlayerSkin;
 import mchorse.mappet.utils.ScriptUtils;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -444,6 +446,13 @@ public class EventHandler
         HUDStage stage = RenderingHandler.currentStage == null ? RenderingHandler.stage : RenderingHandler.currentStage;
 
         stage.update(stage == RenderingHandler.stage);
+
+        if (!RegisterHandler.sentSkin)
+        {
+            Dispatcher.sendToServer(new PacketPlayerSkin(Minecraft.getMinecraft().player.getLocationSkin().toString()));
+
+            RegisterHandler.sentSkin = true;
+        }
     }
 
     @SubscribeEvent

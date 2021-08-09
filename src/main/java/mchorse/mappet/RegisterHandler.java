@@ -16,10 +16,13 @@ import mchorse.mappet.client.KeyboardHandler;
 import mchorse.mappet.client.RenderingHandler;
 import mchorse.mappet.entities.EntityNpc;
 import mchorse.mappet.items.ItemNpcTool;
+import mchorse.mappet.network.Dispatcher;
+import mchorse.mappet.network.common.scripts.PacketPlayerSkin;
 import mchorse.mappet.tile.TileEmitter;
 import mchorse.mappet.tile.TileRegion;
 import mchorse.mappet.tile.TileTrigger;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -37,6 +40,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class RegisterHandler
 {
+    public static boolean sentSkin;
+
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public void onClientConnect(FMLNetworkEvent.ClientConnectedToServerEvent event)
@@ -59,6 +64,8 @@ public class RegisterHandler
     @SideOnly(Side.CLIENT)
     public void onClientDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event)
     {
+        sentSkin = false;
+
         Mappet.quests = null;
         Mappet.crafting = null;
         Mappet.events = null;

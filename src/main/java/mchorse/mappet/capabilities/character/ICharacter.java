@@ -55,4 +55,10 @@ public interface ICharacter extends INBTSerializable<NBTTagCompound>
     public UIContext getUIContext();
 
     public void setUIContext(UIContext context);
+
+    /* Skin */
+
+    public String getSkin();
+
+    public void setSkin(String skin);
 }

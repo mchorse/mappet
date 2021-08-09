@@ -34,6 +34,7 @@ public class Character implements ICharacter
     private CurrentSession session = new CurrentSession();
 
     private UIContext uiContext;
+    private String skin;
 
     @Override
     public States getStates()
@@ -158,5 +159,22 @@ public class Character implements ICharacter
     public void setUIContext(UIContext context)
     {
         this.uiContext = context;
+    }
+
+    /* Skin */
+
+    @Override
+    public String getSkin()
+    {
+        return this.skin;
+    }
+
+    @Override
+    public void setSkin(String skin)
+    {
+        if (this.skin == null)
+        {
+            this.skin = skin;
+        }
     }
 }

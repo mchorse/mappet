@@ -103,6 +103,15 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
         this.entity.sendMessage(new TextComponentString(message));
     }
 
+    @Override
+    public String getSkin()
+    {
+        ICharacter character = Character.get(this.entity);
+        String skin = character.getSkin();
+
+        return skin == null ? "" : skin;
+    }
+
     /* Mappet stuff */
 
     @Override

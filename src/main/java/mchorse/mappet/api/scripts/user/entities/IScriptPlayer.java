@@ -108,6 +108,21 @@ public interface IScriptPlayer extends IScriptEntity
      */
     public void send(String message);
 
+    /**
+     * Get player's skin.
+     *
+     * <pre>{@code
+     *    // Assuming that c.getSubject() is a player
+     *    var player = c.getSubject();
+     *    var morph = mappet.createMorph('{Name:"blockbuster.fred",Skin:"' + player.getSkin() + '",Pose:"dabbing"}');
+     *
+     *    player.setMorph(morph);
+     * }</pre>
+     *
+     * @return Resource location in format of "minecraft:skins/..." (which can be used in morphs)
+     */
+    public String getSkin();
+
     /* Mappet stuff */
 
     /**
