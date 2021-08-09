@@ -56,6 +56,11 @@ public class GuiUserInterface extends GuiBase
     {
         super.onGuiClosed();
 
+        if (this.context.isDirtyInProgress())
+        {
+            this.context.sendToPlayer();
+        }
+
         Dispatcher.sendToServer(new PacketUI());
     }
 
