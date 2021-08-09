@@ -21,6 +21,7 @@ import mchorse.metamorph.api.MorphAPI;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
+import net.minecraft.network.play.server.SPacketTitle;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.GameType;
@@ -123,6 +124,38 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
         String skin = character.getSkin();
 
         return skin == null ? "" : skin;
+    }
+
+    @Override
+    public void sendTitleDurations(int fadeIn, int idle, int fadeOut)
+    {
+        SPacketTitle packet = new SPacketTitle(fadeIn, idle, fadeOut);
+
+        this.getMinecraftPlayer().connection.sendPacket(packet);
+    }
+
+    @Override
+    public void sendTitle(String title)
+    {
+        SPacketTitle packet = new SPacketTitle(SPacketTitle.Type.TITLE, new TextComponentString(title));
+
+        this.getMinecraftPlayer().connection.sendPacket(packet);
+    }
+
+    @Override
+    public void sendSubtitle(String title)
+    {
+        SPacketTitle packet = new SPacketTitle(SPacketTitle.Type.SUBTITLE, new TextComponentString(title));
+
+        this.getMinecraftPlayer().connection.sendPacket(packet);
+    }
+
+    @Override
+    public void sendActionBar(String title)
+    {
+        SPacketTitle packet = new SPacketTitle(SPacketTitle.Type.ACTIONBAR, new TextComponentString(title));
+
+        this.getMinecraftPlayer().connection.sendPacket(packet);
     }
 
     /* Mappet stuff */

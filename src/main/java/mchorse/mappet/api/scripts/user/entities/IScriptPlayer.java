@@ -139,6 +139,57 @@ public interface IScriptPlayer extends IScriptEntity
      */
     public String getSkin();
 
+    /**
+     * Send title and subtitle durations (in ticks, <code>20</code> ticks = <code>1</code> second).
+     * These must be sent before sending title or subtitle.
+     *
+     * <p><b>BEWARE</b>: these durations will stay the same until player logs out, so you may want
+     * to change them before every time you send title and subtitle.</p>
+     *
+     * <p>Default values are: fadeIn = <code>10</code> ticks, idle = <code>70</code> ticks,
+     * fadeOut = <code>20</code> ticks.</p>
+     *
+     * <pre>{@code
+     *    var player = c.getSubject();
+     *
+     *    player.sendTitleDuration(5, 10, 5);
+     *    player.sendTitle("Quick!");
+     *    player.sendSubtitle("Get into cover!");
+     * }</pre>
+     *
+     * @param fadeIn How many ticks it will take for title and subtitle to appear.
+     * @param idle For how many ticks will title and subtitle stay after fading in.
+     * @param fadeOut How many ticks it will take for title and subtitle to disappear after idling.
+     */
+    public void sendTitleDurations(int fadeIn, int idle, int fadeOut);
+
+    /**
+     * Send the title to this player that will be displayed in the middle of the screen.
+     *
+     * <pre>{@code
+     *    c.getSubject().sendTitle("Hello, world!");
+     * }</pre>
+     */
+    public void sendTitle(String title);
+
+    /**
+     * Send the subtitle to this player that will be displayed in the middle of the
+     * screen. Title must be sent as well, using {@link #sendTitle(String)}, in order
+     * for subtitle to appear.
+     *
+     * <pre>{@code
+     *    c.getSubject().sendTitle("Hello,");
+     *    c.getSubject().sendSubtitle("world!");
+     * }</pre>
+     */
+    public void sendSubtitle(String title);
+
+    /**
+     * Send a message to this player that will be displayed in action bar. The duration
+     * of action bar line is <code>60</code> ticks (<code>3</code> seconds).
+     */
+    public void sendActionBar(String title);
+
     /* Mappet stuff */
 
     /**
