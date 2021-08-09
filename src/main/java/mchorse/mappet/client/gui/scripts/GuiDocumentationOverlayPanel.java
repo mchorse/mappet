@@ -47,21 +47,26 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
 
     private void pick(DocEntry entryIn)
     {
+        boolean isDelegate = entryIn instanceof DocDelegate;
+
         entryIn = entryIn.getEntry();
 
-        List<DocEntry> entries = entryIn.getEntries();
-
-        if (!entries.isEmpty() || entryIn.parent != null)
+        if (entry == entryIn || isDelegate)
         {
-            this.list.clear();
+            List<DocEntry> entries = entryIn.getEntries();
 
-            if (entryIn.parent != null)
+            if (!entries.isEmpty() || entryIn.parent != null)
             {
-                this.list.add(new DocDelegate(entryIn.parent));
-            }
+                this.list.clear();
 
-            this.list.add(entries);
-            this.list.sort();
+                if (entryIn.parent != null)
+                {
+                    this.list.add(new DocDelegate(entryIn.parent));
+                }
+
+                this.list.add(entries);
+                this.list.sort();
+            }
         }
 
         this.fill(entryIn);
