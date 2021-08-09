@@ -6,6 +6,7 @@ import mchorse.mappet.client.gui.scripts.utils.documentation.DocClass;
 import mchorse.mappet.client.gui.scripts.utils.documentation.DocDelegate;
 import mchorse.mappet.client.gui.scripts.utils.documentation.DocEntry;
 import mchorse.mappet.client.gui.scripts.utils.documentation.DocList;
+import mchorse.mappet.client.gui.scripts.utils.documentation.DocMethod;
 import mchorse.mappet.client.gui.scripts.utils.documentation.Docs;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlayPanel;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
@@ -50,7 +51,7 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
 
         List<DocEntry> entries = entryIn.getEntries();
 
-        if (!entries.isEmpty())
+        if (!entries.isEmpty() || entryIn.parent != null)
         {
             this.list.clear();
 
@@ -68,7 +69,7 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
 
     private void fill(DocEntry entryIn)
     {
-        if (!entry.getEntries().isEmpty())
+        if (!(entry instanceof DocMethod))
         {
             entry = entryIn;
         }
