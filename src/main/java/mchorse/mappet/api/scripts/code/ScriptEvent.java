@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts.code;
 
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import mchorse.mappet.CommonProxy;
 import mchorse.mappet.api.scripts.ScriptExecutionFork;
 import mchorse.mappet.api.scripts.code.entities.ScriptEntity;
@@ -129,6 +130,19 @@ public class ScriptEvent implements IScriptEvent
     public void scheduleScript(String script, String function, int delay)
     {
         CommonProxy.eventHandler.addExecutable(new ScriptExecutionFork(this.context, script, function, delay));
+    }
+
+    @Override
+    public void scheduleScript(int delay, ScriptObjectMirror function)
+    {
+        if (function != null && function.isFunction())
+        {
+            CommonProxy.eventHandler.addExecutable(new ScriptExecutionFork(this.context, function, delay));
+        }
+        else
+        {
+            throw new IllegalStateException("Given object is null in script " + this.script + " (" + this.function + " function)!");
+        }
     }
 
     @Override

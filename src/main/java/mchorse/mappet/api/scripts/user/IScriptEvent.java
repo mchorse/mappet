@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts.user;
 
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
 
 import java.util.Map;
@@ -107,6 +108,8 @@ public interface IScriptEvent
      *        }
      *    }
      * }</pre>
+     *
+     * @param delay How many ticks should pass before scheduled script will be executed.
      */
     public void scheduleScript(int delay);
 
@@ -164,6 +167,22 @@ public interface IScriptEvent
      * }</pre>
      */
     public void scheduleScript(String script, String function, int delay);
+
+    /**
+     * Schedule a JavaScript function (instead of script). Once the timer has expired,
+     * given function will be called with this context as the only argument.
+     *
+     * <pre>{@code
+     *    function main(c)
+     *    {
+     *        c.scheduleScript(60, function (context)
+     *        {
+     *            context.send("This was called three seconds later!");
+     *        });
+     *    }
+     * }</pre>
+     */
+    public void scheduleScript(int delay, ScriptObjectMirror function);
 
     /**
      * Execute a command.
