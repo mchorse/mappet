@@ -69,7 +69,7 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
 
     private void fill(DocEntry entryIn)
     {
-        if (!(entry instanceof DocMethod))
+        if (!(entryIn instanceof DocMethod))
         {
             entry = entryIn;
         }
