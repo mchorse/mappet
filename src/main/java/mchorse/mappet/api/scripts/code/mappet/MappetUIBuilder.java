@@ -190,7 +190,7 @@ public class MappetUIBuilder implements IMappetUIBuilder
     }
 
     @Override
-    public UITrackpadComponent trackpad(int value)
+    public UITrackpadComponent trackpad(double value)
     {
         UITrackpadComponent component = new UITrackpadComponent();
 
