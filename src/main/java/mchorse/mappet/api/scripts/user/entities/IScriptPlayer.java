@@ -2,9 +2,10 @@ package mchorse.mappet.api.scripts.user.entities;
 
 import mchorse.mappet.api.scripts.code.mappet.MappetUIContext;
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
-import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
+import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIContext;
+import mchorse.mappet.api.scripts.user.nbt.INBT;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 /**
@@ -98,7 +99,7 @@ public interface IScriptPlayer extends IScriptEntity
     public IScriptInventory getEnderChest();
 
     /**
-     * Send a message to this entity.
+     * Send a message to this player.
      *
      * <pre>{@code
      *    // Assuming that c.getSubject() is a player
@@ -107,6 +108,21 @@ public interface IScriptPlayer extends IScriptEntity
      * }</pre>
      */
     public void send(String message);
+
+    /**
+     * Send a message to this player using text component (like <code>/tellraw</code> command).
+     *
+     * <pre>{@code
+     *    var message = mappet.createCompound();
+     *
+     *    message.setString("text", "This message displays an item...");
+     *    message.setString("color", "gold");
+     *    message.setNBT("hoverEvent",'{action:"show_item",value:"{id:\\"minecraft:diamond_hoe\\",Count:1b}"}');
+     *
+     *    c.getSubject().sendRaw(message);
+     * }</pre>
+     */
+    public void sendRaw(INBT message);
 
     /**
      * Get player's skin.

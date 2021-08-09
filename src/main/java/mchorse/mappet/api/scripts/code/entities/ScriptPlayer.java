@@ -9,6 +9,7 @@ import mchorse.mappet.api.scripts.user.items.IScriptInventory;
 import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIContext;
+import mchorse.mappet.api.scripts.user.nbt.INBT;
 import mchorse.mappet.api.ui.UI;
 import mchorse.mappet.api.ui.UIContext;
 import mchorse.mappet.capabilities.character.Character;
@@ -20,6 +21,7 @@ import mchorse.metamorph.api.MorphAPI;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.GameType;
 
@@ -101,6 +103,17 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     public void send(String message)
     {
         this.entity.sendMessage(new TextComponentString(message));
+    }
+
+    @Override
+    public void sendRaw(INBT message)
+    {
+        ITextComponent component = ITextComponent.Serializer.fromJsonLenient(message.stringify());
+
+        if (component != null)
+        {
+            this.entity.sendMessage(component);
+        }
     }
 
     @Override

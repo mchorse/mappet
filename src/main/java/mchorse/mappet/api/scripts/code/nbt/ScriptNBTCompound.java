@@ -1,8 +1,10 @@
 package mchorse.mappet.api.scripts.code.nbt;
 
+import com.google.gson.JsonArray;
 import mchorse.mappet.api.scripts.user.nbt.INBT;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.mappet.api.scripts.user.nbt.INBTList;
+import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -229,5 +231,22 @@ public class ScriptNBTCompound implements INBTCompound
     public void setList(String key, INBTList value)
     {
         this.tag.setTag(key, value.getNBTTagList());
+    }
+
+    @Override
+    public boolean setNBT(String key, String nbt)
+    {
+        try
+        {
+            NBTTagCompound tag = JsonToNBT.getTagFromJson("{data:" + nbt +"}");
+
+            this.tag.setTag(key, tag.getTag("data"));
+
+            return true;
+        }
+        catch (Exception e)
+        {}
+
+        return false;
     }
 }
