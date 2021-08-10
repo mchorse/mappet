@@ -52,8 +52,27 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class UIButtonComponent extends UILabelBaseComponent
 {
+    public Integer background;
+
     public UIButtonComponent()
     {}
+
+    /**
+     * Change button's background color by providing hex RGB.
+     *
+     * <pre>{@code
+     *    // Assuming that uiContext is a IMappetUIContext
+     *    uiContext.get("button").background(0x00ff00);
+     * }</pre>
+     */
+    public UIButtonComponent background(int background)
+    {
+        this.change("Background");
+
+        this.background = background;
+
+        return this;
+    }
 
     @Override
     @DiscardMethod
@@ -76,6 +95,17 @@ public class UIButtonComponent extends UILabelBaseComponent
         {
             button.label = IKey.str(this.getLabel());
         }
+        else if (key.equals("Background"))
+        {
+            if (this.background != null && this.background >= 0)
+            {
+                button.color(this.background);
+            }
+            else
+            {
+                button.custom = false;
+            }
+        }
     }
 
     @Override
@@ -92,6 +122,11 @@ public class UIButtonComponent extends UILabelBaseComponent
             }
         });
 
+        if (this.background != null && this.background >= 0)
+        {
+            button.color(this.background);
+        }
+
         return this.apply(button, context);
     }
 
@@ -104,6 +139,28 @@ public class UIButtonComponent extends UILabelBaseComponent
         if (!this.id.isEmpty())
         {
             tag.setInteger(this.id, tag.getInteger(this.id) + 1);
+        }
+    }
+
+    @Override
+    public void serializeNBT(NBTTagCompound tag)
+    {
+        super.serializeNBT(tag);
+
+        if (this.background != null)
+        {
+            tag.setInteger("Background", this.background);
+        }
+    }
+
+    @Override
+    public void deserializeNBT(NBTTagCompound tag)
+    {
+        super.deserializeNBT(tag);
+
+        if (tag.hasKey("Background"))
+        {
+            this.background = tag.getInteger("Background");
         }
     }
 }
