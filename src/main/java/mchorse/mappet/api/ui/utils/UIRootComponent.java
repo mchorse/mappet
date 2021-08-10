@@ -24,6 +24,6 @@ public class UIRootComponent extends UIParentComponent
             element.add(created);
         }
 
-        return element;
+        return this.applyKeybinds(element, context);
     }
 }

@@ -1,5 +1,6 @@
 package mchorse.mappet.api.ui.components;
 
+import mchorse.mappet.api.scripts.user.mappet.IMappetUIContext;
 import mchorse.mappet.api.ui.UIContext;
 import mchorse.mappet.api.ui.utils.DiscardMethod;
 import mchorse.mappet.api.ui.utils.UIKeybind;
@@ -26,6 +27,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Base UI component.
+ *
+ * <p>Every UI component in UI API is based off this base component, and therefore
+ * they have all of the methods available for changing ID, margins, frame (x, y,
+ * width, and height), tooltip, visibility, enabled, keybinds and update delay.</p>
+ */
 public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
 {
     public static final int DELAY = 200;
@@ -51,6 +59,17 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
 
     protected Set<String> changedProperties = new HashSet<String>();
 
+    /**
+     * Set the ID of the component.
+     *
+     * <p>Without ID, the data that can be inputted by players won't be sent
+     * into the script handler, so it is <b>required</b> to set component's
+     * ID if you want to receive the data from the component.</p>
+     *
+     * <p><b>BEWARE</b>: multiple components must not share same ID, if they will
+     * it will certainly cause bugs in the data that you'll be receiving from the
+     * client and the way you retrieve components using {@link IMappetUIContext#get(String)}.</p>
+     */
     public UIComponent id(String id)
     {
         this.id = id;
@@ -58,11 +77,27 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         return this;
     }
 
+    /**
+     * Set a tooltip that will be displayed at the bottom of component's frame.
+     */
     public UIComponent tooltip(String tooltip)
     {
         return this.tooltip(tooltip, 0);
     }
 
+    /**
+     * Set a tooltip that will be displayed at specified side of component's frame.
+     *
+     * <pre>{@code
+     *    // Assuming that uiContext is a IMappetUIContext
+     *    uiContext.get("component").tooltip("Enter your full name", 1);
+     * }</pre>
+     *
+     * @param direction <code>0</code> is bottom.
+     *                  <code>1</code> is top.
+     *                  <code>2</code> is right.
+     *                  <code>3</code> is left.
+     */
     public UIComponent tooltip(String tooltip, int direction)
     {
         this.change("Tooltip");
@@ -73,6 +108,15 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         return this;
     }
 
+    /**
+     * Set component's visibility. Hiding components also disables any user input,
+     * i.e. despite button being invisible, it can't be clicked.
+     *
+     * <pre>{@code
+     *    // Assuming that uiContext is a IMappetUIContext
+     *    uiContext.get("button").visible(false);
+     * }</pre>
+     */
     public UIComponent visible(boolean visible)
     {
         this.change("Visible");
@@ -82,6 +126,16 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         return this;
     }
 
+    /**
+     * Toggle component's user input. When the component is disabled, it can't
+     * receive any user input: no inputting text into or focusing textbox and
+     * textareas, no clicking on click area, icon button, or button, etc.
+     *
+     * <pre>{@code
+     *    // Assuming that uiContext is a IMappetUIContext
+     *    uiContext.get("button").enabled(false);
+     * }</pre>
+     */
     public UIComponent enabled(boolean enabled)
     {
         this.change("Enabled");
@@ -91,6 +145,17 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         return this;
     }
 
+    /**
+     * Set margin to all sides.
+     *
+     * <p><b>IMPORTANT</b>: margins affect positioning only within layout component.
+     * They do absolutely nothing outside of column, row and grid layout components.</p>
+     *
+     * <pre>{@code
+     *    // Assuming that uiContext is a IMappetUIContext
+     *    uiContext.get("button").margin(10);
+     * }</pre>
+     */
     public UIComponent margin(int margin)
     {
         this.change("Margin");
@@ -103,6 +168,10 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         return this;
     }
 
+    /**
+     * Set top margin. See {@link #margin(int)} method for more information about
+     * restrictions.
+     */
     public UIComponent marginTop(int margin)
     {
         this.change("Margin");
@@ -112,6 +181,10 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         return this;
     }
 
+    /**
+     * Set bottom margin. See {@link #margin(int)} method for more information
+     * about restrictions.
+     */
     public UIComponent marginBotom(int margin)
     {
         this.change("Margin");
@@ -121,6 +194,10 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         return this;
     }
 
+    /**
+     * Set left margin. See {@link #margin(int)} method for more information about
+     * restrictions.
+     */
     public UIComponent marginLeft(int margin)
     {
         this.change("Margin");
@@ -130,6 +207,10 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         return this;
     }
 
+    /**
+     * Set right margin. See {@link #margin(int)} method for more information about
+     * restrictions.
+     */
     public UIComponent marginRight(int margin)
     {
         this.change("Margin");
@@ -139,21 +220,68 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         return this;
     }
 
+    /**
+     * Add a keybind with no modifiers. See {@link #keybind(int, String, String, boolean, boolean)} for proper example.
+     */
     public UIComponent keybind(int keyCode, String action, String label)
     {
         return this.keybind(keyCode, action, label, false, false, false);
     }
 
+    /**
+     * Add a keybind with optional Control modifier.
+     * See {@link #keybind(int, String, String, boolean, boolean)} for proper example.
+     */
     public UIComponent keybind(int keyCode, String action, String label, boolean ctrl)
     {
         return this.keybind(keyCode, action, label, ctrl, false, false);
     }
 
+    /**
+     * Add a keybind with optional Control and/or Shift modifier(s).
+     * See {@link #keybind(int, String, String, boolean, boolean)} for proper example.
+     */
     public UIComponent keybind(int keyCode, String action, String label, boolean ctrl, boolean shift)
     {
         return this.keybind(keyCode, action, label, ctrl, shift, false);
     }
 
+    /**
+     * Add a keybind optionally with Control, Shift, and Alt key modifiers (i.e. while holding).
+     *
+     * <pre>{@code
+     *    // For more reference, check this page to find the list of all key codes:
+     *    // https://minecraft.fandom.com/wiki/Key_codes/Keyboard1
+     *    //
+     *    function main(c)
+     *    {
+     *        var ui = mappet.createUI(c, "handler").background();
+     *        var button = ui.icon("upload").id("icon");
+     *
+     *        // 203 = Arrow left
+     *        ui.getCurrent().keybind(203, "left", "Change icon to left");
+     *        // 205 = Arrow right
+     *        ui.getCurrent().keybind(205, "right", "Change icon to right");
+     *        button.rxy(0.5, 0.5).wh(20, 20).anchor(0.5);
+     *        c.getSubject().openUI(ui);
+     *    }
+     *
+     *    function handler(c)
+     *    {
+     *        var uiContext = c.getSubject().getUIContext();
+     *        var key = uiContext.getHotkey();
+     *
+     *        if (key === "left")
+     *        {
+     *            uiContext.get("icon").icon("leftload");
+     *        }
+     *        else if (key === "right")
+     *        {
+     *            uiContext.get("icon").icon("rightload");
+     *        }
+     *    }
+     * }</pre>
+     */
     public UIComponent keybind(int keyCode, String action, String label, boolean ctrl, boolean shift, boolean alt)
     {
         this.keybinds.add(new UIKeybind(keyCode, action, label, UIKeybind.createModifier(shift, ctrl, alt)));
@@ -163,27 +291,36 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
 
     /* Position and size */
 
+    /**
+     * Set X in pixels relative to parent component.
+     */
     public UIComponent x(int value)
-    {
-        return this.x(value, 0);
-    }
-
-    public UIComponent x(int value, int offset)
     {
         this.change("X");
 
         this.x.percentage = false;
         this.x.value = value;
-        this.x.offset = offset;
+        this.x.offset = 0;
 
         return this;
     }
 
+    /**
+     * Set X relative in percents to parent component. Passed value should be
+     * <code>0..1</code>, where <code>0</code> is fully left, and <code>1</code> is fully right.
+     */
     public UIComponent rx(float value)
     {
         return this.rx(value, 0);
     }
 
+    /**
+     * Set X relative in percents to parent component with offset. Passed value should be
+     * <code>0..1</code>, where <code>0</code> is fully left, and <code>1</code> is fully right.
+     *
+     * @param value Percentage how far into X.
+     * @param offset Offset in pixels (can be negative).
+     */
     public UIComponent rx(float value, int offset)
     {
         this.change("X");
@@ -195,27 +332,36 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         return this;
     }
 
+    /**
+     * Set Y in pixels relative to parent component.
+     */
     public UIComponent y(int value)
-    {
-        return this.y(value, 0);
-    }
-
-    public UIComponent y(int value, int offset)
     {
         this.change("Y");
 
         this.y.percentage = false;
         this.y.value = value;
-        this.y.offset = offset;
+        this.y.offset = 0;
 
         return this;
     }
 
+    /**
+     * Set Y relative in percents to parent component. Passed value should be
+     * <code>0..1</code>, where <code>0</code> is fully top, and <code>1</code> is fully bottom.
+     */
     public UIComponent ry(float value)
     {
         return this.ry(value, 0);
     }
 
+    /**
+     * Set Y relative in percents to parent component with offset. Passed value should be
+     * <code>0..1</code>, where <code>0</code> is fully top, and <code>1</code> is fully bottom.
+     *
+     * @param value Percentage how far into Y.
+     * @param offset Offset in pixels (can be negative).
+     */
     public UIComponent ry(float value, int offset)
     {
         this.change("Y");
@@ -227,27 +373,40 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         return this;
     }
 
+    /**
+     * Set width in pixels.
+     */
     public UIComponent w(int value)
-    {
-        return this.w(value, 0);
-    }
-
-    public UIComponent w(int value, int offset)
     {
         this.change("W");
 
         this.w.percentage = false;
         this.w.value = value;
-        this.w.offset = offset;
+        this.w.offset = 0;
 
         return this;
     }
 
+    /**
+     * Set width relative in percents to parent component. Passed value should be
+     * <code>0..1</code>, where <code>0</code> is element will be <code>0%</code> of
+     * parent component's width, and <code>1</code> is <code>100%</code> of parent's
+     * component width.
+     */
     public UIComponent rw(float value)
     {
         return this.rw(value, 0);
     }
 
+    /**
+     * Set width relative in percents to parent component with offset. Passed value should be
+     * <code>0..1</code>, where <code>0</code> is element will be <code>0%</code> of
+     * parent component's width, and <code>1</code> is <code>100%</code> of parent's
+     * component width.
+     *
+     * @param value Percentage of how wide relative to parent component.
+     * @param offset Offset in pixels (can be negative).
+     */
     public UIComponent rw(float value, int offset)
     {
         this.change("W");
@@ -259,27 +418,40 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         return this;
     }
 
+    /**
+     * Set height in pixels.
+     */
     public UIComponent h(int value)
-    {
-        return this.h(value, 0);
-    }
-
-    public UIComponent h(int value, int offset)
     {
         this.change("H");
 
         this.h.percentage = false;
         this.h.value = value;
-        this.h.offset = offset;
+        this.h.offset = 0;
 
         return this;
     }
 
+    /**
+     * Set height relative in percents to parent component. Passed value should be
+     * <code>0..1</code>, where <code>0</code> is element will be <code>0%</code> of
+     * parent component's height, and <code>1</code> is <code>100%</code> of parent's
+     * component height.
+     */
     public UIComponent rh(float value)
     {
         return this.rh(value, 0);
     }
 
+    /**
+     * Set height relative in percents to parent component with offset. Passed value should be
+     * <code>0..1</code>, where <code>0</code> is element will be <code>0%</code> of
+     * parent component's height, and <code>1</code> is <code>100%</code> of parent's
+     * component height.
+     *
+     * @param value Percentage of how tall relative to parent component.
+     * @param offset Offset in pixels (can be negative).
+     */
     public UIComponent rh(float value, int offset)
     {
         this.change("H");
@@ -291,36 +463,62 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         return this;
     }
 
+    /**
+     * Set X and Y in pixels relative to parent component.
+     */
     public UIComponent xy(int x, int y)
     {
         return this.x(x).y(y);
     }
 
+    /**
+     * Set X and Y in pixels in percentage relative to parent component.
+     */
     public UIComponent rxy(float x, float y)
     {
         return this.rx(x).ry(y);
     }
 
+    /**
+     * Set width and height in pixels.
+     */
     public UIComponent wh(int w, int h)
     {
         return this.w(w).h(h);
     }
 
+    /**
+     * Set relative width and height in percentage relative to parent component.
+     */
     public UIComponent rwh(float w, float h)
     {
         return this.rw(w).rh(h);
     }
 
+    /**
+     * Set horizontal and vertical alignment anchor.
+     *
+     * @param anchor Horizontal and vertical anchor.
+     */
     public UIComponent anchor(float anchor)
     {
         return this.anchor(anchor, anchor);
     }
 
+    /**
+     * Set horizontal and vertical alignment anchor.
+     *
+     * @param anchorX Horizontal anchor.
+     * @param anchorY Vertical anchor.
+     */
     public UIComponent anchor(float anchorX, float anchorY)
     {
         return this.anchorX(anchorX).anchorY(anchorY);
     }
 
+    /**
+     * Set horizontal alignment anchor.
+     */
     public UIComponent anchorX(float anchor)
     {
         this.change("X");
@@ -330,6 +528,9 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         return this;
     }
 
+    /**
+     * Set vertical alignment anchor.
+     */
     public UIComponent anchorY(float anchor)
     {
         this.change("Y");
@@ -339,14 +540,21 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         return this;
     }
 
-    /* Subclass utilities */
-
-    @DiscardMethod
-    protected int getDefaultUpdateDelay()
-    {
-        return 0;
-    }
-
+    /**
+     * Set update delay in milliseconds (<code>1000</code> = <code>1</code> second).
+     *
+     * <p>Update delay allows to limit how frequently data gets sent from the client
+     * to the hanlder script.</p>
+     *
+     * <pre>{@code
+     *    // Assuming that ui is a IMappetUIBuilder
+     *
+     *    // Change text box's update delay to 1 second meaning
+     *    // that a second after user didn't type anything into
+     *    // the text box it will send all the data to the handler script
+     *    ui.textbox().id("name").updateDelay(1000);
+     * }</pre>
+     */
     public UIComponent updateDelay(int updateDelay)
     {
         this.change("UpdateDelay");
@@ -354,6 +562,12 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         this.updateDelay = updateDelay;
 
         return this;
+    }
+
+    @DiscardMethod
+    protected int getDefaultUpdateDelay()
+    {
+        return 0;
     }
 
     @DiscardMethod
@@ -383,6 +597,15 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
             context.registerElement(this.id, element, this.isDataReserved());
         }
 
+        this.applyKeybinds(element, context);
+
+        return element;
+    }
+
+    @DiscardMethod
+    @SideOnly(Side.CLIENT)
+    protected GuiElement applyKeybinds(GuiElement element, UIContext context)
+    {
         for (UIKeybind keybind : this.keybinds)
         {
             Keybind key = element.keys().register(IKey.str(keybind.label), keybind.keyCode, () ->
@@ -431,7 +654,14 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
             direction = Direction.LEFT;
         }
 
-        element.tooltip(IKey.str(TextUtils.processColoredText(this.tooltip)), direction);
+        if (this.tooltip.trim().isEmpty())
+        {
+            element.tooltip = null;
+        }
+        else
+        {
+            element.tooltip(IKey.str(TextUtils.processColoredText(this.tooltip)), direction);
+        }
     }
 
     /* Changes API (to being able to update data from the server on the client) */

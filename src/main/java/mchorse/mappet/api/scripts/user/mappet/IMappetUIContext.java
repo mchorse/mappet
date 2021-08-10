@@ -145,6 +145,10 @@ public interface IMappetUIContext
 
     /**
      * Get the ID of the last pressed hot key.
+     *
+     * <p>If no keybind was pressed, it will be an empty string (<code>""</code>).
+     * See {@link UIComponent#keybind(int, String, String, boolean, boolean, boolean)} method
+     * for an example.</p>
      */
     public String getHotkey();
 

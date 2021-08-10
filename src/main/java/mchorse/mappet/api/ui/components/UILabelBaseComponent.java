@@ -51,6 +51,29 @@ public abstract class UILabelBaseComponent extends UIComponent
         return this;
     }
 
+    /**
+     * Set label for label, toggle and text UI components, or change
+     * the input value for textbox and textarea components.
+     *
+     * <pre>{@code
+     *    // Assuming that uiContext is a IMappetUIContext
+     *
+     *    // Assuming that title is a label UI component
+     *    uiContext.get("title").label("Application form");
+     *
+     *    // Assuming that prerequisites is a text UI component
+     *    uiContext.get("prerequisites").label("This is an application form for enrolling into H.P. Lovecraft's book club.\n\n* - are required fields");
+     *
+     *    // Assuming that fullname is a textbox UI component
+     *    uiContext.get("fullname").label("John Smith");
+     *
+     *    // Assuming that description is a textarea UI component
+     *    uiContext.get("description").label("I'm John Smith, I'm from Alaska, and I like fishing.");
+     *
+     *    // Assuming that adult is a toggle UI component
+     *    uiContext.get("adult").label("Adult");
+     * }</pre>
+     */
     public UILabelBaseComponent label(String label)
     {
         this.change("Label");
