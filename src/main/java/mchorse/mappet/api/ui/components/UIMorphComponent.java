@@ -1,6 +1,7 @@
 package mchorse.mappet.api.ui.components;
 
 import mchorse.mappet.Mappet;
+import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.ui.UIContext;
 import mchorse.mappet.api.ui.utils.DiscardMethod;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
@@ -27,6 +28,63 @@ import javax.vecmath.Vector2f;
 import javax.vecmath.Vector3f;
 import java.text.DecimalFormat;
 
+/**
+ * Morph UI component.
+ *
+ * <p>This component allows to display a morph. Users can inspect it, but it can also be
+ * edited, if configured. If you want disable users to turn around the morph by disabling
+ * user input using {@link UIComponent#enabled(boolean)}.</p>
+ *
+ * <p>If this component is editable, then the value that gets written to UI context's data
+ * (if ID is present) is an NBT compound tag that represents a morph.</p>
+ *
+ * <p>This component can be created using {@link IMappetUIBuilder#morph(AbstractMorph)} method.</p>
+ *
+ * <pre>{@code
+ *    function main(c)
+ *    {
+ *        var ui = mappet.createUI().background();
+ *        var layout = ui.layout();
+ *
+ *        layout.getCurrent().rx(0.5).ry(1).wh(300, 100).anchor(0.5, 1);
+ *
+ *        var steve = mappet.createMorph("{CustomPose:{Size:[0.6f,1.8f,0.6f],Poses:{right_arm:{P:[-6.0f,-2.0f,0.0f],R:[-83.0f,41.0f,0.0f]},left_leg:{P:[2.0f,-12.0f,0.0f]},right_armwear:{P:[0.0f,-4.0f,0.0f]},outer:{P:[0.0f,4.0f,0.0f]},left_legwear:{P:[0.0f,-6.0f,0.0f]},body:{P:[0.0f,8.0f,0.0f]},bodywear:{P:[0.0f,-6.0f,0.0f]},head:{P:[0.0f,8.0f,0.0f],R:[18.0f,0.0f,9.0f]},left_arm:{P:[6.0f,-2.0f,0.0f]},right_leg:{P:[-2.0f,-12.0f,0.0f]},right_legwear:{P:[0.0f,-6.0f,0.0f]},anchor:{P:[0.0f,16.0f,0.0f]},left_armwear:{P:[0.0f,-4.0f,0.0f]}}},Settings:{Hands:1b},Name:\"blockbuster.fred\"}");
+ *        var morph = layout.morph(steve);
+ *
+ *        morph.position(-0.019, 1.5, 0).rotation(-11, 24).distance(1.6).fov(40);
+ *        morph.enabled(false).wh(100, 100);
+ *
+ *        var label = layout.label("Steve").background(0xaa000000);
+ *
+ *        label.xy(0, 80).wh(100, 20).labelAnchor(0.5, 0.5);
+ *
+ *        var graphics = layout.graphics();
+ *        var h = 54;
+ *        var y = 30;
+ *
+ *        // Draw the background bubble
+ *        graphics.xy(100, y).wh(200, 100);
+ *        graphics.rect(4, 5, 192, h - 12, 0xff000000);
+ *        graphics.rect(5, 4, 190, h - 10, 0xff000000);
+ *        graphics.rect(5, 5, 190, h - 12, 0xffffffff);
+ *        graphics.rect(4, 11, 1, 4, 0xffffffff);
+ *        graphics.rect(3, 10, 1, 5, 0xff000000);
+ *        graphics.rect(3, 11, 1, 3, 0xffffffff);
+ *        graphics.rect(2, 10, 1, 4, 0xff000000);
+ *        graphics.rect(2, 11, 1, 2, 0xffffffff);
+ *        graphics.rect(1, 10, 1, 3, 0xff000000);
+ *        graphics.rect(1, 11, 1, 1, 0xffffffff);
+ *        graphics.rect(0, 10, 1, 2, 0xff000000);
+ *        graphics.rect(-1, 10, 1, 1, 0xff000000);
+ *
+ *        var text = layout.text("Well, hello there! I expected you...\n\nMy name is Steve, and yours?");
+ *
+ *        text.color(0x000000, false).xy(110, y + 10).wh(180, 80);
+ *
+ *        c.getSubject().openUI(ui);
+ *    }
+ * }</pre>
+ */
 public class UIMorphComponent extends UIComponent
 {
     public NBTTagCompound morph;
@@ -34,9 +92,19 @@ public class UIMorphComponent extends UIComponent
 
     public Vector3f pos;
     public Vector2f rot;
-    public float scale = 2F;
+    public float distance = 2F;
     public float fov = 70;
 
+    /**
+     * Set display morph.
+     *
+     * <pre>{@code
+     *    // Assuming that uiContext is a IMappetUIContext
+     *
+     *    // Set Alex morph
+     *    uiContext.get("morph").morph(mappet.createMorph('{Name:"blockbuster.alex"}'));
+     * }</pre>
+     */
     public UIMorphComponent morph(AbstractMorph morph)
     {
         this.change("Morph");
@@ -46,15 +114,56 @@ public class UIMorphComponent extends UIComponent
         return this;
     }
 
+    /**
+     * Enable an ability for players to pick or edit the morph.
+     *
+     * <pre>{@code
+     *    // Assuming that uiContext is a IMappetUIContext
+     *
+     *    // Enable morph editing
+     *    uiContext.get("morph").editing();
+     * }</pre>
+     */
     public UIMorphComponent editing()
+    {
+        return this.editing(true);
+    }
+
+    /**
+     * Toggle an ability for players to pick or edit the morph.
+     *
+     * <pre>{@code
+     *    // Assuming that uiContext is a IMappetUIContext
+     *
+     *    // Disable morph editing
+     *    uiContext.get("morph").editing(false);
+     * }</pre>
+     */
+    public UIMorphComponent editing(boolean editing)
     {
         this.change("Editing");
 
-        this.editing = true;
+        this.editing = editing;
 
         return this;
     }
 
+    /**
+     * Change camera's orbit position in the morph component. The default camera position (<code>0</code>,
+     * <code>1</code>, <code>0</code>).
+     *
+     * <p>ProTip: you can enable UI debug option in Ctrl + 0 > Mappet, you can position the morph
+     * after running the script, right click somewhere within its frame, and click Copy camera
+     * information... context menu item. It will copy the configuration of camera, which you can
+     * paste into the code.</p>
+     *
+     * <pre>{@code
+     *    // Assuming that uiContext is a IMappetUIContext
+     *
+     *    // Set camera position
+     *    uiContext.get("morph").position(0, 1, 0.5);
+     * }</pre>
+     */
     public UIMorphComponent position(float x, float y, float z)
     {
         this.change("Position");
@@ -64,6 +173,16 @@ public class UIMorphComponent extends UIComponent
         return this;
     }
 
+    /**
+     * Change camera orbit rotation in the morph component. The default camera rotation (<code>0</code>, <code>0</code>).
+     *
+     * <pre>{@code
+     *    // Assuming that uiContext is a IMappetUIContext
+     *
+     *    // Set camera rotation
+     *    uiContext.get("morph").rotation(15, 0);
+     * }</pre>
+     */
     public UIMorphComponent rotation(float pitch, float yaw)
     {
         this.change("Rotation");
@@ -73,15 +192,36 @@ public class UIMorphComponent extends UIComponent
         return this;
     }
 
-    public UIMorphComponent scale(float scale)
+    /**
+     * Change camera distance from camera orbit position in the morph component. The default
+     * camera distance is <code>2</code>.
+     *
+     * <pre>{@code
+     *    // Assuming that uiContext is a IMappetUIContext
+     *
+     *    // Set camera distance
+     *    uiContext.get("morph").distance(4);
+     * }</pre>
+     */
+    public UIMorphComponent distance(float distance)
     {
-        this.change("Scale");
+        this.change("Distance");
 
-        this.scale = scale;
+        this.distance = distance;
 
         return this;
     }
 
+    /**
+     * Change camera Field of View in the morph component. The default FOV is <code>70</code>.
+     *
+     * <pre>{@code
+     *    // Assuming that uiContext is a IMappetUIContext
+     *
+     *    // Set camera FOV
+     *    uiContext.get("morph").fov(50);
+     * }</pre>
+     */
     public UIMorphComponent fov(float fov)
     {
         this.change("Fov");
@@ -123,9 +263,9 @@ public class UIMorphComponent extends UIComponent
         {
             renderer.setRotation(this.rot.y, this.rot.x);
         }
-        else if (key.equals("Scale"))
+        else if (key.equals("Distance"))
         {
-            renderer.scale = this.scale;
+            renderer.scale = this.distance;
         }
         else if (key.equals("Fov"))
         {
@@ -179,7 +319,7 @@ public class UIMorphComponent extends UIComponent
                 builder.append(formatter.format(renderer.pos.y)).append(", ");
                 builder.append(formatter.format(renderer.pos.z)).append(").rotation(");
                 builder.append(formatter.format(renderer.pitch)).append(", ");
-                builder.append(formatter.format(renderer.yaw)).append(").scale(");
+                builder.append(formatter.format(renderer.yaw)).append(").distance(");
                 builder.append(formatter.format(renderer.scale)).append(").fov(");
                 builder.append(formatter.format(renderer.fov)).append(")");
 
@@ -197,7 +337,7 @@ public class UIMorphComponent extends UIComponent
             renderer.setRotation(this.rot.y, this.rot.x);
         }
 
-        renderer.scale = this.scale;
+        renderer.scale = this.distance;
         renderer.fov = this.fov;
 
         return this.apply(renderer, context);
@@ -245,7 +385,7 @@ public class UIMorphComponent extends UIComponent
             tag.setTag("Rotation", rot);
         }
 
-        tag.setFloat("Scale", this.scale);
+        tag.setFloat("Distance", this.distance);
         tag.setFloat("Fov", this.fov);
     }
 
@@ -283,9 +423,9 @@ public class UIMorphComponent extends UIComponent
             this.rot = new Vector2f(rotation.x, rotation.y);
         }
 
-        if (tag.hasKey("Scale"))
+        if (tag.hasKey("Distance"))
         {
-            this.scale = tag.getFloat("Scale");
+            this.distance = tag.getFloat("Distance");
         }
 
         if (tag.hasKey("Fov"))

@@ -35,32 +35,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class UILabelComponent extends UILabelBaseComponent
 {
-    public Integer color;
     public Integer background;
     public float anchorX;
     public float anchorY;
 
     public UILabelComponent()
     {}
-
-    /**
-     * Change text color of this label component by providing hex RGB.
-     *
-     * <pre>{@code
-     *    // Assuming that uiContext is a IMappetUIContext
-     *
-     *    // Set label's text color to toxic green
-     *    uiContext.get("label").color(0x00ff00);
-     * }</pre>
-     */
-    public UILabelComponent color(int color)
-    {
-        this.change("Color");
-
-        this.color = color;
-
-        return this;
-    }
 
     /**
      * Change background color of this label component by providing hex ARGB.
@@ -72,11 +52,11 @@ public class UILabelComponent extends UILabelBaseComponent
      *    uiContext.get("label").background(0x88000000);
      * }</pre>
      */
-    public UILabelComponent background(int color)
+    public UILabelComponent background(int background)
     {
         this.change("Background");
 
-        this.background = color;
+        this.background = background;
 
         return this;
     }
@@ -126,11 +106,6 @@ public class UILabelComponent extends UILabelBaseComponent
     {
         GuiLabel label = Elements.label(IKey.str(this.getLabel()));
 
-        if (this.color != null)
-        {
-            label.color(this.color);
-        }
-
         if (this.background != null)
         {
             label.background(this.background);
@@ -154,10 +129,6 @@ public class UILabelComponent extends UILabelBaseComponent
         {
             label.label = IKey.str(this.getLabel());
         }
-        else if (key.equals("Color"))
-        {
-            label.color = this.color;
-        }
         else if (key.equals("Background"))
         {
             label.background = this.background;
@@ -178,11 +149,6 @@ public class UILabelComponent extends UILabelBaseComponent
     {
         super.serializeNBT(tag);
 
-        if (this.color != null)
-        {
-            tag.setInteger("Color", this.color);
-        }
-
         if (this.background != null)
         {
             tag.setInteger("Background", this.background);
@@ -197,11 +163,6 @@ public class UILabelComponent extends UILabelBaseComponent
     public void deserializeNBT(NBTTagCompound tag)
     {
         super.deserializeNBT(tag);
-
-        if (tag.hasKey("Color"))
-        {
-            this.color = tag.getInteger("Color");
-        }
 
         if (tag.hasKey("Background"))
         {

@@ -2,12 +2,13 @@ package mchorse.mappet.client.gui.utils.text;
 
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
+import mchorse.mclib.client.gui.framework.elements.utils.ITextColoring;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 
 import java.util.List;
 
-public class GuiText extends GuiElement
+public class GuiText extends GuiElement implements ITextColoring
 {
     private IKey temp = IKey.EMPTY;
     private List<String> text;
@@ -81,6 +82,12 @@ public class GuiText extends GuiElement
         this.paddingV = vertical;
 
         return this;
+    }
+
+    @Override
+    public void setColor(int color, boolean shadow)
+    {
+        this.color(color, shadow);
     }
 
     @Override
