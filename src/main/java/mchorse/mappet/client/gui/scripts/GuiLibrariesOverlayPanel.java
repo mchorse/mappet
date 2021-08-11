@@ -42,6 +42,7 @@ public class GuiLibrariesOverlayPanel extends GuiStringOverlayPanel
 
             return menu.shadow();
         });
+        this.strings.list.sorting();
     }
 
     /* Context menu callbacks */

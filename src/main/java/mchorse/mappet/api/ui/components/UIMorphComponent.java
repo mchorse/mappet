@@ -152,7 +152,7 @@ public class UIMorphComponent extends UIComponent
      * Change camera's orbit position in the morph component. The default camera position (<code>0</code>,
      * <code>1</code>, <code>0</code>).
      *
-     * <p>ProTip: you can enable UI debug option in Ctrl + 0 > Mappet, you can position the morph
+     * <p>ProTip: you can enable UI debug option in Ctrl + 0 &gt; Mappet, you can position the morph
      * after running the script, right click somewhere within its frame, and click Copy camera
      * information... context menu item. It will copy the configuration of camera, which you can
      * paste into the code.</p>

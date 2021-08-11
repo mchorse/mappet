@@ -1,6 +1,5 @@
 package mchorse.mappet.api.scripts.user.entities;
 
-import mchorse.mappet.api.scripts.code.mappet.MappetUIContext;
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
 import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
@@ -275,7 +274,7 @@ public interface IScriptPlayer extends IScriptEntity
     public void closeUI();
 
     /**
-     * Get the UI context of currently opened user UI. See {@link MappetUIContext}
+     * Get the UI context of currently opened user UI. See {@link IMappetUIContext}
      * for code examples.
      */
     public IMappetUIContext getUIContext();
