@@ -119,7 +119,7 @@ public class ScriptManager extends BaseManager<Script>
             return null;
         }
 
-        script.start();
+        script.start(this);
 
         return script;
     }
