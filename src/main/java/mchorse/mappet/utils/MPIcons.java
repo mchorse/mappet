@@ -9,7 +9,14 @@ public class MPIcons
 {
     public static final ResourceLocation TEXTURE = new ResourceLocation(Mappet.MOD_ID, "textures/gui/icons.png");
 
-    public static final Icon REPL = IconRegistry.register("repl", new Icon(TEXTURE, 0, 0));
-    public static final Icon IN = IconRegistry.register("in", new Icon(TEXTURE, 16, 0));
-    public static final Icon OUT = IconRegistry.register("out", new Icon(TEXTURE, 32, 0));
+    public static final Icon REPL = new Icon(TEXTURE, 0, 0);
+    public static final Icon IN = new Icon(TEXTURE, 16, 0);
+    public static final Icon OUT = new Icon(TEXTURE, 32, 0);
+
+    public static void register()
+    {
+        IconRegistry.register("repl", REPL);
+        IconRegistry.register("in", IN);
+        IconRegistry.register("out", OUT);
+    }
 }

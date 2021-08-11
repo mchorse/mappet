@@ -58,6 +58,7 @@ import mchorse.mappet.events.RegisterTriggerBlockEvent;
 import mchorse.mappet.events.RegisterUIComponentEvent;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.utils.Colors;
+import mchorse.mappet.utils.MPIcons;
 import mchorse.mappet.utils.MappetNpcSelector;
 import mchorse.mappet.utils.MetamorphHandler;
 import mchorse.mappet.utils.ScriptUtils;
@@ -139,6 +140,7 @@ public class CommonProxy
         Mappet.EVENT_BUS.register(eventHandler);
 
         this.initiateJS();
+        MPIcons.register();
     }
 
     /**
