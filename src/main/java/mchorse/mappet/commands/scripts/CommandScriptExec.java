@@ -56,7 +56,7 @@ public class CommandScriptExec extends CommandScriptBase
         catch (ScriptException e)
         {
             e.printStackTrace();
-            throw new CommandException("script.error", args[1], e.getColumnNumber(), e.getLineNumber(), e.getMessage());
+            throw new CommandException("script.error", e.getFileName(), e.getLineNumber(), e.getColumnNumber(), e.getMessage());
         }
         catch (Exception e)
         {

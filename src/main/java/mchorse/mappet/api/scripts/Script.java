@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraftforge.common.util.Constants;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.script.Invocable;
 import javax.script.ScriptContext;
@@ -31,6 +32,7 @@ public class Script extends AbstractData
     public List<String> libraries = new ArrayList<String>();
 
     private ScriptEngine engine;
+    private List<ScriptRange> ranges;
 
     public Script()
     {}
@@ -46,6 +48,7 @@ public class Script extends AbstractData
 
             StringBuilder finalCode = new StringBuilder();
             Set<String> alreadyLoaded = new HashSet<String>();
+            int total = 0;
 
             for (String library : this.libraries)
             {
@@ -59,8 +62,19 @@ public class Script extends AbstractData
                 try
                 {
                     File jsFile = manager.getJSFile(library);
+                    String code = FileUtils.readFileToString(jsFile, Utils.getCharset());
 
-                    finalCode.append(FileUtils.readFileToString(jsFile, Utils.getCharset()));
+                    finalCode.append(code);
+                    finalCode.append("\n");
+
+                    if (this.ranges == null)
+                    {
+                        this.ranges = new ArrayList<ScriptRange>();
+                    }
+
+                    this.ranges.add(new ScriptRange(total, library));
+
+                    total += StringUtils.countMatches(code, "\n") + 1;
                 }
                 catch (Exception e)
                 {
@@ -72,6 +86,11 @@ public class Script extends AbstractData
             }
 
             finalCode.append(this.code);
+
+            if (this.ranges != null)
+            {
+                this.ranges.add(new ScriptRange(total, this.getId()));
+            }
 
             this.engine.put("mappet", new ScriptFactory());
             this.engine.eval(finalCode.toString());
@@ -85,7 +104,51 @@ public class Script extends AbstractData
             function = "main";
         }
 
-        return ((Invocable) this.engine).invokeFunction(function, new ScriptEvent(context, this.getId(), function));
+        try
+        {
+            return ((Invocable) this.engine).invokeFunction(function, new ScriptEvent(context, this.getId(), function));
+        }
+        catch (ScriptException e)
+        {
+            ScriptException exception = processScriptException(e);
+
+            throw exception == null ? e : exception;
+        }
+    }
+
+    private ScriptException processScriptException(ScriptException e)
+    {
+        if (this.ranges == null)
+        {
+            return null;
+        }
+
+        ScriptRange range = null;
+
+        for (int i = this.ranges.size() - 1; i >= 0; i--)
+        {
+            ScriptRange possibleRange = this.ranges.get(i);
+
+            if (possibleRange.lineOffset <= e.getLineNumber() - 1)
+            {
+                range = possibleRange;
+
+                break;
+            }
+        }
+
+        if (range != null)
+        {
+            String message = e.getMessage();
+            int lineNumber = e.getLineNumber() - range.lineOffset;
+
+            message = message.replaceFirst(this.getId() + ".js", range.script + ".js (in " + this.getId() + ".js)");
+            message = message.replaceFirst("at line number [\\d]+", "at line number " + lineNumber);
+
+            return new ScriptException(message, range.script, lineNumber, e.getColumnNumber());
+        }
+
+        return null;
     }
 
     @Override
