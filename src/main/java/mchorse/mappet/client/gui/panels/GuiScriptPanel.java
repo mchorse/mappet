@@ -4,7 +4,9 @@ import mchorse.mappet.Mappet;
 import mchorse.mappet.api.scripts.Script;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
+import mchorse.mappet.client.gui.npc.utils.GuiNpcStatesOverlayPanel;
 import mchorse.mappet.client.gui.scripts.GuiDocumentationOverlayPanel;
+import mchorse.mappet.client.gui.scripts.GuiLibrariesOverlayPanel;
 import mchorse.mappet.client.gui.scripts.GuiRepl;
 import mchorse.mappet.client.gui.scripts.GuiTextEditor;
 import mchorse.mappet.client.gui.scripts.utils.GuiItemStackOverlayPanel;
@@ -27,6 +29,7 @@ import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.util.MMIcons;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
@@ -40,6 +43,8 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
 {
     public GuiIconElement toggleRepl;
     public GuiIconElement docs;
+    public GuiIconElement libraries;
+    public GuiIconElement run;
     public GuiTextEditor code;
     public GuiRepl repl;
     public GuiToggleElement unique;
@@ -129,6 +134,12 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
         this.docs = new GuiIconElement(mc, Icons.HELP, this::openDocumentation);
         this.docs.flex().relative(this.toggleRepl).y(20);
         this.docs.tooltip(IKey.lang("mappet.gui.scripts.documentation.title"), Direction.LEFT);
+        this.libraries = new GuiIconElement(mc, Icons.MORE, this::openLibraries);
+        this.libraries.flex().relative(this.docs).y(20);
+        this.libraries.tooltip(IKey.lang("mappet.gui.scripts.libraries.tooltip"), Direction.LEFT);
+        this.run = new GuiIconElement(mc, Icons.PLAY, this::runScript);
+        this.run.flex().relative(this.libraries).y(20);
+        this.run.tooltip(IKey.lang("mappet.gui.scripts.run"), Direction.LEFT);
 
         this.code = new GuiTextEditor(mc, null);
         this.code.background().context(() ->
@@ -156,7 +167,7 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
         this.sidebar.prepend(this.unique);
 
         this.toggleSidebar.removeFromParent();
-        this.add(this.repl, this.toggleSidebar, this.toggleRepl, this.docs);
+        this.add(this.repl, this.toggleSidebar, this.toggleRepl, this.docs, this.run, this.libraries);
 
         this.fill(null);
     }
@@ -166,6 +177,21 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
         GuiDocumentationOverlayPanel panel = new GuiDocumentationOverlayPanel(this.mc);
 
         GuiOverlay.addOverlay(GuiBase.getCurrent(), panel, 0.7F, 0.9F);
+    }
+
+    private void runScript(GuiIconElement element)
+    {
+        EntityPlayerSP player = Minecraft.getMinecraft().player;
+
+        this.save();
+        player.sendChatMessage("/mp script exec " + player.getUniqueID().toString() + " " + this.data.getId());
+    }
+
+    private void openLibraries(GuiIconElement element)
+    {
+        GuiLibrariesOverlayPanel overlay = new GuiLibrariesOverlayPanel(this.mc, this.data);
+
+        GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay, 0.4F, 0.6F);
     }
 
     @Override
@@ -195,6 +221,7 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
 
         this.editor.setVisible(data != null);
         this.unique.setVisible(data != null && allowed);
+        this.updateButtons();
 
         if (data != null)
         {
@@ -208,10 +235,17 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
         }
     }
 
+    private void updateButtons()
+    {
+        this.run.setVisible(this.data != null && this.allowed && this.code.isVisible());
+        this.libraries.setVisible(this.data != null && this.allowed && this.code.isVisible());
+    }
+
     private void setRepl(boolean showRepl)
     {
         this.repl.setVisible(showRepl);
         this.code.setVisible(!showRepl);
+        this.updateButtons();
     }
 
     @Override

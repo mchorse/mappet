@@ -49,6 +49,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
 
     protected boolean update;
     protected T data;
+    protected boolean allowed;
 
     public GuiMappetDashboardPanel(Minecraft mc, GuiMappetDashboard dashboard)
     {
@@ -292,6 +293,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
     public void fill(T data, boolean allowed)
     {
         this.data = data;
+        this.allowed = allowed;
         this.editor.setEnabled(allowed);
         this.remove.setEnabled(allowed);
         this.rename.setEnabled(allowed);

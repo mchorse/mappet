@@ -503,6 +503,11 @@ mappet.gui.triggers.context.copy=Copy this trigger
 mappet.gui.triggers.context.paste=Paste copied trigger
 mappet.gui.triggers.context.remove=Remove this trigger
 
+mappet.gui.scripts.run=Run script (main function)
+mappet.gui.scripts.libraries.title=Script libraries
+mappet.gui.scripts.libraries.tooltip=Manage libraries...
+mappet.gui.scripts.libraries.context.add=Add a library...
+mappet.gui.scripts.libraries.context.remove=Remove this library
 mappet.gui.scripts.documentation.title=Scripting documentation
 mappet.gui.scripts.repl.title=REPL (interactive console)
 mappet.gui.scripts.repl.hello_world=Hello, world!
