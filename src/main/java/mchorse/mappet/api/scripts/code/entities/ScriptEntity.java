@@ -225,7 +225,7 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     {
         if (this.isLivingBase())
         {
-            return new ScriptItemStack(((EntityLivingBase) this.entity).getHeldItemMainhand());
+            return ScriptItemStack.create(((EntityLivingBase) this.entity).getHeldItemMainhand());
         }
 
         return ScriptItemStack.EMPTY;
@@ -242,7 +242,7 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     {
         if (this.isLivingBase())
         {
-            return new ScriptItemStack(((EntityLivingBase) this.entity).getHeldItemOffhand());
+            return ScriptItemStack.create(((EntityLivingBase) this.entity).getHeldItemOffhand());
         }
 
         return ScriptItemStack.EMPTY;

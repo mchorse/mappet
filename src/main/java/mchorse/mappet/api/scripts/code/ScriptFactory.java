@@ -166,7 +166,7 @@ public class ScriptFactory implements IScriptFactory
     {
         if (compound != null)
         {
-            return new ScriptItemStack(new ItemStack(compound.getNBTTagComound()));
+            return ScriptItemStack.create(new ItemStack(compound.getNBTTagComound()));
         }
 
         return ScriptItemStack.EMPTY;
@@ -177,7 +177,7 @@ public class ScriptFactory implements IScriptFactory
     {
         Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemId));
 
-        return item == null ? ScriptItemStack.EMPTY : new ScriptItemStack(new ItemStack(item, count, meta));
+        return ScriptItemStack.create(new ItemStack(item, count, meta));
     }
 
     @Override
@@ -185,7 +185,7 @@ public class ScriptFactory implements IScriptFactory
     {
         Block item = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockId));
 
-        return item == null ? ScriptItemStack.EMPTY : new ScriptItemStack(new ItemStack(item, count, meta));
+        return ScriptItemStack.create(new ItemStack(item, count, meta));
     }
 
     @Override

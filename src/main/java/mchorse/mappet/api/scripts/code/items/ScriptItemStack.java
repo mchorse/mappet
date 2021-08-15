@@ -13,9 +13,19 @@ public class ScriptItemStack implements IScriptItemStack
     private ItemStack stack;
     private IScriptItem item;
 
-    public ScriptItemStack(ItemStack stack)
+    public static IScriptItemStack create(ItemStack stack)
     {
-        this.stack = stack == null ? ItemStack.EMPTY : stack;
+        if (stack == null || stack.isEmpty())
+        {
+            return EMPTY;
+        }
+
+        return new ScriptItemStack(stack);
+    }
+
+    private ScriptItemStack(ItemStack stack)
+    {
+        this.stack = stack;
     }
 
     @Override

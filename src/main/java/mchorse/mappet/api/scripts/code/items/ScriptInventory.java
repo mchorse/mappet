@@ -37,17 +37,13 @@ public class ScriptInventory implements IScriptInventory
     @Override
     public IScriptItemStack getStack(int index)
     {
-        ItemStack stack = this.inventory.getStackInSlot(index);
-
-        return stack.isEmpty() ? ScriptItemStack.EMPTY : new ScriptItemStack(stack);
+        return ScriptItemStack.create(this.inventory.getStackInSlot(index));
     }
 
     @Override
     public IScriptItemStack removeStack(int index)
     {
-        ItemStack stack = this.inventory.removeStackFromSlot(index);
-
-        return stack.isEmpty() ? ScriptItemStack.EMPTY : new ScriptItemStack(stack);
+        return ScriptItemStack.create(this.inventory.removeStackFromSlot(index));
     }
 
     @Override

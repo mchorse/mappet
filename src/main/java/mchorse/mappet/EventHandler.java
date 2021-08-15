@@ -327,7 +327,7 @@ public class EventHandler
         {
             DataContext context = new DataContext(event.getEntityPlayer());
 
-            context.getValues().put("item", new ScriptItemStack(event.getItem().getItem()));
+            context.getValues().put("item", ScriptItemStack.create(event.getItem().getItem()));
             Mappet.settings.playerItemPickup.trigger(context);
         }
     }
