@@ -53,6 +53,12 @@ public class MappetStates implements IMappetStates
     }
 
     @Override
+    public void resetMasked(String id)
+    {
+        this.states.resetMasked(id);
+    }
+
+    @Override
     public void clear()
     {
         this.states.clear();

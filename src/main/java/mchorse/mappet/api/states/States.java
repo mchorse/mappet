@@ -101,7 +101,7 @@ public class States implements INBTSerializable<NBTTagCompound>
         return previous != null;
     }
 
-    public boolean maskedReset(String id)
+    public boolean resetMasked(String id)
     {
         if (id.trim().equals("*"))
         {

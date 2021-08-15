@@ -89,10 +89,22 @@ public interface IMappetStates
      *    var states = c.getServer().getStates();
      *
      *    // The city has been defaulted
-     *    states.remove("total_spendings");
+     *    states.reset("total_spendings");
      * }</pre>
      */
     public void reset(String id);
+
+    /**
+     * Removes multiple states by using mask.
+     *
+     * <pre>{@code
+     *    var states = c.getServer().getStates();
+     *
+     *    // Remove all states that start with "regions."
+     *    states.resetMasked("regions.*");
+     * }</pre>
+     */
+    public void resetMasked(String id);
 
     /**
      * Remove all states.

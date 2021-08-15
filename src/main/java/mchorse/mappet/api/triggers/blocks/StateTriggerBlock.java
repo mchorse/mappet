@@ -41,7 +41,7 @@ public class StateTriggerBlock extends StringTriggerBlock
         }
         else
         {
-            states.maskedReset(this.string);
+            states.resetMasked(this.string);
         }
     }
 
