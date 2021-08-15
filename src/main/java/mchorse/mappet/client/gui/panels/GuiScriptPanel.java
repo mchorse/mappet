@@ -167,7 +167,7 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
         this.sidebar.prepend(this.unique);
 
         this.toggleSidebar.removeFromParent();
-        this.add(this.repl, this.toggleSidebar, this.toggleRepl, this.docs, this.run, this.libraries);
+        this.add(this.repl, this.toggleSidebar, this.toggleRepl, this.docs, this.libraries, this.run);
 
         this.fill(null);
     }
