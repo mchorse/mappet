@@ -486,7 +486,14 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     {
         super.onDeath(cause);
 
-        this.state.triggerDied.trigger(this);
+        if (cause.getTrueSource() instanceof EntityLivingBase)
+        {
+            this.state.triggerDied.trigger(new DataContext(this, (EntityLivingBase) cause.getTrueSource()));
+        }
+        else
+        {
+            this.state.triggerDied.trigger(this);
+        }
     }
 
     @Override
