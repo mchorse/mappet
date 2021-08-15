@@ -1,5 +1,6 @@
 package mchorse.mappet.client;
 
+import mchorse.mappet.Mappet;
 import mchorse.mappet.client.gui.GuiJournalScreen;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.network.Dispatcher;
@@ -86,7 +87,10 @@ public class KeyboardHandler
     {
         if (event.getGui() instanceof GuiInventory || event.getGui() instanceof GuiContainerCreative)
         {
-            event.getButtonList().add(new GuiJournalButton(-69420, 0, event.getGui().height - 20, ""));
+            int x = Mappet.journalButtonX.get();
+            int y = event.getGui().height - 20 - Mappet.journalButtonY.get();
+
+            event.getButtonList().add(new GuiJournalButton(-69420, x, y, ""));
         }
     }
 

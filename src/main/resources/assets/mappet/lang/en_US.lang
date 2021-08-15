@@ -142,6 +142,10 @@ mappet.config.gui.node_thickness=Connection thickness
 mappet.config.comments.gui.node_thickness=This option allows to change line thickness of node connections, in pixels (there might be a limit on line width on some hardware).
 mappet.config.gui.quest_preview_rewards=Preview quest rewards
 mappet.config.comments.gui.quest_preview_rewards=This option allows to toggle preview of quest rewards.
+mappet.config.gui.journal_button_x=Journal button X
+mappet.config.comments.gui.journal_button_x=Offsets the journal button in inventory GUIs on X axis
+mappet.config.gui.journal_button_y=Journal button Y
+mappet.config.comments.gui.journal_button_y=Offsets the journal button in inventory GUIs on Y axis
 
 mappet.config.script_editor.title=Script editor
 mappet.config.script_editor.tooltip=Options to tweak script editor's GUI preferences
