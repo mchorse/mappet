@@ -2,14 +2,16 @@ package mchorse.mappet.commands.scripts;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.utils.DataContext;
+import mchorse.mappet.commands.CommandMappet;
 import mchorse.mclib.commands.SubCommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
 
+import javax.annotation.Nullable;
 import javax.script.ScriptException;
-import java.util.logging.Level;
+import java.util.List;
 
 public class CommandScriptExec extends CommandScriptBase
 {
@@ -28,7 +30,7 @@ public class CommandScriptExec extends CommandScriptBase
     @Override
     public String getSyntax()
     {
-        return "{l}{6}/{r}mp {8}script exec{r} {7}<player> <id> [function] [data]{r}";
+        return "{l}{6}/{r}mp {8}script exec{r} {7}<target> <id> [function] [data]{r}";
     }
 
     @Override
@@ -40,8 +42,7 @@ public class CommandScriptExec extends CommandScriptBase
     @Override
     public void executeCommand(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
-        EntityPlayerMP player = getPlayer(server, sender, args[0]);
-        DataContext context = new DataContext(player);
+        DataContext context = CommandMappet.createContext(server, sender, args[0]);
         String function = args.length > 2 ? args[2] : "main";
 
         if (args.length > 3)
@@ -63,5 +64,16 @@ public class CommandScriptExec extends CommandScriptBase
             e.printStackTrace();
             throw new CommandException("script.empty", args[1], e.getClass().getSimpleName() + ": " + e.getMessage());
         }
+    }
+
+    @Override
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos)
+    {
+        if (args.length == 1)
+        {
+            return getListOfStringsMatchingLastWord(args, CommandMappet.listOfPlayersAndServer(server));
+        }
+
+        return super.getTabCompletions(server, sender, args, targetPos);
     }
 }

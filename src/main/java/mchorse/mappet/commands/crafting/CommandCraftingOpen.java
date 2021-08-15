@@ -4,12 +4,17 @@ import mchorse.mappet.Mappet;
 import mchorse.mappet.api.crafting.CraftingTable;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
+import mchorse.mappet.commands.CommandMappet;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.crafting.PacketCraftingTable;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class CommandCraftingOpen extends CommandCraftingBase
 {
@@ -51,5 +56,16 @@ public class CommandCraftingOpen extends CommandCraftingBase
         }
 
         Mappet.crafting.open(player, table);
+    }
+
+    @Override
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos)
+    {
+        if (args.length == 1)
+        {
+            return getListOfStringsMatchingLastWord(args, CommandMappet.listOfPlayers(server));
+        }
+
+        return super.getTabCompletions(server, sender, args, targetPos);
     }
 }
