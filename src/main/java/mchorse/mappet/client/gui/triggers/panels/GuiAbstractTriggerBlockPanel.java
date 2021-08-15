@@ -12,7 +12,7 @@ import net.minecraft.client.Minecraft;
 
 public abstract class GuiAbstractTriggerBlockPanel <T extends AbstractTriggerBlock> extends GuiElement
 {
-    public GuiTrackpadElement delay;
+    public GuiTrackpadElement frequency;
 
     protected GuiTriggerOverlayPanel overlay;
     protected T block;
@@ -24,8 +24,8 @@ public abstract class GuiAbstractTriggerBlockPanel <T extends AbstractTriggerBlo
         this.overlay = overlay;
         this.block = block;
 
-        this.delay = new GuiTrackpadElement(mc, (v) -> this.block.delay = v.intValue());
-        this.delay.limit(1).integer().setValue(block.delay);
+        this.frequency = new GuiTrackpadElement(mc, (v) -> this.block.frequency = v.intValue());
+        this.frequency.limit(1).integer().setValue(block.frequency);
 
         GuiLabel label = Elements.label(IKey.lang("mappet.gui.trigger_types." + CommonProxy.getTriggerBlocks().getType(block)));
 
@@ -35,6 +35,6 @@ public abstract class GuiAbstractTriggerBlockPanel <T extends AbstractTriggerBlo
 
     public void addDelay()
     {
-        this.add(Elements.label(IKey.lang("mappet.gui.triggers.delay")).marginTop(12), this.delay);
+        this.add(Elements.label(IKey.lang("mappet.gui.triggers.frequency")).marginTop(12), this.frequency);
     }
 }

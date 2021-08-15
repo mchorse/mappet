@@ -456,7 +456,7 @@ mappet.gui.syntax_theme.context.remove=Remove this theme
 mappet.gui.syntax_theme.modal.add=Type into a name for new theme:
 
 mappet.gui.triggers.title=Trigger editor
-mappet.gui.triggers.delay=Delay
+mappet.gui.triggers.frequency=Delay
 mappet.gui.triggers.function=Function
 mappet.gui.triggers.script.function_tooltip=Script entry function (§7main§r is default function name)
 mappet.gui.triggers.context.add=Add a trigger...

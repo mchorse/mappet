@@ -73,7 +73,7 @@ public class Trigger implements INBTSerializable<NBTTagCompound>
                 return;
             }
 
-            block.triggerWithDelay(context);
+            block.triggerWithFrequency(context);
         }
     }
 

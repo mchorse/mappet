@@ -456,7 +456,7 @@ mappet.gui.syntax_theme.context.remove=Удалить эту тему
 mappet.gui.syntax_theme.modal.add=Впишите название для новой темы:
 
 mappet.gui.triggers.title=Редактор триггеров
-mappet.gui.triggers.delay=Задержка
+mappet.gui.triggers.frequency=Задержка
 mappet.gui.triggers.function=Функция
 mappet.gui.triggers.script.function_tooltip=Функция записи скриптов (§7main§r является названием функции по умолчанию)
 mappet.gui.triggers.context.add=Добавьте триггер...

@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class AbstractTriggerBlock extends AbstractBlock
 {
-    public int delay = 1;
+    public int frequency = 1;
 
     private int tick;
 
@@ -21,11 +21,11 @@ public abstract class AbstractTriggerBlock extends AbstractBlock
         return I18n.format("mappet.gui.trigger_types." + CommonProxy.getTriggerBlocks().getType(this));
     }
 
-    public void triggerWithDelay(DataContext context)
+    public void triggerWithFrequency(DataContext context)
     {
         this.tick += 1;
 
-        if (this.tick > 0 && this.tick % Math.max(this.delay, 1) == 0)
+        if (this.tick > 0 && this.tick % Math.max(this.frequency, 1) == 0)
         {
             this.trigger(context);
             this.tick = 0;
@@ -39,12 +39,18 @@ public abstract class AbstractTriggerBlock extends AbstractBlock
     @Override
     protected void serializeNBT(NBTTagCompound tag)
     {
-        tag.setInteger("Delay", this.delay);
+        tag.setInteger("Frequency", this.frequency);
     }
 
     @Override
     public void deserializeNBT(NBTTagCompound tag)
     {
-        this.delay = tag.getInteger("Delay");
+        /* Backward compatibility with rc3 and below */
+        if (tag.hasKey("Delay"))
+        {
+            tag.setTag("Frequency", tag.getTag("Delay"));
+        }
+
+        this.frequency = tag.getInteger("Frequency");
     }
 }
