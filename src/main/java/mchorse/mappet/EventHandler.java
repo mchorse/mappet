@@ -3,6 +3,7 @@ package mchorse.mappet;
 import mchorse.mappet.api.huds.HUDStage;
 import mchorse.mappet.api.quests.Quest;
 import mchorse.mappet.api.quests.Quests;
+import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.IExecutable;
 import mchorse.mappet.capabilities.character.Character;
@@ -321,6 +322,14 @@ public class EventHandler
     public void onPlayerPickUp(EntityItemPickupEvent event)
     {
         this.playersToCheck.add(event.getEntityPlayer());
+
+        if (!Mappet.settings.playerDeath.isEmpty())
+        {
+            DataContext context = new DataContext(event.getEntityPlayer());
+
+            context.getValues().put("item", new ScriptItemStack(event.getItem().getItem()));
+            Mappet.settings.playerItemPickup.trigger(context);
+        }
     }
 
     @SubscribeEvent
@@ -328,7 +337,7 @@ public class EventHandler
     {
         Entity source = event.getSource().getTrueSource();
 
-        if (event.getEntity() instanceof EntityPlayer)
+        if (event.getEntity() instanceof EntityPlayer && !Mappet.settings.playerDeath.isEmpty())
         {
             EntityPlayer player = (EntityPlayer) event.getEntity();
             DataContext context = new DataContext(player, source);
