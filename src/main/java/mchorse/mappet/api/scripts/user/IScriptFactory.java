@@ -388,7 +388,7 @@ public interface IScriptFactory
      *        var button = ui.button("Push me!").id("button");
      *
      *        label.rxy(0.5, 0.5).wh(80, 20).anchor(0.5).labelAnchor(0.5);
-     *        label.rx(0.5).y(0.5, 25).wh(80, 20).anchor(0.5);
+     *        label.rx(0.5).ry(0.5, 25).wh(80, 20).anchor(0.5);
      *
      *        c.getSubject().openUI(ui);
      *    }
@@ -432,7 +432,7 @@ public interface IScriptFactory
      *        var button = ui.button("Push me!").id("button");
      *
      *        label.rxy(0.5, 0.5).wh(80, 20).anchor(0.5).labelAnchor(0.5);
-     *        label.rx(0.5).y(0.5, 25).wh(80, 20).anchor(0.5);
+     *        label.rx(0.5).ry(0.5, 25).wh(80, 20).anchor(0.5);
      *
      *        c.getSubject().openUI(ui);
      *    }

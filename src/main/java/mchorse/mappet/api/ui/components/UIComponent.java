@@ -298,9 +298,8 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
     {
         this.change("X");
 
-        this.x.percentage = false;
-        this.x.value = value;
-        this.x.offset = 0;
+        this.x.value = 0F;
+        this.x.offset = value;
 
         return this;
     }
@@ -325,7 +324,6 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
     {
         this.change("X");
 
-        this.x.percentage = true;
         this.x.value = value;
         this.x.offset = offset;
 
@@ -339,9 +337,8 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
     {
         this.change("Y");
 
-        this.y.percentage = false;
-        this.y.value = value;
-        this.y.offset = 0;
+        this.y.value = 0F;
+        this.y.offset = value;
 
         return this;
     }
@@ -366,7 +363,6 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
     {
         this.change("Y");
 
-        this.y.percentage = true;
         this.y.value = value;
         this.y.offset = offset;
 
@@ -380,9 +376,8 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
     {
         this.change("W");
 
-        this.w.percentage = false;
-        this.w.value = value;
-        this.w.offset = 0;
+        this.w.value = 0F;
+        this.w.offset = value;
 
         return this;
     }
@@ -411,7 +406,6 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
     {
         this.change("W");
 
-        this.w.percentage = true;
         this.w.value = value;
         this.w.offset = offset;
 
@@ -425,9 +419,8 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
     {
         this.change("H");
 
-        this.h.percentage = false;
-        this.h.value = value;
-        this.h.offset = 0;
+        this.h.value = 0F;
+        this.h.offset = value;
 
         return this;
     }
@@ -456,7 +449,6 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
     {
         this.change("H");
 
-        this.h.percentage = true;
         this.h.value = value;
         this.h.offset = offset;
 

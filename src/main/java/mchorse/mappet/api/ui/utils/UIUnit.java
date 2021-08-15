@@ -11,7 +11,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class UIUnit implements INBTSerializable<NBTTagCompound>
 {
     public float value;
-    public boolean percentage;
     public int offset;
     public int max;
     public float anchor;
@@ -23,8 +22,16 @@ public class UIUnit implements INBTSerializable<NBTTagCompound>
     {
         GuiElement target = context.getElement(this.target);
 
-        unit.set(this.value, this.percentage ? Flex.Measure.RELATIVE : Flex.Measure.PIXELS);
-        unit.offset = this.offset;
+        if (this.value != 0)
+        {
+            unit.set(this.value, Flex.Measure.RELATIVE);
+            unit.offset = this.offset;
+        }
+        else
+        {
+            unit.set(this.offset, Flex.Measure.PIXELS);
+        }
+
         unit.max = this.max;
         unit.anchor = this.anchor;
         unit.target = target == null ? null : target.flex();
@@ -37,7 +44,6 @@ public class UIUnit implements INBTSerializable<NBTTagCompound>
         NBTTagCompound tag = new NBTTagCompound();
 
         tag.setFloat("Value", this.value);
-        tag.setBoolean("Percentage", this.percentage);
         tag.setInteger("Offset", this.offset);
         tag.setFloat("Anchor", this.anchor);
         tag.setString("Target", this.target);
@@ -50,7 +56,6 @@ public class UIUnit implements INBTSerializable<NBTTagCompound>
     public void deserializeNBT(NBTTagCompound tag)
     {
         this.value = tag.getFloat("Value");
-        this.percentage = tag.getBoolean("Percentage");
         this.offset = tag.getInteger("Offset");
         this.anchor = tag.getFloat("Anchor");
         this.target = tag.getString("Target");
