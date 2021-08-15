@@ -9,11 +9,12 @@ import mchorse.mappet.api.utils.IExecutable;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.CharacterProvider;
 import mchorse.mappet.capabilities.character.ICharacter;
+import mchorse.mappet.client.KeyboardHandler;
 import mchorse.mappet.client.RenderingHandler;
 import mchorse.mappet.commands.data.CommandDataClear;
 import mchorse.mappet.events.StateChangedEvent;
 import mchorse.mappet.network.Dispatcher;
-import mchorse.mappet.network.common.events.PacketEventPlayerHotkeys;
+import mchorse.mappet.network.common.events.PacketEventHotkeys;
 import mchorse.mappet.network.common.quests.PacketQuest;
 import mchorse.mappet.network.common.quests.PacketQuests;
 import mchorse.mappet.network.common.scripts.PacketClick;
@@ -314,7 +315,7 @@ public class EventHandler
 
         if (!Mappet.settings.hotkeys.hotkeys.isEmpty())
         {
-            Dispatcher.sendTo(new PacketEventPlayerHotkeys(Mappet.settings.hotkeys), player);
+            Dispatcher.sendTo(new PacketEventHotkeys(Mappet.settings.hotkeys), player);
         }
     }
 
@@ -481,6 +482,8 @@ public class EventHandler
 
             RegisterHandler.sentSkin = true;
         }
+
+        KeyboardHandler.updateHeldKeys();
     }
 
     @SubscribeEvent

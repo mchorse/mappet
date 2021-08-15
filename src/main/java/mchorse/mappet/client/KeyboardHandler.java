@@ -1,6 +1,7 @@
 package mchorse.mappet.client;
 
 import mchorse.mappet.Mappet;
+import mchorse.mappet.api.misc.hotkeys.TriggerHotkey;
 import mchorse.mappet.client.gui.GuiJournalScreen;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.network.Dispatcher;
@@ -26,7 +27,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -38,12 +42,35 @@ import java.util.Set;
 @SideOnly(Side.CLIENT)
 public class KeyboardHandler
 {
-    public static final Set<Integer> hotkeys = new HashSet<Integer>();
+    public static final Set<TriggerHotkey> hotkeys = new HashSet<TriggerHotkey>();
+    public static final List<TriggerHotkey> held = new ArrayList<TriggerHotkey>();
 
     public KeyBinding openMappetDashboard;
     public KeyBinding openJournal;
 
     private GuiButton button;
+
+    public static void updateHeldKeys()
+    {
+        if (held.isEmpty())
+        {
+            return;
+        }
+
+        Iterator<TriggerHotkey> it = held.iterator();
+
+        while (it.hasNext())
+        {
+            int keycode = it.next().keycode;
+
+            if (!Keyboard.isKeyDown(keycode))
+            {
+                it.remove();
+
+                Dispatcher.sendToServer(new PacketEventHotkey(keycode, false));
+            }
+        }
+    }
 
     public KeyboardHandler()
     {
@@ -73,11 +100,26 @@ public class KeyboardHandler
 
         if (Keyboard.getEventKeyState())
         {
-            int key = Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey();
+            handleKeys();
+        }
+    }
 
-            if (hotkeys.contains(key))
+    private void handleKeys()
+    {
+        int key = Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey();
+
+        for (TriggerHotkey hotkey : hotkeys)
+        {
+            if (hotkey.keycode == key)
             {
-                Dispatcher.sendToServer(new PacketEventHotkey(key));
+                Dispatcher.sendToServer(new PacketEventHotkey(key, true));
+
+                if (hotkey.toggle)
+                {
+                    held.add(hotkey);
+                }
+
+                return;
             }
         }
     }

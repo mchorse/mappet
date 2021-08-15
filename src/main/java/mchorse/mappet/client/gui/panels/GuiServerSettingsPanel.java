@@ -4,7 +4,7 @@ import mchorse.mappet.api.misc.ServerSettings;
 import mchorse.mappet.api.states.States;
 import mchorse.mappet.api.triggers.Trigger;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
-import mchorse.mappet.client.gui.events.GuiEventHotkeysOverlayPanel;
+import mchorse.mappet.client.gui.events.GuiTriggerHotkeysOverlayPanel;
 import mchorse.mappet.client.gui.states.GuiStatesEditor;
 import mchorse.mappet.client.gui.triggers.GuiTriggerElement;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
@@ -29,7 +29,6 @@ import mchorse.mclib.client.gui.utils.ScrollDirection;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.ColorUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -113,7 +112,7 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
 
     private void openHotkeysEditor()
     {
-        GuiEventHotkeysOverlayPanel overlay = new GuiEventHotkeysOverlayPanel(this.mc, this.settings.hotkeys);
+        GuiTriggerHotkeysOverlayPanel overlay = new GuiTriggerHotkeysOverlayPanel(this.mc, this.settings.hotkeys);
 
         GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay, 0.5F, 0.7F);
     }

@@ -42,7 +42,7 @@ import mchorse.mappet.network.common.crafting.PacketCraftingTable;
 import mchorse.mappet.network.common.dialogue.PacketDialogueFragment;
 import mchorse.mappet.network.common.dialogue.PacketPickReply;
 import mchorse.mappet.network.common.events.PacketEventHotkey;
-import mchorse.mappet.network.common.events.PacketEventPlayerHotkeys;
+import mchorse.mappet.network.common.events.PacketEventHotkeys;
 import mchorse.mappet.network.common.factions.PacketFactions;
 import mchorse.mappet.network.common.factions.PacketRequestFactions;
 import mchorse.mappet.network.common.huds.PacketHUDMorph;
@@ -159,7 +159,7 @@ public class Dispatcher
 
             /* Events */
             this.register(PacketEventHotkey.class, ServerHandlerEventHotkey.class, Side.SERVER);
-            this.register(PacketEventPlayerHotkeys.class, ClientHandlerEventPlayerHotkeys.class, Side.CLIENT);
+            this.register(PacketEventHotkeys.class, ClientHandlerEventPlayerHotkeys.class, Side.CLIENT);
 
             /* Scripts */
             this.register(PacketEntityRotations.class, ClientHandlerEntityRotations.class, Side.CLIENT);

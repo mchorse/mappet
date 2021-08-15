@@ -8,6 +8,7 @@ import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlayPanel;
 import mchorse.mappet.utils.Colors;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.input.GuiKeybindElement;
 import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
@@ -22,25 +23,26 @@ import org.lwjgl.input.Keyboard;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class GuiEventHotkeysOverlayPanel extends GuiOverlayPanel
+public class GuiTriggerHotkeysOverlayPanel extends GuiOverlayPanel
 {
-    public GuiEventHotkeyList list;
+    public GuiTriggerHotkeyList list;
 
     public GuiScrollElement editor;
     public GuiKeybindElement key;
+    public GuiToggleElement toggle;
     public GuiTriggerElement trigger;
     public GuiCheckerElement enabled;
 
     private TriggerHotkeys hotkeys;
     private TriggerHotkey hotkey;
 
-    public GuiEventHotkeysOverlayPanel(Minecraft mc, TriggerHotkeys hotkeys)
+    public GuiTriggerHotkeysOverlayPanel(Minecraft mc, TriggerHotkeys hotkeys)
     {
         super(mc, IKey.lang("mappet.gui.nodes.event.hotkeys.title"));
 
         this.hotkeys = hotkeys;
 
-        this.list = new GuiEventHotkeyList(mc, (l) -> this.pickHotkey(l.get(0), false));
+        this.list = new GuiTriggerHotkeyList(mc, (l) -> this.pickHotkey(l.get(0), false));
         this.list.sorting().setList(hotkeys.hotkeys);
         this.list.context(() ->
         {
@@ -67,13 +69,15 @@ public class GuiEventHotkeysOverlayPanel extends GuiOverlayPanel
                 this.hotkey.keycode = k;
             }
         });
+        this.toggle = new GuiToggleElement(mc, IKey.lang("mappet.gui.nodes.event.hotkeys.toggle"), (b) -> this.hotkey.toggle = b.isToggled());
+        this.toggle.tooltip(IKey.lang("mappet.gui.nodes.event.hotkeys.toggle_tooltip"));
         this.trigger = new GuiTriggerElement(mc);
         this.enabled = new GuiCheckerElement(mc);
 
         this.list.flex().relative(this.content).w(120).h(1F);
         this.editor.flex().relative(this.content).x(120).w(1F, -120).h(1F).column(5).vertical().stretch().scroll().padding(10);
 
-        this.editor.add(Elements.label(IKey.lang("mappet.gui.nodes.event.hotkeys.key")), this.key);
+        this.editor.add(Elements.label(IKey.lang("mappet.gui.nodes.event.hotkeys.key")), this.key, this.toggle);
         this.editor.add(this.trigger.marginTop(12));
         this.editor.add(Elements.label(IKey.lang("mappet.gui.nodes.event.hotkeys.enabled")).marginTop(12), this.enabled);
 
@@ -109,6 +113,7 @@ public class GuiEventHotkeysOverlayPanel extends GuiOverlayPanel
         if (hotkey != null)
         {
             this.key.setKeybind(hotkey.keycode);
+            this.toggle.toggled(hotkey.toggle);
             this.trigger.set(hotkey.trigger);
             this.enabled.set(hotkey.enabled);
 
@@ -130,9 +135,9 @@ public class GuiEventHotkeysOverlayPanel extends GuiOverlayPanel
         }
     }
 
-    public static class GuiEventHotkeyList extends GuiListElement<TriggerHotkey>
+    public static class GuiTriggerHotkeyList extends GuiListElement<TriggerHotkey>
     {
-        public GuiEventHotkeyList(Minecraft mc, Consumer<List<TriggerHotkey>> callback)
+        public GuiTriggerHotkeyList(Minecraft mc, Consumer<List<TriggerHotkey>> callback)
         {
             super(mc, callback);
         }

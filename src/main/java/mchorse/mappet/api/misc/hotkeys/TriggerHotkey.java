@@ -9,8 +9,21 @@ import net.minecraftforge.common.util.INBTSerializable;
 public class TriggerHotkey implements INBTSerializable<NBTTagCompound>
 {
     public int keycode;
+    public boolean toggle;
     public Trigger trigger = new Trigger();
     public Checker enabled = new Checker(true);
+
+    public TriggerHotkey()
+    {
+        this.trigger = new Trigger();
+        this.enabled = new Checker(true);
+    }
+
+    public TriggerHotkey(int keycode, boolean toggle)
+    {
+        this.keycode = keycode;
+        this.toggle = toggle;
+    }
 
     public void execute(DataContext context)
     {
@@ -31,6 +44,7 @@ public class TriggerHotkey implements INBTSerializable<NBTTagCompound>
         NBTTagCompound tag = new NBTTagCompound();
 
         tag.setInteger("Keycode", this.keycode);
+        tag.setBoolean("Toggle", this.toggle);
         tag.setTag("Trigger", this.trigger.serializeNBT());
         tag.setTag("Enabled", this.enabled.serializeNBT());
 
@@ -41,6 +55,7 @@ public class TriggerHotkey implements INBTSerializable<NBTTagCompound>
     public void deserializeNBT(NBTTagCompound tag)
     {
         this.keycode = tag.getInteger("Keycode");
+        this.toggle = tag.getBoolean("Toggle");
         this.trigger.deserializeNBT(tag.getCompoundTag("Trigger"));
         this.enabled.deserializeNBT(tag.getTag("Enabled"));
     }

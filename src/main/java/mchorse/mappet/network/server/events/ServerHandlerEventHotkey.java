@@ -10,6 +10,6 @@ public class ServerHandlerEventHotkey extends ServerMessageHandler<PacketEventHo
     @Override
     public void run(EntityPlayerMP player, PacketEventHotkey message)
     {
-        Mappet.settings.hotkeys.execute(player, message.keycode);
+        Mappet.settings.hotkeys.execute(player, message.keycode, message.down);
     }
 }

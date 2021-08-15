@@ -14,13 +14,13 @@ public class TriggerHotkeys implements INBTSerializable<NBTTagCompound>
 {
     public List<TriggerHotkey> hotkeys = new ArrayList<TriggerHotkey>();
 
-    public void execute(EntityPlayer player, int keycode)
+    public void execute(EntityPlayer player, int keycode, boolean down)
     {
         for (TriggerHotkey hotkey : this.hotkeys)
         {
             if (hotkey.keycode == keycode)
             {
-                hotkey.execute(new DataContext(player).set("key", keycode));
+                hotkey.execute(new DataContext(player).set("key", keycode).set("down", down ? 1 : 0));
 
                 break;
             }

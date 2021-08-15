@@ -3,7 +3,7 @@ package mchorse.mappet.network.server.content;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.content.PacketServerSettings;
-import mchorse.mappet.network.common.events.PacketEventPlayerHotkeys;
+import mchorse.mappet.network.common.events.PacketEventHotkeys;
 import mchorse.mclib.network.ServerMessageHandler;
 import mchorse.mclib.utils.OpHelper;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -23,7 +23,7 @@ public class ServerHandlerServerSettings extends ServerMessageHandler<PacketServ
 
         for (EntityPlayerMP p : player.getServer().getPlayerList().getPlayers())
         {
-            Dispatcher.sendTo(new PacketEventPlayerHotkeys(Mappet.settings.hotkeys), p);
+            Dispatcher.sendTo(new PacketEventHotkeys(Mappet.settings.hotkeys), p);
         }
     }
 }

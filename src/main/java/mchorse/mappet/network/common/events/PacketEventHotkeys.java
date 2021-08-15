@@ -8,19 +8,19 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PacketEventPlayerHotkeys implements IMessage
+/**
+ * This packet reads only the key code and toggle mode (so no trigger or condition)!
+ */
+public class PacketEventHotkeys implements IMessage
 {
-    public List<Integer> hotkeys = new ArrayList<Integer>();
+    public List<TriggerHotkey> hotkeys = new ArrayList<TriggerHotkey>();
 
-    public PacketEventPlayerHotkeys()
+    public PacketEventHotkeys()
     {}
 
-    public PacketEventPlayerHotkeys(TriggerHotkeys hotkeys)
+    public PacketEventHotkeys(TriggerHotkeys hotkeys)
     {
-        for (TriggerHotkey hotkey : hotkeys.hotkeys)
-        {
-            this.hotkeys.add(hotkey.keycode);
-        }
+        this.hotkeys.addAll(hotkeys.hotkeys);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class PacketEventPlayerHotkeys implements IMessage
     {
         for (int i = 0, c = buf.readInt(); i < c; i++)
         {
-            this.hotkeys.add(buf.readInt());
+            this.hotkeys.add(new TriggerHotkey(buf.readInt(), buf.readBoolean()));
         }
     }
 
@@ -37,9 +37,10 @@ public class PacketEventPlayerHotkeys implements IMessage
     {
         buf.writeInt(this.hotkeys.size());
 
-        for (Integer integer : this.hotkeys)
+        for (TriggerHotkey hotkey : this.hotkeys)
         {
-            buf.writeInt(integer);
+            buf.writeInt(hotkey.keycode);
+            buf.writeBoolean(hotkey.toggle);
         }
     }
 }
