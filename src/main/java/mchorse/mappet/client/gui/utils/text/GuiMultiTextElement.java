@@ -1144,13 +1144,16 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         {
             String character = this.getFromChar(context.typedChar);
 
-            this.deleteSelection();
-            this.deselect();
-            this.writeCharacter(character);
-            this.moveCursor(1, 0);
+            if (!character.isEmpty())
+            {
+                this.deleteSelection();
+                this.deselect();
+                this.writeCharacter(character);
+                this.moveCursor(1, 0);
 
-            undo.ready().post(character, this.cursor, this.selection);
-            this.playSound(SoundEvents.BLOCK_STONE_PLACE);
+                undo.ready().post(character, this.cursor, this.selection);
+                this.playSound(SoundEvents.BLOCK_STONE_PLACE);
+            }
 
             return true;
         }
@@ -1158,7 +1161,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         return false;
     }
 
-    private void playSound(SoundEvent event)
+    protected void playSound(SoundEvent event)
     {
         if (Mappet.scriptEditorSounds.get())
         {

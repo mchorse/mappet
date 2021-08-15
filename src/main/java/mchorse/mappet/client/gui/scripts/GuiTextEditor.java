@@ -11,6 +11,7 @@ import mchorse.mclib.utils.ColorUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.init.SoundEvents;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,6 +113,19 @@ public class GuiTextEditor extends GuiMultiTextElement
     @Override
     protected String getFromChar(char typedChar)
     {
+        if (
+            this.wasDoubleInsert(typedChar, ')', '(') ||
+            this.wasDoubleInsert(typedChar, ']', '[') ||
+            this.wasDoubleInsert(typedChar, '}', '{') ||
+            this.wasDoubleInsert(typedChar, '"', '"') ||
+            this.wasDoubleInsert(typedChar, '\'', '\'')
+        ) {
+            this.moveCursor(1, 0);
+            this.playSound(SoundEvents.BLOCK_STONE_PLACE);
+
+            return "";
+        }
+
         if (typedChar == '(')
         {
             return "()";
@@ -134,6 +148,22 @@ public class GuiTextEditor extends GuiMultiTextElement
         }
 
         return super.getFromChar(typedChar);
+    }
+
+    private boolean wasDoubleInsert(char input, char target, char supplementary)
+    {
+        if (input != target)
+        {
+            return false;
+        }
+
+        String line = this.text.get(this.cursor.line);
+
+        return line.length() >= 2
+            && this.cursor.offset > 0
+            && this.cursor.offset < line.length()
+            && line.charAt(this.cursor.offset) == target
+            && line.charAt(this.cursor.offset - 1) == supplementary;
     }
 
     @Override

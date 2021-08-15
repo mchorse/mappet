@@ -252,6 +252,11 @@ public class SyntaxHighlighter
             TextSegment previous = list.get(list.size() - 1);
             boolean bufferIsKeyword = this.buffer.trim().equals(keyword);
 
+            if (previous.color == this.style.strings)
+            {
+                return false;
+            }
+
             if (bufferIsKeyword && previous.text.equals("function"))
             {
                 return false;
