@@ -215,6 +215,7 @@ mappet.gui.settings.triggers.server_tick=On server tick
 mappet.gui.settings.triggers.player_login=On player log in
 mappet.gui.settings.triggers.player_lmb=On player left click
 mappet.gui.settings.triggers.player_rmb=On player right click
+mappet.gui.settings.triggers.player_death=On player death
 
 mappet.gui.quests.cancelable=Cancelable
 mappet.gui.quests.instant=Instant

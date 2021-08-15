@@ -190,7 +190,7 @@ public class EventHandler
         {
             if (!Mappet.settings.damageEntity.isEmpty())
             {
-                DataContext context = new DataContext(event.getEntityLiving(), (EntityPlayer) source.getTrueSource());
+                DataContext context = new DataContext(event.getEntityLiving(), source.getTrueSource());
 
                 Mappet.settings.damageEntity.trigger(context.set("damage", event.getAmount()));
 
@@ -327,6 +327,19 @@ public class EventHandler
     public void onMobKilled(LivingDeathEvent event)
     {
         Entity source = event.getSource().getTrueSource();
+
+        if (event.getEntity() instanceof EntityPlayer)
+        {
+            EntityPlayer player = (EntityPlayer) event.getEntity();
+            DataContext context = new DataContext(player, source);
+
+            Mappet.settings.playerDeath.trigger(context);
+
+            if (context.isCanceled())
+            {
+                event.setCanceled(true);
+            }
+        }
 
         if (!(source instanceof EntityPlayer))
         {

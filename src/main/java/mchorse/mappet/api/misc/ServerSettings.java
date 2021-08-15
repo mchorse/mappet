@@ -29,9 +29,12 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
     public final Trigger damageEntity;
     public final Trigger serverLoad;
     public final Trigger serverTick;
+
+    /* Player triggers */
     public final Trigger playerLogIn;
     public final Trigger playerLeftClick;
     public final Trigger playerRightClick;
+    public final Trigger playerDeath;
 
     public Trigger register(String key, Trigger trigger)
     {
@@ -55,9 +58,11 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
         this.damageEntity = this.register("damage_entity", new Trigger());
         this.serverLoad = this.register("server_load", new Trigger());
         this.serverTick = this.register("server_tick", new Trigger());
+
         this.playerLogIn = this.register("player_login", new Trigger());
         this.playerLeftClick = this.register("player_lmb", new Trigger());
         this.playerRightClick = this.register("player_rmb", new Trigger());
+        this.playerDeath = this.register("player_death", new Trigger());
 
         Mappet.EVENT_BUS.post(new RegisterServerTriggerEvent(this));
     }
@@ -77,6 +82,7 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
 
             if (!tag.hasKey("Hotkeys"))
             {
+                /* Backward compatibility with beta */
                 File hotkeys = new File(this.file.getParentFile(), "hotkeys.json");
 
                 if (hotkeys.isFile())

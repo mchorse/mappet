@@ -8,6 +8,7 @@ import mchorse.mappet.api.triggers.blocks.EventTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.ScriptTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.SoundTriggerBlock;
 import mchorse.mappet.api.utils.DataContext;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -56,6 +57,11 @@ public class Trigger implements INBTSerializable<NBTTagCompound>
     public void trigger(EntityLivingBase target)
     {
         this.trigger(new DataContext(target));
+    }
+
+    public void trigger(EntityLivingBase target, Entity entity)
+    {
+        this.trigger(new DataContext(target, entity));
     }
 
     public void trigger(DataContext context)

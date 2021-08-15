@@ -4,6 +4,7 @@ import mchorse.mappet.Mappet;
 import mchorse.mappet.entities.EntityNpc;
 import mchorse.mappet.utils.ExpressionRewriter;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.JsonToNBT;
@@ -33,6 +34,11 @@ public class DataContext
 
     private TriggerSender sender;
     private Map<String, Object> values = new HashMap<String, Object>();
+
+    public DataContext(EntityLivingBase subject, Entity object)
+    {
+        this(subject, object instanceof EntityLivingBase ? (EntityLivingBase) object : null);
+    }
 
     public DataContext(EntityLivingBase subject, EntityLivingBase object)
     {
