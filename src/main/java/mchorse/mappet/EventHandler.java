@@ -2,6 +2,7 @@ package mchorse.mappet;
 
 import mchorse.mappet.api.huds.HUDStage;
 import mchorse.mappet.api.quests.Quest;
+import mchorse.mappet.api.quests.Quests;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.IExecutable;
 import mchorse.mappet.capabilities.character.Character;
@@ -360,7 +361,10 @@ public class EventHandler
 
             if (character != null)
             {
-                Iterator<Map.Entry<String, Quest>> it = character.getQuests().quests.entrySet().iterator();
+                Quests quests = character.getQuests();
+                Iterator<Map.Entry<String, Quest>> it = quests.quests.entrySet().iterator();
+
+                quests.iterating = true;
 
                 while (it.hasNext())
                 {
@@ -378,6 +382,8 @@ public class EventHandler
                         Dispatcher.sendTo(new PacketQuest(entry.getKey(), entry.getValue()), (EntityPlayerMP) player);
                     }
                 }
+
+                quests.flush(player);
             }
         }
 

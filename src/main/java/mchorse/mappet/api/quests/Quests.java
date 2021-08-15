@@ -8,18 +8,30 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Quests implements INBTSerializable<NBTTagCompound>
 {
     public Map<String, Quest> quests = new LinkedHashMap<String, Quest>();
+    public boolean iterating;
+    public List<Quest> toAdd = new ArrayList<Quest>(2);
 
     public boolean add(Quest quest, EntityPlayer player)
     {
         if (this.has(quest.getId()))
         {
             return false;
+        }
+
+        if (this.iterating)
+        {
+            this.toAdd.add(quest);
+
+            return true;
         }
 
         this.quests.put(quest.getId(), quest);
@@ -89,6 +101,21 @@ public class Quests implements INBTSerializable<NBTTagCompound>
 
             quest.partialDeserializeNBT(entry.getValue().partialSerializeNBT());
             this.quests.put(entry.getKey(), quest);
+        }
+    }
+
+    public void flush(EntityPlayer player)
+    {
+        if (this.iterating)
+        {
+            this.iterating = false;
+
+            for (Quest quest : this.toAdd)
+            {
+                this.add(quest, player);
+            }
+
+            this.toAdd.clear();
         }
     }
 
