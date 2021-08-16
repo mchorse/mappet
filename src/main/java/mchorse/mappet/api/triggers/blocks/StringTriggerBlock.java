@@ -37,6 +37,8 @@ public abstract class StringTriggerBlock extends AbstractTriggerBlock
     @Override
     protected void serializeNBT(NBTTagCompound tag)
     {
+        super.serializeNBT(tag);
+
         tag.setString(this.getKey(), this.string);
     }
 

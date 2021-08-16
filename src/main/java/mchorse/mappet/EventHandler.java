@@ -1,6 +1,5 @@
 package mchorse.mappet;
 
-import mchorse.mappet.api.data.Data;
 import mchorse.mappet.api.huds.HUDStage;
 import mchorse.mappet.api.quests.Quest;
 import mchorse.mappet.api.quests.Quests;
@@ -259,6 +258,30 @@ public class EventHandler
         }
 
         Mappet.settings.playerCloseContainer.trigger(context);
+    }
+
+    @SubscribeEvent
+    public void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event)
+    {
+        EntityPlayer player = event.getEntityPlayer();
+
+        if (player.world.isRemote || Mappet.settings.interactBlock.isEmpty())
+        {
+            return;
+        }
+
+        DataContext context = new DataContext(player)
+            .set("x", event.getPos().getX())
+            .set("y", event.getPos().getY())
+            .set("z", event.getPos().getZ())
+            .set("hand", event.getHand() == EnumHand.MAIN_HAND ? "main" : "off");
+
+        Mappet.settings.interactBlock.trigger(context);
+
+        if (context.isCanceled())
+        {
+            event.setCanceled(true);
+        }
     }
 
     /* Other cool stuff */

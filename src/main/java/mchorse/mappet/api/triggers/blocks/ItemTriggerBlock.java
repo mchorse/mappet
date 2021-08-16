@@ -82,6 +82,8 @@ public class ItemTriggerBlock extends AbstractTriggerBlock
     @Override
     protected void serializeNBT(NBTTagCompound tag)
     {
+        super.serializeNBT(tag);
+
         tag.setTag("Target", this.target.serializeNBT());
         tag.setTag("Stack", this.stack.serializeNBT());
         tag.setInteger("Mode", this.mode.ordinal());
