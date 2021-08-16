@@ -11,6 +11,7 @@ import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.IFocusedGuiElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
+import mchorse.mclib.client.gui.framework.elements.utils.ITextColoring;
 import mchorse.mclib.client.gui.utils.ScrollArea;
 import mchorse.mclib.client.gui.utils.ScrollDirection;
 import mchorse.mclib.utils.ColorUtils;
@@ -31,7 +32,7 @@ import java.util.List;
 import java.util.StringJoiner;
 import java.util.function.Consumer;
 
-public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElement
+public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElement, ITextColoring
 {
     public ScrollArea horizontal = new ScrollArea();
     public ScrollArea vertical = new ScrollArea();
@@ -42,6 +43,8 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
     private boolean background;
     protected int padding = 10;
     protected int lineHeight = 12;
+    protected int textColor = 0xffffff;
+    protected boolean textShadow;
 
     /* Editing */
     private boolean focused;
@@ -127,6 +130,13 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         this.lineHeight = lineHeight;
 
         return this;
+    }
+
+    @Override
+    public void setColor(int textColor, boolean textShadow)
+    {
+        this.textColor = textColor;
+        this.textShadow = textShadow;
     }
 
     public void setText(String text)
@@ -1276,7 +1286,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
     protected void drawTextLine(String line, int i, int nx, int ny, int sw)
     {
-        this.font.drawStringWithShadow(line, nx, ny, 0xffffff);
+        this.font.drawString(line, nx, ny, this.textColor, this.textShadow);
     }
 
     protected void drawBackground()
