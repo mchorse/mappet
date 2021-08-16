@@ -145,11 +145,6 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
     @Override
     public void draw(GuiContext context)
     {
-        if (this.editor.isVisible())
-        {
-            this.editor.area.draw(0x66000000);
-        }
-
         if (this.title.isVisible())
         {
             this.font.drawStringWithShadow(TITLE.get(), this.title.area.x, this.title.area.y - 12, 0xffffff);

@@ -121,7 +121,6 @@ public class GuiFactionPanel extends GuiMappetDashboardPanel<Faction>
         scrollEditor.add(Elements.row(mc, 5, c, d).marginTop(12));
         scrollEditor.add(label.marginTop(12), this.relations);
         scrollEditor.add(this.openOwnRelation);
-        scrollEditor.scroll.opposite = true;
 
         this.editor.add(scrollEditor);
 

@@ -35,6 +35,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
 {
     public static final IKey KEYS_CATEGORY = IKey.lang("mappet.gui.panels.keys.category");
 
+    public GuiElement iconBar;
     public GuiIconElement toggleSidebar;
     public GuiElement sidebar;
 
@@ -60,9 +61,11 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
 
         this.sidebar = new GuiElement(mc);
         this.sidebar.flex().relative(this).x(1F).w(200).h(1F).anchorX(1F);
+        this.iconBar = new GuiElement(mc);
+        this.iconBar.flex().relative(this.sidebar).x(-20).w(20).h(1F).column(0).stretch();
 
         this.toggleSidebar = new GuiIconElement(mc, Icons.RIGHTLOAD, (element) -> this.toggleSidebar());
-        this.toggleSidebar.flex().relative(this.sidebar).x(-20);
+        this.iconBar.add(this.toggleSidebar);
 
         this.add = new GuiIconElement(mc, Icons.ADD, this::addNewData);
         this.dupe = new GuiIconElement(mc, Icons.DUPE, this::dupeData);
@@ -100,13 +103,13 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
         this.sidebar.add(drawable, this.names, this.buttons);
 
         this.editor = new GuiElement(mc);
-        this.editor.flex().relative(this).wTo(this.sidebar.area).h(1F);
+        this.editor.flex().relative(this).wTo(this.iconBar.area).h(1F);
 
         this.buttons.flex().relative(this.names).x(1F).y(-20).anchorX(1F).row(0).resize();
         this.buttons.add(this.add, this.dupe, this.rename, this.remove);
 
         this.markContainer();
-        this.add(this.sidebar, this.editor, this.toggleSidebar);
+        this.add(this.sidebar, this.iconBar, this.editor);
 
         this.keys().register(IKey.lang("mappet.gui.panels.keys.toggle_sidebar"), Keyboard.KEY_N, () -> this.toggleSidebar.clickItself(GuiBase.getCurrent())).category(KEYS_CATEGORY);
     }
@@ -134,12 +137,12 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
         if (this.sidebar.isVisible())
         {
             this.toggleWithSidebar();
-            this.toggleSidebar.flex().relative(this.sidebar).x(-20);
+            this.iconBar.flex().relative(this.sidebar).x(-20);
         }
         else
         {
             this.toggleFull();
-            this.toggleSidebar.flex().relative(this).x(1F, -20);
+            this.iconBar.flex().relative(this).x(1F, -20);
         }
 
         this.resize();
@@ -147,12 +150,12 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
 
     protected void toggleWithSidebar()
     {
-        this.editor.flex().wTo(this.sidebar.area);
+        this.editor.flex().wTo(this.iconBar.area);
     }
 
     protected void toggleFull()
     {
-        this.editor.flex().w(1F);
+        this.editor.flex().wTo(this.iconBar.area);
     }
 
     /**
@@ -388,6 +391,9 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
     @Override
     public void draw(GuiContext context)
     {
+        this.iconBar.area.draw(0x77000000);
+        GuiDraw.drawHorizontalGradientRect(this.iconBar.area.x - 6, this.iconBar.area.y, this.iconBar.area.x, this.iconBar.area.ey(), 0, 0x29000000);
+
         if (this.sidebar.isVisible())
         {
             this.sidebar.area.draw(0xaa000000);

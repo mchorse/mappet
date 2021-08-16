@@ -74,7 +74,6 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
         scrollEditor.add(Elements.label(IKey.lang("mappet.gui.quests.accept")).background().marginTop(20).marginBottom(4), this.accept);
         scrollEditor.add(Elements.label(IKey.lang("mappet.gui.quests.decline")).background().marginTop(12).marginBottom(4), this.decline);
         scrollEditor.add(Elements.label(IKey.lang("mappet.gui.quests.complete")).background().marginTop(12).marginBottom(4), this.complete);
-        scrollEditor.scroll.opposite = true;
 
         this.editor.add(scrollEditor);
 

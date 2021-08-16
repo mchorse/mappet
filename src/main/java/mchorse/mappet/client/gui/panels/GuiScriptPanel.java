@@ -129,17 +129,15 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
         super(mc, dashboard);
 
         this.toggleRepl = new GuiIconElement(mc, MPIcons.REPL, (b) -> this.setRepl(!this.repl.isVisible()));
-        this.toggleRepl.flex().relative(this.toggleSidebar).y(20);
         this.toggleRepl.tooltip(IKey.lang("mappet.gui.scripts.repl.title"), Direction.LEFT);
         this.docs = new GuiIconElement(mc, Icons.HELP, this::openDocumentation);
-        this.docs.flex().relative(this.toggleRepl).y(20);
         this.docs.tooltip(IKey.lang("mappet.gui.scripts.documentation.title"), Direction.LEFT);
         this.libraries = new GuiIconElement(mc, Icons.MORE, this::openLibraries);
-        this.libraries.flex().relative(this.docs).y(20);
         this.libraries.tooltip(IKey.lang("mappet.gui.scripts.libraries.tooltip"), Direction.LEFT);
         this.run = new GuiIconElement(mc, Icons.PLAY, this::runScript);
-        this.run.flex().relative(this.libraries).y(20);
         this.run.tooltip(IKey.lang("mappet.gui.scripts.run"), Direction.LEFT);
+
+        this.iconBar.add(this.toggleRepl, this.docs, this.libraries, this.run);
 
         this.code = new GuiTextEditor(mc, null);
         this.code.background().context(() ->
@@ -166,8 +164,7 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
         this.editor.add(this.code);
         this.sidebar.prepend(this.unique);
 
-        this.toggleSidebar.removeFromParent();
-        this.add(this.repl, this.toggleSidebar, this.toggleRepl, this.docs, this.libraries, this.run);
+        this.add(this.repl);
 
         this.fill(null);
     }
@@ -185,7 +182,7 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
 
         this.save();
         this.save = false;
-        
+
         player.sendChatMessage("/mp script exec " + player.getUniqueID().toString() + " " + this.data.getId());
     }
 
