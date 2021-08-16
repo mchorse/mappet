@@ -212,19 +212,59 @@ mappet.gui.panels.keys.toggle_sidebar=Toggle sidebar
 
 mappet.gui.settings.title=Global triggers
 mappet.gui.settings.hotkeys=Edit trigger hotkeys...
-mappet.gui.settings.triggers.chat=On chat message
-mappet.gui.settings.triggers.break_block=On block break
-mappet.gui.settings.triggers.place_block=On block place
-mappet.gui.settings.triggers.interact_block=On block interact
-mappet.gui.settings.triggers.damage_entity=On entity hit
-mappet.gui.settings.triggers.server_load=On server load
-mappet.gui.settings.triggers.server_tick=On server tick
-mappet.gui.settings.triggers.player_login=On player log in
-mappet.gui.settings.triggers.player_lmb=On player left click
-mappet.gui.settings.triggers.player_rmb=On player right click
-mappet.gui.settings.triggers.player_death=On player death
-mappet.gui.settings.triggers.player_item_pickup=On player pick up an item
-mappet.gui.settings.triggers.player_close_container=On player close container
+mappet.gui.settings.variables=Available variables
+
+mappet.gui.settings.triggers.chat=Player: chat message
+mappet.gui.settings.triggers.descriptions.chat=This gets triggered when a player types a message into the chat and sends it.\n\nCommands (messages starting with §7/§r) don't get triggered by this event. If you wish to implement commands, use a different prefix like §7!§r.
+mappet.gui.settings.triggers.variables.chat=§6message§r, the message (string) that was sent by the player.
+
+mappet.gui.settings.triggers.break_block=Block: broken by a player
+mappet.gui.settings.triggers.descriptions.break_block=This cancelable trigger gets triggered when a player breaks a block in the world.
+mappet.gui.settings.triggers.variables.break_block=§6block§r, the ID of the block that was broken (like §7minecraft:stone§r).\n§6meta§r, the meta (0..15) value of the block's state.\n§6x§r, §6y§r, and §6z§r in the world.
+
+mappet.gui.settings.triggers.place_block=Block: placed by a player
+mappet.gui.settings.triggers.descriptions.place_block=This cancelable trigger gets triggered when a player places a block in the world.
+mappet.gui.settings.triggers.variables.place_block=§6block§r, the ID of the block that was placed (like §7minecraft:stone§r).\n§6meta§r, the meta (0..15) value of the block's state.\n§6x§r, §6y§r, and §6z§r in the world.
+
+mappet.gui.settings.triggers.interact_block=Block: interacted by a player
+mappet.gui.settings.triggers.descriptions.interact_block=This cancelable trigger gets triggered when a player interacts with a block (by right clicking it) in the world. 
+mappet.gui.settings.triggers.variables.interact_block=§6x§r, §6y§r, and §6z§r in the world.\n§6hand§r, the hand that interacted with the block: §7main§r or §7off§r.
+
+mappet.gui.settings.triggers.damage_entity=Entity: hurt
+mappet.gui.settings.triggers.descriptions.damage_entity=This cancelable trigger gets triggered when a mob/a player gets hurt (damaged).
+mappet.gui.settings.triggers.variables.damage_entity=§6damage§r, how many HP this mob/player took of damage.
+
+mappet.gui.settings.triggers.server_load=Server: loaded
+mappet.gui.settings.triggers.descriptions.server_load=This gets triggered after server gets booted up, but world(s) aren't loaded yet.
+mappet.gui.settings.triggers.variables.server_load=§7N/A§r
+
+mappet.gui.settings.triggers.server_tick=Server: ticking
+mappet.gui.settings.triggers.descriptions.server_tick=This gets triggered when server ticks (i.e. §720§r times a second).\n\nProTip: use frequency option of triggers to limit how many times does a script or event gets triggered. 
+mappet.gui.settings.triggers.variables.server_tick=§7N/A§r
+
+mappet.gui.settings.triggers.player_login=Player: logged in
+mappet.gui.settings.triggers.descriptions.player_login=This gets triggered when player logs onto the server.
+mappet.gui.settings.triggers.variables.player_login=§7N/A§r
+
+mappet.gui.settings.triggers.player_lmb=Player: left click (air)
+mappet.gui.settings.triggers.descriptions.player_lmb=This gets triggered when a player left clicks in the air (no whatsoever interaction with blocks, entities or items).
+mappet.gui.settings.triggers.variables.player_lmb=§7N/A§r
+
+mappet.gui.settings.triggers.player_rmb=Player: right click (air)
+mappet.gui.settings.triggers.descriptions.player_rmb=This gets triggered when a player right clicks in the air (no whatsoever interaction with blocks, entities or items).
+mappet.gui.settings.triggers.variables.player_rmb=§7N/A§r
+
+mappet.gui.settings.triggers.player_death=Player: death
+mappet.gui.settings.triggers.descriptions.player_death=This cancelable trigger gets triggered when a player dies.\n\nProTip: if you want to cancel the death, make sure to give some health to the player, or otherwise the player will end up in eternal dying cycle.
+mappet.gui.settings.triggers.variables.player_death=§7N/A§r
+
+mappet.gui.settings.triggers.player_item_pickup=Player: picked up an item
+mappet.gui.settings.triggers.descriptions.player_item_pickup=This cancelable trigger gets triggered when a player picks up an item in the world.
+mappet.gui.settings.triggers.variables.player_item_pickup=§7N/A§r or...\n§6x§r, §6y§r, and §6z§r of the inventory block in the world.
+
+mappet.gui.settings.triggers.player_close_container=Player: closed container
+mappet.gui.settings.triggers.descriptions.player_close_container=This gets triggered when a player picks up an item in the world.
+mappet.gui.settings.triggers.variables.player_close_container=§6item§r, §7IScriptItemStack§r item that player picked (this is useful only in scripts).
 
 mappet.gui.quests.cancelable=Cancelable
 mappet.gui.quests.instant=Instant

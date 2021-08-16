@@ -386,6 +386,11 @@ public class EventHandler
 
             context.getValues().put("item", ScriptItemStack.create(event.getItem().getItem()));
             Mappet.settings.playerItemPickup.trigger(context);
+
+            if (context.isCanceled())
+            {
+                event.setCanceled(true);
+            }
         }
     }
 

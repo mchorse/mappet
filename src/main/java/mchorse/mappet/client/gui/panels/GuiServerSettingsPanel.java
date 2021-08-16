@@ -2,13 +2,13 @@ package mchorse.mappet.client.gui.panels;
 
 import mchorse.mappet.api.misc.ServerSettings;
 import mchorse.mappet.api.states.States;
-import mchorse.mappet.api.triggers.Trigger;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.events.GuiTriggerHotkeysOverlayPanel;
 import mchorse.mappet.client.gui.states.GuiStatesEditor;
 import mchorse.mappet.client.gui.triggers.GuiTriggerElement;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
 import mchorse.mappet.client.gui.utils.overlays.GuiStringOverlayPanel;
+import mchorse.mappet.client.gui.utils.text.GuiText;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.content.PacketRequestServerSettings;
 import mchorse.mappet.network.common.content.PacketRequestStates;
@@ -19,13 +19,14 @@ import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
+import mchorse.mclib.client.gui.framework.elements.list.GuiLabelListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiLabel;
 import mchorse.mclib.client.gui.mclib.GuiDashboardPanel;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.Icons;
-import mchorse.mclib.client.gui.utils.ScrollDirection;
+import mchorse.mclib.client.gui.utils.Label;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.ColorUtils;
 import net.minecraft.client.Minecraft;
@@ -34,7 +35,6 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard>
 {
@@ -44,8 +44,10 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
     public GuiIconElement statesSwitch;
     public GuiIconElement statesAdd;
 
+    public GuiLabelListElement<String> triggers;
+    public GuiTriggerElement trigger;
+    public GuiIconElement hotkeys;
     public GuiScrollElement editor;
-    public GuiButtonElement hotkeys;
 
     private ServerSettings settings;
     private String target;
@@ -66,17 +68,23 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
         this.statesAdd = new GuiIconElement(mc, Icons.ADD, this::addState);
         this.statesAdd.flex().relative(this.states).x(1F, -30).y(10);
 
-        this.editor = new GuiScrollElement(mc, ScrollDirection.HORIZONTAL);
-        this.editor.flex().relative(this).x(0.5F).y(25).w(0.5F).h(1F, -25).column(5).scroll().width(180).padding(10);
+        this.triggers = new GuiLabelListElement<String>(mc, (l) -> this.fillTrigger(l.get(0), false));
+        this.triggers.background().flex().relative(this).x(0.5F, 10).y(35).w(0.5F, -20).h(80);
+        this.trigger = new GuiTriggerElement(mc);
+        this.trigger.flex().relative(this).x(1F, -10).y(1F, -10).wh(120, 20).anchor(1F, 1F);
+        this.editor = new GuiScrollElement(mc);
+        this.editor.flex().relative(this).x(0.5F).y(115).w(0.5F).h(1F, -145).column(5).scroll().stretch().padding(10);
 
-        this.hotkeys = new GuiButtonElement(mc, IKey.lang("mappet.gui.settings.hotkeys"), (b) -> this.openHotkeysEditor());
+        this.hotkeys = new GuiIconElement(mc, Icons.DOWNLOAD, (b) -> this.openHotkeysEditor());
+        this.hotkeys.tooltip(IKey.lang("mappet.gui.settings.hotkeys"));
+        this.hotkeys.flex().relative(this).x(1F, -16).y(20).wh(20, 20).anchor(0.5F, 0.5F);
 
         GuiLabel triggers = Elements.label(IKey.lang("mappet.gui.settings.title")).anchor(0, 0.5F).background();
 
         triggers.flex().relative(this).x(0.5F, 10).y(10).wh(120, 20);
 
         this.states.add(this.statesTitle, this.statesSwitch, this.statesAdd, this.statesEditor);
-        this.add(this.states, triggers, this.editor);
+        this.add(this.states, this.hotkeys, this.triggers, this.editor, this.trigger, triggers);
     }
 
     private void openSearch(GuiIconElement element)
@@ -122,17 +130,33 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
         this.settings = new ServerSettings(null);
         this.settings.deserializeNBT(tag);
 
-        this.editor.removeAll();
-        this.editor.add(this.hotkeys);
+        this.triggers.clear();
 
-        /* TODO: add variable tooltips */
-        for (Map.Entry<String, Trigger> entry : this.settings.registered.entrySet())
+        for (String key : this.settings.registered.keySet())
         {
-            GuiTriggerElement trigger = new GuiTriggerElement(this.mc, entry.getValue());
-            GuiLabel label = Elements.label(IKey.lang("mappet.gui.settings.triggers." + entry.getKey())).background();
-            GuiElement element = Elements.column(this.mc, 5, label.marginBottom(4), trigger);
+            this.triggers.add(IKey.lang("mappet.gui.settings.triggers." + key), key);
+        }
 
-            this.editor.add(element.marginTop(12));
+        this.triggers.sort();
+        this.triggers.setCurrentValue("chat");
+
+        this.fillTrigger(this.triggers.getCurrentFirst(), true);
+
+        this.resize();
+    }
+
+    private void fillTrigger(Label<String> trigger, boolean select)
+    {
+        this.editor.removeAll();
+        this.editor.add(new GuiText(this.mc).text(IKey.lang("mappet.gui.settings.triggers.descriptions." + trigger.value)));
+        this.editor.add(Elements.label(IKey.lang("mappet.gui.settings.variables")).background().marginTop(16).marginBottom(8));
+        this.editor.add(new GuiText(this.mc).text(IKey.lang("mappet.gui.settings.triggers.variables." + trigger.value)));
+
+        this.trigger.set(this.settings.registered.get(trigger.value));
+
+        if (select)
+        {
+            this.triggers.setCurrentScroll(trigger);
         }
 
         this.resize();
@@ -192,10 +216,11 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
     {
         int x = this.editor.area.x;
         int y = this.area.y;
-        int h = this.editor.area.ey();
+        int h = this.area.ey();
+        int color = 0x66000000;
 
-        GuiDraw.drawHorizontalGradientRect(x - 40, y, x, h, 0, ColorUtils.HALF_BLACK);
-        GuiDraw.drawHorizontalGradientRect(x, y, x + 40, h, ColorUtils.HALF_BLACK, 0);
+        GuiDraw.drawHorizontalGradientRect(x - 20, y, x, h, 0, color);
+        GuiDraw.drawHorizontalGradientRect(x, y, x + 20, h, color, 0);
 
         super.draw(context);
     }
