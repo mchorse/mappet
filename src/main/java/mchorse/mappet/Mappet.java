@@ -104,6 +104,7 @@ public final class Mappet
     public static ValueBoolean generalDataCaching;
 
     public static ValueBoolean npcsPeacefulDamage;
+    public static ValueBoolean npcsToolOnlyOP;
 
     public static ValueInt eventMaxExecutions;
     public static ValueBoolean eventUseServerForCommands;
@@ -135,6 +136,7 @@ public final class Mappet
         generalDataCaching = builder.getBoolean("data_caching", true);
 
         npcsPeacefulDamage = builder.category("npc").getBoolean("peaceful_damage", true);
+        npcsToolOnlyOP = builder.getBoolean("tool_only_op", true);
 
         eventMaxExecutions = builder.category("events").getInt("max_executions", 10000, 100, 1000000);
         eventUseServerForCommands = builder.getBoolean("use_server_for_commands", false);

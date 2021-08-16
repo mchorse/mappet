@@ -7,6 +7,7 @@ import mchorse.mappet.entities.EntityNpc;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.npc.PacketNpcList;
 import mchorse.mappet.network.common.npc.PacketNpcState;
+import mchorse.mclib.utils.OpHelper;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.client.resources.I18n;
@@ -50,6 +51,11 @@ public class ItemNpcTool extends Item
     {
         if (!player.world.isRemote && target instanceof EntityNpc)
         {
+            if (Mappet.npcsToolOnlyOP.get() && !OpHelper.isPlayerOp((EntityPlayerMP) player))
+            {
+                return super.itemInteractionForEntity(stack, player, target, hand);
+            }
+
             EntityNpc npc = (EntityNpc) target;
 
             if (player.isSneaking())
@@ -70,12 +76,46 @@ public class ItemNpcTool extends Item
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
-        if (!worldIn.isRemote && this.openNpcTool(playerIn, playerIn.getHeldItem(handIn)))
+        if (!worldIn.isRemote)
         {
-            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
+            if (Mappet.npcsToolOnlyOP.get() && !OpHelper.isPlayerOp((EntityPlayerMP) playerIn))
+            {
+                return super.onItemRightClick(worldIn, playerIn, handIn);
+            }
+
+            if (this.openNpcTool(playerIn, playerIn.getHeldItem(handIn)))
+            {
+                return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
+            }
         }
 
         return super.onItemRightClick(worldIn, playerIn, handIn);
+    }
+
+    private boolean openNpcTool(EntityPlayer player, ItemStack stack)
+    {
+        Collection<String> npcs = Mappet.npcs.getKeys();
+
+        if (!npcs.isEmpty() && player instanceof EntityPlayerMP)
+        {
+            List<String> states = new ArrayList<String>();
+
+            try
+            {
+                NBTTagCompound tag = stack.getTagCompound();
+                Npc npc = Mappet.npcs.load(tag.getString("Npc"));
+
+                states.addAll(npc.states.keySet());
+            }
+            catch (Exception e)
+            {}
+
+            Dispatcher.sendTo(new PacketNpcList(npcs, states), (EntityPlayerMP) player);
+
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -85,6 +125,11 @@ public class ItemNpcTool extends Item
 
         if (!worldIn.isRemote)
         {
+            if (Mappet.npcsToolOnlyOP.get() && !OpHelper.isPlayerOp((EntityPlayerMP) player))
+            {
+                return EnumActionResult.PASS;
+            }
+
             EntityNpc entity = new EntityNpc(worldIn);
             BlockPos posOffset = pos.offset(facing);
 
@@ -136,31 +181,5 @@ public class ItemNpcTool extends Item
             entity.getState().morph = morph;
             entity.setMorph(morph);
         }
-    }
-
-    private boolean openNpcTool(EntityPlayer player, ItemStack stack)
-    {
-        Collection<String> npcs = Mappet.npcs.getKeys();
-
-        if (!npcs.isEmpty() && player instanceof EntityPlayerMP)
-        {
-            List<String> states = new ArrayList<String>();
-
-            try
-            {
-                NBTTagCompound tag = stack.getTagCompound();
-                Npc npc = Mappet.npcs.load(tag.getString("Npc"));
-
-                states.addAll(npc.states.keySet());
-            }
-            catch (Exception e)
-            {}
-
-            Dispatcher.sendTo(new PacketNpcList(npcs, states), (EntityPlayerMP) player);
-
-            return true;
-        }
-
-        return false;
     }
 }
