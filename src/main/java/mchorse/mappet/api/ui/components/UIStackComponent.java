@@ -106,15 +106,14 @@ public class UIStackComponent extends UIComponent
     @SideOnly(Side.CLIENT)
     public GuiElement create(Minecraft mc, UIContext context)
     {
-        GuiSlotElement element = new GuiSlotElement(mc, 0, (stack) ->
-        {
-            if (!this.id.isEmpty())
-            {
-                context.data.setTag(this.id, stack.serializeNBT());
-                context.dirty(this.id, this.updateDelay);
-            }
-        });
+        final GuiSlotElement element = new GuiSlotElement(mc, 0, null);
 
+        element.callback = this.id.isEmpty() ? null : (stack) ->
+        {
+            context.data.setTag(this.id, stack.serializeNBT());
+            context.data.setInteger(this.id + ".slot", element.lastSlot);
+            context.dirty(this.id, this.updateDelay);
+        };
         element.setStack(this.stack);
 
         return this.apply(element, context);
