@@ -6,6 +6,7 @@ import mchorse.mappet.api.ui.utils.DiscardMethod;
 import mchorse.mappet.client.gui.utils.text.GuiText;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -37,12 +38,32 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class UITextComponent extends UILabelBaseComponent
 {
+    public float textAnchor;
+
+    /**
+     * Change text's anchor point which determines where text will
+     * be rendered relative to component's frame horizontally.
+     *
+     * <pre>{@code
+     *    // Assuming that uiContext is a IMappetUIContext
+     *
+     *    // Position the text's content in the center of its frame
+     *    uiContext.get("text").textAnchor(0.5);
+     * }</pre>
+     */
+    public UITextComponent textAnchor(float anchor)
+    {
+        this.textAnchor = anchor;
+
+        return this;
+    }
+
     @Override
     @DiscardMethod
     @SideOnly(Side.CLIENT)
     public GuiElement create(Minecraft mc, UIContext context)
     {
-        return this.apply(new GuiText(mc).text(this.getLabel()), context);
+        return this.apply(new GuiText(mc).text(this.getLabel()).anchorX(this.textAnchor), context);
     }
 
     @Override
@@ -55,6 +76,29 @@ public class UITextComponent extends UILabelBaseComponent
         if (key.equals("Label"))
         {
             ((GuiText) element).text(this.getLabel());
+        }
+        else if (key.equals("TextAnchor"))
+        {
+            ((GuiText) element).anchorX(this.textAnchor);
+        }
+    }
+
+    @Override
+    public void serializeNBT(NBTTagCompound tag)
+    {
+        super.serializeNBT(tag);
+
+        tag.setFloat("TextAnchor", this.textAnchor);
+    }
+
+    @Override
+    public void deserializeNBT(NBTTagCompound tag)
+    {
+        super.deserializeNBT(tag);
+
+        if (tag.hasKey("TextAnchor"))
+        {
+            this.textAnchor = tag.getFloat("TextAnchor");
         }
     }
 }

@@ -18,6 +18,7 @@ public class GuiText extends GuiElement implements ITextColoring
     private boolean shadow = true;
     private int paddingH;
     private int paddingV;
+    private float anchorX;
 
     private int lines;
 
@@ -84,6 +85,13 @@ public class GuiText extends GuiElement implements ITextColoring
         return this;
     }
 
+    public GuiText anchorX(float anchor)
+    {
+        this.anchorX = anchor;
+
+        return this;
+    }
+
     @Override
     public void setColor(int color, boolean shadow)
     {
@@ -119,13 +127,20 @@ public class GuiText extends GuiElement implements ITextColoring
 
             for (String line : this.text)
             {
+                int x = this.area.x + this.paddingH;
+
+                if (this.anchorX != 0)
+                {
+                    x = x + (int) (((this.area.w - this.paddingH * 2) - (this.font.getStringWidth(line))) * this.anchorX);
+                }
+
                 if (this.shadow)
                 {
-                    this.font.drawStringWithShadow(line, this.area.x + this.paddingH, this.area.y + y, color);
+                    this.font.drawStringWithShadow(line, x, this.area.y + y, color);
                 }
                 else
                 {
-                    this.font.drawString(line, this.area.x + this.paddingH, this.area.y + y, color);
+                    this.font.drawString(line, x, this.area.y + y, color);
                 }
 
                 y += this.lineHeight;
