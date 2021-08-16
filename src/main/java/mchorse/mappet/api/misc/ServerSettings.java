@@ -36,6 +36,7 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
     public final Trigger playerRightClick;
     public final Trigger playerDeath;
     public final Trigger playerItemPickup;
+    public final Trigger playerCloseContainer;
 
     public Trigger register(String key, Trigger trigger)
     {
@@ -65,6 +66,7 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
         this.playerRightClick = this.register("player_rmb", new Trigger());
         this.playerDeath = this.register("player_death", new Trigger());
         this.playerItemPickup = this.register("player_item_pickup", new Trigger());
+        this.playerCloseContainer = this.register("player_close_container", new Trigger());
 
         Mappet.EVENT_BUS.post(new RegisterServerTriggerEvent(this));
     }

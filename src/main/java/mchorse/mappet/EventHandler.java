@@ -1,5 +1,6 @@
 package mchorse.mappet;
 
+import mchorse.mappet.api.data.Data;
 import mchorse.mappet.api.huds.HUDStage;
 import mchorse.mappet.api.quests.Quest;
 import mchorse.mappet.api.quests.Quests;
@@ -25,9 +26,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.ContainerChest;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.ServerChatEvent;
@@ -35,6 +39,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
+import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -226,6 +231,34 @@ public class EventHandler
         }
 
         Dispatcher.sendToServer(new PacketClick(EnumHand.OFF_HAND));
+    }
+
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onPlayerCloseContainer(PlayerContainerEvent.Close event)
+    {
+        if (Mappet.settings.playerCloseContainer.isEmpty())
+        {
+            return;
+        }
+
+        DataContext context = new DataContext(event.getEntityPlayer());
+
+        if (event.getContainer() instanceof ContainerChest)
+        {
+            ContainerChest chest = (ContainerChest) event.getContainer();
+
+            if (chest.getLowerChestInventory() instanceof TileEntity)
+            {
+                BlockPos pos = ((TileEntity) chest.getLowerChestInventory()).getPos();
+
+                context.set("x", pos.getX());
+                context.set("y", pos.getY());
+                context.set("z", pos.getZ());
+            }
+        }
+
+        Mappet.settings.playerCloseContainer.trigger(context);
     }
 
     /* Other cool stuff */

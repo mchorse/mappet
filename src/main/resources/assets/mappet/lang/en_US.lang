@@ -221,6 +221,7 @@ mappet.gui.settings.triggers.player_lmb=On player left click
 mappet.gui.settings.triggers.player_rmb=On player right click
 mappet.gui.settings.triggers.player_death=On player death
 mappet.gui.settings.triggers.player_item_pickup=On player pick up an item
+mappet.gui.settings.triggers.player_close_container=On player close container
 
 mappet.gui.quests.cancelable=Cancelable
 mappet.gui.quests.instant=Instant
