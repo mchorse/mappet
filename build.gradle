@@ -87,6 +87,7 @@ task scriptingJavadocs(type: Javadoc) {
     source = sourceSets.main.allJava
 
     include "mchorse/mappet/api/ui/components/**"
+    include "mchorse/mappet/client/gui/utils/graphics/Graphic**"
     include "mchorse/mappet/api/scripts/user/**"
 }
 
@@ -96,7 +97,7 @@ task scriptingJavadocsJson(type: Exec) {
     //
     // Rename it to jsonDoclet.jar, and place it in the run/ folder
     executable "javadoc"
-    args "-doclet", "mchorse.utils.doclets.JsonDoclet", "-docletpath", "./run/jsonDoclet.jar", "-sourcepath", "./src/main/java/", "-subpackages", "mchorse.mappet.api.scripts.user:mchorse.mappet.api.ui.components"
+    args "-doclet", "mchorse.utils.doclets.JsonDoclet", "-docletpath", "./run/jsonDoclet.jar", "-sourcepath", "./src/main/java/", "-subpackages", "mchorse.mappet.api.scripts.user:mchorse.mappet.api.ui.components:mchorse.mappet.client.gui.utils.graphics"
 
     doLast {
         file("src/main/resources/assets/mappet/docs.json").setText(file("docs.json").text)

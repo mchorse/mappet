@@ -86,7 +86,7 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
             {
                 docClass.setup();
 
-                if (docClass.name.contains("ui.components"))
+                if (docClass.name.contains("ui.components") || docClass.name.endsWith(".Graphic"))
                 {
                     ui.entries.add(docClass);
                     docClass.parent = ui;

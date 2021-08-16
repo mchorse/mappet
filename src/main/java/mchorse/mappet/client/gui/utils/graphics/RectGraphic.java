@@ -12,17 +12,14 @@ public class RectGraphic extends Graphic
 
     public RectGraphic(int x, int y, int w, int h, int primary)
     {
-        this.rect.set(x, y, w, h);
+        this.pixels.set(x, y, w, h);
         this.primary = primary;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void draw(Area area)
+    public void drawGraphic(Area area)
     {
-        int left = area.x + this.rect.x;
-        int top = area.y + this.rect.y;
-
-        Gui.drawRect(left, top, left + this.rect.w, top + this.rect.h, this.primary);
+        Gui.drawRect(area.x, area.y, area.ex(), area.ey(), this.primary);
     }
 }

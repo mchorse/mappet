@@ -23,7 +23,7 @@ public class IconGraphic extends Graphic
 
     public IconGraphic(String id, int x, int y, int primary, float anchorX, float anchorY)
     {
-        this.rect.set(x, y, 0, 0);
+        this.pixels.set(x, y, 0, 0);
         this.primary = primary;
         this.id = id;
         this.anchorX = anchorX;
@@ -32,7 +32,7 @@ public class IconGraphic extends Graphic
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void draw(Area area)
+    public void drawGraphic(Area area)
     {
         ColorUtils.bindColor(this.primary);
 
@@ -42,8 +42,8 @@ public class IconGraphic extends Graphic
             this.icon = this.icon == null ? Icons.NONE : this.icon;
         }
 
-        int left = area.x + this.rect.x;
-        int top = area.y + this.rect.y;
+        int left = area.x;
+        int top = area.y;
 
         this.icon.render(left, top, this.anchorX, this.anchorY);
     }

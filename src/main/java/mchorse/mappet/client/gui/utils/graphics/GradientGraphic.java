@@ -16,7 +16,7 @@ public class GradientGraphic extends Graphic
 
     public GradientGraphic(int x, int y, int w, int h, int primary, int secondary, boolean horizontal)
     {
-        this.rect.set(x, y, w, h);
+        this.pixels.set(x, y, w, h);
         this.primary = primary;
         this.secondary = secondary;
         this.horizontal = horizontal;
@@ -24,20 +24,15 @@ public class GradientGraphic extends Graphic
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void draw(Area area)
+    protected void drawGraphic(Area area)
     {
-        int left = area.x + this.rect.x;
-        int top = area.y + this.rect.y;
-        int right = left + this.rect.w;
-        int bottom = top + this.rect.h;
-
         if (this.horizontal)
         {
-            GuiDraw.drawHorizontalGradientRect(left, top, right, bottom, this.primary, this.secondary);
+            GuiDraw.drawHorizontalGradientRect(area.x, area.y, area.ex(), area.ey(), this.primary, this.secondary);
         }
         else
         {
-            GuiDraw.drawVerticalGradientRect(left, top, right, bottom, this.primary, this.secondary);
+            GuiDraw.drawVerticalGradientRect(area.x, area.y, area.ex(), area.ey(), this.primary, this.secondary);
         }
     }
 

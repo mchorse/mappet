@@ -9,6 +9,7 @@ import mchorse.mappet.client.gui.utils.graphics.Graphic;
 import mchorse.mappet.client.gui.utils.graphics.IconGraphic;
 import mchorse.mappet.client.gui.utils.graphics.ImageGraphic;
 import mchorse.mappet.client.gui.utils.graphics.RectGraphic;
+import mchorse.mappet.client.gui.utils.graphics.ShadowGraphic;
 import mchorse.mappet.client.gui.utils.graphics.TextGraphic;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import net.minecraft.client.Minecraft;
@@ -39,6 +40,9 @@ import java.util.List;
  *        // Background rendering
  *        var back = ui.graphics().rx(0.5, -150).ry(1, -250).wh(300, 250);
  *        var icons = Java.type("mchorse.mclib.client.gui.utils.IconRegistry").icons.keySet();
+ *
+ *        back.shadow(80, 80, 300 - 160, 250 - 160, 0x88ff1493, 0x00ff1493, 80);
+ *        back.shadow(80, 80, 300 - 160, 250 - 160, 0x880088ff, 0x000088ff, 40);
  *
  *        for each (var icon in icons)
  *        {
@@ -90,15 +94,48 @@ public class UIGraphicsComponent extends UIComponent
     }
 
     /**
+     * Draw a solid colored rectangle.
+     *
+     * @param color ARGB color that fills the rectangle.
+     */
+    public Graphic rect(int color)
+    {
+        return this.rect(0, 0, 0, 0, color);
+    }
+
+    /**
      * Draw a solid colored rectangle relative to graphics component's frame.
      *
      * @param w Width of the rectangle.
      * @param h Height of the rectangle.
      * @param color ARGB color that fills the rectangle.
      */
-    public UIGraphicsComponent rect(int x, int y, int w, int h, int color)
+    public Graphic rect(int x, int y, int w, int h, int color)
     {
         return this.addGraphic(new RectGraphic(x, y, w, h, color));
+    }
+
+    /**
+     * Draw a vertical gradient rectangle.
+     *
+     * @param primary ARGB color that fills top part of the gradient.
+     * @param secondary ARGB color that fills bottom part of the gradient.
+     */
+    public Graphic gradient(int primary, int secondary)
+    {
+        return this.gradient(primary, secondary, false);
+    }
+
+    /**
+     * Draw a vertical/horizontal gradient rectangle.
+     *
+     * @param primary ARGB color that fills top part of the gradient.
+     * @param secondary ARGB color that fills bottom part of the gradient.
+     * @param horizontal Whether gradient is horizontal (<code>true</code>) or vertical (<code>false</code>).
+     */
+    public Graphic gradient(int primary, int secondary, boolean horizontal)
+    {
+        return this.gradient(0, 0, 0, 0, primary, secondary, horizontal);
     }
 
     /**
@@ -109,7 +146,7 @@ public class UIGraphicsComponent extends UIComponent
      * @param primary ARGB color that fills top part of the gradient.
      * @param secondary ARGB color that fills bottom part of the gradient.
      */
-    public UIGraphicsComponent gradient(int x, int y, int w, int h, int primary, int secondary)
+    public Graphic gradient(int x, int y, int w, int h, int primary, int secondary)
     {
         return this.gradient(x, y, w, h, primary, secondary, false);
     }
@@ -123,9 +160,25 @@ public class UIGraphicsComponent extends UIComponent
      * @param secondary ARGB color that fills bottom or right part of the gradient.
      * @param horizontal Whether gradient is horizontal (<code>true</code>) or vertical (<code>false</code>).
      */
-    public UIGraphicsComponent gradient(int x, int y, int w, int h, int primary, int secondary, boolean horizontal)
+    public Graphic gradient(int x, int y, int w, int h, int primary, int secondary, boolean horizontal)
     {
         return this.addGraphic(new GradientGraphic(x, y, w, h, primary, secondary, horizontal));
+    }
+
+    /**
+     * Draw an image.
+     */
+    public Graphic image(String image, int textureWidth, int textureHeight)
+    {
+        return this.image(image, textureWidth, textureHeight, 0xffffffff);
+    }
+
+    /**
+     * Draw an image.
+     */
+    public Graphic image(String image, int textureWidth, int textureHeight, int primary)
+    {
+        return this.image(image, 0, 0, 0, 0, textureWidth, textureHeight, primary);
     }
 
     /**
@@ -139,7 +192,7 @@ public class UIGraphicsComponent extends UIComponent
      * by inputting image's URL. Although, sometimes it won't work due to incorrect headers
      * that doesn't identify a web-browser.</p>
      */
-    public UIGraphicsComponent image(String image, int x, int y, int w, int h)
+    public Graphic image(String image, int x, int y, int w, int h)
     {
         return this.image(image, x, y, w, h, w, h, 0xffffffff);
     }
@@ -147,7 +200,7 @@ public class UIGraphicsComponent extends UIComponent
     /**
      * Draw an image relative to graphics component's frame with known texture size.
      */
-    public UIGraphicsComponent image(String image, int x, int y, int w, int h, int textureWidth, int textureHeight)
+    public Graphic image(String image, int x, int y, int w, int h, int textureWidth, int textureHeight)
     {
         return this.image(image, x, y, w, h, textureWidth, textureHeight, 0xffffffff);
     }
@@ -155,7 +208,7 @@ public class UIGraphicsComponent extends UIComponent
     /**
      * Draw an image relative to graphics component's frame with known texture size and color.
      */
-    public UIGraphicsComponent image(String image, int x, int y, int w, int h, int textureWidth, int textureHeight, int primary)
+    public Graphic image(String image, int x, int y, int w, int h, int textureWidth, int textureHeight, int primary)
     {
         return this.addGraphic(new ImageGraphic(new ResourceLocation(image), x, y, w, h, textureWidth, textureHeight, primary));
     }
@@ -165,7 +218,7 @@ public class UIGraphicsComponent extends UIComponent
      *
      * @param color ARGB text's font color.
      */
-    public UIGraphicsComponent text(String text, int x, int y, int color)
+    public Graphic text(String text, int x, int y, int color)
     {
         return this.text(text, x, y, color, 0, 0);
     }
@@ -177,7 +230,7 @@ public class UIGraphicsComponent extends UIComponent
      * @param anchorX Horizontal anchor (<code>0..1</code>).
      * @param anchorY Vertical anchor (<code>0..1</code>).
      */
-    public UIGraphicsComponent text(String text, int x, int y, int color, float anchorX, float anchorY)
+    public Graphic text(String text, int x, int y, int color, float anchorX, float anchorY)
     {
         return this.addGraphic(new TextGraphic(text, x, y, color, anchorX, anchorY));
     }
@@ -189,7 +242,7 @@ public class UIGraphicsComponent extends UIComponent
      *
      * @param color ARGB color that used to render an icon.
      */
-    public UIGraphicsComponent icon(String icon, int x, int y, int color)
+    public Graphic icon(String icon, int x, int y, int color)
     {
         return this.icon(icon, x, y, color, 0, 0);
     }
@@ -201,18 +254,46 @@ public class UIGraphicsComponent extends UIComponent
      * @param anchorX Horizontal anchor (<code>0..1</code>).
      * @param anchorY Vertical anchor (<code>0..1</code>).
      */
-    public UIGraphicsComponent icon(String icon, int x, int y, int color, float anchorX, float anchorY)
+    public Graphic icon(String icon, int x, int y, int color, float anchorX, float anchorY)
     {
         return this.addGraphic(new IconGraphic(icon, x, y, color, anchorX, anchorY));
     }
 
+    /**
+     * Draw a drop shadow.
+     *
+     * @param primary ARGB color that fills inside.
+     * @param secondary ARGB color that fills outside.
+     * @param offset Fading shadow's distance from the given box using <code>x</code>,
+     *               <code>y</code>, <code>w</code>, and <code>h</code> arguments.
+     */
+    public Graphic shadow(int primary, int secondary, int offset)
+    {
+        return this.shadow(0, 0, 0, 0, primary, secondary, offset);
+    }
+
+    /**
+     * Draw a drop shadow.
+     *
+     * @param w Width of the rectangle.
+     * @param h Height of the rectangle.
+     * @param primary ARGB color that fills inside.
+     * @param secondary ARGB color that fills outside.
+     * @param offset Fading shadow's distance from the given box using <code>x</code>,
+     *               <code>y</code>, <code>w</code>, and <code>h</code> arguments.
+     */
+    public Graphic shadow(int x, int y, int w, int h, int primary, int secondary, int offset)
+    {
+        return this.addGraphic(new ShadowGraphic(x, y, w, h, primary, secondary, offset));
+    }
+
     @DiscardMethod
-    private UIGraphicsComponent addGraphic(Graphic graphic)
+    private <T extends Graphic> T addGraphic(T graphic)
     {
         this.change("Graphics");
         this.graphics.add(graphic);
 
-        return this;
+        return graphic;
     }
 
     @Override

@@ -23,7 +23,7 @@ public class ImageGraphic extends Graphic
     public ImageGraphic(ResourceLocation picture, int x, int y, int w, int h, int width, int height, int primary)
     {
         this.picture = picture;
-        this.rect.set(x, y, w, h);
+        this.pixels.set(x, y, w, h);
         this.primary = primary;
         this.width = width;
         this.height = height;
@@ -31,14 +31,14 @@ public class ImageGraphic extends Graphic
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void draw(Area area)
+    public void drawGraphic(Area area)
     {
         if (this.picture != null)
         {
             ColorUtils.bindColor(this.primary);
 
-            int left = area.x + this.rect.x;
-            int top = area.y + this.rect.y;
+            int left = area.x;
+            int top = area.y;
 
             Minecraft.getMinecraft().renderEngine.bindTexture(this.picture);
 
@@ -46,7 +46,7 @@ public class ImageGraphic extends Graphic
             GlStateManager.enableAlpha();
             GlStateManager.enableBlend();
 
-            GuiDraw.drawBillboard(left, top, 0, 0, this.rect.w, this.rect.h, this.width, this.height);
+            GuiDraw.drawBillboard(left, top, 0, 0, area.w, area.h, this.width, this.height);
         }
     }
 
