@@ -210,18 +210,4 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
         this.save();
         this.statesEditor.set(null);
     }
-
-    @Override
-    public void draw(GuiContext context)
-    {
-        int x = this.editor.area.x;
-        int y = this.area.y;
-        int h = this.area.ey();
-        int color = 0x66000000;
-
-        GuiDraw.drawHorizontalGradientRect(x - 20, y, x, h, 0, color);
-        GuiDraw.drawHorizontalGradientRect(x, y, x + 20, h, color, 0);
-
-        super.draw(context);
-    }
 }
