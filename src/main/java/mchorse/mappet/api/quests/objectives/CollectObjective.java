@@ -11,6 +11,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class CollectObjective extends AbstractObjective
 {
     public ItemStack stack = ItemStack.EMPTY;
+    public boolean ignoreNBT;
 
     public CollectObjective()
     {}
@@ -34,7 +35,7 @@ public class CollectObjective extends AbstractObjective
 
     private int countItems(EntityPlayer player)
     {
-        return InventoryUtils.countItems(player, this.stack);
+        return InventoryUtils.countItems(player, this.stack, true, this.ignoreNBT);
     }
 
     @Override
@@ -80,6 +81,8 @@ public class CollectObjective extends AbstractObjective
             tag.setTag("Item", this.stack.serializeNBT());
         }
 
+        tag.setBoolean("IgnoreNBT", this.ignoreNBT);
+
         return tag;
     }
 
@@ -92,5 +95,7 @@ public class CollectObjective extends AbstractObjective
         {
             this.stack = new ItemStack(tag.getCompoundTag("Item"));
         }
+
+        this.ignoreNBT = tag.getBoolean("IgnoreNBT");
     }
 }

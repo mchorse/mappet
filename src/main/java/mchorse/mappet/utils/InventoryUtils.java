@@ -8,9 +8,19 @@ public class InventoryUtils
 {
     public static boolean areStacksSimilar(ItemStack a, ItemStack b)
     {
+        return areStacksSimilar(a, b, false);
+    }
+
+    public static boolean areStacksSimilar(ItemStack a, ItemStack b, boolean ignoreNBT)
+    {
         if (a.isEmpty() && b.isEmpty())
         {
             return true;
+        }
+
+        if (ignoreNBT)
+        {
+            return a.getItem() == b.getItem();
         }
 
         return ItemStack.areItemsEqualIgnoreDurability(a, b) && ItemStack.areItemStackTagsEqual(a, b);
@@ -18,10 +28,10 @@ public class InventoryUtils
 
     public static int countItems(EntityPlayer player, ItemStack target)
     {
-        return countItems(player, target, true);
+        return countItems(player, target, true, false);
     }
 
-    public static int countItems(EntityPlayer player, ItemStack target, boolean stopUponTargetCount)
+    public static int countItems(EntityPlayer player, ItemStack target, boolean stopUponTargetCount, boolean ignoreNBT)
     {
         int count = 0;
 
@@ -29,7 +39,7 @@ public class InventoryUtils
         {
             ItemStack stack = player.inventory.getStackInSlot(i);
 
-            if (areStacksSimilar(target, stack))
+            if (areStacksSimilar(target, stack, ignoreNBT))
             {
                 count += stack.getCount();
 
