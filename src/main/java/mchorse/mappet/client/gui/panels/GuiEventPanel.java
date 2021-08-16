@@ -33,11 +33,12 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventBaseNode>>
+public class GuiEventPanel extends GuiMappetRunPanel<NodeSystem<EventBaseNode>>
 {
     public static final IKey EMPTY_EVENT = IKey.lang("mappet.gui.nodes.info.empty_event");
 
@@ -114,6 +115,15 @@ public class GuiEventPanel extends GuiMappetDashboardPanel<NodeSystem<EventBaseN
                 this.editor.add(panel);
             }
         }
+    }
+
+    @Override
+    protected void run(EntityPlayerSP player)
+    {
+        this.save();
+        this.save = false;
+
+        player.sendChatMessage("/mp event trigger " + player.getUniqueID().toString() + " " + this.data.getId());
     }
 
     @Override

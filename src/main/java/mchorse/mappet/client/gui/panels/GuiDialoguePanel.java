@@ -12,8 +12,9 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 
-public class GuiDialoguePanel extends GuiMappetDashboardPanel<Dialogue>
+public class GuiDialoguePanel extends GuiMappetRunPanel<Dialogue>
 {
     public static final IKey EMPTY = IKey.lang("mappet.gui.nodes.info.empty_dialogue");
 
@@ -74,6 +75,15 @@ public class GuiDialoguePanel extends GuiMappetDashboardPanel<Dialogue>
                 this.editor.add(panel);
             }
         }
+    }
+
+    @Override
+    protected void run(EntityPlayerSP player)
+    {
+        this.save();
+        this.save = false;
+
+        player.sendChatMessage("/mp dialogue open " + player.getUniqueID().toString() + " " + this.data.getId());
     }
 
     @Override

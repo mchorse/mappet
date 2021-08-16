@@ -178,7 +178,7 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
 
     private void runScript(GuiIconElement element)
     {
-        EntityPlayerSP player = Minecraft.getMinecraft().player;
+        EntityPlayerSP player = this.mc.player;
 
         this.save();
         this.save = false;

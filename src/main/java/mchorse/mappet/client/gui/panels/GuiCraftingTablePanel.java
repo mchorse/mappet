@@ -15,8 +15,9 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 
-public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable>
+public class GuiCraftingTablePanel extends GuiMappetRunPanel<CraftingTable>
 {
     public static final IKey ACTION = IKey.lang("mappet.gui.crafting.action");
     public static final IKey TITLE = IKey.lang("mappet.gui.crafting.title");
@@ -106,6 +107,15 @@ public class GuiCraftingTablePanel extends GuiMappetDashboardPanel<CraftingTable
 
         this.pickRecipe(this.data.recipes.isEmpty() ? null : this.data.recipes.get(index), true);
         this.recipes.update();
+    }
+
+    @Override
+    protected void run(EntityPlayerSP player)
+    {
+        this.save();
+        this.save = false;
+
+        player.sendChatMessage("/mp crafting open " + player.getUniqueID().toString() + " " + this.data.getId());
     }
 
     @Override

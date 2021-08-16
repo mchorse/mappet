@@ -19,8 +19,9 @@ import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 
-public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
+public class GuiQuestPanel extends GuiMappetRunPanel<Quest>
 {
     public static final IKey EMPTY = IKey.lang("mappet.gui.quests.info.empty");
     public GuiTextElement title;
@@ -78,6 +79,15 @@ public class GuiQuestPanel extends GuiMappetDashboardPanel<Quest>
         this.editor.add(scrollEditor);
 
         this.fill(null);
+    }
+
+    @Override
+    protected void run(EntityPlayerSP player)
+    {
+        this.save();
+        this.save = false;
+
+        player.sendChatMessage("/mp quest accept " + player.getUniqueID().toString() + " " + this.data.getId());
     }
 
     @Override

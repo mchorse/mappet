@@ -186,9 +186,13 @@ mappet.gui.context.copy_camera=Copy camera information...
 
 mappet.gui.panels.settings=Server settings
 mappet.gui.panels.crafting=Crafting tables
+mappet.gui.panels.crafting_run=Open crafting table
 mappet.gui.panels.quests=Quests
+mappet.gui.panels.quests_run=Accept quest
 mappet.gui.panels.events=Events
+mappet.gui.panels.events_run=Trigger event
 mappet.gui.panels.dialogues=Dialogues
+mappet.gui.panels.dialogues_run=Open dialogue
 mappet.gui.panels.regions=Regions
 mappet.gui.panels.npcs=NPCs
 mappet.gui.panels.factions=Factions
