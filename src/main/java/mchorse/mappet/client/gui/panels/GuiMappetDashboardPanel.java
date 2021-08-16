@@ -50,6 +50,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
     protected boolean update;
     protected T data;
     protected boolean allowed;
+    protected boolean save;
 
     public GuiMappetDashboardPanel(Minecraft mc, GuiMappetDashboard dashboard)
     {
@@ -324,6 +325,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
         super.open();
 
         this.update = true;
+        this.save = true;
     }
 
     @Override
@@ -354,7 +356,10 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
     {
         super.disappear();
 
-        this.save();
+        if (this.save)
+        {
+            this.save();
+        }
     }
 
     @Override
@@ -362,7 +367,10 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
     {
         super.close();
 
-        this.save();
+        if (this.save)
+        {
+            this.save();
+        }
     }
 
     public void save()

@@ -184,6 +184,8 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
         EntityPlayerSP player = Minecraft.getMinecraft().player;
 
         this.save();
+        this.save = false;
+        
         player.sendChatMessage("/mp script exec " + player.getUniqueID().toString() + " " + this.data.getId());
     }
 
