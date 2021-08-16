@@ -21,7 +21,7 @@ public class GuiScriptSoundOverlayPanel extends GuiSoundOverlayPanel
     {
         super.onClose();
 
-        if (!this.rls.list.isDeselected())
+        if (!this.rls.list.isDeselected() && this.rls.list.getIndex() > 0)
         {
             String current = this.editor.getSelectedText().trim();
             String result = this.rls.list.getCurrentFirst();

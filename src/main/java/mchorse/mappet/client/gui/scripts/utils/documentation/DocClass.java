@@ -30,8 +30,13 @@ public class DocClass extends DocEntry
         return null;
     }
 
-    public void removeDisabledMethods()
+    public void setup()
     {
         this.methods.removeIf(method -> method.annotations.contains("mchorse.mappet.api.ui.utils.DiscardMethod"));
+
+        for (DocMethod method : this.methods)
+        {
+            method.parentClass = this;
+        }
     }
 }

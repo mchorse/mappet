@@ -4,7 +4,6 @@ import mchorse.mappet.Mappet;
 import mchorse.mappet.api.scripts.Script;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
-import mchorse.mappet.client.gui.npc.utils.GuiNpcStatesOverlayPanel;
 import mchorse.mappet.client.gui.scripts.GuiDocumentationOverlayPanel;
 import mchorse.mappet.client.gui.scripts.GuiLibrariesOverlayPanel;
 import mchorse.mappet.client.gui.scripts.GuiRepl;
@@ -13,12 +12,15 @@ import mchorse.mappet.client.gui.scripts.utils.GuiItemStackOverlayPanel;
 import mchorse.mappet.client.gui.scripts.utils.GuiMorphOverlayPanel;
 import mchorse.mappet.client.gui.scripts.utils.GuiScriptSoundOverlayPanel;
 import mchorse.mappet.client.gui.scripts.utils.SyntaxStyle;
+import mchorse.mappet.client.gui.scripts.utils.documentation.DocClass;
+import mchorse.mappet.client.gui.scripts.utils.documentation.DocMethod;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
 import mchorse.mappet.client.gui.utils.overlays.GuiSoundOverlayPanel;
 import mchorse.mappet.utils.MPIcons;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
+import mchorse.mclib.client.gui.framework.elements.context.GuiContextMenu;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import mchorse.mclib.client.gui.utils.Icons;
@@ -38,6 +40,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
 {
@@ -49,7 +52,46 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
     public GuiRepl repl;
     public GuiToggleElement unique;
 
-    public static void openMorphPicker(GuiTextEditor editor)
+    /* Context menu stuff */
+
+    public static GuiContextMenu createScriptContextMenu(Minecraft mc, GuiTextEditor editor)
+    {
+        /* These GUI QoL features are getting out of hand... */
+        GuiSimpleContextMenu menu = new GuiSimpleContextMenu(mc)
+            .action(Icons.POSE, IKey.lang("mappet.gui.scripts.context.paste_morph"), () -> openMorphPicker(editor))
+            .action(MMIcons.ITEM, IKey.lang("mappet.gui.scripts.context.paste_item"), () -> openItemPicker(editor))
+            .action(Icons.BLOCK, IKey.lang("mappet.gui.scripts.context.paste_player_pos"), () -> pastePlayerPosition(editor))
+            .action(Icons.VISIBLE, IKey.lang("mappet.gui.scripts.context.paste_block_pos"), () -> pasteBlockPosition(editor))
+            .action(Icons.SOUND, IKey.lang("mappet.gui.scripts.context.paste_sound"), () -> openSoundPicker(editor));
+
+        if (editor.isSelected())
+        {
+            setupDocumentation(mc, editor, menu);
+        }
+
+        return menu;
+    }
+
+    private static void setupDocumentation(Minecraft mc, GuiTextEditor editor, GuiSimpleContextMenu menu)
+    {
+        String text = editor.getSelectedText().replaceAll("[^\\w\\d_]+", "");
+        List<DocClass> searched = GuiDocumentationOverlayPanel.search(text);
+
+        if (searched.isEmpty())
+        {
+            return;
+        }
+
+        for (DocClass docClass : searched)
+        {
+            menu.action(Icons.SEARCH, IKey.format("mappet.gui.scripts.context.docs", docClass.getName()), () ->
+            {
+                searchDocumentation(editor, docClass.getMethod(text));
+            });
+        }
+    }
+
+    private static void openMorphPicker(GuiTextEditor editor)
     {
         AbstractMorph morph = null;
         NBTTagCompound tag = readFromSelected(editor);
@@ -62,7 +104,7 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
         GuiOverlay.addOverlay(GuiBase.getCurrent(), new GuiMorphOverlayPanel(Minecraft.getMinecraft(), IKey.lang("mappet.gui.scripts.overlay.title_morph"), editor, morph), 240, 54);
     }
 
-    public static void openItemPicker(GuiTextEditor editor)
+    private static void openItemPicker(GuiTextEditor editor)
     {
         ItemStack stack = ItemStack.EMPTY;
         NBTTagCompound tag = readFromSelected(editor);
@@ -75,7 +117,7 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
         GuiOverlay.addOverlay(GuiBase.getCurrent(), new GuiItemStackOverlayPanel(Minecraft.getMinecraft(), IKey.lang("mappet.gui.scripts.overlay.title_item"), editor, stack), 240, 54);
     }
 
-    public static NBTTagCompound readFromSelected(GuiTextEditor editor)
+    private static NBTTagCompound readFromSelected(GuiTextEditor editor)
     {
         if (editor.isSelected())
         {
@@ -95,7 +137,7 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
         return null;
     }
 
-    public static void pastePlayerPosition(GuiTextEditor editor)
+    private static void pastePlayerPosition(GuiTextEditor editor)
     {
         EntityPlayer player = Minecraft.getMinecraft().player;
         DecimalFormat format = GuiTrackpadElement.FORMAT;
@@ -103,7 +145,7 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
         editor.pasteText(format.format(player.posX) + ", " + format.format(player.posY) + ", " + format.format(player.posZ));
     }
 
-    public static void pasteBlockPosition(GuiTextEditor editor)
+    private static void pasteBlockPosition(GuiTextEditor editor)
     {
         EntityPlayer player = Minecraft.getMinecraft().player;
         DecimalFormat format = GuiTrackpadElement.FORMAT;
@@ -117,11 +159,18 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
         }
     }
 
-    public static void openSoundPicker(GuiTextEditor editor)
+    private static void openSoundPicker(GuiTextEditor editor)
     {
         GuiSoundOverlayPanel panel = new GuiScriptSoundOverlayPanel(Minecraft.getMinecraft(), editor);
 
         GuiOverlay.addOverlay(GuiBase.getCurrent(), panel, 0.5F, 0.9F);
+    }
+
+    private static void searchDocumentation(GuiTextEditor editor, DocMethod method)
+    {
+        GuiDocumentationOverlayPanel panel = new GuiDocumentationOverlayPanel(Minecraft.getMinecraft(), method);
+
+        GuiOverlay.addOverlay(GuiBase.getCurrent(), panel, 0.7F, 0.9F);
     }
 
     public GuiScriptPanel(Minecraft mc, GuiMappetDashboard dashboard)
@@ -140,16 +189,7 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
         this.iconBar.add(this.toggleRepl, this.docs, this.libraries, this.run);
 
         this.code = new GuiTextEditor(mc, null);
-        this.code.background().context(() ->
-        {
-            /* These GUI QoL features are getting out of hand... */
-            return new GuiSimpleContextMenu(this.mc)
-                .action(Icons.POSE, IKey.lang("mappet.gui.scripts.context.paste_morph"), () -> openMorphPicker(this.code))
-                .action(MMIcons.ITEM, IKey.lang("mappet.gui.scripts.context.paste_item"), () -> openItemPicker(this.code))
-                .action(Icons.BLOCK, IKey.lang("mappet.gui.scripts.context.paste_player_pos"), () -> pastePlayerPosition(this.code))
-                .action(Icons.VISIBLE, IKey.lang("mappet.gui.scripts.context.paste_block_pos"), () -> pasteBlockPosition(this.code))
-                .action(Icons.SOUND, IKey.lang("mappet.gui.scripts.context.paste_sound"), () -> openSoundPicker(this.code));
-        });
+        this.code.background().context(() -> createScriptContextMenu(this.mc, this.code));
 
         this.repl = new GuiRepl(mc);
 

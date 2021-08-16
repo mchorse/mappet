@@ -16,6 +16,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.launchwrapper.Launch;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.function.Consumer;
@@ -23,14 +24,93 @@ import java.util.function.Consumer;
 public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
 {
     private static Docs docs;
+    private static DocEntry top;
     private static DocEntry entry;
 
     public GuiDocEntryList list;
     public GuiScrollElement documentation;
 
-    private DocEntry topPackage;
+    public static List<DocClass> search(String text)
+    {
+        List<DocClass> list = new ArrayList<DocClass>();
+
+        for (DocClass docClass : getDocs().classes)
+        {
+            if (docClass.getMethod(text) != null)
+            {
+                list.add(docClass);
+            }
+        }
+
+        return list;
+    }
+
+    public static Docs getDocs()
+    {
+        parseDocs();
+
+        return docs;
+    }
+
+    private static void parseDocs()
+    {
+        /* Update the docs data only if it's in dev environment */
+        final boolean dev = (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+
+        if (dev || docs == null)
+        {
+            InputStream stream = GuiDocumentationOverlayPanel.class.getResourceAsStream("/assets/mappet/docs.json");
+            Gson gson = new GsonBuilder().create();
+            Scanner scanner = new Scanner(stream, "UTF-8");
+
+            docs = gson.fromJson(scanner.useDelimiter("\\A").next(), Docs.class);
+            entry = null;
+
+            docs.copyMethods("UILabelBaseComponent", "UIButtonComponent", "UILabelComponent", "UITextComponent", "UITextareaComponent", "UITextboxComponent", "UIToggleComponent");
+            docs.remove("UIParentComponent");
+            docs.remove("UILabelBaseComponent");
+
+            DocList topPackage = new DocList();
+            DocList scripting = new DocList();
+            DocList ui = new DocList();
+
+            topPackage.doc = docs.getPackage("mchorse.mappet.api.scripts.user.mappet").doc;
+            scripting.name = "Scripting API";
+            scripting.doc = docs.getPackage("mchorse.mappet.api.scripts.user").doc;
+            scripting.parent = topPackage;
+            ui.name = "UI API";
+            ui.doc = docs.getPackage("mchorse.mappet.api.ui.components").doc;
+            ui.parent = topPackage;
+
+            for (DocClass docClass : docs.classes)
+            {
+                docClass.setup();
+
+                if (docClass.name.contains("ui.components"))
+                {
+                    ui.entries.add(docClass);
+                    docClass.parent = ui;
+                }
+                else
+                {
+                    scripting.entries.add(docClass);
+                    docClass.parent = scripting;
+                }
+            }
+
+            topPackage.entries.add(scripting);
+            topPackage.entries.add(ui);
+
+            top = topPackage;
+        }
+    }
 
     public GuiDocumentationOverlayPanel(Minecraft mc)
+    {
+        this(mc, null);
+    }
+
+    public GuiDocumentationOverlayPanel(Minecraft mc, DocEntry entry)
     {
         super(mc, IKey.lang("mappet.gui.scripts.documentation.title"));
 
@@ -42,30 +122,37 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
 
         this.content.add(this.list, this.documentation);
 
-        this.parseDocumentation();
+        this.setupDocs(entry);
     }
 
     private void pick(DocEntry entryIn)
     {
         boolean isDelegate = entryIn instanceof DocDelegate;
+        boolean isMethod = entryIn instanceof DocMethod;
 
         entryIn = entryIn.getEntry();
 
-        if (entry == entryIn || isDelegate)
+        if (entry == entryIn || isDelegate || isMethod)
         {
-            List<DocEntry> entries = entryIn.getEntries();
+            DocEntry listEntry = isMethod ? ((DocMethod) entryIn).parentClass : entryIn;
+            List<DocEntry> entries = listEntry.getEntries();
 
-            if (!entries.isEmpty() || entryIn.parent != null)
+            if (!entries.isEmpty() || listEntry.parent != null)
             {
                 this.list.clear();
 
-                if (entryIn.parent != null)
+                if (listEntry.parent != null)
                 {
-                    this.list.add(new DocDelegate(entryIn.parent));
+                    this.list.add(new DocDelegate(listEntry.parent));
                 }
 
                 this.list.add(entries);
                 this.list.sort();
+
+                if (isMethod)
+                {
+                    this.list.setCurrentScroll(entryIn);
+                }
             }
         }
 
@@ -86,60 +173,17 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
         this.resize();
     }
 
-    private void parseDocumentation()
+    private void setupDocs(DocEntry in)
     {
-        /* Update the docs data only if it's in dev environment */
-        final boolean dev = (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+        parseDocs();
 
-        if (dev || docs == null)
+        if (in != null)
         {
-            InputStream stream = this.getClass().getResourceAsStream("/assets/mappet/docs.json");
-            Gson gson = new GsonBuilder().create();
-            Scanner scanner = new Scanner(stream, "UTF-8");
-
-            docs = gson.fromJson(scanner.useDelimiter("\\A").next(), Docs.class);
-            entry = null;
-
-            docs.copyMethods("UILabelBaseComponent", "UIButtonComponent", "UILabelComponent", "UITextComponent", "UITextareaComponent", "UITextboxComponent", "UIToggleComponent");
-            docs.remove("UIParentComponent");
-            docs.remove("UILabelBaseComponent");
-
-            DocList top = new DocList();
-            DocList scripting = new DocList();
-            DocList ui = new DocList();
-
-            top.doc = docs.getPackage("mchorse.mappet.api.scripts.user.mappet").doc;
-            scripting.name = "Scripting API";
-            scripting.doc = docs.getPackage("mchorse.mappet.api.scripts.user").doc;
-            scripting.parent = top;
-            ui.name = "UI API";
-            ui.doc = docs.getPackage("mchorse.mappet.api.ui.components").doc;
-            ui.parent = top;
-
-            for (DocClass docClass : docs.classes)
-            {
-                docClass.removeDisabledMethods();
-
-                if (docClass.name.contains("ui.components"))
-                {
-                    ui.entries.add(docClass);
-                    docClass.parent = ui;
-                }
-                else
-                {
-                    scripting.entries.add(docClass);
-                    docClass.parent = scripting;
-                }
-            }
-
-            top.entries.add(scripting);
-            top.entries.add(ui);
-            this.topPackage = top;
+            entry = in;
         }
-
-        if (entry == null)
+        else if (entry == null)
         {
-            entry = this.topPackage;
+            entry = top;
         }
 
         this.pick(entry);

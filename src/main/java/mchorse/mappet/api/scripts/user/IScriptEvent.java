@@ -50,7 +50,7 @@ public interface IScriptEvent
     public Map<String, Object> getValues();
 
     /**
-     * Get a value for given key (might be a null).
+     * Get a value for given key (might be a <code>null</code>).
      */
     public Object getValue(String key);
 

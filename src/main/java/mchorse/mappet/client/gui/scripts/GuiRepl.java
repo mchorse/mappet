@@ -35,15 +35,7 @@ public class GuiRepl extends GuiElement
 
         this.repl = new GuiTextEditor(mc, null);
         this.repl.background().flex().relative(this).y(1F).w(1F).h(100).anchorY(1F);
-        this.repl.context(() ->
-        {
-            return new GuiSimpleContextMenu(this.mc)
-                .action(Icons.POSE, IKey.lang("mappet.gui.scripts.context.paste_morph"), () -> GuiScriptPanel.openMorphPicker(this.repl))
-                .action(MMIcons.ITEM, IKey.lang("mappet.gui.scripts.context.paste_item"), () -> GuiScriptPanel.openItemPicker(this.repl))
-                .action(Icons.BLOCK, IKey.lang("mappet.gui.scripts.context.paste_player_pos"), () -> GuiScriptPanel.pastePlayerPosition(this.repl))
-                .action(Icons.VISIBLE, IKey.lang("mappet.gui.scripts.context.paste_block_pos"), () -> GuiScriptPanel.pasteBlockPosition(this.repl))
-                .action(Icons.SOUND, IKey.lang("mappet.gui.scripts.context.paste_sound"), () -> GuiScriptPanel.openSoundPicker(this.repl));
-        });
+        this.repl.context(() -> GuiScriptPanel.createScriptContextMenu(this.mc, this.repl));
 
         this.log = new GuiScrollElement(mc);
         this.log.flex().relative(this).w(1F).h(1F, -100).column(0).vertical().stretch().scroll();

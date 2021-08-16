@@ -530,6 +530,7 @@ mappet.gui.scripts.context.paste_item=Paste item NBT...
 mappet.gui.scripts.context.paste_player_pos=Paste player's position
 mappet.gui.scripts.context.paste_block_pos=Paste block position
 mappet.gui.scripts.context.paste_sound=Paste sound event...
+mappet.gui.scripts.context.docs=Open docs for %s
 mappet.gui.scripts.overlay.title_morph=Morph
 mappet.gui.scripts.overlay.title_item=Item
 mappet.gui.scripts.overlay.insert=Insert
