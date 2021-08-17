@@ -563,6 +563,8 @@ mappet.gui.triggers.title=Trigger editor
 mappet.gui.triggers.frequency=Delay
 mappet.gui.triggers.function=Function
 mappet.gui.triggers.script.function_tooltip=Script entry function (§7main§r is default function name)
+mappet.gui.triggers.morph.morph=Morph into %s
+mappet.gui.triggers.morph.demorph=Demorph
 mappet.gui.triggers.context.add=Add a trigger...
 mappet.gui.triggers.context.add_trigger=Add %s trigger
 mappet.gui.triggers.context.copy=Copy this trigger
@@ -644,6 +646,7 @@ mappet.gui.trigger_types.dialogue=Dialogue
 mappet.gui.trigger_types.script=Script
 mappet.gui.trigger_types.item=Item
 mappet.gui.trigger_types.state=State
+mappet.gui.trigger_types.morph=Morph
 
 mappet.gui.entity_property.xp=Total experience
 mappet.gui.entity_property.xp_level=Experience level

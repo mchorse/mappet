@@ -28,12 +28,13 @@ import mchorse.mappet.api.triggers.blocks.CommandTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.DialogueTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.EventTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.ItemTriggerBlock;
+import mchorse.mappet.api.triggers.blocks.MorphTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.ScriptTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.SoundTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.StateTriggerBlock;
+import mchorse.mappet.api.ui.components.UIButtonComponent;
 import mchorse.mappet.api.ui.components.UIClickComponent;
 import mchorse.mappet.api.ui.components.UIComponent;
-import mchorse.mappet.api.ui.components.UIButtonComponent;
 import mchorse.mappet.api.ui.components.UIGraphicsComponent;
 import mchorse.mappet.api.ui.components.UIIconButtonComponent;
 import mchorse.mappet.api.ui.components.UILabelComponent;
@@ -224,7 +225,8 @@ public class CommonProxy
             .register("dialogue", DialogueTriggerBlock.class, Colors.DIALOGUE)
             .register("script", ScriptTriggerBlock.class, Colors.ENTITY)
             .register("item", ItemTriggerBlock.class, Colors.CRAFTING)
-            .register("state", StateTriggerBlock.class, Colors.STATE);
+            .register("state", StateTriggerBlock.class, Colors.STATE)
+            .register("morph", MorphTriggerBlock.class, Colors.MORPH);
 
         triggerBlocks = triggers;
         Mappet.EVENT_BUS.post(new RegisterTriggerBlockEvent(triggers));
