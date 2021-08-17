@@ -297,11 +297,62 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         return this;
     }
 
+    /**
+     * Add a context menu item.
+     *
+     * @param icon Icon ID (see {@link UIIconButtonComponent}).
+     * @param action Action ID that will be used for handling with {@link IMappetUIContext#getContext()}.
+     * @param label Label that will be displayed in the context menu item.
+     */
     public UIComponent context(String icon, String action, String label)
     {
         return this.context(icon, action, label, 0);
     }
 
+    /**
+     * Add a context menu item.
+     *
+     * <pre>{@code
+     *    function main(c)
+     *    {
+     *        var ui = mappet.createUI(c, "handler").background();
+     *        var label = ui.label("Hello!").id("label").tooltip("Right click me...");
+     *
+     *        label.rxy(0.5, 0.5).wh(160, 20).anchor(0.5).labelAnchor(0.5);
+     *        label.context("bubble", "a", "How are you?");
+     *        label.context("remove", "b", "...", 0xff0033);
+     *
+     *        c.getSubject().openUI(ui);
+     *    }
+     *
+     *    function handler(c)
+     *    {
+     *        var uiContext = c.getSubject().getUIContext();
+     *        var data = uiContext.getData();
+     *
+     *        if (uiContext.getLast() === "textbox")
+     *        {
+     *            c.getSubject().send("Your name is: " + data.getString("textbox"));
+     *        }
+     *
+     *        var item = uiContext.getContext();
+     *
+     *        if (item === "a")
+     *        {
+     *            uiContext.get("label").label("I'm fine, and you?");
+     *        }
+     *        else if (item === "b")
+     *        {
+     *            uiContext.get("label").label("");
+     *        }
+     *    }
+     * }</pre>
+     *
+     * @param icon Icon ID (see {@link UIIconButtonComponent}).
+     * @param action Action ID that will be used for handling with {@link IMappetUIContext#getContext()}.
+     * @param label Label that will be displayed in the context menu item.
+     * @param color Background color highlight (in RGB hex format).
+     */
     public UIComponent context(String icon, String action, String label, int color)
     {
         this.change("Context");
