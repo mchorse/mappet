@@ -36,7 +36,7 @@ public class DocClass extends DocEntry
 
         for (DocMethod method : this.methods)
         {
-            method.parentClass = this;
+            method.parent = this;
         }
     }
 }

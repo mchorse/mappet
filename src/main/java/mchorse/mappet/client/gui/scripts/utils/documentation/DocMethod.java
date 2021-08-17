@@ -12,8 +12,6 @@ import java.util.stream.Collectors;
 
 public class DocMethod extends DocEntry
 {
-    public DocClass parentClass;
-
     public DocReturn returns;
     public List<DocParameter> arguments = new ArrayList<DocParameter>();
     public List<String> annotations = new ArrayList<String>();
@@ -60,5 +58,11 @@ public class DocMethod extends DocEntry
         {
             DocEntry.process(this.returns.doc, mc, target);
         }
+    }
+
+    @Override
+    public List<DocEntry> getEntries()
+    {
+        return this.parent == null ? super.getEntries() : this.parent.getEntries();
     }
 }

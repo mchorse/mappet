@@ -127,32 +127,29 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
 
     private void pick(DocEntry entryIn)
     {
-        boolean isDelegate = entryIn instanceof DocDelegate;
         boolean isMethod = entryIn instanceof DocMethod;
 
         entryIn = entryIn.getEntry();
+        List<DocEntry> entries = entryIn.getEntries();
+        boolean wasSame = this.list.getList().size() >= 2 && this.list.getList().get(1).parent == entryIn.parent;
 
-        if (entry == entryIn || isDelegate || isMethod)
+        /* If the list isn't the same or if the the current item got double clicked
+         * to enter into the section */
+        if (entry == entryIn || !wasSame)
         {
-            DocEntry listEntry = isMethod ? ((DocMethod) entryIn).parentClass : entryIn;
-            List<DocEntry> entries = listEntry.getEntries();
+            this.list.clear();
 
-            if (!entries.isEmpty() || listEntry.parent != null)
+            if (entryIn.parent != null)
             {
-                this.list.clear();
+                this.list.add(new DocDelegate(entryIn.parent));
+            }
 
-                if (listEntry.parent != null)
-                {
-                    this.list.add(new DocDelegate(listEntry.parent));
-                }
+            this.list.add(entries);
+            this.list.sort();
 
-                this.list.add(entries);
-                this.list.sort();
-
-                if (isMethod)
-                {
-                    this.list.setCurrentScroll(entryIn);
-                }
+            if (isMethod)
+            {
+                this.list.setCurrentScroll(entryIn);
             }
         }
 
