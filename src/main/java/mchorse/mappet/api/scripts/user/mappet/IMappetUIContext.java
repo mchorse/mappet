@@ -152,6 +152,14 @@ public interface IMappetUIContext
      */
     public String getHotkey();
 
+    /**
+     * Get the ID of the last context menu item.
+     *
+     * <p>If no context menu was activated, it will be an empty string (<code>""</code>).
+     * See {@link UIComponent#context(String, String, String, int)} method for an example.</p>
+     */
+    public String getContext();
+
     /* Server side modification */
 
     /**

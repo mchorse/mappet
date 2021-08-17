@@ -3,9 +3,14 @@ package mchorse.mappet.api.ui.components;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIContext;
 import mchorse.mappet.api.ui.UIContext;
 import mchorse.mappet.api.ui.utils.DiscardMethod;
+import mchorse.mappet.api.ui.utils.UIContextItem;
 import mchorse.mappet.api.ui.utils.UIKeybind;
 import mchorse.mappet.api.ui.utils.UIUnit;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
+import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
+import mchorse.mclib.client.gui.utils.Icon;
+import mchorse.mclib.client.gui.utils.IconRegistry;
+import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.Keybind;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.Direction;
@@ -56,6 +61,7 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
 
     public int updateDelay = this.getDefaultUpdateDelay();
     public List<UIKeybind> keybinds = new ArrayList<UIKeybind>();
+    public List<UIContextItem> context = new ArrayList<UIContextItem>();
 
     protected Set<String> changedProperties = new HashSet<String>();
 
@@ -284,7 +290,23 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
      */
     public UIComponent keybind(int keyCode, String action, String label, boolean ctrl, boolean shift, boolean alt)
     {
+        this.change("Keybinds");
+
         this.keybinds.add(new UIKeybind(keyCode, action, label, UIKeybind.createModifier(shift, ctrl, alt)));
+
+        return this;
+    }
+
+    public UIComponent context(String icon, String action, String label)
+    {
+        return this.context(icon, action, label, 0);
+    }
+
+    public UIComponent context(String icon, String action, String label, int color)
+    {
+        this.change("Context");
+
+        this.context.add(new UIContextItem(icon, action, label, color));
 
         return this;
     }
@@ -590,6 +612,7 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         }
 
         this.applyKeybinds(element, context);
+        this.applyContext(element, context);
 
         return element;
     }
@@ -598,6 +621,8 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
     @SideOnly(Side.CLIENT)
     protected GuiElement applyKeybinds(GuiElement element, UIContext context)
     {
+        element.keys().keybinds.clear();
+
         for (UIKeybind keybind : this.keybinds)
         {
             Keybind key = element.keys().register(IKey.str(keybind.label), keybind.keyCode, () ->
@@ -653,6 +678,45 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         else
         {
             element.tooltip(IKey.str(TextUtils.processColoredText(this.tooltip)), direction);
+        }
+    }
+
+    @DiscardMethod
+    @SideOnly(Side.CLIENT)
+    private void applyContext(GuiElement element, UIContext context)
+    {
+        if (this.context.isEmpty())
+        {
+            element.context(null);
+        }
+        else
+        {
+            element.context(() ->
+            {
+                GuiSimpleContextMenu menu = new GuiSimpleContextMenu(Minecraft.getMinecraft());
+
+                for (UIContextItem item : this.context)
+                {
+                    Runnable runnable = () -> context.sendContext(item.action);
+                    Icon icon = IconRegistry.icons.get(item.icon);
+
+                    if (icon == null)
+                    {
+                        icon = Icons.NONE;
+                    }
+
+                    if (item.color > 0)
+                    {
+                        menu.action(icon, IKey.str(item.label), runnable, item.color);
+                    }
+                    else
+                    {
+                        menu.action(icon, IKey.str(item.label), runnable);
+                    }
+                }
+
+                return menu;
+            });
         }
     }
 
@@ -727,6 +791,14 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         {
             this.h.apply(element.flex().h, context);
         }
+        else if (key.equals("Keybinds"))
+        {
+            this.applyKeybinds(element, context);
+        }
+        else if (key.equals("Context"))
+        {
+            this.applyContext(element, context);
+        }
     }
 
     /* Main implementation */
@@ -784,17 +856,23 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         tag.setTag("H", this.h.serializeNBT());
         tag.setInteger("UpdateDelay", this.updateDelay);
 
-        if (!this.keybinds.isEmpty())
+        NBTTagList keybinds = new NBTTagList();
+
+        for (UIKeybind keybind : this.keybinds)
         {
-            NBTTagList keybinds = new NBTTagList();
-
-            for (UIKeybind keybind : this.keybinds)
-            {
-                keybinds.appendTag(keybind.serializeNBT());
-            }
-
-            tag.setTag("Keybinds", keybinds);
+            keybinds.appendTag(keybind.serializeNBT());
         }
+
+        tag.setTag("Keybinds", keybinds);
+
+        NBTTagList context = new NBTTagList();
+
+        for (UIContextItem contextItem : this.context)
+        {
+            context.appendTag(contextItem.serializeNBT());
+        }
+
+        tag.setTag("Context", context);
     }
 
     @Override
@@ -859,6 +937,21 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
 
                 keybind.deserializeNBT(keybinds.getCompoundTagAt(i));
                 this.keybinds.add(keybind);
+            }
+        }
+
+        if (tag.hasKey("Context"))
+        {
+            this.context.clear();
+
+            NBTTagList context = tag.getTagList("Context", Constants.NBT.TAG_COMPOUND);
+
+            for (int i = 0, c = context.tagCount(); i < c; i++)
+            {
+                UIContextItem contextItem = new UIContextItem();
+
+                contextItem.deserializeNBT(context.getCompoundTagAt(i));
+                this.context.add(contextItem);
             }
         }
     }

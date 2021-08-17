@@ -70,11 +70,11 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
         this.statesAdd.flex().relative(this.states).x(1F, -30).y(10);
 
         this.triggers = new GuiLabelListElement<String>(mc, (l) -> this.fillTrigger(l.get(0), false));
-        this.triggers.background().flex().relative(this).x(0.5F, 10).y(35).w(0.5F, -20).h(80);
+        this.triggers.background().flex().relative(this).x(0.5F, 10).y(35).w(0.5F, -20).h(96);
         this.trigger = new GuiTriggerElement(mc);
         this.trigger.flex().relative(this).x(1F, -10).y(1F, -10).wh(120, 20).anchor(1F, 1F);
         this.editor = new GuiScrollElement(mc);
-        this.editor.flex().relative(this).x(0.5F).y(115).w(0.5F).h(1F, -145).column(5).scroll().stretch().padding(10);
+        this.editor.flex().relative(this).x(0.5F).y(131).w(0.5F).h(1F, -161).column(5).scroll().stretch().padding(10);
 
         this.hotkeys = new GuiIconElement(mc, Icons.DOWNLOAD, (b) -> this.openHotkeysEditor());
         this.hotkeys.tooltip(IKey.lang("mappet.gui.settings.hotkeys"), Direction.LEFT);

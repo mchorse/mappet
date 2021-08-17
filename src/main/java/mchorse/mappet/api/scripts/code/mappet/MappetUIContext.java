@@ -46,6 +46,12 @@ public class MappetUIContext implements IMappetUIContext
     }
 
     @Override
+    public String getContext()
+    {
+        return this.context.getContext();
+    }
+
+    @Override
     public UIComponent get(String id)
     {
         return this.context.getById(id);

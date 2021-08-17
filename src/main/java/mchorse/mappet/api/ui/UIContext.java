@@ -35,6 +35,7 @@ public class UIContext
     private String last = "";
     private boolean closed;
     private String hotkey = "";
+    private String context = "";
     private Long dirty;
 
     public UIContext(UI ui)
@@ -164,6 +165,11 @@ public class UIContext
         return this.hotkey;
     }
 
+    public String getContext()
+    {
+        return this.context;
+    }
+
     public boolean isClosed()
     {
         return this.closed;
@@ -224,8 +230,24 @@ public class UIContext
         {
             NBTTagCompound tag = new NBTTagCompound();
 
-            tag.setString("Last", "");
             tag.setString("Hotkey", action);
+
+            Dispatcher.sendToServer(new PacketUIData(tag));
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void sendContext(String action)
+    {
+        if (this.dirty != null)
+        {
+            this.sendToServer();
+        }
+        else
+        {
+            NBTTagCompound tag = new NBTTagCompound();
+
+            tag.setString("Context", action);
 
             Dispatcher.sendToServer(new PacketUIData(tag));
         }
@@ -257,6 +279,7 @@ public class UIContext
         tag.setTag("Data", this.data);
         tag.setString("Last", this.last);
         tag.setString("Hotkey", this.hotkey);
+        tag.setString("Context", this.context);
 
         NBTTagCompound oldData = this.data;
 
@@ -292,6 +315,7 @@ public class UIContext
         this.data.merge(data.getCompoundTag("Data"));
         this.last = data.getString("Last");
         this.hotkey = data.getString("Hotkey");
+        this.context = data.getString("Context");
 
         if (this.handleScript(this.player))
         {
