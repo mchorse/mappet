@@ -107,7 +107,9 @@ public abstract class DocEntry
                 line = line.replaceAll("\\{@link +[^}]+\\.([^}]+)}", TextFormatting.GOLD + "$1" + TextFormatting.RESET);
                 line = line.replaceAll("\\{@link +([^}]*)#([^}]+)}", TextFormatting.GOLD + "$1" + TextFormatting.RESET + "." + TextFormatting.GRAY + "$2" + TextFormatting.RESET);
                 line = line.replaceAll("\\{@link ([^}]+)}", TextFormatting.GOLD + "$1" + TextFormatting.RESET);
+                line = line.replaceAll("&lt;", "<");
                 line = line.replaceAll("&gt;", ">");
+                line = line.replaceAll("&amp;", "&");
 
                 GuiText text = new GuiText(mc).text(line.trim().replaceAll(" {2,}", " "));
 

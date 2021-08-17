@@ -60,6 +60,11 @@ public class UITrackpadComponent extends UIComponent
     public Double max;
     public boolean integer;
 
+    public Double normal;
+    public Double weak;
+    public Double strong;
+    public Double increment;
+
     /**
      * Set the value that of trackpad component.
      */
@@ -136,6 +141,52 @@ public class UITrackpadComponent extends UIComponent
         return this.min(min).max(max).integer(integer);
     }
 
+    /**
+     * Changes the amplitudes of this trackpad fields, i.e. how much value changes when
+     * moving the cursor horizontally. Weak (<code>Alt</code> amplitude gets set 5 times
+     * weaker than input value, and strong (<code>Shift</code>) amplitude gets set 5 times
+     * stronger than input value.
+     */
+    public UITrackpadComponent amplitudes(double normal)
+    {
+        return this.amplitudes(normal, normal / 5, normal * 5);
+    }
+
+    /**
+     * Changes the amplitudes of this trackpad fields, i.e. how much value changes when
+     * moving the cursor horizontally.
+     *
+     * @param normal Value change per pixel when no modifiers is held.
+     * @param weak Value change per pixel when alt is held.
+     * @param strong Value change per pixel when shift is held.
+     */
+    public UITrackpadComponent amplitudes(double normal, double weak, double strong)
+    {
+        this.change("Normal", "Weak", "Strong");
+
+        this.normal = normal;
+        this.weak = weak;
+        this.strong = strong;
+
+        return this;
+    }
+
+    /**
+     * Changes the incremental value of this trackpad fields, i.e. how much being added
+     * or subtracted when user presses &lt; and &gt; buttons on the sides of the
+     * trackpad value.
+     *
+     * @param increment Value change per click on increment buttons.
+     */
+    public UITrackpadComponent increment(double increment)
+    {
+        this.change("Increment");
+
+        this.increment = increment;
+
+        return this;
+    }
+
     @Override
     @DiscardMethod
     protected int getDefaultUpdateDelay()
@@ -156,17 +207,33 @@ public class UITrackpadComponent extends UIComponent
         {
             trackpad.setValue(this.value);
         }
-        if (key.equals("Min") && this.min != null)
+        else if (key.equals("Min") && this.min != null)
         {
             trackpad.min = this.min;
         }
-        if (key.equals("Max") && this.max != null)
+        else if (key.equals("Max") && this.max != null)
         {
             trackpad.max = this.max;
         }
-        if (key.equals("Integer"))
+        else if (key.equals("Integer"))
         {
             trackpad.integer = this.integer;
+        }
+        else if (key.equals("Normal") && this.normal != null)
+        {
+            trackpad.normal = this.normal;
+        }
+        else if (key.equals("Weak") && this.weak != null)
+        {
+            trackpad.weak = this.weak;
+        }
+        else if (key.equals("Strong") && this.strong != null)
+        {
+            trackpad.strong = this.strong;
+        }
+        else if (key.equals("Increment") && this.increment != null)
+        {
+            trackpad.increment = this.increment;
         }
     }
 
@@ -199,6 +266,11 @@ public class UITrackpadComponent extends UIComponent
         if (this.max != null) element.max = this.max;
 
         element.integer = this.integer;
+
+        if (this.normal != null) element.normal = this.normal;
+        if (this.weak != null) element.weak = this.weak;
+        if (this.strong != null) element.strong = this.strong;
+        if (this.increment != null) element.increment = this.increment;
 
         return this.apply(element, context);
     }
@@ -233,6 +305,11 @@ public class UITrackpadComponent extends UIComponent
         if (this.max != null) tag.setDouble("Max", this.max);
 
         tag.setBoolean("Integer", this.integer);
+
+        if (this.normal != null) tag.setDouble("Normal", this.normal);
+        if (this.weak != null) tag.setDouble("Weak", this.weak);
+        if (this.strong != null) tag.setDouble("Strong", this.strong);
+        if (this.increment != null) tag.setDouble("Increment", this.increment);
     }
 
     @Override
@@ -245,5 +322,9 @@ public class UITrackpadComponent extends UIComponent
         if (tag.hasKey("Min")) this.min = tag.getDouble("Min");
         if (tag.hasKey("Max")) this.max = tag.getDouble("Max");
         if (tag.hasKey("Integer")) this.integer = tag.getBoolean("Integer");
+        if (tag.hasKey("Normal")) this.normal = tag.getDouble("Normal");
+        if (tag.hasKey("Weak")) this.weak = tag.getDouble("Weak");
+        if (tag.hasKey("Strong")) this.strong = tag.getDouble("Strong");
+        if (tag.hasKey("Increment")) this.increment = tag.getDouble("Increment");
     }
 }
