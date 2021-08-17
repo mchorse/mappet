@@ -8,6 +8,7 @@ import mchorse.mappet.api.conditions.blocks.DialogueConditionBlock;
 import mchorse.mappet.api.conditions.blocks.EntityConditionBlock;
 import mchorse.mappet.api.conditions.blocks.FactionConditionBlock;
 import mchorse.mappet.api.conditions.blocks.ItemConditionBlock;
+import mchorse.mappet.api.conditions.blocks.MorphConditionBlock;
 import mchorse.mappet.api.conditions.blocks.QuestConditionBlock;
 import mchorse.mappet.api.conditions.blocks.StateConditionBlock;
 import mchorse.mappet.api.conditions.blocks.WorldTimeConditionBlock;
@@ -17,13 +18,13 @@ import mchorse.mappet.client.gui.conditions.blocks.GuiDialogueConditionBlockPane
 import mchorse.mappet.client.gui.conditions.blocks.GuiEntityConditionBlockPanel;
 import mchorse.mappet.client.gui.conditions.blocks.GuiFactionConditionBlockPanel;
 import mchorse.mappet.client.gui.conditions.blocks.GuiItemConditionBlockPanel;
+import mchorse.mappet.client.gui.conditions.blocks.GuiMorphConditionBlockPanel;
 import mchorse.mappet.client.gui.conditions.blocks.GuiQuestConditionBlockPanel;
 import mchorse.mappet.client.gui.conditions.blocks.GuiStateConditionBlockPanel;
 import mchorse.mappet.client.gui.conditions.blocks.GuiWorldTimeConditionBlockPanel;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mappet.client.gui.utils.overlays.GuiEditorOverlayPanel;
 import mchorse.mappet.utils.Colors;
-import mchorse.mclib.McLib;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
@@ -65,6 +66,7 @@ public class GuiConditionOverlayPanel extends GuiEditorOverlayPanel<AbstractCond
         PANELS.put(WorldTimeConditionBlock.class, GuiWorldTimeConditionBlockPanel.class);
         PANELS.put(EntityConditionBlock.class, GuiEntityConditionBlockPanel.class);
         PANELS.put(ConditionConditionBlock.class, GuiConditionConditionBlockPanel.class);
+        PANELS.put(MorphConditionBlock.class, GuiMorphConditionBlockPanel.class);
     }
 
     public GuiConditionOverlayPanel(Minecraft mc, Condition condition)
