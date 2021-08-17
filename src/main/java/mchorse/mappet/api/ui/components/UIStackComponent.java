@@ -41,6 +41,20 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *            var pos = c.getSubject().getPosition();
  *
  *            c.getWorld().dropItemStack(item, pos.x, pos.y + 2, pos.z);
+ *
+ *            // Item stack UI component also includes the slot from which
+ *            // item was picked from player's inventory. -1 means it was
+ *            // picked from elsewhere (from search or pasted into the
+ *            // field)
+ *            var slot = data.getInt("stack.slot");
+ *
+ *            if (slot >= 0)
+ *            {
+ *                // When slot isn't -1, you can access it from player's inventory
+ *                var corresponding = c.getSubject().getInventory().getStack(slot);
+ *
+ *                c.send("Item " + corresponding.getMinecraftItemStack() + " was taken from slot " + slot);
+ *            }
  *        }
  *    }
  * }</pre>
