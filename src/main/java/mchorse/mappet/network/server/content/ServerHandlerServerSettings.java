@@ -23,7 +23,7 @@ public class ServerHandlerServerSettings extends ServerMessageHandler<PacketServ
 
         for (EntityPlayerMP p : player.getServer().getPlayerList().getPlayers())
         {
-            Dispatcher.sendTo(new PacketEventHotkeys(Mappet.settings.hotkeys), p);
+            Dispatcher.sendTo(new PacketEventHotkeys(Mappet.settings), p);
         }
     }
 }

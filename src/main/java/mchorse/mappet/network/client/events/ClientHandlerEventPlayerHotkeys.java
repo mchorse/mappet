@@ -15,5 +15,6 @@ public class ClientHandlerEventPlayerHotkeys extends ClientMessageHandler<Packet
     {
         KeyboardHandler.hotkeys.clear();
         KeyboardHandler.hotkeys.addAll(message.hotkeys);
+        KeyboardHandler.clientPlayerJournal = !message.journalTrigger;
     }
 }

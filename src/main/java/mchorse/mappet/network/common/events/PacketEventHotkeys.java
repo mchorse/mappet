@@ -1,6 +1,7 @@
 package mchorse.mappet.network.common.events;
 
 import io.netty.buffer.ByteBuf;
+import mchorse.mappet.api.misc.ServerSettings;
 import mchorse.mappet.api.misc.hotkeys.TriggerHotkey;
 import mchorse.mappet.api.misc.hotkeys.TriggerHotkeys;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -14,13 +15,15 @@ import java.util.List;
 public class PacketEventHotkeys implements IMessage
 {
     public List<TriggerHotkey> hotkeys = new ArrayList<TriggerHotkey>();
+    public boolean journalTrigger;
 
     public PacketEventHotkeys()
     {}
 
-    public PacketEventHotkeys(TriggerHotkeys hotkeys)
+    public PacketEventHotkeys(ServerSettings settings)
     {
-        this.hotkeys.addAll(hotkeys.hotkeys);
+        this.hotkeys.addAll(settings.hotkeys.hotkeys);
+        this.journalTrigger = !settings.playerJournal.isEmpty();
     }
 
     @Override
@@ -30,6 +33,8 @@ public class PacketEventHotkeys implements IMessage
         {
             this.hotkeys.add(new TriggerHotkey(buf.readInt(), buf.readBoolean()));
         }
+
+        this.journalTrigger = buf.readBoolean();
     }
 
     @Override
@@ -42,5 +47,7 @@ public class PacketEventHotkeys implements IMessage
             buf.writeInt(hotkey.keycode);
             buf.writeBoolean(hotkey.toggle);
         }
+
+        buf.writeBoolean(this.journalTrigger);
     }
 }

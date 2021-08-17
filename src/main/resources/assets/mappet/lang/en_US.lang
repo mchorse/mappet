@@ -266,6 +266,10 @@ mappet.gui.settings.triggers.player_close_container=Player: closed container
 mappet.gui.settings.triggers.descriptions.player_close_container=This gets triggered when a player picks up an item in the world.
 mappet.gui.settings.triggers.variables.player_close_container=§6item§r, §7IScriptItemStack§r item that player picked (this is useful only in scripts).
 
+mappet.gui.settings.triggers.player_journal=Player: opened journal
+mappet.gui.settings.triggers.descriptions.player_journal=This cancelable trigger gets triggered when a player opens the player journal.\n\nYou can use this trigger to implement your own player journal using UI API. When event gets canceled, the default player journal won't be opened.
+mappet.gui.settings.triggers.variables.player_journal=§7N/A§r
+
 mappet.gui.quests.cancelable=Cancelable
 mappet.gui.quests.instant=Instant
 mappet.gui.quests.instant_tooltip=When enabled, this quest will be instantly completed instead of having to hand it in to an NPC/dialogue

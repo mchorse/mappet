@@ -371,7 +371,7 @@ public class EventHandler
 
         if (!Mappet.settings.hotkeys.hotkeys.isEmpty())
         {
-            Dispatcher.sendTo(new PacketEventHotkeys(Mappet.settings.hotkeys), player);
+            Dispatcher.sendTo(new PacketEventHotkeys(Mappet.settings), player);
         }
     }
 

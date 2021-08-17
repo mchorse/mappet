@@ -6,6 +6,7 @@ import mchorse.mappet.client.gui.GuiJournalScreen;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.events.PacketEventHotkey;
+import mchorse.mappet.network.common.events.PacketPlayerJournal;
 import mchorse.mclib.client.gui.framework.tooltips.styles.TooltipStyle;
 import mchorse.mclib.client.gui.utils.Area;
 import mchorse.mclib.client.gui.utils.keys.IKey;
@@ -44,11 +45,26 @@ public class KeyboardHandler
 {
     public static final Set<TriggerHotkey> hotkeys = new HashSet<TriggerHotkey>();
     public static final List<TriggerHotkey> held = new ArrayList<TriggerHotkey>();
+    public static boolean clientPlayerJournal;
 
     public KeyBinding openMappetDashboard;
     public KeyBinding openJournal;
 
     private GuiButton button;
+
+    public static void openPlayerJournal()
+    {
+        if (clientPlayerJournal)
+        {
+            Minecraft mc = Minecraft.getMinecraft();
+
+            mc.displayGuiScreen(new GuiJournalScreen(mc));
+        }
+        else
+        {
+            Dispatcher.sendToServer(new PacketPlayerJournal());
+        }
+    }
 
     public static void updateHeldKeys()
     {
@@ -95,7 +111,7 @@ public class KeyboardHandler
 
         if (this.openJournal.isPressed())
         {
-            mc.displayGuiScreen(new GuiJournalScreen(mc));
+            openPlayerJournal();
         }
 
         if (Keyboard.getEventKeyState())
@@ -141,7 +157,7 @@ public class KeyboardHandler
     {
         if (event.getButton() instanceof GuiJournalButton)
         {
-            Minecraft.getMinecraft().displayGuiScreen(new GuiJournalScreen(Minecraft.getMinecraft()));
+            openPlayerJournal();
         }
     }
 

@@ -29,6 +29,7 @@ import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.Label;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.ColorUtils;
+import mchorse.mclib.utils.Direction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -76,7 +77,7 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
         this.editor.flex().relative(this).x(0.5F).y(115).w(0.5F).h(1F, -145).column(5).scroll().stretch().padding(10);
 
         this.hotkeys = new GuiIconElement(mc, Icons.DOWNLOAD, (b) -> this.openHotkeysEditor());
-        this.hotkeys.tooltip(IKey.lang("mappet.gui.settings.hotkeys"));
+        this.hotkeys.tooltip(IKey.lang("mappet.gui.settings.hotkeys"), Direction.LEFT);
         this.hotkeys.flex().relative(this).x(1F, -16).y(20).wh(20, 20).anchor(0.5F, 0.5F);
 
         GuiLabel triggers = Elements.label(IKey.lang("mappet.gui.settings.title")).anchor(0, 0.5F).background();

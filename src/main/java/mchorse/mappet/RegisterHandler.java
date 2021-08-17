@@ -58,6 +58,8 @@ public class RegisterHandler
             Mappet.scripts = new ScriptManager(null);
             Mappet.huds = new HUDManager(null);
         }
+
+        KeyboardHandler.clientPlayerJournal = true;
     }
 
     @SubscribeEvent
