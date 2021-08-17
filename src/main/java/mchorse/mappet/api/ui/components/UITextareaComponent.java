@@ -52,6 +52,21 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class UITextareaComponent extends UILabelBaseComponent
 {
+    /**
+     * Disable textarea's background.
+     *
+     * <pre>{@code
+     *    // Assuming that uiContext is a IMappetUIContext
+     *    uiContext.get("textarea").noBackground();
+     * }</pre>
+     */
+    public UITextareaComponent noBackground()
+    {
+        this.hasBackground = false;
+
+        return this;
+    }
+
     @Override
     @DiscardMethod
     protected int getDefaultUpdateDelay()
@@ -87,7 +102,7 @@ public class UITextareaComponent extends UILabelBaseComponent
         });
 
         element.setText(this.label);
-        element.background();
+        element.background(this.hasBackground);
 
         return this.apply(element, context);
     }

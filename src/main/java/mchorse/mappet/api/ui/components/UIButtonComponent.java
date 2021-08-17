@@ -74,6 +74,21 @@ public class UIButtonComponent extends UILabelBaseComponent
         return this;
     }
 
+    /**
+     * Disable button's background.
+     *
+     * <pre>{@code
+     *    // Assuming that uiContext is a IMappetUIContext
+     *    uiContext.get("button").noBackground();
+     * }</pre>
+     */
+    public UIButtonComponent noBackground()
+    {
+        this.hasBackground = false;
+
+        return this;
+    }
+
     @Override
     @DiscardMethod
     @SideOnly(Side.CLIENT)
@@ -126,6 +141,8 @@ public class UIButtonComponent extends UILabelBaseComponent
         {
             button.color(this.background);
         }
+
+        button.background(this.hasBackground);
 
         return this.apply(button, context);
     }

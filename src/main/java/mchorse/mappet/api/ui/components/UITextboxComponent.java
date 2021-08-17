@@ -65,6 +65,21 @@ public class UITextboxComponent extends UILabelBaseComponent
         return this;
     }
 
+    /**
+     * Disable textbox's background.
+     *
+     * <pre>{@code
+     *    // Assuming that uiContext is a IMappetUIContext
+     *    uiContext.get("textbox").noBackground();
+     * }</pre>
+     */
+    public UITextboxComponent noBackground()
+    {
+        this.hasBackground = false;
+
+        return this;
+    }
+
     @Override
     @DiscardMethod
     protected int getDefaultUpdateDelay()
@@ -104,6 +119,7 @@ public class UITextboxComponent extends UILabelBaseComponent
         });
 
         element.setText(this.label);
+        element.background(this.hasBackground);
 
         return this.apply(element, context);
     }

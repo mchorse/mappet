@@ -12,8 +12,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public abstract class UILabelBaseComponent extends UIComponent
 {
     public String label = "";
+
     private Integer color;
     private boolean textShadow = true;
+
+    protected boolean hasBackground = true;
 
     /**
      * Change text color of this component by providing hex RGB.
@@ -127,6 +130,8 @@ public abstract class UILabelBaseComponent extends UIComponent
         }
 
         tag.setBoolean("TextShadow", this.textShadow);
+
+        tag.setBoolean("HasBackground", this.hasBackground);
     }
 
     @Override
@@ -148,6 +153,11 @@ public abstract class UILabelBaseComponent extends UIComponent
         if (tag.hasKey("TextShadow"))
         {
             this.textShadow = tag.getBoolean("TextShadow");
+        }
+
+        if (tag.hasKey("HasBackground"))
+        {
+            this.hasBackground = tag.getBoolean("HasBackground");
         }
     }
 }
