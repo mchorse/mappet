@@ -84,7 +84,7 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Override
     public ScriptVector getMotion()
     {
-        return new ScriptVector(this.entity.motionX, this.entity.motionY, this.entity.posZ);
+        return new ScriptVector(this.entity.motionX, this.entity.motionY, this.entity.motionZ);
     }
 
     @Override
