@@ -21,9 +21,12 @@ mappet.error.npc.invalid_property=§fНе было найдено состоян
 mappet.error.npc.cant_edit=§fЗадание значения свойству §7%s§f: §7%s§f не написан согласно корректной форматировке!
 
 mappet.error.data.missing=§fДанные с ID §7%s§f не найдены!
+mappet.error.data.empty_charset=§fCharacter set %s§f cannot be found or used!
 
 mappet.error.script.empty=§fСкрипт с ID §7%s§f либо не найден либо у него отсутствует §7главная§r функция!
 mappet.error.script.error=§fНевозможно выполнить скрипт с ID §7%s§f. Произошла ошибка в %s§r:%s§r!\n\n%s§r
+
+mappet.error.hud.missing=§fHUD scene by ID §7%s§f is missing!
 
 # Info
 mappet.info.states.clear=§fЗначение с ID §7%s§f было удалено из состояний.
@@ -38,7 +41,9 @@ mappet.info.factions.clear_all=§fВсе очки фракции у §7%s§f б�
 mappet.info.factions.set=§fОчки фракции с ID §7%s§f были установлены на значение §7%s§r.
 mappet.info.factions.changed=§fОчки фракции с ID §7%s§f были §7%s§r, теперь стали §7%s§r.
 
+mappet.info.data.cleared=§fGlobal states and player states were cleared.
 mappet.info.data.cleared_inventory=§fГлобальные состояния, состояния игроков и инвентари были очищены.
+mappet.info.data.rencoded=§fRe-encoded all the data from %s§f to %s§f.
 
 # Success
 mappet.success.quest.accepted=§fКвест с ID §7%s§f был выдан игроку §7%s§f.
@@ -78,6 +83,7 @@ mappet.commands.mp.npc.help=Подкоманда управления NPC.
 mappet.commands.mp.npc.edit=Эта команда позволяет изменять значения индвидуального свойства §7<property>§r на заданное значение §7<value>§r для одного или нескольких NP, найденных селектором цели §7<target>§r.
 mappet.commands.mp.npc.state=Эта команда позволяет переключать состояния §7<state>§r одного или нескольких NPC, найденных селектором цели §7<target>§r.\n\n Аргумент состояния §7<state>§r поддерживает следующую форматировку: §7[npc_id@]state[:properties]§r, где параметр ID NPC §7npc_id§r и параметр свойств §7properties§r являются необязательными.\n\nС этой форматировкой, вы можете менять состояния из чертежа другого NPC, или даже менять только некоторые свойства из другого состояния.
 mappet.commands.mp.npc.summon=Эта команда спавнит NPC с ID §7<id>§r с необязательным аргументом состояния §7[state]§r (аргумент §7default§r это название свойства по умолчанию) в координатах по §7[x] [y] [z]§r. Если аргументы §7[x] [y] [z]§r были опущены, то NPC будет заспавнен на месте отправителя команды. Относительные значения с §7~§r поддерживаются.
+mappet.commands.mp.npc.despawn=This command despawns all NPCs found by §7<target>§r.
 
 mappet.commands.mp.faction.help=Подкоманда управления фракциями. Эта команда позволяет управлять очками фракций в общем или очками фракций у одного или нескольких игроков.
 mappet.commands.mp.faction.add=Эта команда добавляет очки фракции, обработанные через выражение §7<expression>§r фракции с ID §7<id>§r. Если ID §7<id>§r не существует, то выражение §7<expression>§r будет добавлено к нулю.
@@ -88,9 +94,16 @@ mappet.commands.mp.data.help=Подкоманда данных, позволяю
 mappet.commands.mp.data.clear=Очищает все глобальные состояния и состояния игроков вместе с инвентарями.
 mappet.commands.mp.data.load=Загружает сохранённые данные с ID §7<id>§r. Аргумент §7[global]§r определяет необходимо ли также загружать глобальные состояния (по умолчанию аргумент стоит на §7true§r (то есть включён). Аргумент §7[players]§r позволяет выбрать другого игрока, в которого будут загружены инвентарь и состояния игрока.
 mappet.commands.mp.data.save=Сохраняет глобальные состояния вместе с текущими состояниями игрока, а также его инвентарём в данные с ID §7<id>§r.
+mappet.commands.mp.data.rencode=Re-encode all data files within world's §7mappet/§f folder from §7<from>§r character set, to §7<to>§r character set.
 
 mappet.commands.mp.script.help=Подкоманда скриптов.
 mappet.commands.mp.script.eval=Эта команда рассчитывает скрипт с ID §7<id>§r (из папки §7mappet/scripts/§r, без приписки формата файла) для игроков найденных селектором цели §7<player>§r. Будет вызвана функция скрипта §7[function]§r (если она отсутствует, то будет вызвана §7main§r). Вы также можете передавать опциональные NBT-данные напрямую в событие используя аргумент §7[data]§r.
+mappet.commands.mp.script.exec=This command executes script by §7<id>§r (from world's §7mappet/scripts/§r folder, without file extension) upon player(s) or server (if §7~§r was provided) found by §7<target>§r selector. Script's §7[function]§r (§7main§r if omitted) function will be called. You can also pass arbitrary NBT data to the event using §7[data]§r argument.
+
+mappet.commands.mp.hud.help=HUD scenes management command.
+mappet.commands.mp.hud.close=Closes an HUD scene by §7[id]§r of all players found by §7<target>§r selector. If player(s) didn't have such HUD scene by §7[id]§r nothing will happen. If §7[id]§r was omitted, then all HUD scenes will be removed from players by §7<target>§r selector.
+mappet.commands.mp.hud.morph=Changes the morph in player's scene by §7<id>§r for all players matching §7<target>§r selector at given §7<index>§r in the scene with a morph constructed from §7<nbt>§r. If the player won't have the scene, or a HUD morph at given §7<index>§r, nothing will happen.
+mappet.commands.mp.hud.setup=Adds an HUD scene by §7<id>§r which will display to all players found by §7<target>§r selector. If scene by given §7<id>§r was already added earlier, and didn't expire, then it will be started over again.
 
 # Config
 
@@ -99,11 +112,18 @@ mappet.config.title=Маппет
 mappet.config.general.title=Общие
 mappet.config.general.tooltip=Общие настройки мода
 
+mappet.config.general.encoding=Encoding
+mappet.config.comments.general.encoding=The encoding that will be used to read and write Mappet files.
+mappet.config.general.data_caching=Data caching
+mappet.config.comments.general.data_caching=Whether data should be cached instead of being read from files every time.
+
 mappet.config.npc.title=NPC
 mappet.config.npc.tooltip=Настройки мода, относящиеся к NPC
 
 mappet.config.npc.peaceful_damage=Урон в "мирной"
 mappet.config.comments.npc.peaceful_damage=Эта опция определяет смогут ли NPC наносить урон игрокам, если те находятся в мирном режиме сложности.
+mappet.config.npc.tool_only_op=NPC tool OP
+mappet.config.comments.npc.tool_only_op=This option determines whether only OP users can use NPC tool.
 
 mappet.config.events.title=События
 mappet.config.events.tooltip=Настройки мода, относящиеся к событиям
@@ -124,6 +144,10 @@ mappet.config.gui.node_thickness=Толщина соединений
 mappet.config.comments.gui.node_thickness=Эта опция позволяет менять значение толщины соединений между нодами в пикселях (на некоторых устройствах возможно ограничение значения ширины линий).
 mappet.config.gui.quest_preview_rewards=Предпросмотр квестовых наград
 mappet.config.comments.gui.quest_preview_rewards=Эта настройка позволяет включить или выключить предпросмотр наград за выполнение квестов.
+mappet.config.gui.journal_button_x=Journal button X
+mappet.config.comments.gui.journal_button_x=Offsets the journal button in inventory GUIs on X axis.
+mappet.config.gui.journal_button_y=Journal button Y
+mappet.config.comments.gui.journal_button_y=Offsets the journal button in inventory GUIs on Y axis.
 
 mappet.config.script_editor.title=Редактор скриптов
 mappet.config.script_editor.tooltip=Опции настроек интерфейса редактор скриптов
@@ -131,12 +155,15 @@ mappet.config.script_editor.tooltip=Опции настроек интерфей
 mappet.config.comments.script_editor.syntax_style=Эта кнопка открывает редактор темы, где вы можете управлять и редактировать темы редактора скриптов, подсвечивающие синтаксис.
 mappet.config.script_editor.sounds=Звуки при нажатии клавиш
 mappet.config.comments.script_editor.sounds=Необходимо ли проигрывать звуки из Майнкрафта при написании кода в редакторе скриптов
+mappet.config.script_editor.ui_debug=UI debug
+mappet.config.comments.script_editor.ui_debug=When enabled, adds a couple of debug utilities UI generated by scripting API, such as copying the camera position of the morph component.
 
 # GUI
 
 mappet.gui.none=<none>
 mappet.gui.search=Искать...
 mappet.gui.right_click=Кликните здесь правой кнопкой мыши...
+mappet.gui.player_journal=Open player's journal...
 mappet.gui.overlays.entities.main=Выберите ID сущности...
 mappet.gui.overlays.sounds.main=Выберите звуковое событие...
 mappet.gui.overlays.event=Выберите событие...
@@ -147,25 +174,33 @@ mappet.gui.overlays.chain=Выберите цепочку квестов...
 mappet.gui.overlays.crafting=Выберите таблицу рецептов...
 mappet.gui.overlays.quest=Выберите квест...
 mappet.gui.overlays.script=Выберите скрипт...
+mappet.gui.overlays.hud=Pick an HUD scene...
 mappet.gui.overlays.text_fullscreen=Редактировать в полноэкранном режиме...
 mappet.gui.block_pos.context.paste=Вставить ваше текущее местоположение
 mappet.gui.block_pos.context.remove=Удалить позицию блока
 mappet.gui.items.context.remove=Удалить предмет
 mappet.gui.trigger.sound=Звуковое событие
+mappet.gui.trigger.edit=Edit triggers...
 mappet.gui.checker.edit=Редактировать условие...
 mappet.gui.checker.expression=Выражение
 mappet.gui.checker.toggle=Переключиться между редактором выражений и условий
+mappet.gui.context.copy_camera=Copy camera information...
 
 mappet.gui.panels.settings=Настройки сервера
 mappet.gui.panels.crafting=Таблицы рецептов
+mappet.gui.panels.crafting_run=Open crafting table
 mappet.gui.panels.quests=Квесты
+mappet.gui.panels.quests_run=Accept quest
 mappet.gui.panels.events=События
+mappet.gui.panels.events_run=Trigger event
 mappet.gui.panels.dialogues=Диалоги
+mappet.gui.panels.dialogues_run=Open dialogue
 mappet.gui.panels.regions=Регионы
 mappet.gui.panels.npcs=NPC
 mappet.gui.panels.factions=Фракции
 mappet.gui.panels.chains=Цепочки квестов
 mappet.gui.panels.scripts=Скрипты
+mappet.gui.panels.huds=HUD scenes
 mappet.gui.panels.modals.add=Впишите название:
 mappet.gui.panels.modals.dupe=Впишите новое название для дубликата:
 mappet.gui.panels.modals.rename=Впишите новое название:
@@ -175,15 +210,65 @@ mappet.gui.panels.context.paste=Вставить...
 mappet.gui.panels.keys.category=Клавиши панели Маппета
 mappet.gui.panels.keys.toggle_sidebar=Вкл/Выкл боковое меню
 
+mappet.gui.settings.title=Global triggers
+mappet.gui.settings.hotkeys=Edit trigger hotkeys...
+mappet.gui.settings.variables=Available variables
+
 mappet.gui.settings.triggers.chat=При сообщении в чате
+mappet.gui.settings.triggers.descriptions.chat=This gets triggered when a player types a message into the chat and sends it.\n\nCommands (messages starting with §7/§r) don't get triggered by this event. If you wish to implement commands, use a different prefix like §7!§r.
+mappet.gui.settings.triggers.variables.chat=§6message§r, the message (string) that was sent by the player.
+
 mappet.gui.settings.triggers.break_block=При разрушении блока
+mappet.gui.settings.triggers.descriptions.break_block=This cancelable trigger gets triggered when a player breaks a block in the world.
+mappet.gui.settings.triggers.variables.break_block=§6block§r, the ID of the block that was broken (like §7minecraft:stone§r).\n§6meta§r, the meta (0..15) value of the block's state.\n§6x§r, §6y§r, and §6z§r in the world.
+
 mappet.gui.settings.triggers.place_block=При размещении блока
+mappet.gui.settings.triggers.descriptions.place_block=This cancelable trigger gets triggered when a player places a block in the world.
+mappet.gui.settings.triggers.variables.place_block=§6block§r, the ID of the block that was placed (like §7minecraft:stone§r).\n§6meta§r, the meta (0..15) value of the block's state.\n§6x§r, §6y§r, and §6z§r in the world.
+
+mappet.gui.settings.triggers.interact_block=Block: interacted by a player
+mappet.gui.settings.triggers.descriptions.interact_block=This cancelable trigger gets triggered when a player interacts with a block (by right clicking it) in the world. 
+mappet.gui.settings.triggers.variables.interact_block=§6x§r, §6y§r, and §6z§r in the world.\n§6hand§r, the hand that interacted with the block: §7main§r or §7off§r.
+
 mappet.gui.settings.triggers.damage_entity=При попадении по сущности
+mappet.gui.settings.triggers.descriptions.damage_entity=This cancelable trigger gets triggered when a mob/a player gets hurt (damaged).
+mappet.gui.settings.triggers.variables.damage_entity=§6damage§r, how many HP this mob/player took of damage.
+
 mappet.gui.settings.triggers.server_load=При загрузке сервера
+mappet.gui.settings.triggers.descriptions.server_load=This gets triggered after server gets booted up, but world(s) aren't loaded yet.
+mappet.gui.settings.triggers.variables.server_load=§7N/A§r
+
 mappet.gui.settings.triggers.server_tick=При тике сервера
+mappet.gui.settings.triggers.descriptions.server_tick=This gets triggered when server ticks (i.e. §720§r times a second).\n\nProTip: use frequency option of triggers to limit how many times does a script or event gets triggered. 
+mappet.gui.settings.triggers.variables.server_tick=§7N/A§r
+
 mappet.gui.settings.triggers.player_login=При входе игрока в мир
+mappet.gui.settings.triggers.descriptions.player_login=This gets triggered when player logs onto the server.
+mappet.gui.settings.triggers.variables.player_login=§7N/A§r
+
 mappet.gui.settings.triggers.player_lmb=При клике ЛКМ игроком
+mappet.gui.settings.triggers.descriptions.player_lmb=This gets triggered when a player left clicks in the air (no whatsoever interaction with blocks, entities or items).
+mappet.gui.settings.triggers.variables.player_lmb=§7N/A§r
+
 mappet.gui.settings.triggers.player_rmb=При клике ПКМ игроком
+mappet.gui.settings.triggers.descriptions.player_rmb=This gets triggered when a player right clicks in the air (no whatsoever interaction with blocks, entities or items).
+mappet.gui.settings.triggers.variables.player_rmb=§7N/A§r
+
+mappet.gui.settings.triggers.player_death=Player: death
+mappet.gui.settings.triggers.descriptions.player_death=This cancelable trigger gets triggered when a player dies.\n\nProTip: if you want to cancel the death, make sure to give some health to the player, or otherwise the player will end up in eternal dying cycle.
+mappet.gui.settings.triggers.variables.player_death=§7N/A§r
+
+mappet.gui.settings.triggers.player_item_pickup=Player: picked up an item
+mappet.gui.settings.triggers.descriptions.player_item_pickup=This cancelable trigger gets triggered when a player picks up an item in the world.
+mappet.gui.settings.triggers.variables.player_item_pickup=§7N/A§r or...\n§6x§r, §6y§r, and §6z§r of the inventory block in the world.
+
+mappet.gui.settings.triggers.player_close_container=Player: closed container
+mappet.gui.settings.triggers.descriptions.player_close_container=This gets triggered when a player picks up an item in the world.
+mappet.gui.settings.triggers.variables.player_close_container=§6item§r, §7IScriptItemStack§r item that player picked (this is useful only in scripts).
+
+mappet.gui.settings.triggers.player_journal=Player: opened journal
+mappet.gui.settings.triggers.descriptions.player_journal=This cancelable trigger gets triggered when a player opens the player journal.\n\nYou can use this trigger to implement your own player journal using UI API. When event gets canceled, the default player journal won't be opened.
+mappet.gui.settings.triggers.variables.player_journal=§7N/A§r
 
 mappet.gui.quests.cancelable=Отменяемый
 mappet.gui.quests.instant=Мгновенный
@@ -202,6 +287,8 @@ mappet.gui.quests.objective_kill.nbt=Соответствующий NBT
 mappet.gui.quests.objective_kill.string=Убить %s (%s/%s)
 mappet.gui.quests.objective_kill.message_tooltip=Доступны следующие переменные:\n\n§6${entity}§r - отображаемое название сущности\n§6${count}§r - сколько необходимых сущностей уже было убито\n§6${total}§r - сколько всего сущностей необходимо убить
 mappet.gui.quests.objective_collect.title=Количество предметов на сбор
+mappet.gui.quests.objective_collect.ignore_nbt=Ignore NBT
+mappet.gui.quests.objective_collect.ignore_nbt_tooltip=When enabled, the additional NBT or meta/damage data will be ignored when comparing the items that player has in their inventory 
 mappet.gui.quests.objective_collect.string=Собрать %s (%s/%s)
 mappet.gui.quests.objective_collect.message_tooltip=Доступны следующие переменные:\n\n§6${name}§r - отображаемое название предмета(ов)\n§6${count}§r - сколько предметов уже было собрано\n§6${total}§r - сколько всего предметов необходимо собрать
 mappet.gui.quests.objective_state.dialogue=Поговорите с ...
@@ -220,7 +307,6 @@ mappet.gui.quests.info.empty=Чтобы начать редактировани�
 mappet.gui.interaction.back=Назад
 mappet.gui.interaction.accept=Принять
 mappet.gui.interaction.complete=Завершить
-mappet.gui.interaction.crafting.recipe_title=Название
 mappet.gui.interaction.info.no_quests=Здесь больше нет доступных вам квестов...
 mappet.gui.interaction.info.no_replies=Нажмите клавишу Esc, чтобы закрыть диалог...
 
@@ -228,16 +314,20 @@ mappet.gui.trigger_block.collidable=Имеет коллизию
 mappet.gui.trigger_block.left=Триггер при левом клике
 mappet.gui.trigger_block.right=Триггер при правом клике
 
-mappet.gui.emitter_block.expression=Выражение
+mappet.gui.emitter_block.condition=Signal condition
 mappet.gui.emitter_block.radius=Радиус
 mappet.gui.emitter_block.update=Частота обновления
+mappet.gui.emitter_block.disable=Auto-disable
+mappet.gui.emitter_block.disable_tootlip=When radius is specified, it turns off the redstone signal instead of keeping at whatever value it was
 
 mappet.gui.npc_tool.title=Инструмент настройки NPC
 mappet.gui.npc_tool.npc=NPC
 mappet.gui.npc_tool.state=Состояние
 
 mappet.gui.crafting.title=Название таблицы рецептов
+mappet.gui.crafting.action="Craft" button's title
 mappet.gui.crafting.recipe.title=Название рецепта
+mappet.gui.crafting.recipe.description=Recipe's description
 mappet.gui.crafting.recipe.visible=Видимый
 mappet.gui.crafting.recipe.hotkey=Горячая клавиша крафта
 mappet.gui.crafting.recipe.trigger=Триггер крафта
@@ -273,10 +363,17 @@ mappet.gui.nodes.event.binary_tooltip=Эта опция позволяет ог�
 mappet.gui.nodes.event.command=Команда
 mappet.gui.nodes.event.condition=Условие
 mappet.gui.nodes.event.timer=Таймер
+mappet.gui.nodes.event.ticks=%s ticks
 mappet.gui.nodes.event.subject=Субъект
 mappet.gui.nodes.event.data=Пользовательские данные
+mappet.gui.nodes.event.cancel=Cancel
+mappet.gui.nodes.event.cancel_tooltip=Use cancel of any of the triggers as a result of the node's execution
+mappet.gui.nodes.item.take=Take %s
+mappet.gui.nodes.item.give=Give %s
 mappet.gui.nodes.event.hotkeys.title=Редактор горячей клавиши события
 mappet.gui.nodes.event.hotkeys.key=Клавиша
+mappet.gui.nodes.event.hotkeys.toggle=Toggle mode
+mappet.gui.nodes.event.hotkeys.toggle_tooltip=When enabled, these trigger hotkeys will also get triggered when the key got released.\n\nVariable §7down§r will have §71§r or §70§r whether the pressed or released.
 mappet.gui.nodes.event.hotkeys.enabled=Включена
 mappet.gui.nodes.event.hotkeys.context.add=Добавить горячую клавишу события
 mappet.gui.nodes.event.hotkeys.context.remove=Удалить горячую клавишу события
@@ -309,6 +406,8 @@ mappet.gui.nodes.info.empty_nodes=Чтобы начать работу с нод
 
 mappet.gui.npcs.meta.title=Метаданные
 mappet.gui.npcs.meta.id=ID NPC
+mappet.gui.npcs.meta.states.pick=Edit states...
+mappet.gui.npcs.meta.states.title=Edit NPC's states
 mappet.gui.npcs.meta.unique=Уникальный
 mappet.gui.npcs.meta.path_distance=Расстояние нахождения пути
 mappet.gui.npcs.behavior.title=Поведение
@@ -335,6 +434,7 @@ mappet.gui.npcs.damage.killable=Смертный
 mappet.gui.npcs.movement.title=Передвижение
 mappet.gui.npcs.movement.speed=Скорость
 mappet.gui.npcs.movement.can_swim=Может плавать
+mappet.gui.npcs.movement.immovable=Immovable
 mappet.gui.npcs.movement.post=Точка поста
 mappet.gui.npcs.movement.patrol_circulate=Патрулирует по кругу
 mappet.gui.npcs.movement.patrol_points=Точки патруля
@@ -420,6 +520,10 @@ mappet.gui.conditions.world_time.types.range=Между...
 mappet.gui.conditions.entity.id=Выбрать свойство...
 mappet.gui.conditions.entity.overlay.main=Свойства сущности
 mappet.gui.conditions.condition.string=Вложено %s блок(ов)
+mappet.gui.conditions.morph.only_name=Only ID
+mappet.gui.conditions.morph.only_name_tooltip=When enabled, only the morph ID (like §7blockbuster.steve§r) will be checked, rather than full equality of all properties.
+mappet.gui.conditions.morph.string=Has morph %s
+mappet.gui.conditions.morph.no_morph=Has no morph
 mappet.gui.conditions.targets.global=Глобальынй
 mappet.gui.conditions.targets.subject=Субъект
 mappet.gui.conditions.targets.object=Объект
@@ -459,20 +563,49 @@ mappet.gui.triggers.title=Редактор триггеров
 mappet.gui.triggers.frequency=Задержка
 mappet.gui.triggers.function=Функция
 mappet.gui.triggers.script.function_tooltip=Функция записи скриптов (§7main§r является названием функции по умолчанию)
+mappet.gui.triggers.morph.morph=Morph into %s
+mappet.gui.triggers.morph.demorph=Demorph
 mappet.gui.triggers.context.add=Добавьте триггер...
 mappet.gui.triggers.context.add_trigger=Добавить триггер %s
 mappet.gui.triggers.context.copy=Скопировать этот триггер
 mappet.gui.triggers.context.paste=Вставить скопированный триггер
 mappet.gui.triggers.context.remove=Удалить этот триггер
 
+mappet.gui.scripts.run=Run script (main function)
+mappet.gui.scripts.libraries.title=Script libraries
+mappet.gui.scripts.libraries.tooltip=Manage libraries...
+mappet.gui.scripts.libraries.context.add=Add a library...
+mappet.gui.scripts.libraries.context.remove=Remove this library
+mappet.gui.scripts.documentation.title=Scripting documentation
+mappet.gui.scripts.repl.title=REPL (interactive console)
+mappet.gui.scripts.repl.hello_world=Hello, world!
+mappet.gui.scripts.repl.welcome=This is Mappet's Read-Eval-Print Loop (REPL). You can type in §6JS§r code, and execute it by pressing Enter key. You can cycle through eval history by holding §6Ctrl§r key and arrow §6Up§r or §6Down§r.\n\nFollowing variables are available:\n\n- §6c§r is a IScriptEvent that has player as a subject\n- §6mappet§r is a IScriptFactory
+mappet.gui.scripts.repl.context.clear=Clear
 mappet.gui.scripts.context.paste_morph=Вставьте NBT морфа...
 mappet.gui.scripts.context.paste_item=Вставьте NBT предмета...
 mappet.gui.scripts.context.paste_player_pos=Вставить позицию игрока
 mappet.gui.scripts.context.paste_block_pos=Вставить позицию блока
+mappet.gui.scripts.context.paste_sound=Paste sound event...
+mappet.gui.scripts.context.docs=Open docs for %s
 mappet.gui.scripts.overlay.title_morph=Морф
 mappet.gui.scripts.overlay.title_item=Предмет
 mappet.gui.scripts.overlay.insert=Вставить
 mappet.gui.scripts.overlay.pick_morph=Выберите морф...
+
+mappet.gui.states.server=Server states
+mappet.gui.states.player=%s's states
+mappet.gui.states.pick=Pick states target
+mappet.gui.states.empty=There are no states to edit. Create one by pressing "+" button...
+
+mappet.gui.huds.ortho=Orthographic
+mappet.gui.huds.expire=Expiration
+mappet.gui.huds.fov=Field of View
+mappet.gui.huds.hide=Hide in F1
+mappet.gui.huds.overlay.title=HUD morphs
+mappet.gui.huds.context.add=Add a HUD morph
+mappet.gui.huds.context.copy=Copy this HUD morph
+mappet.gui.huds.context.paste=Paste copied HUD morph
+mappet.gui.huds.context.remove=Remove this HUD morph
 
 # GUI enums
 
@@ -494,9 +627,7 @@ mappet.gui.node_types.command=Команда
 mappet.gui.node_types.condition=Условие
 mappet.gui.node_types.switch=Переключатель
 mappet.gui.node_types.timer=Таймер
-mappet.gui.node_types.event=Событие
-mappet.gui.node_types.dialogue=Диалоги
-mappet.gui.node_types.script=Скрипт
+mappet.gui.node_types.trigger=Trigger
 
 mappet.gui.condition_types.quest=Квест
 mappet.gui.condition_types.dialogue=Диалог
@@ -506,12 +637,16 @@ mappet.gui.condition_types.item=Предмет
 mappet.gui.condition_types.world_time=Мировое время
 mappet.gui.condition_types.entity=Сущность
 mappet.gui.condition_types.condition=Условие
+mappet.gui.condition_types.morph=Morph
 
 mappet.gui.trigger_types.command=Команда
 mappet.gui.trigger_types.sound=Звуковое событие
 mappet.gui.trigger_types.event=Событие
 mappet.gui.trigger_types.dialogue=Диалог
 mappet.gui.trigger_types.script=Скрипт
+mappet.gui.trigger_types.item=Item
+mappet.gui.trigger_types.state=State
+mappet.gui.trigger_types.morph=Morph
 
 mappet.gui.entity_property.xp=Общий опыт
 mappet.gui.entity_property.xp_level=Уровень опыта
@@ -526,6 +661,13 @@ mappet.gui.entity_property.sprinting=При спринте
 mappet.gui.entity_property.on_ground=При нахождении на земле
 mappet.gui.entity_property.yaw=Вращение головы по Y (рыскание)
 mappet.gui.entity_property.pitch=Вращение головы по X (тангаж)
+
+mappet.gui.item_trigger.mode.take=Take item
+mappet.gui.item_trigger.mode.give=Give item
+
+mappet.gui.state_trigger.mode.add=Add
+mappet.gui.state_trigger.mode.set=Set
+mappet.gui.state_trigger.mode.remove=Remove
 
 # Keys
 mappet.keys.category=Маппет
