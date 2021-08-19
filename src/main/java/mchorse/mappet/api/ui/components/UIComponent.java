@@ -50,7 +50,7 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
 
     public int tooltipDirection;
     public int marginTop;
-    public int marginBotom;
+    public int marginBottom;
     public int marginLeft;
     public int marginRight;
 
@@ -167,7 +167,7 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         this.change("Margin");
 
         this.marginTop = margin;
-        this.marginBotom = margin;
+        this.marginBottom = margin;
         this.marginLeft = margin;
         this.marginRight = margin;
 
@@ -191,11 +191,11 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
      * Set bottom margin. See {@link #margin(int)} method for more information
      * about restrictions.
      */
-    public UIComponent marginBotom(int margin)
+    public UIComponent marginBottom(int margin)
     {
         this.change("Margin");
 
-        this.marginBotom = margin;
+        this.marginBottom = margin;
 
         return this;
     }
@@ -648,7 +648,7 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         element.setEnabled(this.enabled);
 
         element.marginTop(this.marginTop);
-        element.marginBottom(this.marginBotom);
+        element.marginBottom(this.marginBottom);
         element.marginLeft(this.marginLeft);
         element.marginRight(this.marginRight);
 
@@ -822,7 +822,7 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         else if (key.equals("Margin"))
         {
             element.marginTop(this.marginTop);
-            element.marginBottom(this.marginBotom);
+            element.marginBottom(this.marginBottom);
             element.marginLeft(this.marginLeft);
             element.marginRight(this.marginRight);
         }
@@ -896,7 +896,7 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         NBTTagList margins = new NBTTagList();
 
         margins.appendTag(new NBTTagInt(this.marginTop));
-        margins.appendTag(new NBTTagInt(this.marginBotom));
+        margins.appendTag(new NBTTagInt(this.marginBottom));
         margins.appendTag(new NBTTagInt(this.marginLeft));
         margins.appendTag(new NBTTagInt(this.marginRight));
 
@@ -960,7 +960,7 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
             if (margins.tagCount() >= 4)
             {
                 this.marginTop = margins.getIntAt(0);
-                this.marginBotom = margins.getIntAt(1);
+                this.marginBottom = margins.getIntAt(1);
                 this.marginLeft = margins.getIntAt(2);
                 this.marginRight = margins.getIntAt(3);
             }
