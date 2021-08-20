@@ -415,6 +415,16 @@ public interface IScriptEntity
     public void damage(float health);
 
     /**
+     * Damage this entity as given entity was the source of attack.
+     */
+    public void damageAs(IScriptEntity entity, float health);
+
+    /**
+     * Damage this entity as given player was the source of the attack with its equipment.
+     */
+    public void damageWithItemsAs(IScriptPlayer player);
+
+    /**
      * Get entity's fall distance.
      */
     public float getFallDistance();

@@ -7,6 +7,7 @@ import mchorse.mappet.api.scripts.code.nbt.ScriptNBTCompound;
 import mchorse.mappet.api.scripts.user.IScriptRayTrace;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
+import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
@@ -405,6 +406,24 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
         {
             this.entity.attackEntityFrom(DamageSource.OUT_OF_WORLD, health);
         }
+    }
+
+    @Override
+    public void damageAs(IScriptEntity entity, float damage)
+    {
+        if (this.isLivingBase() && entity.isLivingBase())
+        {
+            EntityLivingBase target = (EntityLivingBase) this.entity;
+            EntityLivingBase source = (EntityLivingBase) entity.getMinecraftEntity();
+
+            target.attackEntityFrom(DamageSource.causeMobDamage(source), damage);
+        }
+    }
+
+    @Override
+    public void damageWithItemsAs(IScriptPlayer player)
+    {
+        player.getMinecraftPlayer().attackTargetEntityWithCurrentItem(this.entity);
     }
 
     @Override
