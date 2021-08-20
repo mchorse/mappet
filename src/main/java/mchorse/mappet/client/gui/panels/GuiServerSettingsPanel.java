@@ -2,6 +2,7 @@ package mchorse.mappet.client.gui.panels;
 
 import mchorse.mappet.api.misc.ServerSettings;
 import mchorse.mappet.api.states.States;
+import mchorse.mappet.api.triggers.Trigger;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.events.GuiTriggerHotkeysOverlayPanel;
 import mchorse.mappet.client.gui.states.GuiStatesEditor;
@@ -29,6 +30,7 @@ import mchorse.mclib.utils.Direction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.TextFormatting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +70,7 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
 
         this.triggers = new GuiLabelListElement<String>(mc, (l) -> this.fillTrigger(l.get(0), false));
         this.triggers.background().flex().relative(this).x(0.5F, 10).y(35).w(0.5F, -20).h(96);
-        this.trigger = new GuiTriggerElement(mc);
+        this.trigger = new GuiTriggerElement(mc).onClose(this::updateCurrentTrigger);
         this.trigger.flex().relative(this).x(1F, -10).y(1F, -10).wh(120, 20).anchor(1F, 1F);
         this.editor = new GuiScrollElement(mc);
         this.editor.flex().relative(this).x(0.5F).y(131).w(0.5F).h(1F, -161).column(5).scroll().stretch().padding(10);
@@ -83,6 +85,27 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
 
         this.states.add(this.statesTitle, this.statesSwitch, this.statesAdd, this.statesEditor);
         this.add(this.states, this.hotkeys, this.triggers, this.editor, this.trigger, triggers);
+    }
+
+    private void updateCurrentTrigger()
+    {
+        Trigger trigger = this.settings.registered.get(this.lastTrigger);
+
+        this.triggers.getCurrentFirst().title = this.createTooltip(this.lastTrigger, trigger);
+    }
+
+    public IKey createTooltip(String key, Trigger trigger)
+    {
+        IKey title = IKey.lang("mappet.gui.settings.triggers." + key);
+
+        if (trigger.blocks.isEmpty())
+        {
+            return title;
+        }
+
+        IKey count = IKey.str(" §7(§6"+ trigger.blocks.size() + "§7)§r");
+
+        return IKey.comp(title, count);
     }
 
     private void openSearch(GuiIconElement element)
@@ -132,7 +155,7 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
 
         for (String key : this.settings.registered.keySet())
         {
-            this.triggers.add(IKey.lang("mappet.gui.settings.triggers." + key), key);
+            this.triggers.add(this.createTooltip(key, this.settings.registered.get(key)), key);
         }
 
         this.triggers.sort();

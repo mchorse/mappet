@@ -13,6 +13,7 @@ public class GuiTriggerElement extends GuiElement
     public GuiButtonElement open;
 
     private Trigger trigger;
+    private Runnable onClose;
 
     public GuiTriggerElement(Minecraft mc)
     {
@@ -33,9 +34,24 @@ public class GuiTriggerElement extends GuiElement
         this.set(trigger);
     }
 
+    public GuiTriggerElement onClose(Runnable onClose)
+    {
+        this.onClose = onClose;
+
+        return this;
+    }
+
     private void openTriggerEditor()
     {
-        GuiTriggerOverlayPanel panel = new GuiTriggerOverlayPanel(this.mc, this.trigger, this::updateTooltip);
+        GuiTriggerOverlayPanel panel = new GuiTriggerOverlayPanel(this.mc, this.trigger, () ->
+        {
+            this.updateTooltip();
+
+            if (this.onClose != null)
+            {
+                this.onClose.run();
+            }
+        });
 
         GuiOverlay.addOverlay(GuiBase.getCurrent(), panel, 0.55F, 0.75F);
     }
