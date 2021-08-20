@@ -10,6 +10,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -19,19 +20,21 @@ import java.util.Map;
 public class ServerSettings implements INBTSerializable<NBTTagCompound>
 {
     private File file;
+    private Map<String, String> keyToAlias = new HashMap<String, String>();
 
     public final Map<String, Trigger> registered = new LinkedHashMap<String, Trigger>();
     public final TriggerHotkeys hotkeys = new TriggerHotkeys();
 
-    public final Trigger chat;
-    public final Trigger breakBlock;
-    public final Trigger placeBlock;
-    public final Trigger interactBlock;
-    public final Trigger damageEntity;
+    public final Trigger blockBreak;
+    public final Trigger blockPlace;
+    public final Trigger blockInteract;
+    public final Trigger entityDamaged;
+    public final Trigger entityDeath;
     public final Trigger serverLoad;
     public final Trigger serverTick;
 
     /* Player triggers */
+    public final Trigger playerChat;
     public final Trigger playerLogIn;
     public final Trigger playerLeftClick;
     public final Trigger playerRightClick;
@@ -43,9 +46,19 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
 
     public Trigger register(String key, Trigger trigger)
     {
+        return this.register(key, null, trigger);
+    }
+
+    public Trigger register(String key, String alias, Trigger trigger)
+    {
         if (this.registered.containsKey(key))
         {
             throw new IllegalStateException("Server trigger '" + key + "' is already registered!");
+        }
+
+        if (alias != null)
+        {
+            this.keyToAlias.put(key, alias);
         }
 
         this.registered.put(key, trigger);
@@ -57,14 +70,15 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
     {
         this.file = file;
 
-        this.chat = this.register("chat", new Trigger());
-        this.breakBlock = this.register("break_block", new Trigger());
-        this.placeBlock = this.register("place_block", new Trigger());
-        this.interactBlock = this.register("interact_block", new Trigger());
-        this.damageEntity = this.register("damage_entity", new Trigger());
+        this.blockBreak = this.register("block_break", "break_block", new Trigger());
+        this.blockPlace = this.register("block_place", "place_block", new Trigger());
+        this.blockInteract = this.register("block_interact", "interact_block", new Trigger());
+        this.entityDamaged = this.register("entity_damaged", "damage_entity", new Trigger());
+        this.entityDeath = this.register("entity_death", "damage_entity", new Trigger());
         this.serverLoad = this.register("server_load", new Trigger());
         this.serverTick = this.register("server_tick", new Trigger());
 
+        this.playerChat = this.register("player_chat", "chat", new Trigger());
         this.playerLogIn = this.register("player_login", new Trigger());
         this.playerLeftClick = this.register("player_lmb", new Trigger());
         this.playerRightClick = this.register("player_rmb", new Trigger());
@@ -174,7 +188,16 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
 
             for (Map.Entry<String, Trigger> entry : this.registered.entrySet())
             {
-                this.readTrigger(triggers, entry.getKey(), entry.getValue());
+                String oldAlias = this.keyToAlias.get(entry.getKey());
+
+                if (triggers.hasKey(oldAlias, Constants.NBT.TAG_COMPOUND))
+                {
+                    this.readTrigger(triggers, oldAlias, entry.getValue());
+                }
+                else
+                {
+                    this.readTrigger(triggers, entry.getKey(), entry.getValue());
+                }
             }
         }
 

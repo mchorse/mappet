@@ -4,6 +4,7 @@ import mchorse.mappet.api.huds.HUDStage;
 import mchorse.mappet.api.quests.Quest;
 import mchorse.mappet.api.quests.Quests;
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
+import mchorse.mappet.api.triggers.Trigger;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.IExecutable;
 import mchorse.mappet.capabilities.character.Character;
@@ -42,6 +43,7 @@ import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -132,65 +134,61 @@ public class EventHandler
         this.context = null;
     }
 
+    private void trigger(Event event, Trigger trigger, DataContext context)
+    {
+        trigger.trigger(context);
+
+        if (context.isCanceled())
+        {
+            event.setCanceled(true);
+        }
+    }
+
     /* Server trigger handlers */
 
     @SubscribeEvent
     public void onPlayerChat(ServerChatEvent event)
     {
-        if (!Mappet.settings.chat.isEmpty())
+        if (!Mappet.settings.playerChat.isEmpty())
         {
-            DataContext context = new DataContext(event.getPlayer());
+            DataContext context = new DataContext(event.getPlayer())
+                .set("message", event.getMessage());
 
-            Mappet.settings.chat.trigger(context.set("message", event.getMessage()));
-
-            if (context.isCanceled())
-            {
-                event.setCanceled(true);
-            }
+            this.trigger(event, Mappet.settings.playerChat, context);
         }
     }
 
     @SubscribeEvent
     public void onPlayerBreakBlock(BlockEvent.BreakEvent event)
     {
-        if (!Mappet.settings.breakBlock.isEmpty())
+        if (!Mappet.settings.blockBreak.isEmpty())
         {
-            DataContext context = new DataContext(event.getPlayer());
             IBlockState state = event.getState();
-
-            Mappet.settings.breakBlock.trigger(context
+            DataContext context = new DataContext(event.getPlayer())
                 .set("block", state.getBlock().getRegistryName().toString())
                 .set("meta", state.getBlock().getMetaFromState(state))
                 .set("x", event.getPos().getX())
                 .set("y", event.getPos().getY())
-                .set("z", event.getPos().getZ()));
+                .set("z", event.getPos().getZ());
 
-            if (context.isCanceled())
-            {
-                event.setCanceled(true);
-            }
+            this.trigger(event, Mappet.settings.blockBreak, context);
         }
     }
 
     @SubscribeEvent
     public void onPlayerPlaceBlock(BlockEvent.PlaceEvent event)
     {
-        if (!Mappet.settings.placeBlock.isEmpty())
+        if (!Mappet.settings.blockPlace.isEmpty())
         {
-            DataContext context = new DataContext(event.getPlayer());
             IBlockState state = event.getPlacedBlock();
-
-            Mappet.settings.placeBlock.trigger(context
+            DataContext context = new DataContext(event.getPlayer())
                 .set("block", state.getBlock().getRegistryName().toString())
                 .set("meta", state.getBlock().getMetaFromState(state))
                 .set("x", event.getPos().getX())
                 .set("y", event.getPos().getY())
-                .set("z", event.getPos().getZ()));
+                .set("z", event.getPos().getZ());
 
-            if (context.isCanceled())
-            {
-                event.setCanceled(true);
-            }
+            this.trigger(event, Mappet.settings.blockPlace, context);
         }
     }
 
@@ -201,16 +199,12 @@ public class EventHandler
 
         if (source.getTrueSource() instanceof EntityPlayer)
         {
-            if (!Mappet.settings.damageEntity.isEmpty())
+            if (!Mappet.settings.entityDamaged.isEmpty())
             {
-                DataContext context = new DataContext(event.getEntityLiving(), source.getTrueSource());
+                DataContext context = new DataContext(event.getEntityLiving(), source.getTrueSource())
+                    .set("damage", event.getAmount());
 
-                Mappet.settings.damageEntity.trigger(context.set("damage", event.getAmount()));
-
-                if (context.isCanceled())
-                {
-                    event.setCanceled(true);
-                }
+                this.trigger(event, Mappet.settings.entityDamaged, context);
             }
         }
     }
@@ -274,7 +268,7 @@ public class EventHandler
     {
         EntityPlayer player = event.getEntityPlayer();
 
-        if (player.world.isRemote || Mappet.settings.interactBlock.isEmpty())
+        if (player.world.isRemote || Mappet.settings.blockInteract.isEmpty())
         {
             return;
         }
@@ -285,12 +279,7 @@ public class EventHandler
             .set("z", event.getPos().getZ())
             .set("hand", event.getHand() == EnumHand.MAIN_HAND ? "main" : "off");
 
-        Mappet.settings.interactBlock.trigger(context);
-
-        if (context.isCanceled())
-        {
-            event.setCanceled(true);
-        }
+        this.trigger(event, Mappet.settings.blockInteract, context);
     }
 
     /* Other cool stuff */
@@ -354,7 +343,7 @@ public class EventHandler
     /**
      * Copy data from dead player (or player returning from end) to the new player
      */
-                                @SubscribeEvent
+    @SubscribeEvent
     public void onPlayerClone(net.minecraftforge.event.entity.player.PlayerEvent.Clone event)
     {
         EntityPlayer player = event.getEntityPlayer();
@@ -407,49 +396,42 @@ public class EventHandler
             DataContext context = new DataContext(event.getEntityPlayer());
 
             context.getValues().put("item", ScriptItemStack.create(event.getItem().getItem()));
-            Mappet.settings.playerItemPickup.trigger(context);
-
-            if (context.isCanceled())
-            {
-                event.setCanceled(true);
-            }
+            this.trigger(event, Mappet.settings.playerItemPickup, context);
         }
     }
 
     @SubscribeEvent
     public void onMobKilled(LivingDeathEvent event)
     {
-        Entity source = event.getSource().getTrueSource();
-
-        if (event.getEntity() instanceof EntityPlayer && !Mappet.settings.playerDeath.isEmpty())
-        {
-            EntityPlayer player = (EntityPlayer) event.getEntity();
-            DataContext context = new DataContext(player, source);
-
-            Mappet.settings.playerDeath.trigger(context);
-
-            if (context.isCanceled())
-            {
-                event.setCanceled(true);
-            }
-        }
-
-        if (!(source instanceof EntityPlayer))
+        if (event.getEntity().world.isRemote)
         {
             return;
         }
 
-        EntityPlayer player = (EntityPlayer) source;
-        ICharacter character = Character.get(player);
+        Entity source = event.getSource().getTrueSource();
+        Trigger trigger = event.getEntity() instanceof EntityPlayer
+            ? Mappet.settings.playerDeath
+            : Mappet.settings.entityDeath;
 
-        if (character != null)
+        if (!trigger.isEmpty())
         {
-            for (Quest quest : character.getQuests().quests.values())
-            {
-                quest.mobWasKilled(player, event.getEntity());
-            }
+            this.trigger(event, trigger, new DataContext(event.getEntityLiving(), source));
+        }
 
-            this.playersToCheck.add(player);
+        if (source instanceof EntityPlayer)
+        {
+            EntityPlayer player = (EntityPlayer) source;
+            ICharacter character = Character.get(player);
+
+            if (character != null)
+            {
+                for (Quest quest : character.getQuests().quests.values())
+                {
+                    quest.mobWasKilled(player, event.getEntity());
+                }
+
+                this.playersToCheck.add(player);
+            }
         }
     }
 
