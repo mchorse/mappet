@@ -405,6 +405,19 @@ public interface IScriptEntity
     public void damage(float health);
 
     /**
+     * Get entity's fall distance.
+     */
+    public float getFallDistance();
+
+    /**
+     * Set entity's fall distance.
+     *
+     * <p>You can use this method, by calling it with <code>0</code>, to prevent fall
+     * damage when teleporting an entity which was already falling.</p>
+     */
+    public void setFallDistance(float distance);
+
+    /**
      * Remove this entity from the server without any dead effects (essentially despawn).
      */
     public void remove();

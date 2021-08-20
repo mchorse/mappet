@@ -396,6 +396,18 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     }
 
     @Override
+    public float getFallDistance()
+    {
+        return this.entity.fallDistance;
+    }
+
+    @Override
+    public void setFallDistance(float distance)
+    {
+        this.entity.fallDistance = distance;
+    }
+
+    @Override
     public void remove()
     {
         this.entity.setDead();
