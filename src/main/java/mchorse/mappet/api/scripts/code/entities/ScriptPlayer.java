@@ -158,6 +158,32 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
         this.getMinecraftPlayer().connection.sendPacket(packet);
     }
 
+    @Override
+    public void setXp(int level, int points)
+    {
+        this.entity.addExperienceLevel(-this.getXpLevel() - 1);
+        this.entity.addExperienceLevel(level);
+        this.entity.addExperience(points);
+    }
+
+    @Override
+    public void addXp(int points)
+    {
+        this.entity.addExperience(points);
+    }
+
+    @Override
+    public int getXpLevel()
+    {
+        return this.entity.experienceLevel;
+    }
+
+    @Override
+    public int getXpPoints()
+    {
+        return (int) (this.entity.experience * this.entity.xpBarCap());
+    }
+
     /* Mappet stuff */
 
     @Override

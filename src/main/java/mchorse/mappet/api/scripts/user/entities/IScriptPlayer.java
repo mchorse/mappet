@@ -189,6 +189,68 @@ public interface IScriptPlayer extends IScriptEntity
      */
     public void sendActionBar(String title);
 
+    /**
+     * Set experience level and amount of points for that level.
+     *
+     * <pre>{@code
+     *    // For more information of how levels work (i.e. how many points per
+     *    // level to level up) see this table:
+     *    // https://minecraft.fandom.com/wiki/Experience#Leveling_up
+     *
+     *    // Set player's XP level to 17 and half of the bar (level 17 has
+     *    // 42 points in total to level up)
+     *    c.getSubject().setXp(17, 21);
+     * }</pre>
+     *
+     * @param level Experience level.
+     * @param points Amount of experience points in that particular level.
+     */
+    public void setXp(int level, int points);
+
+    /**
+     * Add experience points to this player. Inputting more points than player's
+     * current level can contain will result into leveling up one or more times.
+     *
+     * <pre>{@code
+     *    // For more information of how levels work (i.e. how many points per
+     *    // level to level up) see this table:
+     *    // https://minecraft.fandom.com/wiki/Experience#Leveling_up
+     *
+     *    // Add 1000 experience points
+     *    c.getSubject().addXp(1000);
+     * }</pre>
+     *
+     * @param points Amount of experience points to add to player.
+     */
+    public void addXp(int points);
+
+    /**
+     * Get player's current experience level.
+     *
+     * <pre>{@code
+     *    // For more information of how levels work (i.e. how many points per
+     *    // level to level up) see this table:
+     *    // https://minecraft.fandom.com/wiki/Experience#Leveling_up
+     *
+     *    var s = c.getSubject();
+     *
+     *    if (s.getXpLevel() < 50)
+     *    {
+     *        var section = "\u00A7";
+     *
+     *        // Teleport the player out of the area
+     *        s.setPosition(10, 4, -15);
+     *        s.send("Come back when you're level" + section + "7 50" + section + "r!");
+     *    }
+     * }</pre>
+     */
+    public int getXpLevel();
+
+    /**
+     * Get player's experience points in their current level.
+     */
+    public int getXpPoints();
+
     /* Mappet stuff */
 
     /**
@@ -269,7 +331,11 @@ public interface IScriptPlayer extends IScriptEntity
     public boolean openUI(IMappetUIBuilder builder, boolean defaultData);
 
     /**
-     * Close the user interface
+     * Close the user interface.
+     *
+     * <p>You can use this method to close any GUI that player has opened, inventory,
+     * chests, command block menu, Mappet dashboard, etc. However, Mappet won't close
+     * the in-game pause menu (to avoid potential griefing).</p>
      */
     public void closeUI();
 
