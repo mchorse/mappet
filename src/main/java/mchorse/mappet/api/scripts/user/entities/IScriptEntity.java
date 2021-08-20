@@ -428,6 +428,13 @@ public interface IScriptEntity
      */
     public void kill();
 
+    /**
+     * Swing entity's arm.
+     *
+     * @param arm <code>0</code> is primary (main), <code>1</code> is secondary (off-hand).
+     */
+    public void swingArm(int arm);
+
     /* Potion effects */
 
     /**

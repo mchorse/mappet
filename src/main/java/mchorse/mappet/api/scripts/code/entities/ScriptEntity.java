@@ -419,6 +419,15 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
         this.entity.onKillCommand();
     }
 
+    @Override
+    public void swingArm(int arm)
+    {
+        if (this.isLivingBase())
+        {
+            ((EntityLivingBase) this.entity).swingArm(arm == 1 ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
+        }
+    }
+
     /* Potion effects */
 
     @Override

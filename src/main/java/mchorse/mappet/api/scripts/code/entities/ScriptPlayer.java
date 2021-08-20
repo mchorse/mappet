@@ -20,8 +20,10 @@ import mchorse.mappet.network.common.ui.PacketUI;
 import mchorse.metamorph.api.MorphAPI;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.play.server.SPacketAnimation;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.network.play.server.SPacketTitle;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.GameType;
@@ -57,6 +59,14 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
         super.setRotations(pitch, yaw, yawHead);
 
         this.entity.connection.setPlayerLocation(this.entity.posX, this.entity.posY, this.entity.posZ, yaw, pitch);
+    }
+
+    @Override
+    public void swingArm(int arm)
+    {
+        super.swingArm(arm);
+
+        this.entity.connection.sendPacket(new SPacketAnimation(this.entity, arm == 1 ? 3 : 0));
     }
 
     /* Player's methods */
