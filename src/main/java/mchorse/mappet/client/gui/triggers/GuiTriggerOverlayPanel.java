@@ -51,6 +51,7 @@ public class GuiTriggerOverlayPanel extends GuiEditorOverlayPanel<AbstractTrigge
             Class<? extends GuiAbstractTriggerBlockPanel<? extends AbstractTriggerBlock>>>();
 
     private Trigger trigger;
+    private Runnable onClose;
 
     static
     {
@@ -66,9 +67,15 @@ public class GuiTriggerOverlayPanel extends GuiEditorOverlayPanel<AbstractTrigge
 
     public GuiTriggerOverlayPanel(Minecraft mc, Trigger trigger)
     {
+        this(mc, trigger, null);
+    }
+
+    public GuiTriggerOverlayPanel(Minecraft mc, Trigger trigger, Runnable onClose)
+    {
         super(mc, IKey.lang("mappet.gui.triggers.title"));
 
         this.trigger = trigger;
+        this.onClose = onClose;
 
         this.list.sorting().setList(trigger.blocks);
         this.list.context(() ->
@@ -165,6 +172,17 @@ public class GuiTriggerOverlayPanel extends GuiEditorOverlayPanel<AbstractTrigge
         catch (Exception e)
         {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onClose()
+    {
+        super.onClose();
+
+        if (this.onClose != null)
+        {
+            this.onClose.run();
         }
     }
 

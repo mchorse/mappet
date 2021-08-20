@@ -17,18 +17,14 @@ import mchorse.mappet.network.common.content.PacketStates;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
-import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.list.GuiLabelListElement;
-import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
-import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiLabel;
 import mchorse.mclib.client.gui.mclib.GuiDashboardPanel;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.Label;
 import mchorse.mclib.client.gui.utils.keys.IKey;
-import mchorse.mclib.utils.ColorUtils;
 import mchorse.mclib.utils.Direction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -51,7 +47,8 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
     public GuiScrollElement editor;
 
     private ServerSettings settings;
-    private String target;
+    private String lastTarget;
+    private String lastTrigger = "player_chat";
 
     public GuiServerSettingsPanel(Minecraft mc, GuiMappetDashboard dashboard)
     {
@@ -111,7 +108,7 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
             Dispatcher.sendToServer(new PacketRequestStates(target));
         });
 
-        GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay.set(this.target), 0.4F, 0.6F);
+        GuiOverlay.addOverlay(GuiBase.getCurrent(), overlay.set(this.lastTarget), 0.4F, 0.6F);
     }
 
     private void addState(GuiIconElement element)
@@ -139,7 +136,7 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
         }
 
         this.triggers.sort();
-        this.triggers.setCurrentValue("chat");
+        this.triggers.setCurrentValue(this.lastTrigger);
 
         this.fillTrigger(this.triggers.getCurrentFirst(), true);
 
@@ -160,6 +157,8 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
             this.triggers.setCurrentScroll(trigger);
         }
 
+        this.lastTrigger = trigger.value;
+
         this.resize();
     }
 
@@ -170,7 +169,7 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
         this.statesTitle.label = target.equals("~") ? IKey.lang("mappet.gui.states.server") : IKey.format("mappet.gui.states.player", target);
         states.deserializeNBT(data);
         this.statesEditor.set(states);
-        this.target = target;
+        this.lastTarget = target;
     }
 
     public void save()
@@ -182,7 +181,7 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
 
         if (this.statesEditor.get() != null)
         {
-            Dispatcher.sendToServer(new PacketStates(this.target, this.statesEditor.get().serializeNBT()));
+            Dispatcher.sendToServer(new PacketStates(this.lastTarget, this.statesEditor.get().serializeNBT()));
         }
     }
 

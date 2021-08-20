@@ -35,9 +35,21 @@ public class GuiTriggerElement extends GuiElement
 
     private void openTriggerEditor()
     {
-        GuiTriggerOverlayPanel panel = new GuiTriggerOverlayPanel(this.mc, this.trigger);
+        GuiTriggerOverlayPanel panel = new GuiTriggerOverlayPanel(this.mc, this.trigger, this::updateTooltip);
 
         GuiOverlay.addOverlay(GuiBase.getCurrent(), panel, 0.55F, 0.75F);
+    }
+
+    private void updateTooltip()
+    {
+        if (this.trigger == null)
+        {
+            this.tooltip = null;
+        }
+        else
+        {
+            this.tooltip(IKey.format("mappet.gui.trigger.quantity", this.trigger.blocks.size()));
+        }
     }
 
     public Trigger get()
@@ -48,5 +60,7 @@ public class GuiTriggerElement extends GuiElement
     public void set(Trigger trigger)
     {
         this.trigger = trigger;
+
+        this.updateTooltip();
     }
 }
