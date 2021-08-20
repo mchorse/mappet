@@ -129,6 +129,7 @@ public class UIStackComponent extends UIComponent
             context.dirty(this.id, this.updateDelay);
         };
         element.setStack(this.stack);
+        element.drawDisabled = false;
 
         return this.apply(element, context);
     }
