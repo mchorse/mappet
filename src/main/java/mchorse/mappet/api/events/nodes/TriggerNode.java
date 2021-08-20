@@ -7,13 +7,23 @@ import mchorse.mappet.api.triggers.blocks.EventTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.ScriptTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.StringTriggerBlock;
 import mchorse.mappet.api.utils.DataContext;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TriggerNode extends EventBaseNode
 {
     public Trigger trigger = new Trigger();
     public String customData = "";
     public boolean cancel;
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected String getDisplayTitle()
+    {
+        return I18n.format("mappet.gui.trigger.quantity", this.trigger.blocks.size());
+    }
 
     @Override
     public int execute(EventContext context)
