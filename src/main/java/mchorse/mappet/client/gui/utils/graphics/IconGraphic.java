@@ -23,7 +23,8 @@ public class IconGraphic extends Graphic
 
     public IconGraphic(String id, int x, int y, int primary, float anchorX, float anchorY)
     {
-        this.pixels.set(x, y, 0, 0);
+        this.pixels.set(x - 8, y - 8, 16, 16);
+
         this.primary = primary;
         this.id = id;
         this.anchorX = anchorX;
@@ -42,8 +43,8 @@ public class IconGraphic extends Graphic
             this.icon = this.icon == null ? Icons.NONE : this.icon;
         }
 
-        int left = area.x;
-        int top = area.y;
+        int left = area.x(this.anchorX);
+        int top = area.y(this.anchorY);
 
         this.icon.render(left, top, this.anchorX, this.anchorY);
     }

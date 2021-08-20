@@ -3,6 +3,7 @@ package mchorse.mappet.client.gui.utils.graphics;
 import mchorse.mappet.api.ui.components.UIComponent;
 import mchorse.mappet.api.ui.components.UIGraphicsComponent;
 import mchorse.mappet.api.ui.utils.DiscardMethod;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.utils.Area;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -27,6 +28,7 @@ public abstract class Graphic implements INBTSerializable<NBTTagCompound>
     public float relativeW;
     public float relativeH;
     public int primary;
+    public boolean hover;
 
     @DiscardMethod
     public static Graphic fromNBT(NBTTagCompound tag)
@@ -279,16 +281,29 @@ public abstract class Graphic implements INBTSerializable<NBTTagCompound>
         return this.rw(w).rh(h);
     }
 
+    /**
+     * Set this graphic to display only when when mouse is over it.
+     */
+    public Graphic hoverOnly()
+    {
+        this.hover = true;
+
+        return this;
+    }
+
     @DiscardMethod
     @SideOnly(Side.CLIENT)
-    public final void draw(Area elementArea)
+    public final void draw(GuiContext context, Area elementArea)
     {
         computed.x = elementArea.x + (int) (elementArea.w * this.relativeX) + this.pixels.x;
         computed.y = elementArea.y + (int) (elementArea.h * this.relativeY) + this.pixels.y;
         computed.w = (int) (elementArea.w * this.relativeW) + this.pixels.w;
         computed.h = (int) (elementArea.h * this.relativeH) + this.pixels.h;
 
-        this.drawGraphic(computed);
+        if (!this.hover || computed.isInside(context))
+        {
+            this.drawGraphic(computed);
+        }
     }
 
     @DiscardMethod
@@ -318,6 +333,7 @@ public abstract class Graphic implements INBTSerializable<NBTTagCompound>
         tag.setFloat("RW", this.relativeW);
         tag.setFloat("RH", this.relativeH);
         tag.setInteger("Primary", this.primary);
+        tag.setBoolean("Hover", this.hover);
     }
 
     @Override
@@ -333,5 +349,6 @@ public abstract class Graphic implements INBTSerializable<NBTTagCompound>
         this.relativeW = tag.getFloat("RW");
         this.relativeH = tag.getFloat("RH");
         this.primary = tag.getInteger("Primary");
+        this.hover = tag.getBoolean("Hover");
     }
 }

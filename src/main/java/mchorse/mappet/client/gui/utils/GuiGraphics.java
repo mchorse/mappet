@@ -22,7 +22,7 @@ public class GuiGraphics extends GuiElement
     {
         for (Graphic graphic : this.graphics)
         {
-            graphic.draw(this.area);
+            graphic.draw(context, this.area);
         }
 
         super.draw(context);

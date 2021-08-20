@@ -15,9 +15,9 @@ public class TextGraphic extends Graphic
     public TextGraphic()
     {}
 
-    public TextGraphic(String text, int x, int y, int primary, float anchorX, float anchorY)
+    public TextGraphic(String text, int x, int y, int w, int h, int primary, float anchorX, float anchorY)
     {
-        this.pixels.set(x, y, 0, 0);
+        this.pixels.set(x, y, w, h);
         this.primary = primary;
         this.text = text;
         this.anchorX = anchorX;
@@ -31,8 +31,8 @@ public class TextGraphic extends Graphic
         Minecraft mc = Minecraft.getMinecraft();
 
         int w = mc.fontRenderer.getStringWidth(this.text);
-        int left = area.x - (int) (w * this.anchorX);
-        int top = area.y - (int) (mc.fontRenderer.FONT_HEIGHT * this.anchorY);
+        int left = area.x(this.anchorX) - (int) (w * this.anchorX);
+        int top = area.y(this.anchorY) - (int) (mc.fontRenderer.FONT_HEIGHT * this.anchorY);
 
         mc.fontRenderer.drawStringWithShadow(this.text, left, top, this.primary);
     }

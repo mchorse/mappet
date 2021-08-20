@@ -232,7 +232,19 @@ public class UIGraphicsComponent extends UIComponent
      */
     public Graphic text(String text, int x, int y, int color, float anchorX, float anchorY)
     {
-        return this.addGraphic(new TextGraphic(text, x, y, color, anchorX, anchorY));
+        return this.text(text, x, y, 0, 0, color, anchorX, anchorY);
+    }
+
+    /**
+     * Draw a text label with an anchor relative to graphics component's frame.
+     *
+     * @param color ARGB text's font color.
+     * @param anchorX Horizontal anchor (<code>0..1</code>).
+     * @param anchorY Vertical anchor (<code>0..1</code>).
+     */
+    public Graphic text(String text, int x, int y, int w, int h, int color, float anchorX, float anchorY)
+    {
+        return this.addGraphic(new TextGraphic(text, x, y, w, h, color, anchorX, anchorY));
     }
 
     /**
