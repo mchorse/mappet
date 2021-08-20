@@ -55,6 +55,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 public class EventHandler
 {
@@ -85,6 +86,12 @@ public class EventHandler
      * Server data context which is used by server tick global trigger
      */
     private DataContext context;
+
+    /**
+     * Set that keeps track of players that just joined (it is needed to avoid
+     * triggering the player respawn trigger when player logs in)
+     */
+    private Set<UUID> loggedInPlayers = new HashSet<UUID>();
 
     private static boolean isMohist()
     {
@@ -236,6 +243,8 @@ public class EventHandler
     @SideOnly(Side.CLIENT)
     public void onPlayerCloseContainer(PlayerContainerEvent.Close event)
     {
+        this.playersToCheck.add(event.getEntityPlayer());
+
         if (Mappet.settings.playerCloseContainer.isEmpty())
         {
             return;
@@ -332,12 +341,20 @@ public class EventHandler
         {
             player.sendMessage(new TextComponentTranslation("mappet.nashorn_error"));
         }
+
+        this.loggedInPlayers.add(player.getUniqueID());
+    }
+
+    @SubscribeEvent
+    public void onPlayerLogsOut(PlayerEvent.PlayerLoggedOutEvent event)
+    {
+        this.loggedInPlayers.remove(event.player.getUniqueID());
     }
 
     /**
      * Copy data from dead player (or player returning from end) to the new player
      */
-    @SubscribeEvent
+                                @SubscribeEvent
     public void onPlayerClone(net.minecraftforge.event.entity.player.PlayerEvent.Clone event)
     {
         EntityPlayer player = event.getEntityPlayer();
@@ -359,6 +376,11 @@ public class EventHandler
             ICharacter character = Character.get(player);
 
             this.syncData(player, character);
+
+            if (this.loggedInPlayers.contains(player.getUniqueID()) && !Mappet.settings.playerRespawn.isEmpty())
+            {
+                Mappet.settings.playerRespawn.trigger(new DataContext(player));
+            }
         }
     }
 

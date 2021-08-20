@@ -429,6 +429,14 @@ public interface IScriptEntity
     public void kill();
 
     /**
+     * Swing entity's main hand.
+     */
+    public default void swingArm()
+    {
+        this.swingArm(0);
+    }
+
+    /**
      * Swing entity's arm.
      *
      * @param arm <code>0</code> is primary (main), <code>1</code> is secondary (off-hand).

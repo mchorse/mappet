@@ -258,6 +258,10 @@ mappet.gui.settings.triggers.player_death=Player: death
 mappet.gui.settings.triggers.descriptions.player_death=This cancelable trigger gets triggered when a player dies.\n\nProTip: if you want to cancel the death, make sure to give some health to the player, or otherwise the player will end up in eternal dying cycle.
 mappet.gui.settings.triggers.variables.player_death=§7N/A§r
 
+mappet.gui.settings.triggers.player_respawn=Player: respawn
+mappet.gui.settings.triggers.descriptions.player_respawn=This gets triggered when a player respawns. 
+mappet.gui.settings.triggers.variables.player_respawn=§7N/A§r
+
 mappet.gui.settings.triggers.player_item_pickup=Player: picked up an item
 mappet.gui.settings.triggers.descriptions.player_item_pickup=This cancelable trigger gets triggered when a player picks up an item in the world.
 mappet.gui.settings.triggers.variables.player_item_pickup=§7N/A§r or...\n§6x§r, §6y§r, and §6z§r of the inventory block in the world.

@@ -35,6 +35,7 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
     public final Trigger playerLogIn;
     public final Trigger playerLeftClick;
     public final Trigger playerRightClick;
+    public final Trigger playerRespawn;
     public final Trigger playerDeath;
     public final Trigger playerItemPickup;
     public final Trigger playerCloseContainer;
@@ -67,6 +68,7 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
         this.playerLogIn = this.register("player_login", new Trigger());
         this.playerLeftClick = this.register("player_lmb", new Trigger());
         this.playerRightClick = this.register("player_rmb", new Trigger());
+        this.playerRespawn = this.register("player_respawn", new Trigger());
         this.playerDeath = this.register("player_death", new Trigger());
         this.playerItemPickup = this.register("player_item_pickup", new Trigger());
         this.playerCloseContainer = this.register("player_close_container", new Trigger());
