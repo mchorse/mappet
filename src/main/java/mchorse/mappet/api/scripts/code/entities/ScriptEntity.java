@@ -143,6 +143,18 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     }
 
     @Override
+    public float getWidth()
+    {
+        return this.entity.width;
+    }
+
+    @Override
+    public float getHeight()
+    {
+        return this.entity.height;
+    }
+
+    @Override
     public float getHp()
     {
         if (this.isLivingBase())

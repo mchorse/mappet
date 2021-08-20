@@ -144,6 +144,16 @@ public interface IScriptEntity
     public ScriptVector getLook();
 
     /**
+     * Get entity's current hitbox width (and depth, it's the same number).
+     */
+    public float getWidth();
+
+    /**
+     * Get entity's current hitbox height.
+     */
+    public float getHeight();
+
+    /**
      * Get health points of this entity (20 is the max default for players).
      *
      * <pre>{@code
