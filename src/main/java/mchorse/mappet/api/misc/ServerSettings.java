@@ -74,7 +74,7 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
         this.blockPlace = this.register("block_place", "place_block", new Trigger());
         this.blockInteract = this.register("block_interact", "interact_block", new Trigger());
         this.entityDamaged = this.register("entity_damaged", "damage_entity", new Trigger());
-        this.entityDeath = this.register("entity_death", "damage_entity", new Trigger());
+        this.entityDeath = this.register("entity_death", new Trigger());
         this.serverLoad = this.register("server_load", new Trigger());
         this.serverTick = this.register("server_tick", new Trigger());
 
