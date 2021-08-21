@@ -189,6 +189,8 @@ public interface IScriptPlayer extends IScriptEntity
      */
     public void sendActionBar(String title);
 
+    /* XP methods */
+
     /**
      * Set experience level and amount of points for that level.
      *
@@ -250,6 +252,57 @@ public interface IScriptPlayer extends IScriptEntity
      * Get player's experience points in their current level.
      */
     public int getXpPoints();
+
+    /* Sounds */
+
+    /**
+     * Play a sound event only to this player.
+     *
+     * <p>For all possible sound event IDs, please refer to either <code>/playsound</code>
+     * command, or script editor's sound picker.</p>
+     *
+     * <pre>{@code
+     *    var player = c.getSubject();
+     *    var pos = player.getPosition();
+     *
+     *    player.playSound("minecraft:entity.pig.ambient", pos.x, pos.y, pos.z);
+     * }</pre>
+     */
+    public default void playSound(String event, double x, double y, double z)
+    {
+        this.playSound(event, x, y, z, 1F, 1F);
+    }
+
+    /**
+     * Play a sound event only to this player with volume and pitch.
+     *
+     * <pre>{@code
+     *    var player = c.getSubject();
+     *    var pos = player.getPosition();
+     *
+     *    player.playSound("minecraft:entity.pig.ambient", pos.x, pos.y, pos.z, 1.0, 0.8);
+     * }</pre>
+     */
+    public void playSound(String event, double x, double y, double z, float volume, float pitch);
+
+    /**
+     * Play a sound event to this player stationary.
+     *
+     * <p>The difference between this method and {@link #playSound(String, double, double, double, float, float)}
+     * is that if player will get teleported, the sound will continue playing.</p>
+     *
+     * <pre>{@code
+     *    var player = c.getSubject();
+     *
+     *    player.playStaticSound("minecraft:block.portal.ambient", 1.0, 0.8);
+     *
+     *    c.scheduleScript(20, function (c)
+     *    {
+     *        c.getSubject.setPosition(-15, 4, 561);
+     *    });
+     * }</pre>
+     */
+    public void playStaticSound(String event, float volume, float pitch);
 
     /* Mappet stuff */
 

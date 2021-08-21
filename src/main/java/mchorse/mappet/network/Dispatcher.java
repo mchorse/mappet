@@ -23,6 +23,7 @@ import mchorse.mappet.network.client.quests.ClientHandlerQuest;
 import mchorse.mappet.network.client.quests.ClientHandlerQuests;
 import mchorse.mappet.network.client.scripts.ClientHandlerEntityRotations;
 import mchorse.mappet.network.client.scripts.ClientHandlerRepl;
+import mchorse.mappet.network.client.scripts.ClientHandlerSound;
 import mchorse.mappet.network.client.ui.ClientHandlerCloseUI;
 import mchorse.mappet.network.client.ui.ClientHandlerUI;
 import mchorse.mappet.network.client.ui.ClientHandlerUIData;
@@ -60,6 +61,7 @@ import mchorse.mappet.network.common.scripts.PacketClick;
 import mchorse.mappet.network.common.scripts.PacketEntityRotations;
 import mchorse.mappet.network.common.scripts.PacketPlayerSkin;
 import mchorse.mappet.network.common.scripts.PacketRepl;
+import mchorse.mappet.network.common.scripts.PacketSound;
 import mchorse.mappet.network.common.ui.PacketCloseUI;
 import mchorse.mappet.network.common.ui.PacketUI;
 import mchorse.mappet.network.common.ui.PacketUIData;
@@ -172,6 +174,7 @@ public class Dispatcher
             this.register(PacketRepl.class, ClientHandlerRepl.class, Side.CLIENT);
             this.register(PacketRepl.class, ServerHandlerRepl.class, Side.SERVER);
             this.register(PacketPlayerSkin.class, ServerHandlerPlayerSkin.class, Side.SERVER);
+            this.register(PacketSound.class, ClientHandlerSound.class, Side.CLIENT);
 
             /* HUD & UI*/
             this.register(PacketHUDScene.class, ClientHandlerHUDScene.class, Side.CLIENT);

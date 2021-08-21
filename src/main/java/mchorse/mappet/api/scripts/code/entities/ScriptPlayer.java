@@ -15,8 +15,10 @@ import mchorse.mappet.api.ui.UIContext;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.network.Dispatcher;
+import mchorse.mappet.network.common.scripts.PacketSound;
 import mchorse.mappet.network.common.ui.PacketCloseUI;
 import mchorse.mappet.network.common.ui.PacketUI;
+import mchorse.mappet.utils.WorldUtils;
 import mchorse.metamorph.api.MorphAPI;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -168,6 +170,8 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
         this.getMinecraftPlayer().connection.sendPacket(packet);
     }
 
+    /* XP methods */
+
     @Override
     public void setXp(int level, int points)
     {
@@ -192,6 +196,20 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     public int getXpPoints()
     {
         return (int) (this.entity.experience * this.entity.xpBarCap());
+    }
+
+    /* Sounds */
+
+    @Override
+    public void playSound(String event, double x, double y, double z, float volume, float pitch)
+    {
+        WorldUtils.playSound(this.entity, event, x, y, z, volume, pitch);
+    }
+
+    @Override
+    public void playStaticSound(String event, float volume, float pitch)
+    {
+        Dispatcher.sendTo(new PacketSound(event, volume, pitch), this.entity);
     }
 
     /* Mappet stuff */
