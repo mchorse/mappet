@@ -129,7 +129,7 @@ public class ScriptEvent implements IScriptEvent
     @Override
     public void scheduleScript(String script, String function, int delay)
     {
-        CommonProxy.eventHandler.addExecutable(new ScriptExecutionFork(this.context, script, function, delay));
+        CommonProxy.eventHandler.addExecutable(new ScriptExecutionFork(this.context.copy(), script, function, delay));
     }
 
     @Override
@@ -137,7 +137,7 @@ public class ScriptEvent implements IScriptEvent
     {
         if (function != null && function.isFunction())
         {
-            CommonProxy.eventHandler.addExecutable(new ScriptExecutionFork(this.context, function, delay));
+            CommonProxy.eventHandler.addExecutable(new ScriptExecutionFork(this.context.copy(), function, delay));
         }
         else
         {
