@@ -269,7 +269,7 @@ public class EventHandler
     {
         EntityPlayer player = event.getEntityPlayer();
 
-        if (!player.world.isRemote)
+        if (player.world.isRemote || Mappet.settings.blockClick.isEmpty())
         {
             return;
         }
