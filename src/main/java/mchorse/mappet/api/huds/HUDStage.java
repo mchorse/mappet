@@ -5,6 +5,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -21,6 +22,7 @@ public class HUDStage
     public Map<String, HUDScene> scenes = new LinkedHashMap<String, HUDScene>();
 
     private List<HUDMorph> renderOrtho = new ArrayList<HUDMorph>();
+    private List<HUDMorph> renderPerpsective = new ArrayList<HUDMorph>();
     private boolean ignoreF1;
 
     public HUDStage(boolean ignoreF1)
@@ -48,6 +50,8 @@ public class HUDStage
 
         int w = resolution.getScaledWidth();
         int h = resolution.getScaledHeight();
+        float lastX = OpenGlHelper.lastBrightnessX;
+        float lastY = OpenGlHelper.lastBrightnessY;
 
         /* Changing projection mode to perspective. In order for this to
          * work, depth buffer must also be cleared. Thanks to Gegy for
@@ -90,6 +94,8 @@ public class HUDStage
                 lastFov = scene.fov;
             }
 
+            this.renderPerpsective.clear();
+
             for (HUDMorph morph : scene.morphs)
             {
                 if (morph.ortho)
@@ -98,8 +104,17 @@ public class HUDStage
                 }
                 else
                 {
-                    morph.render(resolution, partialTicks);
+                    this.renderPerpsective.add(morph);
                 }
+            }
+
+            this.renderPerpsective.sort(this::depthSort);
+
+            for (HUDMorph morph : this.renderPerpsective)
+            {
+                OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
+
+                morph.render(resolution, partialTicks);
             }
         }
 
@@ -109,13 +124,31 @@ public class HUDStage
 
         GlStateManager.clear(GL11.GL_DEPTH_BUFFER_BIT);
 
+        this.renderOrtho.sort(this::depthSort);
+
         for (HUDMorph morph : this.renderOrtho)
         {
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
+
             morph.render(resolution, partialTicks);
         }
 
         this.disableGLStates();
         this.setupOrtho(mc, w, h, false);
+
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastX, lastY);
+    }
+
+    private int depthSort(HUDMorph a, HUDMorph b)
+    {
+        float diff = a.translate.z - b.translate.z;
+
+        if (diff == 0)
+        {
+            return 0;
+        }
+
+        return diff < 0 ? -1 : 1;
     }
 
     private void setupOrtho(Minecraft mc, int w, int h, boolean flip)
