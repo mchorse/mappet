@@ -28,6 +28,7 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
     public final Trigger blockBreak;
     public final Trigger blockPlace;
     public final Trigger blockInteract;
+    public final Trigger blockClick;
     public final Trigger entityDamaged;
     public final Trigger entityDeath;
     public final Trigger serverLoad;
@@ -73,6 +74,7 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
         this.blockBreak = this.register("block_break", "break_block", new Trigger());
         this.blockPlace = this.register("block_place", "place_block", new Trigger());
         this.blockInteract = this.register("block_interact", "interact_block", new Trigger());
+        this.blockClick = this.register("block_click", new Trigger());
         this.entityDamaged = this.register("entity_damaged", "damage_entity", new Trigger());
         this.entityDeath = this.register("entity_death", new Trigger());
         this.serverLoad = this.register("server_load", new Trigger());

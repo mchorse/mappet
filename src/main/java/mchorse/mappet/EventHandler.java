@@ -211,30 +211,6 @@ public class EventHandler
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
-    public void onPlayerLeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event)
-    {
-        if (!event.getEntityPlayer().world.isRemote)
-        {
-            return;
-        }
-
-        Dispatcher.sendToServer(new PacketClick(EnumHand.MAIN_HAND));
-    }
-
-    @SubscribeEvent
-    @SideOnly(Side.CLIENT)
-    public void onPlayerRightClickEmpty(PlayerInteractEvent.RightClickEmpty event)
-    {
-        if (!event.getEntityPlayer().world.isRemote || event.getHand() == EnumHand.OFF_HAND)
-        {
-            return;
-        }
-
-        Dispatcher.sendToServer(new PacketClick(EnumHand.OFF_HAND));
-    }
-
-    @SubscribeEvent
-    @SideOnly(Side.CLIENT)
     public void onPlayerCloseContainer(PlayerContainerEvent.Close event)
     {
         this.playersToCheck.add(event.getEntityPlayer());
@@ -261,6 +237,50 @@ public class EventHandler
         }
 
         Mappet.settings.playerCloseContainer.trigger(context);
+    }
+
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onPlayerLeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event)
+    {
+        if (!event.getEntityPlayer().world.isRemote)
+        {
+            return;
+        }
+
+        Dispatcher.sendToServer(new PacketClick(EnumHand.MAIN_HAND));
+    }
+
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onPlayerRightClickEmpty(PlayerInteractEvent.RightClickEmpty event)
+    {
+        if (!event.getEntityPlayer().world.isRemote || event.getHand() == EnumHand.OFF_HAND)
+        {
+            return;
+        }
+
+        Dispatcher.sendToServer(new PacketClick(EnumHand.OFF_HAND));
+    }
+
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onPlayerLeftClick(PlayerInteractEvent.LeftClickBlock event)
+    {
+        EntityPlayer player = event.getEntityPlayer();
+
+        if (!player.world.isRemote)
+        {
+            return;
+        }
+
+        DataContext context = new DataContext(player)
+            .set("x", event.getPos().getX())
+            .set("y", event.getPos().getY())
+            .set("z", event.getPos().getZ())
+            .set("hand", event.getHand() == EnumHand.MAIN_HAND ? "main" : "off");
+
+        this.trigger(event, Mappet.settings.blockClick, context);
     }
 
     @SubscribeEvent
