@@ -7,7 +7,7 @@ import mchorse.mappet.api.utils.DataContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 
-public class DialogueTriggerBlock extends StringTriggerBlock
+public class DialogueTriggerBlock extends DataTriggerBlock
 {
     public DialogueTriggerBlock()
     {
@@ -32,7 +32,7 @@ public class DialogueTriggerBlock extends StringTriggerBlock
 
                 if (dialogue != null)
                 {
-                    Mappet.dialogues.open((EntityPlayerMP) player, dialogue, new DialogueContext(context));
+                    Mappet.dialogues.open((EntityPlayerMP) player, dialogue, new DialogueContext(this.apply(context)));
                 }
             }
         }

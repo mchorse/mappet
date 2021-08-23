@@ -5,7 +5,7 @@ import mchorse.mappet.api.utils.DataContext;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextFormatting;
 
-public class ScriptTriggerBlock extends StringTriggerBlock
+public class ScriptTriggerBlock extends DataTriggerBlock
 {
     public String function = "";
 
@@ -39,7 +39,7 @@ public class ScriptTriggerBlock extends StringTriggerBlock
         {
             try
             {
-                Mappet.scripts.execute(this.string, this.function.trim(), context);
+                Mappet.scripts.execute(this.string, this.function.trim(), this.apply(context));
             }
             catch (Exception e)
             {

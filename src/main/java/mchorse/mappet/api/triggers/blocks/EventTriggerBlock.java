@@ -4,7 +4,7 @@ import mchorse.mappet.Mappet;
 import mchorse.mappet.api.events.EventContext;
 import mchorse.mappet.api.utils.DataContext;
 
-public class EventTriggerBlock extends StringTriggerBlock
+public class EventTriggerBlock extends DataTriggerBlock
 {
     public EventTriggerBlock()
     {
@@ -21,7 +21,7 @@ public class EventTriggerBlock extends StringTriggerBlock
     {
         if (!this.string.isEmpty())
         {
-            Mappet.events.execute(this.string, new EventContext(context));
+            Mappet.events.execute(this.string, new EventContext(this.apply(context)));
         }
     }
 

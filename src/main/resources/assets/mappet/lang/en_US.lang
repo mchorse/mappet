@@ -379,6 +379,7 @@ mappet.gui.nodes.event.timer=Timer
 mappet.gui.nodes.event.ticks=%s ticks
 mappet.gui.nodes.event.subject=Subject
 mappet.gui.nodes.event.data=Custom data
+mappet.gui.nodes.event.data_tooltip=Here you can provide some additional data by inputting an NBT tag compound (something like §7{x:10}§r)
 mappet.gui.nodes.event.cancel=Cancel
 mappet.gui.nodes.event.cancel_tooltip=Use cancel of any of the triggers as a result of the node's execution
 mappet.gui.nodes.item.take=Take %s

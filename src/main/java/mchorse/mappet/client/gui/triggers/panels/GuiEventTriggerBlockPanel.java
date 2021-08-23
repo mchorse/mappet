@@ -6,7 +6,7 @@ import mchorse.mappet.client.gui.triggers.GuiTriggerOverlayPanel;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 
-public class GuiEventTriggerBlockPanel extends GuiStringTriggerBlockPanel<EventTriggerBlock>
+public class GuiEventTriggerBlockPanel extends GuiDataTriggerBlockPanel<EventTriggerBlock>
 {
     public GuiEventTriggerBlockPanel(Minecraft mc, GuiTriggerOverlayPanel overlay, EventTriggerBlock block)
     {

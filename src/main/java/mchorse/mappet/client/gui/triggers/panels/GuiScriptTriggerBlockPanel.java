@@ -8,7 +8,7 @@ import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 
-public class GuiScriptTriggerBlockPanel extends GuiStringTriggerBlockPanel<ScriptTriggerBlock>
+public class GuiScriptTriggerBlockPanel extends GuiDataTriggerBlockPanel<ScriptTriggerBlock>
 {
     public GuiTextElement function;
 
