@@ -6,6 +6,7 @@ import net.minecraft.client.gui.FontRenderer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SyntaxHighlighter
@@ -15,6 +16,7 @@ public class SyntaxHighlighter
     private static final Set<String> SECONDARY_KEYWORDS = ImmutableSet.of("const", "function", "var", "let", "prototype", "Math", "JSON", "mappet");
     private static final Set<String> SPECIAL = ImmutableSet.of("this", "arguments");
     private static final Set<String> TYPE_KEYSWORDS = ImmutableSet.of("true", "false", "null", "undefined");
+    private static final Pattern FUNCTION_NAME = Pattern.compile("[\\w_][\\d\\w_]*", Pattern.CASE_INSENSITIVE);
 
     private SyntaxStyle style;
 
@@ -172,14 +174,14 @@ public class SyntaxHighlighter
             this.buffer += character;
 
             /* Keywords */
-            if (!isString && ((next != '\0' && !Character.isLetterOrDigit(next)) || i == c - 1))
+            if (!isString && ((next != '\0' && !this.isLegalName(next)) || i == c - 1))
             {
                 if (this.last < i)
                 {
                     char last = line.charAt(this.last);
                     boolean predicateForNumbers = (last == '-' || last == '.') && Character.isDigit(line.charAt(this.last + 1));
 
-                    if (!Character.isLetterOrDigit(last) && !predicateForNumbers)
+                    if (!this.isLegalName(last) && !predicateForNumbers)
                     {
                         this.last += 1;
                     }
@@ -209,7 +211,7 @@ public class SyntaxHighlighter
                 }
             }
 
-            if (!Character.isLetterOrDigit(character))
+            if (!this.isLegalName(character))
             {
                 this.last = i;
             }
@@ -222,6 +224,11 @@ public class SyntaxHighlighter
         }
 
         return list;
+    }
+
+        private boolean isLegalName(char character)
+    {
+        return Character.isLetterOrDigit(character) || character == '_';
     }
 
     /**
@@ -273,7 +280,10 @@ public class SyntaxHighlighter
             }
         }
 
-        return next == '(';
+        Matcher matcher = FUNCTION_NAME.matcher(keyword);
+        boolean matches = matcher.matches();
+
+        return next == '(' && matches;
     }
 
     /**
