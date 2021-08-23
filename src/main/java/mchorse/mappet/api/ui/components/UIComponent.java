@@ -7,6 +7,7 @@ import mchorse.mappet.api.ui.utils.UIContextItem;
 import mchorse.mappet.api.ui.utils.UIKeybind;
 import mchorse.mappet.api.ui.utils.UIUnit;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
+import mchorse.mclib.client.gui.framework.elements.context.GuiContextMenu;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.utils.Icon;
 import mchorse.mclib.client.gui.utils.IconRegistry;
@@ -31,6 +32,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 /**
  * Base UI component.
@@ -738,7 +740,7 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
     {
         if (this.context.isEmpty())
         {
-            element.context(null);
+            this.resetContext(element, context);
         }
         else
         {
@@ -746,28 +748,38 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
             {
                 GuiSimpleContextMenu menu = new GuiSimpleContextMenu(Minecraft.getMinecraft());
 
-                for (UIContextItem item : this.context)
-                {
-                    Runnable runnable = () -> context.sendContext(item.action);
-                    Icon icon = IconRegistry.icons.get(item.icon);
-
-                    if (icon == null)
-                    {
-                        icon = Icons.NONE;
-                    }
-
-                    if (item.color > 0)
-                    {
-                        menu.action(icon, IKey.str(item.label), runnable, item.color);
-                    }
-                    else
-                    {
-                        menu.action(icon, IKey.str(item.label), runnable);
-                    }
-                }
+                this.createContext(menu, element, context);
 
                 return menu;
             });
+        }
+    }
+
+    protected void resetContext(GuiElement element, UIContext context)
+    {
+        element.context(null);
+    }
+
+    protected void createContext(GuiSimpleContextMenu menu, GuiElement element, UIContext context)
+    {
+        for (UIContextItem item : this.context)
+        {
+            Runnable runnable = () -> context.sendContext(item.action);
+            Icon icon = IconRegistry.icons.get(item.icon);
+
+            if (icon == null)
+            {
+                icon = Icons.NONE;
+            }
+
+            if (item.color > 0)
+            {
+                menu.action(icon, IKey.str(item.label), runnable, item.color);
+            }
+            else
+            {
+                menu.action(icon, IKey.str(item.label), runnable);
+            }
         }
     }
 

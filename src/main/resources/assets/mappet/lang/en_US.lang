@@ -224,7 +224,7 @@ mappet.gui.settings.triggers.descriptions.block_place=This cancelable trigger ge
 mappet.gui.settings.triggers.variables.block_place=§6block§r, the ID of the block that was placed (like §7minecraft:stone§r).\n§6meta§r, the meta (0..15) value of the block's state.\n§6x§r, §6y§r, and §6z§r in the world.
 
 mappet.gui.settings.triggers.block_click=Block: clicked by a player
-mappet.gui.settings.triggers.descriptions.block_click=This cancelable trigger gets triggered when a player clicks (with left mouse button) a block in the world. 
+mappet.gui.settings.triggers.descriptions.block_click=This cancelable trigger gets triggered when a player clicks (with left mouse button) a block in the world.\n\n§lImportant§r: this trigger only works in survival mode!
 mappet.gui.settings.triggers.variables.block_click=§6x§r, §6y§r, and §6z§r in the world.\n§6hand§r, the hand that interacted with the block: §7main§r or §7off§r.
 
 mappet.gui.settings.triggers.block_interact=Block: interacted by a player

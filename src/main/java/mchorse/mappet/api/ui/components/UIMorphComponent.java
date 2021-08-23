@@ -307,26 +307,6 @@ public class UIMorphComponent extends UIComponent
         edit.setVisible(this.editing);
         renderer.add(edit);
 
-        if (Mappet.scriptUIDebug.get())
-        {
-            renderer.context(() -> new GuiSimpleContextMenu(mc).action(Icons.SEARCH, IKey.lang("mappet.gui.context.copy_camera"), () ->
-            {
-                StringBuilder builder = new StringBuilder();
-                DecimalFormat formatter = GuiTrackpadElement.FORMAT;
-
-                builder.append(".position(");
-                builder.append(formatter.format(renderer.pos.x)).append(", ");
-                builder.append(formatter.format(renderer.pos.y)).append(", ");
-                builder.append(formatter.format(renderer.pos.z)).append(").rotation(");
-                builder.append(formatter.format(renderer.pitch)).append(", ");
-                builder.append(formatter.format(renderer.yaw)).append(").distance(");
-                builder.append(formatter.format(renderer.scale)).append(").fov(");
-                builder.append(formatter.format(renderer.fov)).append(")");
-
-                GuiScreen.setClipboardString(builder.toString());
-            }));
-        }
-
         if (this.pos != null)
         {
             renderer.setPosition(this.pos.x, this.pos.y, this.pos.z);
@@ -341,6 +321,42 @@ public class UIMorphComponent extends UIComponent
         renderer.fov = this.fov;
 
         return this.apply(renderer, context);
+    }
+
+    @Override
+    protected void resetContext(GuiElement element, UIContext context)
+    {
+        GuiMorphRenderer renderer = (GuiMorphRenderer) element;
+
+        renderer.context(() -> new GuiSimpleContextMenu(Minecraft.getMinecraft())
+            .action(Icons.SEARCH, IKey.lang("mappet.gui.context.copy_camera"), () -> this.copyCameraProperties(renderer)));
+    }
+
+    @Override
+    protected void createContext(GuiSimpleContextMenu menu, GuiElement element, UIContext context)
+    {
+        if (Mappet.scriptUIDebug.get())
+        {
+            GuiMorphRenderer renderer = (GuiMorphRenderer) element;
+
+            menu.action(Icons.SEARCH, IKey.lang("mappet.gui.context.copy_camera"), () -> this.copyCameraProperties(renderer));
+        }
+
+        super.createContext(menu, element, context);
+    }
+
+    private void copyCameraProperties(GuiMorphRenderer renderer)
+    {
+        DecimalFormat formatter = GuiTrackpadElement.FORMAT;
+
+        GuiScreen.setClipboardString(".position(" +
+            formatter.format(renderer.pos.x) + ", " +
+            formatter.format(renderer.pos.y) + ", " +
+            formatter.format(renderer.pos.z) + ").rotation(" +
+            formatter.format(renderer.pitch) + ", " +
+            formatter.format(renderer.yaw) + ").distance(" +
+            formatter.format(renderer.scale) + ").fov(" +
+            formatter.format(renderer.fov) + ")");
     }
 
     @Override
