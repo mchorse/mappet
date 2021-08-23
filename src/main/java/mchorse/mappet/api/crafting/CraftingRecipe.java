@@ -180,7 +180,7 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
 
         if (tag.hasKey("Visible"))
         {
-            this.visible.deserializeNBT(tag.getTag("Condition"));
+            this.visible.deserializeNBT(tag.getTag("Visible"));
         }
 
         if (tag.hasKey("Trigger"))
