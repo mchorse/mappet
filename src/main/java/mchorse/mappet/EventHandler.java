@@ -12,6 +12,7 @@ import mchorse.mappet.capabilities.character.CharacterProvider;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.client.KeyboardHandler;
 import mchorse.mappet.client.RenderingHandler;
+import mchorse.mappet.client.morphs.WorldMorph;
 import mchorse.mappet.commands.data.CommandDataClear;
 import mchorse.mappet.events.StateChangedEvent;
 import mchorse.mappet.network.Dispatcher;
@@ -557,9 +558,7 @@ public class EventHandler
     @SideOnly(Side.CLIENT)
     private void onPlayerTickClient(TickEvent.PlayerTickEvent event)
     {
-        HUDStage stage = RenderingHandler.currentStage == null ? RenderingHandler.stage : RenderingHandler.currentStage;
-
-        stage.update(stage == RenderingHandler.stage);
+        RenderingHandler.update();
 
         if (!RegisterHandler.sentSkin)
         {

@@ -16,13 +16,10 @@ import mchorse.mappet.client.KeyboardHandler;
 import mchorse.mappet.client.RenderingHandler;
 import mchorse.mappet.entities.EntityNpc;
 import mchorse.mappet.items.ItemNpcTool;
-import mchorse.mappet.network.Dispatcher;
-import mchorse.mappet.network.common.scripts.PacketPlayerSkin;
 import mchorse.mappet.tile.TileEmitter;
 import mchorse.mappet.tile.TileRegion;
 import mchorse.mappet.tile.TileTrigger;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -79,8 +76,7 @@ public class RegisterHandler
         Mappet.huds = null;
 
         KeyboardHandler.hotkeys.clear();
-        RenderingHandler.stage.reset();
-        RenderingHandler.currentStage = null;
+        RenderingHandler.reset();
     }
 
     @SubscribeEvent
