@@ -95,28 +95,55 @@ public class WorldMorph implements IMessage
         else
         {
             this.dummy.setPosition(entity.posX + this.x, entity.posY + this.y, entity.posZ + this.z);
-            this.dummy.prevPosX = entity.prevPosX + this.x;
-            this.dummy.prevPosY = entity.prevPosY + this.y;
-            this.dummy.prevPosZ = entity.prevPosZ + this.z;
-            this.dummy.lastTickPosX = entity.lastTickPosX + this.x;
-            this.dummy.lastTickPosY = entity.lastTickPosY + this.y;
-            this.dummy.lastTickPosZ = entity.lastTickPosZ + this.z;
 
-            if (this.rotate)
+            if (entity.isDead)
             {
-                this.dummy.rotationYaw = entity.rotationYaw;
-                this.dummy.rotationPitch = entity.rotationPitch;
-                this.dummy.prevRotationYaw = entity.prevRotationYaw;
-                this.dummy.prevRotationPitch = entity.prevRotationPitch;
+                this.dummy.prevPosX = this.dummy.posX;
+                this.dummy.prevPosY = this.dummy.posY;
+                this.dummy.prevPosZ = this.dummy.posZ;
+                this.dummy.lastTickPosX = this.dummy.posX;
+                this.dummy.lastTickPosY = this.dummy.posY;
+                this.dummy.lastTickPosZ = this.dummy.posZ;
 
-                if (entity instanceof EntityLivingBase)
+                if (this.rotate)
                 {
-                    EntityLivingBase livingBase = (EntityLivingBase) entity;
+                    this.dummy.rotationYaw = this.dummy.prevRotationYaw = entity.rotationYaw;
+                    this.dummy.rotationPitch = this.dummy.prevRotationPitch = entity.rotationPitch;
 
-                    this.dummy.rotationYawHead = livingBase.rotationYawHead;
-                    this.dummy.renderYawOffset = livingBase.renderYawOffset;
-                    this.dummy.prevRotationYawHead = livingBase.prevRotationYawHead;
-                    this.dummy.prevRenderYawOffset = livingBase.prevRenderYawOffset;
+                    if (entity instanceof EntityLivingBase)
+                    {
+                        EntityLivingBase livingBase = (EntityLivingBase) entity;
+
+                        this.dummy.rotationYawHead = this.dummy.prevRotationYawHead = livingBase.rotationYawHead;
+                        this.dummy.renderYawOffset = this.dummy.prevRenderYawOffset = livingBase.renderYawOffset;
+                    }
+                }
+            }
+            else
+            {
+                this.dummy.prevPosX = entity.prevPosX + this.x;
+                this.dummy.prevPosY = entity.prevPosY + this.y;
+                this.dummy.prevPosZ = entity.prevPosZ + this.z;
+                this.dummy.lastTickPosX = entity.lastTickPosX + this.x;
+                this.dummy.lastTickPosY = entity.lastTickPosY + this.y;
+                this.dummy.lastTickPosZ = entity.lastTickPosZ + this.z;
+
+                if (this.rotate)
+                {
+                    this.dummy.rotationYaw = entity.rotationYaw;
+                    this.dummy.rotationPitch = entity.rotationPitch;
+                    this.dummy.prevRotationYaw = entity.prevRotationYaw;
+                    this.dummy.prevRotationPitch = entity.prevRotationPitch;
+
+                    if (entity instanceof EntityLivingBase)
+                    {
+                        EntityLivingBase livingBase = (EntityLivingBase) entity;
+
+                        this.dummy.rotationYawHead = livingBase.rotationYawHead;
+                        this.dummy.renderYawOffset = livingBase.renderYawOffset;
+                        this.dummy.prevRotationYawHead = livingBase.prevRotationYawHead;
+                        this.dummy.prevRenderYawOffset = livingBase.prevRenderYawOffset;
+                    }
                 }
             }
         }

@@ -12,9 +12,11 @@ import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.mappet.api.states.States;
+import mchorse.mappet.client.morphs.WorldMorph;
 import mchorse.mappet.entities.EntityNpc;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.scripts.PacketEntityRotations;
+import mchorse.mappet.network.common.scripts.PacketWorldMorph;
 import mchorse.mappet.utils.EntityUtils;
 import mchorse.mclib.utils.RayTracing;
 import mchorse.metamorph.api.morphs.AbstractMorph;
@@ -530,5 +532,33 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     public boolean setMorph(AbstractMorph morph)
     {
         return false;
+    }
+
+    @Override
+    public void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, boolean rotate)
+    {
+        if (morph == null)
+        {
+            return;
+        }
+
+        WorldMorph worldMorph = new WorldMorph();
+
+        worldMorph.morph = morph;
+        worldMorph.expiration = expiration;
+        worldMorph.rotate = rotate;
+        worldMorph.x = x;
+        worldMorph.y = y;
+        worldMorph.z = z;
+        worldMorph.entity = this.entity;
+
+        PacketWorldMorph message = new PacketWorldMorph(worldMorph);
+
+        Dispatcher.sendToTracked(this.entity, message);
+
+        if (this.isPlayer())
+        {
+            Dispatcher.sendTo(message, (EntityPlayerMP) this.entity);
+        }
     }
 }

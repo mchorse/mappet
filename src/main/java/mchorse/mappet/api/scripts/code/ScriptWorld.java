@@ -15,8 +15,13 @@ import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
+import mchorse.mappet.client.morphs.WorldMorph;
 import mchorse.mappet.entities.EntityNpc;
+import mchorse.mappet.network.Dispatcher;
+import mchorse.mappet.network.common.scripts.PacketWorldMorph;
 import mchorse.mappet.utils.WorldUtils;
+import mchorse.mclib.utils.MathUtils;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -30,6 +35,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -312,5 +318,29 @@ public class ScriptWorld implements IScriptWorld
         this.world.spawnEntity(item);
 
         return ScriptEntity.create(item);
+    }
+
+    /* Mappet stuff */
+
+    @Override
+    public void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, int range)
+    {
+        if (morph == null)
+        {
+            return;
+        }
+
+        WorldMorph worldMorph = new WorldMorph();
+
+        worldMorph.morph = morph;
+        worldMorph.expiration = expiration;
+        worldMorph.x = x;
+        worldMorph.y = y;
+        worldMorph.z = z;
+
+        int dimension = this.world.provider.getDimension();
+        NetworkRegistry.TargetPoint point = new NetworkRegistry.TargetPoint(dimension, x, y, z, MathUtils.clamp(range, 1, 256));
+
+        Dispatcher.DISPATCHER.get().sendToAllAround(new PacketWorldMorph(worldMorph), point);
     }
 }

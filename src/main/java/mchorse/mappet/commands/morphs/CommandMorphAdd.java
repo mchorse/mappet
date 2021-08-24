@@ -4,7 +4,6 @@ import joptsimple.internal.Strings;
 import mchorse.mappet.client.morphs.WorldMorph;
 import mchorse.mappet.commands.huds.CommandHudBase;
 import mchorse.mappet.network.Dispatcher;
-import mchorse.mappet.network.common.huds.PacketHUDMorph;
 import mchorse.mappet.network.common.scripts.PacketWorldMorph;
 import mchorse.mclib.commands.SubCommandBase;
 import mchorse.metamorph.api.MorphManager;
@@ -13,10 +12,8 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.JsonToNBT;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 

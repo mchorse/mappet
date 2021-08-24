@@ -566,4 +566,28 @@ public interface IScriptEntity
      * @return if entity's morph was changed successfully.
      */
     public boolean setMorph(AbstractMorph morph);
+
+    /**
+     * Display a world morph to all players that see this entity (including themselves).
+     */
+    public default void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z)
+    {
+        this.displayMorph(morph, expiration, x, y, z, true);
+    }
+
+    /**
+     * Display a world morph to all players that see this entity (including themselves).
+     *
+     * <pre>{@code
+     *    var s = c.getSubject();
+     *    var morph = mappet.createMorph('{Name:"item"}');
+     *
+     *    s.displayMorph(morph, 100, 0, s.getHeight() + 0.5, 0, true);
+     * }</pre>
+     *
+     * @param morph Morph that will be displayed (if <code>null</code>, then it won't send anything).
+     * @param expiration For how many ticks will this displayed morph exist on the client side.
+     * @param rotate Whether attached world morph should replicate entity's rotation (i.e. copy head rotation).
+     */
+    public void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, boolean rotate);
 }

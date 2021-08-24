@@ -7,6 +7,7 @@ import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 
@@ -393,4 +394,33 @@ public interface IScriptWorld
      * }</pre>
      */
     public IScriptEntity dropItemStack(IScriptItemStack stack, double x, double y, double z, double mx, double my, double mz);
+
+    /* Mappet stuff */
+
+    /**
+     * Display a world morph to all players around 64 blocks away from given point.
+     */
+    public default void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z)
+    {
+        this.displayMorph(morph, expiration, x, y, z, 64);
+    }
+
+    /**
+     * Display a world morph to all players at given point.
+     *
+     * <pre>{@code
+     *    var s = c.getSubject();
+     *    var morph = mappet.createMorph('{Name:"item"}');
+     *    var pos = s.getPosition();
+     *
+     *    // This will display a diamond hoe morph on top of the
+     *    // player's head (but it won't track player's movement)
+     *    c.getWorld().displayMorph(morph, 100, pos.x, pos.y + s.getHeight() + 0.5, pos.z);
+     * }</pre>
+     *
+     * @param morph Morph that will be displayed (if <code>null</code>, then it won't send anything).
+     * @param expiration For how many ticks will this displayed morph exist on the client side.
+     * @param range How many blocks far away will this send to players around given point.
+     */
+    public void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, int range);
 }
