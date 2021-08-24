@@ -28,6 +28,9 @@ mappet.error.script.error=§fScript by ID §7%s§f failed to execute. An error a
 
 mappet.error.hud.missing=§fHUD scene by ID §7%s§f is missing!
 
+mappet.error.morph.nbt=§fGiven NBT code has a syntax error!
+mappet.error.morph.unrecognized=§fGiven NBT code of a morph doesn't exist in the morph system! The NBT code:\n\n%s 
+
 # Info
 mappet.info.states.clear=§fValue by key §7%s§f was removed from states.
 mappet.info.states.clear_all=§fAll values were removed from §7%s§f's states.
@@ -104,6 +107,9 @@ mappet.commands.mp.hud.help=HUD scenes management command.
 mappet.commands.mp.hud.close=Closes an HUD scene by §7[id]§r of all players found by §7<target>§r selector. If player(s) didn't have such HUD scene by §7[id]§r nothing will happen. If §7[id]§r was omitted, then all HUD scenes will be removed from players by §7<target>§r selector.
 mappet.commands.mp.hud.morph=Changes the morph in player's scene by §7<id>§r for all players matching §7<target>§r selector at given §7<index>§r in the scene with a morph constructed from §7<nbt>§r. If the player won't have the scene, or a HUD morph at given §7<index>§r, nothing will happen.
 mappet.commands.mp.hud.setup=Adds an HUD scene by §7<id>§r which will display to all players found by §7<target>§r selector. If scene by given §7<id>§r was already added earlier, and didn't expire, then it will be started over again.
+
+mappet.commands.mp.morph.help=World morph management command.
+mappet.commands.mp.morph.add=Displays a §7<morph>§r in the world for §7<expiration>§r ticks.\n\nIf §7<target>§r is §7~§r, then it will be displayed in the world statically (so §7<x>§r, §7<y>§r and §7<z>§r must be absolute world coordinates where the morph will be displayed). §7<rotate>§r isn't used with this mode!\n\nIf §7<target>§r is a target selector, then the morph will be attached to entities found by the selector. §7<x>§r, §7<y>§r and §7<z>§r is a relative shift from the bottom center of entity's hit box. §7<rotate>§r is a boolean (§7true§r or §7false§r) that toggles whether world morph should follow entity's rotation.
 
 # Config
 

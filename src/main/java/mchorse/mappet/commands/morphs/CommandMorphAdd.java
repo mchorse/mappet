@@ -58,12 +58,11 @@ public class CommandMorphAdd extends CommandHudBase
         double x = CommandBase.parseDouble(args[3]);
         double y = CommandBase.parseDouble(args[4]);
         double z = CommandBase.parseDouble(args[5]);
+        String nbt = Strings.join(SubCommandBase.dropFirstArguments(args, 6), " ");
         AbstractMorph morph;
 
         try
         {
-            String nbt = Strings.join(SubCommandBase.dropFirstArguments(args, 6), " ");
-
             morph = MorphManager.INSTANCE.morphFromNBT(JsonToNBT.getTagFromJson(nbt));
         }
         catch (Exception e)
@@ -73,7 +72,7 @@ public class CommandMorphAdd extends CommandHudBase
 
         if (morph == null)
         {
-            return;
+            throw new CommandException("morph.unrecognized", nbt);
         }
 
         WorldMorph worldMorph = new WorldMorph();
