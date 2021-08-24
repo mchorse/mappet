@@ -1,5 +1,7 @@
 package mchorse.mappet.api.scripts.code.entities;
 
+import mchorse.mappet.Mappet;
+import mchorse.mappet.api.huds.HUDScene;
 import mchorse.mappet.api.scripts.code.items.ScriptInventory;
 import mchorse.mappet.api.scripts.code.mappet.MappetQuests;
 import mchorse.mappet.api.scripts.code.mappet.MappetUIBuilder;
@@ -10,18 +12,26 @@ import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIContext;
 import mchorse.mappet.api.scripts.user.nbt.INBT;
+import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.mappet.api.ui.UI;
 import mchorse.mappet.api.ui.UIContext;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.network.Dispatcher;
+import mchorse.mappet.network.common.huds.PacketHUDMorph;
+import mchorse.mappet.network.common.huds.PacketHUDScene;
 import mchorse.mappet.network.common.scripts.PacketSound;
 import mchorse.mappet.network.common.ui.PacketCloseUI;
 import mchorse.mappet.network.common.ui.PacketUI;
 import mchorse.mappet.utils.WorldUtils;
+import mchorse.mclib.commands.SubCommandBase;
 import mchorse.metamorph.api.MorphAPI;
+import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import net.minecraft.command.CommandBase;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.SPacketAnimation;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.network.play.server.SPacketTitle;
@@ -286,5 +296,53 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
         UIContext context = character.getUIContext();
 
         return context == null ? null : new MappetUIContext(context);
+    }
+
+    /* HUD scenes API */
+
+    @Override
+    public boolean setupHUD(String id)
+    {
+        HUDScene scene = Mappet.huds.load(id);
+
+        if (scene != null)
+        {
+            Dispatcher.sendTo(new PacketHUDScene(scene.getId(), scene.serializeNBT()), this.entity);
+        }
+
+        return scene != null;
+    }
+
+    @Override
+    public void changeHUDMorph(String id, int index, AbstractMorph morph)
+    {
+        if (morph == null)
+        {
+            return;
+        }
+
+        this.changeHUDMorph(id, index, MorphUtils.toNBT(morph));
+    }
+
+    @Override
+    public void changeHUDMorph(String id, int index, INBTCompound morph)
+    {
+        if (morph == null)
+        {
+            return;
+        }
+
+        this.changeHUDMorph(id, index, morph.getNBTTagComound());
+    }
+
+    private void changeHUDMorph(String id, int index, NBTTagCompound tag)
+    {
+        Dispatcher.sendTo(new PacketHUDMorph(id, index, tag), this.entity);
+    }
+
+    @Override
+    public void closeHUD(String id)
+    {
+        Dispatcher.sendTo(new PacketHUDScene(id == null ? "" : id, null), this.entity);
     }
 }

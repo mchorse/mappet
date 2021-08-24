@@ -5,6 +5,8 @@ import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIContext;
 import mchorse.mappet.api.scripts.user.nbt.INBT;
+import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 /**
@@ -397,4 +399,45 @@ public interface IScriptPlayer extends IScriptEntity
      * for code examples.
      */
     public IMappetUIContext getUIContext();
+
+    /* HUD scenes API */
+
+    /**
+     * Setup (initiate) an HUD scene for this player.
+     *
+     * @param id HUD scene's ID/filename.
+     */
+    public boolean setupHUD(String id);
+
+    /**
+     * Change a morph in a HUD scene at given index with given morph.
+     *
+     * @param id HUD scene's ID/filename.
+     * @param index Index of the morph in the scene that should be changed (0 is the first, and so on).
+     */
+    public void changeHUDMorph(String id, int index, AbstractMorph morph);
+
+    /**
+     * Change a morph in a HUD scene at given index with a morph described by given NBT data.
+     *
+     * @param id HUD scene's ID/filename.
+     * @param index Index of the morph in the scene that should be changed (0 is the first, and so on).
+     * @param morph NBT data of the morph.
+     */
+    public void changeHUDMorph(String id, int index, INBTCompound morph);
+
+    /**
+     * Close all HUD scenes.
+     */
+    public default void closeAllHUD()
+    {
+        this.closeHUD(null);
+    }
+
+    /**
+     * Close specific HUD scene for this player.
+     *
+     * @param id HUD scene's ID/filename.
+     */
+    public void closeHUD(String id);
 }
