@@ -72,7 +72,7 @@ public class Region implements INBTSerializable<NBTTagCompound>
         return false;
     }
 
-    public void triggerEnter(EntityPlayer player)
+    public void triggerEnter(EntityPlayer player, BlockPos pos)
     {
         if (this.writeState && !this.state.isEmpty())
         {
@@ -88,10 +88,13 @@ public class Region implements INBTSerializable<NBTTagCompound>
             }
         }
 
-        this.onEnter.trigger(player);
+        this.onEnter.trigger(new DataContext(player)
+            .set("x", pos.getX())
+            .set("y", pos.getY())
+            .set("z", pos.getZ()));
     }
 
-    public void triggerExit(EntityPlayer player)
+    public void triggerExit(EntityPlayer player, BlockPos pos)
     {
         if (this.writeState && !this.state.isEmpty())
         {
@@ -103,7 +106,10 @@ public class Region implements INBTSerializable<NBTTagCompound>
             }
         }
 
-        this.onExit.trigger(player);
+        this.onExit.trigger(new DataContext(player)
+            .set("x", pos.getX())
+            .set("y", pos.getY())
+            .set("z", pos.getZ()));
     }
 
     @Override

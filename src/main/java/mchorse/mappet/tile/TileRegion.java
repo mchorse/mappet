@@ -80,7 +80,7 @@ public class TileRegion extends TileEntity implements ITickable
 
                 if (player != null)
                 {
-                    this.region.triggerEnter(player);
+                    this.region.triggerEnter(player, this.getPos());
                 }
 
                 it.remove();
@@ -123,7 +123,7 @@ public class TileRegion extends TileEntity implements ITickable
                     }
                     else
                     {
-                        this.region.triggerEnter(player);
+                        this.region.triggerEnter(player, this.getPos());
                     }
 
                     this.players.add(id);
@@ -137,7 +137,7 @@ public class TileRegion extends TileEntity implements ITickable
                 }
                 else
                 {
-                    this.region.triggerExit(player);
+                    this.region.triggerExit(player, this.getPos());
                 }
 
                 this.players.remove(id);

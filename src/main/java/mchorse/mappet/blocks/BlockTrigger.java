@@ -2,6 +2,7 @@ package mchorse.mappet.blocks;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.events.EventContext;
+import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.blocks.PacketEditTrigger;
 import mchorse.mappet.tile.TileTrigger;
@@ -70,7 +71,10 @@ public class BlockTrigger extends Block implements ITileEntityProvider
 
             if (tile instanceof TileTrigger)
             {
-                ((TileTrigger) tile).leftClick.trigger(playerIn);
+                ((TileTrigger) tile).leftClick.trigger(new DataContext(playerIn)
+                    .set("x", pos.getX())
+                    .set("y", pos.getY())
+                    .set("z", pos.getZ()));
             }
         }
     }
@@ -95,7 +99,10 @@ public class BlockTrigger extends Block implements ITileEntityProvider
             }
             else
             {
-                trigger.rightClick.trigger(playerIn);
+                trigger.rightClick.trigger(new DataContext(playerIn)
+                    .set("x", pos.getX())
+                    .set("y", pos.getY())
+                    .set("z", pos.getZ()));
             }
         }
 
