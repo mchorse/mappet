@@ -7,7 +7,6 @@ import mchorse.mappet.api.ui.utils.UIContextItem;
 import mchorse.mappet.api.ui.utils.UIKeybind;
 import mchorse.mappet.api.ui.utils.UIUnit;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
-import mchorse.mclib.client.gui.framework.elements.context.GuiContextMenu;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.utils.Icon;
 import mchorse.mclib.client.gui.utils.IconRegistry;
@@ -32,7 +31,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Supplier;
 
 /**
  * Base UI component.
@@ -755,11 +753,13 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
         }
     }
 
+    @SideOnly(Side.CLIENT)
     protected void resetContext(GuiElement element, UIContext context)
     {
         element.context(null);
     }
 
+    @SideOnly(Side.CLIENT)
     protected void createContext(GuiSimpleContextMenu menu, GuiElement element, UIContext context)
     {
         for (UIContextItem item : this.context)
