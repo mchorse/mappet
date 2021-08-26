@@ -21,6 +21,8 @@ public class WorldMorph implements IMessage
     public double x;
     public double y;
     public double z;
+    public float yaw;
+    public float pitch;
     public Entity entity;
     public int expiration;
     public boolean rotate;
@@ -91,6 +93,10 @@ public class WorldMorph implements IMessage
             this.dummy.lastTickPosX = this.dummy.posX;
             this.dummy.lastTickPosY = this.dummy.posY;
             this.dummy.lastTickPosZ = this.dummy.posZ;
+            this.dummy.rotationYaw = this.dummy.prevRotationYaw = this.yaw;
+            this.dummy.rotationPitch = this.dummy.prevRotationPitch = this.pitch;
+            this.dummy.rotationYawHead = this.dummy.prevRotationYawHead = this.yaw;
+            this.dummy.renderYawOffset = this.dummy.prevRenderYawOffset = this.yaw;
         }
         else
         {
@@ -107,15 +113,15 @@ public class WorldMorph implements IMessage
 
                 if (this.rotate)
                 {
-                    this.dummy.rotationYaw = this.dummy.prevRotationYaw = entity.rotationYaw;
-                    this.dummy.rotationPitch = this.dummy.prevRotationPitch = entity.rotationPitch;
+                    this.dummy.rotationYaw = this.dummy.prevRotationYaw = entity.rotationYaw + this.yaw;
+                    this.dummy.rotationPitch = this.dummy.prevRotationPitch = entity.rotationPitch + this.pitch;
 
                     if (entity instanceof EntityLivingBase)
                     {
                         EntityLivingBase livingBase = (EntityLivingBase) entity;
 
-                        this.dummy.rotationYawHead = this.dummy.prevRotationYawHead = livingBase.rotationYawHead;
-                        this.dummy.renderYawOffset = this.dummy.prevRenderYawOffset = livingBase.renderYawOffset;
+                        this.dummy.rotationYawHead = this.dummy.prevRotationYawHead = livingBase.rotationYawHead + this.yaw;
+                        this.dummy.renderYawOffset = this.dummy.prevRenderYawOffset = livingBase.renderYawOffset + this.yaw;
                     }
                 }
             }
@@ -130,19 +136,19 @@ public class WorldMorph implements IMessage
 
                 if (this.rotate)
                 {
-                    this.dummy.rotationYaw = entity.rotationYaw;
-                    this.dummy.rotationPitch = entity.rotationPitch;
-                    this.dummy.prevRotationYaw = entity.prevRotationYaw;
-                    this.dummy.prevRotationPitch = entity.prevRotationPitch;
+                    this.dummy.rotationYaw = entity.rotationYaw + this.yaw;
+                    this.dummy.rotationPitch = entity.rotationPitch + this.pitch;
+                    this.dummy.prevRotationYaw = entity.prevRotationYaw + this.yaw;
+                    this.dummy.prevRotationPitch = entity.prevRotationPitch + this.pitch;
 
                     if (entity instanceof EntityLivingBase)
                     {
                         EntityLivingBase livingBase = (EntityLivingBase) entity;
 
-                        this.dummy.rotationYawHead = livingBase.rotationYawHead;
-                        this.dummy.renderYawOffset = livingBase.renderYawOffset;
-                        this.dummy.prevRotationYawHead = livingBase.prevRotationYawHead;
-                        this.dummy.prevRenderYawOffset = livingBase.prevRenderYawOffset;
+                        this.dummy.rotationYawHead = livingBase.rotationYawHead + this.yaw;
+                        this.dummy.renderYawOffset = livingBase.renderYawOffset + this.yaw;
+                        this.dummy.prevRotationYawHead = livingBase.prevRotationYawHead + this.yaw;
+                        this.dummy.prevRenderYawOffset = livingBase.prevRenderYawOffset + this.yaw;
                     }
                 }
             }
@@ -169,6 +175,8 @@ public class WorldMorph implements IMessage
         this.x = buf.readDouble();
         this.y = buf.readDouble();
         this.z = buf.readDouble();
+        this.yaw = buf.readFloat();
+        this.pitch = buf.readFloat();
         this.expiration = buf.readInt();
         this.rotate = buf.readBoolean();
         this.entityId = buf.readInt();
@@ -181,6 +189,8 @@ public class WorldMorph implements IMessage
         buf.writeDouble(this.x);
         buf.writeDouble(this.y);
         buf.writeDouble(this.z);
+        buf.writeFloat(this.yaw);
+        buf.writeFloat(this.pitch);
         buf.writeInt(this.expiration);
         buf.writeBoolean(this.rotate);
         buf.writeInt(this.entity == null ? -1 : this.entity.getEntityId());

@@ -576,7 +576,8 @@ public interface IScriptEntity
     }
 
     /**
-     * Display a world morph to all players that see this entity (including themselves).
+     * Display a world morph to all players that see this entity (including themselves) with
+     * toggleable following rotation.
      *
      * <pre>{@code
      *    var s = c.getSubject();
@@ -589,5 +590,27 @@ public interface IScriptEntity
      * @param expiration For how many ticks will this displayed morph exist on the client side.
      * @param rotate Whether attached world morph should replicate entity's rotation (i.e. copy head rotation).
      */
-    public void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, boolean rotate);
+    public default void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, boolean rotate)
+    {
+        this.displayMorph(morph, expiration, x, y, z, 0, 0, rotate);
+    }
+
+    /**
+     * Display a world morph to all players that see this entity (including themselves)
+     * toggleable following rotation and rotation offsets.
+     *
+     * <pre>{@code
+     *    var s = c.getSubject();
+     *    var morph = mappet.createMorph('{Name:"item"}');
+     *
+     *    s.displayMorph(morph, 100, 0, s.getHeight() + 0.5, 0, 180, 0, true);
+     * }</pre>
+     *
+     * @param morph Morph that will be displayed (if <code>null</code>, then it won't send anything).
+     * @param expiration For how many ticks will this displayed morph exist on the client side.
+     * @param yaw Horizontal rotation in degrees.
+     * @param pitch Vertical rotation in degrees.
+     * @param rotate Whether attached world morph should replicate entity's rotation (i.e. copy head rotation).
+     */
+    public void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, float yaw, float pitch, boolean rotate);
 }

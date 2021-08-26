@@ -323,7 +323,7 @@ public class ScriptWorld implements IScriptWorld
     /* Mappet stuff */
 
     @Override
-    public void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, int range)
+    public void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, float yaw, float pitch, int range)
     {
         if (morph == null)
         {
@@ -337,6 +337,8 @@ public class ScriptWorld implements IScriptWorld
         worldMorph.x = x;
         worldMorph.y = y;
         worldMorph.z = z;
+        worldMorph.yaw = yaw;
+        worldMorph.pitch = pitch;
 
         int dimension = this.world.provider.getDimension();
         NetworkRegistry.TargetPoint point = new NetworkRegistry.TargetPoint(dimension, x, y, z, MathUtils.clamp(range, 1, 256));

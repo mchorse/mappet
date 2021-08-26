@@ -535,7 +535,7 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     }
 
     @Override
-    public void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, boolean rotate)
+    public void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, float yaw, float pitch, boolean rotate)
     {
         if (morph == null)
         {
@@ -550,6 +550,8 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
         worldMorph.x = x;
         worldMorph.y = y;
         worldMorph.z = z;
+        worldMorph.yaw = yaw;
+        worldMorph.pitch = pitch;
         worldMorph.entity = this.entity;
 
         PacketWorldMorph message = new PacketWorldMorph(worldMorph);

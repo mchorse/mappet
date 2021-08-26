@@ -402,7 +402,7 @@ public interface IScriptWorld
      */
     public default void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z)
     {
-        this.displayMorph(morph, expiration, x, y, z, 64);
+        this.displayMorph(morph, expiration, x, y, z, 0, 0);
     }
 
     /**
@@ -415,12 +415,51 @@ public interface IScriptWorld
      *
      *    // This will display a diamond hoe morph on top of the
      *    // player's head (but it won't track player's movement)
-     *    c.getWorld().displayMorph(morph, 100, pos.x, pos.y + s.getHeight() + 0.5, pos.z);
+     *    c.getWorld().displayMorph(morph, 100, pos.x, pos.y + s.getHeight() + 0.5, pos.z, 64);
      * }</pre>
      *
      * @param morph Morph that will be displayed (if <code>null</code>, then it won't send anything).
      * @param expiration For how many ticks will this displayed morph exist on the client side.
      * @param range How many blocks far away will this send to players around given point.
      */
-    public void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, int range);
+    public default void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, int range)
+    {
+        this.displayMorph(morph, expiration, x, y, z, 0, 0, range);
+    }
+
+    /**
+     * Display a world morph to all players at given point with rotation.
+     *
+     * <pre>{@code
+     *    var s = c.getSubject();
+     *    var morph = mappet.createMorph('{Name:"item"}');
+     *    var pos = s.getPosition();
+     *
+     *    // This will display a diamond hoe morph on top of the
+     *    // player's head (but it won't track player's movement)
+     *    // oriented at west
+     *    c.getWorld().displayMorph(morph, 100, pos.x, pos.y + s.getHeight() + 0.5, pos.z, 90, 0);
+     * }</pre>
+     *
+     * @param morph Morph that will be displayed (if <code>null</code>, then it won't send anything).
+     * @param expiration For how many ticks will this displayed morph exist on the client side.
+     * @param yaw Horizontal rotation in degrees.
+     * @param pitch Vertical rotation in degrees.
+     */
+    public default void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, float yaw, float pitch)
+    {
+        this.displayMorph(morph, expiration, x, y, z, yaw, pitch, 64);
+    }
+
+    /**
+     * Display a world morph to all players at given point with rotation
+     * some blocks away in this world.
+     *
+     * @param morph Morph that will be displayed (if <code>null</code>, then it won't send anything).
+     * @param expiration For how many ticks will this displayed morph exist on the client side.
+     * @param yaw Horizontal rotation in degrees.
+     * @param pitch Vertical rotation in degrees.
+     * @param range How many blocks far away will this send to players around given point.
+     */
+    public void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, float yaw, float pitch, int range);
 }

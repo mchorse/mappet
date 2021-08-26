@@ -109,7 +109,9 @@ mappet.commands.mp.hud.morph=Changes the morph in player's scene by §7<id>§r f
 mappet.commands.mp.hud.setup=Adds an HUD scene by §7<id>§r which will display to all players found by §7<target>§r selector. If scene by given §7<id>§r was already added earlier, and didn't expire, then it will be started over again.
 
 mappet.commands.mp.morph.help=World morph management command.
-mappet.commands.mp.morph.add=Displays a §7<morph>§r in the world for §7<expiration>§r ticks.\n\nIf §7<target>§r is §7~§r, then it will be displayed in the world statically (so §7<x>§r, §7<y>§r and §7<z>§r must be absolute world coordinates where the morph will be displayed). §7<rotate>§r isn't used with this mode!\n\nIf §7<target>§r is a target selector, then the morph will be attached to entities found by the selector. §7<x>§r, §7<y>§r and §7<z>§r is a relative shift from the bottom center of entity's hit box. §7<rotate>§r is a boolean (§7true§r or §7false§r) that toggles whether world morph should follow entity's rotation.
+mappet.commands.mp.morph.add.help=Subcommand to display morph(s) in the world.
+mappet.commands.mp.morph.add.entity=Displays a §7<morph>§r in the world for §7<expiration>§r ticks attached to all entities found by §7<target>§r selector. §7<x>§r, §7<y>§r and §7<z>§r is a relative shift from the bottom center of entity's hit box. §7<rotate>§r is a boolean (§7true§r or §7false§r) that toggles whether world morph should follow entity's rotation. §7<yaw>§r and §7<pitch>§r are horizontal and vertical rotation offsets, respectively.
+mappet.commands.mp.morph.add.world=Displays a §7<morph>§r in the world for §7<expiration>§r ticks.§7<x>§r, §7<y>§r and §7<z>§r are absolute world coordinates where the morph will be displayed. §7<yaw>§r and §7<pitch>§r are horizontal and vertical rotation offsets, respectively. Relative §7~§r values are supported for §7<x>§r, §7<y>§r, §7<z>§r, §7<yaw>§r, and §7<pitch>§r arguments.
 
 # Config
 
