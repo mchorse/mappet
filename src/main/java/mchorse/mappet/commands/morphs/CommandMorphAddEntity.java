@@ -33,7 +33,7 @@ public class CommandMorphAddEntity extends MappetCommandBase
     @Override
     public String getSyntax()
     {
-        return "{l}{6}/{r}mp {8}morph add{r} {7}<target> <expiration> <rotate> <x> <y> <z> <yaw> <pitch> <morph>{r}";
+        return "{l}{6}/{r}mp {8}morph add entity{r} {7}<target> <expiration> <rotate> <x> <y> <z> <yaw> <pitch> <morph>{r}";
     }
 
     @Override

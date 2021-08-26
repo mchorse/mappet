@@ -34,7 +34,7 @@ public class CommandMorphAddWorld extends MappetCommandBase
     @Override
     public String getSyntax()
     {
-        return "{l}{6}/{r}mp {8}morph add{r} {7}<expiration> <x> <y> <z> <yaw> <pitch> <morph>{r}";
+        return "{l}{6}/{r}mp {8}morph add world{r} {7}<expiration> <x> <y> <z> <yaw> <pitch> <morph>{r}";
     }
 
     @Override
