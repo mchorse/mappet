@@ -3,10 +3,12 @@ package mchorse.mappet.api.triggers.blocks;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.Target;
 import mchorse.mappet.api.utils.TargetMode;
+import mchorse.mappet.entities.EntityNpc;
 import mchorse.metamorph.api.MorphAPI;
 import mchorse.metamorph.api.MorphManager;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -31,10 +33,12 @@ public class MorphTriggerBlock extends AbstractTriggerBlock
     @Override
     public void trigger(DataContext context)
     {
-        EntityPlayer player = this.target.getPlayer(context);
+        Entity entity = this.target.getEntity(context);
 
-        if (player != null)
+        if (entity instanceof EntityPlayerMP)
         {
+            EntityPlayerMP player = (EntityPlayerMP) entity;
+
             if (this.morph == null)
             {
                 MorphAPI.demorph(player);
@@ -43,6 +47,13 @@ public class MorphTriggerBlock extends AbstractTriggerBlock
             {
                 MorphAPI.morph(player, MorphManager.INSTANCE.morphFromNBT(this.morph), true);
             }
+        }
+        else if (entity instanceof EntityNpc)
+        {
+            EntityNpc npc = (EntityNpc) entity;
+
+            npc.setMorph(MorphManager.INSTANCE.morphFromNBT(this.morph));
+            npc.sendMorph();
         }
     }
 
