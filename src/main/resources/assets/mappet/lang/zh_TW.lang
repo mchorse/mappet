@@ -28,6 +28,9 @@ mappet.error.script.error=§fScript by ID §7%s§f failed to execute. An error a
 
 mappet.error.hud.missing=§fHUD scene by ID §7%s§f is missing!
 
+mappet.error.morph.nbt=§fGiven NBT code has a syntax error!
+mappet.error.morph.unrecognized=§fGiven NBT code of a morph doesn't exist in the morph system! The NBT code:\n\n%s 
+
 # Info
 mappet.info.states.clear=§f狀態鍵 §7%s§f 的值已從狀態中移除。
 mappet.info.states.clear_all=§f已移除狀態 §7%s§f 所有的值。
@@ -105,6 +108,11 @@ mappet.commands.mp.hud.close=Closes an HUD scene by §7[id]§r of all players fo
 mappet.commands.mp.hud.morph=Changes the morph in player's scene by §7<id>§r for all players matching §7<target>§r selector at given §7<index>§r in the scene with a morph constructed from §7<nbt>§r. If the player won't have the scene, or a HUD morph at given §7<index>§r, nothing will happen.
 mappet.commands.mp.hud.setup=Adds an HUD scene by §7<id>§r which will display to all players found by §7<target>§r selector. If scene by given §7<id>§r was already added earlier, and didn't expire, then it will be started over again.
 
+mappet.commands.mp.morph.help=World morph management command.
+mappet.commands.mp.morph.add.help=Subcommand to display morph(s) in the world.
+mappet.commands.mp.morph.add.entity=Displays a §7<morph>§r in the world for §7<expiration>§r ticks attached to all entities found by §7<target>§r selector. §7<x>§r, §7<y>§r and §7<z>§r is a relative shift from the bottom center of entity's hit box. §7<rotate>§r is a boolean (§7true§r or §7false§r) that toggles whether world morph should follow entity's rotation. §7<yaw>§r and §7<pitch>§r are horizontal and vertical rotation offsets, respectively.
+mappet.commands.mp.morph.add.world=Displays a §7<morph>§r in the world for §7<expiration>§r ticks.§7<x>§r, §7<y>§r and §7<z>§r are absolute world coordinates where the morph will be displayed. §7<yaw>§r and §7<pitch>§r are horizontal and vertical rotation offsets, respectively. Relative §7~§r values are supported for §7<x>§r, §7<y>§r, §7<z>§r, §7<yaw>§r, and §7<pitch>§r arguments.
+
 # Config
 
 mappet.config.title=Mappet
@@ -181,6 +189,7 @@ mappet.gui.block_pos.context.remove=移除方塊位置
 mappet.gui.items.context.remove=移除物品
 mappet.gui.trigger.sound=聲音事件
 mappet.gui.trigger.edit=Edit triggers...
+mappet.gui.trigger.quantity=There are %s triggers
 mappet.gui.checker.edit=編輯條件...
 mappet.gui.checker.expression=表達式
 mappet.gui.checker.toggle=切換為表達式或條件編輯器
@@ -214,25 +223,29 @@ mappet.gui.settings.title=Global triggers
 mappet.gui.settings.hotkeys=Edit trigger hotkeys...
 mappet.gui.settings.variables=Available variables
 
-mappet.gui.settings.triggers.chat=On chat message
-mappet.gui.settings.triggers.descriptions.chat=This gets triggered when a player types a message into the chat and sends it.\n\nCommands (messages starting with §7/§r) don't get triggered by this event. If you wish to implement commands, use a different prefix like §7!§r.
-mappet.gui.settings.triggers.variables.chat=§6message§r, the message (string) that was sent by the player.
+mappet.gui.settings.triggers.block_break=Block: broken by a player
+mappet.gui.settings.triggers.descriptions.block_break=This cancelable trigger gets triggered when a player breaks a block in the world.
+mappet.gui.settings.triggers.variables.block_break=§6block§r, the ID of the block that was broken (like §7minecraft:stone§r).\n§6meta§r, the meta (0..15) value of the block's state.\n§6x§r, §6y§r, and §6z§r in the world.
 
-mappet.gui.settings.triggers.break_block=On block break
-mappet.gui.settings.triggers.descriptions.break_block=This cancelable trigger gets triggered when a player breaks a block in the world.
-mappet.gui.settings.triggers.variables.break_block=§6block§r, the ID of the block that was broken (like §7minecraft:stone§r).\n§6meta§r, the meta (0..15) value of the block's state.\n§6x§r, §6y§r, and §6z§r in the world.
+mappet.gui.settings.triggers.block_place=Block: placed by a player
+mappet.gui.settings.triggers.descriptions.block_place=This cancelable trigger gets triggered when a player places a block in the world.
+mappet.gui.settings.triggers.variables.block_place=§6block§r, the ID of the block that was placed (like §7minecraft:stone§r).\n§6meta§r, the meta (0..15) value of the block's state.\n§6x§r, §6y§r, and §6z§r in the world.
 
-mappet.gui.settings.triggers.place_block=On block place
-mappet.gui.settings.triggers.descriptions.place_block=This cancelable trigger gets triggered when a player places a block in the world.
-mappet.gui.settings.triggers.variables.place_block=§6block§r, the ID of the block that was placed (like §7minecraft:stone§r).\n§6meta§r, the meta (0..15) value of the block's state.\n§6x§r, §6y§r, and §6z§r in the world.
+mappet.gui.settings.triggers.block_click=Block: clicked by a player
+mappet.gui.settings.triggers.descriptions.block_click=This cancelable trigger gets triggered when a player clicks (with left mouse button) a block in the world.\n\n§lImportant§r: this trigger only works in survival mode!
+mappet.gui.settings.triggers.variables.block_click=§6x§r, §6y§r, and §6z§r in the world.\n§6hand§r, the hand that interacted with the block: §7main§r or §7off§r.
 
-mappet.gui.settings.triggers.interact_block=Block: interacted by a player
-mappet.gui.settings.triggers.descriptions.interact_block=This cancelable trigger gets triggered when a player interacts with a block (by right clicking it) in the world. 
-mappet.gui.settings.triggers.variables.interact_block=§6x§r, §6y§r, and §6z§r in the world.\n§6hand§r, the hand that interacted with the block: §7main§r or §7off§r.
+mappet.gui.settings.triggers.block_interact=Block: interacted by a player
+mappet.gui.settings.triggers.descriptions.block_interact=This cancelable trigger gets triggered when a player interacts with a block (by right clicking it) in the world. 
+mappet.gui.settings.triggers.variables.block_interact=§6x§r, §6y§r, and §6z§r in the world.\n§6hand§r, the hand that interacted with the block: §7main§r or §7off§r.
 
-mappet.gui.settings.triggers.damage_entity=On entity hit
-mappet.gui.settings.triggers.descriptions.damage_entity=This cancelable trigger gets triggered when a mob/a player gets hurt (damaged).
-mappet.gui.settings.triggers.variables.damage_entity=§6damage§r, how many HP this mob/player took of damage.
+mappet.gui.settings.triggers.entity_damaged=Entity: hurt
+mappet.gui.settings.triggers.descriptions.entity_damaged=This cancelable trigger gets triggered when a mob/a player gets hurt (damaged).
+mappet.gui.settings.triggers.variables.entity_damaged=§6damage§r, how many HP this mob/player took of damage.
+
+mappet.gui.settings.triggers.entity_death=Entity: death
+mappet.gui.settings.triggers.descriptions.entity_death=This gets triggered when a mob dies.
+mappet.gui.settings.triggers.variables.entity_death=§7N/A§r
 
 mappet.gui.settings.triggers.server_load=On server load
 mappet.gui.settings.triggers.descriptions.server_load=This gets triggered after server gets booted up, but world(s) aren't loaded yet.
@@ -241,6 +254,10 @@ mappet.gui.settings.triggers.variables.server_load=§7N/A§r
 mappet.gui.settings.triggers.server_tick=On server tick
 mappet.gui.settings.triggers.descriptions.server_tick=This gets triggered when server ticks (i.e. §720§r times a second).\n\nProTip: use frequency option of triggers to limit how many times does a script or event gets triggered. 
 mappet.gui.settings.triggers.variables.server_tick=§7N/A§r
+
+mappet.gui.settings.triggers.player_chat=Player: chat message
+mappet.gui.settings.triggers.descriptions.player_chat=This gets triggered when a player types a message into the chat and sends it.\n\nCommands (messages starting with §7/§r) don't get triggered by this event. If you wish to implement commands, use a different prefix like §7!§r.
+mappet.gui.settings.triggers.variables.player_chat=§6message§r, the message (string) that was sent by the player.
 
 mappet.gui.settings.triggers.player_login=On player log in
 mappet.gui.settings.triggers.descriptions.player_login=This gets triggered when player logs onto the server.
@@ -257,6 +274,10 @@ mappet.gui.settings.triggers.variables.player_rmb=§7N/A§r
 mappet.gui.settings.triggers.player_death=Player: death
 mappet.gui.settings.triggers.descriptions.player_death=This cancelable trigger gets triggered when a player dies.\n\nProTip: if you want to cancel the death, make sure to give some health to the player, or otherwise the player will end up in eternal dying cycle.
 mappet.gui.settings.triggers.variables.player_death=§7N/A§r
+
+mappet.gui.settings.triggers.player_respawn=Player: respawn
+mappet.gui.settings.triggers.descriptions.player_respawn=This gets triggered when a player respawns. 
+mappet.gui.settings.triggers.variables.player_respawn=§7N/A§r
 
 mappet.gui.settings.triggers.player_item_pickup=Player: picked up an item
 mappet.gui.settings.triggers.descriptions.player_item_pickup=This cancelable trigger gets triggered when a player picks up an item in the world.
@@ -366,6 +387,7 @@ mappet.gui.nodes.event.timer=計時器
 mappet.gui.nodes.event.ticks=%s ticks
 mappet.gui.nodes.event.subject=主對象(Subject)
 mappet.gui.nodes.event.data=Custom data
+mappet.gui.nodes.event.data_tooltip=Here you can provide some additional data by inputting an NBT tag compound (something like §7{x:10}§r)
 mappet.gui.nodes.event.cancel=Cancel
 mappet.gui.nodes.event.cancel_tooltip=Use cancel of any of the triggers as a result of the node's execution
 mappet.gui.nodes.item.take=Take %s
