@@ -40,7 +40,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 
 import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
 {
@@ -51,6 +53,11 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
     public GuiTextEditor code;
     public GuiRepl repl;
     public GuiToggleElement unique;
+
+    /**
+     * A map of last remembered vertical scrolled within other scripts
+     */
+    private Map<String, Integer> lastScrolls = new HashMap<String, Integer>();
 
     /* Context menu stuff */
 
@@ -66,13 +73,13 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
 
         if (editor.isSelected())
         {
-            setupDocumentation(mc, editor, menu);
+            setupDocumentation(editor, menu);
         }
 
         return menu;
     }
 
-    private static void setupDocumentation(Minecraft mc, GuiTextEditor editor, GuiSimpleContextMenu menu)
+    private static void setupDocumentation(GuiTextEditor editor, GuiSimpleContextMenu menu)
     {
         String text = editor.getSelectedText().replaceAll("[^\\w\\d_]+", "");
         List<DocClass> searched = GuiDocumentationOverlayPanel.search(text);
@@ -256,6 +263,8 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
     @Override
     public void fill(Script data, boolean allowed)
     {
+        String last = this.data == null ? null : this.data.getId();
+
         super.fill(data, allowed);
 
         this.editor.setVisible(data != null);
@@ -266,8 +275,23 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
         {
             if (!this.code.getText().equals(data.code))
             {
+                if (last != null)
+                {
+                    this.lastScrolls.put(last, this.code.vertical.scroll);
+                }
+
                 this.code.setText(data.code);
                 this.setRepl(false);
+
+                if (last != null)
+                {
+                    Integer scroll = this.lastScrolls.get(data.getId());
+
+                    if (scroll != null)
+                    {
+                        this.code.vertical.scroll = scroll;
+                    }
+                }
             }
 
             this.unique.toggled(data.unique);
