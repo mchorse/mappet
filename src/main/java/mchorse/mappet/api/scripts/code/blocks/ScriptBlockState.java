@@ -57,4 +57,10 @@ public class ScriptBlockState implements IScriptBlockState
     {
         return this.state.getBlock() == ((ScriptBlockState) state).state.getBlock();
     }
+
+    @Override
+    public boolean isAir()
+    {
+        return this.state.getBlock() == Blocks.AIR;
+    }
 }

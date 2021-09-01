@@ -40,6 +40,7 @@ public class GuiRegionPanel extends GuiDashboardPanel<GuiMappetDashboard>
     public GuiRegionEditor region;
 
     protected TileRegion tile;
+    protected boolean wasOpened;
 
     public GuiRegionPanel(Minecraft mc, GuiMappetDashboard dashboard)
     {
@@ -53,7 +54,7 @@ public class GuiRegionPanel extends GuiDashboardPanel<GuiMappetDashboard>
 
         GuiDrawable drawable = new GuiDrawable((context) -> this.font.drawStringWithShadow(I18n.format(this.getTitle()), this.tiles.area.x, this.area.y + 10, 0xffffff));
 
-        this.tiles = new GuiTileRegionListElement(mc, (list) -> this.fill(list.get(0)));
+        this.tiles = new GuiTileRegionListElement(mc, (list) -> this.fill(list.get(0), false));
         this.tiles.flex().relative(this.sidebar).xy(10, 25).w(1F, -20).h(1F, -35);
         this.sidebar.add(drawable, this.tiles);
 
@@ -70,7 +71,7 @@ public class GuiRegionPanel extends GuiDashboardPanel<GuiMappetDashboard>
 
         this.keys().register(IKey.lang("mappet.gui.panels.keys.toggle_sidebar"), Keyboard.KEY_N, () -> this.toggleSidebar.clickItself(GuiBase.getCurrent())).category(GuiMappetDashboardPanel.KEYS_CATEGORY);
 
-        this.fill(null);
+        this.fill(null, true);
     }
 
     private void toggleSidebar()
@@ -102,8 +103,13 @@ public class GuiRegionPanel extends GuiDashboardPanel<GuiMappetDashboard>
 
     /* Data population */
 
-    public void fill(TileRegion tile)
+    public void fill(TileRegion tile, boolean ignoreSave)
     {
+        if (!ignoreSave)
+        {
+            this.save();
+        }
+
         if (tile != null && tile.isInvalid())
         {
             tile = null;
@@ -161,8 +167,10 @@ public class GuiRegionPanel extends GuiDashboardPanel<GuiMappetDashboard>
 
         if (this.tile != null && this.tile.isInvalid())
         {
-            this.fill(null);
+            this.fill(null, true);
         }
+
+        this.wasOpened = true;
     }
 
     @Override
@@ -170,7 +178,13 @@ public class GuiRegionPanel extends GuiDashboardPanel<GuiMappetDashboard>
     {
         super.close();
 
-        if (this.tile != null)
+        this.save();
+        this.wasOpened = false;
+    }
+
+    private void save()
+    {
+        if (this.tile != null && !this.tile.isInvalid() && this.wasOpened)
         {
             Dispatcher.sendToServer(new PacketEditRegion(this.tile.getPos(), this.tile.region.serializeNBT()));
         }

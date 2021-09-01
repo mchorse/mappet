@@ -1,6 +1,7 @@
 package mchorse.mappet.api.scripts.user;
 
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
+import mchorse.mappet.api.scripts.user.blocks.IScriptTileEntity;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
 import mchorse.mappet.api.scripts.user.entities.IScriptNpc;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
@@ -57,6 +58,29 @@ public interface IScriptWorld
      * @return a block state at given XYZ, or null if the chunk isn't loaded
      */
     public IScriptBlockState getBlock(int x, int y, int z);
+
+    /**
+     * Whether a tile entity is present at given XYZ.
+     */
+    public boolean hasTileEntity(int x, int y, int z);
+
+    /**
+     * Get tile entity at given XYZ.
+     *
+     * <pre>{@code
+     *    var tile = c.getWorld().getBlock(214, 3, 509);
+     *
+     *    if (tile)
+     *    {
+     *        c.send("Tile entity at (214, 3, 509) is " + tile.getId());
+     *    }
+     *    else
+     *    {
+     *        c.send("There is no tile entity at (214, 3, 509)");
+     *    }
+     * }</pre>
+     */
+    public IScriptTileEntity getTileEntity(int x, int y, int z);
 
     /**
      * Checks whether there is an inventory tile entity at given XYZ.

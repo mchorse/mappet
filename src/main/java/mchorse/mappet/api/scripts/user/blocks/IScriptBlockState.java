@@ -79,4 +79,9 @@ public interface IScriptBlockState
      * }</pre>
      */
     public boolean isSameBlock(IScriptBlockState state);
+
+    /**
+     * Check whether given block state is air.
+     */
+    public boolean isAir();
 }

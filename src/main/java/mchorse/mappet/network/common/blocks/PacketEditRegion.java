@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class PacketEditRegion implements IMessage
 {
+    public boolean open;
     public BlockPos pos;
     public NBTTagCompound tag;
 
@@ -27,9 +28,17 @@ public class PacketEditRegion implements IMessage
         this.tag = tag;
     }
 
+    public PacketEditRegion open()
+    {
+        this.open = true;
+
+        return this;
+    }
+
     @Override
     public void fromBytes(ByteBuf buf)
     {
+        this.open = buf.readBoolean();
         this.pos = new BlockPos(buf.readInt(), buf.readInt(), buf.readInt());
         this.tag = NBTUtils.readInfiniteTag(buf);
     }
@@ -37,6 +46,7 @@ public class PacketEditRegion implements IMessage
     @Override
     public void toBytes(ByteBuf buf)
     {
+        buf.writeBoolean(this.open);
         buf.writeInt(this.pos.getX());
         buf.writeInt(this.pos.getY());
         buf.writeInt(this.pos.getZ());

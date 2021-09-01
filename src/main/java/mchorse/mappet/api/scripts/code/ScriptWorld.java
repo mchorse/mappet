@@ -4,11 +4,13 @@ import mchorse.mappet.Mappet;
 import mchorse.mappet.api.npcs.Npc;
 import mchorse.mappet.api.npcs.NpcState;
 import mchorse.mappet.api.scripts.code.blocks.ScriptBlockState;
+import mchorse.mappet.api.scripts.code.blocks.ScriptTileEntity;
 import mchorse.mappet.api.scripts.code.entities.ScriptEntity;
 import mchorse.mappet.api.scripts.code.entities.ScriptNpc;
 import mchorse.mappet.api.scripts.code.items.ScriptInventory;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
+import mchorse.mappet.api.scripts.user.blocks.IScriptTileEntity;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
 import mchorse.mappet.api.scripts.user.entities.IScriptNpc;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
@@ -78,6 +80,28 @@ public class ScriptWorld implements IScriptWorld
         }
 
         return ScriptBlockState.create(this.world.getBlockState(this.pos));
+    }
+
+    @Override
+    public boolean hasTileEntity(int x, int y, int z)
+    {
+        if (!this.world.isBlockLoaded(this.pos.setPos(x, y, z)))
+        {
+            return false;
+        }
+
+        return this.world.getTileEntity(this.pos) != null;
+    }
+
+    @Override
+    public IScriptTileEntity getTileEntity(int x, int y, int z)
+    {
+        if (!this.hasTileEntity(x, y, z))
+        {
+            return null;
+        }
+
+        return new ScriptTileEntity(this.world.getTileEntity(this.pos.setPos(x, y, z)));
     }
 
     @Override
