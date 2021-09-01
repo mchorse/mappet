@@ -1,9 +1,9 @@
 package mchorse.mappet.client.gui.regions;
 
-import mchorse.mappet.api.utils.TargetMode;
 import mchorse.mappet.api.regions.Region;
 import mchorse.mappet.api.regions.shapes.AbstractShape;
 import mchorse.mappet.api.regions.shapes.BoxShape;
+import mchorse.mappet.api.utils.TargetMode;
 import mchorse.mappet.client.gui.conditions.GuiCheckerElement;
 import mchorse.mappet.client.gui.triggers.GuiTriggerElement;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
@@ -17,7 +17,6 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiLabel;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
-import mchorse.mclib.utils.Direction;
 import net.minecraft.client.Minecraft;
 
 public class GuiRegionEditor extends GuiElement
@@ -34,6 +33,7 @@ public class GuiRegionEditor extends GuiElement
     public GuiTextElement state;
     public GuiCirculateElement target;
     public GuiToggleElement additive;
+    public GuiToggleElement once;
 
     public GuiElement shapes;
 
@@ -64,7 +64,9 @@ public class GuiRegionEditor extends GuiElement
         }
 
         this.additive = new GuiToggleElement(mc, IKey.lang("mappet.gui.region.additive"), (b) -> this.region.additive = b.isToggled());
-        this.additive.tooltip(IKey.lang("mappet.gui.region.additive_tooltip"), Direction.TOP);
+        this.additive.tooltip(IKey.lang("mappet.gui.region.additive_tooltip"));
+        this.once = new GuiToggleElement(mc, IKey.lang("mappet.gui.region.once"), (b) -> this.region.once = b.isToggled());
+        this.once.tooltip(IKey.lang("mappet.gui.region.once_tooltip"));
 
         this.shapes = Elements.column(mc, 5);
 
@@ -109,7 +111,7 @@ public class GuiRegionEditor extends GuiElement
         if (this.region.writeState)
         {
             this.stateOptions.add(Elements.label(IKey.lang("mappet.gui.conditions.state.id")).marginTop(6), this.state);
-            this.stateOptions.add(this.target, this.additive);
+            this.stateOptions.add(this.target, this.additive, this.once);
         }
 
         this.getParentContainer().resize();
@@ -142,6 +144,7 @@ public class GuiRegionEditor extends GuiElement
             this.state.setText(region.state);
             this.target.setValue(region.target.ordinal());
             this.additive.toggled(region.additive);
+            this.once.toggled(region.once);
 
             this.toggleStates();
         }

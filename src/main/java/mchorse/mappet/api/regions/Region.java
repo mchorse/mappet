@@ -1,13 +1,13 @@
 package mchorse.mappet.api.regions;
 
 import mchorse.mappet.Mappet;
-import mchorse.mappet.api.utils.TargetMode;
+import mchorse.mappet.api.conditions.Checker;
 import mchorse.mappet.api.regions.shapes.AbstractShape;
 import mchorse.mappet.api.regions.shapes.BoxShape;
 import mchorse.mappet.api.states.States;
-import mchorse.mappet.api.conditions.Checker;
-import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.triggers.Trigger;
+import mchorse.mappet.api.utils.DataContext;
+import mchorse.mappet.api.utils.TargetMode;
 import mchorse.mappet.utils.EntityUtils;
 import mchorse.mappet.utils.EnumUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,9 +40,20 @@ public class Region implements INBTSerializable<NBTTagCompound>
     public String state = "";
     public TargetMode target = TargetMode.GLOBAL;
     public boolean additive = true;
+    public boolean once;
 
     public boolean isEnabled(EntityPlayer player)
     {
+        if (this.once)
+        {
+            States states = this.getStates(player);
+
+            if (states != null && states.values.containsKey(this.state))
+            {
+                return false;
+            }
+        }
+
         return this.enabled.check(new DataContext(player));
     }
 
@@ -76,7 +87,7 @@ public class Region implements INBTSerializable<NBTTagCompound>
     {
         if (this.writeState && !this.state.isEmpty())
         {
-            States states = this.target == TargetMode.GLOBAL ? Mappet.states : EntityUtils.getStates(player);
+            States states = getStates(player);
 
             if (this.additive)
             {
@@ -98,7 +109,7 @@ public class Region implements INBTSerializable<NBTTagCompound>
     {
         if (this.writeState && !this.state.isEmpty())
         {
-            States states = this.target == TargetMode.GLOBAL ? Mappet.states : EntityUtils.getStates(player);
+            States states = this.getStates(player);
 
             if (!this.additive)
             {
@@ -110,6 +121,11 @@ public class Region implements INBTSerializable<NBTTagCompound>
             .set("x", pos.getX())
             .set("y", pos.getY())
             .set("z", pos.getZ()));
+    }
+
+    private States getStates(EntityPlayer player)
+    {
+        return this.target == TargetMode.GLOBAL ? Mappet.states : EntityUtils.getStates(player);
     }
 
     @Override
@@ -139,6 +155,7 @@ public class Region implements INBTSerializable<NBTTagCompound>
         tag.setString("State", this.state.trim());
         tag.setInteger("Target", this.target.ordinal());
         tag.setBoolean("Additive", this.additive);
+        tag.setBoolean("Once", this.once);
 
         return tag;
     }
@@ -211,6 +228,7 @@ public class Region implements INBTSerializable<NBTTagCompound>
         this.state = tag.getString("State");
         this.target = EnumUtils.getValue(tag.getInteger("Target"), TargetMode.values(), TargetMode.GLOBAL);
         this.additive = tag.getBoolean("Additive");
+        this.once = tag.getBoolean("Once");
     }
 
     private AbstractShape readShape(NBTTagCompound shapeTag)

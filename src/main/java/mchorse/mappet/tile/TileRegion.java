@@ -101,7 +101,7 @@ public class TileRegion extends TileEntity implements ITickable
                 enabled = !enabled;
             }
 
-            if (player.isSpectator() || !enabled)
+            if (player.isSpectator())
             {
                 continue;
             }
@@ -111,6 +111,11 @@ public class TileRegion extends TileEntity implements ITickable
 
             if (this.region.isPlayerInside(player, this.getPos()))
             {
+                if (!enabled)
+                {
+                    continue;
+                }
+
                 if (!this.region.passable)
                 {
                     this.handlePassing(player);

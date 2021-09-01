@@ -376,6 +376,8 @@ mappet.gui.region.info.empty=Select a region block in the list on the right, or 
 mappet.gui.region.write_states=Write state
 mappet.gui.region.additive=Additive
 mappet.gui.region.additive_tooltip=Instead of adding §71§r upon entering, and removing the state upon exiting, with additive enabled, it will add §71§r every time player enters without removing the state upon exiting.
+mappet.gui.region.once=Once
+mappet.gui.region.once_tooltip=When enabled, this region block will work only the first time it gets triggered (or more specifically, before the state was written).\n\nAdditive mode §lmust be enabled§r for this feature to work how you intend it.
 mappet.gui.region.context.remove=Remove this shape
 
 mappet.gui.nodes.node.title=Title
