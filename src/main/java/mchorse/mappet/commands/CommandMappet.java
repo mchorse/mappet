@@ -29,7 +29,7 @@ public class CommandMappet extends MappetSubCommandBase
             return new DataContext(server);
         }
 
-        return new DataContext(getPlayer(server, sender, argument));
+        return new DataContext(getEntity(server, sender, argument));
     }
 
     public static List<String> listOfPlayersAndServer(MinecraftServer server)

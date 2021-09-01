@@ -2,7 +2,6 @@ package mchorse.mappet.api.utils;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -16,7 +15,7 @@ public class TriggerSender implements ICommandSender
     public World world;
     public BlockPos pos;
 
-    public EntityLivingBase entity;
+    public Entity entity;
 
     public TriggerSender set(MinecraftServer server, World world, BlockPos pos)
     {
@@ -28,7 +27,7 @@ public class TriggerSender implements ICommandSender
         return this;
     }
 
-    public TriggerSender set(EntityLivingBase entity)
+    public TriggerSender set(Entity entity)
     {
         this.entity = entity;
         this.server = entity.getServer();

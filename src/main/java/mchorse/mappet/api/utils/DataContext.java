@@ -1,11 +1,11 @@
 package mchorse.mappet.api.utils;
 
+import com.sun.istack.internal.NotNull;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.entities.EntityNpc;
 import mchorse.mappet.utils.ExpressionRewriter;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTBase;
@@ -27,28 +27,25 @@ public class DataContext
     public MinecraftServer server;
     public World world;
     public BlockPos pos;
-    public EntityLivingBase subject;
-    public EntityLivingBase object;
+    public Entity subject;
+    public Entity object;
 
     private boolean canceled;
 
     private TriggerSender sender;
     private Map<String, Object> values = new HashMap<String, Object>();
 
-    public DataContext(EntityLivingBase subject, Entity object)
+    public DataContext(@NotNull Entity subject, @NotNull Entity object)
     {
-        this(subject, object instanceof EntityLivingBase ? (EntityLivingBase) object : null);
-    }
+        this(subject.world);
 
-    public DataContext(EntityLivingBase subject, EntityLivingBase object)
-    {
-        this(subject);
-
+        this.subject = subject;
         this.object = object;
+
         this.setup();
     }
 
-    public DataContext(EntityLivingBase subject)
+    public DataContext(@NotNull Entity subject)
     {
         this(subject.world);
 
