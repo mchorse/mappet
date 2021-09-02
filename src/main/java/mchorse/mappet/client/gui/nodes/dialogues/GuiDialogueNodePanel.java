@@ -21,7 +21,7 @@ public class GuiDialogueNodePanel extends GuiEventBaseNodePanel<DialogueNode>
         super(mc);
 
         this.text = new GuiMultiTextElement<TextLine>(mc, (text) -> this.node.message.text = text);
-        this.text.wrap().background().flex().h(100);
+        this.text.wrap().background().flex().h(136);
         this.color = new GuiColorElement(mc, (c) -> this.node.message.color = c);
 
         this.add(Elements.label(IKey.lang("mappet.gui.nodes.dialogue.content")).marginTop(12), this.text, this.color);

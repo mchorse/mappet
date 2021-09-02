@@ -1,6 +1,7 @@
 package mchorse.mappet.client.gui.utils.text;
 
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.util.math.MathHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,28 +55,35 @@ public class TextLine
             return lines;
         }
 
-        StringBuilder builder = new StringBuilder();
+        int left = 0;
+        int right = 0;
+        int c = this.text.length();
+        int increment = c > 5 ? 5 : 1;
 
-        for (int i = 0, c = this.text.length(); i < c; i++)
+        for (; right < c; right += increment)
         {
-            char character = this.text.charAt(i);
-            String string = builder.toString();
-            int sw = font.getStringWidth(string + character);
+            String string = this.text.substring(left, right);
+            int sw = font.getStringWidth(string);
 
             if (sw > w)
             {
-                lines.add(builder.toString());
-                builder = new StringBuilder();
-            }
+                int space = string.lastIndexOf(' ', right);
+                int diff = (right - left) - space;
 
-            builder.append(character);
+                if (space != -1 && diff < 12)
+                {
+                    right -= diff - 1;
+                    string = this.text.substring(left, right);
+                }
+
+                lines.add(string);
+                left = right;
+            }
         }
 
-        String string = builder.toString();
-
-        if (!string.isEmpty())
+        if (left != right)
         {
-            lines.add(string);
+            lines.add(this.text.substring(left, MathHelper.clamp(right, 0, c)));
         }
 
         return lines;
