@@ -25,6 +25,7 @@ import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.SoundEvent;
 import org.lwjgl.input.Keyboard;
 
+import javax.vecmath.Vector2d;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -808,7 +809,7 @@ public class GuiMultiTextElement <T extends TextLine> extends GuiElement impleme
         }
 
         T current = null;
-        int line = y / this.lineHeight;
+        int line = y < 0 ? 0 : y / this.lineHeight;
         int l = 0;
         int s = 0;
 
@@ -919,13 +920,16 @@ public class GuiMultiTextElement <T extends TextLine> extends GuiElement impleme
             return;
         }
 
-        int x = this.font.getStringWidth(this.cursor.start(this.text.get(this.cursor.line).text)) + this.getShiftX();
-        int y = this.cursor.line * this.lineHeight;
+        Vector2d pos = this.getCursorPosition(this.cursor);
+
+        pos.x += this.horizontal.scroll;
+        pos.y += this.vertical.scroll;
+
         int w = 4;
         int h = this.lineHeight;
 
-        this.horizontal.scrollIntoView(x, w + this.padding * 2, this.getShiftX());
-        this.vertical.scrollIntoView(y, h + this.padding * 2, this.getShiftX());
+        this.horizontal.scrollIntoView((int) pos.x, w + this.padding * 2, this.getShiftX());
+        this.vertical.scrollIntoView((int) pos.y, h + this.padding * 2, this.getShiftX());
     }
 
     /* Focusable */
@@ -1534,34 +1538,112 @@ public class GuiMultiTextElement <T extends TextLine> extends GuiElement impleme
      */
     private void drawSelectionBar(int x, int y, Cursor min, Cursor max)
     {
-        final int selectionPad = 2;
+        Vector2d minPos = this.getCursorPosition(min);
+        Vector2d maxPos = this.getCursorPosition(max);
 
-        String first = this.text.get(min.line).text;
-        String last = this.text.get(max.line).text;
+        this.drawSelectionArea(x + (int) minPos.x, y + (int) minPos.y, x + (int) maxPos.x, y + (int) maxPos.y);
+    }
 
-        int nx = x - this.horizontal.scroll + this.getShiftX();
-        int ny = y - this.vertical.scroll + min.line * this.lineHeight;
-        int color = ColorUtils.HALF_BLACK + McLib.primaryColor.get();
+    protected Vector2d getCursorPosition(Cursor cursor)
+    {
+        Vector2d pos = new Vector2d();
 
-        int x1 = nx + this.font.getStringWidth(min.start(first)) - selectionPad / 2;
-        int x2 = nx + this.font.getStringWidth(max.start(last)) + selectionPad / 2;
-
-        if (min.line == max.line)
+        if (this.wrapping)
         {
-            Gui.drawRect(x1, ny - selectionPad, x2, ny + this.font.FONT_HEIGHT + selectionPad, color);
+            this.getCusrorPositionWrapped(cursor, pos);
         }
         else
         {
-            int diff = max.line - min.line;
+            String line = this.text.get(cursor.line).text;
 
-            Gui.drawRect(x1, ny - selectionPad, this.area.ex(), ny + this.lineHeight, color);
+            pos.x = this.font.getStringWidth(cursor.start(line));
+            pos.y = cursor.line * this.lineHeight;
+        }
 
-            if (diff > 1)
+        pos.x = pos.x - this.horizontal.scroll + this.getShiftX();
+        pos.y = pos.y - this.vertical.scroll;
+
+        return pos;
+    }
+
+    private void getCusrorPositionWrapped(Cursor cursor, Vector2d pos)
+    {
+        int lines = 0;
+        int offset = 0;
+
+        for (int i = 0, c = this.text.size(); i < c; i++)
+        {
+            T textLine = this.text.get(i);
+            int textLines = textLine.getLines();
+
+            if (i == cursor.line)
             {
-                Gui.drawRect(this.area.x, ny + this.lineHeight, this.area.ex(), ny + diff * this.lineHeight, color);
+                if (textLine.wrappedLines == null)
+                {
+                    offset = this.font.getStringWidth(cursor.start(textLine.text));
+                }
+                else
+                {
+                    int textOffset = 0;
+
+                    for (int j = 0; j < textLine.wrappedLines.size(); j++)
+                    {
+                        String wrappedLine = textLine.wrappedLines.get(j);
+
+                        if (cursor.offset >= textOffset && cursor.offset < textOffset + wrappedLine.length())
+                        {
+                            offset = this.font.getStringWidth(wrappedLine.substring(0, cursor.offset - textOffset));
+
+                            break;
+                        }
+
+                        lines += 1;
+                        textOffset += wrappedLine.length();
+                    }
+
+                    if (cursor.offset >= textLine.text.length())
+                    {
+                        lines -= 1;
+                        offset = this.font.getStringWidth(textLine.wrappedLines.get(textLine.wrappedLines.size() - 1));
+                    }
+                }
+
+                break;
             }
 
-            Gui.drawRect(this.area.x, ny + diff * this.lineHeight, x2, ny + diff * this.lineHeight + this.font.FONT_HEIGHT + selectionPad, color);
+            lines += textLines;
+        }
+
+        pos.x = offset;
+        pos.y = lines * this.lineHeight;
+    }
+
+    private void drawSelectionArea(int x1, int y1, int x2, int y2)
+    {
+        final int selectionPad = 2;
+        int color = ColorUtils.HALF_BLACK + McLib.primaryColor.get();
+
+        boolean middle = y2 > y1 + this.lineHeight;
+        boolean bottom = y2 > y1;
+
+        int endX = bottom || middle ? this.area.ex() : x2 + selectionPad;
+        int endY = bottom && !middle ? y2 : y1 + this.font.FONT_HEIGHT;
+
+        if (!bottom && !middle)
+        {
+            endY += selectionPad;
+        }
+
+        Gui.drawRect(x1 - selectionPad, y1 - selectionPad, endX, endY, color);
+
+        if (middle)
+        {
+            Gui.drawRect(this.area.x, y1 + this.font.FONT_HEIGHT, this.area.ex(), y2, color);
+        }
+
+        if (bottom)
+        {
+            Gui.drawRect(this.area.x, y2, x2 + selectionPad, y2 + this.font.FONT_HEIGHT + selectionPad, color);
         }
     }
 }
