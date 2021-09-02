@@ -48,10 +48,10 @@ public class SyntaxHighlighter
     /**
      * Parse text segments that will be used for syntax highlighting
      */
-    public List<TextSegment> parse(FontRenderer font, List<List<TextSegment>> segments, String line, int lineIndex)
+    public List<TextSegment> parse(FontRenderer font, List<HighlightedTextLine> textLines, String line, int lineIndex)
     {
         List<TextSegment> list = new ArrayList<TextSegment>();
-        List<TextSegment> prevLine = lineIndex > 0 ? segments.get(lineIndex - 1) : null;
+        List<TextSegment> prevLine = lineIndex > 0 ? textLines.get(lineIndex - 1).segments : null;
 
         if (prevLine != null && !prevLine.isEmpty())
         {

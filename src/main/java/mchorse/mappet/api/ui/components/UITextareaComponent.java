@@ -4,6 +4,7 @@ import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.ui.UIContext;
 import mchorse.mappet.api.ui.utils.DiscardMethod;
 import mchorse.mappet.client.gui.utils.text.GuiMultiTextElement;
+import mchorse.mappet.client.gui.utils.text.TextLine;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
@@ -92,7 +93,7 @@ public class UITextareaComponent extends UILabelBaseComponent
     @SideOnly(Side.CLIENT)
     public GuiElement create(Minecraft mc, UIContext context)
     {
-        GuiMultiTextElement element = new GuiMultiTextElement(mc, (t) ->
+        GuiMultiTextElement<TextLine> element = new GuiMultiTextElement<TextLine>(mc, (t) ->
         {
             if (!this.id.isEmpty())
             {
@@ -101,7 +102,7 @@ public class UITextareaComponent extends UILabelBaseComponent
             }
         });
 
-        element.setText(this.label);
+        element.wrap().setText(this.label);
         element.background(this.hasBackground);
 
         return this.apply(element, context);

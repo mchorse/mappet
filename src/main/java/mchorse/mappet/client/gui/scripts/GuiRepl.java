@@ -12,7 +12,6 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.ColorUtils;
-import mchorse.metamorph.util.MMIcons;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
@@ -81,7 +80,7 @@ public class GuiRepl extends GuiElement
 
                 int lastLine = this.repl.getLines().size() - 1;
 
-                cursor.set(lastLine, this.repl.getLines().get(lastLine).length());
+                cursor.set(lastLine, this.repl.getLines().get(lastLine).text.length());
                 this.repl.moveViewportToCursor();
 
                 return true;
@@ -93,7 +92,7 @@ public class GuiRepl extends GuiElement
 
                 int lastLine = this.repl.getLines().size() - 1;
 
-                cursor.set(lastLine, this.repl.getLines().get(lastLine).length());
+                cursor.set(lastLine, this.repl.getLines().get(lastLine).text.length());
                 this.repl.moveViewportToCursor();
 
                 return true;

@@ -7,6 +7,7 @@ import mchorse.mappet.client.gui.quests.GuiObjectives;
 import mchorse.mappet.client.gui.quests.GuiRewards;
 import mchorse.mappet.client.gui.triggers.GuiTriggerElement;
 import mchorse.mappet.client.gui.utils.text.GuiMultiTextElement;
+import mchorse.mappet.client.gui.utils.text.TextLine;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
@@ -25,7 +26,7 @@ public class GuiQuestPanel extends GuiMappetRunPanel<Quest>
 {
     public static final IKey EMPTY = IKey.lang("mappet.gui.quests.info.empty");
     public GuiTextElement title;
-    public GuiMultiTextElement story;
+    public GuiMultiTextElement<TextLine> story;
     public GuiToggleElement cancelable;
     public GuiToggleElement instant;
 
@@ -41,8 +42,8 @@ public class GuiQuestPanel extends GuiMappetRunPanel<Quest>
         super(mc, dashboard);
 
         this.title = new GuiTextElement(mc, 1000, (text) -> this.data.title = text);
-        this.story = new GuiMultiTextElement(mc, (text) -> this.data.story = text).background().padding(6);
-        this.story.flex().h(120);
+        this.story = new GuiMultiTextElement<TextLine>(mc, (text) -> this.data.story = text);
+        this.story.wrap().background().padding(6).flex().h(120);
         this.cancelable = new GuiToggleElement(mc, IKey.lang("mappet.gui.quests.cancelable"), (b) -> this.data.cancelable = b.isToggled());
         this.instant = new GuiToggleElement(mc, IKey.lang("mappet.gui.quests.instant"), (b) -> this.data.instant = b.isToggled());
         this.instant.tooltip(IKey.lang("mappet.gui.quests.instant_tooltip"));

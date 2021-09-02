@@ -1,5 +1,6 @@
 package mchorse.mappet.client.gui.scripts;
 
+import mchorse.mappet.client.gui.scripts.utils.HighlightedTextLine;
 import mchorse.mappet.client.gui.scripts.utils.SyntaxHighlighter;
 import mchorse.mappet.client.gui.scripts.utils.TextSegment;
 import mchorse.mappet.client.gui.utils.text.GuiMultiTextElement;
@@ -13,14 +14,12 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.init.SoundEvents;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class GuiTextEditor extends GuiMultiTextElement
+public class GuiTextEditor extends GuiMultiTextElement<HighlightedTextLine>
 {
     private SyntaxHighlighter highlighter;
-    private List<List<TextSegment>> segments = new ArrayList<List<TextSegment>>();
     private int placements;
     private boolean lines = true;
 
@@ -29,6 +28,12 @@ public class GuiTextEditor extends GuiMultiTextElement
         super(mc, callback);
 
         this.highlighter = new SyntaxHighlighter();
+    }
+
+    @Override
+    protected HighlightedTextLine createTextLine(String line)
+    {
+        return new HighlightedTextLine(line);
     }
 
     public GuiTextEditor disableLines()
@@ -45,7 +50,11 @@ public class GuiTextEditor extends GuiMultiTextElement
 
     public void resetHighlight()
     {
-        this.segments.clear();
+        for (HighlightedTextLine textLine : this.text)
+        {
+            textLine.resetSegments();
+        }
+
         this.ensureSize();
     }
 
@@ -55,24 +64,11 @@ public class GuiTextEditor extends GuiMultiTextElement
         super.setText(text);
 
         /* It will be null before when it will get called from parent's constructor */
-        if (this.segments != null)
-        {
-            this.resetHighlight();
-        }
+        this.resetHighlight();
     }
 
     private void ensureSize()
     {
-        while (this.segments.size() < this.text.size())
-        {
-            this.segments.add(null);
-        }
-
-        while (this.segments.size() > this.text.size())
-        {
-            this.segments.remove(this.segments.size() - 1);
-        }
-
         double power = Math.ceil(Math.log10(this.text.size() + 1));
 
         this.placements = (int) power * 6;
@@ -81,9 +77,11 @@ public class GuiTextEditor extends GuiMultiTextElement
     @Override
     protected void changedLine(int i)
     {
+        super.changedLine(i);
+
         this.ensureSize();
 
-        String line = this.text.get(i);
+        String line = this.text.get(i).text;
 
         if (line.contains("/*") || line.contains("*/"))
         {
@@ -91,18 +89,20 @@ public class GuiTextEditor extends GuiMultiTextElement
         }
         else
         {
-            this.segments.set(i, null);
+            this.text.get(i).resetSegments();
         }
     }
 
     @Override
     protected void changedLineAfter(int i)
     {
+        super.changedLineAfter(i);
+
         this.ensureSize();
 
-        while (i < this.segments.size())
+        while (i < this.text.size())
         {
-            this.segments.set(i, null);
+            this.text.get(i).resetSegments();
 
             i += 1;
         }
@@ -157,7 +157,7 @@ public class GuiTextEditor extends GuiMultiTextElement
             return false;
         }
 
-        String line = this.text.get(this.cursor.line);
+        String line = this.text.get(this.cursor.line).text;
 
         return line.length() >= 2
             && this.cursor.offset > 0
@@ -169,7 +169,7 @@ public class GuiTextEditor extends GuiMultiTextElement
     @Override
     protected void keyNewLine(TextEditUndo undo)
     {
-        String line = this.text.get(this.cursor.line);
+        String line = this.text.get(this.cursor.line).text;
         boolean unwrap = line.length() >= 2
             && this.cursor.offset > 0
             && this.cursor.offset < line.length()
@@ -204,7 +204,7 @@ public class GuiTextEditor extends GuiMultiTextElement
     @Override
     protected void keyBackspace(TextEditUndo undo, boolean ctrl)
     {
-        String line = this.text.get(this.cursor.line);
+        String line = this.text.get(this.cursor.line).text;
 
         line = this.cursor.start(line);
 
@@ -283,7 +283,7 @@ public class GuiTextEditor extends GuiMultiTextElement
     {
         if (this.hasLine(i))
         {
-            return this.getIndent(this.text.get(i));
+            return this.getIndent(this.text.get(i).text);
         }
 
         return 0;
@@ -321,19 +321,14 @@ public class GuiTextEditor extends GuiMultiTextElement
     /* Replacing rendering */
 
     @Override
-    protected void drawTextLine(String line, int i, int nx, int ny, int sw)
+    protected void drawTextLine(String line, int i, int j, int nx, int ny)
     {
-        if (this.segments.size() != this.text.size())
-        {
-            return;
-        }
-
-        List<TextSegment> segments = this.segments.get(i);
+        List<TextSegment> segments = this.text.get(i).segments;
 
         if (segments == null)
         {
-            segments = this.highlighter.parse(this.font, this.segments, line, i);
-            this.segments.set(i, segments);
+            segments = this.highlighter.parse(this.font, this.text, line, i);
+            this.text.get(i).setSegments(segments);
         }
 
         if (segments != null)

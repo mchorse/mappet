@@ -31,8 +31,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
-public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElement, ITextColoring
+public class GuiMultiTextElement <T extends TextLine> extends GuiElement implements IFocusedGuiElement, ITextColoring
 {
     public ScrollArea horizontal = new ScrollArea();
     public ScrollArea vertical = new ScrollArea();
@@ -45,11 +46,12 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
     protected int lineHeight = 12;
     protected int textColor = 0xffffff;
     protected boolean textShadow;
+    protected boolean wrapping;
 
     /* Editing */
     private boolean focused;
     private int dragging;
-    protected List<String> text = new ArrayList<String>();
+    protected List<T> text = new ArrayList<T>();
     public final Cursor cursor = new Cursor();
     public final Cursor selection = new Cursor(-1, 0);
 
@@ -66,29 +68,20 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
     private UndoManager<GuiMultiTextElement> undo;
 
+    private int lastW;
+
     public static List<String> splitNewlineString(String string)
     {
-        List<String> splits = new ArrayList<String>();
-        StringBuilder builder = new StringBuilder();
-
-        for (int i = 0, c = string.length(); i < c; i++)
+        if (!string.contains("\n"))
         {
-            char character = string.charAt(i);
+            ArrayList<String> strings = new ArrayList<>();
 
-            if (character == '\n')
-            {
-                splits.add(builder.toString());
-                builder = new StringBuilder();
-            }
-            else
-            {
-                builder.append(character);
-            }
+            strings.add(string);
+
+            return strings;
         }
 
-        splits.add(builder.toString());
-
-        return splits;
+        return new ArrayList<String>(Arrays.asList(string.split("\n")));
     }
 
     public GuiMultiTextElement(Minecraft mc, Consumer<String> callback)
@@ -106,28 +99,35 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         this.clear();
     }
 
-    public GuiMultiTextElement background()
+    public GuiMultiTextElement<T> background()
     {
         return this.background(true);
     }
 
-    public GuiMultiTextElement background(boolean background)
+    public GuiMultiTextElement<T> background(boolean background)
     {
         this.background = background;
 
         return this;
     }
 
-    public GuiMultiTextElement padding(int padding)
+    public GuiMultiTextElement<T> padding(int padding)
     {
         this.padding = padding;
 
         return this;
     }
 
-    public GuiMultiTextElement lineHeight(int lineHeight)
+    public GuiMultiTextElement<T> lineHeight(int lineHeight)
     {
         this.lineHeight = lineHeight;
+
+        return this;
+    }
+
+    public GuiMultiTextElement<T> wrap()
+    {
+        this.wrapping = true;
 
         return this;
     }
@@ -142,21 +142,36 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
     public void setText(String text)
     {
         this.text.clear();
-        this.text.addAll(Arrays.asList(text.split("\n")));
+
+        for (String line : text.split("\n"))
+        {
+            this.text.add(this.createTextLine(line));
+        }
 
         this.cursor.set(0, 0);
         this.selection.set(-1, 0);
         this.horizontal.scroll = 0;
         this.vertical.scroll = 0;
         this.undo = new UndoManager<GuiMultiTextElement>(100).simpleMerge();
+
+        if (this.area.w > 0)
+        {
+            this.recalculateWrapping();
+            this.recalculateSizes();
+        }
+    }
+
+    protected T createTextLine(String line)
+    {
+        return (T) new TextLine(line);
     }
 
     public String getText()
     {
-        return String.join("\n", this.text);
+        return this.text.stream().map(t -> t.text).collect(Collectors.joining("\n"));
     }
 
-    public List<String> getLines()
+    public List<T> getLines()
     {
         return this.text;
     }
@@ -218,7 +233,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
         for (int i = min.line; i <= Math.min(max.line, this.text.size() - 1); i++)
         {
-            String line = this.text.get(i);
+            String line = this.text.get(i).text;
 
             if (i == min.line && i == max.line)
             {
@@ -303,7 +318,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
      */
     public List<Cursor> findGroup(int direction, Cursor cursor)
     {
-        String line = this.text.get(cursor.line);
+        String line = this.text.get(cursor.line).text;
 
         if (line.isEmpty() || this.cursor.offset >= line.length() - 1)
         {
@@ -389,7 +404,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
         for (int i = 0; i < splits.size(); i++)
         {
-            String line = this.text.get(this.selection.line);
+            String line = this.text.get(this.selection.line).text;
             int l = splits.get(reverse ? splits.size() - (i + 1) : i).length();
 
             this.selection.offset += (reverse ? -l : l);
@@ -406,7 +421,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
                 }
 
                 this.selection.line += reverse ? -1 : 1;
-                this.selection.offset = reverse ? this.text.get(this.selection.line).length() : 0;
+                this.selection.offset = reverse ? this.text.get(this.selection.line).text.length() : 0;
             }
         }
 
@@ -433,10 +448,23 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
     }
 
     protected void changedLine(int i)
-    {}
+    {
+        this.text.get(i).calculateWrappedLines(this.font, this.area.w - this.padding * 2);
+
+        this.recalculateSizes();
+    }
 
     protected void changedLineAfter(int i)
-    {}
+    {
+        while (i < this.text.size())
+        {
+            this.text.get(i).calculateWrappedLines(this.font, this.area.w - this.padding * 2);
+
+            i += 1;
+        }
+
+        this.recalculateSizes();
+    }
 
     public void writeNewLine()
     {
@@ -445,20 +473,20 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             return;
         }
 
-        String line = this.text.get(this.cursor.line);
+        String line = this.text.get(this.cursor.line).text;
 
         if (this.cursor.offset == 0 || line.isEmpty())
         {
-            this.text.add(this.cursor.line, "");
+            this.text.add(this.cursor.line, this.createTextLine(""));
         }
         else if (this.cursor.offset >= line.length())
         {
-            this.text.add(this.cursor.line + 1, "");
+            this.text.add(this.cursor.line + 1, this.createTextLine(""));
         }
         else
         {
-            this.text.set(this.cursor.line, this.cursor.start(line));
-            this.text.add(this.cursor.line + 1, this.cursor.end(line));
+            this.text.get(this.cursor.line).set(this.cursor.start(line));
+            this.text.add(this.cursor.line + 1, this.createTextLine(this.cursor.end(line)));
             this.moveCursorToLineStart();
         }
 
@@ -472,7 +500,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
     {
         if (this.hasLine(this.cursor.line))
         {
-            String line = this.text.get(this.cursor.line);
+            String line = this.text.get(this.cursor.line).text;
             int index = this.cursor.offset;
 
             if (index >= line.length())
@@ -488,7 +516,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
                 line = this.cursor.start(line) + character + this.cursor.end(line);
             }
 
-            this.text.set(this.cursor.line, line);
+            this.text.get(this.cursor.line).set(line);
             this.changedLine(this.cursor.line);
         }
     }
@@ -506,9 +534,9 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         else
         {
             int line = this.cursor.line;
-            String remainder = this.cursor.end(this.text.get(line));
+            String remainder = this.cursor.end(this.text.get(line).text);
 
-            this.text.set(line, this.cursor.start(this.text.get(line)));
+            this.text.get(line).set(this.cursor.start(this.text.get(line).text));
 
             for (int i = 0; i < size; i++)
             {
@@ -517,7 +545,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
                     this.cursor.line += 1;
 
                     this.moveCursorToLineStart();
-                    this.text.add(this.cursor.line, "");
+                    this.text.add(this.cursor.line, this.createTextLine(""));
                 }
 
                 this.writeCharacter(splits.get(i));
@@ -544,7 +572,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
     {
         if (this.hasLine(this.cursor.line))
         {
-            String line = this.text.get(this.cursor.line);
+            String line = this.text.get(this.cursor.line).text;
             int index = Math.min(this.cursor.offset, line.length());
 
             if (line.isEmpty())
@@ -566,7 +594,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
                 String deleted = line.substring(line.length() - 1);
 
                 line = line.substring(0, line.length() - 1);
-                this.text.set(this.cursor.line, line);
+                this.text.get(this.cursor.line).set(line);
                 this.moveCursorToLineEnd();
 
                 this.changedLine(this.cursor.line);
@@ -577,12 +605,12 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             {
                 if (this.cursor.line > 0)
                 {
-                    String text = this.text.remove(this.cursor.line);
+                    String text = this.text.remove(this.cursor.line).text;
 
                     this.cursor.line -= 1;
 
                     this.moveCursorToLineEnd();
-                    this.text.set(this.cursor.line, this.text.get(this.cursor.line) + text);
+                    this.text.get(this.cursor.line).text = this.text.get(this.cursor.line).text + text;
                     this.changedLineAfter(this.cursor.line);
 
                     return "\n";
@@ -593,7 +621,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
                 String deleted = line.substring(this.cursor.getOffset(line, -1), this.cursor.getOffset(line));
 
                 line = this.cursor.start(line, -1) + this.cursor.end(line);
-                this.text.set(this.cursor.line, line);
+                this.text.get(this.cursor.line).text = line;
                 this.moveCursor(-1, 0);
                 this.changedLine(this.cursor.line);
 
@@ -616,15 +644,15 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
         if (min.line == max.line)
         {
-            String line = this.text.get(min.line);
+            String line = this.text.get(min.line).text;
 
             if (min.offset <= 0 && max.offset >= line.length())
             {
-                this.text.set(min.line, "");
+                this.text.get(min.line).set("");
             }
             else
             {
-                this.text.set(min.line, min.start(line) + max.end(line));
+                this.text.get(min.line).set(min.start(line) + max.end(line));
             }
         }
         else
@@ -633,7 +661,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
             for (int i = max.line; i >= min.line; i--)
             {
-                String line = this.text.get(i);
+                String line = this.text.get(i).text;
 
                 if (i == max.line)
                 {
@@ -642,7 +670,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
                 }
                 else if (i == min.line)
                 {
-                    this.text.set(i, min.start(line) + end);
+                    this.text.get(i).set(min.start(line) + end);
                 }
                 else
                 {
@@ -685,7 +713,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             return;
         }
 
-        String line = this.text.get(this.cursor.line);
+        String line = this.text.get(this.cursor.line).text;
 
         if (x != 0)
         {
@@ -734,7 +762,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             if (this.hasLine(ny))
             {
                 this.cursor.line = ny;
-                this.cursor.offset = MathUtils.clamp(this.cursor.offset, 0, this.text.get(this.cursor.line).length());
+                this.cursor.offset = MathUtils.clamp(this.cursor.offset, 0, this.text.get(this.cursor.line).text.length());
             }
         }
     }
@@ -748,7 +776,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
     {
         if (this.hasLine(this.cursor.line))
         {
-            this.cursor.offset = this.text.get(this.cursor.line).length();
+            this.cursor.offset = this.text.get(this.cursor.line).text.length();
         }
     }
 
@@ -760,9 +788,101 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         x += this.horizontal.scroll - this.getShiftX();
         y += this.vertical.scroll;
 
+        /* Wrapped and unwrapped move to cursor require two different versions
+         * of the same operation due to complexity of wrapped data structure */
+        if (this.wrapping)
+        {
+            this.moveToCursorWrapped(cursor, x, y);
+        }
+        else
+        {
+            this.moveCursorToUnwrapped(cursor, x, y);
+        }
+    }
+
+    private void moveToCursorWrapped(Cursor cursor, int x, int y)
+    {
+        if (this.text.isEmpty())
+        {
+            return;
+        }
+
+        T current = null;
+        int line = y / this.lineHeight;
+        int l = 0;
+        int s = 0;
+
+        for (int i = 0, c = this.text.size(); i < c; i++)
+        {
+            T textLine = this.text.get(i);
+
+            if (line >= l && line < l + textLine.getLines())
+            {
+                current = textLine;
+                cursor.line = i;
+                s = line - l;
+
+                break;
+            }
+
+            l += textLine.getLines();
+        }
+
+        if (current == null)
+        {
+            current = this.text.get(this.text.size() - 1);
+            cursor.line = this.text.size() - 1;
+            s = current.getLines() - 1;
+        }
+
+        cursor.offset = 0;
+
+        String lineText = current.text;
+
+        if (current.wrappedLines != null)
+        {
+            for (int i = 0; i < s; i++)
+            {
+                cursor.offset += current.wrappedLines.get(i).length();
+            }
+
+            lineText = current.wrappedLines.get(s);
+        }
+
+        int w = 0;
+
+        if (x > this.font.getStringWidth(lineText))
+        {
+            cursor.offset += lineText.length();
+
+            return;
+        }
+        else if (x < 0)
+        {
+            return;
+        }
+
+        int i = 0;
+
+        while (x > w)
+        {
+            w = this.font.getStringWidth(lineText.substring(0, i));
+
+            cursor.offset += 1;
+            i += 1;
+        }
+
+        if (cursor.offset > 0)
+        {
+            cursor.offset -= 2;
+        }
+    }
+
+    private void moveCursorToUnwrapped(Cursor cursor, int x, int y)
+    {
         cursor.line = MathUtils.clamp(y / this.lineHeight, 0, this.text.size() - 1);
 
-        String line = this.text.get(cursor.line);
+        String line = this.text.get(cursor.line).text;
         int w = this.font.getStringWidth(line);
 
         if (x <= 0)
@@ -799,7 +919,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             return;
         }
 
-        int x = this.font.getStringWidth(this.cursor.start(this.text.get(this.cursor.line))) + this.getShiftX();
+        int x = this.font.getStringWidth(this.cursor.start(this.text.get(this.cursor.line).text)) + this.getShiftX();
         int y = this.cursor.line * this.lineHeight;
         int w = 4;
         int h = this.lineHeight;
@@ -851,10 +971,48 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
     {
         super.resize();
 
+        if (this.lastW != this.area.w)
+        {
+            this.lastW = this.area.w;
+
+            this.recalculateWrapping();
+        }
+
+        this.recalculateSizes();
         this.horizontal.copy(this.area);
         this.horizontal.clamp();
         this.vertical.copy(this.area);
         this.vertical.clamp();
+    }
+
+    protected void recalculateWrapping()
+    {
+        if (this.wrapping)
+        {
+            for (T textLine : this.text)
+            {
+                textLine.calculateWrappedLines(this.font, this.area.w - this.padding * 2);
+            }
+        }
+    }
+
+    protected void recalculateSizes()
+    {
+        int w = 0;
+        int h = 0;
+
+        for (T textLine : this.text)
+        {
+            if (!this.wrapping)
+            {
+                w = Math.max(this.font.getStringWidth(textLine.text), w);
+            }
+
+            h += textLine.getLines() * this.lineHeight;
+        }
+
+        this.horizontal.scrollSize = this.wrapping ? w : this.getHorizontalSize(w);
+        this.vertical.scrollSize = h - (this.lineHeight - this.font.FONT_HEIGHT) + this.padding * 2;
     }
 
     @Override
@@ -1205,11 +1363,11 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
     protected void keyTab(TextEditUndo undo)
     {
+        undo.postText = "    ";
+
         this.deleteSelection();
         this.deselect();
-        this.writeString("    ");
-
-        undo.postText = "    ";
+        this.writeString(undo.postText);
     }
 
     @Override
@@ -1228,8 +1386,6 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
 
         int x = this.area.x + this.padding;
         int y = this.area.y + this.padding;
-        int w = 0;
-        int i = 0;
 
         Cursor min = this.getMin();
         Cursor max = this.getMax();
@@ -1239,32 +1395,64 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
             this.drawSelectionBar(x, y, min, max);
         }
 
-        for (String line : this.text)
+        for (int i = 0, ci = this.text.size(); i < ci; i++)
         {
-            int sw = this.font.getStringWidth(line);
-            int nx = x - this.horizontal.scroll + this.getShiftX();
-            int ny = y - this.vertical.scroll;
+            T textLine = this.text.get(i);
+            String line = textLine.text;
+            int newX = x - this.horizontal.scroll + this.getShiftX();
+            int newY = y - this.vertical.scroll;
 
-            if (ny + this.font.FONT_HEIGHT >= this.area.y && ny < this.area.ey())
+            if (newY > this.area.ey())
             {
-                if (this.cursor.line == i && this.focused)
-                {
-                    int nw = line.isEmpty() ? 0 : this.font.getStringWidth(this.cursor.start(line));
-                    int a = (int) (Math.sin((context.tick + context.partialTicks) / 2D) * 127.5 + 127.5) << 24;
-
-                    Gui.drawRect(nx + nw, ny - 1, nx + nw + 1, ny + this.font.FONT_HEIGHT + 1, a + 0xffffff);
-                }
-
-                this.drawTextLine(line, i, nx, ny, sw);
+                break;
             }
 
-            w = Math.max(sw, w);
-            y += this.lineHeight;
-            i += 1;
-        }
+            boolean drawCursor = this.cursor.line == i && this.focused;
+            int lines = textLine.getLines() - 1;
 
-        this.horizontal.scrollSize = this.getHorizontalSize(w);
-        this.vertical.scrollSize = y - this.area.y + this.padding - (this.text.isEmpty() ? 0 : this.lineHeight - this.font.FONT_HEIGHT);
+            if (newY + this.font.FONT_HEIGHT + lines * this.lineHeight >= this.area.y)
+            {
+                int cursorW = 0;
+                int cursorA = 0;
+
+                if (drawCursor)
+                {
+                    cursorW = line.isEmpty() ? 0 : this.font.getStringWidth(this.cursor.start(line));
+                    cursorA = (int) (Math.sin((context.tick + context.partialTicks) / 2D) * 127.5 + 127.5) << 24;
+                }
+
+                if (textLine.wrappedLines == null)
+                {
+                    if (drawCursor)
+                    {
+                        Gui.drawRect(newX + cursorW, newY - 1, newX + cursorW + 1, newY + this.font.FONT_HEIGHT + 1, cursorA + 0xffffff);
+                    }
+
+                    this.drawTextLine(line, i, 0, newX, newY);
+                }
+                else
+                {
+                    int wrappedW = 0;
+
+                    for (int j = 0, cj = textLine.wrappedLines.size(); j < cj; j++)
+                    {
+                        String wrappedLine = textLine.wrappedLines.get(j);
+                        int lineW = this.font.getStringWidth(wrappedLine);
+                        int lineY = newY + j * this.lineHeight;
+
+                        if (cursorW >= wrappedW && cursorW < wrappedW + lineW || this.cursor.offset >= textLine.text.length())
+                        {
+                            Gui.drawRect(newX + cursorW - wrappedW, lineY - 1, newX + cursorW - wrappedW + 1, lineY + this.font.FONT_HEIGHT + 1, cursorA + 0xffffff);
+                        }
+
+                        this.drawTextLine(wrappedLine, i, j, newX, lineY);
+                        wrappedW += lineW;
+                    }
+                }
+            }
+
+            y += textLine.getLines() * this.lineHeight;
+        }
 
         this.drawForeground(context);
 
@@ -1284,7 +1472,7 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
         return w + this.padding * 2 + this.getShiftX();
     }
 
-    protected void drawTextLine(String line, int i, int nx, int ny, int sw)
+    protected void drawTextLine(String line, int i, int j, int nx, int ny)
     {
         this.font.drawString(line, nx, ny, this.textColor, this.textShadow);
     }
@@ -1348,8 +1536,8 @@ public class GuiMultiTextElement extends GuiElement implements IFocusedGuiElemen
     {
         final int selectionPad = 2;
 
-        String first = this.text.get(min.line);
-        String last = this.text.get(max.line);
+        String first = this.text.get(min.line).text;
+        String last = this.text.get(max.line).text;
 
         int nx = x - this.horizontal.scroll + this.getShiftX();
         int ny = y - this.vertical.scroll + min.line * this.lineHeight;
