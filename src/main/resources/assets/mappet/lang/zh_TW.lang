@@ -376,6 +376,8 @@ mappet.gui.region.info.empty=在右右側列表中選擇一個區域方塊，或
 mappet.gui.region.write_states=Write state
 mappet.gui.region.additive=Additive
 mappet.gui.region.additive_tooltip=Instead of adding §71§r upon entering, and removing the state upon exiting, with additive enabled, it will add §71§r every time player enters without removing the state upon exiting.
+mappet.gui.region.once=Once
+mappet.gui.region.once_tooltip=When enabled, this region block will work only the first time it gets triggered (or more specifically, before the state was written).\n\nAdditive mode §lmust be enabled§r for this feature to work how you intend it.
 mappet.gui.region.context.remove=Remove this shape
 
 mappet.gui.nodes.node.title=標題
@@ -603,6 +605,7 @@ mappet.gui.scripts.repl.title=REPL (interactive console)
 mappet.gui.scripts.repl.hello_world=Hello, world!
 mappet.gui.scripts.repl.welcome=This is Mappet's Read-Eval-Print Loop (REPL). You can type in §6JS§r code, and execute it by pressing Enter key. You can cycle through eval history by holding §6Ctrl§r key and arrow §6Up§r or §6Down§r.\n\nFollowing variables are available:\n\n- §6c§r is a IScriptEvent that has player as a subject\n- §6mappet§r is a IScriptFactory
 mappet.gui.scripts.repl.context.clear=Clear
+mappet.gui.scripts.keys.word_wrap=Toggle word wrapping
 mappet.gui.scripts.context.paste_morph=Paste morph NBT...
 mappet.gui.scripts.context.paste_item=Paste item NBT...
 mappet.gui.scripts.context.paste_player_pos=Paste player's position
