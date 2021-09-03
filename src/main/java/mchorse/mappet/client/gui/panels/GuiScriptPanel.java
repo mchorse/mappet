@@ -38,6 +38,7 @@ import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import org.lwjgl.input.Keyboard;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -197,6 +198,9 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
 
         this.code = new GuiTextEditor(mc, null);
         this.code.background().context(() -> createScriptContextMenu(this.mc, this.code));
+        this.code.keys().ignoreFocus().register(IKey.lang("mappet.gui.scripts.keys.word_wrap"), Keyboard.KEY_P, this::toggleWordWrap)
+            .category(GuiMappetDashboardPanel.KEYS_CATEGORY)
+            .held(Keyboard.KEY_LCONTROL);
 
         this.repl = new GuiRepl(mc);
 
@@ -214,6 +218,14 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
         this.add(this.repl);
 
         this.fill(null);
+    }
+
+    private void toggleWordWrap()
+    {
+        this.code.wrap();
+        this.code.recalculate();
+        this.code.horizontal.clamp();
+        this.code.vertical.clamp();
     }
 
     private void openDocumentation(GuiIconElement element)

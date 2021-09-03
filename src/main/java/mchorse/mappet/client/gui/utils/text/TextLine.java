@@ -26,6 +26,11 @@ public class TextLine
         return this.wrappedLines == null ? 1 : this.wrappedLines.size();
     }
 
+    public void resetWrapping()
+    {
+        this.wrappedLines = null;
+    }
+
     public void calculateWrappedLines(FontRenderer font, int w)
     {
         List<String> wrappedLines = splitIntoLines(font, w);
@@ -58,7 +63,7 @@ public class TextLine
         int left = 0;
         int right = 0;
         int c = this.text.length();
-        int increment = c > 5 ? 5 : 1;
+        int increment = c > 5 ? 3 : 1;
 
         for (; right < c; right += increment)
         {

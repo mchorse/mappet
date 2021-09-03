@@ -55,7 +55,7 @@ public class GuiTextEditor extends GuiMultiTextElement<HighlightedTextLine>
             textLine.resetSegments();
         }
 
-        this.ensureSize();
+        this.recalculateLinesPlacements();
     }
 
     @Override
@@ -67,7 +67,7 @@ public class GuiTextEditor extends GuiMultiTextElement<HighlightedTextLine>
         this.resetHighlight();
     }
 
-    private void ensureSize()
+    private void recalculateLinesPlacements()
     {
         double power = Math.ceil(Math.log10(this.text.size() + 1));
 
@@ -79,7 +79,7 @@ public class GuiTextEditor extends GuiMultiTextElement<HighlightedTextLine>
     {
         super.changedLine(i);
 
-        this.ensureSize();
+        this.recalculateLinesPlacements();
 
         String line = this.text.get(i).text;
 
@@ -98,7 +98,7 @@ public class GuiTextEditor extends GuiMultiTextElement<HighlightedTextLine>
     {
         super.changedLineAfter(i);
 
-        this.ensureSize();
+        this.recalculateLinesPlacements();
 
         while (i < this.text.size())
         {
@@ -323,12 +323,32 @@ public class GuiTextEditor extends GuiMultiTextElement<HighlightedTextLine>
     @Override
     protected void drawTextLine(String line, int i, int j, int nx, int ny)
     {
-        List<TextSegment> segments = this.text.get(i).segments;
-
-        if (segments == null)
+        /* Draw line number */
+        if (this.lines && j == 0)
         {
-            segments = this.highlighter.parse(this.font, this.text, line, i);
-            this.text.get(i).setSegments(segments);
+            String label = String.valueOf(i + 1);
+
+            this.font.drawString(label, this.area.x + 5 + this.placements - this.font.getStringWidth(label), ny, this.highlighter.getStyle().lineNumbers);
+        }
+
+        /* Draw  */
+        HighlightedTextLine textLine = this.text.get(i);
+
+        if (textLine.segments == null)
+        {
+            textLine.setSegments(this.highlighter.parse(this.font, this.text, textLine.text, i));
+
+            if (textLine.wrappedLines != null)
+            {
+                textLine.calculateWrappedSegments(this.font);
+            }
+        }
+
+        List<TextSegment> segments = textLine.segments;
+
+        if (textLine.wrappedSegments != null)
+        {
+            segments = j < textLine.wrappedSegments.size() ? textLine.wrappedSegments.get(j) : null;
         }
 
         if (segments != null)
@@ -352,47 +372,29 @@ public class GuiTextEditor extends GuiMultiTextElement<HighlightedTextLine>
     protected void drawBackground()
     {
         this.area.draw(0xff000000 + ColorUtils.multiplyColor(this.highlighter.getStyle().background, 0.8F));
+
+        if (this.lines)
+        {
+            /* Draw line numbers background */
+            int x = this.area.x + this.getShiftX();
+
+            Gui.drawRect(this.area.x, this.area.y, x, this.area.ey(), 0xff000000 + this.highlighter.getStyle().background);
+        }
     }
 
     @Override
     protected void drawForeground(GuiContext context)
     {
-        if (!this.lines)
+        if (this.lines)
         {
-            return;
-        }
+            /* Draw shadow to the right of line numbers when scrolling */
+            int x = this.area.x + this.getShiftX();
+            int a = (int) (Math.min(this.horizontal.scroll / 10F, 1F) * 0x44);
 
-        /* Draw line numbers background */
-        int x = this.area.x + this.getShiftX();
-
-        Gui.drawRect(this.area.x, this.area.y, x, this.area.ey(), 0xff000000 + this.highlighter.getStyle().background);
-
-        /* Draw line numbers themselves */
-        int start = Math.max(0, (this.vertical.scroll - 10) / this.lineHeight);
-        int y = start * this.lineHeight;
-
-        for (int i = start; i < this.text.size(); i++)
-        {
-            int ny = this.area.y + this.padding + y - this.vertical.scroll;
-
-            if (ny > this.area.ey())
+            if (a > 0)
             {
-                break;
+                GuiDraw.drawHorizontalGradientRect(x, this.area.y, x + 10, this.area.ey(), a << 24, 0);
             }
-
-            String label = String.valueOf(i + 1);
-
-            this.font.drawString(label, this.area.x + 5 + this.placements - this.font.getStringWidth(label), ny, this.highlighter.getStyle().lineNumbers);
-
-            y += this.lineHeight;
-        }
-
-        /* Draw shadow to the right of line numbers when scrolling */
-        int a = (int) (Math.min(this.horizontal.scroll / 10F, 1F) * 0x44);
-
-        if (a > 0)
-        {
-            GuiDraw.drawHorizontalGradientRect(x, this.area.y, x + 10, this.area.ey(), a << 24, 0);
         }
     }
 }

@@ -128,7 +128,12 @@ public class GuiMultiTextElement <T extends TextLine> extends GuiElement impleme
 
     public GuiMultiTextElement<T> wrap()
     {
-        this.wrapping = true;
+        return this.wrap(!this.wrapping);
+    }
+
+    public GuiMultiTextElement<T> wrap(boolean wrapping)
+    {
+        this.wrapping = wrapping;
 
         return this;
     }
@@ -175,6 +180,11 @@ public class GuiMultiTextElement <T extends TextLine> extends GuiElement impleme
     public List<T> getLines()
     {
         return this.text;
+    }
+
+    public int getWrappedWidth()
+    {
+        return this.area.w - this.padding * 3 - this.getShiftX();
     }
 
     /* Selection API */
@@ -450,7 +460,7 @@ public class GuiMultiTextElement <T extends TextLine> extends GuiElement impleme
 
     protected void changedLine(int i)
     {
-        this.text.get(i).calculateWrappedLines(this.font, this.area.w - this.padding * 2);
+        this.text.get(i).calculateWrappedLines(this.font, this.getWrappedWidth());
 
         this.recalculateSizes();
     }
@@ -459,7 +469,7 @@ public class GuiMultiTextElement <T extends TextLine> extends GuiElement impleme
     {
         while (i < this.text.size())
         {
-            this.text.get(i).calculateWrappedLines(this.font, this.area.w - this.padding * 2);
+            this.text.get(i).calculateWrappedLines(this.font, this.getWrappedWidth());
 
             i += 1;
         }
@@ -989,13 +999,30 @@ public class GuiMultiTextElement <T extends TextLine> extends GuiElement impleme
         this.vertical.clamp();
     }
 
+    public void recalculate()
+    {
+        for (T textLine : this.text)
+        {
+            if (this.wrapping)
+            {
+                textLine.calculateWrappedLines(this.font, this.getWrappedWidth());
+            }
+            else
+            {
+                textLine.resetWrapping();
+            }
+        }
+
+        this.recalculateSizes();
+    }
+
     protected void recalculateWrapping()
     {
         if (this.wrapping)
         {
             for (T textLine : this.text)
             {
-                textLine.calculateWrappedLines(this.font, this.area.w - this.padding * 2);
+                textLine.calculateWrappedLines(this.font, this.getWrappedWidth());
             }
         }
     }
