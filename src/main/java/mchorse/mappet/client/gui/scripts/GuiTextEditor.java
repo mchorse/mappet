@@ -2,6 +2,7 @@ package mchorse.mappet.client.gui.scripts;
 
 import mchorse.mappet.client.gui.scripts.utils.HighlightedTextLine;
 import mchorse.mappet.client.gui.scripts.utils.SyntaxHighlighter;
+import mchorse.mappet.client.gui.scripts.utils.TextLineNumber;
 import mchorse.mappet.client.gui.scripts.utils.TextSegment;
 import mchorse.mappet.client.gui.utils.text.GuiMultiTextElement;
 import mchorse.mappet.client.gui.utils.text.undo.TextEditUndo;
@@ -14,6 +15,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.init.SoundEvents;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -22,6 +24,9 @@ public class GuiTextEditor extends GuiMultiTextElement<HighlightedTextLine>
     private SyntaxHighlighter highlighter;
     private int placements;
     private boolean lines = true;
+
+    private List<TextLineNumber> numbers = new ArrayList<TextLineNumber>(40);
+    private int lineNumber = 0;
 
     public GuiTextEditor(Minecraft mc, Consumer<String> callback)
     {
@@ -54,8 +59,6 @@ public class GuiTextEditor extends GuiMultiTextElement<HighlightedTextLine>
         {
             textLine.resetSegments();
         }
-
-        this.recalculateLinesPlacements();
     }
 
     @Override
@@ -67,20 +70,20 @@ public class GuiTextEditor extends GuiMultiTextElement<HighlightedTextLine>
         this.resetHighlight();
     }
 
-    private void recalculateLinesPlacements()
+    @Override
+    protected void recalculateSizes()
     {
+        /* Calculate how many pixels will number lines will occupy horizontally */
         double power = Math.ceil(Math.log10(this.text.size() + 1));
 
         this.placements = (int) power * 6;
+
+        super.recalculateSizes();
     }
 
     @Override
     protected void changedLine(int i)
     {
-        super.changedLine(i);
-
-        this.recalculateLinesPlacements();
-
         String line = this.text.get(i).text;
 
         if (line.contains("/*") || line.contains("*/"))
@@ -89,6 +92,7 @@ public class GuiTextEditor extends GuiMultiTextElement<HighlightedTextLine>
         }
         else
         {
+            super.changedLine(i);
             this.text.get(i).resetSegments();
         }
     }
@@ -97,8 +101,6 @@ public class GuiTextEditor extends GuiMultiTextElement<HighlightedTextLine>
     protected void changedLineAfter(int i)
     {
         super.changedLineAfter(i);
-
-        this.recalculateLinesPlacements();
 
         while (i < this.text.size())
         {
@@ -323,12 +325,20 @@ public class GuiTextEditor extends GuiMultiTextElement<HighlightedTextLine>
     @Override
     protected void drawTextLine(String line, int i, int j, int nx, int ny)
     {
-        /* Draw line number */
+        /* Cache line number to be later rendered in drawForeground() */
         if (this.lines && j == 0)
         {
             String label = String.valueOf(i + 1);
 
-            this.font.drawString(label, this.area.x + 5 + this.placements - this.font.getStringWidth(label), ny, this.highlighter.getStyle().lineNumbers);
+            int x = this.area.x + 5 + this.placements - this.font.getStringWidth(label);
+
+            if (this.lineNumber >= this.numbers.size())
+            {
+                this.numbers.add(new TextLineNumber());
+            }
+
+            this.numbers.get(this.lineNumber).set(label, x, ny);
+            this.lineNumber += 1;
         }
 
         /* Draw  */
@@ -372,14 +382,6 @@ public class GuiTextEditor extends GuiMultiTextElement<HighlightedTextLine>
     protected void drawBackground()
     {
         this.area.draw(0xff000000 + ColorUtils.multiplyColor(this.highlighter.getStyle().background, 0.8F));
-
-        if (this.lines)
-        {
-            /* Draw line numbers background */
-            int x = this.area.x + this.getShiftX();
-
-            Gui.drawRect(this.area.x, this.area.y, x, this.area.ey(), 0xff000000 + this.highlighter.getStyle().background);
-        }
     }
 
     @Override
@@ -387,8 +389,26 @@ public class GuiTextEditor extends GuiMultiTextElement<HighlightedTextLine>
     {
         if (this.lines)
         {
-            /* Draw shadow to the right of line numbers when scrolling */
+            /* Draw line numbers background */
             int x = this.area.x + this.getShiftX();
+
+            Gui.drawRect(this.area.x, this.area.y, x, this.area.ey(), 0xff000000 + this.highlighter.getStyle().background);
+
+            /* Draw cached line numbers */
+            for (TextLineNumber number : this.numbers)
+            {
+                if (!number.draw)
+                {
+                    break;
+                }
+
+                this.font.drawString(number.line, number.x, number.y, this.highlighter.getStyle().lineNumbers);
+                number.draw = false;
+            }
+
+            this.lineNumber = 0;
+
+            /* Draw shadow to the right of line numbers when scrolling */
             int a = (int) (Math.min(this.horizontal.scroll / 10F, 1F) * 0x44);
 
             if (a > 0)

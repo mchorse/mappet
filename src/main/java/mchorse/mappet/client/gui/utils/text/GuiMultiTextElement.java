@@ -27,7 +27,6 @@ import org.lwjgl.input.Keyboard;
 
 import javax.vecmath.Vector2d;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.StringJoiner;
@@ -73,16 +72,27 @@ public class GuiMultiTextElement <T extends TextLine> extends GuiElement impleme
 
     public static List<String> splitNewlineString(String string)
     {
-        if (!string.contains("\n"))
+        List<String> splits = new ArrayList<String>();
+        StringBuilder builder = new StringBuilder();
+
+        for (int i = 0, c = string.length(); i < c; i++)
         {
-            ArrayList<String> strings = new ArrayList<>();
+            char character = string.charAt(i);
 
-            strings.add(string);
-
-            return strings;
+            if (character == '\n')
+            {
+                splits.add(builder.toString());
+                builder = new StringBuilder();
+            }
+            else
+            {
+                builder.append(character);
+            }
         }
 
-        return new ArrayList<String>(Arrays.asList(string.split("\n")));
+        splits.add(builder.toString());
+
+        return splits;
     }
 
     public GuiMultiTextElement(Minecraft mc, Consumer<String> callback)
@@ -460,8 +470,7 @@ public class GuiMultiTextElement <T extends TextLine> extends GuiElement impleme
 
     protected void changedLine(int i)
     {
-        this.text.get(i).calculateWrappedLines(this.font, this.getWrappedWidth());
-
+        this.calculateWrappedLine(this.text.get(i));
         this.recalculateSizes();
     }
 
@@ -469,7 +478,7 @@ public class GuiMultiTextElement <T extends TextLine> extends GuiElement impleme
     {
         while (i < this.text.size())
         {
-            this.text.get(i).calculateWrappedLines(this.font, this.getWrappedWidth());
+            this.calculateWrappedLine(this.text.get(i));
 
             i += 1;
         }
@@ -993,9 +1002,7 @@ public class GuiMultiTextElement <T extends TextLine> extends GuiElement impleme
         }
 
         this.recalculateSizes();
-        this.horizontal.copy(this.area);
         this.horizontal.clamp();
-        this.vertical.copy(this.area);
         this.vertical.clamp();
     }
 
@@ -1003,14 +1010,7 @@ public class GuiMultiTextElement <T extends TextLine> extends GuiElement impleme
     {
         for (T textLine : this.text)
         {
-            if (this.wrapping)
-            {
-                textLine.calculateWrappedLines(this.font, this.getWrappedWidth());
-            }
-            else
-            {
-                textLine.resetWrapping();
-            }
+            this.calculateWrappedLine(textLine);
         }
 
         this.recalculateSizes();
@@ -1022,8 +1022,20 @@ public class GuiMultiTextElement <T extends TextLine> extends GuiElement impleme
         {
             for (T textLine : this.text)
             {
-                textLine.calculateWrappedLines(this.font, this.getWrappedWidth());
+                this.calculateWrappedLine(textLine);
             }
+        }
+    }
+
+    protected void calculateWrappedLine(T textLine)
+    {
+        if (this.wrapping)
+        {
+            textLine.calculateWrappedLines(this.font, this.getWrappedWidth());
+        }
+        else
+        {
+            textLine.resetWrapping();
         }
     }
 
@@ -1042,7 +1054,14 @@ public class GuiMultiTextElement <T extends TextLine> extends GuiElement impleme
             h += textLine.getLines() * this.lineHeight;
         }
 
+        int offset = this.getShiftX();
+
+        this.horizontal.copy(this.area);
+        this.horizontal.x += offset;
+        this.horizontal.w -= offset;
         this.horizontal.scrollSize = this.wrapping ? w : this.getHorizontalSize(w);
+
+        this.vertical.copy(this.area);
         this.vertical.scrollSize = h - (this.lineHeight - this.font.FONT_HEIGHT) + this.padding * 2;
     }
 
@@ -1485,10 +1504,10 @@ public class GuiMultiTextElement <T extends TextLine> extends GuiElement impleme
             y += textLine.getLines() * this.lineHeight;
         }
 
-        this.drawForeground(context);
-
         this.horizontal.drawScrollbar();
         this.vertical.drawScrollbar();
+
+        this.drawForeground(context);
 
         GuiDraw.unscissor(context);
     }
