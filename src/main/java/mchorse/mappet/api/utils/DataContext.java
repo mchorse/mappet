@@ -1,6 +1,5 @@
 package mchorse.mappet.api.utils;
 
-import com.sun.istack.internal.NotNull;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.entities.EntityNpc;
 import mchorse.mappet.utils.ExpressionRewriter;
@@ -35,7 +34,7 @@ public class DataContext
     private TriggerSender sender;
     private Map<String, Object> values = new HashMap<String, Object>();
 
-    public DataContext(@NotNull Entity subject, @NotNull Entity object)
+    public DataContext(Entity subject, Entity object)
     {
         this(subject.world);
 
@@ -45,7 +44,7 @@ public class DataContext
         this.setup();
     }
 
-    public DataContext(@NotNull Entity subject)
+    public DataContext(Entity subject)
     {
         this(subject.world);
 
