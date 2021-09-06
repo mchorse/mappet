@@ -10,8 +10,8 @@ import java.util.Set;
 
 public class MappetQuests implements IMappetQuests
 {
-    private Quests quests;
-    private EntityPlayer player;
+    public Quests quests;
+    public EntityPlayer player;
 
     public MappetQuests(Quests quests, EntityPlayer player)
     {

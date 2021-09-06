@@ -2,11 +2,11 @@ package mchorse.mappet.api.quests;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.quests.objectives.AbstractObjective;
-import mchorse.mappet.api.quests.objectives.StateObjective;
 import mchorse.mappet.api.quests.objectives.KillObjective;
+import mchorse.mappet.api.quests.objectives.StateObjective;
 import mchorse.mappet.api.quests.rewards.IReward;
-import mchorse.mappet.api.utils.AbstractData;
 import mchorse.mappet.api.triggers.Trigger;
+import mchorse.mappet.api.utils.AbstractData;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mclib.utils.TextUtils;
@@ -33,11 +33,11 @@ public class Quest extends AbstractData implements INBTPartialSerializable
     public final List<AbstractObjective> objectives = new ArrayList<AbstractObjective>();
     public final List<IReward> rewards = new ArrayList<IReward>();
 
-    private boolean iniitated;
+    private boolean initated;
 
     public void initiate(EntityPlayer player)
     {
-        if (this.iniitated)
+        if (this.initated)
         {
             return;
         }
@@ -47,7 +47,7 @@ public class Quest extends AbstractData implements INBTPartialSerializable
             objective.initiate(player);
         }
 
-        this.iniitated = true;
+        this.initated = true;
     }
 
     public String getProcessedTitle()

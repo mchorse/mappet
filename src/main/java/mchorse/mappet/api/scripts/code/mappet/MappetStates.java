@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class MappetStates implements IMappetStates
 {
-    private States states;
+    public States states;
 
     public MappetStates(States states)
     {
