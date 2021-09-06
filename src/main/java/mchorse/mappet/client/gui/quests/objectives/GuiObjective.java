@@ -20,7 +20,7 @@ public abstract class GuiObjective <T extends AbstractObjective> extends GuiElem
 
         this.objective = objective;
 
-        this.message = new GuiTextElement(mc, (t) -> this.objective.message = t);
+        this.message = new GuiTextElement(mc, 1000, (t) -> this.objective.message = t);
         this.message.tooltip(IKey.comp(IKey.lang("mappet.gui.quests.objectives.message_tooltip"), this.getMessageTooltip()));
         this.message.setText(objective.message);
     }
