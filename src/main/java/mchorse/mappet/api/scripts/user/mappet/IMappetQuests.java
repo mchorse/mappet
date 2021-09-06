@@ -45,7 +45,7 @@ public interface IMappetQuests
      * }</pre>
      *
      * @return <code>true</code> if a quest was successfully added, <code>false</code> if
-     *         player has already this quest, or if the quest doesn't exist
+     *         player has already this quest, or if the quest doesn't exist.
      */
     public boolean add(String id);
 
@@ -76,7 +76,7 @@ public interface IMappetQuests
      * }</pre>
      *
      * @return <code>true</code> if player was rewarded and quest was removed from the
-     *         quests list, <code>false</code> if the quest by given ID isn't present
+     *         quests list, <code>false</code> if the quest by given ID isn't present.
      */
     public boolean complete(String id);
 
@@ -91,7 +91,7 @@ public interface IMappetQuests
      * }</pre>
      *
      * @return <code>true</code> if the quest was removed, <code>false</code> if the
-     *         quest wasn't even present in these quests
+     *         quest wasn't even present in these quests.
      */
     public boolean decline(String id);
 

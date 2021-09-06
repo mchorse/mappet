@@ -33,8 +33,22 @@ public class Quest extends AbstractData implements INBTPartialSerializable
     public final List<AbstractObjective> objectives = new ArrayList<AbstractObjective>();
     public final List<IReward> rewards = new ArrayList<IReward>();
 
-    public Quest()
-    {}
+    private boolean iniitated;
+
+    public void initiate(EntityPlayer player)
+    {
+        if (this.iniitated)
+        {
+            return;
+        }
+
+        for (AbstractObjective objective : this.objectives)
+        {
+            objective.initiate(player);
+        }
+
+        this.iniitated = true;
+    }
 
     public String getProcessedTitle()
     {

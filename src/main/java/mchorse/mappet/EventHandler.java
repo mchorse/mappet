@@ -398,6 +398,8 @@ public class EventHandler
     {
         if (!character.getQuests().quests.isEmpty())
         {
+            character.getQuests().initiate(player);
+
             Dispatcher.sendTo(new PacketQuests(character.getQuests()), player);
         }
 

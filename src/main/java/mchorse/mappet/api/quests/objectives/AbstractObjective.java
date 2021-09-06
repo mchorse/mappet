@@ -30,6 +30,9 @@ public abstract class AbstractObjective implements INBTSerializable<NBTTagCompou
         return null;
     }
 
+    public void initiate(EntityPlayer player)
+    {}
+
     public abstract boolean isComplete(EntityPlayer player);
 
     public abstract void complete(EntityPlayer player);

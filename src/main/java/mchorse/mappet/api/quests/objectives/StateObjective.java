@@ -9,6 +9,18 @@ public class StateObjective extends AbstractObjective
 {
     public Checker expression = new Checker();
     private boolean result;
+    private String compiledMessage;
+
+    @Override
+    public void initiate(EntityPlayer player)
+    {
+        super.initiate(player);
+
+        if (this.message.contains("${"))
+        {
+            this.compiledMessage = new DataContext(player).process(this.message);
+        }
+    }
 
     @Override
     public boolean isComplete(EntityPlayer player)
@@ -19,8 +31,16 @@ public class StateObjective extends AbstractObjective
     public boolean updateValue(EntityPlayer player)
     {
         boolean result = this.result;
+        DataContext data = new DataContext(player);
 
-        this.result = this.expression.check(new DataContext(player));
+        this.result = this.expression.check(data);
+
+        if (this.message.contains("${"))
+        {
+            this.compiledMessage = data.process(this.message);
+
+            return true;
+        }
 
         return this.result != result;
     }
@@ -32,7 +52,7 @@ public class StateObjective extends AbstractObjective
     @Override
     public String stringifyObjective(EntityPlayer player)
     {
-        return this.message;
+        return this.compiledMessage == null ? this.message : this.compiledMessage;
     }
 
     @Override
@@ -71,6 +91,11 @@ public class StateObjective extends AbstractObjective
         tag.setTag("Expression", this.expression.serializeNBT());
         tag.setBoolean("Result", this.result);
 
+        if (this.compiledMessage != null)
+        {
+            tag.setString("CompiledMessage", this.compiledMessage);
+        }
+
         return tag;
     }
 
@@ -81,5 +106,14 @@ public class StateObjective extends AbstractObjective
 
         this.expression.deserializeNBT(tag.getTag("Expression"));
         this.result = tag.getBoolean("Result");
+
+        if (tag.hasKey("CompiledMessage"))
+        {
+            this.compiledMessage = tag.getString("CompiledMessage");
+        }
+        else
+        {
+            this.compiledMessage = null;
+        }
     }
 }

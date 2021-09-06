@@ -20,6 +20,14 @@ public class Quests implements INBTSerializable<NBTTagCompound>
     public boolean iterating;
     public List<Quest> toAdd = new ArrayList<Quest>(2);
 
+    public void initiate(EntityPlayer player)
+    {
+        for (Quest quest : this.quests.values())
+        {
+            quest.initiate(player);
+        }
+    }
+
     public boolean add(Quest quest, EntityPlayer player)
     {
         if (this.has(quest.getId()))
@@ -35,6 +43,7 @@ public class Quests implements INBTSerializable<NBTTagCompound>
         }
 
         this.quests.put(quest.getId(), quest);
+        quest.initiate(player);
         quest.accept.trigger(player);
 
         if (player instanceof EntityPlayerMP)
