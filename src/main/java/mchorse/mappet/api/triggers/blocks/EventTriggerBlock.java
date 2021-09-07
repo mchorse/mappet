@@ -21,7 +21,14 @@ public class EventTriggerBlock extends DataTriggerBlock
     {
         if (!this.string.isEmpty())
         {
-            Mappet.events.execute(this.string, new EventContext(this.apply(context)));
+            DataContext data = this.apply(context);
+
+            Mappet.events.execute(this.string, new EventContext(data));
+
+            if (!context.isCanceled())
+            {
+                context.cancel(data.isCanceled());
+            }
         }
     }
 

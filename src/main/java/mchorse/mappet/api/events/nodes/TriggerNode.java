@@ -49,7 +49,7 @@ public class TriggerNode extends EventBaseNode
     {
         DataContext context = event.data.copy();
 
-        context.parse(event.data.process(this.customData));
+        context.parse(context.process(this.customData));
 
         return context;
     }

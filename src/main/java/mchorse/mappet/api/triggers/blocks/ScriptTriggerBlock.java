@@ -39,7 +39,14 @@ public class ScriptTriggerBlock extends DataTriggerBlock
         {
             try
             {
-                Mappet.scripts.execute(this.string, this.function.trim(), this.apply(context));
+                DataContext data = this.apply(context);
+
+                Mappet.scripts.execute(this.string, this.function.trim(), data);
+
+                if (!context.isCanceled())
+                {
+                    context.cancel(data.isCanceled());
+                }
             }
             catch (Exception e)
             {
