@@ -2,6 +2,8 @@ package mchorse.mappet.api.scripts.user;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
+import mchorse.mappet.api.scripts.user.entities.IScriptNpc;
+import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 
 import java.util.Map;
 
@@ -33,6 +35,16 @@ public interface IScriptEvent
      * Get object (secondary) entity that was passed into the event.
      */
     public IScriptEntity getObject();
+
+    /**
+     * Get the first player from either subject or object (or <code>null</code>, if there is no player).
+     */
+    public IScriptPlayer getPlayer();
+
+    /**
+     * Get the first Mappet NPC from either subject or object (or <code>null</code>, if there is no NPC).
+     */
+    public IScriptNpc getNPC();
 
     /**
      * Get the world in which this event happened.

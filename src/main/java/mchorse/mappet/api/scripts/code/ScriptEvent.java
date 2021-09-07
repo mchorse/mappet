@@ -8,6 +8,8 @@ import mchorse.mappet.api.scripts.user.IScriptEvent;
 import mchorse.mappet.api.scripts.user.IScriptServer;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
+import mchorse.mappet.api.scripts.user.entities.IScriptNpc;
+import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.utils.DataContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextComponentString;
@@ -64,6 +66,42 @@ public class ScriptEvent implements IScriptEvent
         }
 
         return this.object;
+    }
+
+    @Override
+    public IScriptPlayer getPlayer()
+    {
+        IScriptEntity subject = this.getSubject();
+        IScriptEntity object = this.getObject();
+
+        if (subject instanceof IScriptPlayer)
+        {
+            return (IScriptPlayer) subject;
+        }
+        else if (object instanceof IScriptPlayer)
+        {
+            return (IScriptPlayer) object;
+        }
+
+        return null;
+    }
+
+    @Override
+    public IScriptNpc getNPC()
+    {
+        IScriptEntity subject = this.getSubject();
+        IScriptEntity object = this.getObject();
+
+        if (subject instanceof IScriptNpc)
+        {
+            return (IScriptNpc) subject;
+        }
+        else if (object instanceof IScriptPlayer)
+        {
+            return (IScriptNpc) object;
+        }
+
+        return null;
     }
 
     @Override
