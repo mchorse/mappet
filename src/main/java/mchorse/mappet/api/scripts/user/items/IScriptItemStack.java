@@ -15,42 +15,52 @@ public interface IScriptItemStack
     public ItemStack getMinecraftItemStack();
 
     /**
-     * Whether this item is empty
+     * Whether this item is empty.
      */
     public boolean isEmpty();
 
     /**
-     * Get item stack's item
+     * Get item stack's item.
      */
     public IScriptItem getItem();
 
     /**
-     * Get item stack's count
+     * Get item stack's count.
      */
     public int getCount();
 
     /**
-     * Get item stack's meta
+     * Set item stack's count.
+     */
+    public void setCount(int count);
+
+    /**
+     * Get item stack's meta.
      */
     public int getMeta();
 
     /**
-     * Check whether an item stack has an NBT compound tag
+     * Set item stack's meta.
+     */
+    public void setMeta(int meta);
+
+    /**
+     * Check whether an item stack has an NBT compound tag.
      */
     public boolean hasData();
 
     /**
-     * Get item stack's NBT compound tag
+     * Get item stack's NBT compound tag.
      */
     public INBTCompound getData();
 
     /**
-     * Replace item stack's NBT compound tag
+     * Replace item stack's NBT compound tag.
      */
     public void setData(INBTCompound tag);
 
     /**
-     * Serialize item stack to an NBT compound
+     * Serialize item stack to an NBT compound.
      */
     public INBTCompound serialize();
 }

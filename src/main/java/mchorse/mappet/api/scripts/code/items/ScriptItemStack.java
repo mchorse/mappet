@@ -58,9 +58,21 @@ public class ScriptItemStack implements IScriptItemStack
     }
 
     @Override
+    public void setCount(int count)
+    {
+        this.stack.setCount(count);
+    }
+
+    @Override
     public int getMeta()
     {
         return this.stack.getMetadata();
+    }
+
+    @Override
+    public void setMeta(int meta)
+    {
+        this.stack.setItemDamage(meta);
     }
 
     @Override
