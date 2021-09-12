@@ -63,6 +63,11 @@ public class Character implements ICharacter
     @Override
     public void setDialogue(Dialogue dialogue, DialogueContext context)
     {
+        if (dialogue == null && this.dialogue != null)
+        {
+            this.dialogue.onClose.trigger(this.dialogueContext.data);
+        }
+
         this.dialogue = dialogue;
         this.dialogueContext = context;
     }

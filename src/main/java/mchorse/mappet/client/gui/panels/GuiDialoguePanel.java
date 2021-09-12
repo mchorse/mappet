@@ -7,9 +7,12 @@ import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.nodes.GuiEventBaseNodePanel;
 import mchorse.mappet.client.gui.nodes.GuiEventNodeGraph;
+import mchorse.mappet.client.gui.triggers.GuiTriggerElement;
+import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
+import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -20,7 +23,10 @@ public class GuiDialoguePanel extends GuiMappetRunPanel<Dialogue>
 
     public GuiEventNodeGraph graph;
     public GuiEventBaseNodePanel panel;
+
+    public GuiElement bottom;
     public GuiToggleElement closable;
+    public GuiTriggerElement onClose;
 
     public GuiDialoguePanel(Minecraft mc, GuiMappetDashboard dashboard)
     {
@@ -29,13 +35,17 @@ public class GuiDialoguePanel extends GuiMappetRunPanel<Dialogue>
         this.graph = new GuiEventNodeGraph(mc, CommonProxy.getDialogues(), this::pickNode);
         this.graph.notifyAboutMain().flex().relative(this.editor).wh(1F, 1F);
 
-        this.closable = new GuiToggleElement(mc, IKey.lang("mappet.gui.nodes.dialogue.closable"), (b) -> this.data.closable = b.isToggled());
-        this.closable.flex().relative(this.sidebar).x(10).y(1F, -10).w(1F, -20).anchorY(1F);
+        this.bottom = new GuiElement(mc);
+        this.bottom.flex().relative(this.sidebar).y(1F).w(1F).anchorY(1F).column(5).vertical().stretch().padding(10);
 
-        this.names.flex().hTo(this.closable.area, -5);
+        this.closable = new GuiToggleElement(mc, IKey.lang("mappet.gui.nodes.dialogue.closable"), (b) -> this.data.closable = b.isToggled());
+        this.onClose = new GuiTriggerElement(mc);
+
+        this.names.flex().hTo(this.bottom.area, -5);
 
         this.editor.add(this.graph);
-        this.sidebar.prepend(this.closable);
+        this.bottom.add(Elements.label(IKey.str("On close trigger")), this.onClose, this.closable);
+        this.sidebar.prepend(this.bottom);
 
         this.fill(null);
     }
@@ -104,12 +114,13 @@ public class GuiDialoguePanel extends GuiMappetRunPanel<Dialogue>
         super.fill(data, allowed);
 
         this.graph.setVisible(data != null);
-        this.closable.setVisible(data != null && allowed);
+        this.bottom.setVisible(data != null && allowed);
 
         if (data != null)
         {
             this.graph.set(data);
             this.closable.toggled(data.closable);
+            this.onClose.set(data.onClose);
         }
     }
 

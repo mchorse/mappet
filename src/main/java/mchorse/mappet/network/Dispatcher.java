@@ -43,6 +43,7 @@ import mchorse.mappet.network.common.content.PacketStates;
 import mchorse.mappet.network.common.crafting.PacketCraft;
 import mchorse.mappet.network.common.crafting.PacketCraftingTable;
 import mchorse.mappet.network.common.dialogue.PacketDialogueFragment;
+import mchorse.mappet.network.common.dialogue.PacketFinishDialogue;
 import mchorse.mappet.network.common.dialogue.PacketPickReply;
 import mchorse.mappet.network.common.events.PacketEventHotkey;
 import mchorse.mappet.network.common.events.PacketEventHotkeys;
@@ -80,6 +81,7 @@ import mchorse.mappet.network.server.content.ServerHandlerServerSettings;
 import mchorse.mappet.network.server.content.ServerHandlerStates;
 import mchorse.mappet.network.server.crafting.ServerHandlerCraft;
 import mchorse.mappet.network.server.crafting.ServerHandlerCraftingTable;
+import mchorse.mappet.network.server.dialogue.ServerHandlerFinishDialogue;
 import mchorse.mappet.network.server.dialogue.ServerHandlerPickReply;
 import mchorse.mappet.network.server.events.ServerHandlerEventHotkey;
 import mchorse.mappet.network.server.events.ServerHandlerPlayerJournal;
@@ -121,6 +123,7 @@ public class Dispatcher
             /* Dialogue */
             this.register(PacketDialogueFragment.class, ClientHandlerDialogueFragment.class, Side.CLIENT);
             this.register(PacketPickReply.class, ServerHandlerPickReply.class, Side.SERVER);
+            this.register(PacketFinishDialogue.class, ServerHandlerFinishDialogue.class, Side.SERVER);
 
             /* Blocks */
             this.register(PacketEditEmitter.class, ClientHandlerEditEmitter.class, Side.CLIENT);

@@ -12,8 +12,8 @@ import mchorse.mappet.client.gui.utils.GuiMorphRenderer;
 import mchorse.mappet.client.gui.utils.text.GuiClickableText;
 import mchorse.mappet.client.gui.utils.text.GuiText;
 import mchorse.mappet.network.Dispatcher;
-import mchorse.mappet.network.common.crafting.PacketCraftingTable;
 import mchorse.mappet.network.common.dialogue.PacketDialogueFragment;
+import mchorse.mappet.network.common.dialogue.PacketFinishDialogue;
 import mchorse.mappet.network.common.dialogue.PacketPickReply;
 import mchorse.mappet.network.common.quests.PacketQuestAction;
 import mchorse.mclib.client.gui.framework.GuiBase;
@@ -307,7 +307,7 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
         {
             super.closeScreen();
 
-            Dispatcher.sendToServer(new PacketCraftingTable(null));
+            Dispatcher.sendToServer(new PacketFinishDialogue());
         }
     }
 
