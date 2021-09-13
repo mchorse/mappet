@@ -1,3 +1,5 @@
+![Mappet](https://i.imgur.com/1pvpWDH.png)
+
 [CurseForge page](https://www.curseforge.com/minecraft/mc-mods/mappet) – [GitHub](https://github.com/mchorse/mappet) – [Wiki](https://github.com/mchorse/mappet/wiki) 
 
 **Mappet** is a Minecraft mod (for **1.12.2** exclusively) that is designed as a tool set for far superior adventure maps than possible with vanilla. It's also possible to use Mappet for scripted roleplays, and, to some extent, in Minecraft machinimas.
