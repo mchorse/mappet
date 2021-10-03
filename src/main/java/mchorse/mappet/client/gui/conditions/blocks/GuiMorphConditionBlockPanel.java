@@ -7,6 +7,7 @@ import mchorse.mappet.client.gui.utils.GuiTargetElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.metamorph.api.MorphManager;
+import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.creative.GuiNestedEdit;
 import net.minecraft.client.Minecraft;
@@ -29,7 +30,7 @@ public class GuiMorphConditionBlockPanel extends GuiAbstractConditionBlockPanel<
 
             GuiMappetDashboard.get(mc).openMorphMenu(overlay.getParent(), editing, m, (morph) ->
             {
-                this.block.morph = morph.toNBT();
+                this.block.morph = MorphUtils.toNBT(morph);
                 this.morph.setMorph(morph);
             });
         });
