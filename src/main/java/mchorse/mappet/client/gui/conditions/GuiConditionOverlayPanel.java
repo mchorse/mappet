@@ -198,11 +198,11 @@ public class GuiConditionOverlayPanel extends GuiEditorOverlayPanel<AbstractCond
         @Override
         public void drawPostListElement(AbstractConditionBlock element, int i, int x, int y, boolean hover, boolean selected)
         {
-            if (i < this.getList().size() - 1)
+            if (i > 0)
             {
                 String label = I18n.format(element.or ? "mappet.gui.conditions.label_or" : "mappet.gui.conditions.label_and");
 
-                y += this.scroll.scrollItemSize - 4;
+                y -= 4;
                 int w = this.font.getStringWidth(label);
 
                 GuiDraw.drawTextBackground(this.font, label, this.scroll.mx(w), y,0xffffff, ColorUtils.HALF_BLACK, 2);
