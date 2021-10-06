@@ -1,7 +1,7 @@
 package mchorse.mappet.utils;
 
 import com.google.common.collect.ImmutableSet;
-import mchorse.mappet.ClientProxy;
+import mchorse.mappet.CommonProxy;
 import org.apache.commons.io.FileUtils;
 
 import javax.script.Bindings;
@@ -62,7 +62,7 @@ public class ScriptUtils
 
         File home = new File(System.getProperty("java.home"));
         File nashorn = new File(home, "lib/ext/nashorn.jar");
-        File modsNashorn = new File(ClientProxy.configFolder.getParentFile().getParentFile(), "mods/nashorn.jar");
+        File modsNashorn = new File(CommonProxy.configFolder.getParentFile(), "mods/nashorn.jar");
 
         if (nashorn.isFile() && !modsNashorn.isFile())
         {
