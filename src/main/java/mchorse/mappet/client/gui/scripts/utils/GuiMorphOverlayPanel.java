@@ -7,6 +7,7 @@ import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagString;
@@ -42,7 +43,7 @@ public class GuiMorphOverlayPanel extends GuiOverlayPanel
 
     private void setMorph(AbstractMorph morph)
     {
-        this.morph = morph;
+        this.morph = MorphUtils.copy(morph);
     }
 
     private void insert(GuiButtonElement b)

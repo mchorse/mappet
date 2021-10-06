@@ -9,6 +9,7 @@ import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.creative.GuiNestedEdit;
 import net.minecraft.client.Minecraft;
@@ -48,7 +49,7 @@ public class GuiNpcGeneralPanel extends GuiNpcPanel
 
     private void setMorph(AbstractMorph morph)
     {
-        this.state.morph = morph;
+        this.state.morph = MorphUtils.copy(morph);
         this.morph.setMorph(morph);
     }
 

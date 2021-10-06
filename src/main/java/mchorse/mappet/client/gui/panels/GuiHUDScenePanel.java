@@ -20,6 +20,7 @@ import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.ColorUtils;
+import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.creative.GuiNestedEdit;
 import net.minecraft.client.Minecraft;
@@ -87,6 +88,8 @@ public class GuiHUDScenePanel extends GuiMappetDashboardPanel<HUDScene>
 
     private void setMorph(AbstractMorph morph)
     {
+        morph = MorphUtils.copy(morph);
+
         this.current.morph.setDirect(morph);
         this.morph.setMorph(morph);
     }
