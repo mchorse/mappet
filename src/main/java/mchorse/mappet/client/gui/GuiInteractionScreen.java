@@ -277,7 +277,7 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
 
         Dispatcher.sendToServer(new PacketQuestAction(info.quest.getId(), info.status));
 
-        if (this.fragment.singleQuest)
+        if (this.fragment.singleQuest && info.status == QuestStatus.COMPLETED)
         {
             this.back.clickItself(GuiBase.getCurrent());
 

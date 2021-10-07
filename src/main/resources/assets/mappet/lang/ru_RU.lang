@@ -411,6 +411,8 @@ mappet.gui.nodes.dialogue.receiver=Квестополучатель
 mappet.gui.nodes.dialogue.auto_accept=Принимать автоматически
 mappet.gui.nodes.dialogue.allow_retake=Многоразовый квест
 mappet.gui.nodes.dialogue.condition=Это условие определяет может ли квест быть предложенным игроку (при условии что квестодатель и квестополучатель отвечают критериям квеста)
+mappet.gui.nodes.dialogue.skip_if_completed=Skip if completed
+mappet.gui.nodes.dialogue.skip_if_completed_tooltip=Whether this node should be skipped if player already completed this quest
 mappet.gui.nodes.context.add=Добавьте нод...
 mappet.gui.nodes.context.add_node=Добавить нод %s
 mappet.gui.nodes.context.copy=Скопировать выбранные ноды
@@ -663,6 +665,7 @@ mappet.gui.condition_types.world_time=Мировое время
 mappet.gui.condition_types.entity=Сущность
 mappet.gui.condition_types.condition=Условие
 mappet.gui.condition_types.morph=Morph
+mappet.gui.condition_types.expression=Expression
 
 mappet.gui.trigger_types.command=Команда
 mappet.gui.trigger_types.sound=Звуковое событие

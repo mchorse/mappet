@@ -411,6 +411,8 @@ mappet.gui.nodes.dialogue.receiver=任務提交對象
 mappet.gui.nodes.dialogue.auto_accept=Auto accept
 mappet.gui.nodes.dialogue.allow_retake=Allow retake
 mappet.gui.nodes.dialogue.condition=This condition determines whether the quest can be offered to the player (afrer it meets quest receiver and quest giver criteria as well)
+mappet.gui.nodes.dialogue.skip_if_completed=Skip if completed
+mappet.gui.nodes.dialogue.skip_if_completed_tooltip=Whether this node should be skipped if player already completed this quest
 mappet.gui.nodes.context.add=添加節點...
 mappet.gui.nodes.context.add_node=添加 %s 節點
 mappet.gui.nodes.context.copy=拷貝選中節點
@@ -663,6 +665,7 @@ mappet.gui.condition_types.world_time=世界時間
 mappet.gui.condition_types.entity=實體
 mappet.gui.condition_types.condition=條件
 mappet.gui.condition_types.morph=Morph
+mappet.gui.condition_types.expression=Expression
 
 mappet.gui.trigger_types.command=Command
 mappet.gui.trigger_types.sound=Sound event
