@@ -71,6 +71,19 @@ public class ScriptServer implements IScriptServer
     }
 
     @Override
+    public IScriptPlayer getPlayer(String username)
+    {
+        EntityPlayerMP player = this.server.getPlayerList().getPlayerByUsername(username);
+
+        if (player != null)
+        {
+            return new ScriptPlayer(player);
+        }
+
+        return null;
+    }
+
+    @Override
     public IMappetStates getStates()
     {
         if (this.states == null)

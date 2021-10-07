@@ -69,6 +69,22 @@ public interface IScriptServer
     public List<IScriptPlayer> getAllPlayers();
 
     /**
+     * Get a player by their username.
+     *
+     * <pre>{@code
+     *    var player = c.getServer().getPlayer("Notch");
+     *
+     *    if (player)
+     *    {
+     *        // I'm about to pull a prank on Notch... >:)
+     *        //
+     *        // Or give a nice present... :)
+     *    }
+     * }</pre>
+     */
+    public IScriptPlayer getPlayer(String username);
+
+    /**
      * Get global (server) states.
      *
      * <pre>{@code
