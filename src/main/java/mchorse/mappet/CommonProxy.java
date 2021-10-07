@@ -4,6 +4,7 @@ import mchorse.mappet.api.conditions.blocks.AbstractConditionBlock;
 import mchorse.mappet.api.conditions.blocks.ConditionConditionBlock;
 import mchorse.mappet.api.conditions.blocks.DialogueConditionBlock;
 import mchorse.mappet.api.conditions.blocks.EntityConditionBlock;
+import mchorse.mappet.api.conditions.blocks.ExpressionConditionBlock;
 import mchorse.mappet.api.conditions.blocks.FactionConditionBlock;
 import mchorse.mappet.api.conditions.blocks.ItemConditionBlock;
 import mchorse.mappet.api.conditions.blocks.MorphConditionBlock;
@@ -212,7 +213,8 @@ public class CommonProxy
             .register("world_time", WorldTimeConditionBlock.class, Colors.TIME)
             .register("entity", EntityConditionBlock.class, Colors.ENTITY)
             .register("condition", ConditionConditionBlock.class, Colors.CONDITION)
-            .register("morph", MorphConditionBlock.class, Colors.MORPH);
+            .register("morph", MorphConditionBlock.class, Colors.MORPH)
+            .register("expression", ExpressionConditionBlock.class, Colors.CANCEL);
 
         conditionBlocks = conditions;
         Mappet.EVENT_BUS.post(new RegisterConditionBlockEvent(conditions));

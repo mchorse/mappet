@@ -663,6 +663,7 @@ mappet.gui.condition_types.world_time=World time
 mappet.gui.condition_types.entity=Entity
 mappet.gui.condition_types.condition=Condition
 mappet.gui.condition_types.morph=Morph
+mappet.gui.condition_types.expression=Expression
 
 mappet.gui.trigger_types.command=Command
 mappet.gui.trigger_types.sound=Sound event
