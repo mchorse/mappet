@@ -24,7 +24,7 @@ public class NpcLexer
         "speed", "can_swim", "immovable", "has_post", "post", "post_radius", "fallback", "patrol_circulate", "patrol", "follow",
         "faction", "morph", "sight_distance", "sight_radius", "drops", "xp",
         "look_at_player", "look_around", "wander", "flee",
-        "trigger_died", "trigger_damaged", "trigger_interact", "trigger_tick", "trigger_target", "trigger_initialize"
+        "trigger_died", "trigger_damaged", "trigger_interact", "trigger_tick", "trigger_target", "trigger_initialize","damage_rate"
     );
 
     public String id;

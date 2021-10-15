@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 public class GuiNpcDamagePanel extends GuiNpcPanel
 {
     public GuiTrackpadElement damage;
+    public GuiTrackpadElement damageRate;
     public GuiToggleElement canFallDamage;
     public GuiToggleElement canGetBurned;
     public GuiToggleElement invincible;
@@ -18,7 +19,7 @@ public class GuiNpcDamagePanel extends GuiNpcPanel
     public GuiNpcDamagePanel(Minecraft mc)
     {
         super(mc);
-
+        this.initDamageRate();
         this.damage = new GuiTrackpadElement(mc, (v) -> this.state.damage = v.floatValue());
         this.damage.limit(0);
         this.canFallDamage = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.damage.fall"), (b) -> this.state.canFallDamage = b.isToggled());
@@ -30,11 +31,18 @@ public class GuiNpcDamagePanel extends GuiNpcPanel
         this.add(this.canFallDamage.marginTop(12), this.canGetBurned, this.invincible, this.killable);
     }
 
+    private void initDamageRate(){
+
+        this.damageRate = new GuiTrackpadElement(mc,(v) -> this.state.damageRate = v.intValue() );
+        this.damageRate.limit(0, 200);
+
+        this.add(Elements.label(IKey.lang("mappet.gui.npcs.damage.damage_rate")), this.damageRate);
+    }
     @Override
     public void set(NpcState state)
     {
         super.set(state);
-
+        this.damageRate.setValue(state.damageRate);
         this.damage.setValue(state.damage);
         this.canFallDamage.toggled(state.canFallDamage);
         this.canGetBurned.toggled(state.canGetBurned);

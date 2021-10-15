@@ -146,7 +146,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         this.tasks.addTask(4, new EntityAIAttackNpcMelee(this, speed, false));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityLivingBase>(this, EntityLivingBase.class, 10, true, false, this::targetCheck));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityLivingBase>(this, EntityLivingBase.class, this.state.damageRate, true, false, this::targetCheck));
     }
 
     private boolean targetCheck(EntityLivingBase entity)
