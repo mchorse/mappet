@@ -19,14 +19,13 @@ public class GuiNpcDamagePanel extends GuiNpcPanel
     public GuiNpcDamagePanel(Minecraft mc)
     {
         super(mc);
-        this.initDamageRate();
         this.damage = new GuiTrackpadElement(mc, (v) -> this.state.damage = v.floatValue());
         this.damage.limit(0);
+        this.initDamageRate();
         this.canFallDamage = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.damage.fall"), (b) -> this.state.canFallDamage = b.isToggled());
         this.canGetBurned = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.damage.fire"), (b) -> this.state.canGetBurned = b.isToggled());
         this.invincible = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.damage.invincible"), (b) -> this.state.invincible = b.isToggled());
         this.killable = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.damage.killable"), (b) -> this.state.killable = b.isToggled());
-
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.damage.damage")), this.damage);
         this.add(this.canFallDamage.marginTop(12), this.canGetBurned, this.invincible, this.killable);
     }
