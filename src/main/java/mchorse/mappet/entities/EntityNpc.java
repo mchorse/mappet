@@ -24,10 +24,7 @@ import mchorse.metamorph.api.Morph;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.models.IMorphProvider;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -39,6 +36,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
@@ -125,7 +123,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
             }
         }
         if (this.state != null) {
-            this.tasks.addTask(4, new EntityAIAttackNpcMelee(this, speed, false));
+            this.tasks.addTask(4, new EntityAIAttackNpcMelee(this, speed, false, this.state.damageDelay));
         }
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
 
@@ -134,6 +132,9 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     }
 
     private boolean targetCheck(EntityLivingBase entity) {
+        if (!this.entityShouldGoToPost()){
+            return false;
+        }
         Faction faction = this.getFaction();
 
         if (entity instanceof EntityNpc) {
@@ -283,9 +284,11 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
     @Override
     public void onUpdate() {
-        this.healthFailsafe();
-        this.updateAttackTarget();
 
+        this.healthFailsafe();
+        if (this.entityShouldGoToPost()) {
+            this.updateAttackTarget();
+        }
         super.onUpdate();
 
         this.updateArmSwingProgress();
@@ -317,7 +320,20 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     /**
      * If player's attitude has switched, then NPC should stop chasing
      */
+    private boolean entityShouldGoToPost(){
+        if (this.state == null) return false;
+        if (this.getAttackTarget() == null) return false;
+        if (this.state.postPosition == null || !this.state.hasPost)return false;
+        BlockPos posHome = this.state.postPosition;
+        BlockPos pos = this.getPosition();
+        double distance = Math.sqrt(Math.pow(pos.getX()-posHome.getX(),2) + Math.pow(pos.getY()-posHome.getY(),2) + Math.pow(pos.getZ()-posHome.getZ(),2));
+        return !(distance <= this.state.fallback);
+
+
+    }
+
     private void updateAttackTarget() {
+
         if (this.faction == null || this.ticksExisted % 10 != 0) {
             return;
         }

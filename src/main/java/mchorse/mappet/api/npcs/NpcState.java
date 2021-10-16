@@ -65,7 +65,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     /**
      * nps attack rate
      */
-    public int damageRate = 1;
+    public int damageDelay  = 1;
 
     /**
      * Whether this NPC can use ranged weapons
@@ -132,7 +132,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
      * After what distance from the post or patrol point the NPC will
      * stop chasing and come back
      */
-    public float fallback = 30F;
+    public float fallback = 15F;
 
     /**
      * Whether patrol points should circulate rather than ping-pong
@@ -254,8 +254,8 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         else if (property.equals("damage"))
         {
             this.damage = Float.parseFloat(value);
-        }else if(property.equals("damage_rate")){
-            this.damageRate = Integer.parseInt(value);
+        }else if(property.equals("damage_delay")){
+            this.damageDelay  = Integer.parseInt(value);
         }
         else if (property.equals("can_ranged"))
         {
@@ -395,7 +395,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
 
         /* Damage */
         if (all || options.contains("damage")) tag.setFloat("Damage", this.damage);
-        if(all || options.contains("damage_rate")) tag.setInteger("DamageRate", this.damageRate);
+        if(all || options.contains("damage_delay")) tag.setInteger("DamageDelay ", this.damageDelay );
         if (all || options.contains("can_ranged")) tag.setBoolean("CanRanged", this.canRanged);
         if (all || options.contains("can_fall_damage")) tag.setBoolean("CanFallDamage", this.canFallDamage);
         if (all || options.contains("can_get_burned")) tag.setBoolean("CanGetBurned", this.canGetBurned);
@@ -478,7 +478,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("RegenFrequency")) this.regenFrequency = tag.getInteger("RegenFrequency");
 
         /* Damage */
-        if (tag.hasKey("DamageRate")) this.damageRate = tag.getInteger("DamageRate");
+        if (tag.hasKey("DamageDelay ")) this.damageDelay  = tag.getInteger("DamageDelay ");
         if (tag.hasKey("Damage")) this.damage = tag.getFloat("Damage");
         if (tag.hasKey("CanRanged")) this.canRanged = tag.getBoolean("CanRanged");
         if (tag.hasKey("CanFallDamage")) this.canFallDamage = tag.getBoolean("CanFallDamage");
