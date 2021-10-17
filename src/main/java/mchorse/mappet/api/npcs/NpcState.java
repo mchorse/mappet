@@ -63,9 +63,9 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     public float damage = 2F;
 
     /**
-     * nps attack rate
+     * NPC attack delay
      */
-    public int damageDelay  = 1;
+    public int damageDelay = 10;
 
     /**
      * Whether this NPC can use ranged weapons
@@ -254,8 +254,10 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         else if (property.equals("damage"))
         {
             this.damage = Float.parseFloat(value);
-        }else if(property.equals("damage_delay")){
-            this.damageDelay  = Integer.parseInt(value);
+        }
+        else if (property.equals("damage_delay"))
+        {
+            this.damageDelay = Integer.parseInt(value);
         }
         else if (property.equals("can_ranged"))
         {
@@ -395,7 +397,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
 
         /* Damage */
         if (all || options.contains("damage")) tag.setFloat("Damage", this.damage);
-        if(all || options.contains("damage_delay")) tag.setInteger("DamageDelay ", this.damageDelay );
+        if (all || options.contains("damage_delay")) tag.setInteger("DamageDelay", this.damageDelay);
         if (all || options.contains("can_ranged")) tag.setBoolean("CanRanged", this.canRanged);
         if (all || options.contains("can_fall_damage")) tag.setBoolean("CanFallDamage", this.canFallDamage);
         if (all || options.contains("can_get_burned")) tag.setBoolean("CanGetBurned", this.canGetBurned);
@@ -478,8 +480,8 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("RegenFrequency")) this.regenFrequency = tag.getInteger("RegenFrequency");
 
         /* Damage */
-        if (tag.hasKey("DamageDelay ")) this.damageDelay  = tag.getInteger("DamageDelay ");
         if (tag.hasKey("Damage")) this.damage = tag.getFloat("Damage");
+        if (tag.hasKey("DamageDelay")) this.damageDelay = tag.getInteger("DamageDelay");
         if (tag.hasKey("CanRanged")) this.canRanged = tag.getBoolean("CanRanged");
         if (tag.hasKey("CanFallDamage")) this.canFallDamage = tag.getBoolean("CanFallDamage");
         if (tag.hasKey("CanGetBurned")) this.canGetBurned = tag.getBoolean("CanGetBurned");
