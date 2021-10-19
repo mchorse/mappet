@@ -414,7 +414,7 @@ public class EventHandler
     {
         this.playersToCheck.add(event.getEntityPlayer());
 
-        if (!Mappet.settings.playerDeath.isEmpty())
+        if (!Mappet.settings.playerItemPickup.isEmpty())
         {
             DataContext context = new DataContext(event.getEntityPlayer());
 

@@ -8,7 +8,7 @@
         "url": "https://www.curseforge.com/minecraft/mc-mods/mappet/",
         "updateUrl": "https://raw.githubusercontent.com/mchorse/mappet/master/version.json",
         "authorList": ["mchorse"],
-        "credits": "Andruxioid for suggesting the mod's name, and CustomNPCs Forever VK group for suggesting the mod idea!",
+        "credits": "Andruxioid for suggesting the mod's name, and CustomNPCs Forever VK group for suggesting the mod idea! Also thanks to Evanechecssss for implementation of a couple of features.",
         "logoFile": "",
         "screenshots": [],
         "dependencies": []
