@@ -551,7 +551,7 @@ public class EventHandler
             character.getPositionCache().updatePlayer(event.player);
         }
 
-        if (event.player.world.isRemote)
+        if (event.player.world.isRemote && event.player == Minecraft.getMinecraft().player)
         {
             this.onPlayerTickClient(event);
         }
