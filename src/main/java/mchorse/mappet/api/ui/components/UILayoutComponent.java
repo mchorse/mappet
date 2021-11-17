@@ -239,7 +239,7 @@ public class UILayoutComponent extends UIParentComponent
     {
         if (type == LayoutType.COLUMN)
         {
-            ColumnResizer column = element.flex().column(this.margin).stretch();
+            ColumnResizer column = element.flex().column(this.margin);
 
             if (this.scroll)
             {
@@ -254,6 +254,10 @@ public class UILayoutComponent extends UIParentComponent
             if (this.width != null)
             {
                 column.width(this.width);
+            }
+            else
+            {
+                column.stretch();
             }
 
             column.padding(this.padding);
