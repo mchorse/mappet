@@ -54,6 +54,18 @@ public interface IScriptServer
     public List<IScriptEntity> getEntities(String targetSelector);
 
     /**
+     * Get an entity by its UUID.
+     *
+     * <pre>{@code
+     *    var uuid = "29a91933-86f2-4683-8a87-218084d8c927";
+     *    var entity = c.getServer().getEntity(uuid);
+     *
+     *    print(entity.getUniqueId() === uuid);
+     * }</pre>
+     */
+    public IScriptEntity getEntity(String uuid);
+
+    /**
      * Get all players on the server.
      *
      * <pre>{@code

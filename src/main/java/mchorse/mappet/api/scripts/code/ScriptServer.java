@@ -16,6 +16,7 @@ import net.minecraft.server.MinecraftServer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class ScriptServer implements IScriptServer
 {
@@ -55,6 +56,12 @@ public class ScriptServer implements IScriptServer
         {}
 
         return entities;
+    }
+
+    @Override
+    public IScriptEntity getEntity(String uuid)
+    {
+        return ScriptEntity.create(this.server.getEntityFromUuid(UUID.fromString(uuid)));
     }
 
     @Override
