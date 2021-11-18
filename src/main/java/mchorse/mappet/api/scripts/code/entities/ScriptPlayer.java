@@ -20,6 +20,7 @@ import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.huds.PacketHUDMorph;
 import mchorse.mappet.network.common.huds.PacketHUDScene;
+import mchorse.mappet.network.common.scripts.PacketEntityRotations;
 import mchorse.mappet.network.common.scripts.PacketSound;
 import mchorse.mappet.network.common.ui.PacketCloseUI;
 import mchorse.mappet.network.common.ui.PacketUI;
@@ -70,7 +71,7 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     {
         super.setRotations(pitch, yaw, yawHead);
 
-        this.entity.connection.setPlayerLocation(this.entity.posX, this.entity.posY, this.entity.posZ, yaw, pitch);
+        Dispatcher.sendTo(new PacketEntityRotations(this.entity.getEntityId(), yaw, yawHead, pitch), this.entity);
     }
 
     @Override
