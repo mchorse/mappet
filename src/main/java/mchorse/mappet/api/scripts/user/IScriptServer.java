@@ -60,7 +60,7 @@ public interface IScriptServer
      *    var uuid = "29a91933-86f2-4683-8a87-218084d8c927";
      *    var entity = c.getServer().getEntity(uuid);
      *
-     *    print(entity.getUniqueId() === uuid);
+     *    print(entity.getUniqueId() === uuid); // true
      * }</pre>
      */
     public IScriptEntity getEntity(String uuid);

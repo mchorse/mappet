@@ -1,3 +1,15 @@
+## Version 0.1.3
+
+This is a small patch update which fixes a couple of other things.
+
+**Compatible** with McLib **2.3.5**, Blockbuster **2.3** and Metamorph **1.2.9**. It doesn't mean that future versions of McLib, Blockbuster and Metamorph would be incompatible, but older versions are most likely incompatible.
+
+* Added `IScriptServer.getEntity(String)` scripting method
+* Added Copy text context menu item to REPL messages, `clear()` function to clear all REPL messages, and `s` variable for fast `c.getSubject()` access within REPL
+* Fixed player gets teleported (when they shouldn't) when using `IScriptPlayer.setRotations(float, float, float)`
+* Fixed `UILayoutComponent.width(int)` not working properly with scrolling layout
+* Fixed NPC ID gets erased when using `/mp npc state` command
+
 ## Version 0.1.2
 
 This is a small patch update which fixes a couple of things.
