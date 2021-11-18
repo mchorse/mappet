@@ -62,7 +62,10 @@ public class ScriptManager extends BaseManager<Script>
 
             if (context != null)
             {
-                engine.put("c", new ScriptEvent(context, "", ""));
+                ScriptEvent event = new ScriptEvent(context, "", "");
+
+                engine.put("c", event);
+                engine.put("s", event.getSubject());
             }
 
             engine.eval("var __p__ = print; print = function(message) { ____manager____.replPrint(message); __p__(message); };");

@@ -36,6 +36,11 @@ public class GuiText extends GuiElement implements ITextColoring
         return height + this.paddingV * 2;
     }
 
+    public IKey getText()
+    {
+        return this.temp;
+    }
+
     public GuiText text(String text)
     {
         return this.text(IKey.str(text));

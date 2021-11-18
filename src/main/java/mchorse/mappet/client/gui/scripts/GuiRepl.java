@@ -38,11 +38,6 @@ public class GuiRepl extends GuiElement
 
         this.log = new GuiScrollElement(mc);
         this.log.flex().relative(this).w(1F).h(1F, -100).column(0).vertical().stretch().scroll();
-        this.log.context(() ->
-        {
-            return new GuiSimpleContextMenu(this.mc)
-                .action(Icons.CLOSE, IKey.lang("mappet.gui.scripts.repl.context.clear"), () -> this.log.removeAll());
-        });
 
         this.add(this.repl, this.log);
 
@@ -56,6 +51,14 @@ public class GuiRepl extends GuiElement
         if (this.repl.isFocused() && context.keyCode == Keyboard.KEY_RETURN && !GuiScreen.isShiftKeyDown())
         {
             String text = this.repl.getText();
+
+            if (text.trim().startsWith("clear()"))
+            {
+                this.repl.clear();
+                this.log.removeAll();
+
+                return true;
+            }
 
             if (!text.isEmpty())
             {
@@ -131,6 +134,9 @@ public class GuiRepl extends GuiElement
             this.odd = odd;
 
             this.padding(10, vertical);
+
+            this.context(() -> new GuiSimpleContextMenu(mc)
+                .action(Icons.COPY, IKey.str("Copy text"), () -> GuiScreen.setClipboardString(this.getText().get())));
         }
 
         @Override
