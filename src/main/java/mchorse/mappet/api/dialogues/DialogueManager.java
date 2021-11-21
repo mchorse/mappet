@@ -87,7 +87,9 @@ public class DialogueManager extends BaseManager<Dialogue>
 
                 if (character.getQuests().has(quest.getId()))
                 {
-                    status = quest.isComplete(player) ? QuestStatus.COMPLETED : QuestStatus.UNAVAILABLE;
+                    Quest playerQuest = character.getQuests().getByName(quest.getId());
+
+                    status = playerQuest.isComplete(player) ? QuestStatus.COMPLETED : QuestStatus.UNAVAILABLE;
                 }
 
                 packet.addQuest(new QuestInfo(quest, status));
