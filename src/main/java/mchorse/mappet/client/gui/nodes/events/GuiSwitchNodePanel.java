@@ -17,7 +17,7 @@ public class GuiSwitchNodePanel extends GuiEventBaseNodePanel<SwitchNode>
 
         this.expression = new GuiTextElement(mc, 10000, (t) -> this.node.expression = t);
 
-        this.add(Elements.label(IKey.lang("mappet.gui.conditions.expression")).marginTop(12), this.expression, this.binary);
+        this.add(Elements.label(IKey.lang("mappet.gui.conditions.expression")).marginTop(12), this.expression);
     }
 
     @Override
