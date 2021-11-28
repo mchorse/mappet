@@ -354,7 +354,9 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
         if (this.state.regenDelay > 0 && !this.world.isRemote)
         {
-            if (this.lastDamageTime >= this.state.regenDelay && this.ticksExisted % this.state.regenFrequency == 0)
+            int regen = this.state.regenFrequency == 0 ? 1 : this.state.regenFrequency;
+
+            if (this.lastDamageTime >= this.state.regenDelay && this.ticksExisted % regen == 0)
             {
                 if (this.getHealth() > 0 && this.getHealth() < this.getMaxHealth())
                 {

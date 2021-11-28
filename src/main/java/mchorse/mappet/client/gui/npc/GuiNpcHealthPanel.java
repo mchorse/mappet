@@ -18,9 +18,13 @@ public class GuiNpcHealthPanel extends GuiNpcPanel
         super(mc);
 
         this.maxHealth = new GuiTrackpadElement(mc, (v) -> this.state.maxHealth = v.floatValue());
+        this.maxHealth.limit(0);
         this.health = new GuiTrackpadElement(mc, (v) -> this.state.health = v.floatValue());
+        this.health.limit(0);
         this.regenDelay = new GuiTrackpadElement(mc, (v) -> this.state.regenDelay = v.intValue());
+        this.regenDelay.limit(0).integer();
         this.regenFrequency = new GuiTrackpadElement(mc, (v) -> this.state.regenFrequency = v.intValue());
+        this.regenFrequency.limit(1).integer();
 
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.health.max_hp")), this.maxHealth);
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.health.hp")), this.health);
