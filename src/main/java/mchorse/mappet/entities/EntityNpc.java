@@ -387,7 +387,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     {
         if (this.state == null || this.state.postPosition == null || !this.state.hasPost)
         {
-            return true;
+            return false;
         }
 
         BlockPos post = this.state.postPosition;
