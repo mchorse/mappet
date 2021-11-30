@@ -202,8 +202,11 @@ public interface IScriptEvent
      * <pre>{@code
      *    c.executeCommand("/kick Creeper501");
      * }</pre>
+     *
+     * @return How many successful commands were run. 0 - command errored, 1 - command was successful,
+     *      2 or above - multiple commands were executed using target selectors.
      */
-    public void executeCommand(String command);
+    public int executeCommand(String command);
 
     /**
      * Send a message to all players in the chat.

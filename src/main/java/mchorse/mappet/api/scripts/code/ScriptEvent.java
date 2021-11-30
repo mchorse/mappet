@@ -184,9 +184,9 @@ public class ScriptEvent implements IScriptEvent
     }
 
     @Override
-    public void executeCommand(String command)
+    public int executeCommand(String command)
     {
-        this.context.execute(command);
+        return this.context.execute(command);
     }
 
     @Override
