@@ -27,6 +27,8 @@ public abstract class Graphic implements INBTSerializable<NBTTagCompound>
     public float relativeY;
     public float relativeW;
     public float relativeH;
+    public float anchorX;
+    public float anchorY;
     public int primary;
     public boolean hover;
 
@@ -282,6 +284,46 @@ public abstract class Graphic implements INBTSerializable<NBTTagCompound>
     }
 
     /**
+     * Set both X and Y anchor point of this graphic object.
+     */
+    public Graphic anchor(float anchor)
+    {
+        return this.anchor(anchor, anchorY);
+    }
+
+    /**
+     * Set X and Y anchor point of this graphic object individually.
+     */
+    public Graphic anchor(float x, float y)
+    {
+        return this.anchorX(x).anchorY(y);
+    }
+
+    /**
+     * Set X anchor point of this graphic object.
+     *
+     * @param x A factor <code>0..1</code>, where <code>0</code> is the left edge, <code>1</code> is the right edge.
+     */
+    public Graphic anchorX(float x)
+    {
+        this.anchorX = x;
+
+        return this;
+    }
+
+    /**
+     * Set Y anchor point of this graphic object.
+     *
+     * @param y A factor <code>0..1</code>, where <code>0</code> is the top edge, <code>1</code> is the bottom edge.
+     */
+    public Graphic anchorY(float y)
+    {
+        this.anchorY = y;
+
+        return this;
+    }
+
+    /**
      * Set this graphic to display only when when mouse is over it.
      */
     public Graphic hoverOnly()
@@ -299,6 +341,9 @@ public abstract class Graphic implements INBTSerializable<NBTTagCompound>
         computed.y = elementArea.y + (int) (elementArea.h * this.relativeY) + this.pixels.y;
         computed.w = (int) (elementArea.w * this.relativeW) + this.pixels.w;
         computed.h = (int) (elementArea.h * this.relativeH) + this.pixels.h;
+
+        computed.x -= computed.w * this.anchorX;
+        computed.y -= computed.h * this.anchorY;
 
         if (!this.hover || computed.isInside(context))
         {
@@ -332,6 +377,8 @@ public abstract class Graphic implements INBTSerializable<NBTTagCompound>
         tag.setFloat("RY", this.relativeY);
         tag.setFloat("RW", this.relativeW);
         tag.setFloat("RH", this.relativeH);
+        tag.setFloat("AX", this.anchorX);
+        tag.setFloat("AY", this.anchorY);
         tag.setInteger("Primary", this.primary);
         tag.setBoolean("Hover", this.hover);
     }
@@ -348,6 +395,8 @@ public abstract class Graphic implements INBTSerializable<NBTTagCompound>
         this.relativeY = tag.getFloat("RY");
         this.relativeW = tag.getFloat("RW");
         this.relativeH = tag.getFloat("RH");
+        this.anchorX = tag.getFloat("AX");
+        this.anchorY = tag.getFloat("AY");
         this.primary = tag.getInteger("Primary");
         this.hover = tag.getBoolean("Hover");
     }
