@@ -1,24 +1,17 @@
 package mchorse.mappet.api.states;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.events.StateChangedEvent;
 import mchorse.mappet.utils.NBTToJsonLike;
-import mchorse.mappet.utils.Utils;
-import mchorse.mclib.utils.JsonUtils;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTPrimitive;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
-import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.nio.charset.Charset;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.regex.Pattern;
 

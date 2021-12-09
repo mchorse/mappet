@@ -57,7 +57,7 @@ public class ImageGraphic extends Graphic
 
         if (this.picture != null)
         {
-            tag.setString("Image", this.picture.toString());
+            tag.setTag("Image", RLUtils.writeNbt(this.picture));
         }
 
         tag.setInteger("Width", this.width);
@@ -69,7 +69,11 @@ public class ImageGraphic extends Graphic
     {
         super.deserializeNBT(tag);
 
-        this.picture = RLUtils.create(tag.getString("Image"));
+        if (tag.hasKey("Image"))
+        {
+            this.picture = RLUtils.create(tag.getTag("Image"));
+        }
+
         this.width = tag.getInteger("Width");
         this.height = tag.getInteger("Height");
     }

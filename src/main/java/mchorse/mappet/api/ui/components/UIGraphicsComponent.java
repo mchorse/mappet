@@ -12,6 +12,7 @@ import mchorse.mappet.client.gui.utils.graphics.RectGraphic;
 import mchorse.mappet.client.gui.utils.graphics.ShadowGraphic;
 import mchorse.mappet.client.gui.utils.graphics.TextGraphic;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
+import mchorse.mclib.utils.resources.RLUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -210,7 +211,7 @@ public class UIGraphicsComponent extends UIComponent
      */
     public Graphic image(String image, int x, int y, int w, int h, int textureWidth, int textureHeight, int primary)
     {
-        return this.addGraphic(new ImageGraphic(new ResourceLocation(image), x, y, w, h, textureWidth, textureHeight, primary));
+        return this.addGraphic(new ImageGraphic(RLUtils.create(image), x, y, w, h, textureWidth, textureHeight, primary));
     }
 
     /**
