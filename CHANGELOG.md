@@ -1,3 +1,19 @@
+## Version 0.1.4
+
+More bug fixes and tiny tweaks.
+
+**Compatible** with McLib **2.3.5**, Blockbuster **2.3** and Metamorph **1.2.9**. It doesn't mean that future versions of McLib, Blockbuster and Metamorph would be incompatible, but older versions are most likely incompatible.
+
+* Added limits to health fields
+* Added scripting `Graphic.anchor(float)`, `Graphic.anchor(float, float)`, `Graphic.anchorX(float)` and `Graphic.anchorY(float)`
+* Changed `IScriptEvent.executeCommand(String)` return type from `void` to `int`
+* Fixed quest dialogue node not correctly comparing quest completion
+* Fixed server states are being discarded due to old JSON loading code and string based states
+* Fixed division by 0 error with regeneration frequency
+* Fixed targeting for non post NPCs
+* Fixed textures are not being displayed in graphics UI component due to RL lowercasing the path
+* Removeed `Binary` toggle for `switch` node
+
 ## Version 0.1.3
 
 This is a small patch update which fixes a couple of other things.
