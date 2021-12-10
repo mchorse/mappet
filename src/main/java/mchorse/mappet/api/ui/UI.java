@@ -9,6 +9,7 @@ public class UI extends AbstractData
     public UIRootComponent root = new UIRootComponent();
     public boolean background;
     public boolean closable = true;
+    public boolean paused;
 
     @Override
     public NBTTagCompound serializeNBT()
@@ -18,6 +19,7 @@ public class UI extends AbstractData
         tag.setTag("Root", this.root.serializeNBT());
         tag.setBoolean("Background", this.background);
         tag.setBoolean("Closeable", this.closable);
+        tag.setBoolean("Paused", this.paused);
 
         return tag;
     }
@@ -35,6 +37,11 @@ public class UI extends AbstractData
         if (tag.hasKey("Closeable"))
         {
             this.closable = tag.getBoolean("Closeable");
+        }
+
+        if (tag.hasKey("Paused"))
+        {
+            this.paused = tag.getBoolean("Paused");
         }
     }
 }

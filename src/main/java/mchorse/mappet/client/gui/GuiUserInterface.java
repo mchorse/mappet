@@ -39,7 +39,7 @@ public class GuiUserInterface extends GuiBase
     @Override
     public boolean doesGuiPauseGame()
     {
-        return false;
+        return this.context.ui.paused;
     }
 
     @Override

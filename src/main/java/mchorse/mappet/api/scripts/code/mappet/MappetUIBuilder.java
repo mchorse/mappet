@@ -88,6 +88,17 @@ public class MappetUIBuilder implements IMappetUIBuilder
     }
 
     @Override
+    public IMappetUIBuilder paused(boolean paused)
+    {
+        if (this.ui != null)
+        {
+            this.ui.paused = paused;
+        }
+
+        return this;
+    }
+
+    @Override
     public UIComponent create(String id)
     {
         UIComponent component = CommonProxy.getUiComponents().create(id);

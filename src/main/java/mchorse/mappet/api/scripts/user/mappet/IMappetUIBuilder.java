@@ -95,6 +95,13 @@ public interface IMappetUIBuilder
     public IMappetUIBuilder closable(boolean closable);
 
     /**
+     * Toggle pausing of this UI screen.
+     *
+     * @param paused Whether this UI screen is paused when opened.
+     */
+    public IMappetUIBuilder paused(boolean paused);
+
+    /**
      * Create and insert a UI component based on its ID into UI being built by this builder.
      *
      * <p>This method is future proof for in case other modders will be adding their own
