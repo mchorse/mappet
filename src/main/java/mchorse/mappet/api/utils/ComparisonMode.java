@@ -8,6 +8,22 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public enum ComparisonMode
 {
     LESS(Operation.LESS), LESS_THAN(Operation.LESS_THAN), EQUALS(Operation.EQUALS), GREATER_THAN(Operation.GREATER_THAN), GREATER(Operation.GREATER),
+    EQUALS_TO_STRING(null)
+    {
+        @Override
+        @SideOnly(Side.CLIENT)
+        public String stringify(String a, double b, String expression)
+        {
+            return a + " == \"" + expression + "\"";
+        }
+
+        @Override
+        @SideOnly(Side.CLIENT)
+        public IKey stringify()
+        {
+            return IKey.lang("\"\"");
+        }
+    },
     IS_TRUE(null)
     {
         @Override

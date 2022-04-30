@@ -16,6 +16,7 @@ public class GuiComparisonElement extends GuiElement
 
     private GuiCirculateElement mode;
     private GuiTrackpadElement value;
+    private GuiTextElement stringValue;
     private GuiTextElement expression;
 
     public GuiComparisonElement(Minecraft mc, Comparison comparison)
@@ -34,6 +35,8 @@ public class GuiComparisonElement extends GuiElement
         this.mode.setValue(comparison.comparison.ordinal());
         this.value = new GuiTrackpadElement(mc, (v) -> this.comparison.value = v);
         this.value.setValue(comparison.value);
+        this.stringValue = new GuiTextElement(mc, 1000, (t) -> this.comparison.expression = t);
+        this.stringValue.setText(comparison.expression);
 
         this.expression = new GuiTextElement(mc, 1000, (t) -> this.comparison.expression = t);
         this.expression.setText(this.comparison.expression);
@@ -58,6 +61,10 @@ public class GuiComparisonElement extends GuiElement
         else if (this.comparison.comparison == ComparisonMode.IS_TRUE || this.comparison.comparison == ComparisonMode.IS_FALSE)
         {
             insert = null;
+        }
+        else if (this.comparison.comparison == ComparisonMode.EQUALS_TO_STRING)
+        {
+            insert = this.stringValue;
         }
 
         this.removeAll();
