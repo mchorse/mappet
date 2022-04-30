@@ -656,6 +656,7 @@ mappet.gui.faction_attitudes.friendly=Дружелюбие
 
 mappet.gui.node_types.reply=Ответ
 mappet.gui.node_types.reaction=Реакция
+mappet.gui.node_types.comment=Комментарий
 mappet.gui.node_types.crafting=Крафт
 mappet.gui.node_types.quest=Квест
 mappet.gui.node_types.quest_chain=Цепочка квестов

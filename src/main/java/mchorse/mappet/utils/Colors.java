@@ -18,6 +18,7 @@ public class Colors
     public static final int FACTION = 0xb3ff00;
     public static final int QUEST = 0xffaa00;
     public static final int REPLY = 0x00a0ff;
+    public static final int COMMENT = 0xf1fa8c;
     public static final int STATE = Colors.NEGATIVE;
     public static final int TIME = 0x0088ff;
     public static final int MORPH = 0x4f00e0;

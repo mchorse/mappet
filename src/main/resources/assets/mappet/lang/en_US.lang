@@ -656,6 +656,7 @@ mappet.gui.faction_attitudes.friendly=Friendly
 
 mappet.gui.node_types.reply=Reply
 mappet.gui.node_types.reaction=Reaction
+mappet.gui.node_types.comment=Comment
 mappet.gui.node_types.crafting=Crafting
 mappet.gui.node_types.quest=Quest
 mappet.gui.node_types.quest_chain=Quest chain

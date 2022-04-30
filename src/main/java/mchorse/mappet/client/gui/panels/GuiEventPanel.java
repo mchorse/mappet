@@ -1,6 +1,7 @@
 package mchorse.mappet.client.gui.panels;
 
 import mchorse.mappet.CommonProxy;
+import mchorse.mappet.api.dialogues.nodes.CommentNode;
 import mchorse.mappet.api.dialogues.nodes.CraftingNode;
 import mchorse.mappet.api.dialogues.nodes.QuestChainNode;
 import mchorse.mappet.api.dialogues.nodes.QuestDialogueNode;
@@ -18,6 +19,7 @@ import mchorse.mappet.api.utils.nodes.NodeSystem;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.nodes.GuiEventBaseNodePanel;
 import mchorse.mappet.client.gui.nodes.GuiEventNodeGraph;
+import mchorse.mappet.client.gui.nodes.dialogues.GuiCommentNodePanel;
 import mchorse.mappet.client.gui.nodes.dialogues.GuiCraftingNodePanel;
 import mchorse.mappet.client.gui.nodes.dialogues.GuiDialogueNodePanel;
 import mchorse.mappet.client.gui.nodes.dialogues.GuiQuestChainNodePanel;
@@ -56,6 +58,7 @@ public class GuiEventPanel extends GuiMappetRunPanel<NodeSystem<EventBaseNode>>
         PANELS.put(SwitchNode.class, GuiSwitchNodePanel.class);
         PANELS.put(TimerNode.class, GuiTimerNodePanel.class);
         PANELS.put(CancelNode.class, GuiCancelNodePanel.class);
+        PANELS.put(CommentNode.class, GuiCommentNodePanel.class);
         PANELS.put(TriggerNode.class, GuiTriggerNodePanel.class);
 
         PANELS.put(ReactionNode.class, GuiReactionNodePanel.class);
