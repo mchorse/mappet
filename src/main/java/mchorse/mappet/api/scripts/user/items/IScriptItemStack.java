@@ -25,6 +25,11 @@ public interface IScriptItemStack
     public IScriptItem getItem();
 
     /**
+     * Get a copy of item stack.
+     */
+    public IScriptItemStack copy();
+
+    /**
      * Get item stack's count.
      */
     public int getCount();
