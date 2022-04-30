@@ -263,6 +263,10 @@ mappet.gui.settings.triggers.player_login=Player: logged in
 mappet.gui.settings.triggers.descriptions.player_login=This gets triggered when player logs onto the server.
 mappet.gui.settings.triggers.variables.player_login=§7N/A§r
 
+mappet.gui.settings.triggers.player_logout=Player: logged out
+mappet.gui.settings.triggers.descriptions.player_logout=This is triggered when the player logs out of the server.
+mappet.gui.settings.triggers.variables.player_logout=§7N/A§r
+
 mappet.gui.settings.triggers.player_lmb=Player: left click (air)
 mappet.gui.settings.triggers.descriptions.player_lmb=This gets triggered when a player left clicks in the air (no whatsoever interaction with blocks, entities or items).
 mappet.gui.settings.triggers.variables.player_lmb=§7N/A§r
@@ -282,6 +286,10 @@ mappet.gui.settings.triggers.variables.player_respawn=§7N/A§r
 mappet.gui.settings.triggers.player_item_pickup=Player: picked up an item
 mappet.gui.settings.triggers.descriptions.player_item_pickup=This cancelable trigger gets triggered when a player picks up an item in the world.
 mappet.gui.settings.triggers.variables.player_item_pickup=§6item§r, §7IScriptItemStack§r item that player picked (this is useful only in scripts).
+
+mappet.gui.settings.triggers.player_item_interact=Player: interact an item
+mappet.gui.settings.triggers.descriptions.player_item_interact=This cancelable trigger gets triggered when a player right clicks in the air with item.
+mappet.gui.settings.triggers.variables.player_item_interact=§7N/A§r
 
 mappet.gui.settings.triggers.player_close_container=Player: closed container
 mappet.gui.settings.triggers.descriptions.player_close_container=This gets triggered when a player exits a container screen like chest, ender chest, furnace, crafting table, etc.
