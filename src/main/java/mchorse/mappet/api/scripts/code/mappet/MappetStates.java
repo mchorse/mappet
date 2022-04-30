@@ -41,9 +41,21 @@ public class MappetStates implements IMappetStates
     }
 
     @Override
+    public boolean isNumber(String id)
+    {
+        return this.states.isNumber(id);
+    }
+
+    @Override
     public String getString(String id)
     {
         return this.states.getString(id);
+    }
+
+    @Override
+    public boolean isString(String id)
+    {
+        return this.states.isString(id);
     }
 
     @Override

@@ -70,6 +70,17 @@ public interface IMappetStates
     public double getNumber(String id);
 
     /**
+     * Check if a state instance of number.
+     *
+     * <pre>{@code
+     *    var states = c.getServer().getStates();
+     *
+     *    c.send("State is number: " + states.isNumber("state_number"));
+     * }</pre>
+     */
+    public boolean isNumber(String id);
+
+    /**
      * Get a string value of a state by given ID.
      *
      * <pre>{@code
@@ -81,6 +92,17 @@ public interface IMappetStates
      * @return state value, or empty string if no state found
      */
     public String getString(String id);
+
+    /**
+     * Check if a state instance of string.
+     *
+     * <pre>{@code
+     *    var states = c.getServer().getStates();
+     *
+     *    c.send("State is string: " + states.isString("state_string"));
+     * }</pre>
+     */
+    public boolean isString(String id);
 
     /**
      * Removes a state by given ID.
