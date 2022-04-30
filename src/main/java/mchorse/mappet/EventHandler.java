@@ -1,6 +1,5 @@
 package mchorse.mappet;
 
-import mchorse.mappet.api.huds.HUDStage;
 import mchorse.mappet.api.quests.Quest;
 import mchorse.mappet.api.quests.Quests;
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
@@ -12,7 +11,6 @@ import mchorse.mappet.capabilities.character.CharacterProvider;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.client.KeyboardHandler;
 import mchorse.mappet.client.RenderingHandler;
-import mchorse.mappet.client.morphs.WorldMorph;
 import mchorse.mappet.commands.data.CommandDataClear;
 import mchorse.mappet.events.StateChangedEvent;
 import mchorse.mappet.network.Dispatcher;
@@ -194,12 +192,11 @@ public class EventHandler
     }
 
     @SubscribeEvent
-    public void onPlayerDamageEntity(LivingDamageEvent event)
+    public void onEntityHurt(LivingDamageEvent event)
     {
         DamageSource source = event.getSource();
 
-        if (source.getTrueSource() instanceof EntityPlayer)
-        {
+
             if (!Mappet.settings.entityDamaged.isEmpty())
             {
                 DataContext context = new DataContext(event.getEntityLiving(), source.getTrueSource())
@@ -207,7 +204,7 @@ public class EventHandler
 
                 this.trigger(event, Mappet.settings.entityDamaged, context);
             }
-        }
+
     }
 
     @SubscribeEvent
@@ -262,6 +259,26 @@ public class EventHandler
         }
 
         Dispatcher.sendToServer(new PacketClick(EnumHand.OFF_HAND));
+    }
+
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onPlayerRightClickItem(PlayerInteractEvent.RightClickItem event)
+    {
+        EntityPlayer player = event.getEntityPlayer();
+
+        if (player.world.isRemote || Mappet.settings.playerItemInteract.isEmpty())
+        {
+            return;
+        }
+
+        DataContext context = new DataContext(player)
+            .set("x", event.getPos().getX())
+            .set("y", event.getPos().getY())
+            .set("z", event.getPos().getZ())
+            .set("hand", event.getHand() == EnumHand.MAIN_HAND ? "main" : "off");
+
+        this.trigger(event, Mappet.settings.playerItemInteract, context);
     }
 
     @SubscribeEvent
@@ -358,6 +375,13 @@ public class EventHandler
     @SubscribeEvent
     public void onPlayerLogsOut(PlayerEvent.PlayerLoggedOutEvent event)
     {
+        if (!Mappet.settings.playerLogOut.isEmpty())
+        {
+            DataContext context = new DataContext(event.player);
+
+            Mappet.settings.playerLogOut.trigger(context);
+        }
+
         this.loggedInPlayers.remove(event.player.getUniqueID());
     }
 
