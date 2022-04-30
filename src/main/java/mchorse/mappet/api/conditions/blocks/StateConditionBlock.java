@@ -4,6 +4,7 @@ import mchorse.mappet.api.states.States;
 import mchorse.mappet.api.utils.DataContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import mchorse.mappet.api.utils.ComparisonMode;
 
 public class StateConditionBlock extends PropertyConditionBlock
 {
@@ -18,6 +19,18 @@ public class StateConditionBlock extends PropertyConditionBlock
         if (states == null)
         {
             return false;
+        }
+
+        if (this.comparison.comparison == ComparisonMode.EQUALS_TO_STRING)
+        {
+            if (states.isString(this.id))
+            {
+                return states.getString(this.id).equals(this.comparison.expression);
+            }
+            else
+            {
+                return false;
+            }
         }
 
         return this.compare(states.getNumber(this.id));
