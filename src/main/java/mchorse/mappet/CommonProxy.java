@@ -11,6 +11,7 @@ import mchorse.mappet.api.conditions.blocks.MorphConditionBlock;
 import mchorse.mappet.api.conditions.blocks.QuestConditionBlock;
 import mchorse.mappet.api.conditions.blocks.StateConditionBlock;
 import mchorse.mappet.api.conditions.blocks.WorldTimeConditionBlock;
+import mchorse.mappet.api.dialogues.nodes.CommentNode;
 import mchorse.mappet.api.dialogues.nodes.CraftingNode;
 import mchorse.mappet.api.dialogues.nodes.QuestChainNode;
 import mchorse.mappet.api.dialogues.nodes.QuestDialogueNode;
@@ -187,6 +188,7 @@ public class CommonProxy
         /* Register dialogue nodes */
         MapFactory<EventBaseNode> dialogueNodes = eventNodes.copy()
             .register("reply", ReplyNode.class, Colors.REPLY)
+            .register("comment", CommentNode.class, Colors.COMMENT)
             .register("reaction", ReactionNode.class, Colors.STATE)
             .register("crafting", CraftingNode.class, Colors.CRAFTING)
             .register("quest_chain", QuestChainNode.class, Colors.QUEST)

@@ -1,5 +1,6 @@
 package mchorse.mappet.api.dialogues;
 
+import mchorse.mappet.api.dialogues.nodes.CommentNode;
 import mchorse.mappet.api.dialogues.nodes.CraftingNode;
 import mchorse.mappet.api.dialogues.nodes.QuestChainNode;
 import mchorse.mappet.api.dialogues.nodes.QuestDialogueNode;
@@ -14,6 +15,7 @@ import java.util.List;
 public class DialogueContext extends EventContext
 {
     public ReactionNode reactionNode;
+    public CommentNode commentNode;
     public List<ReplyNode> replyNodes = new ArrayList<ReplyNode>();
     public CraftingNode crafting;
     public QuestChainNode questChain;
@@ -27,6 +29,7 @@ public class DialogueContext extends EventContext
     public void resetAll()
     {
         this.reactionNode = null;
+        this.commentNode = null;
         this.replyNodes.clear();
         this.crafting = null;
         this.questChain = null;
