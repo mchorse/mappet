@@ -56,6 +56,10 @@ public class Comparison implements INBTSerializable<NBTTagCompound>
 
             return this.compiledValue.booleanValue();
         }
+        if (this.comparison == ComparisonMode.EQUALS_TO_STRING)
+        {
+            return false;
+        }
 
         return this.comparison.compare(a, this.value);
     }
