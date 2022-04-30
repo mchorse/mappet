@@ -79,11 +79,25 @@ public class States implements INBTSerializable<NBTTagCompound>
         return object instanceof Number ? ((Number) object).doubleValue() : 0;
     }
 
+    public boolean isNumber(String id)
+    {
+        Object object = this.values.get(id);
+
+        return object instanceof Number;
+    }
+
     public String getString(String id)
     {
         Object object = this.values.get(id);
 
         return object instanceof String ? (String) object : "";
+    }
+
+    public boolean isString(String id)
+    {
+        Object object = this.values.get(id);
+
+        return object instanceof String;
     }
 
     public boolean reset(String id)
