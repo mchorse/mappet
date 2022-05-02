@@ -59,9 +59,7 @@ public class GuiComparisonElement extends GuiElement
         {
             insert = null;
         }
-        else if (this.comparison.comparison == ComparisonMode.EQUALS_TO_STRING ||
-                this.comparison.comparison == ComparisonMode.CONTAINS_STRING ||
-                this.comparison.comparison == ComparisonMode.REGEXP_STRING)
+        else if (this.comparison.comparison.isString)
         {
             insert = this.expression;
         }

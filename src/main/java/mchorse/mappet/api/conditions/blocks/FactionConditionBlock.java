@@ -4,7 +4,6 @@ import mchorse.mappet.Mappet;
 import mchorse.mappet.api.factions.Faction;
 import mchorse.mappet.api.factions.FactionAttitude;
 import mchorse.mappet.api.states.States;
-import mchorse.mappet.api.utils.ComparisonMode;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.TargetMode;
 import mchorse.mappet.utils.EnumUtils;
@@ -47,11 +46,8 @@ public class FactionConditionBlock extends PropertyConditionBlock
                     return false;
                 }
 
-                if (
-                    this.comparison.comparison == ComparisonMode.EQUALS_TO_STRING ||
-                    this.comparison.comparison == ComparisonMode.CONTAINS_STRING ||
-                    this.comparison.comparison == ComparisonMode.REGEXP_STRING
-                ) {
+                if (this.comparison.comparison.isString)
+                {
                     return this.compareString(String.valueOf(states.getFactionScore(this.id)));
                 }
 

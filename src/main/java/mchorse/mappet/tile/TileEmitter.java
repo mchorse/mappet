@@ -93,7 +93,9 @@ public class TileEmitter extends TileEntity implements ITickable
                 if (player.getDistance(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5) <= this.radius)
                 {
                     playerIn = true;
+
                     playersInside.add(player);
+
                     break;
                 }
             }

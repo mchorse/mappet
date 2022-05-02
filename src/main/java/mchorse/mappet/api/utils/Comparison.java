@@ -62,21 +62,13 @@ public class Comparison implements INBTSerializable<NBTTagCompound>
 
     public boolean compareString(String a)
     {
-        if (this.comparison == ComparisonMode.EQUALS_TO_STRING)
+        switch (this.comparison)
         {
-            return a.equals(this.expression);
+            case EQUALS_TO_STRING: return a.equals(this.expression);
+            case CONTAINS_STRING: return a.contains(this.expression);
+            case REGEXP_STRING: return a.matches(this.expression);
         }
-
-        if (this.comparison == ComparisonMode.CONTAINS_STRING)
-        {
-            return a.contains(this.expression);
-        }
-
-        if (this.comparison == ComparisonMode.REGEXP_STRING)
-        {
-            return a.matches(this.expression);
-        }
-
+        
         return false;
     }
 

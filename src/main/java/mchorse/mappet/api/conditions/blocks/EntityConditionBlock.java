@@ -1,6 +1,5 @@
 package mchorse.mappet.api.conditions.blocks;
 
-import mchorse.mappet.api.utils.ComparisonMode;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.TargetMode;
 import mchorse.mappet.utils.EntityUtils;
@@ -29,11 +28,8 @@ public class EntityConditionBlock extends PropertyConditionBlock
 
         double value = EntityUtils.getProperty(entity, this.id);
 
-        if (
-            this.comparison.comparison == ComparisonMode.EQUALS_TO_STRING ||
-            this.comparison.comparison == ComparisonMode.CONTAINS_STRING ||
-            this.comparison.comparison == ComparisonMode.REGEXP_STRING
-        ) {
+        if (this.comparison.comparison.isString)
+        {
             return this.compareString(String.valueOf(value));
         }
 
