@@ -262,7 +262,6 @@ public class EventHandler
     }
 
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
     public void onPlayerRightClickItem(PlayerInteractEvent.RightClickItem event)
     {
         EntityPlayer player = event.getEntityPlayer();
