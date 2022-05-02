@@ -1,12 +1,6 @@
 package mchorse.mappet.api.conditions.blocks;
 
 import mchorse.mappet.api.utils.Comparison;
-import mchorse.mappet.api.utils.ComparisonMode;
-import mchorse.mappet.api.expressions.ExpressionManager;
-import mchorse.mappet.utils.EnumUtils;
-import mchorse.mclib.math.IValue;
-import mchorse.mclib.math.MathBuilder;
-import mchorse.mclib.math.Variable;
 import net.minecraft.nbt.NBTTagCompound;
 
 public abstract class PropertyConditionBlock extends TargetConditionBlock
@@ -19,6 +13,11 @@ public abstract class PropertyConditionBlock extends TargetConditionBlock
     protected boolean compare(double a)
     {
         return this.comparison.compare(a);
+    }
+
+    protected boolean compareString(String a)
+    {
+        return this.comparison.compareString(a);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package mchorse.mappet.blocks;
 
 import mchorse.mappet.Mappet;
-import mchorse.mappet.api.events.EventContext;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.blocks.PacketEditTrigger;
