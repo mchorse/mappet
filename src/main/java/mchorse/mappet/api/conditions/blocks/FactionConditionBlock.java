@@ -47,10 +47,11 @@ public class FactionConditionBlock extends PropertyConditionBlock
                     return false;
                 }
 
-                if (this.comparison.comparison == ComparisonMode.EQUALS_TO_STRING ||
-                        this.comparison.comparison == ComparisonMode.CONTAINS_STRING ||
-                        this.comparison.comparison == ComparisonMode.REGEXP_STRING)
-                {
+                if (
+                    this.comparison.comparison == ComparisonMode.EQUALS_TO_STRING ||
+                    this.comparison.comparison == ComparisonMode.CONTAINS_STRING ||
+                    this.comparison.comparison == ComparisonMode.REGEXP_STRING
+                ) {
                     return this.compareString(String.valueOf(states.getFactionScore(this.id)));
                 }
 

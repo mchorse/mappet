@@ -21,14 +21,16 @@ public class StateConditionBlock extends PropertyConditionBlock
             return false;
         }
 
-        if (this.comparison.comparison == ComparisonMode.EQUALS_TO_STRING ||
+        if (
+            this.comparison.comparison == ComparisonMode.EQUALS_TO_STRING ||
             this.comparison.comparison == ComparisonMode.CONTAINS_STRING ||
-            this.comparison.comparison == ComparisonMode.REGEXP_STRING)
-        {
+            this.comparison.comparison == ComparisonMode.REGEXP_STRING
+        ) {
             if(states.isString(this.id))
             {
                 return this.compareString(states.getString(this.id));
             }
+
             return this.compareString(String.valueOf(states.getNumber(this.id)));
         }
 
