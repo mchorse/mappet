@@ -82,10 +82,12 @@ public class TileEmitter extends TileEntity implements ITickable
     private void updateExpression()
     {
         List<EntityPlayer> playersInside = new ArrayList<EntityPlayer>();
+
         if (this.radius > 0)
         {
             BlockPos pos = this.getPos();
             boolean playerIn = false;
+
             for (EntityPlayer player : this.world.playerEntities)
             {
                 if (player.getDistance(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5) <= this.radius)
@@ -108,13 +110,15 @@ public class TileEmitter extends TileEntity implements ITickable
         }
 
         boolean result = this.checker.check(new DataContext(this.world, this.getPos()));
-        //Don't judge me, I only have one brain cell
-        if(!result)
+
+        /* Don't judge me, I only have one brain cell */
+        if (!result)
         {
-            for(EntityPlayer player : playersInside)
+            for (EntityPlayer player : playersInside)
             {
                 result = this.checker.check(new DataContext(player));
-                if(result)
+
+                if (result)
                 {
                     break;
                 }

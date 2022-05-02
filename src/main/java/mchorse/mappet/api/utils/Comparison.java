@@ -76,6 +76,7 @@ public class Comparison implements INBTSerializable<NBTTagCompound>
         {
             return a.matches(this.expression);
         }
+
         return false;
     }
 
