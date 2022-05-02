@@ -30,7 +30,6 @@ import mchorse.mclib.utils.Direction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.text.TextFormatting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +50,7 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
     private ServerSettings settings;
     private String lastTarget;
     private String lastTrigger = "player_chat";
+    private String lastStates = "~";
 
     public GuiServerSettingsPanel(Minecraft mc, GuiMappetDashboard dashboard)
     {
@@ -214,7 +214,7 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
         super.appear();
 
         Dispatcher.sendToServer(new PacketRequestServerSettings());
-        Dispatcher.sendToServer(new PacketRequestStates("~"));
+        Dispatcher.sendToServer(new PacketRequestStates(this.lastStates));
     }
 
     @Override
