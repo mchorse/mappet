@@ -21,7 +21,39 @@ public enum ComparisonMode
         @SideOnly(Side.CLIENT)
         public IKey stringify()
         {
-            return IKey.lang("\"\"");
+            return IKey.str("\"\"");
+        }
+    },
+    CONTAINS_STRING(null)
+    {
+        @Override
+        @SideOnly(Side.CLIENT)
+        public String stringify(String a, double b, String expression)
+        {
+            return a + " " + IKey.lang("mappet.gui.conditions.comparisons.contains_string") + " \"" + expression + "\"";
+        }
+
+        @Override
+        @SideOnly(Side.CLIENT)
+        public IKey stringify()
+        {
+            return IKey.comp(IKey.lang("mappet.gui.conditions.comparisons.contains_string"), IKey.str(" \"\""));
+        }
+    },
+    REGEXP_STRING(null)
+    {
+        @Override
+        @SideOnly(Side.CLIENT)
+        public String stringify(String a, double b, String expression)
+        {
+            return a + " match /"+expression+"/";
+        }
+
+        @Override
+        @SideOnly(Side.CLIENT)
+        public IKey stringify()
+        {
+            return IKey.lang("mappet.gui.conditions.comparisons.regexp");
         }
     },
     IS_TRUE(null)
