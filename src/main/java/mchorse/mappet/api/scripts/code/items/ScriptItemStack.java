@@ -43,7 +43,7 @@ public class ScriptItemStack implements IScriptItemStack
     @Override
     public IScriptItemStack copy()
     {
-        return new ScriptItemStack(this.getMinecraftItemStack());
+        return new ScriptItemStack(this.getMinecraftItemStack().copy());
     }
 
     @Override
