@@ -1,3 +1,25 @@
+## Version 0.1.5
+
+This update is brought to you by TorayLife, with some neat QoL features, triggers and bug fixes!
+
+**Compatible** with McLib **2.3.5**, Blockbuster **2.3** and Metamorph **1.2.9**. It doesn't mean that future versions of McLib, Blockbuster and Metamorph would be incompatible, but older versions are most likely incompatible.
+
+* Added new triggers:
+    * `Player: log out` trigger gets triggered with a subject player when player logs off the server
+    * `Player: interact an item` trigger gets triggered when a player right clicks (interacts with) an item in the air
+* Added scripting methods:
+    * `IMappetUIBuilder.paused(boolean)` which allows to make UI pausable in singleplayer (by McHorse)
+    * `IMappetStates.isNumber(String)` and `IMappetStates.isString(String)` allow to check whether given state is of number or string type
+    * `IScriptItemStack.copy()` which allows to duplicate an item stack
+* Added new string value comparison types: 
+    * Exact match of given string (value == "...")
+    * Contains somewhere in the value a string (value contains "...")
+    * Regular expression match (value matches /.../)
+* Added comment node to dialogues, which passes execution to its connected child nodes, but the main feature is to label or comment sections of the dialogue
+* Added a feature for emitter block to check against players within the radius (rather than globally) when `radius > 0`
+* Fixed `Entity: hurt` trigger getting triggered only when a player hurts an entity (and not when other entities hurt each other)
+* Fixed server states editor switching back to `~` upon return back to panel instead of refreshing currently selected states (by McHorse)
+
 ## Version 0.1.4
 
 More bug fixes and tiny tweaks.
@@ -12,7 +34,7 @@ More bug fixes and tiny tweaks.
 * Fixed division by 0 error with regeneration frequency
 * Fixed targeting for non post NPCs
 * Fixed textures are not being displayed in graphics UI component due to RL lowercasing the path
-* Removeed `Binary` toggle for `switch` node
+* Removed `Binary` toggle for `switch` node
 
 ## Version 0.1.3
 
