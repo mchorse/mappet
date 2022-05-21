@@ -19,6 +19,7 @@ import mchorse.mappet.blocks.BlockRegion;
 import mchorse.mappet.blocks.BlockTrigger;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.commands.CommandMappet;
+import mchorse.mappet.utils.MappetNpcRespawner;
 import mchorse.mappet.utils.ValueButtons;
 import mchorse.mappet.utils.ValueSyntaxStyle;
 import mchorse.mclib.McLib;
@@ -98,6 +99,7 @@ public final class Mappet
     public static QuestChainManager chains;
     public static ScriptManager scripts;
     public static HUDManager huds;
+    public static MappetNpcRespawner respawner;
 
     /* Configuration */
     public static ValueString generalEncoding;
@@ -209,6 +211,7 @@ public final class Mappet
         chains = new QuestChainManager(new File(mappetWorldFolder, "chains"));
         scripts = new ScriptManager(new File(mappetWorldFolder, "scripts"));
         huds = new HUDManager(new File(mappetWorldFolder, "huds"));
+        respawner = new MappetNpcRespawner("Mappet_Respawner");
 
         /* Initiate */
         if (!settings.serverLoad.isEmpty())
