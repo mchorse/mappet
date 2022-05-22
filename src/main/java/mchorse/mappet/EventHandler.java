@@ -19,6 +19,7 @@ import mchorse.mappet.network.common.quests.PacketQuest;
 import mchorse.mappet.network.common.quests.PacketQuests;
 import mchorse.mappet.network.common.scripts.PacketClick;
 import mchorse.mappet.network.common.scripts.PacketPlayerSkin;
+import mchorse.mappet.utils.MappetNpcRespawnManager;
 import mchorse.mappet.utils.ScriptUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -617,5 +618,12 @@ public class EventHandler
                 }
             }
         }
+    }
+
+    @SubscribeEvent
+    public void onWorldTick(TickEvent.WorldTickEvent event)
+    {
+        MappetNpcRespawnManager respawnManager = MappetNpcRespawnManager.get(event.world);
+        respawnManager.onTick();
     }
 }

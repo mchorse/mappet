@@ -215,6 +215,43 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     public Trigger triggerTarget = new Trigger();
     public Trigger triggerInitialize = new Trigger();
 
+    /* Respawn */
+
+    /**
+     * Is NPC respawns with provided delay
+     */
+    public boolean respawn;
+
+    /**
+     * Delay to respawn
+     */
+    public int respawnDelay;
+
+    /**
+     * Whether NPC respawns at the specified coordinates
+     */
+    public boolean respawnOnCoorinates;
+
+    /**
+     * X coordinate to respawn
+     */
+    public double respawnPosX;
+
+    /**
+     * Y coordinate to respawn
+     */
+    public double respawnPosY;
+
+    /**
+     * Z coordinate to respawn
+     */
+    public double respawnPosZ;
+
+    /**
+     * Whether NPC respawns with same UUID
+     */
+    public boolean respawnSaveUUID;
+
     /**
      * I should've used my Value API for this, but now it's too late
      */
@@ -358,6 +395,34 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         {
             this.flee = Float.parseFloat(value);
         }
+        else if (property.equals("respawn"))
+        {
+            this.respawn = Boolean.parseBoolean(value);
+        }
+        else if (property.equals("respawn_delay"))
+        {
+            this.respawnDelay = Integer.parseInt(value);
+        }
+        else if (property.equals("respawn_on_coordinates"))
+        {
+            this.respawnOnCoorinates = Boolean.parseBoolean(value);
+        }
+        else if (property.equals("respawn_pos_x"))
+        {
+            this.respawnPosX = Double.parseDouble(value);
+        }
+        else if (property.equals("respawn_pos_y"))
+        {
+            this.respawnPosY = Double.parseDouble(value);
+        }
+        else if (property.equals("respawn_pos_z"))
+        {
+            this.respawnPosZ = Double.parseDouble(value);
+        }
+        else if (property.equals("respawn_save_uuid"))
+        {
+            this.respawnSaveUUID = Boolean.parseBoolean(value);
+        }
         else
         {
             return false;
@@ -461,6 +526,15 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (all || options.contains("trigger_target")) tag.setTag("TriggerTarget", this.triggerTarget.serializeNBT());
         if (all || options.contains("trigger_initialize")) tag.setTag("TriggerInitialize", this.triggerInitialize.serializeNBT());
 
+        /* Respawn */
+        if (all || options.contains("respawn")) tag.setBoolean("Respawn", this.respawn);
+        if (all || options.contains("respawn_delay")) tag.setInteger("RespawnDelay", this.respawnDelay);
+        if (all || options.contains("respawn_on_coordinates")) tag.setBoolean("RespawnOnCoordinates", this.respawnOnCoorinates);
+        if (all || options.contains("respawn_pos_x")) tag.setDouble("RespawnPosX", this.respawnPosX);
+        if (all || options.contains("respawn_pos_y")) tag.setDouble("RespawnPosY", this.respawnPosY);
+        if (all || options.contains("respawn_pos_z")) tag.setDouble("RespawnPosZ", this.respawnPosZ);
+        if (all || options.contains("respawn_save_uuid")) tag.setBoolean("RespawnSaveUUID", this.respawnSaveUUID);
+
         return tag;
     }
 
@@ -559,5 +633,15 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("TriggerTick")) this.triggerTick.deserializeNBT(tag.getCompoundTag("TriggerTick"));
         if (tag.hasKey("TriggerTarget")) this.triggerTarget.deserializeNBT(tag.getCompoundTag("TriggerTarget"));
         if (tag.hasKey("TriggerInitialize")) this.triggerInitialize.deserializeNBT(tag.getCompoundTag("TriggerInitialize"));
+
+
+        /* Respawn */
+        if (tag.hasKey("Respawn")) this.respawn = tag.getBoolean("Respawn");
+        if (tag.hasKey("RespawnDelay")) this.respawnDelay = tag.getInteger("RespawnDelay");
+        if (tag.hasKey("RespawnOnCoordinates")) this.respawnOnCoorinates = tag.getBoolean("RespawnOnCoordinates");
+        if (tag.hasKey("RespawnPosX")) this.respawnPosX = tag.getDouble("RespawnPosX");
+        if (tag.hasKey("RespawnPosY")) this.respawnPosY = tag.getDouble("RespawnPosY");
+        if (tag.hasKey("RespawnPosZ")) this.respawnPosZ = tag.getDouble("RespawnPosZ");
+        if (tag.hasKey("RespawnSaveUUID")) this.respawnSaveUUID = tag.getBoolean("RespawnSaveUUID");
     }
 }

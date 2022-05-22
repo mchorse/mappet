@@ -23,6 +23,8 @@ public class GuiNpcEditor extends GuiScrollElement
     private GuiNpcMovementPanel movement;
     private GuiNpcBehaviorPanel behavior;
 
+    private GuiNpcRespawnPanel respawn;
+
     public GuiNpcEditor(Minecraft mc, boolean id)
     {
         super(mc, ScrollDirection.HORIZONTAL);
@@ -35,6 +37,7 @@ public class GuiNpcEditor extends GuiScrollElement
         this.damage = new GuiNpcDamagePanel(mc);
         this.movement = new GuiNpcMovementPanel(mc);
         this.behavior = new GuiNpcBehaviorPanel(mc);
+        this.respawn = new GuiNpcRespawnPanel(mc);
 
         this.flex().column(5).scroll().width(180).padding(15);
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.meta.title")).background().marginBottom(6));
@@ -49,6 +52,8 @@ public class GuiNpcEditor extends GuiScrollElement
         this.addChildren(this.movement);
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.behavior.title")).background().marginBottom(6).marginTop(24));
         this.addChildren(this.behavior);
+        this.add(Elements.label(IKey.lang("mappet.gui.npcs.respawn.title")).background().marginBottom(6).marginTop(24));
+        this.addChildren(this.respawn);
     }
 
     private void addChildren(GuiElement element)
@@ -76,6 +81,7 @@ public class GuiNpcEditor extends GuiScrollElement
         this.damage.set(state);
         this.movement.set(state);
         this.behavior.set(state);
+        this.respawn.set(state);
 
         this.resize();
     }
