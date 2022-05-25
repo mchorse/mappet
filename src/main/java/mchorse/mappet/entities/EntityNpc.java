@@ -67,6 +67,11 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     public float smoothBodyYawHead;
     public float prevSmoothBodyYawHead;
 
+    /*
+     *   Needs to fix a clone issue, when npc dies and you quick reload world
+     */
+    public boolean dieOnLoad = false;
+
     public EntityNpc(World worldIn)
     {
         super(worldIn);
@@ -209,7 +214,6 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
         return null;
     }
-
     public void initialize()
     {
         this.state.triggerInitialize.trigger(this);
@@ -518,10 +522,11 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     public void onDeath(DamageSource cause)
     {
         super.onDeath(cause);
-        if(this.state.respawn)
+        if(this.state.respawn && !this.dieOnLoad)
         {
             MappetNpcRespawnManager respawnManager = MappetNpcRespawnManager.get(this.world);
             respawnManager.addDiedNpc(this);
+            this.dieOnLoad = true;
         }
         this.state.triggerDied.trigger(this, cause.getTrueSource());
     }
@@ -559,9 +564,19 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     @Override
     public void writeEntityToNBT(NBTTagCompound tag)
     {
-        super.writeEntityToNBT(tag);
+        tag.setBoolean("DieOnLoad", this.dieOnLoad);
 
-        tag.setTag("State", this.state.serializeNBT());
+        /*
+        * Do not load data to NBT, if NPC has to die
+        * Prevents repeated quest trigger and drop.
+        */
+
+        if(!this.dieOnLoad)
+        {
+            super.writeEntityToNBT(tag);
+
+            tag.setTag("State", this.state.serializeNBT());
+        }
     }
 
     @Override
@@ -584,6 +599,14 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         if (tag.hasKey("NpcId"))
         {
             state.id = tag.getString("NpcId");
+        }
+
+        if (tag.hasKey("DieOnLoad"))
+        {
+            if(tag.getBoolean("DieOnLoad"))
+            {
+                this.setDead();
+            }
         }
     }
 
