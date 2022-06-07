@@ -136,6 +136,7 @@ public class EventHandler
 
     private void trigger(Event event, Trigger trigger, DataContext context)
     {
+        context.event = event;
         trigger.trigger(context);
 
         if (context.isCanceled())
