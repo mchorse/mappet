@@ -1,4 +1,4 @@
-package mchorse.mappet.utils;
+package mchorse.mappet.entities.utils;
 
 import mchorse.mappet.entities.EntityNpc;
 import net.minecraft.nbt.NBTTagCompound;
