@@ -214,6 +214,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     /* TODO: implement this */
     public Trigger triggerTarget = new Trigger();
     public Trigger triggerInitialize = new Trigger();
+    public Trigger triggerRespawn = new Trigger();
 
     /* Respawn */
 
@@ -525,6 +526,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (all || options.contains("trigger_tick")) tag.setTag("TriggerTick", this.triggerTick.serializeNBT());
         if (all || options.contains("trigger_target")) tag.setTag("TriggerTarget", this.triggerTarget.serializeNBT());
         if (all || options.contains("trigger_initialize")) tag.setTag("TriggerInitialize", this.triggerInitialize.serializeNBT());
+        if (all || options.contains("trigger_respawn")) tag.setTag("TriggerRespawn", this.triggerInitialize.serializeNBT());
 
         /* Respawn */
         if (all || options.contains("respawn")) tag.setBoolean("Respawn", this.respawn);
@@ -633,6 +635,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("TriggerTick")) this.triggerTick.deserializeNBT(tag.getCompoundTag("TriggerTick"));
         if (tag.hasKey("TriggerTarget")) this.triggerTarget.deserializeNBT(tag.getCompoundTag("TriggerTarget"));
         if (tag.hasKey("TriggerInitialize")) this.triggerInitialize.deserializeNBT(tag.getCompoundTag("TriggerInitialize"));
+        if (tag.hasKey("TriggerRespawn")) this.triggerInitialize.deserializeNBT(tag.getCompoundTag("TriggerRespawn"));
 
 
         /* Respawn */

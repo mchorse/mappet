@@ -1,6 +1,7 @@
 package mchorse.mappet.client.gui.npc;
 
 import mchorse.mappet.api.npcs.NpcState;
+import mchorse.mappet.client.gui.triggers.GuiTriggerElement;
 import mchorse.mappet.client.gui.utils.GuiVecPosElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
@@ -20,6 +21,8 @@ public class GuiNpcRespawnPanel extends GuiNpcPanel
 
     public GuiToggleElement respawnSaveUUID;
 
+    public GuiTriggerElement triggerRespawn;
+
     public GuiNpcRespawnPanel(Minecraft mc)
     {
         super(mc);
@@ -33,13 +36,22 @@ public class GuiNpcRespawnPanel extends GuiNpcPanel
             this.state.respawnPosY = pos.y;
             this.state.respawnPosZ = pos.z;
         });
-        this.respawnSaveUUID = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.respawn.isRespawnSaveUUID"), (b) -> this.state.respawnSaveUUID = b.isToggled());
-
+        this.respawnSaveUUID = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.respawn.isRespawnSaveUUID"), (b) -> {
+            this.state.respawnSaveUUID = b.isToggled();
+            /* Prevents final NPS despavn if the original NPS still exists */
+            if(this.state.respawnSaveUUID && this.state.respawnDelay < 20)
+            {
+                    this.respawnDelay.setValue(20);
+                    this.state.respawnDelay = 20;
+            }
+        });
+        this.triggerRespawn = new GuiTriggerElement(mc);
 
         this.add(this.respawn);
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.respawn.respawnDelay")), this.respawnDelay);
         this.add(this.respawnOnCoordinates, this.respawnCoordinates);
         this.add(this.respawnSaveUUID);
+        this.add(Elements.label(IKey.lang("mappet.gui.npcs.respawn.respawnTrigger")).background().marginTop(12).marginBottom(5), this.triggerRespawn);
     }
 
     @Override
@@ -52,5 +64,6 @@ public class GuiNpcRespawnPanel extends GuiNpcPanel
         this.respawnOnCoordinates.toggled(state.respawnOnCoorinates);
         this.respawnCoordinates.set(new Vec3d(state.respawnPosX, state.respawnPosY, state.respawnPosZ));
         this.respawnSaveUUID.toggled(state.respawnSaveUUID);
+        this.triggerRespawn.set(state.triggerRespawn);
     }
 }

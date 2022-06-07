@@ -19,7 +19,7 @@ import mchorse.mappet.network.common.quests.PacketQuest;
 import mchorse.mappet.network.common.quests.PacketQuests;
 import mchorse.mappet.network.common.scripts.PacketClick;
 import mchorse.mappet.network.common.scripts.PacketPlayerSkin;
-import mchorse.mappet.utils.MappetNpcRespawnManager;
+import mchorse.mappet.entities.utils.MappetNpcRespawnManager;
 import mchorse.mappet.utils.ScriptUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;

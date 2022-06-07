@@ -51,5 +51,6 @@ public class DiedNpcHolder
             npc.setUniqueId(UUID.fromString(uuid));
         }
         world.spawnEntity(npc);
+        npc.getState().triggerRespawn.trigger(npc);
     }
 }
