@@ -1,4 +1,4 @@
-package mchorse.mappet.utils;
+package mchorse.mappet.entities.utils;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.entities.EntityNpc;
