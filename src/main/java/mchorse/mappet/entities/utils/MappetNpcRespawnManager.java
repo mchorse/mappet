@@ -15,7 +15,6 @@ import java.util.List;
 public class MappetNpcRespawnManager extends WorldSavedData
 {
     public static final String DATA_NAME = Mappet.MOD_ID + "_RespawnData";
-
     public final List<DiedNpcHolder> diedNpcHolders = new ArrayList<>();
     public final List<DiedNpcHolder> deleteCache = new ArrayList<>();
     public MinecraftServer server;
@@ -34,6 +33,7 @@ public class MappetNpcRespawnManager extends WorldSavedData
                 this.respawnNpc(diedNpcHolder);
             }
         }
+
         this.removeSpawnedNpcs();
         this.markDirty();
     }
@@ -62,6 +62,7 @@ public class MappetNpcRespawnManager extends WorldSavedData
         {
             this.diedNpcHolders.remove(diedNpcHolder);
         }
+
         clearDeleteCache();
     }
 
@@ -110,7 +111,9 @@ public class MappetNpcRespawnManager extends WorldSavedData
 
             tagList.appendTag(tag);
         }
+
         nbtTagCompound.setTag("diedNpcHolders", tagList);
+
         return nbtTagCompound;
     }
 
@@ -123,7 +126,9 @@ public class MappetNpcRespawnManager extends WorldSavedData
             data = new MappetNpcRespawnManager(DATA_NAME);
             world.getMapStorage().setData(DATA_NAME, data);
         }
+
         data.server = world.getMinecraftServer();
+
         return data;
     }
 }

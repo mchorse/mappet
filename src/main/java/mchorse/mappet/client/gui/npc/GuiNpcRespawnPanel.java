@@ -39,7 +39,7 @@ public class GuiNpcRespawnPanel extends GuiNpcPanel
         this.respawnSaveUUID = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.respawn.isRespawnSaveUUID"), (b) -> {
             this.state.respawnSaveUUID = b.isToggled();
             /* Prevents final NPS despavn if the original NPS still exists */
-            if(this.state.respawnSaveUUID && this.state.respawnDelay < 20)
+            if (this.state.respawnSaveUUID && this.state.respawnDelay < 20)
             {
                     this.respawnDelay.setValue(20);
                     this.state.respawnDelay = 20;
