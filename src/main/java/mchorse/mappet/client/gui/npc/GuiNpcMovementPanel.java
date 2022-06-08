@@ -6,7 +6,6 @@ import mchorse.mappet.client.gui.utils.GuiBlockPosList;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
-import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiLabel;
@@ -72,7 +71,7 @@ public class GuiNpcMovementPanel extends GuiNpcPanel
         this.postPosition.set(state.postPosition);
         this.postRadius.setValue(state.postRadius);
         this.patrolCirculate.toggled(state.patrolCirculate);
-        this.patrol.set(state.patrol);
+        this.patrol.set(state.patrol, state.patrolTriggers);
         this.follow.setText(state.follow);
     }
 }
