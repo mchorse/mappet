@@ -41,9 +41,9 @@ public class MappetNpcRespawnManager extends WorldSavedData
     public void addDiedNpc(EntityNpc npc)
     {
         long respawnTime = npc.world.getTotalWorldTime() + npc.getState().respawnDelay;
-        double posX = npc.getState().respawnOnCoorinates ? npc.getState().respawnPosX : npc.posX;
-        double posY = npc.getState().respawnOnCoorinates ? npc.getState().respawnPosY : npc.posY;
-        double posZ = npc.getState().respawnOnCoorinates ? npc.getState().respawnPosZ : npc.posZ;
+        double posX = npc.getState().respawnOnCoordinates ? npc.getState().respawnPosX : npc.posX;
+        double posY = npc.getState().respawnOnCoordinates ? npc.getState().respawnPosY : npc.posY;
+        double posZ = npc.getState().respawnOnCoordinates ? npc.getState().respawnPosZ : npc.posZ;
 
         this.diedNpcHolders.add(new DiedNpcHolder(npc, respawnTime, posX, posY, posZ));
         this.markDirty();

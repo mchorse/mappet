@@ -30,7 +30,7 @@ public class GuiNpcRespawnPanel extends GuiNpcPanel
         this.respawn = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.respawn.isRespawn"), (b) -> this.state.respawn = b.isToggled());
         this.respawnDelay = new GuiTrackpadElement(mc, (v) -> this.state.respawnDelay = v.intValue());
         this.respawnDelay.integer().limit(0);
-        this.respawnOnCoordinates = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.respawn.isRespawnOnCoordinates"), (b) -> this.state.respawnOnCoorinates = b.isToggled());
+        this.respawnOnCoordinates = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.respawn.isRespawnOnCoordinates"), (b) -> this.state.respawnOnCoordinates = b.isToggled());
         this.respawnCoordinates = new GuiVecPosElement(mc, (pos) -> {
             this.state.respawnPosX = pos.x;
             this.state.respawnPosY = pos.y;
@@ -61,7 +61,7 @@ public class GuiNpcRespawnPanel extends GuiNpcPanel
 
         this.respawn.toggled(state.respawn);
         this.respawnDelay.setValue(state.respawnDelay);
-        this.respawnOnCoordinates.toggled(state.respawnOnCoorinates);
+        this.respawnOnCoordinates.toggled(state.respawnOnCoordinates);
         this.respawnCoordinates.set(new Vec3d(state.respawnPosX, state.respawnPosY, state.respawnPosZ));
         this.respawnSaveUUID.toggled(state.respawnSaveUUID);
         this.triggerRespawn.set(state.triggerRespawn);

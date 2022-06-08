@@ -231,7 +231,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     /**
      * Whether NPC respawns at the specified coordinates
      */
-    public boolean respawnOnCoorinates;
+    public boolean respawnOnCoordinates;
 
     /**
      * X coordinate to respawn
@@ -406,7 +406,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         }
         else if (property.equals("respawn_on_coordinates"))
         {
-            this.respawnOnCoorinates = Boolean.parseBoolean(value);
+            this.respawnOnCoordinates = Boolean.parseBoolean(value);
         }
         else if (property.equals("respawn_pos_x"))
         {
@@ -526,12 +526,12 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (all || options.contains("trigger_tick")) tag.setTag("TriggerTick", this.triggerTick.serializeNBT());
         if (all || options.contains("trigger_target")) tag.setTag("TriggerTarget", this.triggerTarget.serializeNBT());
         if (all || options.contains("trigger_initialize")) tag.setTag("TriggerInitialize", this.triggerInitialize.serializeNBT());
-        if (all || options.contains("trigger_respawn")) tag.setTag("TriggerRespawn", this.triggerInitialize.serializeNBT());
+        if (all || options.contains("trigger_respawn")) tag.setTag("TriggerRespawn", this.triggerRespawn.serializeNBT());
 
         /* Respawn */
         if (all || options.contains("respawn")) tag.setBoolean("Respawn", this.respawn);
         if (all || options.contains("respawn_delay")) tag.setInteger("RespawnDelay", this.respawnDelay);
-        if (all || options.contains("respawn_on_coordinates")) tag.setBoolean("RespawnOnCoordinates", this.respawnOnCoorinates);
+        if (all || options.contains("respawn_on_coordinates")) tag.setBoolean("RespawnOnCoordinates", this.respawnOnCoordinates);
         if (all || options.contains("respawn_pos_x")) tag.setDouble("RespawnPosX", this.respawnPosX);
         if (all || options.contains("respawn_pos_y")) tag.setDouble("RespawnPosY", this.respawnPosY);
         if (all || options.contains("respawn_pos_z")) tag.setDouble("RespawnPosZ", this.respawnPosZ);
@@ -635,13 +635,13 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("TriggerTick")) this.triggerTick.deserializeNBT(tag.getCompoundTag("TriggerTick"));
         if (tag.hasKey("TriggerTarget")) this.triggerTarget.deserializeNBT(tag.getCompoundTag("TriggerTarget"));
         if (tag.hasKey("TriggerInitialize")) this.triggerInitialize.deserializeNBT(tag.getCompoundTag("TriggerInitialize"));
-        if (tag.hasKey("TriggerRespawn")) this.triggerInitialize.deserializeNBT(tag.getCompoundTag("TriggerRespawn"));
+        if (tag.hasKey("TriggerRespawn")) this.triggerRespawn.deserializeNBT(tag.getCompoundTag("TriggerRespawn"));
 
 
         /* Respawn */
         if (tag.hasKey("Respawn")) this.respawn = tag.getBoolean("Respawn");
         if (tag.hasKey("RespawnDelay")) this.respawnDelay = tag.getInteger("RespawnDelay");
-        if (tag.hasKey("RespawnOnCoordinates")) this.respawnOnCoorinates = tag.getBoolean("RespawnOnCoordinates");
+        if (tag.hasKey("RespawnOnCoordinates")) this.respawnOnCoordinates = tag.getBoolean("RespawnOnCoordinates");
         if (tag.hasKey("RespawnPosX")) this.respawnPosX = tag.getDouble("RespawnPosX");
         if (tag.hasKey("RespawnPosY")) this.respawnPosY = tag.getDouble("RespawnPosY");
         if (tag.hasKey("RespawnPosZ")) this.respawnPosZ = tag.getDouble("RespawnPosZ");
