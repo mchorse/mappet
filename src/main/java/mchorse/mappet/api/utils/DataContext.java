@@ -14,7 +14,6 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.eventhandler.Event;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +28,6 @@ public class DataContext
     public BlockPos pos;
     public Entity subject;
     public Entity object;
-    public Event event;
 
     private boolean canceled;
 
