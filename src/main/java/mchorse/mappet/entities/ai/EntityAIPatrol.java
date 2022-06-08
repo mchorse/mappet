@@ -1,9 +1,10 @@
 package mchorse.mappet.entities.ai;
 
 import mchorse.mappet.api.npcs.NpcState;
+import mchorse.mappet.api.triggers.Trigger;
+import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.entities.EntityNpc;
 import mchorse.mclib.utils.MathUtils;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.pathfinding.Path;
@@ -78,6 +79,14 @@ public class EntityAIPatrol extends EntityAIBase
         if (this.target.getDistanceSq(pos) < 2)
         {
             int next = this.index + this.direction;
+
+            if (this.index >= 0 && this.index < state.patrolTriggers.size())
+            {
+                Trigger triggerPatrol = state.patrolTriggers.get(this.index);
+                DataContext context = new DataContext(this.target);
+                context.getValues().put("last", this.index == state.patrol.size());
+                triggerPatrol.trigger(context);
+            }
 
             if (state.patrolCirculate)
             {

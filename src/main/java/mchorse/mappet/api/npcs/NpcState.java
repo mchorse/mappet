@@ -145,6 +145,11 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     public List<BlockPos> patrol = new ArrayList<BlockPos>();
 
     /**
+     *  List of triggers on each patrol point
+     */
+    public List<Trigger> patrolTriggers = new ArrayList<Trigger>();
+
+    /**
      * The UUID of the player that must be followed
      */
     public String follow = "";
@@ -485,13 +490,20 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if ((all || options.contains("patrol")))
         {
             NBTTagList points = new NBTTagList();
+            NBTTagList triggers = new NBTTagList();
 
-            for (BlockPos pos : this.patrol)
+            for (int i = 0; i < this.patrol.size(); i++)
             {
-                points.appendTag(NBTUtils.blockPosTo(pos));
+                points.appendTag(NBTUtils.blockPosTo(this.patrol.get(i)));
+            }
+
+            for (int i = 0; i < this.patrolTriggers.size(); i++)
+            {
+                triggers.appendTag(this.patrolTriggers.get(i).serializeNBT());
             }
 
             tag.setTag("Patrol", points);
+            tag.setTag("PatrolTriggers", triggers);
         }
         if ((all || options.contains("follow"))) tag.setString("Follow", this.follow);
 
@@ -590,6 +602,18 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
                 {
                     this.patrol.add(pos);
                 }
+            }
+
+            NBTTagList triggers = tag.getTagList("PatrolTriggers", Constants.NBT.TAG_COMPOUND);
+
+            this.patrolTriggers.clear();
+
+            for (int i = 0; i < triggers.tagCount(); i++)
+            {
+                Trigger trigger = new Trigger();
+                trigger.deserializeNBT(triggers.getCompoundTagAt(i));
+
+                this.patrolTriggers.add(trigger);
             }
         }
         if (tag.hasKey("Follow", Constants.NBT.TAG_STRING)) this.follow = tag.getString("Follow");
