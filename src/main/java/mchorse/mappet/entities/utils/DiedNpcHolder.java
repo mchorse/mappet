@@ -46,10 +46,11 @@ public class DiedNpcHolder
         npc.setPosition(posX, posY, posZ);
         npc.setHealth(npc.getMaxHealth());
 
-        if(npc.getState().respawnSaveUUID)
+        if (npc.getState().respawnSaveUUID)
         {
             npc.setUniqueId(UUID.fromString(uuid));
         }
+
         world.spawnEntity(npc);
         npc.getState().triggerRespawn.trigger(npc);
     }
