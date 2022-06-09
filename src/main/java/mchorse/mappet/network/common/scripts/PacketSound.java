@@ -7,15 +7,17 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 public class PacketSound implements IMessage
 {
     public String sound = "";
+    public String soundCategory = "";
     public float volume = 1F;
     public float pitch = 1F;
 
     public PacketSound()
     {}
 
-    public PacketSound(String sound, float volume, float pitch)
+    public PacketSound(String sound, String soundCategory, float volume, float pitch)
     {
         this.sound = sound;
+        this.soundCategory = soundCategory;
         this.volume = volume;
         this.pitch = pitch;
     }
@@ -24,6 +26,7 @@ public class PacketSound implements IMessage
     public void fromBytes(ByteBuf buf)
     {
         this.sound = ByteBufUtils.readUTF8String(buf);
+        this.soundCategory = ByteBufUtils.readUTF8String(buf);
         this.volume = buf.readFloat();
         this.pitch = buf.readFloat();
     }
@@ -32,6 +35,7 @@ public class PacketSound implements IMessage
     public void toBytes(ByteBuf buf)
     {
         ByteBufUtils.writeUTF8String(buf, this.sound);
+        ByteBufUtils.writeUTF8String(buf, this.soundCategory);
         buf.writeFloat(this.volume);
         buf.writeFloat(this.pitch);
     }

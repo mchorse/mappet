@@ -22,11 +22,20 @@ public class WorldUtils
         return null;
     }
 
+    public static void playSound(EntityPlayerMP player, String soundEvent, String soundCategory)
+    {
+        playSound(player, soundEvent, soundCategory, player.posX, player.posY, player.posZ, 1F, 1F);
+    }
     public static void playSound(EntityPlayerMP player, String soundEvent)
     {
-        playSound(player, soundEvent, player.posX, player.posY, player.posZ, 1F, 1F);
+        playSound(player, soundEvent, "master", player.posX, player.posY, player.posZ, 1F, 1F);
     }
 
+    public static void playSound(EntityPlayerMP player, String soundEvent, String soundCategory, double x, double y, double z, float volume, float pitch)
+    {
+        SoundCategory category = SoundCategory.getSoundCategoryNames().contains(soundCategory) ? SoundCategory.getByName(soundCategory) : SoundCategory.MASTER;
+        player.connection.sendPacket(new SPacketCustomSound(soundEvent, category, x, y, z, volume, pitch));
+    }
     public static void playSound(EntityPlayerMP player, String soundEvent, double x, double y, double z, float volume, float pitch)
     {
         player.connection.sendPacket(new SPacketCustomSound(soundEvent, SoundCategory.MASTER, x, y, z, volume, pitch));
