@@ -130,8 +130,13 @@ mappet.config.npc.tooltip=Настройки мода, относящиеся к
 
 mappet.config.npc.peaceful_damage=Урон в "мирной"
 mappet.config.comments.npc.peaceful_damage=Эта опция определяет смогут ли NPC наносить урон игрокам, если те находятся в мирном режиме сложности.
-mappet.config.npc.tool_only_op=NPC tool OP
-mappet.config.comments.npc.tool_only_op=This option determines whether only OP users can use NPC tool.
+mappet.config.npc.tool_only_op=Инструмент НПС только для Оператора
+mappet.config.comments.npc.tool_only_op=Этот параметр определяет, могут ли только операторы использовать инструмент NPC.
+mappet.config.npc.tool_only_creative=Инструмент НПС только для Креатива
+mappet.config.comments.npc.tool_only_creative=Этот параметр определяет, могут ли только игроки в креативе использовать инструмент NPC.
+mappet.config.npc.dashboard_only_creative=Главная панель только для Креатива
+mappet.config.comments.npc.dashboard_only_creative=Этот параметр определяет, могут ли только игроки в креативе открывать главную панель.
+
 
 mappet.config.events.title=События
 mappet.config.events.tooltip=Настройки мода, относящиеся к событиям

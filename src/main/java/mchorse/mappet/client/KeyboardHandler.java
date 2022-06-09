@@ -10,7 +10,6 @@ import mchorse.mappet.network.common.events.PacketPlayerJournal;
 import mchorse.mclib.client.gui.framework.tooltips.styles.TooltipStyle;
 import mchorse.mclib.client.gui.utils.Area;
 import mchorse.mclib.client.gui.utils.keys.IKey;
-import mchorse.mclib.utils.Direction;
 import mchorse.mclib.utils.OpHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -106,7 +105,17 @@ public class KeyboardHandler
 
         if (this.openMappetDashboard.isPressed() && OpHelper.isPlayerOp())
         {
-            mc.displayGuiScreen(GuiMappetDashboard.get(mc));
+            if(Mappet.dashboardOnlyCreative.get())
+            {
+                if (mc.player.capabilities.isCreativeMode)
+                {
+                    mc.displayGuiScreen(GuiMappetDashboard.get(mc));
+                }
+            }
+            else
+            {
+                mc.displayGuiScreen(GuiMappetDashboard.get(mc));
+            }
         }
 
         if (this.openJournal.isPressed())

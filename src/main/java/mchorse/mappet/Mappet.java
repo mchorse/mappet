@@ -105,6 +105,8 @@ public final class Mappet
 
     public static ValueBoolean npcsPeacefulDamage;
     public static ValueBoolean npcsToolOnlyOP;
+    public static ValueBoolean npcsToolOnlyCreative;
+    public static ValueBoolean dashboardOnlyCreative;
 
     public static ValueInt eventMaxExecutions;
     public static ValueBoolean eventUseServerForCommands;
@@ -137,6 +139,8 @@ public final class Mappet
 
         npcsPeacefulDamage = builder.category("npc").getBoolean("peaceful_damage", true);
         npcsToolOnlyOP = builder.getBoolean("tool_only_op", true);
+        npcsToolOnlyCreative = builder.getBoolean("tool_only_creative", false);
+        dashboardOnlyCreative = builder.getBoolean("dashboard_only_creative", false);
 
         eventMaxExecutions = builder.category("events").getInt("max_executions", 10000, 100, 1000000);
         eventUseServerForCommands = builder.getBoolean("use_server_for_commands", false);
