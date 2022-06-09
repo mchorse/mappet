@@ -56,6 +56,11 @@ public class ItemNpcTool extends Item
                 return super.itemInteractionForEntity(stack, player, target, hand);
             }
 
+            if (Mappet.npcsToolOnlyCreative.get() && !player.capabilities.isCreativeMode)
+            {
+                return super.itemInteractionForEntity(stack, player, target, hand);
+            }
+
             EntityNpc npc = (EntityNpc) target;
 
             if (player.isSneaking())
@@ -79,6 +84,11 @@ public class ItemNpcTool extends Item
         if (!worldIn.isRemote)
         {
             if (Mappet.npcsToolOnlyOP.get() && !OpHelper.isPlayerOp((EntityPlayerMP) playerIn))
+            {
+                return super.onItemRightClick(worldIn, playerIn, handIn);
+            }
+
+            if (Mappet.npcsToolOnlyCreative.get() && !playerIn.capabilities.isCreativeMode)
             {
                 return super.onItemRightClick(worldIn, playerIn, handIn);
             }
@@ -126,6 +136,11 @@ public class ItemNpcTool extends Item
         if (!worldIn.isRemote)
         {
             if (Mappet.npcsToolOnlyOP.get() && !OpHelper.isPlayerOp((EntityPlayerMP) player))
+            {
+                return EnumActionResult.PASS;
+            }
+
+            if (Mappet.npcsToolOnlyCreative.get() && !player.capabilities.isCreativeMode)
             {
                 return EnumActionResult.PASS;
             }

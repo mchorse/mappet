@@ -132,6 +132,10 @@ mappet.config.npc.peaceful_damage=Peaceful damage
 mappet.config.comments.npc.peaceful_damage=This option determines whether NPCs can inflict damage to players in peaceful difficulty.
 mappet.config.npc.tool_only_op=NPC tool OP
 mappet.config.comments.npc.tool_only_op=This option determines whether only OP users can use NPC tool.
+mappet.config.npc.tool_only_creative=NPC tool only Creative
+mappet.config.comments.npc.tool_only_creative=This option determines whether only Creative users can use NPC tool.
+mappet.config.npc.dashboard_only_creative=Dashboard only Creative
+mappet.config.comments.npc.dashboard_only_creative=This option determines whether only Creative users can open dashboard.
 
 mappet.config.events.title=Events
 mappet.config.events.tooltip=Mod options related to events
