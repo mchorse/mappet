@@ -255,6 +255,13 @@ public interface IScriptPlayer extends IScriptEntity
      */
     public int getXpPoints();
 
+    /* Hunger */
+
+    public void setHunger(int value);
+    public int getHunger();
+    public void setSaturation(float value);
+    public float getSaturation();
+
     /* Sounds */
 
     /**

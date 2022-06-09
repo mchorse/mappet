@@ -205,6 +205,30 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
         return (int) (this.entity.experience * this.entity.xpBarCap());
     }
 
+    @Override
+    public void setHunger(int value)
+    {
+        this.entity.getFoodStats().setFoodLevel(value);
+    }
+
+    @Override
+    public int getHunger()
+    {
+        return this.entity.getFoodStats().getFoodLevel();
+    }
+
+    @Override
+    public void setSaturation(float value)
+    {
+        this.entity.getFoodStats().setFoodSaturationLevel(value);
+    }
+
+    @Override
+    public float getSaturation()
+    {
+        return this.entity.getFoodStats().getSaturationLevel();
+    }
+
     /* Sounds */
 
     @Override
