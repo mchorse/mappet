@@ -276,6 +276,32 @@ public interface IScriptPlayer extends IScriptEntity
     }
 
     /**
+     * Play a sound event only to this player at specific sound channel.
+     *
+     * <pre>{@code
+     *    var player = c.getSubject();
+     *    var pos = player.getPosition();
+     *
+     *    player.playSound("minecraft:entity.pig.ambient", "voice", pos.x, pos.y, pos.z);
+     * }</pre>
+     */
+
+    public void playSound(String event, String soundCategory, double x, double y, double z);
+
+    /**
+     * Play a sound event only to this player with volume and pitch at specific channel.
+     *
+     * <pre>{@code
+     *    var player = c.getSubject();
+     *    var pos = player.getPosition();
+     *
+     *    player.playSound("minecraft:entity.pig.ambient", "voice", pos.x, pos.y, pos.z, 1.0, 0.8);
+     * }</pre>
+     */
+
+    public void playSound(String event, String soundCategory, double x, double y, double z, float volume, float pitch);
+
+    /**
      * Play a sound event only to this player with volume and pitch.
      *
      * <pre>{@code
@@ -285,6 +311,8 @@ public interface IScriptPlayer extends IScriptEntity
      *    player.playSound("minecraft:entity.pig.ambient", pos.x, pos.y, pos.z, 1.0, 0.8);
      * }</pre>
      */
+
+
     public void playSound(String event, double x, double y, double z, float volume, float pitch);
 
     /**
@@ -305,6 +333,25 @@ public interface IScriptPlayer extends IScriptEntity
      * }</pre>
      */
     public void playStaticSound(String event, float volume, float pitch);
+
+    /**
+     * Play a sound event to this player stationary at specific channel.
+     *
+     * <p>The difference between this method and {@link #playSound(String, double, double, double, float, float)}
+     * is that if player will get teleported, the sound will continue playing.</p>
+     *
+     * <pre>{@code
+     *    var player = c.getSubject();
+     *
+     *    player.playStaticSound("minecraft:block.portal.ambient", "voice", 1.0, 0.8);
+     *
+     *    c.scheduleScript(20, function (c)
+     *    {
+     *        c.getSubject.setPosition(-15, 4, 561);
+     *    });
+     * }</pre>
+     */
+    public void playStaticSound(String event, String soundCategory, float volume, float pitch);
 
     /* Mappet stuff */
 

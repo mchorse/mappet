@@ -25,18 +25,14 @@ import mchorse.mappet.network.common.scripts.PacketSound;
 import mchorse.mappet.network.common.ui.PacketCloseUI;
 import mchorse.mappet.network.common.ui.PacketUI;
 import mchorse.mappet.utils.WorldUtils;
-import mchorse.mclib.commands.SubCommandBase;
 import mchorse.metamorph.api.MorphAPI;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import net.minecraft.command.CommandBase;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.SPacketAnimation;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.network.play.server.SPacketTitle;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.GameType;
@@ -218,9 +214,27 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     }
 
     @Override
+    public void playSound(String event, String soundCategory, double x, double y, double z, float volume, float pitch)
+    {
+        WorldUtils.playSound(this.entity, event, soundCategory, x, y, z, volume, pitch);
+    }
+
+    @Override
+    public void playSound(String event, String soundCategory, double x, double y, double z)
+    {
+        WorldUtils.playSound(this.entity, event, soundCategory, x, y, z, 1.0F, 1.0F);
+    }
+
+    @Override
     public void playStaticSound(String event, float volume, float pitch)
     {
-        Dispatcher.sendTo(new PacketSound(event, volume, pitch), this.entity);
+        this.playStaticSound(event, "master", volume, pitch);
+    }
+
+    @Override
+    public void playStaticSound(String event, String soundCategory, float volume, float pitch)
+    {
+        Dispatcher.sendTo(new PacketSound(event, soundCategory, volume, pitch), this.entity);
     }
 
     /* Mappet stuff */
