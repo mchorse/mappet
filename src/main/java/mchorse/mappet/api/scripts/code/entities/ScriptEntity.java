@@ -368,7 +368,7 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Override
     public void setFullData(INBTCompound data)
     {
-        this.entity.readFromNBT(data.getNBTTagComound());
+        this.entity.readFromNBT(data.getNBTTagCompound());
     }
 
     @Override

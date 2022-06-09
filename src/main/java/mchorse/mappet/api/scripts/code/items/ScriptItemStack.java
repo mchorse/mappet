@@ -96,7 +96,7 @@ public class ScriptItemStack implements IScriptItemStack
     @Override
     public void setData(INBTCompound tag)
     {
-        this.stack.setTagCompound(tag.getNBTTagComound());
+        this.stack.setTagCompound(tag.getNBTTagCompound());
     }
 
     @Override

@@ -205,7 +205,7 @@ public class ScriptWorld implements IScriptWorld
 
         if (compound != null)
         {
-            tag.merge(compound.getNBTTagComound());
+            tag.merge(compound.getNBTTagCompound());
         }
 
         tag.setString("id", id);

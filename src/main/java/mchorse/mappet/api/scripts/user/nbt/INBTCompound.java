@@ -13,7 +13,7 @@ public interface INBTCompound extends INBT
      * Get raw NBT tag compound. <b>BEWARE:</b> you need to know the MCP
      * mappings in order to directly call methods on this instance!
      */
-    public NBTTagCompound getNBTTagComound();
+    public NBTTagCompound getNBTTagCompound();
 
     /**
      * Check whether this NBT compound has a value by given key.
