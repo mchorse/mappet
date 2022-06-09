@@ -21,7 +21,7 @@ public class ScriptNBTCompound implements INBTCompound
     }
 
     @Override
-    public NBTTagCompound getNBTTagComound()
+    public NBTTagCompound getNBTTagCompound()
     {
         return this.tag;
     }

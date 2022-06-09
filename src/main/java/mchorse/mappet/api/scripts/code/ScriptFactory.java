@@ -166,7 +166,7 @@ public class ScriptFactory implements IScriptFactory
     {
         if (compound != null)
         {
-            return ScriptItemStack.create(new ItemStack(compound.getNBTTagComound()));
+            return ScriptItemStack.create(new ItemStack(compound.getNBTTagCompound()));
         }
 
         return ScriptItemStack.EMPTY;
@@ -208,7 +208,7 @@ public class ScriptFactory implements IScriptFactory
             return null;
         }
 
-        return MorphManager.INSTANCE.morphFromNBT(compound.getNBTTagComound());
+        return MorphManager.INSTANCE.morphFromNBT(compound.getNBTTagCompound());
     }
 
     @Override

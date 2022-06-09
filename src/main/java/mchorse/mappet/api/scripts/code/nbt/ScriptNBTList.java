@@ -286,13 +286,13 @@ public class ScriptNBTList implements INBTList
     @Override
     public void setCompound(int index, INBTCompound value)
     {
-        this.list.set(index, value.getNBTTagComound());
+        this.list.set(index, value.getNBTTagCompound());
     }
 
     @Override
     public void addCompound(INBTCompound value)
     {
-        this.list.appendTag(value.getNBTTagComound());
+        this.list.appendTag(value.getNBTTagCompound());
     }
 
     @Override

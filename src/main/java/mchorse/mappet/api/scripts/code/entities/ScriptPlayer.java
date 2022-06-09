@@ -371,7 +371,7 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
             return;
         }
 
-        this.changeHUDMorph(id, index, morph.getNBTTagComound());
+        this.changeHUDMorph(id, index, morph.getNBTTagCompound());
     }
 
     private void changeHUDMorph(String id, int index, NBTTagCompound tag)

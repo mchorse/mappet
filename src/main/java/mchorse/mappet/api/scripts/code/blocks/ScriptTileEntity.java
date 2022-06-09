@@ -44,7 +44,7 @@ public class ScriptTileEntity implements IScriptTileEntity
     @Override
     public void setData(INBTCompound compound)
     {
-        this.tile.readFromNBT(compound.getNBTTagComound());
+        this.tile.readFromNBT(compound.getNBTTagCompound());
         this.tile.markDirty();
     }
 
