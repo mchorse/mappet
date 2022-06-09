@@ -172,6 +172,7 @@ public class CommonProxy
         /* Register event nodes */
         MapFactory<EventBaseNode> eventNodes = new MapFactory<EventBaseNode>()
             .register("command", CommandNode.class, Colors.COMMAND)
+            .register("comment", CommentNode.class, Colors.COMMENT)
             .register("condition", ConditionNode.class, Colors.CONDITION)
             .register("switch", SwitchNode.class, Colors.FACTION)
             .register("timer", TimerNode.class, Colors.TIME)
