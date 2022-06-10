@@ -24,6 +24,7 @@ public class Quest extends AbstractData implements INBTPartialSerializable
     public String title = "";
     public String story = "";
     public boolean cancelable = true;
+    public boolean visible = true;
     public boolean instant;
 
     public Trigger accept = new Trigger();
@@ -172,6 +173,7 @@ public class Quest extends AbstractData implements INBTPartialSerializable
         {
             objectives.appendTag(objective.partialSerializeNBT());
         }
+        tag.setBoolean("Visible", this.visible);
 
         return tag;
     }
@@ -188,6 +190,11 @@ public class Quest extends AbstractData implements INBTPartialSerializable
                 this.objectives.get(i).partialDeserializeNBT(list.getCompoundTagAt(i));
             }
         }
+
+        if (tag.hasKey("Visible"))
+        {
+            this.visible = tag.getBoolean("Visible");
+        }
     }
 
     @Override
@@ -201,6 +208,7 @@ public class Quest extends AbstractData implements INBTPartialSerializable
         tag.setString("Story", this.story);
         tag.setBoolean("Cancelable", this.cancelable);
         tag.setBoolean("Instant", this.instant);
+        tag.setBoolean("Visible", this.visible);
 
         NBTTagCompound accept = this.accept.serializeNBT();
         NBTTagCompound decline = this.decline.serializeNBT();
@@ -261,6 +269,11 @@ public class Quest extends AbstractData implements INBTPartialSerializable
         if (tag.hasKey("Complete"))
         {
             this.complete.deserializeNBT(tag.getCompoundTag("Complete"));
+        }
+
+        if (tag.hasKey("Visible"))
+        {
+            this.visible = tag.getBoolean("Visible");
         }
 
         if (tag.hasKey("Objectives"))

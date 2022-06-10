@@ -337,6 +337,7 @@ mappet.gui.quests.rewards.context.remove=Удалить эту награду
 mappet.gui.quests.rewards.context.add_item=Добавить награду в предметах
 mappet.gui.quests.reward_item.title=Предметы награды
 mappet.gui.quests.info.empty=Чтобы начать редактирование, создайте или выберите квест из списка справа...
+mappet.gui.quests.visible = Видимый
 
 mappet.gui.interaction.back=Назад
 mappet.gui.interaction.accept=Принять
