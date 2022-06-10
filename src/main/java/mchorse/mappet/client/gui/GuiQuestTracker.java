@@ -40,7 +40,7 @@ public class GuiQuestTracker extends Gui
                     break;
                 }
 
-                y += renderQuest(mc, entry.getValue(), x, y, w);
+                y += entry.getValue().visible ? renderQuest(mc, entry.getValue(), x, y, w) : 0;
                 i += 1;
             }
         }

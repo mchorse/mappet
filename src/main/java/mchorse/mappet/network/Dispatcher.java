@@ -58,6 +58,7 @@ import mchorse.mappet.network.common.npc.PacketNpcState;
 import mchorse.mappet.network.common.npc.PacketNpcTool;
 import mchorse.mappet.network.common.quests.PacketQuest;
 import mchorse.mappet.network.common.quests.PacketQuestAction;
+import mchorse.mappet.network.common.quests.PacketQuestVisibility;
 import mchorse.mappet.network.common.quests.PacketQuests;
 import mchorse.mappet.network.common.scripts.PacketClick;
 import mchorse.mappet.network.common.scripts.PacketEntityRotations;
@@ -90,6 +91,7 @@ import mchorse.mappet.network.server.npc.ServerHandlerNpcList;
 import mchorse.mappet.network.server.npc.ServerHandlerNpcState;
 import mchorse.mappet.network.server.npc.ServerHandlerNpcTool;
 import mchorse.mappet.network.server.quests.ServerHandlerQuestAction;
+import mchorse.mappet.network.server.quests.ServerHandlerQuestVisibility;
 import mchorse.mappet.network.server.scripts.ServerHandlerClick;
 import mchorse.mappet.network.server.scripts.ServerHandlerPlayerSkin;
 import mchorse.mappet.network.server.scripts.ServerHandlerRepl;
@@ -162,6 +164,7 @@ public class Dispatcher
             this.register(PacketQuest.class, ClientHandlerQuest.class, Side.CLIENT);
             this.register(PacketQuests.class, ClientHandlerQuests.class, Side.CLIENT);
             this.register(PacketQuestAction.class, ServerHandlerQuestAction.class, Side.SERVER);
+            this.register(PacketQuestVisibility.class, ServerHandlerQuestVisibility.class, Side.SERVER);
 
             /* Factions */
             this.register(PacketFactions.class, ClientHandlerFactions.class, Side.CLIENT);
