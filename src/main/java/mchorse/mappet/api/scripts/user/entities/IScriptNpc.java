@@ -40,4 +40,7 @@ public interface IScriptNpc extends IScriptEntity
      * }</pre>
      */
     public String getNpcId();
+
+    public String getNpcState();
+    public void setNpcState(String id);
 }
