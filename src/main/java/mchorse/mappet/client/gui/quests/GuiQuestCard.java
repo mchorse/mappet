@@ -35,7 +35,8 @@ public class GuiQuestCard
         }
 
         element.add(Elements.label(IKey.str(title)).background().marginBottom(12));
-        element.add(new GuiToggleElement(mc, IKey.lang("mappet.gui.quests.visible"), characterQuest.visible,  (b) -> {
+        element.add(new GuiToggleElement(mc, IKey.lang("mappet.gui.quests.visible"), characterQuest.visible,  (b) ->
+        {
             Dispatcher.sendToServer(new PacketQuestVisibility(characterQuest.getId(), characterQuest, b.isToggled()));
             characterQuest.visible = b.isToggled();
         }));

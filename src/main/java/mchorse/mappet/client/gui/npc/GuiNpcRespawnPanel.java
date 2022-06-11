@@ -31,12 +31,14 @@ public class GuiNpcRespawnPanel extends GuiNpcPanel
         this.respawnDelay = new GuiTrackpadElement(mc, (v) -> this.state.respawnDelay = v.intValue());
         this.respawnDelay.integer().limit(0);
         this.respawnOnCoordinates = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.respawn.isRespawnOnCoordinates"), (b) -> this.state.respawnOnCoordinates = b.isToggled());
-        this.respawnCoordinates = new GuiVecPosElement(mc, (pos) -> {
+        this.respawnCoordinates = new GuiVecPosElement(mc, (pos) ->
+        {
             this.state.respawnPosX = pos.x;
             this.state.respawnPosY = pos.y;
             this.state.respawnPosZ = pos.z;
         });
-        this.respawnSaveUUID = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.respawn.isRespawnSaveUUID"), (b) -> {
+        this.respawnSaveUUID = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.respawn.isRespawnSaveUUID"), (b) ->
+        {
             this.state.respawnSaveUUID = b.isToggled();
             /* Prevents final NPS despavn if the original NPS still exists */
             if (this.state.respawnSaveUUID && this.state.respawnDelay < 20)
