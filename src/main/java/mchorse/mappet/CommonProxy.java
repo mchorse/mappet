@@ -189,7 +189,6 @@ public class CommonProxy
         /* Register dialogue nodes */
         MapFactory<EventBaseNode> dialogueNodes = eventNodes.copy()
             .register("reply", ReplyNode.class, Colors.REPLY)
-            .register("comment", CommentNode.class, Colors.COMMENT)
             .register("reaction", ReactionNode.class, Colors.STATE)
             .register("crafting", CraftingNode.class, Colors.CRAFTING)
             .register("quest_chain", QuestChainNode.class, Colors.QUEST)
