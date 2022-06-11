@@ -71,7 +71,7 @@ public class UIStringListComponent extends UIComponent
      *    uiContext.get("strings").setValues("Tomato", "Cucumber", "Pepper", "Cabbage");
      * }</pre>
      */
-    public UIStringListComponent setValues(String... values)
+    public UIStringListComponent values(String... values)
     {
         this.change("Values");
 
@@ -154,37 +154,6 @@ public class UIStringListComponent extends UIComponent
     }
 
     /**
-     * Set the currently selected element.
-     *
-     * <pre>{@code
-     *    // Assuming that uiContext is a IMappetUIContext
-     *
-     *    // Set first string in the list to be selected
-     *    uiContext.get("strings").setSelected(0);
-     * }</pre>
-     */
-    public UIStringListComponent setSelected(int selected)
-    {
-        return this.selected(selected);
-    }
-
-    /**
-     * Returns the currently selected element.
-     *
-     * <pre>{@code
-     *    // Assuming that uiContext is a IMappetUIContext
-     *
-     *    var selected = uiContext.get("strings").getSelected();
-     *
-     *    c.send("I select "+selected+" element!");
-     * }</pre>
-     */
-    public int getSelected()
-    {
-        return this.selected;
-    }
-
-    /**
      * Set component's solid color background.
      *
      * <pre>{@code
@@ -247,20 +216,25 @@ public class UIStringListComponent extends UIComponent
     @SideOnly(Side.CLIENT)
     public GuiElement create(Minecraft mc, UIContext context)
     {
-        GuiStringListElement element = new GuiStringListElement(mc, (v) ->
+        GuiStringListElement element = new GuiStringListElement(mc, null);
+
+        element.callback = (v) ->
         {
             if (!this.id.isEmpty())
             {
                 context.data.setString(this.id, v.get(0));
+                context.data.setInteger(this.id + ".index", element.getIndex());
                 context.dirty(this.id, this.updateDelay);
             }
-        });
+        };
 
         element.add(this.values);
 
         if (this.selected != null)
         {
             element.setIndex(this.selected);
+            context.data.setString(this.id, this.getValues().get(element.getIndex()));
+            context.data.setInteger(this.id + ".index", element.getIndex());
         }
 
         if (this.background != null)
