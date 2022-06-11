@@ -68,10 +68,10 @@ public class UIStringListComponent extends UIComponent
      *    // Assuming that uiContext is a IMappetUIContext
      *
      *    // Replace values in strings
-     *    uiContext.get("strings").values("Tomato", "Cucumber", "Pepper", "Cabbage");
+     *    uiContext.get("strings").setValues("Tomato", "Cucumber", "Pepper", "Cabbage");
      * }</pre>
      */
-    public UIStringListComponent values(String... values)
+    public UIStringListComponent setValues(String... values)
     {
         this.change("Values");
 
@@ -103,6 +103,38 @@ public class UIStringListComponent extends UIComponent
     }
 
     /**
+     * Replace values within this string list.
+     *
+     * <pre>{@code
+     *    // Assuming that uiContext is a IMappetUIContext
+     *    var vegetables = ["Tomato", "Cucumber", "Pepper", "Cabbage"];
+     *
+     *    // Replace values in strings
+     *    uiContext.get("strings").setValues(vegetables);
+     * }</pre>
+     */
+    public UIStringListComponent setValues(List<String> values)
+    {
+        return this.values(values);
+    }
+
+    /**
+     * Returns values of this string list.
+     *
+     * <pre>{@code
+     *    var values = uiContext.get("strings").getValues();
+     *    for(var i in values)
+     *    {
+     *        c.send(values[i]);
+     *    }
+     * }</pre>
+     */
+    public List<String> getValues()
+    {
+        return this.values;
+    }
+
+    /**
      * Set the currently selected element.
      *
      * <pre>{@code
@@ -119,6 +151,37 @@ public class UIStringListComponent extends UIComponent
         this.selected = selected;
 
         return this;
+    }
+
+    /**
+     * Set the currently selected element.
+     *
+     * <pre>{@code
+     *    // Assuming that uiContext is a IMappetUIContext
+     *
+     *    // Set first string in the list to be selected
+     *    uiContext.get("strings").setSelected(0);
+     * }</pre>
+     */
+    public UIStringListComponent setSelected(int selected)
+    {
+        return this.selected(selected);
+    }
+
+    /**
+     * Returns the currently selected element.
+     *
+     * <pre>{@code
+     *    // Assuming that uiContext is a IMappetUIContext
+     *
+     *    var selected = uiContext.get("strings").getSelected();
+     *
+     *    c.send("I select "+selected+" element!");
+     * }</pre>
+     */
+    public int getSelected()
+    {
+        return this.selected;
     }
 
     /**
