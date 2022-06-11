@@ -105,7 +105,7 @@ public class KeyboardHandler
 
         if (this.openMappetDashboard.isPressed() && OpHelper.isPlayerOp())
         {
-            if(Mappet.dashboardOnlyCreative.get())
+            if (Mappet.dashboardOnlyCreative.get())
             {
                 if (mc.player.capabilities.isCreativeMode)
                 {

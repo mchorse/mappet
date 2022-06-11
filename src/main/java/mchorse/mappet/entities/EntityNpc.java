@@ -67,8 +67,8 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     public float smoothBodyYawHead;
     public float prevSmoothBodyYawHead;
 
-    /*
-     *   Needs to fix a clone issue, when npc dies and you quick reload world
+    /**
+     * Needs to fix a clone issue, when npc dies and you quick reload world
      */
     public boolean dieOnLoad = false;
 
@@ -522,7 +522,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     public void onDeath(DamageSource cause)
     {
         super.onDeath(cause);
-        if(this.state.respawn && !this.dieOnLoad)
+        if (this.state.respawn && !this.dieOnLoad)
         {
             MappetNpcRespawnManager respawnManager = MappetNpcRespawnManager.get(this.world);
             respawnManager.addDiedNpc(this);
@@ -567,11 +567,11 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         tag.setBoolean("DieOnLoad", this.dieOnLoad);
 
         /*
-        * Do not load data to NBT, if NPC has to die
-        * Prevents repeated quest trigger and drop.
-        */
+         * Do not load data to NBT, if NPC has to die
+         * Prevents repeated quest trigger and drop.
+         */
 
-        if(!this.dieOnLoad)
+        if (!this.dieOnLoad)
         {
             super.writeEntityToNBT(tag);
 
@@ -601,12 +601,9 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
             state.id = tag.getString("NpcId");
         }
 
-        if (tag.hasKey("DieOnLoad"))
+        if (tag.hasKey("DieOnLoad") && tag.getBoolean("DieOnLoad"))
         {
-            if(tag.getBoolean("DieOnLoad"))
-            {
-                this.setDead();
-            }
+            this.setDead();
         }
     }
 
