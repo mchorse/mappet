@@ -324,6 +324,7 @@ public class UIMorphComponent extends UIComponent
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     protected void resetContext(GuiElement element, UIContext context)
     {
         GuiMorphRenderer renderer = (GuiMorphRenderer) element;
@@ -333,6 +334,7 @@ public class UIMorphComponent extends UIComponent
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     protected void createContext(GuiSimpleContextMenu menu, GuiElement element, UIContext context)
     {
         if (Mappet.scriptUIDebug.get())
@@ -345,6 +347,7 @@ public class UIMorphComponent extends UIComponent
         super.createContext(menu, element, context);
     }
 
+    @SideOnly(Side.CLIENT)
     private void copyCameraProperties(GuiMorphRenderer renderer)
     {
         DecimalFormat formatter = GuiTrackpadElement.FORMAT;
