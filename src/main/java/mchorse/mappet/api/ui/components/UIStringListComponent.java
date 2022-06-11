@@ -233,8 +233,6 @@ public class UIStringListComponent extends UIComponent
         if (this.selected != null)
         {
             element.setIndex(this.selected);
-            context.data.setString(this.id, this.getValues().get(element.getIndex()));
-            context.data.setInteger(this.id + ".index", element.getIndex());
         }
 
         if (this.background != null)
