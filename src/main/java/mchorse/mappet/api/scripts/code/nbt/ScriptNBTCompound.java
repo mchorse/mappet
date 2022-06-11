@@ -1,6 +1,5 @@
 package mchorse.mappet.api.scripts.code.nbt;
 
-import com.google.gson.JsonArray;
 import mchorse.mappet.api.scripts.user.nbt.INBT;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.mappet.api.scripts.user.nbt.INBTList;

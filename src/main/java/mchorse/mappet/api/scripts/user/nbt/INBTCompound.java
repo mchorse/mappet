@@ -16,6 +16,16 @@ public interface INBTCompound extends INBT
     public NBTTagCompound getNBTTagCompound();
 
     /**
+     * Deprecated version of {@link #getNBTTagCompound} to avoid errors
+     * in existing scripts. Use the other method!
+     */
+    @Deprecated
+    public default NBTTagCompound getNBTTagComound()
+    {
+        return this.getNBTTagCompound();
+    }
+
+    /**
      * Check whether this NBT compound has a value by given key.
      */
     public boolean has(String key);
