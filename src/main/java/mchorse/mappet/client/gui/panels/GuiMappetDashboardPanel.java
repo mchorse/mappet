@@ -218,6 +218,11 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
 
     protected void dupeData(GuiIconElement element)
     {
+        if (this.data == null)
+        {
+            return;
+        }
+
         GuiModal.addFullModal(this.sidebar, () ->
         {
             GuiPromptModal promptModal = new GuiPromptModal(this.mc, IKey.lang("mappet.gui.panels.modals.dupe"), this::dupeData);
@@ -246,6 +251,11 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
 
     protected void renameData(GuiIconElement element)
     {
+        if (this.data == null)
+        {
+            return;
+        }
+
         GuiModal.addFullModal(this.sidebar, () ->
         {
             GuiPromptModal promptModal = new GuiPromptModal(this.mc, IKey.lang("mappet.gui.panels.modals.rename"), this::renameData);
@@ -271,6 +281,11 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
 
     protected void removeData(GuiIconElement element)
     {
+        if (this.data == null)
+        {
+            return;
+        }
+
         GuiModal.addFullModal(this.sidebar, () -> new GuiConfirmModal(this.mc, IKey.lang("mappet.gui.panels.modals.remove"), this::removeData));
     }
 
