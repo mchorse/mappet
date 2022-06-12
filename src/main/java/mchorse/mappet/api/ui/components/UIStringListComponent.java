@@ -253,12 +253,15 @@ public class UIStringListComponent extends UIComponent
         if (!this.id.isEmpty())
         {
             String value = "";
+            int index = 0;
 
             if (this.selected != null && this.selected >= 0 && this.selected < this.values.size())
             {
                 value = this.values.get(this.selected);
+                index = this.selected;
             }
 
+            tag.setInteger(this.id + ".index", index);
             tag.setString(this.id, value);
         }
     }
