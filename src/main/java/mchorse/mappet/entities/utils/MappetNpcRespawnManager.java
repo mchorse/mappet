@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldSavedData;
+import net.minecraftforge.common.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class MappetNpcRespawnManager extends WorldSavedData
     {
         for (DiedNpcHolder diedNpcHolder : this.diedNpcHolders)
         {
-            if (diedNpcHolder.respawnTime <= server.getWorld(diedNpcHolder.worldID).getTotalWorldTime())
+            if (diedNpcHolder.respawnTime <= this.server.getWorld(diedNpcHolder.worldID).getTotalWorldTime())
             {
                 this.respawnNpc(diedNpcHolder);
             }
@@ -53,7 +54,7 @@ public class MappetNpcRespawnManager extends WorldSavedData
     {
         diedNpcHolder.spawn(server.getWorld(diedNpcHolder.worldID));
 
-        deleteCache.add(diedNpcHolder);
+        this.deleteCache.add(diedNpcHolder);
     }
 
     public void removeSpawnedNpcs()
@@ -74,21 +75,21 @@ public class MappetNpcRespawnManager extends WorldSavedData
     @Override
     public void readFromNBT(NBTTagCompound nbtTagCompound)
     {
-        NBTTagList tagList = nbtTagCompound.getTagList("diedNpcHolders", 10);
+        NBTTagList tagList = nbtTagCompound.getTagList("DiedNPCHolders", Constants.NBT.TAG_COMPOUND);
 
         for (NBTBase tag : tagList)
         {
             NBTTagCompound compound = (NBTTagCompound) tag;
-            NBTTagCompound nbt = compound.getCompoundTag("nbt");
+            NBTTagCompound nbt = compound.getCompoundTag("NBT");
 
-            String uuid = compound.getString("uuid");
-            long respawnTime = compound.getLong("respawnTime");
-            int worldID = compound.getInteger("worldID");
-            double posX = compound.getDouble("posX");
-            double posY = compound.getDouble("posY");
-            double posZ = compound.getDouble("posZ");
+            String uuid = compound.getString("UUID");
+            long respawnTime = compound.getLong("RespawnTime");
+            int worldID = compound.getInteger("WorldID");
+            double posX = compound.getDouble("PosX");
+            double posY = compound.getDouble("PosY");
+            double posZ = compound.getDouble("PosZ");
 
-            diedNpcHolders.add(new DiedNpcHolder(nbt, uuid, respawnTime, worldID, posX, posY, posZ));
+            this.diedNpcHolders.add(new DiedNpcHolder(nbt, uuid, respawnTime, worldID, posX, posY, posZ));
         }
     }
 
@@ -101,18 +102,18 @@ public class MappetNpcRespawnManager extends WorldSavedData
         {
             NBTTagCompound tag = new NBTTagCompound();
 
-            tag.setTag("nbt", diedNpcHolder.nbt);
-            tag.setString("uuid", diedNpcHolder.uuid);
-            tag.setLong("respawnTime", diedNpcHolder.respawnTime);
-            tag.setInteger("worldID", diedNpcHolder.worldID);
-            tag.setDouble("posX", diedNpcHolder.posX);
-            tag.setDouble("posY", diedNpcHolder.posY);
-            tag.setDouble("posZ", diedNpcHolder.posZ);
+            tag.setTag("NBT", diedNpcHolder.nbt);
+            tag.setString("UUID", diedNpcHolder.uuid);
+            tag.setLong("RespawnTime", diedNpcHolder.respawnTime);
+            tag.setInteger("WorldID", diedNpcHolder.worldID);
+            tag.setDouble("PosX", diedNpcHolder.posX);
+            tag.setDouble("PosY", diedNpcHolder.posY);
+            tag.setDouble("PosZ", diedNpcHolder.posZ);
 
             tagList.appendTag(tag);
         }
 
-        nbtTagCompound.setTag("diedNpcHolders", tagList);
+        nbtTagCompound.setTag("DiedNPCHolders", tagList);
 
         return nbtTagCompound;
     }
@@ -124,6 +125,7 @@ public class MappetNpcRespawnManager extends WorldSavedData
         if (data == null)
         {
             data = new MappetNpcRespawnManager(DATA_NAME);
+
             world.getMapStorage().setData(DATA_NAME, data);
         }
 

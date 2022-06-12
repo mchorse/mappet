@@ -337,7 +337,7 @@ mappet.gui.quests.rewards.context.remove=Удалить эту награду
 mappet.gui.quests.rewards.context.add_item=Добавить награду в предметах
 mappet.gui.quests.reward_item.title=Предметы награды
 mappet.gui.quests.info.empty=Чтобы начать редактирование, создайте или выберите квест из списка справа...
-mappet.gui.quests.visible = Видимый
+mappet.gui.quests.visible=Видимый
 
 mappet.gui.interaction.back=Назад
 mappet.gui.interaction.accept=Принять
@@ -499,12 +499,12 @@ mappet.gui.npcs.context.rename=Переназовите состояние...
 mappet.gui.npcs.context.remove=Удалить состояние
 mappet.gui.npcs.info.empty=Чтобы начать редактирование, создайте или выберите NPC из списка справа...
 
-mappet.gui.npcs.respawn.title = Возрождение
-mappet.gui.npcs.respawn.respawn = Возрождается
-mappet.gui.npcs.respawn.respawn_on_coordinates = Возрождается на координатах
-mappet.gui.npcs.respawn.respawn_save_UUID = Возрождается с тем же UUID
-mappet.gui.npcs.respawn.respawn_delay = Задержка
-mappet.gui.npcs.respawn.respawn_trigger = Триггер на возрождении НПС
+mappet.gui.npcs.respawn.title=Возрождение
+mappet.gui.npcs.respawn.respawn=Возрождается
+mappet.gui.npcs.respawn.respawn_on_coordinates=Возрождается на координатах
+mappet.gui.npcs.respawn.respawn_save_uuid=Возрождается с тем же UUID
+mappet.gui.npcs.respawn.respawn_delay=Задержка
+mappet.gui.npcs.respawn.respawn_trigger=Триггер на возрождении НПС
 
 mappet.gui.factions.title=Название фракции
 mappet.gui.factions.color=Отображаемый цвет

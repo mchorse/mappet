@@ -14,13 +14,9 @@ public class GuiNpcRespawnPanel extends GuiNpcPanel
 {
     public GuiToggleElement respawn;
     public GuiTrackpadElement respawnDelay;
-
     public GuiToggleElement respawnOnCoordinates;
-
     public GuiVecPosElement respawnCoordinates;
-
     public GuiToggleElement respawnSaveUUID;
-
     public GuiTriggerElement triggerRespawn;
 
     public GuiNpcRespawnPanel(Minecraft mc)
@@ -37,14 +33,15 @@ public class GuiNpcRespawnPanel extends GuiNpcPanel
             this.state.respawnPosY = pos.y;
             this.state.respawnPosZ = pos.z;
         });
-        this.respawnSaveUUID = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.respawn.respawn_save_UUID"), (b) ->
+        this.respawnSaveUUID = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.respawn.respawn_save_uuid"), (b) ->
         {
             this.state.respawnSaveUUID = b.isToggled();
-            /* Prevents final NPS despawn if the original NPS still exists */
+
+            /* Prevents final NPC despawn if the original NPC still exists */
             if (this.state.respawnSaveUUID && this.state.respawnDelay < 20)
             {
-                    this.respawnDelay.setValue(20);
-                    this.state.respawnDelay = 20;
+                this.respawnDelay.setValue(20);
+                this.state.respawnDelay = 20;
             }
         });
         this.triggerRespawn = new GuiTriggerElement(mc);

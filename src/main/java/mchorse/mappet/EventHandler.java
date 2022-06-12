@@ -626,6 +626,7 @@ public class EventHandler
     public void onWorldTick(TickEvent.WorldTickEvent event)
     {
         MappetNpcRespawnManager respawnManager = MappetNpcRespawnManager.get(event.world);
+
         respawnManager.onTick();
     }
 }

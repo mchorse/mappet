@@ -68,7 +68,7 @@ public class UIStringListComponent extends UIComponent
      *    // Assuming that uiContext is a IMappetUIContext
      *
      *    // Replace values in strings
-     *    uiContext.get("strings").setValues("Tomato", "Cucumber", "Pepper", "Cabbage");
+     *    uiContext.get("strings").values("Tomato", "Cucumber", "Pepper", "Cabbage");
      * }</pre>
      */
     public UIStringListComponent values(String... values)
@@ -123,7 +123,8 @@ public class UIStringListComponent extends UIComponent
      *
      * <pre>{@code
      *    var values = uiContext.get("strings").getValues();
-     *    for(var i in values)
+     *    
+     *    for (var i in values)
      *    {
      *        c.send(values[i]);
      *    }

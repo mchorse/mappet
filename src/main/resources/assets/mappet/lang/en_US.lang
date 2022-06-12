@@ -498,12 +498,12 @@ mappet.gui.npcs.context.rename=Rename this state...
 mappet.gui.npcs.context.remove=Remove selected state
 mappet.gui.npcs.info.empty=Select or create an NPC in the list on the right, to start editing...
 
-mappet.gui.npcs.respawn.title = Respawning
-mappet.gui.npcs.respawn.respawn = Respawn
-mappet.gui.npcs.respawn.respawn_on_coordinates = Respawn on coordinates
-mappet.gui.npcs.respawn.respawn_save_UUID = Respawn with same UUID
-mappet.gui.npcs.respawn.respawn_delay = Delay
-mappet.gui.npcs.respawn.respawn_trigger = On NPC respawn trigger
+mappet.gui.npcs.respawn.title=Respawning
+mappet.gui.npcs.respawn.respawn=Respawn
+mappet.gui.npcs.respawn.respawn_on_coordinates=Respawn on coordinates
+mappet.gui.npcs.respawn.respawn_save_uuid=Respawn with same UUID
+mappet.gui.npcs.respawn.respawn_delay=Delay
+mappet.gui.npcs.respawn.respawn_trigger=On NPC respawn trigger
 
 mappet.gui.factions.title=Faction's title
 mappet.gui.factions.color=Display color

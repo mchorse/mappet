@@ -83,8 +83,11 @@ public class EntityAIPatrol extends EntityAIBase
             if (this.index >= 0 && this.index < state.patrolTriggers.size())
             {
                 Trigger triggerPatrol = state.patrolTriggers.get(this.index);
-                DataContext context = new DataContext(this.target);
-                context.getValues().put("last", this.index == state.patrol.size());
+                DataContext context = new DataContext(this.target)
+                    .set("last", this.index == state.patrol.size() - 1 ? 1 : 0)
+                    .set("index", this.index)
+                    .set("count", state.patrol.size());
+
                 triggerPatrol.trigger(context);
             }
 

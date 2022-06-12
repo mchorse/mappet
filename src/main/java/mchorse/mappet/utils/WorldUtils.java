@@ -36,6 +36,7 @@ public class WorldUtils
         SoundCategory category = SoundCategory.getSoundCategoryNames().contains(soundCategory) ? SoundCategory.getByName(soundCategory) : SoundCategory.MASTER;
         player.connection.sendPacket(new SPacketCustomSound(soundEvent, category, x, y, z, volume, pitch));
     }
+    
     public static void playSound(EntityPlayerMP player, String soundEvent, double x, double y, double z, float volume, float pitch)
     {
         player.connection.sendPacket(new SPacketCustomSound(soundEvent, SoundCategory.MASTER, x, y, z, volume, pitch));

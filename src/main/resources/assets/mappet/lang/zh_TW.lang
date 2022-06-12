@@ -483,12 +483,12 @@ mappet.gui.npcs.context.rename=Rename this state...
 mappet.gui.npcs.context.remove=移除狀態
 mappet.gui.npcs.info.empty=在右側的列表中選擇或創建一個 NPC 以開始編輯...
 
-mappet.gui.npcs.respawn.title = Respawning
-mappet.gui.npcs.respawn.isRespawn = Is respawn
-mappet.gui.npcs.respawn.isRespawnOnCoordinates = Is respawn on coordinates
-mappet.gui.npcs.respawn.isRespawnSaveUUID = Is respawn with same UUID
-mappet.gui.npcs.respawn.respawnDelay = Delay
-mappet.gui.npcs.respawn.respawnTrigger = On NPC respawn trigger
+mappet.gui.npcs.respawn.title=Respawning
+mappet.gui.npcs.respawn.respawn=Is respawn
+mappet.gui.npcs.respawn.respawn_on_coordinates=Is respawn on coordinates
+mappet.gui.npcs.respawn.respawn_save_uuid=Is respawn with same UUID
+mappet.gui.npcs.respawn.respawn_delay=Delay
+mappet.gui.npcs.respawn.respawn_trigger=On NPC respawn trigger
 
 mappet.gui.factions.title=陣營標題
 mappet.gui.factions.color=顯示顏色
