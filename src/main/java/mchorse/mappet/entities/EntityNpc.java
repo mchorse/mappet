@@ -525,6 +525,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         if (this.state.respawn && !this.dieOnLoad)
         {
             MappetNpcRespawnManager respawnManager = MappetNpcRespawnManager.get(this.world);
+
             respawnManager.addDiedNpc(this);
             this.dieOnLoad = true;
         }

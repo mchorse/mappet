@@ -43,12 +43,12 @@ public class DiedNpcHolder
         EntityNpc npc = new EntityNpc(world);
 
         npc.readEntityFromNBT(this.nbt);
-        npc.setPosition(posX, posY, posZ);
+        npc.setPosition(this.posX, this.posY, this.posZ);
         npc.setHealth(npc.getMaxHealth());
 
         if (npc.getState().respawnSaveUUID)
         {
-            npc.setUniqueId(UUID.fromString(uuid));
+            npc.setUniqueId(UUID.fromString(this.uuid));
         }
 
         world.spawnEntity(npc);
