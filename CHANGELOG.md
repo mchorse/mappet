@@ -1,3 +1,27 @@
+## Version 0.2
+
+This update is brought to you by TorayLife (again), featuring NPC respawning mechanic, patrol points triggers, QoL tweaks and bug fixes! Thanks to Falkiner, ORION, OtakuGamer, Hrymka, and dyamo for ideas and suggestions!
+
+**Compatible** with McLib **2.3.5**, Blockbuster **2.3** and Metamorph **1.2.9**. It doesn't mean that future versions of McLib, Blockbuster and Metamorph would be incompatible, but older versions are most likely incompatible.
+
+* Added NPC respawn mechanism with multiple options such as: respawn delay, respawn at died coordinates, and respawn trigger
+* Added patrol trigger for NPC's patrol points
+* Added mod option to limit non-creative players to use NPC tool
+* Added mod option to limit non-creative players to open Mappet dashboard (even with OP)
+* Added toggle to player journal to toggle visibility of a quest in HUD
+* Added comment node to events as well
+* Added scripting methods:
+    * Global triggers now pass `event` variable (which is a Forge event), it's useful for advanced scripting (requires knowledge of working with MCP-SRG maps)
+    * Added sound category to `playSound` and `playStaticSound` methods which allow to specify a channel in which sound would be playing
+    * Added `IScriptPlayer.setHunger(int)`, `IScriptPlayer.getHunger()`, `IScriptPlayer.setSaturation(int)`, and `IScriptPlayer.getSaturation()`
+    * Added `IScriptNpc.setNpcState(String)` and `IScriptNpc.getNpcState()`
+    * Added `UIStringListComponent.setValues(List<String>)` (alias for `UIStringListComponent.values(List<String>)`) and `UIStringListComponent.getValues()`
+    * Added selected index of a string list UI component to the context data (in `%component_id%.index`)
+    * Added `INBTCompound.getNBTTagCompound()` (fixes a typo of deprecated method `INBTCompound.getNBTTagComound()`)
+* Fixed some places missing OP checks
+* Fixed morph UI component erroring on a dedicated server
+* Fixed crash when trying to copy non selected data entry in one of the Mappet dashboard panels
+
 ## Version 0.1.5
 
 This update is brought to you by TorayLife, with some neat QoL features, triggers and bug fixes!
