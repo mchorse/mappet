@@ -12,6 +12,7 @@ import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.client.KeyboardHandler;
 import mchorse.mappet.client.RenderingHandler;
 import mchorse.mappet.commands.data.CommandDataClear;
+import mchorse.mappet.entities.utils.MappetNpcRespawnManager;
 import mchorse.mappet.events.StateChangedEvent;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.events.PacketEventHotkeys;
@@ -19,7 +20,6 @@ import mchorse.mappet.network.common.quests.PacketQuest;
 import mchorse.mappet.network.common.quests.PacketQuests;
 import mchorse.mappet.network.common.scripts.PacketClick;
 import mchorse.mappet.network.common.scripts.PacketPlayerSkin;
-import mchorse.mappet.entities.utils.MappetNpcRespawnManager;
 import mchorse.mappet.utils.ScriptUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -199,15 +199,13 @@ public class EventHandler
     {
         DamageSource source = event.getSource();
 
+        if (!Mappet.settings.entityDamaged.isEmpty())
+        {
+            DataContext context = new DataContext(event.getEntityLiving(), source.getTrueSource())
+                .set("damage", event.getAmount());
 
-            if (!Mappet.settings.entityDamaged.isEmpty())
-            {
-                DataContext context = new DataContext(event.getEntityLiving(), source.getTrueSource())
-                    .set("damage", event.getAmount());
-
-                this.trigger(event, Mappet.settings.entityDamaged, context);
-            }
-
+            this.trigger(event, Mappet.settings.entityDamaged, context);
+        }
     }
 
     @SubscribeEvent
@@ -313,7 +311,10 @@ public class EventHandler
             return;
         }
 
+        IBlockState state = event.getWorld().getBlockState(event.getPos());
         DataContext context = new DataContext(player)
+            .set("block", state.getBlock().getRegistryName().toString())
+            .set("meta", state.getBlock().getMetaFromState(state))
             .set("x", event.getPos().getX())
             .set("y", event.getPos().getY())
             .set("z", event.getPos().getZ())
