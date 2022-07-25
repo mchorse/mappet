@@ -115,7 +115,7 @@ public interface IScriptEvent
      *        }
      *        else
      *        {
-     *            states.remove("counter");
+     *            states.reset("counter");
      *            c.send("Here I go!");
      *        }
      *    }
