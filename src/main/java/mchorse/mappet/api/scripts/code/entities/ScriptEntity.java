@@ -19,6 +19,7 @@ import mchorse.mappet.network.common.scripts.PacketEntityRotations;
 import mchorse.mappet.network.common.scripts.PacketWorldMorph;
 import mchorse.mappet.utils.EntityUtils;
 import mchorse.mclib.utils.RayTracing;
+import mchorse.metamorph.api.models.IMorphProvider;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -526,6 +527,17 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
         }
 
         return this.states;
+    }
+
+    @Override
+    public AbstractMorph getMorph()
+    {
+        if (this.entity instanceof IMorphProvider)
+        {
+            return ((IMorphProvider) this.entity).getMorph();
+        }
+
+        return null;
     }
 
     @Override

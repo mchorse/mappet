@@ -28,6 +28,8 @@ import mchorse.mappet.utils.WorldUtils;
 import mchorse.metamorph.api.MorphAPI;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.capabilities.morphing.IMorphing;
+import mchorse.metamorph.capabilities.morphing.Morphing;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.SPacketAnimation;
@@ -272,6 +274,19 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
         }
 
         return this.quests;
+    }
+
+    @Override
+    public AbstractMorph getMorph()
+    {
+        IMorphing cap = Morphing.get(this.entity);
+
+        if (cap != null)
+        {
+            return cap.getCurrentMorph();
+        }
+
+        return super.getMorph();
     }
 
     @Override

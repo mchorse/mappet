@@ -554,6 +554,23 @@ public interface IScriptEntity
     public IMappetStates getStates();
 
     /**
+     * Get entity's morph (works with player and NPCs).
+     *
+     * <pre>{@code
+     *    // Assuming s is a player
+     *    var s = c.getSubject();
+     *    var morph = mappet.createMorph("{Name:\"blockbuster.alex\"}");
+     *    var entityMorph = s.getMorph();
+     *
+     *    if (entityMorph != null && entityMorph.equals(morph))
+     *    {
+     *        c.send(s.getName() + " is morphed into Alex morph!");
+     *    }
+     * }</pre>
+     */
+    public AbstractMorph getMorph();
+
+    /**
      * Set entity's morph (works with player and NPCs).
      *
      * <pre>{@code
