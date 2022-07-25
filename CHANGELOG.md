@@ -1,3 +1,12 @@
+## Version 0.2.1
+
+This quick patch update adds `IScriptEntity.getMorph()` and fixes a couple of documenation errors.
+
+**Compatible** with McLib **2.3.5**, Blockbuster **2.3** and Metamorph **1.2.9**. It doesn't mean that future versions of McLib, Blockbuster and Metamorph would be incompatible, but older versions are most likely incompatible.
+
+* Add `IScriptEntity.getMorph()`
+* Fix a couple of documentation sample errors (thanks to OtakuGamer)
+
 ## Version 0.2
 
 This update is brought to you by TorayLife (again), featuring NPC respawning mechanic, patrol points triggers, QoL tweaks and bug fixes! Thanks to Falkiner, ORION, OtakuGamer, Hrymka, and dyamo for ideas and suggestions!
