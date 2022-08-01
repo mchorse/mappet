@@ -44,7 +44,7 @@ mappet.info.factions.clear_all=§fВсе очки фракции у §7%s§f б�
 mappet.info.factions.set=§fОчки фракции с ID §7%s§f были установлены на значение §7%s§r.
 mappet.info.factions.changed=§fОчки фракции с ID §7%s§f были §7%s§r, теперь стали §7%s§r.
 
-mappet.info.data.cleared=§fGlobal states and player states were cleared.
+mappet.info.data.cleared=§fГлобальные состояния и состояния игроков очищены.
 mappet.info.data.cleared_inventory=§fГлобальные состояния, состояния игроков и инвентари были очищены.
 mappet.info.data.rencoded=§fRe-encoded all the data from %s§f to %s§f.
 
@@ -101,7 +101,7 @@ mappet.commands.mp.data.rencode=Re-encode all data files within world's §7mappe
 
 mappet.commands.mp.script.help=Подкоманда скриптов.
 mappet.commands.mp.script.eval=Эта команда рассчитывает скрипт с ID §7<id>§r (из папки §7mappet/scripts/§r, без приписки формата файла) для игроков найденных селектором цели §7<player>§r. Будет вызвана функция скрипта §7[function]§r (если она отсутствует, то будет вызвана §7main§r). Вы также можете передавать опциональные NBT-данные напрямую в событие используя аргумент §7[data]§r.
-mappet.commands.mp.script.exec=This command executes script by §7<id>§r (from world's §7mappet/scripts/§r folder, without file extension) upon player(s) or server (if §7~§r was provided) found by §7<target>§r selector. Script's §7[function]§r (§7main§r if omitted) function will be called. You can also pass arbitrary NBT data to the event using §7[data]§r argument.
+mappet.commands.mp.script.exec=Это команда исполняет скрипт с ID §7<id>§r (из папки §7mappet/scripts/§r, без приписки формата файла) upon player(s) or server (if §7~§r was provided) found by §7<target>§r selector. Script's §7[function]§r (§7main§r if omitted) function will be called. You can also pass arbitrary NBT data to the event using §7[data]§r argument.
 
 mappet.commands.mp.hud.help=HUD scenes management command.
 mappet.commands.mp.hud.close=Closes an HUD scene by §7[id]§r of all players found by §7<target>§r selector. If player(s) didn't have such HUD scene by §7[id]§r nothing will happen. If §7[id]§r was omitted, then all HUD scenes will be removed from players by §7<target>§r selector.
