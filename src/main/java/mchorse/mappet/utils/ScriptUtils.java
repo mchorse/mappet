@@ -37,9 +37,9 @@ public class ScriptUtils
         {
             Class factoryClass = Class.forName("jdk.nashorn.api.scripting.NashornScriptEngineFactory");
             Object factory = factoryClass.getConstructor().newInstance();
-            Method getScriptEnging = factoryClass.getDeclaredMethod("getScriptEngine");
+            Method getScriptEngine = factoryClass.getDeclaredMethod("getScriptEngine");
 
-            return (ScriptEngine) getScriptEnging.invoke(factory);
+            return (ScriptEngine) getScriptEngine.invoke(factory);
         }
         catch (Exception e)
         {
