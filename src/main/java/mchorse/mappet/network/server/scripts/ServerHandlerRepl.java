@@ -1,5 +1,6 @@
 package mchorse.mappet.network.server.scripts;
 
+import com.caoccao.javet.exceptions.JavetException;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.scripts.PacketRepl;
@@ -26,7 +27,7 @@ public class ServerHandlerRepl extends ServerMessageHandler<PacketRepl>
 
             Dispatcher.sendTo(new PacketRepl(output), player);
         }
-        catch (ScriptException e)
+        catch (JavetException e)
         {
             e.printStackTrace();
 

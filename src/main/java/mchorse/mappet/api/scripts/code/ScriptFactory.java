@@ -1,6 +1,6 @@
 package mchorse.mappet.api.scripts.code;
 
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
+//import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.scripts.code.blocks.ScriptBlockState;
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
@@ -120,43 +120,43 @@ public class ScriptFactory implements IScriptFactory
         {
             return new NBTTagInt((Integer) object);
         }
-        else if (object instanceof ScriptObjectMirror)
-        {
-            ScriptObjectMirror mirror = (ScriptObjectMirror) object;
-
-            if (mirror.isArray())
-            {
-                NBTTagList list = new NBTTagList();
-
-                for (int i = 0, c = mirror.size(); i < c; i++)
-                {
-                    NBTBase base = this.convertToNBT(mirror.getSlot(i));
-
-                    if (base != null)
-                    {
-                        list.appendTag(base);
-                    }
-                }
-
-                return list;
-            }
-            else
-            {
-                NBTTagCompound tag = new NBTTagCompound();
-
-                for (String key : mirror.keySet())
-                {
-                    NBTBase base = this.convertToNBT(mirror.get(key));
-
-                    if (base != null)
-                    {
-                        tag.setTag(key, base);
-                    }
-                }
-
-                return tag;
-            }
-        }
+//        else if (object instanceof ScriptObjectMirror)
+//        {
+//            ScriptObjectMirror mirror = (ScriptObjectMirror) object;
+//
+//            if (mirror.isArray())
+//            {
+//                NBTTagList list = new NBTTagList();
+//
+//                for (int i = 0, c = mirror.size(); i < c; i++)
+//                {
+//                    NBTBase base = this.convertToNBT(mirror.getSlot(i));
+//
+//                    if (base != null)
+//                    {
+//                        list.appendTag(base);
+//                    }
+//                }
+//
+//                return list;
+//            }
+//            else
+//            {
+//                NBTTagCompound tag = new NBTTagCompound();
+//
+//                for (String key : mirror.keySet())
+//                {
+//                    NBTBase base = this.convertToNBT(mirror.get(key));
+//
+//                    if (base != null)
+//                    {
+//                        tag.setTag(key, base);
+//                    }
+//                }
+//
+//                return tag;
+//            }
+//        }
 
         return null;
     }
@@ -235,10 +235,10 @@ public class ScriptFactory implements IScriptFactory
     @Override
     public String dump(Object object, boolean simple)
     {
-        if (object instanceof ScriptObjectMirror)
-        {
-            return object.toString();
-        }
+//        if (object instanceof ScriptObjectMirror)
+//        {
+//            return object.toString();
+//        }
 
         Class<?> clazz = object.getClass();
         StringBuilder output = new StringBuilder(simple ? clazz.getSimpleName() : clazz.getTypeName());

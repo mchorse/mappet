@@ -1,5 +1,8 @@
 package mchorse.mappet.commands.scripts;
 
+import com.caoccao.javet.exceptions.BaseJavetScriptingException;
+import com.caoccao.javet.exceptions.JavetException;
+import com.caoccao.javet.exceptions.JavetScriptingError;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.commands.CommandMappet;
@@ -54,10 +57,11 @@ public class CommandScriptExec extends CommandScriptBase
         {
             Mappet.scripts.execute(args[1], function, context);
         }
-        catch (ScriptException e)
+        catch (BaseJavetScriptingException e)
         {
             e.printStackTrace();
-            throw new CommandException("script.error", e.getFileName(), e.getLineNumber(), e.getColumnNumber(), e.getMessage());
+            JavetScriptingError error = e.getScriptingError();
+            throw new CommandException("script.error", error.getResourceName(), error.getLineNumber(), error.getStartColumn(), error.getDetailedMessage());
         }
         catch (Exception e)
         {

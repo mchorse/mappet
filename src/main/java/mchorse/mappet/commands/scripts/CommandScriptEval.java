@@ -1,5 +1,8 @@
 package mchorse.mappet.commands.scripts;
 
+import com.caoccao.javet.exceptions.BaseJavetScriptingException;
+import com.caoccao.javet.exceptions.JavetException;
+import com.caoccao.javet.exceptions.JavetScriptingError;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.utils.DataContext;
 import net.minecraft.command.CommandException;
@@ -45,9 +48,10 @@ public class CommandScriptEval extends CommandScriptBase
         {
             Mappet.scripts.executeRepl(key, code);
         }
-        catch (ScriptException e)
+        catch (BaseJavetScriptingException e)
         {
-            throw new CommandException("script.error", args[1], e.getColumnNumber(), e.getLineNumber(), e.getMessage());
+            JavetScriptingError scriptingError = e.getScriptingError();
+            throw new CommandException("script.error", args[1], scriptingError.getStartColumn(), scriptingError.getLineNumber(), e.getMessage());
         }
         catch (Exception e)
         {

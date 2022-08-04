@@ -1,5 +1,6 @@
 package mchorse.mappet;
 
+import com.caoccao.javet.interop.V8Runtime;
 import mchorse.mappet.api.conditions.blocks.AbstractConditionBlock;
 import mchorse.mappet.api.conditions.blocks.ConditionConditionBlock;
 import mchorse.mappet.api.conditions.blocks.DialogueConditionBlock;
@@ -154,9 +155,9 @@ public class CommonProxy
     {
         try
         {
-            ScriptEngine engine = ScriptUtils.tryCreatingEngine();
+            V8Runtime engine = ScriptUtils.tryCreatingEngine();
 
-            if (!engine.eval("true").equals(Boolean.TRUE))
+            if (!engine.getExecutor("true").executeBoolean().equals(Boolean.TRUE))
             {
                 throw new Exception("Something went wrong with JavaScript...");
             }

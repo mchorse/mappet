@@ -1,7 +1,14 @@
 package mchorse.mappet.api.scripts;
 
+import com.caoccao.javet.exceptions.JavetException;
+import com.caoccao.javet.interception.logging.JavetStandardConsoleInterceptor;
+import com.caoccao.javet.interop.V8Runtime;
+import com.caoccao.javet.values.V8Value;
+import com.caoccao.javet.values.reference.V8ValueGlobalObject;
+import com.caoccao.javet.values.reference.V8ValueObject;
 import mchorse.mappet.api.scripts.code.ScriptEvent;
 import mchorse.mappet.api.scripts.code.ScriptFactory;
+import mchorse.mappet.api.scripts.user.IScriptEvent;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.manager.BaseManager;
 import mchorse.mappet.utils.ScriptUtils;
@@ -25,7 +32,7 @@ public class ScriptManager extends BaseManager<Script>
     public final Map<String, Object> objects = new HashMap<String, Object>();
 
     private Map<String, Script> uniqueScripts = new HashMap<String, Script>();
-    private Map<Object, ScriptEngine> repls = new HashMap<Object, ScriptEngine>();
+    private Map<Object, V8Runtime> repls = new HashMap<Object, V8Runtime>();
     private String replOutput = "";
 
     public ScriptManager(File folder)
@@ -36,15 +43,15 @@ public class ScriptManager extends BaseManager<Script>
     /**
      * Execute a REPL code that came from a player
      */
-    public String executeRepl(Object key, String code) throws ScriptException
-    {
-        ScriptEngine engine = this.repls.get(key);
+    public String executeRepl(Object key, String code) throws JavetException {
+        V8Runtime engine = this.repls.get(key);
+        ScriptEvent event;
 
         this.replOutput = "";
 
         if (engine == null)
         {
-            engine = ScriptUtils.sanitize(ScriptUtils.tryCreatingEngine());
+            engine = ScriptUtils.tryCreatingEngine();
 
             DataContext context = null;
 
@@ -57,24 +64,28 @@ public class ScriptManager extends BaseManager<Script>
                 context = new DataContext((MinecraftServer) key);
             }
 
-            engine.put("____manager____", this);
-            engine.put("mappet", new ScriptFactory());
+            engine.getGlobalObject().set("____manager____", this);
+            engine.getGlobalObject().set("mappet", new ScriptFactory());
 
             if (context != null)
             {
-                ScriptEvent event = new ScriptEvent(context, "", "");
+                event = new ScriptEvent(context, "", "");
 
-                engine.put("c", event);
-                engine.put("s", event.getSubject());
+                engine.getGlobalObject().set("c", event);
+                //engine.getGlobalObject().set("s", event.getSubject());
+
+//                try (V8ValueObject v8ValueObject = engine.createV8ValueObject()) {
+//                    engine.getGlobalObject().set("c", v8ValueObject);
+//                    v8ValueObject.bind(event);
+//                }
             }
 
-            engine.eval("var __p__ = print; print = function(message) { ____manager____.replPrint(message); __p__(message); };");
+            engine.getExecutor("var print = function(message) { ____manager____.replPrint(message); };").executeVoid();
 
             this.repls.put(key, engine);
         }
 
-        Object object = engine.eval(code);
-
+        V8Value object = engine.getExecutor(code).execute();
         if (this.replOutput.isEmpty())
         {
             this.replPrint(object);
@@ -96,14 +107,14 @@ public class ScriptManager extends BaseManager<Script>
     /**
      * Execute given script
      */
-    public Object execute(String id, String function, DataContext context) throws ScriptException, NoSuchMethodException
+    public Object execute(String id, String function, DataContext context) throws JavetException, NoSuchMethodException
     {
         Script script = getScript(id);
 
         return script == null ? null : script.execute(function, context);
     }
 
-    private Script getScript(String id) throws ScriptException
+    private Script getScript(String id) throws JavetException
     {
         Script script = this.uniqueScripts.get(id);
 

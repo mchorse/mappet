@@ -1,5 +1,9 @@
 package mchorse.mappet.api.scripts;
 
+import com.caoccao.javet.exceptions.BaseJavetScriptingException;
+import com.caoccao.javet.exceptions.JavetException;
+import com.caoccao.javet.interop.V8Runtime;
+import com.caoccao.javet.values.reference.V8ValueFunction;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.scripts.code.ScriptEvent;
 import mchorse.mappet.api.scripts.code.ScriptFactory;
@@ -31,18 +35,18 @@ public class Script extends AbstractData
     public boolean unique;
     public List<String> libraries = new ArrayList<String>();
 
-    private ScriptEngine engine;
+    private V8Runtime engine;
     private List<ScriptRange> ranges;
 
     public Script()
     {}
 
-    public void start(ScriptManager manager) throws ScriptException
+    public void start(ScriptManager manager) throws JavetException
     {
         if (this.engine == null)
         {
-            this.engine = ScriptUtils.sanitize(ScriptUtils.tryCreatingEngine());
-            this.engine.getContext().setAttribute("javax.script.filename", this.getId() + ".js", ScriptContext.ENGINE_SCOPE);
+            this.engine = ScriptUtils.tryCreatingEngine();
+            //this.engine.().setAttribute("javax.script.filename", this.getId() + ".js", ScriptContext.ENGINE_SCOPE);
 
             Mappet.EVENT_BUS.post(new RegisterScriptVariablesEvent(this.engine));
 
@@ -50,40 +54,40 @@ public class Script extends AbstractData
             Set<String> alreadyLoaded = new HashSet<String>();
             int total = 0;
 
-            for (String library : this.libraries)
-            {
-                /* Don't load this script as its own library nor load repeatedly
-                 * same library twice or more */
-                if (library.equals(this.getId()) || alreadyLoaded.contains(library))
-                {
-                    continue;
-                }
-
-                try
-                {
-                    File jsFile = manager.getJSFile(library);
-                    String code = FileUtils.readFileToString(jsFile, Utils.getCharset());
-
-                    finalCode.append(code);
-                    finalCode.append("\n");
-
-                    if (this.ranges == null)
-                    {
-                        this.ranges = new ArrayList<ScriptRange>();
-                    }
-
-                    this.ranges.add(new ScriptRange(total, library));
-
-                    total += StringUtils.countMatches(code, "\n") + 1;
-                }
-                catch (Exception e)
-                {
-                    System.err.println("[Mappet] Script library " + library + ".js failed to load...");
-                    e.printStackTrace();
-                }
-
-                alreadyLoaded.add(library);
-            }
+//            for (String library : this.libraries)
+//            {
+//                /* Don't load this script as its own library nor load repeatedly
+//                 * same library twice or more */
+//                if (library.equals(this.getId()) || alreadyLoaded.contains(library))
+//                {
+//                    continue;
+//                }
+//
+//                try
+//                {
+//                    File jsFile = manager.getJSFile(library);
+//                    String code = FileUtils.readFileToString(jsFile, Utils.getCharset());
+//
+//                    finalCode.append(code);
+//                    finalCode.append("\n");
+//
+//                    if (this.ranges == null)
+//                    {
+//                        this.ranges = new ArrayList<ScriptRange>();
+//                    }
+//
+//                    this.ranges.add(new ScriptRange(total, library));
+//
+//                    total += StringUtils.countMatches(code, "\n") + 1;
+//                }
+//                catch (Exception e)
+//                {
+//                    System.err.println("[Mappet] Script library " + library + ".js failed to load...");
+//                    e.printStackTrace();
+//                }
+//
+//                alreadyLoaded.add(library);
+//            }
 
             finalCode.append(this.code);
 
@@ -92,63 +96,19 @@ public class Script extends AbstractData
                 this.ranges.add(new ScriptRange(total, this.getId()));
             }
 
-            this.engine.put("mappet", new ScriptFactory());
-            this.engine.eval(finalCode.toString());
+            this.engine.getGlobalObject().set("mappet", new ScriptFactory());
+            this.engine.getExecutor(finalCode.toString()).executeVoid();
         }
     }
 
-    public Object execute(String function, DataContext context) throws ScriptException, NoSuchMethodException
+    public Object execute(String function, DataContext context) throws JavetException, NoSuchMethodException
     {
         if (function.isEmpty())
         {
             function = "main";
         }
 
-        try
-        {
-            return ((Invocable) this.engine).invokeFunction(function, new ScriptEvent(context, this.getId(), function));
-        }
-        catch (ScriptException e)
-        {
-            ScriptException exception = processScriptException(e);
-
-            throw exception == null ? e : exception;
-        }
-    }
-
-    private ScriptException processScriptException(ScriptException e)
-    {
-        if (this.ranges == null)
-        {
-            return null;
-        }
-
-        ScriptRange range = null;
-
-        for (int i = this.ranges.size() - 1; i >= 0; i--)
-        {
-            ScriptRange possibleRange = this.ranges.get(i);
-
-            if (possibleRange.lineOffset <= e.getLineNumber() - 1)
-            {
-                range = possibleRange;
-
-                break;
-            }
-        }
-
-        if (range != null)
-        {
-            String message = e.getMessage();
-            int lineNumber = e.getLineNumber() - range.lineOffset;
-
-            message = message.replaceFirst(this.getId() + ".js", range.script + ".js (in " + this.getId() + ".js)");
-            message = message.replaceFirst("at line number [\\d]+", "at line number " + lineNumber);
-
-            return new ScriptException(message, range.script, lineNumber, e.getColumnNumber());
-        }
-
-        return null;
+        return ((V8ValueFunction) this.engine.getGlobalObject().get(function)).callObject(null, new ScriptEvent(context, this.getId(), function));
     }
 
     @Override

@@ -1,91 +1,50 @@
 package mchorse.mappet.utils;
 
-import com.google.common.collect.ImmutableSet;
-import mchorse.mappet.CommonProxy;
-import org.apache.commons.io.FileUtils;
-
-import javax.script.Bindings;
-import javax.script.ScriptContext;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import java.io.File;
-import java.lang.reflect.Method;
+import com.caoccao.javet.interop.V8Host;
+import com.caoccao.javet.interop.V8Runtime;
+import com.caoccao.javet.interop.converters.JavetProxyConverter;
 
 public class ScriptUtils
 {
-    public static boolean copiedNashorn;
-    public static boolean errorNashorn;
-
-    private static ScriptEngineManager manager;
+    private static V8Host v8Host;
 
     /**
      * Tries to create a script engine
      */
-    public static ScriptEngine tryCreatingEngine()
+    public static V8Runtime tryCreatingEngine()
     {
-        for (String name : ImmutableSet.of("nashorn", "Nashorn", "javascript", "JavaScript", "js", "JS", "ecmascript", "ECMAScript"))
-        {
-            ScriptEngine engine = getManager().getEngineByName(name);
+        try {
+            V8Runtime engine = getManager().createV8Runtime();
+            engine.setConverter(new JavetProxyConverter());
 
-            if (engine != null)
-            {
-                return engine;
-            }
-        }
+            engine.getGlobalObject().set("Java", new Object() {
+                @SuppressWarnings("unused")
+                public Class<?> type(String className) throws ClassNotFoundException {
+                    return Class.forName(className);
+                }
+            });
+            engine.getGlobalObject().set("import", new Runnable() {
+                @Override
+                public void run() {
 
-        try
-        {
-            Class factoryClass = Class.forName("jdk.nashorn.api.scripting.NashornScriptEngineFactory");
-            Object factory = factoryClass.getConstructor().newInstance();
-            Method getScriptEngine = factoryClass.getDeclaredMethod("getScriptEngine");
+                }
+            });
 
-            return (ScriptEngine) getScriptEngine.invoke(factory);
-        }
-        catch (Exception e)
-        {
+            return engine;
+        } catch (Exception e) {
             e.printStackTrace();
-
-            tryCopyingNashorn();
         }
-
-        errorNashorn = true;
 
         return null;
     }
 
-    private static void tryCopyingNashorn()
-    {
-        if (copiedNashorn)
-        {
-            return;
-        }
-
-        File home = new File(System.getProperty("java.home"));
-        File nashorn = new File(home, "lib/ext/nashorn.jar");
-        File modsNashorn = new File(CommonProxy.configFolder.getParentFile(), "mods/nashorn.jar");
-
-        if (nashorn.isFile() && !modsNashorn.isFile())
-        {
-            try
-            {
-                FileUtils.copyFile(nashorn, modsNashorn);
-
-                copiedNashorn = true;
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public static ScriptEngineManager getManager()
+    public static V8Host getManager()
     {
         try
         {
-            if (manager == null)
+            if (v8Host == null)
             {
-                manager = new ScriptEngineManager();
+                v8Host = V8Host.getV8Instance();
             }
         }
         catch (Exception e)
@@ -93,19 +52,6 @@ public class ScriptUtils
             e.printStackTrace();
         }
 
-        return manager;
-    }
-
-    public static ScriptEngine sanitize(ScriptEngine engine)
-    {
-        /* Remove */
-        Bindings bindings = engine.getBindings(ScriptContext.ENGINE_SCOPE);
-
-        bindings.remove("load");
-        bindings.remove("loadWithNewGlobal");
-        bindings.remove("exit");
-        bindings.remove("quit");
-
-        return engine;
+        return v8Host;
     }
 }

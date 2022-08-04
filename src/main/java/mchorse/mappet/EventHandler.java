@@ -363,14 +363,14 @@ public class EventHandler
             Mappet.settings.playerLogIn.trigger(context);
         }
 
-        if (ScriptUtils.copiedNashorn)
-        {
-            player.sendMessage(new TextComponentTranslation("mappet.nashorn_copied"));
-        }
-        else if (ScriptUtils.errorNashorn)
-        {
-            player.sendMessage(new TextComponentTranslation("mappet.nashorn_error"));
-        }
+//        if (ScriptUtils.copiedNashorn)
+//        {
+//            player.sendMessage(new TextComponentTranslation("mappet.nashorn_copied"));
+//        }
+//        else if (ScriptUtils.errorNashorn)
+//        {
+//            player.sendMessage(new TextComponentTranslation("mappet.nashorn_error"));
+//        }
 
         this.loggedInPlayers.add(player.getUniqueID());
     }

@@ -1,5 +1,7 @@
 package mchorse.mappet.api.scripts.user;
 
+import com.caoccao.javet.annotations.V8Convert;
+import com.caoccao.javet.annotations.V8Function;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
 import mchorse.mappet.api.scripts.user.entities.IScriptNpc;
@@ -19,56 +21,67 @@ public interface IScriptEvent
     /**
      * Get script's ID to which this event was passed to.
      */
+    @V8Function
     public String getScript();
 
     /**
      * Get script's function name.
      */
+    @V8Function
     public String getFunction();
 
     /**
      * Get subject (primary) entity that was passed into the event.
      */
+    //@V8Function
     public IScriptEntity getSubject();
 
     /**
      * Get object (secondary) entity that was passed into the event.
      */
+    //@V8Function
     public IScriptEntity getObject();
 
     /**
      * Get the first player from either subject or object (or <code>null</code>, if there is no player).
      */
+    //@V8Function
     public IScriptPlayer getPlayer();
 
     /**
      * Get the first Mappet NPC from either subject or object (or <code>null</code>, if there is no NPC).
      */
+    //@V8Function
     public IScriptNpc getNPC();
 
     /**
      * Get the world in which this event happened.
      */
+    //@V8Function
     public IScriptWorld getWorld();
 
     /**
      * Get the server in which this event happened.
      */
+    //@V8Function
     public IScriptServer getServer();
 
     /**
      * Get a map of extra context values that was passed into the event.
      */
+    //@V8Function
     public Map<String, Object> getValues();
 
     /**
      * Get a value for given key (might be a <code>null</code>).
      */
+    @V8Function
     public Object getValue(String key);
 
     /**
      * Set a value for given key in extra data.
      */
+    @V8Function
     public void setValue(String key, Object value);
 
     /* Useful methods */
@@ -92,6 +105,7 @@ public interface IScriptEvent
      *    }
      * }</pre>
      */
+    @V8Function
     public void cancel();
 
     /**
@@ -123,6 +137,7 @@ public interface IScriptEvent
      *
      * @param delay How many ticks should pass before scheduled script will be executed.
      */
+    @V8Function
     public void scheduleScript(int delay);
 
     /**
@@ -145,6 +160,7 @@ public interface IScriptEvent
      *    }
      * }</pre>
      */
+    @V8Function
     public void scheduleScript(String function, int delay);
 
     /**
@@ -194,7 +210,8 @@ public interface IScriptEvent
      *    }
      * }</pre>
      */
-    public void scheduleScript(int delay, ScriptObjectMirror function);
+    //@V8Function
+//    public void scheduleScript(int delay, ScriptObjectMirror function);
 
     /**
      * Execute a command.

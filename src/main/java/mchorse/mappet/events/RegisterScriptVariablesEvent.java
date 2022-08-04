@@ -1,25 +1,27 @@
 package mchorse.mappet.events;
 
+import com.caoccao.javet.exceptions.JavetException;
+import com.caoccao.javet.interop.V8Runtime;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 import javax.script.ScriptEngine;
 
 public class RegisterScriptVariablesEvent extends Event
 {
-    private ScriptEngine engine;
+    private V8Runtime engine;
 
-    public RegisterScriptVariablesEvent(ScriptEngine engine)
+    public RegisterScriptVariablesEvent(V8Runtime engine)
     {
         this.engine = engine;
     }
 
-    public ScriptEngine getEngine()
+    public V8Runtime getEngine()
     {
         return engine;
     }
 
-    public void register(String key, Object value)
+    public void register(String key, Object value) throws JavetException
     {
-        this.engine.put(key, value);
+        this.engine.getGlobalObject().set(key, value);
     }
 }

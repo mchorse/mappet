@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts.code;
 
+import com.caoccao.javet.annotations.V8Function;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import mchorse.mappet.CommonProxy;
 import mchorse.mappet.api.scripts.ScriptExecutionFork;
@@ -170,18 +171,18 @@ public class ScriptEvent implements IScriptEvent
         CommonProxy.eventHandler.addExecutable(new ScriptExecutionFork(this.context.copy(), script, function, delay));
     }
 
-    @Override
-    public void scheduleScript(int delay, ScriptObjectMirror function)
-    {
-        if (function != null && function.isFunction())
-        {
-            CommonProxy.eventHandler.addExecutable(new ScriptExecutionFork(this.context.copy(), function, delay));
-        }
-        else
-        {
-            throw new IllegalStateException("Given object is null in script " + this.script + " (" + this.function + " function)!");
-        }
-    }
+//    @Override
+//    public void scheduleScript(int delay, ScriptObjectMirror function)
+//    {
+//        if (function != null && function.isFunction())
+//        {
+//            CommonProxy.eventHandler.addExecutable(new ScriptExecutionFork(this.context.copy(), function, delay));
+//        }
+//        else
+//        {
+//            throw new IllegalStateException("Given object is null in script " + this.script + " (" + this.function + " function)!");
+//        }
+//    }
 
     @Override
     public int executeCommand(String command)
@@ -190,6 +191,7 @@ public class ScriptEvent implements IScriptEvent
     }
 
     @Override
+    @V8Function
     public void send(String message)
     {
         for (EntityPlayer player : this.context.server.getPlayerList().getPlayers())
