@@ -1,238 +1,120 @@
-buildscript
-{
-    repositories 
-    {
-        jcenter()
-        maven { url = "http://files.minecraftforge.net/maven" }
+buildscript {
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net/' }
+        mavenCentral()
     }
-    
-    dependencies 
-    {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:5.+'
     }
 }
 
-apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'net.minecraftforge.gradle'
+// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
 
-if (project.hasProperty("dev")) 
-{
-    version += "-" + dev
-}
+group = 'mchorse.mappet' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = 'mappet'
 
-group = "mchorse.mappet"
-archivesBaseName = "mappet"
-sourceCompatibility = targetCompatibility = "1.8"
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
-compileJava {
-    sourceCompatibility = targetCompatibility = "1.8"
-}
+minecraft {
+    // The mappings can be changed at any time, and must be in the following format.
+    // snapshot_YYYYMMDD   Snapshot are built nightly.
+    // stable_#            Stables are built at the discretion of the MCP team.
+    // Use non-default mappings at your own risk. they may not always work.
+    // Simply re-run your setup task after changing the mappings to update your workspace.
+    //mappings channel: 'snapshot', version: '20171003-1.12'
+    mappings channel: 'snapshot', version: '20171003-1.12'
+    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 
-minecraft 
-{
-    version = "1.12.2-14.23.3.2655"
-    runDir = "run"
-    
-    mappings = "snapshot_20171003"
-    
-    clientJvmArgs = ["-Xmx1G"]
-    serverJvmArgs = ["-Xmx1G"]
+    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
-    replace "%VERSION%", project.version
-    replace "%MCLIB%", project.mclib
-    replace "%METAMORPH%", project.metamorph
-    replace "%BLOCKBUSTER%", project.blockbuster
+    // Default run configurations.
+    // These can be tweaked, removed, or duplicated as needed.
+    runs {
+        client {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+        }
+
+        server {
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+        }
+    }
 }
 
 dependencies {
-    compileOnly files("run/libs/blockbuster-${blockbuster}-${project.minecraft.version}-dev.jar")
-    compileOnly files("run/libs/metamorph-${metamorph}-${project.minecraft.version}-dev.jar")
-    compileOnly files("run/libs/mclib-${mclib}-${project.minecraft.version}-dev.jar")
+    // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
+    // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
+    // The userdev artifact is a special name and will get all sorts of transformations applied to it.
+    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
+
+    // You may put jars on which you depend on in ./libs or you may define them like so..
+    // compile "some.group:artifact:version:classifier"
+    // compile "some.group:artifact:version"
+
+    // Real examples
+    // compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
+    // compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
+
+    // The 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
+    // provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+
+    // These dependencies get remapped to your current MCP mappings
+    // deobf 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+
+    // For more info...
+    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
+    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+
+    compileOnly files("run/libs/blockbuster-${blockbuster}-1.12.2-dev.jar")
+    compileOnly files("run/libs/metamorph-${metamorph}-1.12.2-dev.jar")
+    compileOnly files("run/libs/mclib-${mclib}-1.12.2-dev.jar")
+
+    implementation 'com.caoccao.javet:javet:1.1.6'
 }
 
-processResources
-{
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
-
-    project.version += "-" + project.minecraft.version
-
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
-        
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
-}
-
-/* Dev build */
-task deobfJar(type: Jar) {
-    from sourceSets.main.output
-    classifier = 'dev'
-}
-
-task sourcesJar(type: Jar) {
-    from sourceSets.main.allJava
-    classifier = 'sources'
-}
-
-artifacts {
-    archives deobfJar
-    archives sourcesJar
-}
-
-task scriptingJavadocs(type: Javadoc) {
-    source = sourceSets.main.allJava
-
-    include "mchorse/mappet/api/ui/components/**"
-    include "mchorse/mappet/client/gui/utils/graphics/Graphic**"
-    include "mchorse/mappet/api/scripts/user/**"
-}
-
-task scriptingJavadocsJson(type: Exec) {
-    // Writing gradle tasks is PAIN, if you'll ever would need to run this, clone and build:
-    // https://github.com/mchorse/jsonDoclet
-    //
-    // Rename it to jsonDoclet.jar, and place it in the run/ folder
-    executable "javadoc"
-    args "-doclet", "mchorse.utils.doclets.JsonDoclet", "-docletpath", "./run/jsonDoclet.jar", "-sourcepath", "./src/main/java/", "-subpackages", "mchorse.mappet.api.scripts.user:mchorse.mappet.api.ui.components:mchorse.mappet.client.gui.utils.graphics"
-
-    doLast {
-        file("src/main/resources/assets/mappet/docs.json").setText(file("docs.json").text)
+// Example for how to get properties into the manifest for reading by the runtime..
+jar {
+    manifest {
+        attributes([
+                "Specification-Title": "Mappet",
+                "Specification-Vendor": "McHorse",
+                "Specification-Version": "1", // We are version 1 of ourselves
+                "Implementation-Title": project.name,
+                "Implementation-Version": "${version}",
+                "Implementation-Vendor" :"McHorse",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
     }
 }
 
-tasks.processResources.dependsOn(scriptingJavadocsJson)
-
-/* Comparing keys */
-task compareLangFiles {
-    doLast {
-        def help = file("src/main/resources/assets/${project.archivesBaseName}/lang/")
-        def parse = { File file ->
-            def map = new HashMap()
-            def splits = file.text.split("\n");
-
-            for (split in splits) {
-                def index = split.indexOf("=")
-
-                if (index == -1) {
-                    continue
-                }
-
-                map.put(split.substring(0, index), true)
-            }
-
-            return map
-        }
-        
-        if (!help.exists()) {
-            return
-        }
-
-        def en = file("${help.getAbsolutePath()}/en_US.lang")
-        def en_map = parse(en)
-
-        for (lang_file in help.listFiles()) {
-            if (!lang_file.name.endsWith(".lang") || lang_file.name.startsWith("en_US")) {
-                continue
-            }
-
-            def lang_map = parse(lang_file)
-            def missing = new ArrayList()
-            def extra = new ArrayList()
-
-            for (key in en_map.keySet()) {
-                if (!lang_map.containsKey(key)) {
-                    missing.add(key)
-                }
-            }
-
-            for (key in lang_map.keySet()) {
-                if (!en_map.containsKey(key)) {
-                    extra.add(key)
-                }
-            }
-
-            missing.sort()
-            extra.sort()
-
-            print("\n")
-
-            if (!missing.isEmpty() || !extra.isEmpty()) {
-                if (!missing.isEmpty()) {
-                    print("Language file ${lang_file.getName()} misses following keys:\n")
-
-                    for (key in missing) {
-                        print("- ${key}\n")
-                    }
-                }
-
-                if (!extra.isEmpty()) {
-                    print("Language file ${lang_file.getName()} has additional keys:\n")
-
-                    for (key in extra) {
-                        print("- ${key}\n")
-                    }
-                }
-            }
-            else {
-                print("Language file ${lang_file.getName()} fully matches ${en.getName()}!\n")
-            }
-        }
-    }
-}
-
-task copyLangStrings {
-    doLast {
-        def parse = { File file ->
-            def map = new HashMap()
-            def splits = file.text.split("\n");
-
-            for (split in splits) {
-                def index = split.indexOf("=")
-
-                if (index == -1) {
-                    continue
-                }
-
-                map.put(split.substring(0, index), split.substring(index + 1))
-            }
-
-            return map
-        }
-        
-        def help = file("src/main/resources/assets/${project.archivesBaseName}/lang/")
-        def en = file("${help.getAbsolutePath()}/en_US.lang")
-
-        for (file in help.listFiles())
-        {
-            if (file.name.endsWith(".lang") && !file.name.startsWith("en_"))
-            {
-                def strings = parse(file)
-                def splits = en.text.split("\n")
-
-                for (def i = 0; i < splits.length; i++) {
-                    def str = splits[i];
-
-                    if (str.contains("=")) {
-                        def index = str.indexOf("=")
-                        def key = str.substring(0, index)
-                        def value = str.substring(index)
-
-                        if (strings.containsKey(key)) {
-                            splits[i] = key + "=" + strings.get(key)
-                        }
-                    }
-                }
-
-                file.write(splits.join("\n"))
-
-                print("Wrote to ${file.name}...")
-            }
-        }
-
-        print("Done!")
-    }
-}
+// Example configuration to allow publishing using the maven-publish task
+// This is the preferred method to reobfuscate your jar file
+jar.finalizedBy('reobfJar')
+// However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
+//publish.dependsOn('reobfJar')
+//
+//publishing {
+//    publications {
+//        mavenJava(MavenPublication) {
+//            artifact jar
+//        }
+//    }
+//    repositories {
+//        maven {
+//            url "file:///${project.projectDir}/mcmodsrepo"
+//        }
+//    }
+//}
