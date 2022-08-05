@@ -14,6 +14,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
 group = 'mchorse.mappet' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = 'mappet'
 
 minecraft {
     // The mappings can be changed at any time, and must be in the following format.
