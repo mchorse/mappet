@@ -3,15 +3,8 @@ package mchorse.mappet.api.scripts;
 import com.caoccao.javet.annotations.V8Function;
 import com.caoccao.javet.exceptions.JavetException;
 import com.caoccao.javet.interop.V8Runtime;
-import com.caoccao.javet.interop.V8Scope;
-import com.caoccao.javet.interop.converters.BaseJavetConverter;
 import com.caoccao.javet.interop.converters.IJavetConverter;
-import com.caoccao.javet.interop.converters.JavetObjectConverter;
 import com.caoccao.javet.values.V8Value;
-import com.caoccao.javet.values.reference.V8ValueMap;
-import com.caoccao.javet.values.reference.V8ValueObject;
-
-import java.util.Map;
 
 public class JavaUtils {
     private V8Runtime engine;
