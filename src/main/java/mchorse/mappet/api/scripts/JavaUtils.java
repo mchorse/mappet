@@ -3,6 +3,15 @@ package mchorse.mappet.api.scripts;
 import com.caoccao.javet.annotations.V8Function;
 import com.caoccao.javet.exceptions.JavetException;
 import com.caoccao.javet.interop.V8Runtime;
+import com.caoccao.javet.interop.V8Scope;
+import com.caoccao.javet.interop.converters.BaseJavetConverter;
+import com.caoccao.javet.interop.converters.IJavetConverter;
+import com.caoccao.javet.interop.converters.JavetObjectConverter;
+import com.caoccao.javet.values.V8Value;
+import com.caoccao.javet.values.reference.V8ValueMap;
+import com.caoccao.javet.values.reference.V8ValueObject;
+
+import java.util.Map;
 
 public class JavaUtils {
     private V8Runtime engine;
@@ -30,5 +39,18 @@ public class JavaUtils {
     @V8Function(name = "importAs")
     public void ImportAs(String importedName, String className) throws ClassNotFoundException, JavetException {
         engine.getGlobalObject().set(importedName, Class.forName(className));
+    }
+
+    @V8Function(name = "from")
+    public V8Value From(Object obj) throws JavetException {
+        IJavetConverter objectConverter = engine.getConverter();
+        objectConverter.getConfig().setProxyMapEnabled(false);
+        objectConverter.getConfig().setProxySetEnabled(false);
+
+        V8Value valueObject = objectConverter.toV8Value(engine, obj);
+
+        objectConverter.getConfig().setProxySetEnabled(true);
+        objectConverter.getConfig().setProxyMapEnabled(true);
+        return valueObject;
     }
 }
