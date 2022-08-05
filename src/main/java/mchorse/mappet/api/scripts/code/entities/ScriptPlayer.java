@@ -122,9 +122,9 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     }
 
     @Override
-    public void send(String message)
+    public void send(Object message)
     {
-        this.entity.sendMessage(new TextComponentString(message));
+        this.entity.sendMessage(new TextComponentString(message.toString()));
     }
 
     @Override

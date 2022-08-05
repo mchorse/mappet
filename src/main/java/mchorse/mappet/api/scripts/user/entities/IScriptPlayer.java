@@ -108,7 +108,7 @@ public interface IScriptPlayer extends IScriptEntity
      *    c.getSubject().send("...but between you and me, you're my favorite player ;)");
      * }</pre>
      */
-    public void send(String message);
+    public void send(Object message);
 
     /**
      * Send a message to this player using text component (like <code>/tellraw</code> command).

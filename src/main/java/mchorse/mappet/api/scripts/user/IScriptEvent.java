@@ -232,5 +232,5 @@ public interface IScriptEvent
      *    c.send("Hi :)");
      * }</pre>
      */
-    public void send(String message);
+    public void send(Object message);
 }

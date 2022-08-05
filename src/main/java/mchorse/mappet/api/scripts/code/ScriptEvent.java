@@ -1,7 +1,6 @@
 package mchorse.mappet.api.scripts.code;
 
 import com.caoccao.javet.annotations.V8Function;
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import mchorse.mappet.CommonProxy;
 import mchorse.mappet.api.scripts.ScriptExecutionFork;
 import mchorse.mappet.api.scripts.code.entities.ScriptEntity;
@@ -191,12 +190,11 @@ public class ScriptEvent implements IScriptEvent
     }
 
     @Override
-    @V8Function
-    public void send(String message)
+    public void send(Object message)
     {
         for (EntityPlayer player : this.context.server.getPlayerList().getPlayers())
         {
-            player.sendMessage(new TextComponentString(message));
+            player.sendMessage(new TextComponentString(message.toString()));
         }
     }
 }
