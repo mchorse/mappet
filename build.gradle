@@ -14,9 +14,6 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
 group = 'mchorse.mappet' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'mappet'
-
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
 minecraft {
     // The mappings can be changed at any time, and must be in the following format.
@@ -97,6 +94,19 @@ jar {
                 "Implementation-Vendor" :"McHorse",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
+    }
+}
+
+task scriptingJavadocsJson(type: Exec) {
+    // Writing gradle tasks is PAIN, if you'll ever would need to run this, clone and build:
+    // https://github.com/mchorse/jsonDoclet
+    //
+    // Rename it to jsonDoclet.jar, and place it in the run/ folder
+    executable "javadoc"
+    args "-doclet", "mchorse.utils.doclets.JsonDoclet", "-docletpath", "./run/jsonDoclet.jar", "-sourcepath", "./src/main/java/", "-subpackages", "mchorse.mappet.api.scripts.user:mchorse.mappet.api.ui.components:mchorse.mappet.client.gui.utils.graphics"
+
+    doLast {
+        file("src/main/resources/assets/mappet/docs.json").setText(file("docs.json").text)
     }
 }
 
