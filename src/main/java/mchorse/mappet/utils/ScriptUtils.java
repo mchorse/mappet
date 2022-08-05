@@ -16,7 +16,10 @@ public class ScriptUtils
     {
         try {
             V8Runtime engine = getManager().createV8Runtime();
-            engine.setConverter(new JavetProxyConverter());
+            JavetProxyConverter javetProxyConverter = new JavetProxyConverter();
+            javetProxyConverter.getConfig().setProxyMapEnabled(true);
+            //javetProxyConverter.getConfig().setProxySetEnabled(true);
+            engine.setConverter(javetProxyConverter);
 
             engine.getGlobalObject().set("Java", new JavaUtils(engine));
 
