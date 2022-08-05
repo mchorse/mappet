@@ -1,7 +1,6 @@
 package mchorse.mappet.commands.scripts;
 
 import com.caoccao.javet.exceptions.BaseJavetScriptingException;
-import com.caoccao.javet.exceptions.JavetException;
 import com.caoccao.javet.exceptions.JavetScriptingError;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.utils.DataContext;
@@ -13,7 +12,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
-import javax.script.ScriptException;
 import java.util.List;
 
 public class CommandScriptExec extends CommandScriptBase
@@ -61,7 +59,7 @@ public class CommandScriptExec extends CommandScriptBase
         {
             e.printStackTrace();
             JavetScriptingError error = e.getScriptingError();
-            throw new CommandException("script.error", error.getResourceName(), error.getLineNumber(), error.getStartColumn(), error.getDetailedMessage());
+            throw new CommandException("script.error", args[1], error.getLineNumber(), error.getStartColumn(), error.toString());
         }
         catch (Exception e)
         {
