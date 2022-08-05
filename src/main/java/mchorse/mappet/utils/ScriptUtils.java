@@ -3,6 +3,7 @@ package mchorse.mappet.utils;
 import com.caoccao.javet.interop.V8Host;
 import com.caoccao.javet.interop.V8Runtime;
 import com.caoccao.javet.interop.converters.JavetProxyConverter;
+import mchorse.mappet.api.scripts.JavaUtils;
 
 public class ScriptUtils
 {
@@ -17,18 +18,7 @@ public class ScriptUtils
             V8Runtime engine = getManager().createV8Runtime();
             engine.setConverter(new JavetProxyConverter());
 
-            engine.getGlobalObject().set("Java", new Object() {
-                @SuppressWarnings("unused")
-                public Class<?> type(String className) throws ClassNotFoundException {
-                    return Class.forName(className);
-                }
-            });
-            engine.getGlobalObject().set("import", new Runnable() {
-                @Override
-                public void run() {
-
-                }
-            });
+            engine.getGlobalObject().set("Java", new JavaUtils(engine));
 
             return engine;
         } catch (Exception e) {
