@@ -44,7 +44,7 @@ mappet.info.factions.clear_all=§fВсе очки фракции у §7%s§f б�
 mappet.info.factions.set=§fОчки фракции с ID §7%s§f были установлены на значение §7%s§r.
 mappet.info.factions.changed=§fОчки фракции с ID §7%s§f были §7%s§r, теперь стали §7%s§r.
 
-mappet.info.data.cleared=§fГлобальные состояния и состояния игроков очищены.
+mappet.info.data.cleared=§fGlobal states and player states were cleared.
 mappet.info.data.cleared_inventory=§fГлобальные состояния, состояния игроков и инвентари были очищены.
 mappet.info.data.rencoded=§fRe-encoded all the data from %s§f to %s§f.
 
@@ -101,7 +101,7 @@ mappet.commands.mp.data.rencode=Re-encode all data files within world's §7mappe
 
 mappet.commands.mp.script.help=Подкоманда скриптов.
 mappet.commands.mp.script.eval=Эта команда рассчитывает скрипт с ID §7<id>§r (из папки §7mappet/scripts/§r, без приписки формата файла) для игроков найденных селектором цели §7<player>§r. Будет вызвана функция скрипта §7[function]§r (если она отсутствует, то будет вызвана §7main§r). Вы также можете передавать опциональные NBT-данные напрямую в событие используя аргумент §7[data]§r.
-mappet.commands.mp.script.exec=Это команда исполняет скрипт с ID §7<id>§r (из папки §7mappet/scripts/§r, без приписки формата файла) upon player(s) or server (if §7~§r was provided) found by §7<target>§r selector. Script's §7[function]§r (§7main§r if omitted) function will be called. You can also pass arbitrary NBT data to the event using §7[data]§r argument.
+mappet.commands.mp.script.exec=This command executes script by §7<id>§r (from world's §7mappet/scripts/§r folder, without file extension) upon player(s) or server (if §7~§r was provided) found by §7<target>§r selector. Script's §7[function]§r (§7main§r if omitted) function will be called. You can also pass arbitrary NBT data to the event using §7[data]§r argument.
 
 mappet.commands.mp.hud.help=HUD scenes management command.
 mappet.commands.mp.hud.close=Closes an HUD scene by §7[id]§r of all players found by §7<target>§r selector. If player(s) didn't have such HUD scene by §7[id]§r nothing will happen. If §7[id]§r was omitted, then all HUD scenes will be removed from players by §7<target>§r selector.
@@ -622,30 +622,30 @@ mappet.gui.triggers.context.copy=Скопировать этот триггер
 mappet.gui.triggers.context.paste=Вставить скопированный триггер
 mappet.gui.triggers.context.remove=Удалить этот триггер
 
-mappet.gui.scripts.run=Run script (main function)
-mappet.gui.scripts.libraries.title=Script libraries
-mappet.gui.scripts.libraries.tooltip=Manage libraries...
-mappet.gui.scripts.libraries.context.add=Add a library...
+mappet.gui.scripts.run=Запустить скрипт и функцию main
+mappet.gui.scripts.libraries.title=Библиотеки
+mappet.gui.scripts.libraries.tooltip=Управлять библиотеками...
+mappet.gui.scripts.libraries.context.add=Добавить библиотеку...
 mappet.gui.scripts.libraries.context.remove=Remove this library
 mappet.gui.scripts.documentation.title=Scripting documentation
 mappet.gui.scripts.repl.title=REPL (interactive console)
-mappet.gui.scripts.repl.hello_world=Hello, world!
-mappet.gui.scripts.repl.welcome=This is Mappet's Read-Eval-Print Loop (REPL). You can type in §6JS§r code, and execute it by pressing Enter key. You can cycle through eval history by holding §6Ctrl§r key and arrow §6Up§r or §6Down§r.\n\nFollowing variables are available:\n\n- §6c§r is a IScriptEvent that has player as a subject\n- §6mappet§r is a IScriptFactory
-mappet.gui.scripts.repl.context.clear=Clear
+mappet.gui.scripts.repl.hello_world=Привет, мир!
+mappet.gui.scripts.repl.welcome=Это Read-Eval-Print Loop (REPL). Вы можете писать §6JS§r код и выполнять его, нажимая Enter. Вы можете смотреть историю комманд, нажав Ctrl+Вверх или Ctrl+Вниз\n\nДоступны следующие переменные:\n\n- §6c§r - IScriptEvent, имеет в себе игрока\n- §6mappet§r - IScriptFactory
+mappet.gui.scripts.repl.context.clear=Очистить
 mappet.gui.scripts.keys.word_wrap=Toggle word wrapping
 mappet.gui.scripts.context.paste_morph=Вставьте NBT морфа...
 mappet.gui.scripts.context.paste_item=Вставьте NBT предмета...
 mappet.gui.scripts.context.paste_player_pos=Вставить позицию игрока
 mappet.gui.scripts.context.paste_block_pos=Вставить позицию блока
-mappet.gui.scripts.context.paste_sound=Paste sound event...
-mappet.gui.scripts.context.docs=Open docs for %s
+mappet.gui.scripts.context.paste_sound=Вставить звук...
+mappet.gui.scripts.context.docs=Открыть документацию для %s
 mappet.gui.scripts.overlay.title_morph=Морф
 mappet.gui.scripts.overlay.title_item=Предмет
 mappet.gui.scripts.overlay.insert=Вставить
 mappet.gui.scripts.overlay.pick_morph=Выберите морф...
 
-mappet.gui.states.server=Server states
-mappet.gui.states.player=%s's states
+mappet.gui.states.server=Данные сервера
+mappet.gui.states.player=Данные %s
 mappet.gui.states.pick=Pick states target
 mappet.gui.states.empty=There are no states to edit. Create one by pressing "+" button...
 
@@ -716,12 +716,12 @@ mappet.gui.entity_property.on_ground=При нахождении на земле
 mappet.gui.entity_property.yaw=Вращение головы по Y (рыскание)
 mappet.gui.entity_property.pitch=Вращение головы по X (тангаж)
 
-mappet.gui.item_trigger.mode.take=Take item
-mappet.gui.item_trigger.mode.give=Give item
+mappet.gui.item_trigger.mode.take=Забрать предмет
+mappet.gui.item_trigger.mode.give=Дать предмет
 
-mappet.gui.state_trigger.mode.add=Add
-mappet.gui.state_trigger.mode.set=Set
-mappet.gui.state_trigger.mode.remove=Remove
+mappet.gui.state_trigger.mode.add=Добавить
+mappet.gui.state_trigger.mode.set=Настроить
+mappet.gui.state_trigger.mode.remove=Убрать
 
 # Keys
 mappet.keys.category=Маппет
@@ -749,6 +749,3 @@ mappet.translation.wiki_url=https://github.com/Andruxioid/mappet_ru/wiki
 mappet.translation.community=Дискорд
 mappet.translation.community_url=https://discord.gg/QhvbgSWpYn
 mappet.translation.sounds=Открыть папку со звуками
-
-mappet.nashorn_copied=Если вы планируете использовать скрипты Маппета, то тогда, пожалуйста, §lперезапустите клиент/сервер§r! Скриптовый движок Nashorn не был загружен по умолчанию, но был скопирован из директории JRE и должен быть доступен.
-mappet.nashorn_error=Невозможно загрузить или §lобнаружить§r скриптовый движок Nashorn! Попробуйте скачать nashorn.jar вручную с JRE §7lib/ext/nashorn.jar§r!
