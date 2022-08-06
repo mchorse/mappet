@@ -25,8 +25,7 @@ public class JavaUtils {
 
     @V8Function(name = "import")
     public void Import(String className) throws ClassNotFoundException, JavetException {
-        Class<?> _class = Class.forName(className);
-        engine.getGlobalObject().set(_class.getName(), _class);
+        engine.getGlobalObject().set(className.substring(className.lastIndexOf('.')), Class.forName(className));
     }
 
     @V8Function(name = "importAs")
@@ -45,5 +44,9 @@ public class JavaUtils {
         objectConverter.getConfig().setProxySetEnabled(true);
         objectConverter.getConfig().setProxyMapEnabled(true);
         return valueObject;
+    }
+    @V8Function(name = "to")
+    public Object To(V8Value value) throws JavetException {
+        return engine.getConverter().toObject(value);
     }
 }
