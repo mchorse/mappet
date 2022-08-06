@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts.user;
 
+import com.caoccao.javet.exceptions.JavetException;
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
@@ -103,7 +104,7 @@ public interface IScriptFactory
      *    c.send(item.serialize());
      * }</pre>
      */
-    public INBTCompound createCompoundFromJS(Object jsObject);
+    public INBTCompound createCompoundFromJS(Object jsObject) throws JavetException;
 
     /**
      * Create an empty NBT list.
@@ -153,7 +154,7 @@ public interface IScriptFactory
      *    c.send(list.stringify());
      * }</pre>
      */
-    public INBTList createListFromJS(Object jsObject);
+    public INBTList createListFromJS(Object jsObject) throws JavetException;
 
     /**
      * Create an item stack out of string NBT.
