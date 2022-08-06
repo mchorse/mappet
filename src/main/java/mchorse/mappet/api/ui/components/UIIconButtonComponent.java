@@ -39,13 +39,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *        if (uiContext.getLast() === "icon")
  *        {
  *            // Get a set of all icons
- *            var icons = Java.type("mchorse.mclib.client.gui.utils.IconRegistry").icons.keySet();
+ *            var icons = Java.from(Java.type("mchorse.mclib.client.gui.utils.IconRegistry").icons.keySet());
  *
  *            // Set a random icon
  *            var index = Math.floor(Math.random() * icons.size());
  *            var i = 0;
  *
- *            for each (var icon in icons)
+ *            for (var icon in icons)
  *            {
  *                if (i == index)
  *                {
