@@ -1,5 +1,11 @@
 package mchorse.mappet.api.ui.components;
 
+import com.caoccao.javet.annotations.V8Convert;
+import com.caoccao.javet.annotations.V8Getter;
+import com.caoccao.javet.annotations.V8Property;
+import com.caoccao.javet.annotations.V8Setter;
+import com.caoccao.javet.enums.V8ConversionMode;
+import jdk.nashorn.internal.objects.annotations.Getter;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIContext;
 import mchorse.mappet.api.ui.UIContext;
 import mchorse.mappet.api.ui.utils.DiscardMethod;
@@ -43,22 +49,36 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
 {
     public static final int DELAY = 200;
 
+    @V8Property(name = "_id")
     public String id = "";
+    @V8Property(name = "_tooltip")
     public String tooltip = "";
-    public boolean visible = true;
-    public boolean enabled = true;
+    @V8Property(name = "_visible")
+    public Boolean visible = true;
+    @V8Property(name = "_enabled")
+    public Boolean enabled = true;
 
+    @V8Property(name = "_tooltipDirection")
     public int tooltipDirection;
+    @V8Property(name = "_marginTop")
     public int marginTop;
+    @V8Property(name = "_marginBottom")
     public int marginBottom;
+    @V8Property(name = "_marginLeft")
     public int marginLeft;
+    @V8Property(name = "_marginRight")
     public int marginRight;
 
+    @V8Property(name = "_x")
     public UIUnit x = new UIUnit();
+    @V8Property(name = "_y")
     public UIUnit y = new UIUnit();
+    @V8Property(name = "_w")
     public UIUnit w = new UIUnit();
+    @V8Property(name = "_h")
     public UIUnit h = new UIUnit();
 
+    @V8Property(name = "_updateDelay")
     public int updateDelay = this.getDefaultUpdateDelay();
     public List<UIKeybind> keybinds = new ArrayList<UIKeybind>();
     public List<UIContextItem> context = new ArrayList<UIContextItem>();
