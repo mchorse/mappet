@@ -19,6 +19,7 @@ public class ScriptUtils
             JavetProxyConverter javetProxyConverter = new JavetProxyConverter();
             javetProxyConverter.getConfig().setProxyMapEnabled(true);
             javetProxyConverter.getConfig().setProxySetEnabled(true);
+            javetProxyConverter.getConfig().setMaxDepth(24);
             engine.setConverter(javetProxyConverter);
 
             engine.getGlobalObject().set("Java", new JavaUtils(engine));
