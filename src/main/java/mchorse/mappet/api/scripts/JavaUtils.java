@@ -25,8 +25,8 @@ public class JavaUtils {
 
     @V8Function(name = "import")
     public void Import(String className) throws ClassNotFoundException, JavetException {
-        String[] classPath = className.split("\\.");
-        ImportAs(classPath[classPath.length - 1], className);
+        Class<?> _class = Class.forName(className);
+        engine.getGlobalObject().set(_class.getName(), _class);
     }
 
     @V8Function(name = "importAs")
