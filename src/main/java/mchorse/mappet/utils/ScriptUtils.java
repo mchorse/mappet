@@ -4,6 +4,7 @@ import com.caoccao.javet.interop.V8Host;
 import com.caoccao.javet.interop.V8Runtime;
 import com.caoccao.javet.interop.converters.JavetProxyConverter;
 import mchorse.mappet.api.scripts.JavaUtils;
+import mchorse.mappet.api.scripts.user.data.ScriptVector;
 
 public class ScriptUtils
 {
@@ -23,6 +24,7 @@ public class ScriptUtils
             engine.setConverter(javetProxyConverter);
 
             engine.getGlobalObject().set("Java", new JavaUtils(engine));
+            engine.getGlobalObject().set("Vector3", ScriptVector.class);
 
             return engine;
         } catch (Exception e) {
