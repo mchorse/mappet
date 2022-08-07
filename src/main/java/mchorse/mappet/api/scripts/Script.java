@@ -32,7 +32,7 @@ import java.util.Set;
 public class Script extends AbstractData
 {
     public String code = "";
-    public boolean unique;
+    public boolean unique = true;
     public List<String> libraries = new ArrayList<String>();
 
     private V8Runtime engine;
