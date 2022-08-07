@@ -1,7 +1,6 @@
 package mchorse.mappet.api.scripts;
 
 import com.caoccao.javet.values.reference.V8ValueFunction;
-import com.caoccao.javet.values.reference.V8ValueObject;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.scripts.code.ScriptEvent;
 import mchorse.mappet.api.utils.DataContext;
@@ -9,8 +8,9 @@ import mchorse.mappet.api.utils.IExecutable;
 
 public class ScriptExecutionFork implements IExecutable
 {
+
     public DataContext context;
-    public V8ValueObject object;
+    public V8ValueFunction object;
     public String script;
     public String function;
     public int timer;
@@ -23,8 +23,7 @@ public class ScriptExecutionFork implements IExecutable
         this.timer = timer;
     }
 
-    @SuppressWarnings("unused")
-    public ScriptExecutionFork(DataContext context, V8ValueObject object, int timer)
+    public ScriptExecutionFork(DataContext context, V8ValueFunction object, int timer)
     {
         this.context = context;
         this.object = object;
@@ -41,7 +40,7 @@ public class ScriptExecutionFork implements IExecutable
                 if (this.object != null)
                 {
 //                    this.object.call(null, new ScriptEvent(this.context, null, null));
-                    ((V8ValueFunction) object).call(null, new ScriptEvent(this.context, null, null));
+                    this.object.callVoid(null, new ScriptEvent(this.context, null, null));
                 }
                 else
                 {
