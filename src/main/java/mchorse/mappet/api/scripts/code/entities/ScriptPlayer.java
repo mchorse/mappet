@@ -319,7 +319,11 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
         if (character.getUIContext() == null)
         {
             UI ui = builder.getUI();
-            UIContext context = new UIContext(ui, this.entity, builder.getScript(), builder.getFunction());
+            UIContext context;
+            if (builder.getFunctionObject() == null || builder.getFunctionObject().isUndefined())
+                context = new UIContext(ui, this.entity, builder.getScript(), builder.getFunction());
+            else
+                context = new UIContext(ui, this.entity, builder.getFunctionObject());
 
             character.setUIContext(context);
             Dispatcher.sendTo(new PacketUI(ui), this.getMinecraftPlayer());

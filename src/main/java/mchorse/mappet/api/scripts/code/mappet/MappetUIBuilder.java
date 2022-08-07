@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts.code.mappet;
 
+import com.caoccao.javet.values.reference.V8ValueFunction;
 import mchorse.mappet.CommonProxy;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
@@ -30,6 +31,7 @@ public class MappetUIBuilder implements IMappetUIBuilder
     private UIComponent current;
     private String script;
     private String function;
+    private V8ValueFunction functionObject;
 
     public MappetUIBuilder(UI ui, String script, String function)
     {
@@ -37,6 +39,11 @@ public class MappetUIBuilder implements IMappetUIBuilder
         this.current = ui.root;
         this.script = script;
         this.function = function;
+    }
+    public MappetUIBuilder(UI ui, V8ValueFunction function) {
+        this.ui = ui;
+        this.current = ui.root;
+        this.functionObject = function;
     }
 
     public MappetUIBuilder(UIComponent component)
@@ -64,6 +71,7 @@ public class MappetUIBuilder implements IMappetUIBuilder
     {
         return this.function;
     }
+    public V8ValueFunction getFunctionObject() { return this.functionObject; }
 
     @Override
     public IMappetUIBuilder background()

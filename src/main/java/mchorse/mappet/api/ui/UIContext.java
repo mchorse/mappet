@@ -1,6 +1,8 @@
 package mchorse.mappet.api.ui;
 
+import com.caoccao.javet.values.reference.V8ValueFunction;
 import mchorse.mappet.Mappet;
+import mchorse.mappet.api.scripts.code.ScriptEvent;
 import mchorse.mappet.api.ui.components.UIComponent;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.network.Dispatcher;
@@ -25,6 +27,7 @@ public class UIContext
 
     private String script = "";
     private String function = "";
+    private V8ValueFunction functionObject;
 
     @SideOnly(Side.CLIENT)
     private Map<String, GuiElement> elements;
@@ -49,6 +52,11 @@ public class UIContext
         this.player = player;
         this.script = script == null ? "" : script;
         this.function = function == null ? "" : function;
+    }
+    public UIContext(UI ui, EntityPlayer player, V8ValueFunction function) {
+        this.ui = ui;
+        this.player = player;
+        this.functionObject = function;
     }
 
     /* Data sync code */
@@ -354,14 +362,17 @@ public class UIContext
 
     private boolean handleScript(EntityPlayer player)
     {
-        if (this.script.isEmpty() || this.function.isEmpty())
+        if ((this.script.isEmpty() || this.function.isEmpty()) && (functionObject == null || functionObject.isUndefined()))
         {
             return false;
         }
 
         try
         {
-            Mappet.scripts.execute(this.script, this.function, new DataContext(player));
+            if (functionObject == null || functionObject.isUndefined())
+                Mappet.scripts.execute(this.script, this.function, new DataContext(player));
+            else
+                functionObject.callVoid(null, new ScriptEvent(new DataContext(player), null, null));
 
             return true;
         }

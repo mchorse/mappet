@@ -1,6 +1,7 @@
 package mchorse.mappet.api.scripts.user;
 
 import com.caoccao.javet.exceptions.JavetException;
+import com.caoccao.javet.values.reference.V8ValueFunction;
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
@@ -454,6 +455,47 @@ public interface IScriptFactory
      * @param function Given script's function that will be used as UI's user input handler.
      */
     public IMappetUIBuilder createUI(String script, String function);
+
+    /**
+     * Create a UI with a JS-function handler. You can send it to the
+     * player by using {@link IScriptPlayer#openUI(IMappetUIBuilder)} method.
+     *
+     * <p>Script and function arguments allow to point to the function
+     * which it will be responsible for handling the user input from
+     * scripted UI.</p>
+     *
+     * <p>In the UI handler, you can access subject's UI context ({@link IMappetUIContext})
+     * which has all the necessary methods to handle user's input.</p>
+     *
+     * <pre>{@code
+     *    // ui.js
+     *
+     *    function main(c)
+     *    {
+     *        var ui = mappet.createUI(handler).background();
+     *        var label = ui.label("Hello, world!").background(0x88000000);
+     *        var button = ui.button("Push me!").id("button");
+     *
+     *        label.rxy(0.5, 0.5).wh(80, 20).anchor(0.5).labelAnchor(0.5);
+     *        label.rx(0.5).ry(0.5, 25).wh(80, 20).anchor(0.5);
+     *
+     *        c.getSubject().openUI(ui);
+     *    }
+     *
+     *    function handler(c)
+     *    {
+     *        var uiContext = c.getSubject().getUIContext();
+     *
+     *        if (uiContext.getLast() === "button")
+     *        {
+     *            // Button was pressed
+     *        }
+     *    }
+     * }</pre>
+     *
+     * @param function Given JS's function that will be used as UI's user input handler
+     */
+    public IMappetUIBuilder createUI(V8ValueFunction function) throws JavetException;
 
     /**
      * Get a global arbitrary object.

@@ -3,6 +3,7 @@ package mchorse.mappet.api.scripts.code;
 import com.caoccao.javet.exceptions.JavetException;
 import com.caoccao.javet.values.V8Value;
 import com.caoccao.javet.values.reference.V8ValueArray;
+import com.caoccao.javet.values.reference.V8ValueFunction;
 import com.caoccao.javet.values.reference.V8ValueObject;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.scripts.code.blocks.ScriptBlockState;
@@ -222,6 +223,12 @@ public class ScriptFactory implements IScriptFactory
         function = function == null ? "" : function;
 
         return new MappetUIBuilder(new UI(), script, function);
+    }
+
+    @Override
+    public IMappetUIBuilder createUI(V8ValueFunction function) throws JavetException {
+        function.setWeak();
+        return new MappetUIBuilder(new UI(), function);
     }
 
     @Override
