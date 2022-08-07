@@ -1,5 +1,7 @@
 package mchorse.mappet.api.scripts.user;
 
+import com.caoccao.javet.exceptions.JavetException;
+import com.caoccao.javet.values.reference.V8ValueFunction;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
 import mchorse.mappet.api.scripts.user.entities.IScriptNpc;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
@@ -193,7 +195,7 @@ public interface IScriptEvent
      *    }
      * }</pre>
      */
-//    public void scheduleScript(int delay, ScriptObjectMirror function);
+    public void scheduleScript(int delay, V8ValueFunction function) throws JavetException;
 
     /**
      * Execute a command.

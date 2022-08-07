@@ -1,6 +1,9 @@
 package mchorse.mappet.api.scripts.code;
 
+import com.caoccao.javet.annotations.V8BindingEnabler;
 import com.caoccao.javet.annotations.V8Function;
+import com.caoccao.javet.exceptions.JavetException;
+import com.caoccao.javet.values.reference.V8ValueFunction;
 import mchorse.mappet.CommonProxy;
 import mchorse.mappet.api.scripts.ScriptExecutionFork;
 import mchorse.mappet.api.scripts.code.entities.ScriptEntity;
@@ -170,18 +173,19 @@ public class ScriptEvent implements IScriptEvent
         CommonProxy.eventHandler.addExecutable(new ScriptExecutionFork(this.context.copy(), script, function, delay));
     }
 
-//    @Override
-//    public void scheduleScript(int delay, ScriptObjectMirror function)
-//    {
-//        if (function != null && function.isFunction())
-//        {
-//            CommonProxy.eventHandler.addExecutable(new ScriptExecutionFork(this.context.copy(), function, delay));
-//        }
-//        else
-//        {
-//            throw new IllegalStateException("Given object is null in script " + this.script + " (" + this.function + " function)!");
-//        }
-//    }
+    @Override
+    public void scheduleScript(int delay, V8ValueFunction function) throws JavetException
+    {
+        if (function != null)
+        {
+            function.setWeak();
+            CommonProxy.eventHandler.addExecutable(new ScriptExecutionFork(this.context.copy(), function, delay));
+        }
+        else
+        {
+            throw new IllegalStateException("Given object is null in script " + this.script + " (" + this.function  + " function)!");
+        }
+    }
 
     @Override
     public int executeCommand(String command)
