@@ -3,6 +3,7 @@ package mchorse.mappet.api.scripts;
 import com.caoccao.javet.exceptions.JavetException;
 import com.caoccao.javet.interception.logging.JavetStandardConsoleInterceptor;
 import com.caoccao.javet.interop.V8Runtime;
+import com.caoccao.javet.interop.callback.JavetCallbackContext;
 import com.caoccao.javet.values.V8Value;
 import com.caoccao.javet.values.reference.V8ValueGlobalObject;
 import com.caoccao.javet.values.reference.V8ValueObject;
@@ -72,15 +73,7 @@ public class ScriptManager extends BaseManager<Script>
                 event = new ScriptEvent(context, "", "");
 
                 engine.getGlobalObject().set("c", event);
-                //engine.getGlobalObject().set("s", event.getSubject());
-
-//                try (V8ValueObject v8ValueObject = engine.createV8ValueObject()) {
-//                    engine.getGlobalObject().set("c", v8ValueObject);
-//                    v8ValueObject.bind(event);
-//                }
             }
-
-            engine.getExecutor("var print = function(message) { ____manager____.replPrint(message); };").executeVoid();
 
             this.repls.put(key, engine);
         }
