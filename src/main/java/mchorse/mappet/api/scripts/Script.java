@@ -46,7 +46,6 @@ public class Script extends AbstractData
         if (this.engine == null)
         {
             this.engine = ScriptUtils.tryCreatingEngine();
-            //this.engine.().setAttribute("javax.script.filename", this.getId() + ".js", ScriptContext.ENGINE_SCOPE);
 
             Mappet.EVENT_BUS.post(new RegisterScriptVariablesEvent(this.engine));
 
@@ -54,40 +53,40 @@ public class Script extends AbstractData
             Set<String> alreadyLoaded = new HashSet<String>();
             int total = 0;
 
-//            for (String library : this.libraries)
-//            {
-//                /* Don't load this script as its own library nor load repeatedly
-//                 * same library twice or more */
-//                if (library.equals(this.getId()) || alreadyLoaded.contains(library))
-//                {
-//                    continue;
-//                }
-//
-//                try
-//                {
-//                    File jsFile = manager.getJSFile(library);
-//                    String code = FileUtils.readFileToString(jsFile, Utils.getCharset());
-//
-//                    finalCode.append(code);
-//                    finalCode.append("\n");
-//
-//                    if (this.ranges == null)
-//                    {
-//                        this.ranges = new ArrayList<ScriptRange>();
-//                    }
-//
-//                    this.ranges.add(new ScriptRange(total, library));
-//
-//                    total += StringUtils.countMatches(code, "\n") + 1;
-//                }
-//                catch (Exception e)
-//                {
-//                    System.err.println("[Mappet] Script library " + library + ".js failed to load...");
-//                    e.printStackTrace();
-//                }
-//
-//                alreadyLoaded.add(library);
-//            }
+            for (String library : this.libraries)
+            {
+                /* Don't load this script as its own library nor load repeatedly
+                 * same library twice or more */
+                if (library.equals(this.getId()) || alreadyLoaded.contains(library))
+                {
+                    continue;
+                }
+
+                try
+                {
+                    File jsFile = manager.getJSFile(library);
+                    String code = FileUtils.readFileToString(jsFile, Utils.getCharset());
+
+                    finalCode.append(code);
+                    finalCode.append("\n");
+
+                    if (this.ranges == null)
+                    {
+                        this.ranges = new ArrayList<ScriptRange>();
+                    }
+
+                    this.ranges.add(new ScriptRange(total, library));
+
+                    total += StringUtils.countMatches(code, "\n") + 1;
+                }
+                catch (Exception e)
+                {
+                    System.err.println("[Mappet] Script library " + library + ".js failed to load...");
+                    e.printStackTrace();
+                }
+
+                alreadyLoaded.add(library);
+            }
 
             finalCode.append(this.code);
 
