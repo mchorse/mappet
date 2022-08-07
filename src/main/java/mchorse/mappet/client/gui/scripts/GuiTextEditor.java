@@ -120,6 +120,7 @@ public class GuiTextEditor extends GuiMultiTextElement<HighlightedTextLine>
             this.wasDoubleInsert(typedChar, ']', '[') ||
             this.wasDoubleInsert(typedChar, '}', '{') ||
             this.wasDoubleInsert(typedChar, '"', '"') ||
+            this.wasDoubleInsert(typedChar, '`', '`') ||
             this.wasDoubleInsert(typedChar, '\'', '\'')
         ) {
             this.moveCursor(1, 0);
@@ -147,6 +148,10 @@ public class GuiTextEditor extends GuiMultiTextElement<HighlightedTextLine>
         else if (typedChar == '\'')
         {
             return "''";
+        }
+        else if (typedChar == '`')
+        {
+            return "``";
         }
 
         return super.getFromChar(typedChar);

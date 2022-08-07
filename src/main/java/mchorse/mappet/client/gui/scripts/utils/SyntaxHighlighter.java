@@ -12,9 +12,9 @@ import java.util.regex.Pattern;
 public class SyntaxHighlighter
 {
     private static final Set<String> OPERATORS = ImmutableSet.of("+", "-", "=", "/", "*", "<", ">", "~", "&", "|", "!");
-    private static final Set<String> PRIMARY_KEYWORDS = ImmutableSet.of("break", "continue", "switch", "case", "default", "try", "catch", "delete", "do", "while", "else", "finally", "if", "for", "of", "in", "instanceof", "new", "throw", "typeof", "with", "yield", "return");
-    private static final Set<String> SECONDARY_KEYWORDS = ImmutableSet.of("const", "function", "class", "var", "let", "prototype", "Math", "JSON", "mappet", "Java");
-    private static final Set<String> SPECIAL = ImmutableSet.of("this", "arguments");
+    private static final Set<String> PRIMARY_KEYWORDS = ImmutableSet.of("break", "catch", "class", "continue", "delete", "do", "else", "extends", "false", "finally", "for", "function", "if", "in", "instanceof", "new", "null", "return", "switch", "throw", "true", "try", "typeof", "while", "with", "yield", "await", "get", "set", "async");
+    private static final Set<String> SECONDARY_KEYWORDS = ImmutableSet.of("prototype", "const", "let", "var", "case", "default");
+    private static final Set<String> SPECIAL = ImmutableSet.of("this", "arguments", "import", "export", "super", "eval");
     private static final Set<String> TYPE_KEYSWORDS = ImmutableSet.of("true", "false", "null", "undefined");
     private static final Pattern FUNCTION_NAME = Pattern.compile("[\\w_][\\d\\w_]*", Pattern.CASE_INSENSITIVE);
 
@@ -24,6 +24,8 @@ public class SyntaxHighlighter
     private String buffer;
     private char string;
     private int last;
+    private boolean formatString;
+    private boolean formatStringEmbed;
 
     public SyntaxHighlighter()
     {
@@ -69,14 +71,18 @@ public class SyntaxHighlighter
         this.string = '\0';
         this.last = 0;
 
+        this.formatString = false;
+        this.formatStringEmbed = false;
+
         main:
         for (int i = 0, c = line.length(); i < c; i++)
         {
             char character = line.charAt(i);
             char next = i < c - 1 ? line.charAt(i + 1) : '\0';
+            char prev = i > 0 ? line.charAt(i - 1) : '\0';
 
             /* Strings */
-            if (character == '\'' || character == '"')
+            if (character == '\'' || character == '"' || character == '`')
             {
                 if (this.string == '\0')
                 {
@@ -84,11 +90,12 @@ public class SyntaxHighlighter
 
                     this.buffer = "";
                     this.string = character;
+
+                    if (character == '`')
+                        this.formatString = true;
                 }
                 else if (string == character)
                 {
-                    char prev = i > 0 ? line.charAt(i - 1) : '\0';
-
                     if (prev != '\\')
                     {
                         this.string = '\0';
@@ -101,8 +108,24 @@ public class SyntaxHighlighter
                     }
                 }
             }
+            else if (formatString && character == '{')
+            {
+                if (prev == '$')
+                {
+                    this.formatStringEmbed = true;
+                    this.buffer += character;
+                    list.add(new TextSegment(this.buffer, this.style.strings, font.getStringWidth(this.buffer)));
+                    this.buffer = "";
+                    continue;
+                }
+            }
+            else if (formatStringEmbed && character == '}') {
+                this.formatStringEmbed = false;
+                list.add(new TextSegment(this.buffer, this.style.other, font.getStringWidth(this.buffer)));
+                this.buffer = "";
+            }
 
-            boolean isString = this.string != '\0';
+            boolean isString = this.string != '\0' && !this.formatStringEmbed;
 
             /* Multiline comments */
             if (!isString && character == '/' && i < c - 1 && line.charAt(i + 1) == '*')
