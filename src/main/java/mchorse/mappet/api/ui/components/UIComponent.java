@@ -1,11 +1,6 @@
 package mchorse.mappet.api.ui.components;
 
-import com.caoccao.javet.annotations.V8Convert;
-import com.caoccao.javet.annotations.V8Getter;
 import com.caoccao.javet.annotations.V8Property;
-import com.caoccao.javet.annotations.V8Setter;
-import com.caoccao.javet.enums.V8ConversionMode;
-import jdk.nashorn.internal.objects.annotations.Getter;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIContext;
 import mchorse.mappet.api.ui.UIContext;
 import mchorse.mappet.api.ui.utils.DiscardMethod;
