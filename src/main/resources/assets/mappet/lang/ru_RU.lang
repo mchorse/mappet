@@ -228,27 +228,27 @@ mappet.gui.settings.title=Global triggers
 mappet.gui.settings.hotkeys=Edit trigger hotkeys...
 mappet.gui.settings.variables=Available variables
 
-mappet.gui.settings.triggers.block_break=Block: broken by a player
+mappet.gui.settings.triggers.block_break=При ломании блока игроком
 mappet.gui.settings.triggers.descriptions.block_break=This cancelable trigger gets triggered when a player breaks a block in the world.
 mappet.gui.settings.triggers.variables.block_break=§6block§r, the ID of the block that was broken (like §7minecraft:stone§r).\n§6meta§r, the meta (0..15) value of the block's state.\n§6x§r, §6y§r, and §6z§r in the world.
 
-mappet.gui.settings.triggers.block_place=Block: placed by a player
+mappet.gui.settings.triggers.block_place=При установке блока игроком
 mappet.gui.settings.triggers.descriptions.block_place=This cancelable trigger gets triggered when a player places a block in the world.
 mappet.gui.settings.triggers.variables.block_place=§6block§r, the ID of the block that was placed (like §7minecraft:stone§r).\n§6meta§r, the meta (0..15) value of the block's state.\n§6x§r, §6y§r, and §6z§r in the world.
 
-mappet.gui.settings.triggers.block_click=Block: clicked by a player
+mappet.gui.settings.triggers.block_click=При ударе блока игроком
 mappet.gui.settings.triggers.descriptions.block_click=This cancelable trigger gets triggered when a player clicks (with left mouse button) a block in the world.\n\n§lImportant§r: this trigger only works in survival mode!
 mappet.gui.settings.triggers.variables.block_click=§6x§r, §6y§r, and §6z§r in the world.\n§6hand§r, the hand that interacted with the block: §7main§r or §7off§r.
 
-mappet.gui.settings.triggers.block_interact=Block: interacted by a player
+mappet.gui.settings.triggers.block_interact=При взаимодействии игрока с блоком
 mappet.gui.settings.triggers.descriptions.block_interact=This cancelable trigger gets triggered when a player interacts with a block (by right clicking it) in the world. 
 mappet.gui.settings.triggers.variables.block_interact=§6x§r, §6y§r, and §6z§r in the world.\n§6hand§r, the hand that interacted with the block: §7main§r or §7off§r.
 
-mappet.gui.settings.triggers.entity_damaged=Entity: hurt
+mappet.gui.settings.triggers.entity_damaged=При получении сущностью урона
 mappet.gui.settings.triggers.descriptions.entity_damaged=This cancelable trigger gets triggered when a mob/a player gets hurt (damaged).
 mappet.gui.settings.triggers.variables.entity_damaged=§6damage§r, how many HP this mob/player took of damage.
 
-mappet.gui.settings.triggers.entity_death=Entity: death
+mappet.gui.settings.triggers.entity_death=При смерти сущности
 mappet.gui.settings.triggers.descriptions.entity_death=This gets triggered when a mob dies.
 mappet.gui.settings.triggers.variables.entity_death=§7N/A§r
 
@@ -260,7 +260,7 @@ mappet.gui.settings.triggers.server_tick=При тике сервера
 mappet.gui.settings.triggers.descriptions.server_tick=This gets triggered when server ticks (i.e. §720§r times a second).\n\nProTip: use frequency option of triggers to limit how many times does a script or event gets triggered. 
 mappet.gui.settings.triggers.variables.server_tick=§7N/A§r
 
-mappet.gui.settings.triggers.player_chat=Player: chat message
+mappet.gui.settings.triggers.player_chat=При сообщение игрока
 mappet.gui.settings.triggers.descriptions.player_chat=This gets triggered when a player types a message into the chat and sends it.\n\nCommands (messages starting with §7/§r) don't get triggered by this event. If you wish to implement commands, use a different prefix like §7!§r.
 mappet.gui.settings.triggers.variables.player_chat=§6message§r, the message (string) that was sent by the player.
 
@@ -303,6 +303,10 @@ mappet.gui.settings.triggers.variables.player_close_container=§6item§r, §7ISc
 mappet.gui.settings.triggers.player_journal=Player: opened journal
 mappet.gui.settings.triggers.descriptions.player_journal=This cancelable trigger gets triggered when a player opens the player journal.\n\nYou can use this trigger to implement your own player journal using UI API. When event gets canceled, the default player journal won't be opened.
 mappet.gui.settings.triggers.variables.player_journal=§7N/A§r
+
+mappet.gui.settings.triggers.player_entity_interact=При взаимодействии игрока с сущностью
+mappet.gui.settings.triggers.descriptions.player_entity_interact=This cancelable trigger gets triggered when a player interact with entity.
+mappet.gui.settings.triggers.variables.player_entity_interact=§6entity§r, §7IScriptEntity§r entity that player interacted.
 
 mappet.gui.quests.cancelable=Отменяемый
 mappet.gui.quests.instant=Мгновенный

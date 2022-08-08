@@ -2,6 +2,7 @@ package mchorse.mappet;
 
 import mchorse.mappet.api.quests.Quest;
 import mchorse.mappet.api.quests.Quests;
+import mchorse.mappet.api.scripts.code.entities.ScriptEntity;
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
 import mchorse.mappet.api.triggers.Trigger;
 import mchorse.mappet.api.utils.DataContext;
@@ -479,6 +480,21 @@ public class EventHandler
                 this.playersToCheck.add(player);
             }
         }
+    }
+
+    @SubscribeEvent
+    public void onPlayerInteractEntity(PlayerInteractEvent.EntityInteract event) {
+        EntityPlayer player = event.getEntityPlayer();
+
+        if (player.world.isRemote || Mappet.settings.playerEntityInteraction.isEmpty())
+        {
+            return;
+        }
+
+        DataContext context = new DataContext(player);
+        context.getValues().put("entity", ScriptEntity.create(event.getTarget()));
+
+        this.trigger(event, Mappet.settings.playerEntityInteraction, context);
     }
 
     @SubscribeEvent

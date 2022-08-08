@@ -303,6 +303,10 @@ mappet.gui.settings.triggers.player_journal=Player: opened journal
 mappet.gui.settings.triggers.descriptions.player_journal=This cancelable trigger gets triggered when a player opens the player journal.\n\nYou can use this trigger to implement your own player journal using UI API. When event gets canceled, the default player journal won't be opened.
 mappet.gui.settings.triggers.variables.player_journal=§7N/A§r
 
+mappet.gui.settings.triggers.player_entity_interact=Player: interact entity
+mappet.gui.settings.triggers.descriptions.player_entity_interact=This cancelable trigger gets triggered when a player interact with entity.
+mappet.gui.settings.triggers.variables.player_entity_interact=§6entity§r, §7IScriptEntity§r entity that player interacted.
+
 mappet.gui.quests.cancelable=Cancelable
 mappet.gui.quests.instant=Instant
 mappet.gui.quests.instant_tooltip=When enabled, this quest will be instantly completed instead of having to hand it in to an NPC/dialogue
