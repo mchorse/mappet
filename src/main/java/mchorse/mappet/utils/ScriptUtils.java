@@ -9,6 +9,7 @@ import mchorse.mappet.api.scripts.user.data.ScriptVector;
 public class ScriptUtils
 {
     private static V8Host v8Host;
+    public static boolean javetError = false;
 
     /**
      * Tries to create a script engine
@@ -30,7 +31,7 @@ public class ScriptUtils
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        javetError = true;
         return null;
     }
 
