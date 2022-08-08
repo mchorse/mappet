@@ -67,6 +67,17 @@ public interface IScriptEntity
     public void setPosition(double x, double y, double z);
 
     /**
+     * Check is entity on ground.
+     *
+     * <pre>{@code
+     *      if (c.getSubject().isOnGround()) {
+     *          c.getSubject().setMotion(0, 1, 0);
+     *      }
+     * }</pre>
+     */
+    public boolean isOnGround();
+
+    /**
      * Get entity's motion.
      *
      * <pre>{@code
