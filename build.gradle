@@ -109,6 +109,25 @@ jar {
     }
 }
 
+processResources
+{
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    inputs.property "version", project.version
+    inputs.property "mcversion", "1.12.2"
+
+    project.version += "-1.12.2"
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+
+        expand 'version':project.version, 'mcversion': '1.12.2'
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
 task scriptingJavadocsJson(type: Exec) {
     // Writing gradle tasks is PAIN, if you'll ever would need to run this, clone and build:
     // https://github.com/mchorse/jsonDoclet
@@ -121,6 +140,8 @@ task scriptingJavadocsJson(type: Exec) {
         file("src/main/resources/assets/mappet/docs.json").setText(file("docs.json").text)
     }
 }
+
+tasks.processResources.dependsOn(scriptingJavadocsJson)
 
 // Example configuration to allow publishing using the maven-publish task
 // This is the preferred method to reobfuscate your jar file
