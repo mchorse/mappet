@@ -1,5 +1,6 @@
 package mchorse.mappet.api.ui.components;
 
+import com.caoccao.javet.annotations.V8Property;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.ui.UIContext;
@@ -61,6 +62,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class UIStackComponent extends UIComponent
 {
+    @V8Property(name = "_stack")
     public ItemStack stack = ItemStack.EMPTY;
 
     /**

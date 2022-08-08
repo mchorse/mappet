@@ -1,5 +1,6 @@
 package mchorse.mappet.api.ui.components;
 
+import com.caoccao.javet.annotations.V8Property;
 import mchorse.mappet.api.ui.UIContext;
 import mchorse.mappet.api.ui.utils.DiscardMethod;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
@@ -11,6 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class UILabelBaseComponent extends UIComponent
 {
+    @V8Property(name = "_label")
     public String label = "";
 
     private Integer color;

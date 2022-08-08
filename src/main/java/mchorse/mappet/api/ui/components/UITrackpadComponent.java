@@ -1,5 +1,6 @@
 package mchorse.mappet.api.ui.components;
 
+import com.caoccao.javet.annotations.V8Property;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.ui.UIContext;
 import mchorse.mappet.api.ui.utils.DiscardMethod;
@@ -55,14 +56,22 @@ import java.util.function.Consumer;
  */
 public class UITrackpadComponent extends UIComponent
 {
+    @V8Property(name = "_value")
     public Double value;
+    @V8Property(name = "_min")
     public Double min;
+    @V8Property(name = "_max")
     public Double max;
+    @V8Property(name = "_integer")
     public boolean integer;
 
+    @V8Property(name = "_normal")
     public Double normal;
+    @V8Property(name = "_weak")
     public Double weak;
+    @V8Property(name = "_strong")
     public Double strong;
+    @V8Property(name = "_increment")
     public Double increment;
 
     /**

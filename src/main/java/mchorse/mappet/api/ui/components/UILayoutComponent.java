@@ -1,5 +1,6 @@
 package mchorse.mappet.api.ui.components;
 
+import com.caoccao.javet.annotations.V8Property;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.ui.UIContext;
 import mchorse.mappet.api.ui.utils.DiscardMethod;
@@ -58,15 +59,23 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class UILayoutComponent extends UIParentComponent
 {
+    @V8Property(name = "_scroll")
     public boolean scroll;
+    @V8Property(name = "_scrollSize")
     public Integer scrollSize;
+    @V8Property(name = "_horizontal")
     public boolean horizontal;
 
     public LayoutType layoutType;
+    @V8Property(name = "_margin")
     public int margin;
+    @V8Property(name = "_padding")
     public int padding;
 
+
+    @V8Property(name = "_width")
     public Integer width;
+    @V8Property(name = "_items")
     public Integer items;
 
     /**

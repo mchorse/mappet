@@ -1,13 +1,18 @@
 package mchorse.mappet.api.ui.utils;
 
+import com.caoccao.javet.annotations.V8Property;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 
 public class UIContextItem implements INBTSerializable<NBTTagCompound>
 {
+    @V8Property(name = "_icon")
     public String icon = "";
+    @V8Property(name = "_action")
     public String action = "";
+    @V8Property(name = "_label")
     public String label = "";
+    @V8Property(name = "_color")
     public int color;
 
     public UIContextItem()

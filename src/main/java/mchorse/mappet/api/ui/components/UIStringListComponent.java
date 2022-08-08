@@ -1,5 +1,6 @@
 package mchorse.mappet.api.ui.components;
 
+import com.caoccao.javet.annotations.V8Property;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.ui.UIContext;
 import mchorse.mappet.api.ui.utils.DiscardMethod;
@@ -57,8 +58,11 @@ import java.util.List;
  */
 public class UIStringListComponent extends UIComponent
 {
+    @V8Property(name = "_values")
     public List<String> values = new ArrayList<String>();
+    @V8Property(name = "_selected")
     public Integer selected;
+    @V8Property(name = "_background")
     public Integer background;
 
     /**

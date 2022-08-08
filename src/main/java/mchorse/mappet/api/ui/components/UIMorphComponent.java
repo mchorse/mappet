@@ -1,5 +1,6 @@
 package mchorse.mappet.api.ui.components;
 
+import com.caoccao.javet.annotations.V8Property;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.ui.UIContext;
@@ -87,12 +88,19 @@ import java.text.DecimalFormat;
  */
 public class UIMorphComponent extends UIComponent
 {
+    @V8Property(name = "_morph")
     public NBTTagCompound morph;
+    @V8Property(name = "_editing")
     public boolean editing;
 
+    @V8Property(name = "_pos")
     public Vector3f pos;
+    @V8Property(name = "_rot")
     public Vector2f rot;
+
+    @V8Property(name = "_distance")
     public float distance = 2F;
+    @V8Property(name = "_fov")
     public float fov = 70;
 
     /**

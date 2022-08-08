@@ -1,5 +1,6 @@
 package mchorse.mappet.api.ui.components;
 
+import com.caoccao.javet.annotations.V8Property;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.ui.UIContext;
 import mchorse.mappet.api.ui.utils.DiscardMethod;
@@ -46,6 +47,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class UIToggleComponent extends UILabelBaseComponent
 {
+    @V8Property(name = "_state")
     public boolean state;
 
     /**

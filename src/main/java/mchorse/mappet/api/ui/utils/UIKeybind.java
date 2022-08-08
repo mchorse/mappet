@@ -1,13 +1,18 @@
 package mchorse.mappet.api.ui.utils;
 
+import com.caoccao.javet.annotations.V8Property;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 
 public class UIKeybind implements INBTSerializable<NBTTagCompound>
 {
+    @V8Property(name = "_keyCode")
     public int keyCode;
+    @V8Property(name = "_action")
     public String action;
+    @V8Property(name = "_label")
     public String label;
+    @V8Property(name = "_modifier")
     public int modifier;
 
     public static int createModifier(boolean shift, boolean ctrl, boolean alt)
