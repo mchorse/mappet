@@ -1,6 +1,7 @@
 {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/mappet",
     "1.12.2": {
+        "0.3": "ES12 support. Allow JS-functions in mappet.createUI(), IScriptEntity.onGround and other things.",
         "0.2.1": "This quick patch update adds `IScriptEntity.getMorph()` and fixes a couple of documenation errors.",
         "0.2": "This update is brought to you by TorayLife (again), featuring NPC respawning mechanic, patrol points triggers, QoL tweaks and bug fixes! Thanks to Falkiner, ORION, OtakuGamer, Hrymka, and dyamo for ideas and suggestions!",
         "0.1.5": "This update is brought to you by TorayLife, with some neat QoL features, triggers and bug fixes!",
@@ -12,7 +13,7 @@
         "0.1-alpha": "This first release provides tons of features: states, conditions, expressions, emitter block, trigger block, region block, crafting tables, quests, NPCs, factions, events, scripts, dialogues, quest chains, many commands, custom sound events, target selectors, global triggers, and much more."
     },
     "promos": {
-        "1.12.2-latest": "0.2.1",
+        "1.12.2-latest": "0.3",
         "1.12.2-recommended": "0.2.1"
     }
 }
