@@ -749,5 +749,4 @@ mappet.translation.community=Discord
 mappet.translation.community_url=https://discord.gg/QhvbgSWpYn
 mappet.translation.sounds=Open sounds folder
 
-mappet.nashorn_copied=If you're planning on using Mappet's scripts, please §lrestart the client/server§r! Nashorn wasn't loaded by default, but it was copied from JRE's path and it should be available.
-mappet.nashorn_error=Nashorn script engine couldn't be loaded or §lwasn't found§r! Try manually getting nashorn.jar from JRE's §7lib/ext/nashorn.jar§r!
+mappet.javet_error=Javet is not in mods folder. Download it here: https://goo.su/cQJE1

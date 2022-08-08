@@ -749,3 +749,5 @@ mappet.translation.wiki_url=https://github.com/Andruxioid/mappet_ru/wiki
 mappet.translation.community=Дискорд
 mappet.translation.community_url=https://discord.gg/QhvbgSWpYn
 mappet.translation.sounds=Открыть папку со звуками
+
+mappet.javet_error=Javet не установлен в папке mods. Скачать Javet: https://goo.su/cQJE1
