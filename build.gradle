@@ -81,7 +81,8 @@ dependencies {
     compileOnly files("run/libs/metamorph-${metamorph}-1.12.2-dev.jar")
     compileOnly files("run/libs/mclib-${mclib}-1.12.2-dev.jar")
 
-    implementation 'com.caoccao.javet:javet:1.1.6'
+    implementation 'com.caoccao.javet:javet-core:1.1.6'
+//    implementation 'com.caoccao.javet:javet:1.1.6'
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
@@ -90,12 +91,21 @@ jar {
         attributes([
                 "Specification-Title": "Mappet",
                 "Specification-Vendor": "McHorse",
-                "Specification-Version": "1", // We are version 1 of ourselves
+//                "Specification-Version": "1", // We are version 1 of ourselves
                 "Implementation-Title": project.name,
                 "Implementation-Version": "${version}",
                 "Implementation-Vendor" :"McHorse",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
+    }
+    from {
+        configurations
+        .runtimeClasspath
+        .collect {
+            if(it.name.equalsIgnoreCase("javet-core-1.1.6.jar")) {
+                zipTree(it)
+            }
+        }
     }
 }
 
