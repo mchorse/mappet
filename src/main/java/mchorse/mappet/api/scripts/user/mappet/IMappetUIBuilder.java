@@ -19,6 +19,7 @@ import mchorse.mappet.api.ui.components.UIToggleComponent;
 import mchorse.mappet.api.ui.components.UITrackpadComponent;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -82,6 +83,7 @@ public interface IMappetUIBuilder
      *    }
      * }</pre>
      */
+    @SuppressWarnings("unused")
     public default IMappetUIBuilder notClosable()
     {
         return this.closable(false);
@@ -249,7 +251,7 @@ public interface IMappetUIBuilder
      *
      * <p>Check {@link UIStringListComponent} for description and examples.</p>
      */
-    public default UIStringListComponent stringList(List<String> values)
+    public default UIStringListComponent stringList(ArrayList<String> values)
     {
         return this.stringList(values, -1);
     }
@@ -260,7 +262,7 @@ public interface IMappetUIBuilder
      *
      * <p>Check {@link UIStringListComponent} for description and examples.</p>
      */
-    public UIStringListComponent stringList(List<String> values, int selected);
+    public UIStringListComponent stringList(ArrayList<String> values, int selected);
 
     /**
      * Create and insert an item stack UI component into UI being built by this builder.

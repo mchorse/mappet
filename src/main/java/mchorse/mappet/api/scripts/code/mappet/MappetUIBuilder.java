@@ -23,12 +23,12 @@ import mchorse.mappet.api.ui.components.UITrackpadComponent;
 import mchorse.mappet.api.ui.utils.LayoutType;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class MappetUIBuilder implements IMappetUIBuilder
 {
     private UI ui;
-    private UIComponent current;
+    private final UIComponent current;
     private String script;
     private String function;
     private V8ValueFunction functionObject;
@@ -220,7 +220,7 @@ public class MappetUIBuilder implements IMappetUIBuilder
     }
 
     @Override
-    public UIStringListComponent stringList(List<String> values, int selected)
+    public UIStringListComponent stringList(ArrayList<String> values, int selected)
     {
         UIStringListComponent component = new UIStringListComponent();
 
