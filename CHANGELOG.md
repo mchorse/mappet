@@ -1,7 +1,7 @@
 ## Version 0.3
 This update adds ES6-12 support, `IScriptEntity.isOnGround()`, and etc.
 
-**Compatible** with McLib **2.3.5**, Blockbuster **2.3** and Metamorph **1.2.9**. It doesn't mean that future versions of McLib, Blockbuster and Metamorph would be incompatible, but older versions are most likely incompatible.
+**Compatible** with McLib **2.4**, Blockbuster **2.5** and Metamorph **1.3**. It doesn't mean that future versions of McLib, Blockbuster and Metamorph would be incompatible, but older versions are most likely incompatible.
 
 - Ingredients are not shown if there are none.
 - Added `IScriptEntity.isOnGround()`
