@@ -13,6 +13,12 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
+
+if (project.hasProperty("dev"))
+{
+    version += "-" + dev
+}
+
 group = 'mchorse.mappet' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'mappet'
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
@@ -126,6 +132,22 @@ processResources
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
+}
+
+/* Dev build */
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'dev'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    classifier = 'sources'
+}
+
+artifacts {
+    archives deobfJar
+    archives sourcesJar
 }
 
 task scriptingJavadocsJson(type: Exec) {
