@@ -76,6 +76,7 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
     @V8Property(name = "_updateDelay")
     public int updateDelay = this.getDefaultUpdateDelay();
     public List<UIKeybind> keybinds = new ArrayList<UIKeybind>();
+    @V8Property(name = "_context")
     public List<UIContextItem> context = new ArrayList<UIContextItem>();
 
     protected Set<String> changedProperties = new HashSet<String>();
@@ -276,8 +277,8 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
      *    //
      *    function main(c)
      *    {
-     *        var ui = mappet.createUI(c, "handler").background();
-     *        var button = ui.icon("upload").id("icon");
+     *        let ui = mappet.createUI(handler).background();
+     *        let button = ui.icon("upload").id("icon");
      *
      *        // 203 = Arrow left
      *        ui.getCurrent().keybind(203, "left", "Change icon to left");
@@ -289,8 +290,8 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
      *
      *    function handler(c)
      *    {
-     *        var uiContext = c.getSubject().getUIContext();
-     *        var key = uiContext.getHotkey();
+     *        let uiContext = c.getSubject().getUIContext();
+     *        let key = uiContext.getHotkey();
      *
      *        if (key === "left")
      *        {
@@ -330,8 +331,8 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
      * <pre>{@code
      *    function main(c)
      *    {
-     *        var ui = mappet.createUI(c, "handler").background();
-     *        var label = ui.label("Hello!").id("label").tooltip("Right click me...");
+     *        let ui = mappet.createUI(handler).background();
+     *        let label = ui.label("Hello!").id("label").tooltip("Right click me...");
      *
      *        label.rxy(0.5, 0.5).wh(160, 20).anchor(0.5).labelAnchor(0.5);
      *        label.context("bubble", "a", "How are you?");
@@ -342,15 +343,15 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
      *
      *    function handler(c)
      *    {
-     *        var uiContext = c.getSubject().getUIContext();
-     *        var data = uiContext.getData();
+     *        let uiContext = c.getSubject().getUIContext();
+     *        let data = uiContext.getData();
      *
      *        if (uiContext.getLast() === "textbox")
      *        {
      *            c.getSubject().send("Your name is: " + data.getString("textbox"));
      *        }
      *
-     *        var item = uiContext.getContext();
+     *        let item = uiContext.getContext();
      *
      *        if (item === "a")
      *        {

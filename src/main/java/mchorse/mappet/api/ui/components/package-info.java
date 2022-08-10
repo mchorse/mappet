@@ -15,26 +15,26 @@
  * a button:</p>
  *
  * <pre>{@code
- *    function main(c)
- *    {
- *        var ui = mappet.createUI(c, "handler").background();
- *        var button = ui.button("Give me a diamond!").id("button");
- *
- *        button.rxy(0.5, 0.5).wh(160, 20).anchor(0.5);
- *        c.getSubject().openUI(ui);
- *    }
- *
  *    function handler(c)
  *    {
- *        var s = c.getSubject();
- *        var uiContext = s.getUIContext();
+ *        let s = c.getSubject();
+ *        let uiContext = s.getUIContext();
  *
  *        if (uiContext.getLast() === "button")
  *        {
- *            var pos = s.getPosition();
+ *            let pos = s.getPosition();
  *
  *            c.getWorld().dropItemStack(mappet.createItem("minecraft:diamond"), pos.x, pos.y + 2, pos.z);
  *        }
+ *    }
+ *
+ *    function main(c)
+ *    {
+ *        let ui = mappet.createUI(handler).background();
+ *        let button = ui.button("Give me a diamond!").id("button");
+ *
+ *        button.rxy(0.5, 0.5).wh(160, 20).anchor(0.5);
+ *        c.getSubject().openUI(ui);
  *    }
  * }</pre>
  */

@@ -28,15 +28,15 @@ import java.util.List;
  * <p>The value that gets written to UI context's data (if ID is present) is
  * the selected string that picked in the list.</p>
  *
- * <p>This component can be created using {@link IMappetUIBuilder#stringList(List)} method.</p>
+ * <p>This component can be created using {@link IMappetUIBuilder#stringList(ArrayList)} method.</p>
  *
  * <pre>{@code
  *    function main(c)
  *    {
- *        var s = c.getSubject();
- *        var ui = mappet.createUI(c, "handler").background();
- *        var strings = ui.stringList(["Apple", "Orange", "Pineapple", "Avocado"]).id("strings").tooltip("Pick a fruit...");
- *        var label = ui.label("...").id("fruit").visible(false);
+ *        let s = c.getSubject();
+ *        let ui = mappet.createUI(handler).background();
+ *        let strings = ui.stringList(["Apple", "Orange", "Pineapple", "Avocado"]).id("strings").tooltip("Pick a fruit...");
+ *        let label = ui.label("...").id("fruit").visible(false);
  *
  *        strings.background(0x88000000).rxy(0.5, 0.5).wh(100, 240).anchor(0.5);
  *        label.rx(0.5).ry(0.5, -160).anchor(0.5, 0.5);
@@ -96,7 +96,7 @@ public class UIStringListComponent extends UIComponent
      *    uiContext.get("strings").values(vegetables);
      * }</pre>
      */
-    public UIStringListComponent values(List<String> values)
+    public UIStringListComponent values(ArrayList<String> values)
     {
         this.change("Values");
 
@@ -117,7 +117,7 @@ public class UIStringListComponent extends UIComponent
      *    uiContext.get("strings").setValues(vegetables);
      * }</pre>
      */
-    public UIStringListComponent setValues(List<String> values)
+    public UIStringListComponent setValues(ArrayList<String> values)
     {
         return this.values(values);
     }

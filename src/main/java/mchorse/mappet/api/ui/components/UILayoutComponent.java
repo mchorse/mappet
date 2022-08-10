@@ -33,18 +33,18 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * <pre>{@code
  *    function main(c)
  *    {
- *        var ui = mappet.createUI().background();
- *        var column = ui.column(4, 10);
+ *        let ui = mappet.createUI().background();
+ *        let column = ui.column(4, 10);
  *
  *        column.getCurrent().scroll().rxy(0.5, 0.5).w(240).rh(0.8).anchor(0.5);
  *
- *        var row = column.row(5);
- *        var name = row.column(4);
+ *        let row = column.row(5);
+ *        let name = row.column(4);
  *
  *        name.label("Name").h(8);
  *        name.textbox().id("name").h(20);
  *
- *        var lastname = row.column(4);
+ *        let lastname = row.column(4);
  *
  *        lastname.label("Last name").h(8);
  *        lastname.textbox().id("lastname").h(20);
@@ -85,8 +85,8 @@ public class UILayoutComponent extends UIParentComponent
      * <pre>{@code
      *    function main(c)
      *    {
-     *        var ui = mappet.createUI().background();
-     *        var column = ui.column(4, 10);
+     *        let ui = mappet.createUI().background();
+     *        let column = ui.column(4, 10);
      *
      *        column.getCurrent().scroll().rxy(0.5, 0.5).wh(200, 200).anchor(0.5);
      *
@@ -98,7 +98,7 @@ public class UILayoutComponent extends UIParentComponent
      *        column.toggle("I agree to ToS").id("toggle").h(14);
      *        column.text("The terms of service are following: you agree that your data will be used by an AI to generate funny cat and dog videos based entirely on your name and lastname.\n\nYou also agree to give us your time to view those videos, because we said so.").color(0xaaaaaa, false).marginTop(8);
      *
-     *        for (var i = 0; i < 10; i++)
+     *        for (let i = 0; i < 10; i++)
      *        {
      *            column.button("Button " + (i + 1)).h(20);
      *        }
@@ -127,12 +127,12 @@ public class UILayoutComponent extends UIParentComponent
      * <pre>{@code
      *    function main(c)
      *    {
-     *        var size = 400;
+     *        let size = 400;
      *
-     *        var ui = mappet.createUI().background();
+     *        let ui = mappet.createUI().background();
      *
      *        // Demonstration of manual vertical scroll area
-     *        var vertical = ui.layout();
+     *        let vertical = ui.layout();
      *
      *        vertical.getCurrent().scroll().scrollSize(size).rxy(0.25, 0.5).wh(150, 200).anchor(0.5);
      *        vertical.button("Top left").xy(10, 10).wh(100, 20);
@@ -142,7 +142,7 @@ public class UILayoutComponent extends UIParentComponent
      *        ui.label("Vertical scroll").background(0x88000000).rx(0.25).ry(0.5, -120).wh(100, 20).anchorX(0.5).labelAnchor(0.5, 0);
      *
      *        // Demonstration of manual horizontal scroll area
-     *        var horizontal = ui.layout();
+     *        let horizontal = ui.layout();
      *
      *        horizontal.getCurrent().scroll().horizontal().scrollSize(size).rxy(0.75, 0.5).wh(150, 200).anchor(0.5);
      *        horizontal.button("Top left").xy(10, 10).wh(100, 20);

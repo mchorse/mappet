@@ -24,8 +24,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * <pre>{@code
  *    function main(c)
  *    {
- *        var ui = mappet.createUI(c, "handler").background();
- *        var stack = ui.item().id("stack").tooltip("To dupe an item, please pick that item.");
+ *        let ui = mappet.createUI(handler).background();
+ *        let stack = ui.item().id("stack").tooltip("To dupe an item, please pick that item.");
  *
  *        stack.rxy(0.5, 0.5).wh(24, 24).anchor(0.5);
  *        c.getSubject().openUI(ui);
@@ -33,13 +33,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *
  *    function handler(c)
  *    {
- *        var uiContext = c.getSubject().getUIContext();
- *        var data = uiContext.getData();
+ *        let uiContext = c.getSubject().getUIContext();
+ *        let data = uiContext.getData();
  *
  *        if (uiContext.getLast() === "stack")
  *        {
- *            var item = mappet.createItem(data.getCompound("stack"));
- *            var pos = c.getSubject().getPosition();
+ *            let item = mappet.createItem(data.getCompound("stack"));
+ *            let pos = c.getSubject().getPosition();
  *
  *            c.getWorld().dropItemStack(item, pos.x, pos.y + 2, pos.z);
  *
@@ -47,12 +47,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *            // item was picked from player's inventory. -1 means it was
  *            // picked from elsewhere (from search or pasted into the
  *            // field)
- *            var slot = data.getInt("stack.slot");
+ *            let slot = data.getInt("stack.slot");
  *
  *            if (slot >= 0)
  *            {
  *                // When slot isn't -1, you can access it from player's inventory
- *                var corresponding = c.getSubject().getInventory().getStack(slot);
+ *                let corresponding = c.getSubject().getInventory().getStack(slot);
  *
  *                c.send("Item " + corresponding.getMinecraftItemStack() + " was taken from slot " + slot);
  *            }

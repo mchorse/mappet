@@ -24,11 +24,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * <pre>{@code
  *    function main(c)
  *    {
- *        var ui = mappet.createUI().background();
- *        var label = ui.label("Welcome, [l" + c.getSubject().getName() + "[r!");
+ *        let ui = mappet.createUI().background();
+ *        let label = ui.label("Welcome, [l" + c.getSubject().getName() + "[r!");
  *
  *        label.rxy(0.5, 0.5).wh(100, 20).anchor(0.5);
- *        label.color(0x00ee22).background(0x88000000).labelAnchor(0.5);
+ *        label.color(0x00ee22).background(0x88000000n).labelAnchor(0.5);
  *
  *        c.getSubject().openUI(ui);
  *    }
@@ -53,7 +53,7 @@ public class UILabelComponent extends UILabelBaseComponent
      *    // Assuming that uiContext is a IMappetUIContext
      *
      *    // Add a half transparent black background
-     *    uiContext.get("label").background(0x88000000);
+     *    uiContext.get("label").background(0x88000000n);
      * }</pre>
      */
     public UILabelComponent background(int background)

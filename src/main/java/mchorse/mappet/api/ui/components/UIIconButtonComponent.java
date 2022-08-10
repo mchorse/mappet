@@ -26,8 +26,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * <pre>{@code
  *    function main(c)
  *    {
- *        var ui = mappet.createUI(c, "handler").background();
- *        var button = ui.icon("more").id("icon");
+ *        let ui = mappet.createUI(handler).background();
+ *        let button = ui.icon("more").id("icon");
  *
  *        button.rxy(0.5, 0.5).wh(20, 20).anchor(0.5);
  *        c.getSubject().openUI(ui);
@@ -35,18 +35,18 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *
  *    function handler(c)
  *    {
- *        var uiContext = c.getSubject().getUIContext();
+ *        let uiContext = c.getSubject().getUIContext();
  *
  *        if (uiContext.getLast() === "icon")
  *        {
  *            // Get a set of all icons
- *            var icons = Java.from(Java.type("mchorse.mclib.client.gui.utils.IconRegistry").icons.keySet());
+ *            let icons = Java.from(Java.type("mchorse.mclib.client.gui.utils.IconRegistry").icons.keySet());
  *
  *            // Set a random icon
- *            var index = Math.floor(Math.random() * icons.size());
- *            var i = 0;
+ *            let index = Math.floor(Math.random() * icons.size());
+ *            let i = 0;
  *
- *            for (var icon in icons)
+ *            for (let icon of icons)
  *            {
  *                if (i == index)
  *                {
@@ -85,14 +85,14 @@ public class UIIconButtonComponent extends UIComponent
      * <pre>{@code
      *    function main(c)
      *    {
-     *        var ui = mappet.createUI(c, "handler").background();
-     *        var icons = Java.type("mchorse.mclib.client.gui.utils.IconRegistry").icons.keySet();
+     *        let ui = mappet.createUI(c, "handler").background();
+     *        let icons = Java.type("mchorse.mclib.client.gui.utils.IconRegistry").icons.keySet();
      *
-     *        var grid = ui.grid(5);
+     *        let grid = ui.grid(5);
      *
      *        grid.getCurrent().width(20).rxy(0.5, 0.5).w(245).anchor(0.5);
      *
-     *        for each (var icon in icons)
+     *        for (let icon of icons)
      *        {
      *            grid.icon(icon).wh(20, 20).tooltip("Icon's ID: " + icon);
      *        }

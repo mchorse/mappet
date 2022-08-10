@@ -32,37 +32,37 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * <pre>{@code
  *    function main(c)
  *    {
- *        var ui = mappet.createUI(c, "handler").background();
- *        var click = ui.click().id("click");
- *        var backdrop = ui.graphics().id("backdrop");
+ *        let ui = mappet.createUI(handler).background();
+ *        let click = ui.click().id("click");
+ *        let backdrop = ui.graphics().id("backdrop");
  *
  *        backdrop.rxy(0.5, 0.5).wh(300, 150).anchor(0.5);
- *        backdrop.rect(0, 0, 300, 150, 0x88000000);
+ *        backdrop.rect(0, 0, 300, 150, 0x88000000n);
  *        click.rxy(0.5, 0.5).wh(300, 150).anchor(0.5);
  *        c.getSubject().openUI(ui);
  *    }
  *
  *    function handler(c)
  *    {
- *        var uiContext = c.getSubject().getUIContext();
- *        var data = uiContext.getData();
+ *        let uiContext = c.getSubject().getUIContext();
+ *        let data = uiContext.getData();
  *
  *        if (uiContext.getLast() === "click")
  *        {
  *            // Math.floor just in case there are precision issues
- *            var list = data.getList("click");
- *            var x = Math.floor(list.getFloat(0));
- *            var y = Math.floor(list.getFloat(1));
- *            var fx = list.getFloat(2);
- *            var fy = list.getFloat(3);
- *            var button = Math.floor(list.getFloat(4));
+ *            let list = data.getList("click");
+ *            let x = Math.floor(list.getFloat(0));
+ *            let y = Math.floor(list.getFloat(1));
+ *            let fx = list.getFloat(2);
+ *            let fy = list.getFloat(3);
+ *            let button = Math.floor(list.getFloat(4));
  *
  *            // Draw random rectangle on the back drop
  *            if (button === 0)
  *            {
- *                var backdrop = uiContext.get("backdrop");
+ *                let backdrop = uiContext.get("backdrop");
  *
- *                backdrop.rect(x - 10, y - 10, 20, 20, 0xff000000 + Math.floor(Math.random() * 0xffffff));
+ *                backdrop.rect(x - 10, y - 10, 20, 20, 0xff000000n + Math.floor(Math.random() * 0xffffff));
  *            }
  *        }
  *    }

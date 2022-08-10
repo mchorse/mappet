@@ -23,23 +23,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * <p>This component can be created using {@link IMappetUIBuilder#button(String)} method.</p>
  *
  * <pre>{@code
- *    function main(c)
- *    {
- *        var ui = mappet.createUI(c, "handler").background();
- *        var button = ui.button("Start...").id("button");
- *
- *        button.rxy(0.5, 0.5).wh(160, 20).anchor(0.5);
- *        c.getSubject().openUI(ui);
- *    }
- *
  *    function handler(c)
  *    {
- *        var uiContext = c.getSubject().getUIContext();
+ *        let uiContext = c.getSubject().getUIContext();
  *
  *        if (uiContext.getLast() === "button")
  *        {
- *            var data = uiContext.getData();
- *            var pressed = data.getInt("button");
+ *            let data = uiContext.getData();
+ *            let pressed = data.getInt("button");
  *
  *            if (pressed >= 100)
  *            {
@@ -48,6 +39,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *
  *            uiContext.get("button").label("You pressed: " + pressed);
  *        }
+ *    }
+ *
+ *    function main(c)
+ *    {
+ *        let ui = mappet.createUI(handler).background();
+ *        let button = ui.button("Start...").id("button");
+ *
+ *        button.rxy(0.5, 0.5).wh(160, 20).anchor(0.5);
+ *        c.getSubject().openUI(ui);
  *    }
  * }</pre>
  */

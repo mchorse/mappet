@@ -36,37 +36,37 @@ import java.util.List;
  * <pre>{@code
  *    function main(c)
  *    {
- *        var ui = mappet.createUI(c, "handler").background();
+ *        let ui = mappet.createUI(handler).background();
  *
  *        // Background rendering
- *        var back = ui.graphics().rx(0.5, -150).ry(1, -250).wh(300, 250);
- *        var icons = Java.type("mchorse.mclib.client.gui.utils.IconRegistry").icons.keySet();
+ *        let back = ui.graphics().rx(0.5, -150).ry(1, -250).wh(300, 250);
+ *        let icons = Java.type("mchorse.mclib.client.gui.utils.IconRegistry").icons.keySet();
  *
  *        back.shadow(80, 80, 300 - 160, 250 - 160, 0x88ff1493, 0x00ff1493, 80);
  *        back.shadow(80, 80, 300 - 160, 250 - 160, 0x880088ff, 0x000088ff, 40);
  *
- *        for each (var icon in icons)
+ *        for (let icon of icons)
  *        {
- *            var x = Math.random() * 280 + 10;
- *            var y = Math.random() * 230 + 10;
+ *            let x = Math.random() * 280 + 10;
+ *            let y = Math.random() * 230 + 10;
  *
  *            back.icon(icon, x - 1, y - 1, 0xff000000 + Math.random() * 0xffffff);
  *        }
  *
  *        // Draw my favorite "me"
- *        var m = mappet.createMorph("{Skin:\"blockbuster:textures/entity/mchorse/skin.png\",CustomPose:{Size:[0.6f,1.8f,0.6f],Poses:{right_arm:{P:[-6.0f,-2.0f,0.0f],R:[-90.0f,-31.0f,0.0f]},left_leg:{P:[2.0f,-12.0f,0.0f]},right_armwear:{P:[0.0f,-4.0f,0.0f]},outer:{P:[0.0f,4.0f,0.0f]},left_legwear:{P:[0.0f,-6.0f,0.0f]},body:{P:[0.0f,8.0f,0.0f],R:[0.0f,-29.0f,0.0f]},bodywear:{P:[0.0f,-6.0f,0.0f]},head:{P:[0.0f,8.0f,0.0f],R:[7.0f,-51.0f,0.0f]},left_arm:{P:[6.0f,-2.0f,0.0f]},right_leg:{P:[-2.0f,-12.0f,0.0f]},right_legwear:{P:[0.0f,-6.0f,0.0f]},anchor:{P:[0.0f,16.0f,0.0f]},left_armwear:{P:[0.0f,-4.0f,0.0f]}}},BodyParts:[{Limb:\"head\",Morph:{Settings:{Hands:1b},Name:\"blockbuster.mchorse/head\"}}],Settings:{Hands:1b},Name:\"blockbuster.fred_3d\"}");
- *        var morph = ui.morph(m).id("icon");
+ *        let m = mappet.createMorph("{Skin:\"blockbuster:textures/entity/mchorse/skin.png\",CustomPose:{Size:[0.6f,1.8f,0.6f],Poses:{right_arm:{P:[-6.0f,-2.0f,0.0f],R:[-90.0f,-31.0f,0.0f]},left_leg:{P:[2.0f,-12.0f,0.0f]},right_armwear:{P:[0.0f,-4.0f,0.0f]},outer:{P:[0.0f,4.0f,0.0f]},left_legwear:{P:[0.0f,-6.0f,0.0f]},body:{P:[0.0f,8.0f,0.0f],R:[0.0f,-29.0f,0.0f]},bodywear:{P:[0.0f,-6.0f,0.0f]},head:{P:[0.0f,8.0f,0.0f],R:[7.0f,-51.0f,0.0f]},left_arm:{P:[6.0f,-2.0f,0.0f]},right_leg:{P:[-2.0f,-12.0f,0.0f]},right_legwear:{P:[0.0f,-6.0f,0.0f]},anchor:{P:[0.0f,16.0f,0.0f]},left_armwear:{P:[0.0f,-4.0f,0.0f]}}},BodyParts:[{Limb:\"head\",Morph:{Settings:{Hands:1b},Name:\"blockbuster.mchorse/head\"}}],Settings:{Hands:1b},Name:\"blockbuster.fred_3d\"}");
+ *        let morph = ui.morph(m).id("icon");
  *
  *        morph.rx(0.5, -150).ry(1, -250).wh(300, 250).position(-0.017, 1.367, 0).rotation(0, 0).distance(2.2).fov(40).enabled(false);
  *
  *        // Draw foreground
- *        var graphics = ui.graphics().rx(0.5, -150).ry(1, -250).wh(300, 250);
+ *        let graphics = ui.graphics().rx(0.5, -150).ry(1, -250).wh(300, 250);
  *
  *        // Draw small rectangles
- *        for (var i = 0; i < 100; i++)
+ *        for (let i = 0; i < 100; i++)
  *        {
- *            var x = Math.random() * 280 + 10;
- *            var y = Math.random() * 230 + 10;
+ *            let x = Math.random() * 280 + 10;
+ *            let y = Math.random() * 230 + 10;
  *
  *            graphics.rect(x - 1, y - 1, 2, 2, 0x88000000 + Math.random() * 0xffffff);
  *        }

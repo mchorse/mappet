@@ -44,24 +44,24 @@ import java.text.DecimalFormat;
  * <pre>{@code
  *    function main(c)
  *    {
- *        var ui = mappet.createUI().background();
- *        var layout = ui.layout();
+ *        let ui = mappet.createUI().background();
+ *        let layout = ui.layout();
  *
  *        layout.getCurrent().rx(0.5).ry(1).wh(300, 100).anchor(0.5, 1);
  *
- *        var steve = mappet.createMorph("{CustomPose:{Size:[0.6f,1.8f,0.6f],Poses:{right_arm:{P:[-6.0f,-2.0f,0.0f],R:[-83.0f,41.0f,0.0f]},left_leg:{P:[2.0f,-12.0f,0.0f]},right_armwear:{P:[0.0f,-4.0f,0.0f]},outer:{P:[0.0f,4.0f,0.0f]},left_legwear:{P:[0.0f,-6.0f,0.0f]},body:{P:[0.0f,8.0f,0.0f]},bodywear:{P:[0.0f,-6.0f,0.0f]},head:{P:[0.0f,8.0f,0.0f],R:[18.0f,0.0f,9.0f]},left_arm:{P:[6.0f,-2.0f,0.0f]},right_leg:{P:[-2.0f,-12.0f,0.0f]},right_legwear:{P:[0.0f,-6.0f,0.0f]},anchor:{P:[0.0f,16.0f,0.0f]},left_armwear:{P:[0.0f,-4.0f,0.0f]}}},Settings:{Hands:1b},Name:\"blockbuster.fred\"}");
- *        var morph = layout.morph(steve);
+ *        let steve = mappet.createMorph("{CustomPose:{Size:[0.6f,1.8f,0.6f],Poses:{right_arm:{P:[-6.0f,-2.0f,0.0f],R:[-83.0f,41.0f,0.0f]},left_leg:{P:[2.0f,-12.0f,0.0f]},right_armwear:{P:[0.0f,-4.0f,0.0f]},outer:{P:[0.0f,4.0f,0.0f]},left_legwear:{P:[0.0f,-6.0f,0.0f]},body:{P:[0.0f,8.0f,0.0f]},bodywear:{P:[0.0f,-6.0f,0.0f]},head:{P:[0.0f,8.0f,0.0f],R:[18.0f,0.0f,9.0f]},left_arm:{P:[6.0f,-2.0f,0.0f]},right_leg:{P:[-2.0f,-12.0f,0.0f]},right_legwear:{P:[0.0f,-6.0f,0.0f]},anchor:{P:[0.0f,16.0f,0.0f]},left_armwear:{P:[0.0f,-4.0f,0.0f]}}},Settings:{Hands:1b},Name:\"blockbuster.fred\"}");
+ *        let morph = layout.morph(steve);
  *
  *        morph.position(-0.019, 1.5, 0).rotation(-11, 24).distance(1.6).fov(40);
  *        morph.enabled(false).wh(100, 100);
  *
- *        var label = layout.label("Steve").background(0xaa000000);
+ *        let label = layout.label("Steve").background(0xaa000000n);
  *
  *        label.xy(0, 80).wh(100, 20).labelAnchor(0.5, 0.5);
  *
- *        var graphics = layout.graphics();
- *        var h = 54;
- *        var y = 30;
+ *        let graphics = layout.graphics();
+ *        let h = 54;
+ *        let y = 30;
  *
  *        // Draw the background bubble
  *        graphics.xy(100, y).wh(200, 100);
@@ -78,7 +78,7 @@ import java.text.DecimalFormat;
  *        graphics.rect(0, 10, 1, 2, 0xff000000);
  *        graphics.rect(-1, 10, 1, 1, 0xff000000);
  *
- *        var text = layout.text("Well, hello there! I expected you...\n\nMy name is Steve, and yours?");
+ *        let text = layout.text("Well, hello there! I expected you...\n\nMy name is Steve, and yours?");
  *
  *        text.color(0x000000, false).xy(110, y + 10).wh(180, 80);
  *
