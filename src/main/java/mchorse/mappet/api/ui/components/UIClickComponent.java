@@ -62,7 +62,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *            {
  *                let backdrop = uiContext.get("backdrop");
  *
- *                backdrop.rect(x - 10, y - 10, 20, 20, 0xff000000n + Math.floor(Math.random() * 0xffffff));
+ *                backdrop.rect(x - 10, y - 10, 20, 20, 0xff000000n + BigInt(Math.floor(Math.random() * 0xffffff)));
  *            }
  *        }
  *    }

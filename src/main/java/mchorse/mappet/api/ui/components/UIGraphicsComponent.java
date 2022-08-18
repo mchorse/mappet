@@ -40,10 +40,10 @@ import java.util.List;
  *
  *        // Background rendering
  *        let back = ui.graphics().rx(0.5, -150).ry(1, -250).wh(300, 250);
- *        let icons = Java.type("mchorse.mclib.client.gui.utils.IconRegistry").icons.keySet();
+ *        let icons = Java.from(Java.type("mchorse.mclib.client.gui.utils.IconRegistry").icons.keySet());
  *
- *        back.shadow(80, 80, 300 - 160, 250 - 160, 0x88ff1493, 0x00ff1493, 80);
- *        back.shadow(80, 80, 300 - 160, 250 - 160, 0x880088ff, 0x000088ff, 40);
+ *        back.shadow(80, 80, 300 - 160, 250 - 160, 0x88ff1493n, 0x00ff1493n, 80);
+ *        back.shadow(80, 80, 300 - 160, 250 - 160, 0x880088ffn, 0x000088ffn, 40);
  *
  *        for (let icon of icons)
  *        {
@@ -76,7 +76,7 @@ import java.util.List;
  *        graphics.image("https://i.pinimg.com/originals/6d/5a/99/6d5a99fa0f01dff1dd5de5e3b8244f8d.png", 0, 75, 55, 100);
  *        graphics.text("McThanos", 120, 230, 0xffffff);
  *
- *        ui.label("Graphic Design is my passion").color(0x00ff00).background(0x88000000).rxy(0.5, 0.25).wh(100, 20).anchor(0.5).labelAnchor(0.5);
+ *        ui.label("Graphic Design is my passion").color(0x00ff00).background(0x88000000n).rxy(0.5, 0.25).wh(100, 20).anchor(0.5).labelAnchor(0.5);
  *
  *        c.getSubject().openUI(ui);
  *    }
