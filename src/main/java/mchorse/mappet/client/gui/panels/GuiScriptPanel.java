@@ -269,7 +269,7 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
     {
         super.fillDefaultData(data);
 
-        data.code = "function main(c)\n{\n    // Code...\n    var s = c.getSubject();\n}";
+        data.code = "function main(c)\n{\n    // Code...\n    let s = c.subject;\n}";
     }
 
     @Override
