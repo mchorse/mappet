@@ -22,6 +22,7 @@ import mchorse.mappet.network.common.huds.PacketHUDMorph;
 import mchorse.mappet.network.common.huds.PacketHUDScene;
 import mchorse.mappet.network.common.scripts.PacketEntityRotations;
 import mchorse.mappet.network.common.scripts.PacketSound;
+import mchorse.mappet.network.common.scripts.PacketStopSound;
 import mchorse.mappet.network.common.ui.PacketCloseUI;
 import mchorse.mappet.network.common.ui.PacketUI;
 import mchorse.mappet.utils.WorldUtils;
@@ -261,6 +262,12 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     public void playStaticSound(String event, String soundCategory, float volume, float pitch)
     {
         Dispatcher.sendTo(new PacketSound(event, soundCategory, volume, pitch), this.entity);
+    }
+
+    @Override
+    public void stopSound(String event, String soundCategory)
+    {
+        Dispatcher.sendTo(new PacketStopSound(event, soundCategory), this.entity);
     }
 
     /* Mappet stuff */

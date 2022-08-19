@@ -360,6 +360,17 @@ public interface IScriptPlayer extends IScriptEntity
      */
     public void playStaticSound(String event, String soundCategory, float volume, float pitch);
 
+    /**
+     * Stop a sound for this player at specific channel.
+     *
+     * <pre>{@code
+     *     let player = c.getSubject();
+     *
+     *     player.stopSound("minecraft:path.to.sound", "master");
+     * }</pre>
+     */
+    public void stopSound(String event, String soundCategory);
+
     /* Mappet stuff */
 
     /**
