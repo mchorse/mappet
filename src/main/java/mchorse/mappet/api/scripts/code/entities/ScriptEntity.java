@@ -313,7 +313,11 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Override
     public void setTarget(IScriptEntity entity)
     {
-        if (this.entity instanceof EntityLiving && entity != null && entity.isLivingBase())
+        if (entity == null)
+        {
+            ((EntityLiving) this.entity).setAttackTarget(null);
+        }
+        else if (this.entity instanceof EntityLiving && entity.isLivingBase())
         {
             ((EntityLiving) this.entity).setAttackTarget((EntityLivingBase) entity.getMinecraftEntity());
         }
