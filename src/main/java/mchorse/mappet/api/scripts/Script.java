@@ -2,7 +2,9 @@ package mchorse.mappet.api.scripts;
 
 import com.caoccao.javet.exceptions.BaseJavetScriptingException;
 import com.caoccao.javet.exceptions.JavetException;
+import com.caoccao.javet.interop.IV8Executable;
 import com.caoccao.javet.interop.V8Runtime;
+import com.caoccao.javet.interop.engine.IJavetEnginePool;
 import com.caoccao.javet.values.reference.V8ValueFunction;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.scripts.code.ScriptEvent;
@@ -96,7 +98,12 @@ public class Script extends AbstractData
             }
 
             this.engine.getGlobalObject().set("mappet", new ScriptFactory());
-            this.engine.getExecutor(finalCode.toString()).executeVoid();
+
+            IV8Executable executable = this.engine.getExecutor(finalCode.toString()).compileV8Script();
+
+            try (ScriptGuard scriptGuard = new ScriptGuard(this.engine, 10000)) {
+                executable.executeVoid();
+            }
         }
     }
 
@@ -107,7 +114,18 @@ public class Script extends AbstractData
             function = "main";
         }
 
-        return ((V8ValueFunction) this.engine.getGlobalObject().get(function)).callObject(null, new ScriptEvent(context, this.getId(), function));
+        V8ValueFunction func = ((V8ValueFunction) this.engine.getGlobalObject().get(function));
+        Object result;
+
+        try (ScriptGuard scriptGuard = new ScriptGuard(engine, 10000)) {
+            result = func.callObject(null, new ScriptEvent(context, this.getId(), function));
+        }
+
+        return result;
+    }
+
+    public V8Runtime getEngine() {
+        return this.engine;
     }
 
     @Override

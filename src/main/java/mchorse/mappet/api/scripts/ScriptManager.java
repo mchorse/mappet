@@ -1,10 +1,13 @@
 package mchorse.mappet.api.scripts;
 
 import com.caoccao.javet.exceptions.JavetException;
+import com.caoccao.javet.exceptions.JavetTerminatedException;
 import com.caoccao.javet.interception.logging.JavetStandardConsoleInterceptor;
+import com.caoccao.javet.interop.IV8Executable;
 import com.caoccao.javet.interop.V8Runtime;
 import com.caoccao.javet.interop.callback.JavetCallbackContext;
 import com.caoccao.javet.values.V8Value;
+import com.caoccao.javet.values.primitive.V8ValueString;
 import com.caoccao.javet.values.reference.V8ValueGlobalObject;
 import com.caoccao.javet.values.reference.V8ValueObject;
 import mchorse.mappet.api.scripts.code.ScriptEvent;
@@ -78,7 +81,13 @@ public class ScriptManager extends BaseManager<Script>
             this.repls.put(key, engine);
         }
 
-        V8Value object = engine.getExecutor(code).execute();
+        IV8Executable executable = engine.getExecutor(code).compileV8Script();
+        V8Value object;
+
+        try (ScriptGuard scriptGuard = new ScriptGuard(engine, 10000)) {
+            object = executable.execute();
+        }
+
         if (this.replOutput.isEmpty())
         {
             this.replPrint(object);
@@ -248,5 +257,9 @@ public class ScriptManager extends BaseManager<Script>
         }
 
         return new File(this.folder, id + ".js");
+    }
+
+    public Script getUnique(String id) throws JavetException {
+        return this.getScript(id);
     }
 }
