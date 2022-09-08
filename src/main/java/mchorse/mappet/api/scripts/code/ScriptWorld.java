@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts.code;
 
+import io.netty.buffer.Unpooled;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.npcs.Npc;
 import mchorse.mappet.api.npcs.NpcState;
@@ -31,6 +32,8 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.play.server.SPacketCustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -324,6 +327,20 @@ public class ScriptWorld implements IScriptWorld
         for (EntityPlayerMP player : this.world.getMinecraftServer().getPlayerList().getPlayers())
         {
             WorldUtils.playSound(player, event, x, y, z, volume, pitch);
+        }
+    }
+
+    @Override
+    public void stopSound(String event, String category)
+    {
+        PacketBuffer packetbuffer = new PacketBuffer(Unpooled.buffer());
+
+        packetbuffer.writeString(category);
+        packetbuffer.writeString(event);
+
+        for (EntityPlayerMP player : this.world.getMinecraftServer().getPlayerList().getPlayers())
+        {
+            player.connection.sendPacket(new SPacketCustomPayload("MC|StopSound", packetbuffer));
         }
     }
 

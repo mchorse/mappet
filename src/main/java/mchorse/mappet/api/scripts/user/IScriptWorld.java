@@ -393,6 +393,43 @@ public interface IScriptWorld
     public void playSound(String event, double x, double y, double z, float volume, float pitch);
 
     /**
+     * Stop all playing sound events for every player.
+     *
+     * <pre>{@code
+     *    c.getWorld().stopAllSounds();
+     * }</pre>
+     */
+    public default void stopAllSounds()
+    {
+        this.stopSound("", "");
+    }
+
+    /**
+     * Stop specific sound event for every player.
+     *
+     * <pre>{@code
+     *    c.getWorld().stopSound("minecraft:entity.pig.ambient");
+     * }</pre>
+     */
+    public default void stopSound(String event)
+    {
+        this.stopSound(event, "");
+    }
+
+    /**
+     * <p>Stop specific sound event in given sound category for every player.</p>
+     *
+     * <p>For list of sound categories, type into chat
+     * <code>/playsound minecraft:entity.pig.ambient</code>, press space, and press
+     * Tab key. The list of sounds categories will be displayed.</p>
+     *
+     * <pre>{@code
+     *    c.getWorld().stopSound("minecraft:entity.pig.ambient", "master");
+     * }</pre>
+     */
+    public void stopSound(String event, String category);
+
+    /**
      * Drop item stack at given XYZ position with no velocity applied.
      *
      * <pre>{@code

@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts.code.entities;
 
+import io.netty.buffer.Unpooled;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.huds.HUDScene;
 import mchorse.mappet.api.scripts.code.items.ScriptInventory;
@@ -32,7 +33,9 @@ import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SPacketAnimation;
+import net.minecraft.network.play.server.SPacketCustomPayload;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.network.play.server.SPacketTitle;
 import net.minecraft.util.text.ITextComponent;
@@ -248,7 +251,18 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     @Override
     public void playSound(String event, String soundCategory, double x, double y, double z)
     {
-        WorldUtils.playSound(this.entity, event, soundCategory, x, y, z, 1.0F, 1.0F);
+        WorldUtils.playSound(this.entity, event, soundCategory, x, y, z, 1F, 1F);
+    }
+
+    @Override
+    public void stopSound(String event, String category)
+    {
+        PacketBuffer packetbuffer = new PacketBuffer(Unpooled.buffer());
+
+        packetbuffer.writeString(category);
+        packetbuffer.writeString(event);
+
+        this.entity.connection.sendPacket(new SPacketCustomPayload("MC|StopSound", packetbuffer));
     }
 
     @Override
