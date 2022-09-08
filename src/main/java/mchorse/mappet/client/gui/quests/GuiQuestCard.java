@@ -22,11 +22,12 @@ import net.minecraft.util.text.TextFormatting;
 
 public class GuiQuestCard
 {
-    public static void fillQuest(GuiElement element, Quest quest, boolean forceReward)
+    public static void fillQuest(GuiElement element, Quest quest, boolean forceReward, boolean displayVisibility)
     {
         Minecraft mc = Minecraft.getMinecraft();
         Quests quests = Character.get(mc.player).getQuests();
-        Quest characterQuest = quests.getByName(quest.getId());
+        Quest playerQuest = quests.getByName(quest.getId());
+        Quest characterQuest = playerQuest == null ? quest : playerQuest;
         String title = characterQuest.getProcessedTitle();
 
         if (mc.player.isCreative())
@@ -35,11 +36,16 @@ public class GuiQuestCard
         }
 
         element.add(Elements.label(IKey.str(title)).background().marginBottom(12));
-        element.add(new GuiToggleElement(mc, IKey.lang("mappet.gui.quests.visible"), characterQuest.visible,  (b) ->
+
+        if (displayVisibility)
         {
-            Dispatcher.sendToServer(new PacketQuestVisibility(characterQuest.getId(), characterQuest, b.isToggled()));
-            characterQuest.visible = b.isToggled();
-        }));
+            element.add(new GuiToggleElement(mc, IKey.lang("mappet.gui.quests.visible"), characterQuest.visible,  (b) ->
+            {
+                Dispatcher.sendToServer(new PacketQuestVisibility(characterQuest.getId(), characterQuest, b.isToggled()));
+                characterQuest.visible = b.isToggled();
+            }));
+        }
+
         element.add(new GuiText(mc).text(DialogueFragment.process(characterQuest.story)).color(0xaaaaaa, true).marginBottom(12));
         element.add(Elements.label(IKey.lang("mappet.gui.quests.objectives.title")));
 

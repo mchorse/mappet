@@ -264,7 +264,7 @@ public class GuiInteractionScreen extends GuiBase implements ICraftingScreen
 
         if (info != null)
         {
-            GuiQuestCard.fillQuest(this.questArea, info.quest, true);
+            GuiQuestCard.fillQuest(this.questArea, info.quest, true, false);
         }
 
         this.questArea.resize();
