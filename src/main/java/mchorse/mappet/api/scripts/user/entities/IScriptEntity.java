@@ -252,6 +252,11 @@ public interface IScriptEntity
      */
     public boolean isSprinting();
 
+    /**
+     * Is this entity on the ground.
+     */
+    public boolean isOnGround();
+
     /* Ray tracing */
 
     /**

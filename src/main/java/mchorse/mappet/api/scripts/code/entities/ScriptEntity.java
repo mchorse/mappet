@@ -220,6 +220,12 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
         return this.entity.isSprinting();
     }
 
+    @Override
+    public boolean isOnGround()
+    {
+        return this.entity.onGround;
+    }
+
     /* Ray tracing */
 
     @Override

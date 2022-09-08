@@ -335,7 +335,7 @@ public interface IScriptPlayer extends IScriptEntity
      *
      *    c.scheduleScript(20, function (c)
      *    {
-     *        c.getSubject.setPosition(-15, 4, 561);
+     *        c.getSubject().setPosition(-15, 4, 561);
      *    });
      * }</pre>
      */
