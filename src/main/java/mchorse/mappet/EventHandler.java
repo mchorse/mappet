@@ -383,6 +383,22 @@ public class EventHandler
         this.trigger(event, Mappet.settings.blockInteract, context);
     }
 
+    @SubscribeEvent
+    public void onPlayerInteractWithEntity(PlayerInteractEvent.EntityInteract event)
+    {
+        EntityPlayer player = event.getEntityPlayer();
+
+        if (player.world.isRemote || Mappet.settings.playerEntityInteract.isEmpty())
+        {
+            return;
+        }
+
+        DataContext context = new DataContext(player, event.getTarget())
+            .set("hand", event.getHand() == EnumHand.MAIN_HAND ? "main" : "off");
+
+        this.trigger(event, Mappet.settings.playerEntityInteract, context);
+    }
+
     /* Other cool stuff */
 
     /**

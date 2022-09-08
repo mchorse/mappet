@@ -244,7 +244,7 @@ mappet.gui.settings.triggers.variables.block_click=§6x§r, §6y§r, and §6z§r
 
 mappet.gui.settings.triggers.block_interact=Block: interacted by a player
 mappet.gui.settings.triggers.descriptions.block_interact=This cancelable trigger gets triggered when a player interacts with a block (by right clicking it) in the world. 
-mappet.gui.settings.triggers.variables.block_interact=§6block§r, the ID of the block that was placed (like §7minecraft:stone§r).\n§6meta§r, the meta (0..15) value of the block's state.\n§6x§r, §6y§r, and §6z§r in the world.\n§6hand§r, the hand that interacted with the block: §7main§r or §7off§r.
+mappet.gui.settings.triggers.variables.block_interact=§6block§r, the ID of the block that was placed (like §7minecraft:stone§r).\n§6meta§r, the meta (0..15) value of the block's state.\n§6x§r, §6y§r, and §6z§r in the world.\n§6hand§r, the hand that interacted with the block (§7main§r or §7off§r).
 
 mappet.gui.settings.triggers.entity_damaged=Entity: hurt
 mappet.gui.settings.triggers.descriptions.entity_damaged=This cancelable trigger gets triggered when a mob/a player gets hurt (damaged).
@@ -294,9 +294,13 @@ mappet.gui.settings.triggers.player_item_pickup=Player: picked up an item
 mappet.gui.settings.triggers.descriptions.player_item_pickup=This cancelable trigger gets triggered when a player picks up an item in the world.
 mappet.gui.settings.triggers.variables.player_item_pickup=§6item§r, §7IScriptItemStack§r item that player picked (this is useful only in scripts).
 
-mappet.gui.settings.triggers.player_item_interact=Player: interact an item
+mappet.gui.settings.triggers.player_item_interact=Player: interact with an item
 mappet.gui.settings.triggers.descriptions.player_item_interact=This cancelable trigger gets triggered when a player right clicks in the air with item.
 mappet.gui.settings.triggers.variables.player_item_interact=§7N/A§r
+
+mappet.gui.settings.triggers.player_entity_interact=Player: interact with an entity
+mappet.gui.settings.triggers.descriptions.player_entity_interact=This cancelable trigger gets triggered when a player right clicks an entity. Subject is the player, and object is the entity that player has interacted with.\n\nDepending on entity interaction handling, this trigger §6might get triggered twice§r for every hand (see variables below). 
+mappet.gui.settings.triggers.variables.player_entity_interact=§6hand§r, the hand that interacted with the entity (§7main§r or §7off§r).
 
 mappet.gui.settings.triggers.player_close_container=Player: closed container
 mappet.gui.settings.triggers.descriptions.player_close_container=This gets triggered when a player exits a container screen like chest, ender chest, furnace, crafting table, etc.
