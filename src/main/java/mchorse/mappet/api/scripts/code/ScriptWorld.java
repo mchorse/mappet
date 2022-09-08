@@ -344,6 +344,12 @@ public class ScriptWorld implements IScriptWorld
         return ScriptEntity.create(item);
     }
 
+    @Override
+    public void explode(IScriptEntity exploder, double x, double y, double z, float distance, boolean blazeGround, boolean destroyTerrain)
+    {
+        this.world.newExplosion(exploder == null ? null : exploder.getMinecraftEntity(), x, y, z, distance, blazeGround, destroyTerrain);
+    }
+
     /* Mappet stuff */
 
     @Override

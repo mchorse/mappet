@@ -419,6 +419,40 @@ public interface IScriptWorld
      */
     public IScriptEntity dropItemStack(IScriptItemStack stack, double x, double y, double z, double mx, double my, double mz);
 
+    /**
+     * Make an explosion in this world at given coordinates, and distance that
+     * destroys blocks, damages entities but not places fire. See {@link IScriptWorld#explode(IScriptEntity, double, double, double, float, boolean, boolean)}
+     * for more thorough definition of arguments.
+     */
+    public default void explode(double x, double y, double z, float distance)
+    {
+        this.explode(null, x, y, z, distance, false, true);
+    }
+
+    /**
+     * Make an explosion in this world at given coordinates, and distance with
+     * options to place fire and destroy blocks. See {@link IScriptWorld#explode(IScriptEntity, double, double, double, float, boolean, boolean)}
+     * for more thorough definition of arguments.
+     */
+    public default void explode(double x, double y, double z, float distance, boolean blazeGround, boolean destroyTerrain)
+    {
+        this.explode(null, x, y, z, distance, blazeGround, destroyTerrain);
+    }
+
+    /**
+     * Make an explosion in this world at given coordinates, distance, and entity
+     * that caused the explosion.
+     *
+     * @param exploder Entity that causes explosion that won't receive damage from it.
+     * @param x X coordinate in the world at which explosion must be caused.
+     * @param y Y coordinate in the world at which explosion must be caused.
+     * @param z Z coordinate in the world at which explosion must be caused.
+     * @param distance Radius (in blocks of the explosion).
+     * @param blazeGround Whether fire blocks should be placed randomly on top of remaining blocks.
+     * @param destroyTerrain Whether blocks should be destroyed by the explosion.
+     */
+    public void explode(IScriptEntity exploder, double x, double y, double z, float distance, boolean blazeGround, boolean destroyTerrain);
+
     /* Mappet stuff */
 
     /**
