@@ -1,3 +1,24 @@
+## Version 0.2.2
+
+This quick patch update patches and updates.
+
+**Compatible** with McLib **2.3.5**, Blockbuster **2.3** and Metamorph **1.2.9**. It doesn't mean that future versions of McLib, Blockbuster and Metamorph would be incompatible, but older versions are most likely incompatible.
+
+* Added `inventory` (which is a `IScriptInventory`) variable to `Player: inventory closes` global trigger
+* Added `/mp event stop <id>` subcommand which stops execution of delayed events (with Timer nodes) and scripts (`IScriptEvent.scheduleScript()`)
+* Added `Player: interact with an entity` global trigger
+* Added scripting methods:
+    * Added `IScriptWorld.explode()`
+    * Added `IScriptItemStack.getMaxCount()`
+    * Added `IScriptBlockState.isOpaque()` and `IScriptBlockState.hasCollision()`
+    * Added `IScriptWorld.rayTrace()` and `IScriptWorld.rayTraceBlocks()`
+    * Added `IScriptEntity.isOnGround()`
+    * Added `IScriptWorld.stopSound(String, String)`, `IScriptWorld.stopAllSounds()`, `IScriptPlayer.stopSound(String, String)`, and `IScriptPlayer.stopAllSounds()`
+    * Added `IScriptEntity.getCombinedLight()`
+* Fixed an error with quest node in a dialogue not loading when quest isn't accepted
+* Fixed respawn options can't be edited by `/mp npc edit` command
+* Fixed a couple of misspellings in documentation
+
 ## Version 0.2.1
 
 This quick patch update adds `IScriptEntity.getMorph()` and fixes a couple of documenation errors.
