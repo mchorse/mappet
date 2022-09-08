@@ -453,6 +453,32 @@ public interface IScriptWorld
      */
     public void explode(IScriptEntity exploder, double x, double y, double z, float distance, boolean blazeGround, boolean destroyTerrain);
 
+    /**
+     * Ray trace in this world, between two given points (including any entity intersection).
+     * Check {@link IScriptRayTrace} for an example.
+     *
+     * @param x1 X coordinate of the first point.
+     * @param y1 Y coordinate of the first point.
+     * @param z1 Z coordinate of the first point.
+     * @param x2 X coordinate of the second point.
+     * @param y2 Y coordinate of the second point.
+     * @param z2 Z coordinate of the second point.
+     */
+    public IScriptRayTrace rayTrace(double x1, double y1, double z1, double x2, double y2, double z2);
+
+    /**
+     * Ray trace in this world, between two given points (excluding entities).
+     * Check {@link IScriptRayTrace} for an example.
+     *
+     * @param x1 X coordinate of the first point.
+     * @param y1 Y coordinate of the first point.
+     * @param z1 Z coordinate of the first point.
+     * @param x2 X coordinate of the second point.
+     * @param y2 Y coordinate of the second point.
+     * @param z2 Z coordinate of the second point.
+     */
+    public IScriptRayTrace rayTraceBlock(double x1, double y1, double z1, double x2, double y2, double z2);
+
     /* Mappet stuff */
 
     /**
