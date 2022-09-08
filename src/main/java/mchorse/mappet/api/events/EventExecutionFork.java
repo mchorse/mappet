@@ -21,6 +21,12 @@ public class EventExecutionFork implements IExecutable
     }
 
     @Override
+    public String getId()
+    {
+        return this.event.getId();
+    }
+
+    @Override
     public boolean update()
     {
         if (this.timer <= 0)

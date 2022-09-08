@@ -1,5 +1,7 @@
 package mchorse.mappet;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import mchorse.mappet.api.quests.Quest;
 import mchorse.mappet.api.quests.Quests;
 import mchorse.mappet.api.scripts.code.items.ScriptInventory;
@@ -121,6 +123,18 @@ public class EventHandler
         return isMohist;
     }
 
+    public List<String> getIds()
+    {
+        List<String> ids = new ArrayList<String>();
+
+        for (IExecutable executable : this.executables)
+        {
+            ids.add(executable.getId());
+        }
+
+        return Lists.newArrayList(Sets.newLinkedHashSet(ids));
+    }
+
     public void addExecutables(List<IExecutable> executionForks)
     {
         this.executables.addAll(executionForks);
@@ -129,6 +143,15 @@ public class EventHandler
     public void addExecutable(IExecutable executable)
     {
         this.executables.add(executable);
+    }
+
+    public int removeExecutables(String id)
+    {
+        int size = this.executables.size();
+
+        this.executables.removeIf((e) -> e.getId().equals(id));
+
+        return size - this.executables.size();
     }
 
     public void reset()

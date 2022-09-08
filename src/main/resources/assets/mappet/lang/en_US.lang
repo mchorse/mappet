@@ -56,6 +56,8 @@ mappet.success.quest.declined=§fQuest by ID §7%s§f was removed from player §
 mappet.success.data.saved=§fData by ID §7%s§f was saved.
 mappet.success.data.loaded=§fData by ID §7%s§f was loaded.
 
+mappet.success.events.stopped=§fStopped §7%s§f events by %s§f ID!
+
 # Commands
 mappet.commands.mp.help=Main Mappet command that provides subcommands for working with Mappet's features.
 
@@ -78,6 +80,7 @@ mappet.commands.mp.crafting.drop=This command drops an output item stacks from a
 
 mappet.commands.mp.event.help=Mappet's event subcommand.
 mappet.commands.mp.event.trigger=This command triggers an event by §7<id>§r using player(s) or server (if §7~§r was passed) found by §7<target>§r selector as a context. You can also pass arbitrary NBT data to the event using §7[data]§r argument.
+mappet.commands.mp.event.stop=This command stops a delayed event(s) (or script(s)) by given §7<id>§r. 
 
 mappet.commands.mp.dialogue.help=Mappet's dialogue subcommand.
 mappet.commands.mp.dialogue.open=This command opens a dialogue by §7<id>§r for §7<player>§r(s). You can also pass arbitrary NBT data to the event using §7[data]§r argument.
