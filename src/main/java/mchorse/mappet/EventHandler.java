@@ -2,6 +2,7 @@ package mchorse.mappet;
 
 import mchorse.mappet.api.quests.Quest;
 import mchorse.mappet.api.quests.Quests;
+import mchorse.mappet.api.scripts.code.items.ScriptInventory;
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
 import mchorse.mappet.api.triggers.Trigger;
 import mchorse.mappet.api.utils.DataContext;
@@ -26,7 +27,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerChest;
+import net.minecraft.inventory.ContainerPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
@@ -50,6 +54,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.lang.reflect.Field;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -219,11 +224,13 @@ public class EventHandler
             return;
         }
 
+        Container container = event.getContainer();
         DataContext context = new DataContext(event.getEntityPlayer());
+        IInventory inventory = null;
 
-        if (event.getContainer() instanceof ContainerChest)
+        if (container instanceof ContainerChest)
         {
-            ContainerChest chest = (ContainerChest) event.getContainer();
+            ContainerChest chest = (ContainerChest) container;
 
             if (chest.getLowerChestInventory() instanceof TileEntity)
             {
@@ -233,6 +240,36 @@ public class EventHandler
                 context.set("y", pos.getY());
                 context.set("z", pos.getZ());
             }
+
+            inventory = chest.getLowerChestInventory();
+        }
+        else if (container instanceof ContainerPlayer)
+        {
+            inventory = event.getEntityPlayer().inventory;
+        }
+        else
+        {
+            Field[] fields = container.getClass().getDeclaredFields();
+
+            for (Field field : fields)
+            {
+                if (field.getType().isAssignableFrom(IInventory.class))
+                {
+                    try
+                    {
+                        field.setAccessible(true);
+
+                        inventory = (IInventory) field.get(container);
+                    }
+                    catch (Exception e)
+                    {}
+                }
+            }
+        }
+
+        if (inventory != null)
+        {
+            context.getValues().put("inventory", new ScriptInventory(inventory));
         }
 
         Mappet.settings.playerCloseContainer.trigger(context);

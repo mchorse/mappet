@@ -297,7 +297,7 @@ mappet.gui.settings.triggers.variables.player_item_interact=§7N/A§r
 
 mappet.gui.settings.triggers.player_close_container=Player: closed container
 mappet.gui.settings.triggers.descriptions.player_close_container=This gets triggered when a player exits a container screen like chest, ender chest, furnace, crafting table, etc.
-mappet.gui.settings.triggers.variables.player_close_container=§7N/A§r or...\n§6x§r, §6y§r, and §6z§r of the inventory block in the world.
+mappet.gui.settings.triggers.variables.player_close_container=§6inventory§r, §7IScriptInventory§r instance of the closed inventory (this is useful only in scripts).\n§6x§r, §6y§r, and §6z§r of the inventory block in the world (only if it was a block).
 
 mappet.gui.settings.triggers.player_journal=Player: opened journal
 mappet.gui.settings.triggers.descriptions.player_journal=This cancelable trigger gets triggered when a player opens the player journal.\n\nYou can use this trigger to implement your own player journal using UI API. When event gets canceled, the default player journal won't be opened.
