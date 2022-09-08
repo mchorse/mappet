@@ -16,10 +16,10 @@ import mchorse.mappet.entities.ai.EntityAIFollowTarget;
 import mchorse.mappet.entities.ai.EntityAIHurtByTargetNpc;
 import mchorse.mappet.entities.ai.EntityAIPatrol;
 import mchorse.mappet.entities.ai.EntityAIReturnToPost;
+import mchorse.mappet.entities.utils.MappetNpcRespawnManager;
 import mchorse.mappet.entities.utils.NpcDamageSource;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.npc.PacketNpcMorph;
-import mchorse.mappet.entities.utils.MappetNpcRespawnManager;
 import mchorse.mclib.utils.Interpolations;
 import mchorse.mclib.utils.MathUtils;
 import mchorse.metamorph.api.Morph;
@@ -66,6 +66,8 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     public float prevSmoothYawHead;
     public float smoothBodyYawHead;
     public float prevSmoothBodyYawHead;
+
+    private Entity lastTarget;
 
     /**
      * Needs to fix a clone issue, when npc dies and you quick reload world
@@ -345,6 +347,13 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     @Override
     public void onUpdate()
     {
+        if (this.lastTarget != this.getAttackTarget())
+        {
+            this.lastTarget = this.getAttackTarget();
+
+            this.state.triggerTarget.trigger(new DataContext(this, this.lastTarget));
+        }
+
         this.healthFailsafe();
         this.updateAttackTarget();
 

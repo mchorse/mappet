@@ -18,6 +18,7 @@ This quick patch update patches and updates.
 * Fixed an error with quest node in a dialogue not loading when quest isn't accepted
 * Fixed respawn options can't be edited by `/mp npc edit` command
 * Fixed a couple of misspellings in documentation
+* Fixed NPC's target trigger
 
 ## Version 0.2.1
 
