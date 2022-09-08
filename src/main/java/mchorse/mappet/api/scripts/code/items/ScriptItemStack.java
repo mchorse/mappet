@@ -58,6 +58,12 @@ public class ScriptItemStack implements IScriptItemStack
     }
 
     @Override
+    public int getMaxCount()
+    {
+        return this.stack.getMaxStackSize();
+    }
+
+    @Override
     public int getCount()
     {
         return this.stack.getCount();
