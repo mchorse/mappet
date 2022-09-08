@@ -30,6 +30,11 @@ public interface IScriptItemStack
     public IScriptItemStack copy();
 
     /**
+     * Get item stack's maximum size.
+     */
+    public int getMaxCount();
+
+    /**
      * Get item stack's count.
      */
     public int getCount();

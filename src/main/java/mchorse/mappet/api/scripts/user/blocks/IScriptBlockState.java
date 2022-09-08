@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts.user.blocks;
 
+import mchorse.mappet.api.scripts.user.IScriptWorld;
 import net.minecraft.block.state.IBlockState;
 
 /**
@@ -79,6 +80,19 @@ public interface IScriptBlockState
      * }</pre>
      */
     public boolean isSameBlock(IScriptBlockState state);
+
+    /**
+     * Check whether given block state is occupying a full block entirely,
+     * rather than being see through or not full (1, 1, 1) block space.
+     */
+    public boolean isOpaque();
+
+    /**
+     * Check whether given block state has collision boxes. Minecraft's block
+     * state code requires a world instance and block coordinates to be passed,
+     * because collision box can be different depending on the place in the world.
+     */
+    public boolean hasCollision(IScriptWorld world, int x, int y, int z);
 
     /**
      * Check whether given block state is air.

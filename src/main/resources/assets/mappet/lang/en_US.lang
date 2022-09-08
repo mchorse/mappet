@@ -56,6 +56,8 @@ mappet.success.quest.declined=§fQuest by ID §7%s§f was removed from player §
 mappet.success.data.saved=§fData by ID §7%s§f was saved.
 mappet.success.data.loaded=§fData by ID §7%s§f was loaded.
 
+mappet.success.events.stopped=§fStopped §7%s§f events by %s§f ID!
+
 # Commands
 mappet.commands.mp.help=Main Mappet command that provides subcommands for working with Mappet's features.
 
@@ -78,6 +80,7 @@ mappet.commands.mp.crafting.drop=This command drops an output item stacks from a
 
 mappet.commands.mp.event.help=Mappet's event subcommand.
 mappet.commands.mp.event.trigger=This command triggers an event by §7<id>§r using player(s) or server (if §7~§r was passed) found by §7<target>§r selector as a context. You can also pass arbitrary NBT data to the event using §7[data]§r argument.
+mappet.commands.mp.event.stop=This command stops a delayed event(s) (or script(s)) by given §7<id>§r. 
 
 mappet.commands.mp.dialogue.help=Mappet's dialogue subcommand.
 mappet.commands.mp.dialogue.open=This command opens a dialogue by §7<id>§r for §7<player>§r(s). You can also pass arbitrary NBT data to the event using §7[data]§r argument.
@@ -241,7 +244,7 @@ mappet.gui.settings.triggers.variables.block_click=§6x§r, §6y§r, and §6z§r
 
 mappet.gui.settings.triggers.block_interact=Block: interacted by a player
 mappet.gui.settings.triggers.descriptions.block_interact=This cancelable trigger gets triggered when a player interacts with a block (by right clicking it) in the world. 
-mappet.gui.settings.triggers.variables.block_interact=§6block§r, the ID of the block that was placed (like §7minecraft:stone§r).\n§6meta§r, the meta (0..15) value of the block's state.\n§6x§r, §6y§r, and §6z§r in the world.\n§6hand§r, the hand that interacted with the block: §7main§r or §7off§r.
+mappet.gui.settings.triggers.variables.block_interact=§6block§r, the ID of the block that was placed (like §7minecraft:stone§r).\n§6meta§r, the meta (0..15) value of the block's state.\n§6x§r, §6y§r, and §6z§r in the world.\n§6hand§r, the hand that interacted with the block (§7main§r or §7off§r).
 
 mappet.gui.settings.triggers.entity_damaged=Entity: hurt
 mappet.gui.settings.triggers.descriptions.entity_damaged=This cancelable trigger gets triggered when a mob/a player gets hurt (damaged).
@@ -291,13 +294,17 @@ mappet.gui.settings.triggers.player_item_pickup=Player: picked up an item
 mappet.gui.settings.triggers.descriptions.player_item_pickup=This cancelable trigger gets triggered when a player picks up an item in the world.
 mappet.gui.settings.triggers.variables.player_item_pickup=§6item§r, §7IScriptItemStack§r item that player picked (this is useful only in scripts).
 
-mappet.gui.settings.triggers.player_item_interact=Player: interact an item
+mappet.gui.settings.triggers.player_item_interact=Player: interact with an item
 mappet.gui.settings.triggers.descriptions.player_item_interact=This cancelable trigger gets triggered when a player right clicks in the air with item.
 mappet.gui.settings.triggers.variables.player_item_interact=§7N/A§r
 
+mappet.gui.settings.triggers.player_entity_interact=Player: interact with an entity
+mappet.gui.settings.triggers.descriptions.player_entity_interact=This cancelable trigger gets triggered when a player right clicks an entity. Subject is the player, and object is the entity that player has interacted with.\n\nDepending on entity interaction handling, this trigger §6might get triggered twice§r for every hand (see variables below). 
+mappet.gui.settings.triggers.variables.player_entity_interact=§6hand§r, the hand that interacted with the entity (§7main§r or §7off§r).
+
 mappet.gui.settings.triggers.player_close_container=Player: closed container
 mappet.gui.settings.triggers.descriptions.player_close_container=This gets triggered when a player exits a container screen like chest, ender chest, furnace, crafting table, etc.
-mappet.gui.settings.triggers.variables.player_close_container=§7N/A§r or...\n§6x§r, §6y§r, and §6z§r of the inventory block in the world.
+mappet.gui.settings.triggers.variables.player_close_container=§6inventory§r, §7IScriptInventory§r instance of the closed inventory (this is useful only in scripts).\n§6x§r, §6y§r, and §6z§r of the inventory block in the world (only if it was a block).
 
 mappet.gui.settings.triggers.player_journal=Player: opened journal
 mappet.gui.settings.triggers.descriptions.player_journal=This cancelable trigger gets triggered when a player opens the player journal.\n\nYou can use this trigger to implement your own player journal using UI API. When event gets canceled, the default player journal won't be opened.

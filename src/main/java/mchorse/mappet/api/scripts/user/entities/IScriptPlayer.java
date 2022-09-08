@@ -292,7 +292,6 @@ public interface IScriptPlayer extends IScriptEntity
      *    player.playSound("minecraft:entity.pig.ambient", "voice", pos.x, pos.y, pos.z);
      * }</pre>
      */
-
     public void playSound(String event, String soundCategory, double x, double y, double z);
 
     /**
@@ -305,7 +304,6 @@ public interface IScriptPlayer extends IScriptEntity
      *    player.playSound("minecraft:entity.pig.ambient", "voice", pos.x, pos.y, pos.z, 1.0, 0.8);
      * }</pre>
      */
-
     public void playSound(String event, String soundCategory, double x, double y, double z, float volume, float pitch);
 
     /**
@@ -318,9 +316,44 @@ public interface IScriptPlayer extends IScriptEntity
      *    player.playSound("minecraft:entity.pig.ambient", pos.x, pos.y, pos.z, 1.0, 0.8);
      * }</pre>
      */
-
-
     public void playSound(String event, double x, double y, double z, float volume, float pitch);
+
+    /**
+     * Stop all playing sound events for this player.
+     *
+     * <pre>{@code
+     *    c.getWorld().stopAllSounds();
+     * }</pre>
+     */
+    public default void stopAllSounds()
+    {
+        this.stopSound("", "");
+    }
+
+    /**
+     * Stop specific sound event for this player.
+     *
+     * <pre>{@code
+     *    c.getWorld().stopSound("minecraft:entity.pig.ambient");
+     * }</pre>
+     */
+    public default void stopSound(String event)
+    {
+        this.stopSound(event, "");
+    }
+
+    /**
+     * <p>Stop specific sound event in given sound category for this player.</p>
+     *
+     * <p>For list of sound categories, type into chat
+     * <code>/playsound minecraft:entity.pig.ambient</code>, press space, and press
+     * Tab key. The list of sounds categories will be displayed.</p>
+     *
+     * <pre>{@code
+     *    c.getWorld().stopSound("minecraft:entity.pig.ambient", "master");
+     * }</pre>
+     */
+    public void stopSound(String event, String category);
 
     /**
      * Play a sound event to this player stationary.
@@ -335,7 +368,7 @@ public interface IScriptPlayer extends IScriptEntity
      *
      *    c.scheduleScript(20, function (c)
      *    {
-     *        c.getSubject.setPosition(-15, 4, 561);
+     *        c.getSubject().setPosition(-15, 4, 561);
      *    });
      * }</pre>
      */

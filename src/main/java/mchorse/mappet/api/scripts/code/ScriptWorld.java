@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts.code;
 
+import io.netty.buffer.Unpooled;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.npcs.Npc;
 import mchorse.mappet.api.npcs.NpcState;
@@ -8,6 +9,7 @@ import mchorse.mappet.api.scripts.code.blocks.ScriptTileEntity;
 import mchorse.mappet.api.scripts.code.entities.ScriptEntity;
 import mchorse.mappet.api.scripts.code.entities.ScriptNpc;
 import mchorse.mappet.api.scripts.code.items.ScriptInventory;
+import mchorse.mappet.api.scripts.user.IScriptRayTrace;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.blocks.IScriptTileEntity;
@@ -17,6 +19,7 @@ import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
+import mchorse.mappet.api.utils.RayTracing;
 import mchorse.mappet.client.morphs.WorldMorph;
 import mchorse.mappet.entities.EntityNpc;
 import mchorse.mappet.network.Dispatcher;
@@ -29,6 +32,8 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.play.server.SPacketCustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -326,6 +331,20 @@ public class ScriptWorld implements IScriptWorld
     }
 
     @Override
+    public void stopSound(String event, String category)
+    {
+        PacketBuffer packetbuffer = new PacketBuffer(Unpooled.buffer());
+
+        packetbuffer.writeString(category);
+        packetbuffer.writeString(event);
+
+        for (EntityPlayerMP player : this.world.getMinecraftServer().getPlayerList().getPlayers())
+        {
+            player.connection.sendPacket(new SPacketCustomPayload("MC|StopSound", packetbuffer));
+        }
+    }
+
+    @Override
     public IScriptEntity dropItemStack(IScriptItemStack stack, double x, double y, double z, double mx, double my, double mz)
     {
         if (stack == null || stack.isEmpty())
@@ -342,6 +361,24 @@ public class ScriptWorld implements IScriptWorld
         this.world.spawnEntity(item);
 
         return ScriptEntity.create(item);
+    }
+
+    @Override
+    public void explode(IScriptEntity exploder, double x, double y, double z, float distance, boolean blazeGround, boolean destroyTerrain)
+    {
+        this.world.newExplosion(exploder == null ? null : exploder.getMinecraftEntity(), x, y, z, distance, blazeGround, destroyTerrain);
+    }
+
+    @Override
+    public IScriptRayTrace rayTrace(double x1, double y1, double z1, double x2, double y2, double z2)
+    {
+        return new ScriptRayTrace(RayTracing.rayTraceWithEntity(this.world, x1, y1, z1, x2, y2, z2));
+    }
+
+    @Override
+    public IScriptRayTrace rayTraceBlock(double x1, double y1, double z1, double x2, double y2, double z2)
+    {
+        return new ScriptRayTrace(RayTracing.rayTrace(this.world, x1, y1, z1, x2, y2, z2));
     }
 
     /* Mappet stuff */

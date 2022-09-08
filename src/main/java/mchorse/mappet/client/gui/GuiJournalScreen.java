@@ -109,7 +109,7 @@ public class GuiJournalScreen extends GuiBase
 
         if (value != null)
         {
-            GuiQuestCard.fillQuest(this.questArea, value, false);
+            GuiQuestCard.fillQuest(this.questArea, value, false, true);
 
             this.cancel.setEnabled(value.cancelable);
 

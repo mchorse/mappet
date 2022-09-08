@@ -7,6 +7,7 @@ public class CommandEvent extends MappetSubCommandBase
 {
     public CommandEvent()
     {
+        this.add(new CommandEventStop());
         this.add(new CommandEventTrigger());
     }
 

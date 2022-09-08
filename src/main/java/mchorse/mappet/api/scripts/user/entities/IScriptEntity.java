@@ -263,6 +263,11 @@ public interface IScriptEntity
      */
     public boolean isSprinting();
 
+    /**
+     * Is this entity on the ground.
+     */
+    public boolean isOnGround();
+
     /* Ray tracing */
 
     /**
@@ -373,6 +378,21 @@ public interface IScriptEntity
      * Get how many ticks did this entity existed.
      */
     public int getTicks();
+
+    /**
+     * Get combined light value of where the entity is currently standing.
+     * In order to get torch and sky light values separately, see the example below
+     * to "unpack" the combined value.
+     *
+     * <pre>{@code
+     *    var light = c.getPlayer().getCombinedLight();
+     *    var skyLight = light / 65536 / 15;
+     *    var torchLight = light % 65536 / 15;
+     *
+     *    // Do something with skyLight and torchLight
+     * }</pre>
+     */
+    public int getCombinedLight();
 
     /**
      * Get entity name.

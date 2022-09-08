@@ -31,6 +31,12 @@ public class ScriptExecutionFork implements IExecutable
     }
 
     @Override
+    public String getId()
+    {
+        return this.script;
+    }
+
+    @Override
     public boolean update()
     {
         if (this.timer <= 0)

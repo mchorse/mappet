@@ -43,4 +43,10 @@ public class ScriptVector
         this.y = pos.getY();
         this.z = pos.getZ();
     }
+
+    @Override
+    public String toString()
+    {
+        return "ScriptVector(" + this.x + ", " + this.y + ", " + this.z + ")";
+    }
 }

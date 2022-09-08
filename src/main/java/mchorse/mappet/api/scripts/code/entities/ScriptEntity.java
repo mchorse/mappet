@@ -35,6 +35,8 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.WorldServer;
 
 public class ScriptEntity <T extends Entity> implements IScriptEntity
@@ -225,6 +227,12 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
         return this.entity.isSprinting();
     }
 
+    @Override
+    public boolean isOnGround()
+    {
+        return this.entity.onGround;
+    }
+
     /* Ray tracing */
 
     @Override
@@ -364,6 +372,21 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     public int getTicks()
     {
         return this.entity.ticksExisted;
+    }
+
+    @Override
+    public int getCombinedLight()
+    {
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(MathHelper.floor(this.entity.posX), 0, MathHelper.floor(this.entity.posZ));
+
+        if (this.entity.world.isBlockLoaded(pos))
+        {
+            pos.setY(MathHelper.floor(this.entity.posY + this.entity.getEyeHeight()));
+
+            return this.entity.world.getCombinedLight(pos, 0);
+        }
+
+        return 0;
     }
 
     @Override

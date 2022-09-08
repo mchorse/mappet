@@ -393,6 +393,43 @@ public interface IScriptWorld
     public void playSound(String event, double x, double y, double z, float volume, float pitch);
 
     /**
+     * Stop all playing sound events for every player.
+     *
+     * <pre>{@code
+     *    c.getWorld().stopAllSounds();
+     * }</pre>
+     */
+    public default void stopAllSounds()
+    {
+        this.stopSound("", "");
+    }
+
+    /**
+     * Stop specific sound event for every player.
+     *
+     * <pre>{@code
+     *    c.getWorld().stopSound("minecraft:entity.pig.ambient");
+     * }</pre>
+     */
+    public default void stopSound(String event)
+    {
+        this.stopSound(event, "");
+    }
+
+    /**
+     * <p>Stop specific sound event in given sound category for every player.</p>
+     *
+     * <p>For list of sound categories, type into chat
+     * <code>/playsound minecraft:entity.pig.ambient</code>, press space, and press
+     * Tab key. The list of sounds categories will be displayed.</p>
+     *
+     * <pre>{@code
+     *    c.getWorld().stopSound("minecraft:entity.pig.ambient", "master");
+     * }</pre>
+     */
+    public void stopSound(String event, String category);
+
+    /**
      * Drop item stack at given XYZ position with no velocity applied.
      *
      * <pre>{@code
@@ -418,6 +455,66 @@ public interface IScriptWorld
      * }</pre>
      */
     public IScriptEntity dropItemStack(IScriptItemStack stack, double x, double y, double z, double mx, double my, double mz);
+
+    /**
+     * Make an explosion in this world at given coordinates, and distance that
+     * destroys blocks, damages entities but not places fire. See {@link IScriptWorld#explode(IScriptEntity, double, double, double, float, boolean, boolean)}
+     * for more thorough definition of arguments.
+     */
+    public default void explode(double x, double y, double z, float distance)
+    {
+        this.explode(null, x, y, z, distance, false, true);
+    }
+
+    /**
+     * Make an explosion in this world at given coordinates, and distance with
+     * options to place fire and destroy blocks. See {@link IScriptWorld#explode(IScriptEntity, double, double, double, float, boolean, boolean)}
+     * for more thorough definition of arguments.
+     */
+    public default void explode(double x, double y, double z, float distance, boolean blazeGround, boolean destroyTerrain)
+    {
+        this.explode(null, x, y, z, distance, blazeGround, destroyTerrain);
+    }
+
+    /**
+     * Make an explosion in this world at given coordinates, distance, and entity
+     * that caused the explosion.
+     *
+     * @param exploder Entity that causes explosion that won't receive damage from it.
+     * @param x X coordinate in the world at which explosion must be caused.
+     * @param y Y coordinate in the world at which explosion must be caused.
+     * @param z Z coordinate in the world at which explosion must be caused.
+     * @param distance Radius (in blocks of the explosion).
+     * @param blazeGround Whether fire blocks should be placed randomly on top of remaining blocks.
+     * @param destroyTerrain Whether blocks should be destroyed by the explosion.
+     */
+    public void explode(IScriptEntity exploder, double x, double y, double z, float distance, boolean blazeGround, boolean destroyTerrain);
+
+    /**
+     * Ray trace in this world, between two given points (including any entity intersection).
+     * Check {@link IScriptRayTrace} for an example.
+     *
+     * @param x1 X coordinate of the first point.
+     * @param y1 Y coordinate of the first point.
+     * @param z1 Z coordinate of the first point.
+     * @param x2 X coordinate of the second point.
+     * @param y2 Y coordinate of the second point.
+     * @param z2 Z coordinate of the second point.
+     */
+    public IScriptRayTrace rayTrace(double x1, double y1, double z1, double x2, double y2, double z2);
+
+    /**
+     * Ray trace in this world, between two given points (excluding entities).
+     * Check {@link IScriptRayTrace} for an example.
+     *
+     * @param x1 X coordinate of the first point.
+     * @param y1 Y coordinate of the first point.
+     * @param z1 Z coordinate of the first point.
+     * @param x2 X coordinate of the second point.
+     * @param y2 Y coordinate of the second point.
+     * @param z2 Z coordinate of the second point.
+     */
+    public IScriptRayTrace rayTraceBlock(double x1, double y1, double z1, double x2, double y2, double z2);
 
     /* Mappet stuff */
 

@@ -1,13 +1,16 @@
 package mchorse.mappet.api.scripts.code.blocks;
 
+import mchorse.mappet.api.scripts.user.IScriptWorld;
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 
 public class ScriptBlockState implements IScriptBlockState
 {
     public static ScriptBlockState AIR = new ScriptBlockState(Blocks.AIR.getDefaultState());
+    public static BlockPos.MutableBlockPos BLOCK_POS = new BlockPos.MutableBlockPos();
 
     private IBlockState state;
 
@@ -56,6 +59,18 @@ public class ScriptBlockState implements IScriptBlockState
     public boolean isSameBlock(IScriptBlockState state)
     {
         return this.state.getBlock() == ((ScriptBlockState) state).state.getBlock();
+    }
+
+    @Override
+    public boolean isOpaque()
+    {
+        return this.state.isOpaqueCube();
+    }
+
+    @Override
+    public boolean hasCollision(IScriptWorld world, int x, int y, int z)
+    {
+        return this.state.getCollisionBoundingBox(world.getMinecraftWorld(), BLOCK_POS.setPos(x, y, z)) != null;
     }
 
     @Override
