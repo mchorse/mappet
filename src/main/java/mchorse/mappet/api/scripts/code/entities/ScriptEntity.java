@@ -88,11 +88,6 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     }
 
     @Override
-    public boolean isOnGround() {
-        return entity.onGround;
-    }
-
-    @Override
     public ScriptVector getMotion()
     {
         return new ScriptVector(this.entity.motionX, this.entity.motionY, this.entity.motionZ);

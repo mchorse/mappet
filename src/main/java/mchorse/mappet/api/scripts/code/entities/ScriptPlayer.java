@@ -278,12 +278,6 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
         Dispatcher.sendTo(new PacketSound(event, soundCategory, volume, pitch), this.entity);
     }
 
-    @Override
-    public void stopSound(String event, String soundCategory)
-    {
-        Dispatcher.sendTo(new PacketStopSound(event, soundCategory), this.entity);
-    }
-
     /* Mappet stuff */
 
     @Override
