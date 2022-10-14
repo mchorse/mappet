@@ -1,3 +1,9 @@
+## Version 0.2.3
+
+This quick update recompiles this mod to be compatible with McLib 2.4.1 changes.
+
+**Compatible** with McLib **2.4.1**, Blockbuster **2.6** and Metamorph **1.3.1**. It doesn't mean that future versions of McLib, Blockbuster and Metamorph would be incompatible, but older versions are most likely incompatible.
+
 ## Version 0.2.2
 
 This quick patch update patches and updates.
