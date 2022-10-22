@@ -56,6 +56,8 @@ mappet.success.quest.declined=§fКвест с ID §7%s§f был удалён �
 mappet.success.data.saved=§fДанные с ID §7%s§f были сохранены.
 mappet.success.data.loaded=§fДанные с ID §7%s§f были загружены.
 
+mappet.success.events.stopped=§fStopped §7%s§f events by %s§f ID!
+
 # Commands
 mappet.commands.mp.help=Главная команда Маппета, предоставляющая подкоманды для работы с возможностями Маппета.
 
@@ -78,6 +80,7 @@ mappet.commands.mp.crafting.drop=Эта команда выбрасывает п
 
 mappet.commands.mp.event.help=Подкоманда событий Маппета.
 mappet.commands.mp.event.trigger=Эта команда включает событие с ID §7<id>§r используя игрока/ов §7<player>§r в качестве контекста. Вы также можете передать произвольные NBT-данные событию используя аргумент данных §7[data]§r.
+mappet.commands.mp.event.stop=This command stops a delayed event(s) (or script(s)) by given §7<id>§r. 
 
 mappet.commands.mp.dialogue.help=Подкоманда диалогов Маппета.
 mappet.commands.mp.dialogue.open=Эта команда открывает диалог с ID §7<id>§r для игрока/ов §7<player>§r.
@@ -136,7 +139,6 @@ mappet.config.npc.tool_only_creative=Инструмент НПС только д
 mappet.config.comments.npc.tool_only_creative=Этот параметр определяет, могут ли только игроки в креативе использовать инструмент NPC.
 mappet.config.npc.dashboard_only_creative=Главная панель только для Креатива
 mappet.config.comments.npc.dashboard_only_creative=Этот параметр определяет, могут ли только игроки в креативе открывать главную панель.
-
 
 mappet.config.events.title=События
 mappet.config.events.tooltip=Настройки мода, относящиеся к событиям
@@ -296,6 +298,10 @@ mappet.gui.settings.triggers.player_item_interact=Player: interact an item
 mappet.gui.settings.triggers.descriptions.player_item_interact=This cancelable trigger gets triggered when a player right clicks in the air with item.
 mappet.gui.settings.triggers.variables.player_item_interact=§7N/A§r
 
+mappet.gui.settings.triggers.player_entity_interact=Player: interact with an entity
+mappet.gui.settings.triggers.descriptions.player_entity_interact=This cancelable trigger gets triggered when a player right clicks an entity. Subject is the player, and object is the entity that player has interacted with.\n\nDepending on entity interaction handling, this trigger §6might get triggered twice§r for every hand (see variables below). 
+mappet.gui.settings.triggers.variables.player_entity_interact=§6hand§r, the hand that interacted with the entity (§7main§r or §7off§r).
+
 mappet.gui.settings.triggers.player_close_container=Player: closed container
 mappet.gui.settings.triggers.descriptions.player_close_container=This gets triggered when a player picks up an item in the world.
 mappet.gui.settings.triggers.variables.player_close_container=§6item§r, §7IScriptItemStack§r item that player picked (this is useful only in scripts).
@@ -337,7 +343,7 @@ mappet.gui.quests.rewards.context.remove=Удалить эту награду
 mappet.gui.quests.rewards.context.add_item=Добавить награду в предметах
 mappet.gui.quests.reward_item.title=Предметы награды
 mappet.gui.quests.info.empty=Чтобы начать редактирование, создайте или выберите квест из списка справа...
-mappet.gui.quests.visible=Видимый
+mappet.gui.quests.visible = Visible
 
 mappet.gui.interaction.back=Назад
 mappet.gui.interaction.accept=Принять

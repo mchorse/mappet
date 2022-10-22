@@ -56,6 +56,8 @@ mappet.success.quest.declined=§fID 为 §7%s§f 的任务已为玩家 §7%s§f 
 mappet.success.data.saved=§f已保存 ID 为 §7%s§f 的数据。
 mappet.success.data.loaded=§f已加载 ID 为 §7%s§f 的数据。
 
+mappet.success.events.stopped=§fStopped §7%s§f events by %s§f ID!
+
 # Commands
 mappet.commands.mp.help=Mappet 主命令，用于给出使用 Mappet 功能的子命令。
 
@@ -78,6 +80,7 @@ mappet.commands.mp.crafting.drop=该命令会根据合成表 §7<id>§r 中配�
 
 mappet.commands.mp.event.help=Mappet 事件子命令
 mappet.commands.mp.event.trigger=该命令用于指定 §7<玩家/多个玩家>§r 来触发事件 §7<id>§r。你也可以使用 §7[data]§r 参数向事件传递任意的 NBT 数据。
+mappet.commands.mp.event.stop=This command stops a delayed event(s) (or script(s)) by given §7<id>§r. 
 
 mappet.commands.mp.dialogue.help=Mappet 对话子命令
 mappet.commands.mp.dialogue.open=该命令会为 §7<玩家/多个玩家>§r 打开对话 §7<id>§r。
@@ -132,6 +135,10 @@ mappet.config.npc.peaceful_damage=Peaceful damage
 mappet.config.comments.npc.peaceful_damage=This option determines whether NPCs can inflict damage to players in peaceful difficulty.
 mappet.config.npc.tool_only_op=NPC tool OP
 mappet.config.comments.npc.tool_only_op=This option determines whether only OP users can use NPC tool.
+mappet.config.npc.tool_only_creative=NPC tool only Creative
+mappet.config.comments.npc.tool_only_creative=This option determines whether only Creative users can use NPC tool.
+mappet.config.npc.dashboard_only_creative=Dashboard only Creative
+mappet.config.comments.npc.dashboard_only_creative=This option determines whether only Creative users can open dashboard.
 
 mappet.config.events.title=事件
 mappet.config.events.tooltip=与事件相关的模组选项
@@ -263,6 +270,10 @@ mappet.gui.settings.triggers.player_login=On player log in
 mappet.gui.settings.triggers.descriptions.player_login=This gets triggered when player logs onto the server.
 mappet.gui.settings.triggers.variables.player_login=§7N/A§r
 
+mappet.gui.settings.triggers.player_logout=Player: logged out
+mappet.gui.settings.triggers.descriptions.player_logout=This is triggered when the player logs out of the server.
+mappet.gui.settings.triggers.variables.player_logout=§7N/A§r
+
 mappet.gui.settings.triggers.player_lmb=On player left click
 mappet.gui.settings.triggers.descriptions.player_lmb=This gets triggered when a player left clicks in the air (no whatsoever interaction with blocks, entities or items).
 mappet.gui.settings.triggers.variables.player_lmb=§7N/A§r
@@ -282,6 +293,14 @@ mappet.gui.settings.triggers.variables.player_respawn=§7N/A§r
 mappet.gui.settings.triggers.player_item_pickup=Player: picked up an item
 mappet.gui.settings.triggers.descriptions.player_item_pickup=This cancelable trigger gets triggered when a player picks up an item in the world.
 mappet.gui.settings.triggers.variables.player_item_pickup=§7N/A§r or...\n§6x§r, §6y§r, and §6z§r of the inventory block in the world.
+
+mappet.gui.settings.triggers.player_item_interact=Player: interact with an item
+mappet.gui.settings.triggers.descriptions.player_item_interact=This cancelable trigger gets triggered when a player right clicks in the air with item.
+mappet.gui.settings.triggers.variables.player_item_interact=§7N/A§r
+
+mappet.gui.settings.triggers.player_entity_interact=Player: interact with an entity
+mappet.gui.settings.triggers.descriptions.player_entity_interact=This cancelable trigger gets triggered when a player right clicks an entity. Subject is the player, and object is the entity that player has interacted with.\n\nDepending on entity interaction handling, this trigger §6might get triggered twice§r for every hand (see variables below). 
+mappet.gui.settings.triggers.variables.player_entity_interact=§6hand§r, the hand that interacted with the entity (§7main§r or §7off§r).
 
 mappet.gui.settings.triggers.player_close_container=Player: closed container
 mappet.gui.settings.triggers.descriptions.player_close_container=This gets triggered when a player picks up an item in the world.
@@ -324,6 +343,7 @@ mappet.gui.quests.rewards.context.remove=移除该奖励
 mappet.gui.quests.rewards.context.add_item=添加物品组奖励
 mappet.gui.quests.reward_item.title=奖励物品
 mappet.gui.quests.info.empty=在右侧的列表中选择或创建一则任务以开始编辑...
+mappet.gui.quests.visible = Visible
 
 mappet.gui.interaction.back=返回
 mappet.gui.interaction.accept=接受
@@ -451,6 +471,8 @@ mappet.gui.npcs.health.max_hp=最大 HP
 mappet.gui.npcs.health.hp=初始 HP
 mappet.gui.npcs.health.regen_delay=HP 恢复延迟
 mappet.gui.npcs.health.regen_frequency=HP 恢复频率
+mappet.gui.npcs.damage.damage_delay=Damage delay
+mappet.gui.npcs.damage.fallback=Fallback distance
 mappet.gui.npcs.damage.title=伤害
 mappet.gui.npcs.damage.damage=伤害
 mappet.gui.npcs.damage.fall=摔落伤害
@@ -565,6 +587,8 @@ mappet.gui.conditions.targets.player=Player
 mappet.gui.conditions.targets.npc=NPC
 mappet.gui.conditions.comparisons.is_true=Is true
 mappet.gui.conditions.comparisons.is_false=Is false
+mappet.gui.conditions.comparisons.contains_string=Contains
+mappet.gui.conditions.comparisons.regexp=Regular expression
 mappet.gui.conditions.context.add=添加条件
 mappet.gui.conditions.context.add_condition=添加 %s 条件
 mappet.gui.conditions.context.copy=拷贝该条件
@@ -653,6 +677,7 @@ mappet.gui.faction_attitudes.friendly=友好
 
 mappet.gui.node_types.reply=回复
 mappet.gui.node_types.reaction=反应
+mappet.gui.node_types.comment=Comment
 mappet.gui.node_types.crafting=合成表
 mappet.gui.node_types.quest=任务
 mappet.gui.node_types.quest_chain=Quest chain
