@@ -72,7 +72,7 @@ public class Themes
     }
 
     /**
-     * Write a them into a file
+     * Write a theme into a file
      */
     public static void writeTheme(File file, SyntaxStyle style)
     {
