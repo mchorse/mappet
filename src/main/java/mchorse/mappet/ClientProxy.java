@@ -4,6 +4,7 @@ import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.client.KeyboardHandler;
 import mchorse.mappet.client.RenderingHandler;
 import mchorse.mappet.client.SoundPack;
+import mchorse.mappet.client.gui.scripts.highlights.Highlighters;
 import mchorse.mappet.client.gui.scripts.themes.Themes;
 import mchorse.mappet.client.renders.entity.RenderNpc;
 import mchorse.mappet.client.renders.tile.TileRegionRenderer;
@@ -74,6 +75,7 @@ public class ClientProxy extends CommonProxy
         ReflectionUtils.registerResourcePack(new SoundPack(sounds = new File(CommonProxy.configFolder, "sounds")));
 
         Themes.initiate();
+        Highlighters.initiate();
     }
 
     @Override

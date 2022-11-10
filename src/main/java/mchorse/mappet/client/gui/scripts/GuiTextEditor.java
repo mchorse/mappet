@@ -1,5 +1,6 @@
 package mchorse.mappet.client.gui.scripts;
 
+import mchorse.mappet.client.gui.scripts.highlights.Highlighters;
 import mchorse.mappet.client.gui.scripts.utils.HighlightedTextLine;
 import mchorse.mappet.client.gui.scripts.utils.SyntaxHighlighter;
 import mchorse.mappet.client.gui.scripts.utils.TextLineNumber;
@@ -32,7 +33,7 @@ public class GuiTextEditor extends GuiMultiTextElement<HighlightedTextLine>
     {
         super(mc, callback);
 
-        this.highlighter = new SyntaxHighlighter();
+        this.highlighter = Highlighters.readHighlighter(Highlighters.highlighterFile("js.json"));
     }
 
     @Override
@@ -51,6 +52,11 @@ public class GuiTextEditor extends GuiMultiTextElement<HighlightedTextLine>
     public SyntaxHighlighter getHighlighter()
     {
         return this.highlighter;
+    }
+
+    public void setHighlighter(SyntaxHighlighter highlighter)
+    {
+        this.highlighter = highlighter;
     }
 
     public void resetHighlight()

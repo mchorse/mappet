@@ -1,7 +1,10 @@
 package mchorse.mappet.client.gui.scripts.utils;
 
 import com.google.common.collect.ImmutableSet;
+import mchorse.mappet.utils.NBTUtils;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,14 +14,14 @@ import java.util.regex.Pattern;
 
 public class SyntaxHighlighter
 {
-    private static final Set<String> OPERATORS = ImmutableSet.of("+", "-", "=", "/", "*", "<", ">", "~", "&", "|", "!");
-    private static final Set<String> PRIMARY_KEYWORDS = ImmutableSet.of("break", "continue", "switch", "case", "default", "try", "catch", "delete", "do", "while", "else", "finally", "if", "else", "for", "each", "in", "instanceof", "new", "throw", "typeof", "with", "yield", "return");
-    private static final Set<String> SECONDARY_KEYWORDS = ImmutableSet.of("const", "function", "var", "let", "prototype", "Math", "JSON", "mappet");
-    private static final Set<String> SPECIAL = ImmutableSet.of("this", "arguments");
-    private static final Set<String> TYPE_KEYSWORDS = ImmutableSet.of("true", "false", "null", "undefined");
-    private static final Pattern FUNCTION_NAME = Pattern.compile("[\\w_][\\d\\w_]*", Pattern.CASE_INSENSITIVE);
-
     private SyntaxStyle style;
+
+    public Set<String> operators;
+    public Set<String> primaryKeywords;
+    public Set<String> secondaryKeywords;
+    public Set<String> special;
+    public Set<String> typeKeywords;
+    public Pattern functionName;
 
     /* Parsing runtime data */
     private String buffer;
@@ -30,9 +33,15 @@ public class SyntaxHighlighter
         this.style = new SyntaxStyle();
     }
 
-    public SyntaxHighlighter(SyntaxStyle style)
+    public SyntaxHighlighter(NBTTagCompound tag)
     {
-        this.style = style;
+        operators = ImmutableSet.copyOf(NBTUtils.getStringArray(tag.getTagList("operators", 8)));
+        primaryKeywords = ImmutableSet.copyOf(NBTUtils.getStringArray(tag.getTagList("primaryKeywords", 8)));
+        secondaryKeywords = ImmutableSet.copyOf(NBTUtils.getStringArray(tag.getTagList("secondaryKeywords", 8)));
+        special = ImmutableSet.copyOf(NBTUtils.getStringArray(tag.getTagList("special", 8)));
+        typeKeywords = ImmutableSet.copyOf(NBTUtils.getStringArray(tag.getTagList("typeKeywords", 8)));
+        functionName = Pattern.compile(tag.getString("functionName"), Pattern.CASE_INSENSITIVE);
+        this.style = new SyntaxStyle();
     }
 
     public SyntaxStyle getStyle()
@@ -151,7 +160,7 @@ public class SyntaxHighlighter
             }
 
             /* Operators */
-            if (!isString && OPERATORS.contains(String.valueOf(character)))
+            if (!isString && operators.contains(String.valueOf(character)))
             {
                 boolean isNumericalMinus = character == '-' && Character.isDigit(next);
 
@@ -189,15 +198,15 @@ public class SyntaxHighlighter
 
                 String keyword = line.substring(this.last, i + 1);
 
-                if (PRIMARY_KEYWORDS.contains(keyword))
+                if (primaryKeywords.contains(keyword))
                 {
                     this.pushKeyword(list, keyword, this.style.primary, i, font);
                 }
-                else if (SPECIAL.contains(keyword))
+                else if (special.contains(keyword))
                 {
                     this.pushKeyword(list, keyword, this.style.special, i, font);
                 }
-                else if (SECONDARY_KEYWORDS.contains(keyword) || this.isFunctionCall(list, keyword, next))
+                else if (secondaryKeywords.contains(keyword) || this.isFunctionCall(list, keyword, next))
                 {
                     this.pushKeyword(list, keyword, this.style.secondary, i, font);
                 }
@@ -226,7 +235,7 @@ public class SyntaxHighlighter
         return list;
     }
 
-        private boolean isLegalName(char character)
+    private boolean isLegalName(char character)
     {
         return Character.isLetterOrDigit(character) || character == '_';
     }
@@ -280,7 +289,7 @@ public class SyntaxHighlighter
             }
         }
 
-        Matcher matcher = FUNCTION_NAME.matcher(keyword);
+        Matcher matcher = functionName.matcher(keyword);
         boolean matches = matcher.matches();
 
         return next == '(' && matches;
@@ -291,7 +300,7 @@ public class SyntaxHighlighter
      */
     private boolean isNumberOrConstant(String keyword)
     {
-        if (TYPE_KEYSWORDS.contains(keyword))
+        if (typeKeywords.contains(keyword))
         {
             return true;
         }
@@ -335,5 +344,37 @@ public class SyntaxHighlighter
         }
 
         return false;
+    }
+
+    public NBTTagCompound toNBT()
+    {
+        return this.toNBT(new NBTTagCompound());
+    }
+
+    public NBTTagCompound toNBT(NBTTagCompound tag)
+    {
+        NBTTagList tagListOperators = new NBTTagList();
+        NBTUtils.writeStringList(tagListOperators, operators);
+        tag.setTag("operators",tagListOperators);
+
+        NBTTagList tagListPrimaryKeywords = new NBTTagList();
+        NBTUtils.writeStringList(tagListPrimaryKeywords, primaryKeywords);
+        tag.setTag("primaryKeywords",tagListPrimaryKeywords);
+
+        NBTTagList tagListSecondaryKeywords = new NBTTagList();
+        NBTUtils.writeStringList(tagListSecondaryKeywords, secondaryKeywords);
+        tag.setTag("secondaryKeywords",tagListSecondaryKeywords);
+
+        NBTTagList tagListSpecial = new NBTTagList();
+        NBTUtils.writeStringList(tagListSpecial, special);
+        tag.setTag("special",tagListSpecial);
+
+        NBTTagList tagListTypeKeywords = new NBTTagList();
+        NBTUtils.writeStringList(tagListTypeKeywords, typeKeywords);
+        tag.setTag("typeKeywords",tagListTypeKeywords);
+
+        tag.setString("functionName", functionName.toString());
+
+        return tag;
     }
 }
