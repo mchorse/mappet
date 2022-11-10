@@ -24,11 +24,13 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Script extends AbstractData
 {
     public String code = "";
-    public boolean unique;
+    public boolean unique = true;
     public List<String> libraries = new ArrayList<String>();
 
     private ScriptEngine engine;
@@ -41,9 +43,14 @@ public class Script extends AbstractData
     {
         if (this.engine == null)
         {
-            this.engine = ScriptUtils.sanitize(ScriptUtils.tryCreatingEngine());
-            this.engine.getContext().setAttribute("javax.script.filename", this.getId() + ".js", ScriptContext.ENGINE_SCOPE);
-
+            this.engine = ScriptUtils.getEngineByExtension(getScriptExtension());
+            if(this.engine == null)
+            {
+                String message = "Looks like mappet can't find script engine for a \""+getScriptExtension()+"\" file extension.";
+                throw  new ScriptException(message, this.getId(), -1);
+            }
+            this.engine = ScriptUtils.sanitize(this.engine);
+            this.engine.getContext().setAttribute("javax.script.filename", this.getId(), ScriptContext.ENGINE_SCOPE);
             Mappet.EVENT_BUS.post(new RegisterScriptVariablesEvent(this.engine));
 
             StringBuilder finalCode = new StringBuilder();
@@ -61,8 +68,8 @@ public class Script extends AbstractData
 
                 try
                 {
-                    File jsFile = manager.getJSFile(library);
-                    String code = FileUtils.readFileToString(jsFile, Utils.getCharset());
+                    File scriptFile = manager.getScriptFile(library);
+                    String code = FileUtils.readFileToString(scriptFile, Utils.getCharset());
 
                     finalCode.append(code);
                     finalCode.append("\n");
@@ -95,6 +102,18 @@ public class Script extends AbstractData
             this.engine.put("mappet", new ScriptFactory());
             this.engine.eval(finalCode.toString());
         }
+    }
+
+    public String getScriptExtension()
+    {
+        Pattern extensionRegex = Pattern.compile("(?<=\\.)\\w+$");
+        Matcher matcher = extensionRegex.matcher(this.getId());
+        String extension = "js";
+        if(matcher.find())
+        {
+            extension = matcher.group(0);
+        }
+        return extension;
     }
 
     public Object execute(String function, DataContext context) throws ScriptException, NoSuchMethodException
@@ -141,8 +160,7 @@ public class Script extends AbstractData
         {
             String message = e.getMessage();
             int lineNumber = e.getLineNumber() - range.lineOffset;
-
-            message = message.replaceFirst(this.getId() + ".js", range.script + ".js (in " + this.getId() + ".js)");
+            message = message.replaceFirst(this.getId(),range.script + " (in " + this.getId() + ")");
             message = message.replaceFirst("at line number [\\d]+", "at line number " + lineNumber);
 
             return new ScriptException(message, range.script, lineNumber, e.getColumnNumber());

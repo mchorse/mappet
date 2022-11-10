@@ -447,7 +447,7 @@ public class EventHandler
         {
             player.sendMessage(new TextComponentTranslation("mappet.nashorn_copied"));
         }
-        else if (ScriptUtils.errorNashorn)
+        else if (ScriptUtils.errorScriptEngine)
         {
             player.sendMessage(new TextComponentTranslation("mappet.nashorn_error"));
         }

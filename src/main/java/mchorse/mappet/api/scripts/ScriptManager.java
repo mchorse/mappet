@@ -6,10 +6,8 @@ import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.manager.BaseManager;
 import mchorse.mappet.utils.ScriptUtils;
 import mchorse.mappet.utils.Utils;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextFormatting;
 import org.apache.commons.io.FileUtils;
@@ -17,8 +15,11 @@ import org.apache.commons.io.FileUtils;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 import java.io.File;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class ScriptManager extends BaseManager<Script>
 {
@@ -31,6 +32,7 @@ public class ScriptManager extends BaseManager<Script>
     public ScriptManager(File folder)
     {
         super(folder);
+        ScriptUtils.getAllEngines();
     }
 
     /**
@@ -44,7 +46,7 @@ public class ScriptManager extends BaseManager<Script>
 
         if (engine == null)
         {
-            engine = ScriptUtils.sanitize(ScriptUtils.tryCreatingEngine());
+            engine = ScriptUtils.sanitize(ScriptUtils.getEngineByExtension(".js"));
 
             DataContext context = null;
 
@@ -128,6 +130,29 @@ public class ScriptManager extends BaseManager<Script>
     }
 
     @Override
+    public Collection<String> getKeys()
+    {
+        Set<String> set = new HashSet<String>();
+
+        if (this.folder == null)
+        {
+            return set;
+        }
+
+        for (File file : this.folder.listFiles())
+        {
+            String name = file.getName();
+
+            if (file.isFile() && this.isData(file))
+            {
+                set.add(name.replace(".json", ""));
+            }
+        }
+
+        return set;
+    }
+
+    @Override
     protected Script createData(String id, NBTTagCompound tag)
     {
         Script script = new Script();
@@ -146,13 +171,13 @@ public class ScriptManager extends BaseManager<Script>
     public Script load(String id)
     {
         Script script = super.load(id);
-        File js = this.getJSFile(id);
+        File scriptFile = this.getScriptFile(id);
 
-        if (js != null && js.isFile())
+        if (scriptFile != null && scriptFile.isFile())
         {
             try
             {
-                String code = FileUtils.readFileToString(js, Utils.getCharset());
+                String code = FileUtils.readFileToString(scriptFile, Utils.getCharset());
 
                 if (script == null)
                 {
@@ -181,7 +206,7 @@ public class ScriptManager extends BaseManager<Script>
         {
             try
             {
-                FileUtils.writeStringToFile(this.getJSFile(id), code, Utils.getCharset());
+                FileUtils.writeStringToFile(this.getScriptFile(id), code, Utils.getCharset());
 
                 result = true;
             }
@@ -192,6 +217,13 @@ public class ScriptManager extends BaseManager<Script>
         if (result)
         {
             this.uniqueScripts.remove(id);
+
+            Script script = this.load(id);
+
+            if (script != null && script.unique)
+            {
+                this.uniqueScripts.put(id, script);
+            }
         }
 
         return result;
@@ -202,20 +234,20 @@ public class ScriptManager extends BaseManager<Script>
     @Override
     public boolean exists(String name)
     {
-        File js = this.getJSFile(name);
+        File scriptFile = this.getScriptFile(name);
 
-        return super.exists(name) || (js != null && js.exists());
+        return super.exists(name) || (scriptFile != null && scriptFile.exists());
     }
 
     @Override
     public boolean rename(String id, String newId)
     {
-        File js = this.getJSFile(id);
+        File scriptFile = this.getScriptFile(id);
         boolean result = super.rename(id, newId);
 
-        if (js != null && js.exists())
+        if (scriptFile != null && scriptFile.exists())
         {
-            return js.renameTo(this.getJSFile(newId)) || result;
+            return scriptFile.renameTo(this.getScriptFile(newId)) || result;
         }
 
         return result;
@@ -225,24 +257,48 @@ public class ScriptManager extends BaseManager<Script>
     public boolean delete(String name)
     {
         boolean result = super.delete(name);
-        File js = this.getJSFile(name);
+        File scriptFile = this.getScriptFile(name);
 
-        return (js != null && js.delete()) || result;
+        return (scriptFile != null && scriptFile.delete()) || result;
     }
 
     @Override
     protected boolean isData(File file)
     {
-        return super.isData(file) || file.getName().endsWith(".js");
+        return super.isData(file) || !file.getName().endsWith(".json");
     }
 
-    public File getJSFile(String id)
+    public File getScriptFile(String id)
     {
         if (this.folder == null)
         {
             return null;
         }
 
-        return new File(this.folder, id + ".js");
+
+        return new File(this.folder, id);
+    }
+
+    public void initiateAllScripts()
+    {
+        Collection<String> scriptIds = getKeys();
+
+        for (String id : scriptIds)
+        {
+            try
+            {
+                Script script = this.load(id);
+
+                if (script != null && script.unique)
+                {
+                    this.uniqueScripts.put(id, script);
+                    script.start(this);
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
 }
