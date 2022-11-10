@@ -4,7 +4,9 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTPrimitive;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.math.BlockPos;
+import java.util.Set;
 
 public class NBTUtils
 {
@@ -35,5 +37,18 @@ public class NBTUtils
         list.appendTag(new NBTTagInt(pos.getZ()));
 
         return list;
+    }
+
+    public static String[] getStringArray(NBTTagList list) {
+        String[] array = new String[list.tagCount()];
+        for(int i = 0; i < list.tagCount(); ++i) {
+            array[i] = list.getStringTagAt(i);
+        }
+        return array;
+    }
+
+    public static void writeStringList(NBTTagList list, Set<String> set)
+    {
+        set.stream().forEach(string -> list.appendTag(new NBTTagString(string)));
     }
 }
