@@ -19,6 +19,7 @@ import mchorse.mappet.blocks.BlockRegion;
 import mchorse.mappet.blocks.BlockTrigger;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.commands.CommandMappet;
+import mchorse.mappet.utils.ScriptUtils;
 import mchorse.mappet.utils.ValueButtons;
 import mchorse.mappet.utils.ValueSyntaxStyle;
 import mchorse.mclib.McLib;
@@ -219,6 +220,9 @@ public final class Mappet
         {
             settings.serverLoad.trigger(new DataContext(event.getServer()));
         }
+
+        ScriptUtils.initiateScriptEngines();
+        scripts.initiateAllScripts();
     }
 
     @Mod.EventHandler

@@ -143,29 +143,11 @@ public class CommonProxy
         MinecraftForge.EVENT_BUS.register(new MetamorphHandler());
         Mappet.EVENT_BUS.register(eventHandler);
 
-        this.initiateJS();
+        ScriptUtils.initiateScriptEngines();
         MPIcons.register();
     }
 
-    /**
-     * Run something in JavaScript to avoid it loading first time
-     */
-    private void initiateJS()
-    {
-        try
-        {
-            ScriptEngine engine = ScriptUtils.tryCreatingEngine();
 
-            if (!engine.eval("true").equals(Boolean.TRUE))
-            {
-                throw new Exception("Something went wrong with JavaScript...");
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
 
     public void postInit(FMLPostInitializationEvent event)
     {

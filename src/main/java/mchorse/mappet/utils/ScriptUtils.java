@@ -1,56 +1,66 @@
 package mchorse.mappet.utils;
 
-import com.google.common.collect.ImmutableSet;
 import mchorse.mappet.CommonProxy;
+import net.minecraft.launchwrapper.Launch;
 import org.apache.commons.io.FileUtils;
 
 import javax.script.Bindings;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
+import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
 import java.io.File;
-import java.lang.reflect.Method;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ScriptUtils
 {
     public static boolean copiedNashorn;
-    public static boolean errorNashorn;
+    public static boolean errorScriptEngine;
 
+    private static List<ScriptEngine> engines;
     private static ScriptEngineManager manager;
 
-    /**
-     * Tries to create a script engine
-     */
-    public static ScriptEngine tryCreatingEngine()
+    public static List<ScriptEngine> getAllEngines()
     {
-        for (String name : ImmutableSet.of("nashorn", "Nashorn", "javascript", "JavaScript", "js", "JS", "ecmascript", "ECMAScript"))
+        if(engines == null)
         {
-            ScriptEngine engine = getManager().getEngineByName(name);
+            engines = getManager().getEngineFactories().stream()
+                    .filter(factory -> !factory.getExtensions().contains("scala"))
+                    .map(ScriptEngineFactory::getScriptEngine)
+                    .collect(Collectors.toList());
+        }
 
-            if (engine != null)
+        return engines;
+    }
+
+    public static ScriptEngine getEngineByExtension(String extension)
+    {
+        return ScriptUtils.getAllEngines().stream()
+                .filter(engine -> engine.getFactory().getExtensions().contains(extension))
+                .findAny().orElse(null);
+    }
+
+    /**
+     * Run something to avoid it loading first time
+     */
+    public static void initiateScriptEngines()
+    {
+        List<ScriptEngine> engineList = ScriptUtils.getAllEngines();
+        for (ScriptEngine engine : engineList)
+        {
+            try
             {
-                return engine;
+                if (!engine.eval("true").equals(Boolean.TRUE))
+                {
+                    throw new Exception("Something went wrong with "+engine.getFactory().getEngineName());
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
             }
         }
-
-        try
-        {
-            Class factoryClass = Class.forName("jdk.nashorn.api.scripting.NashornScriptEngineFactory");
-            Object factory = factoryClass.getConstructor().newInstance();
-            Method getScriptEnging = factoryClass.getDeclaredMethod("getScriptEngine");
-
-            return (ScriptEngine) getScriptEnging.invoke(factory);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-
-            tryCopyingNashorn();
-        }
-
-        errorNashorn = true;
-
-        return null;
     }
 
     private static void tryCopyingNashorn()
