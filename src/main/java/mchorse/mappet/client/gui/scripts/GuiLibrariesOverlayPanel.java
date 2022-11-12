@@ -15,6 +15,7 @@ import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GuiLibrariesOverlayPanel extends GuiStringOverlayPanel
@@ -56,6 +57,19 @@ public class GuiLibrariesOverlayPanel extends GuiStringOverlayPanel
             for (String string : this.strings.list.getList())
             {
                 names.remove(string);
+            }
+
+            List<String> tempNames = new ArrayList<>(names);
+
+            for (String string : tempNames)
+            {
+                /**
+                 * Checks if library extension don't match script extension
+                 */
+                if(!string.endsWith(this.main.substring(this.main.lastIndexOf("."))))
+                {
+                    names.remove(string);
+                }
             }
 
             names.remove(this.main);
