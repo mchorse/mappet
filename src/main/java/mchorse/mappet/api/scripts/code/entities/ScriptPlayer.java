@@ -144,10 +144,7 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     @Override
     public String getSkin()
     {
-        ICharacter character = Character.get(this.entity);
-        String skin = character.getSkin();
-
-        return skin == null ? "" : skin;
+        return "mp.skins:" + this.getName();
     }
 
     @Override

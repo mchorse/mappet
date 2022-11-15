@@ -62,7 +62,6 @@ import mchorse.mappet.network.common.quests.PacketQuestVisibility;
 import mchorse.mappet.network.common.quests.PacketQuests;
 import mchorse.mappet.network.common.scripts.PacketClick;
 import mchorse.mappet.network.common.scripts.PacketEntityRotations;
-import mchorse.mappet.network.common.scripts.PacketPlayerSkin;
 import mchorse.mappet.network.common.scripts.PacketRepl;
 import mchorse.mappet.network.common.scripts.PacketSound;
 import mchorse.mappet.network.common.scripts.PacketWorldMorph;
@@ -93,7 +92,6 @@ import mchorse.mappet.network.server.npc.ServerHandlerNpcTool;
 import mchorse.mappet.network.server.quests.ServerHandlerQuestAction;
 import mchorse.mappet.network.server.quests.ServerHandlerQuestVisibility;
 import mchorse.mappet.network.server.scripts.ServerHandlerClick;
-import mchorse.mappet.network.server.scripts.ServerHandlerPlayerSkin;
 import mchorse.mappet.network.server.scripts.ServerHandlerRepl;
 import mchorse.mappet.network.server.ui.ServerHandlerUI;
 import mchorse.mappet.network.server.ui.ServerHandlerUIData;
@@ -181,7 +179,6 @@ public class Dispatcher
             this.register(PacketClick.class, ServerHandlerClick.class, Side.SERVER);
             this.register(PacketRepl.class, ClientHandlerRepl.class, Side.CLIENT);
             this.register(PacketRepl.class, ServerHandlerRepl.class, Side.SERVER);
-            this.register(PacketPlayerSkin.class, ServerHandlerPlayerSkin.class, Side.SERVER);
             this.register(PacketSound.class, ClientHandlerSound.class, Side.CLIENT);
             this.register(PacketWorldMorph.class, ClientHandlerWorldMorph.class, Side.CLIENT);
 

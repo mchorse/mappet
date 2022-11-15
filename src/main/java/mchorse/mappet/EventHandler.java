@@ -22,10 +22,12 @@ import mchorse.mappet.network.common.events.PacketEventHotkeys;
 import mchorse.mappet.network.common.quests.PacketQuest;
 import mchorse.mappet.network.common.quests.PacketQuests;
 import mchorse.mappet.network.common.scripts.PacketClick;
-import mchorse.mappet.network.common.scripts.PacketPlayerSkin;
 import mchorse.mappet.utils.ScriptUtils;
+import mchorse.mclib.utils.ReflectionUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -101,6 +103,8 @@ public class EventHandler
      * triggering the player respawn trigger when player logs in)
      */
     private Set<UUID> loggedInPlayers = new HashSet<UUID>();
+
+    private int skinCounter;
 
     private static boolean isMohist()
     {
@@ -665,14 +669,50 @@ public class EventHandler
     {
         RenderingHandler.update();
 
-        if (!RegisterHandler.sentSkin)
-        {
-            Dispatcher.sendToServer(new PacketPlayerSkin(Minecraft.getMinecraft().player.getLocationSkin().toString()));
+        KeyboardHandler.updateHeldKeys();
+    }
 
-            RegisterHandler.sentSkin = true;
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void onRenderTick(TickEvent.RenderTickEvent event)
+    {
+        if (event.phase == TickEvent.Phase.START)
+        {
+            if (this.skinCounter >= 50)
+            {
+                this.updateSkins();
+
+                this.skinCounter = 0;
+            }
+
+            this.skinCounter += 1;
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    private void updateSkins()
+    {
+        Minecraft mc = Minecraft.getMinecraft();
+
+        if (mc.world == null)
+        {
+            return;
         }
 
-        KeyboardHandler.updateHeldKeys();
+        Map<ResourceLocation, ITextureObject> map = ReflectionUtils.getTextures(mc.renderEngine);
+
+        for (ResourceLocation location : map.keySet())
+        {
+            if (location.getResourceDomain().equals("mp.skins"))
+            {
+                EntityPlayer player = mc.world.getPlayerEntityByName(location.getResourcePath());
+
+                if (player instanceof EntityPlayerSP)
+                {
+                    map.put(location, map.get(((EntityPlayerSP) player).getLocationSkin()));
+                }
+            }
+        }
     }
 
     @SubscribeEvent

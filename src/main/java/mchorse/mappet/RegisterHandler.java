@@ -37,8 +37,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class RegisterHandler
 {
-    public static boolean sentSkin;
-
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public void onClientConnect(FMLNetworkEvent.ClientConnectedToServerEvent event)
@@ -63,8 +61,6 @@ public class RegisterHandler
     @SideOnly(Side.CLIENT)
     public void onClientDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event)
     {
-        sentSkin = false;
-
         Mappet.quests = null;
         Mappet.crafting = null;
         Mappet.events = null;
