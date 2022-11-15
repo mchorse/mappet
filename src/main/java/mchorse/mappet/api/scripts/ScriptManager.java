@@ -139,9 +139,16 @@ public class ScriptManager extends BaseManager<Script>
             return set;
         }
 
+        this.recursiveFind(set, this.folder, "");
+
         for (File file : this.folder.listFiles())
         {
             String name = file.getName();
+
+            if (!name.endsWith(".json"))
+            {
+                continue;
+            }
 
             if (file.isFile() && this.isData(file))
             {
@@ -276,7 +283,7 @@ public class ScriptManager extends BaseManager<Script>
         }
 
 
-        return new File(this.folder, id);
+        return new File(this.folder, id.lastIndexOf(".") != -1 ? id : id + ".js");
     }
 
     public void initiateAllScripts()
