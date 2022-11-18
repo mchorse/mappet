@@ -129,7 +129,7 @@ public class GuiStringFolderList extends GuiStringListElement
                     files.add(path.substring(0, i + 1));
                 }
             }
-            else if (path.startsWith(this.path) && path.indexOf('/') > 0)
+            else if (path.startsWith(this.path + '/') && path.indexOf('/') > 0)
             {
                 String newPath = path.substring(this.path.length() + 1);
                 int index = newPath.indexOf('/');
@@ -175,16 +175,6 @@ public class GuiStringFolderList extends GuiStringListElement
             this.sort();
             this.setCurrentFile(path);
         }
-    }
-
-    public void addFolder(File folder, String path)
-    {
-        folder.toPath().resolve(path).toFile().mkdirs();
-
-        String folderName = path + "/";
-        this.hierarchy.add(folderName);
-        this.setCurrentFile(path);
-        this.sort();
     }
 
     /**

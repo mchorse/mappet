@@ -1,14 +1,13 @@
 package mchorse.mappet.network.server.content;
 
 import mchorse.mappet.api.utils.manager.IManager;
-import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.content.PacketContentFolder;
 import mchorse.mappet.network.common.content.PacketContentNames;
-import mchorse.mappet.utils.CurrentSession;
 import mchorse.mclib.network.ServerMessageHandler;
 import net.minecraft.entity.player.EntityPlayerMP;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +22,19 @@ public class ServerHandlerContentFolder extends ServerMessageHandler<PacketConte
         Path folder = manager.getFolder().toPath();
         if (message.rename != null && message.path.length() > 0)
         {
-            folder.resolve(message.path).toFile().renameTo(folder.resolve(message.rename).toFile());
+            int lastIndex = message.path.lastIndexOf('/');
+            String newPath = lastIndex == -1 ? "" + message.rename : message.path.substring(0, lastIndex + 1) + message.rename;
+            folder.resolve(message.path).toFile().renameTo(folder.resolve(newPath).toFile());
         }
         else if (message.delete && message.path.length() > 0)
         {
-            folder.resolve(message.path).toFile().delete();
+            File deleteFolder = folder.resolve(message.path).toFile();
+
+            for(File f: deleteFolder.listFiles())
+            {
+                f.delete();
+            }
+            deleteFolder.delete();
         }
         else
         {
