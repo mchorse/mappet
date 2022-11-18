@@ -10,6 +10,7 @@ import mchorse.mappet.client.gui.nodes.GuiNodePanel;
 import mchorse.mappet.client.gui.nodes.quests.GuiQuestNodePanel;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
+import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 
@@ -23,6 +24,8 @@ public class GuiQuestChainPanel extends GuiMappetDashboardPanel<QuestChain>
     public GuiQuestChainPanel(Minecraft mc, GuiMappetDashboard dashboard)
     {
         super(mc, dashboard);
+
+        this.namesList.setFileIcon(Icons.COPY);
 
         this.graph = new GuiNodeGraph<QuestNode>(mc, CommonProxy.getChains(), this::pickNode);
         this.graph.flex().relative(this.editor).wh(1F, 1F);

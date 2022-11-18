@@ -69,6 +69,8 @@ public class GuiFactionPanel extends GuiMappetDashboardPanel<Faction>
     {
         super(mc, dashboard);
 
+        this.namesList.setFileIcon(Icons.BOOKMARK);
+
         this.title = new GuiTextElement(mc, 1000, (t) -> this.data.title = t);
         this.visible = new GuiCheckerElement(mc);
         this.color = new GuiColorElement(mc, (c) -> this.data.color = c);

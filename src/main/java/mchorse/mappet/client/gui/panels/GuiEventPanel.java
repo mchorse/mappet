@@ -33,6 +33,7 @@ import mchorse.mappet.client.gui.nodes.events.GuiTimerNodePanel;
 import mchorse.mappet.client.gui.nodes.events.GuiTriggerNodePanel;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
+import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -74,6 +75,8 @@ public class GuiEventPanel extends GuiMappetRunPanel<NodeSystem<EventBaseNode>>
     public GuiEventPanel(Minecraft mc, GuiMappetDashboard dashboard)
     {
         super(mc, dashboard);
+
+        this.namesList.setFileIcon(Icons.FILE);
 
         this.graph = new GuiEventNodeGraph(mc, CommonProxy.getEvents(), this::pickNode);
         this.graph.notifyAboutMain().flex().relative(this.editor).wh(1F, 1F);
