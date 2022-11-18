@@ -1,3 +1,15 @@
+## Version 0.2.4
+
+This update is brought to you by TorayLife and McHorse.
+
+**Compatible** with McLib **2.4.1**, Blockbuster **2.6** and Metamorph **1.3.1**. It doesn't mean that future versions of McLib, Blockbuster and Metamorph would be incompatible, but older versions are most likely incompatible.
+
+* Added support for any Java scripting engine. This means that scripts can be written in any language for which there is an engine. You can search for your language by `java <language> scripting engine`. Mappet itself will determine which engine to use by file extension. (`js` - `javascript`, `kts` - `Kotlin Script`, etc).
+* Added the ability to customize the syntax highlighting in the script editor. Use the files in the `config/mappet/highlights/` directory to customize it. Files for js and kts extensions are supplied by default.
+* Added a special error text if no script engine is found.
+* The `unique` toggle for scripts is now enabled by default.
+* Added a folder system for events, dialogues, quests, scripts. etc. Use RMB on the file add, rename, remove icons for new functionality. (May contain bugs)
+
 ## Version 0.2.3
 
 This patch is required to work with McLib 2.4.1 and Blockbuster 2.6. Also, Ukrainian translation was added.
