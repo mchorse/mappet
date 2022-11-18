@@ -22,6 +22,14 @@ public class PacketContentData extends PacketContentBase
     {
         super(type);
 
+        if (type.equals(ContentType.SCRIPTS))
+        {
+            if (name.lastIndexOf(".") == -1)
+            {
+                name = name + ".js";
+            }
+        }
+
         this.name = name;
     }
 
