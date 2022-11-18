@@ -214,6 +214,13 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
 
     protected void addNewData(String name, T data)
     {
+        if (this.getType().equals(ContentType.SCRIPTS))
+        {
+            if (name.lastIndexOf(".") == -1)
+            {
+                name = name + ".js";
+            }
+        }
         if (!this.namesList.hasInHierarchy(name))
         {
             this.save();
@@ -256,7 +263,8 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
 
     private void renameFolder(String name)
     {
-        Dispatcher.sendToServer(new PacketContentFolder(this.getType(), "", this.namesList.getPath("")).rename(name));
+        String path = this.namesList.getPath("");
+        Dispatcher.sendToServer(new PacketContentFolder(this.getType(), "", path.substring(0, path.length() - 1)).rename(name));
     }
 
     private void removeFolder()
@@ -268,7 +276,8 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
     {
         if(isDelete)
         {
-            Dispatcher.sendToServer(new PacketContentFolder(this.getType(), "", this.namesList.getPath("")).delete());
+            String path = this.namesList.getPath("");
+            Dispatcher.sendToServer(new PacketContentFolder(this.getType(), "", path.substring(0, path.length() - 1)).delete());
         }
     }
 
@@ -292,7 +301,15 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
 
     protected void dupeData(String name)
     {
-        if (this.data != null && !this.namesList.getList().contains(name))
+        if (this.getType().equals(ContentType.SCRIPTS))
+        {
+            if (name.lastIndexOf(".") == -1)
+            {
+                name = name + ".js";
+            }
+        }
+
+        if (!this.namesList.hasInHierarchy(name))
         {
             this.save();
 
@@ -317,21 +334,35 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
         {
             GuiPromptModal promptModal = new GuiPromptModal(this.mc, IKey.lang("mappet.gui.panels.modals.rename"), this::renameData);
 
-            return promptModal.setValue(this.data.getId()).filename();
+            return promptModal.setValue(this.data.getId().substring(this.data.getId().lastIndexOf('/') + 1)).filename();
         });
     }
 
     protected void renameData(String name)
     {
-        if (this.data != null && !this.namesList.getList().contains(name))
+        if (!this.namesList.hasInHierarchy(name))
         {
-            Dispatcher.sendToServer(new PacketContentData(this.getType(), this.data.getId(), this.data.serializeNBT()).rename(name));
+            String path = this.getDataPath();
+            Dispatcher.sendToServer(new PacketContentData(this.getType(), this.data.getId(), this.data.serializeNBT()).rename(path + name));
 
             this.namesList.removeFile(this.data.getId());
-            this.namesList.addFile(name);
+            this.namesList.addFile(path + name);
 
-            this.data.setId(name);
+            this.data.setId(path + name);
         }
+    }
+
+    protected String getDataPath()
+    {
+        String output = "";
+        int index = this.data.getId().lastIndexOf('/');
+
+        if (index != -1)
+        {
+            output = this.data.getId().substring(0, index + 1);
+        }
+
+        return output;
     }
 
     protected void removeData(GuiIconElement element)
