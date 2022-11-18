@@ -97,17 +97,33 @@ public abstract class FolderManager <T extends AbstractData> implements IManager
             return set;
         }
 
-        for (File file : this.folder.listFiles())
+        this.recursiveFind(set, this.folder, "");
+
+        return set;
+    }
+
+    protected void recursiveFind(Set<String> set, File folder, String prefix)
+    {
+        for (File file : folder.listFiles())
         {
             String name = file.getName();
 
-            if (file.isFile() && this.isData(file))
+            if (file.isFile() && name.endsWith(".json"))
             {
-                set.add(name.substring(0, name.lastIndexOf(".")));
+                set.add(prefix + name.replace(".json", ""));
+            }
+            else if (file.isDirectory())
+            {
+                if (file.listFiles().length > 0)
+                {
+                    this.recursiveFind(set, file, prefix + name + "/");
+                }
+                else
+                {
+                    set.add(prefix + name + "/");
+                }
             }
         }
-
-        return set;
     }
 
     protected boolean isData(File file)
@@ -123,6 +139,11 @@ public abstract class FolderManager <T extends AbstractData> implements IManager
         }
 
         return new File(this.folder, name + this.getExtension());
+    }
+
+    public File getFolder()
+    {
+        return this.folder;
     }
 
     protected String getExtension()
