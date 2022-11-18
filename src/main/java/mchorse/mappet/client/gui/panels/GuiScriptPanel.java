@@ -186,6 +186,8 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
     {
         super(mc, dashboard);
 
+        this.namesList.setFileIcon(MMIcons.PROPERTIES);
+
         this.toggleRepl = new GuiIconElement(mc, MPIcons.REPL, (b) -> this.setRepl(!this.repl.isVisible()));
         this.toggleRepl.tooltip(IKey.lang("mappet.gui.scripts.repl.title"), Direction.LEFT);
         this.docs = new GuiIconElement(mc, Icons.HELP, this::openDocumentation);

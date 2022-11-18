@@ -29,6 +29,8 @@ public class GuiNpcPanel extends GuiMappetDashboardPanel<Npc>
     {
         super(mc, dashboard);
 
+        this.namesList.setFileIcon(Icons.PROCESSOR);
+
         this.states = new GuiIconElement(mc, Icons.MORE, (b) -> this.openNpcStates());
         this.states.flex().relative(this);
 

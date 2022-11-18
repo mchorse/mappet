@@ -13,6 +13,7 @@ import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.Elements;
+import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -31,6 +32,8 @@ public class GuiDialoguePanel extends GuiMappetRunPanel<Dialogue>
     public GuiDialoguePanel(Minecraft mc, GuiMappetDashboard dashboard)
     {
         super(mc, dashboard);
+
+        this.namesList.setFileIcon(Icons.BUBBLE);
 
         this.graph = new GuiEventNodeGraph(mc, CommonProxy.getDialogues(), this::pickNode);
         this.graph.notifyAboutMain().flex().relative(this.editor).wh(1F, 1F);

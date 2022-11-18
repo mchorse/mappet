@@ -14,6 +14,7 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.metamorph.util.MMIcons;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 
@@ -33,6 +34,8 @@ public class GuiCraftingTablePanel extends GuiMappetRunPanel<CraftingTable>
     public GuiCraftingTablePanel(Minecraft mc, GuiMappetDashboard dashboard)
     {
         super(mc, dashboard);
+
+        this.namesList.setFileIcon(Icons.WRENCH);
 
         this.title = new GuiTextElement(mc, 1000, (text) -> this.data.title = text);
         this.action = new GuiTextElement(mc, 1000, (text) -> this.data.action = text);

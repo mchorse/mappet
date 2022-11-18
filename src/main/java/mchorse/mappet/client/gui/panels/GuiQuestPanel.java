@@ -41,6 +41,8 @@ public class GuiQuestPanel extends GuiMappetRunPanel<Quest>
     {
         super(mc, dashboard);
 
+        this.namesList.setFileIcon(Icons.EXCLAMATION);
+
         this.title = new GuiTextElement(mc, 1000, (text) -> this.data.title = text);
         this.story = new GuiMultiTextElement<TextLine>(mc, (text) -> this.data.story = text);
         this.story.wrap().background().padding(6).flex().h(120);
