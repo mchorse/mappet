@@ -221,8 +221,14 @@ mappet.gui.panels.modals.add=輸入名稱:
 mappet.gui.panels.modals.dupe=為副本輸入名稱：
 mappet.gui.panels.modals.rename=輸入新名稱：
 mappet.gui.panels.modals.remove=您確定要移除它嗎？
+mappet.gui.panels.modals.addFolder=Type in a folder name:
+mappet.gui.panels.modals.renameFolder=Type in a new folder name:
+mappet.gui.panels.modals.removeFolder=Are you sure you want to remove this folder?
 mappet.gui.panels.context.copy=拷貝
 mappet.gui.panels.context.paste=粘貼...
+mappet.gui.panels.context.addFolder=Add folder
+mappet.gui.panels.context.renameFolder=Rename folder
+mappet.gui.panels.context.removeFolder=Remove folder
 mappet.gui.panels.keys.category=Mappet 面板快捷鍵
 mappet.gui.panels.keys.toggle_sidebar=開關側邊欄
 

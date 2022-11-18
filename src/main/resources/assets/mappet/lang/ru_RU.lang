@@ -221,8 +221,14 @@ mappet.gui.panels.modals.add=Впишите название:
 mappet.gui.panels.modals.dupe=Впишите новое название для дубликата:
 mappet.gui.panels.modals.rename=Впишите новое название:
 mappet.gui.panels.modals.remove=Вы уверены, что хотите это удалить?
+mappet.gui.panels.modals.addFolder=Впишите название папки:
+mappet.gui.panels.modals.renameFolder=Впишите новое название папки:
+mappet.gui.panels.modals.removeFolder=Вы уверены, что хотите удалить эту папку?
 mappet.gui.panels.context.copy=Скопировать
 mappet.gui.panels.context.paste=Вставить...
+mappet.gui.panels.context.addFolder=Добавить папку
+mappet.gui.panels.context.renameFolder=Переименовать папку
+mappet.gui.panels.context.removeFolder=Удалить папку
 mappet.gui.panels.keys.category=Клавиши панели Маппета
 mappet.gui.panels.keys.toggle_sidebar=Вкл/Выкл боковое меню
 
