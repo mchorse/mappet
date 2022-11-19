@@ -265,6 +265,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
     {
         String path = this.namesList.getPath("");
         Dispatcher.sendToServer(new PacketContentFolder(this.getType(), "", path.substring(0, path.length() - 1)).rename(name));
+        this.fill(null);
     }
 
     private void removeFolder()
