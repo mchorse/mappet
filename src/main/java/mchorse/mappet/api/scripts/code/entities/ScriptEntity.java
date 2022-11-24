@@ -1,10 +1,12 @@
 package mchorse.mappet.api.scripts.code.entities;
 
 import mchorse.mappet.api.scripts.code.ScriptRayTrace;
+import mchorse.mappet.api.scripts.code.ScriptWorld;
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
 import mchorse.mappet.api.scripts.code.mappet.MappetStates;
 import mchorse.mappet.api.scripts.code.nbt.ScriptNBTCompound;
 import mchorse.mappet.api.scripts.user.IScriptRayTrace;
+import mchorse.mappet.api.scripts.user.IScriptWorld;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
@@ -326,9 +328,11 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Override
     public void setTarget(IScriptEntity entity)
     {
-        if (this.entity instanceof EntityLiving && entity != null && entity.isLivingBase())
+        if (this.entity instanceof EntityLiving)
         {
-            ((EntityLiving) this.entity).setAttackTarget((EntityLivingBase) entity.getMinecraftEntity());
+            EntityLivingBase target = entity != null && entity.isLivingBase() ? (EntityLivingBase) entity.getMinecraftEntity() : null;
+
+            ((EntityLiving) this.entity).setAttackTarget(target);
         }
     }
 
@@ -607,5 +611,11 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
         {
             Dispatcher.sendTo(message, (EntityPlayerMP) this.entity);
         }
+    }
+
+    @Override
+    public IScriptWorld getWorld()
+    {
+        return new ScriptWorld(this.entity.world);
     }
 }
