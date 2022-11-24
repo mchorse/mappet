@@ -153,7 +153,7 @@ public interface IScriptPlayer extends IScriptEntity
      * <pre>{@code
      *    var player = c.getSubject();
      *
-     *    player.sendTitleDuration(5, 10, 5);
+     *    player.sendTitleDurations(5, 10, 5);
      *    player.sendTitle("Quick!");
      *    player.sendSubtitle("Get into cover!");
      * }</pre>
