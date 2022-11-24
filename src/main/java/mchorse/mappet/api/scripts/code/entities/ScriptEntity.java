@@ -84,6 +84,11 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Override
     public void setPosition(double x, double y, double z)
     {
+        if (Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(z))
+        {
+            throw new IllegalArgumentException();
+        }
+
         this.entity.setPositionAndUpdate(x, y, z);
     }
 
@@ -110,6 +115,11 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Override
     public void setRotations(float pitch, float yaw, float yawHead)
     {
+        if (Float.isNaN(pitch) || Float.isNaN(yaw) || Float.isNaN(yawHead))
+        {
+            throw new IllegalArgumentException();
+        }
+
         this.entity.setLocationAndAngles(this.entity.posX, this.entity.posY, this.entity.posZ, yaw, pitch);
         this.entity.setRotationYawHead(yawHead);
 
