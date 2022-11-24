@@ -96,8 +96,13 @@ public class Highlighters
             jsHighlighter.functionName = Pattern.compile("[\\w_][\\d\\w_]*", Pattern.CASE_INSENSITIVE);
 
             writeHighlighter(js, jsHighlighter);
-            defaultHighlighter = jsHighlighter;
+            Highlighters.defaultHighlighter = jsHighlighter;
         }
+        else
+        {
+            Highlighters.defaultHighlighter = Highlighters.readHighlighter(Highlighters.highlighterFile("js.json"));
+        }
+
 
         if (!kts.isFile())
         {
