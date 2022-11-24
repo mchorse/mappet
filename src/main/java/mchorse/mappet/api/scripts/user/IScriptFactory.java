@@ -492,7 +492,7 @@ public interface IScriptFactory
      * <pre>{@code
      *    var morph = mappet.createMorph("{Name:\"blockbuster.alex\"}");
      *
-     *    c.send(mapppet.dump(morph));
+     *    c.send(mappet.dump(morph));
      * }</pre>
      */
     public default String dump(Object object)
@@ -507,7 +507,7 @@ public interface IScriptFactory
      * <pre>{@code
      *    var morph = mappet.createMorph("{Name:\"blockbuster.alex\"}");
      *
-     *    c.send(mapppet.dump(morph, true));
+     *    c.send(mappet.dump(morph, true));
      * }</pre>
      *
      * @param simple Whether you want to see simple or full information about
