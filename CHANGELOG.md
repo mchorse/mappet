@@ -9,6 +9,9 @@ This update is brought to you by TorayLife and McHorse.
 * Added a special error text if no script engine is found.
 * The `unique` toggle for scripts is now enabled by default.
 * Added a folder system for events, dialogues, quests, scripts. etc. Use RMB on the file add, rename, remove icons for new functionality. (May contain bugs)
+* Added an error when trying to set a position or rotation for an entity as NaN
+* Added `IScriptEntity.getWorld()`
+* Allow `IScriptEntity.setTarget(null)`
 
 ## Version 0.2.3
 
