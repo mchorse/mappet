@@ -2,6 +2,7 @@ package mchorse.mappet.api.scripts.user.entities;
 
 import mchorse.mappet.api.scripts.user.IScriptFactory;
 import mchorse.mappet.api.scripts.user.IScriptRayTrace;
+import mchorse.mappet.api.scripts.user.IScriptWorld;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
@@ -650,4 +651,15 @@ public interface IScriptEntity
      * @param rotate Whether attached world morph should replicate entity's rotation (i.e. copy head rotation).
      */
     public void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, float yaw, float pitch, boolean rotate);
+
+    /**
+     * Get entity's world.
+     * <pre>{@code
+     *    var s = c.getSubject();
+     *    var world = s.getWorld();
+     *
+     *    world.setRaining(true);
+     * }</pre>
+     */
+    public IScriptWorld getWorld();
 }
