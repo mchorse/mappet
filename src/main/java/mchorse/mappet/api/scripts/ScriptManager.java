@@ -46,7 +46,7 @@ public class ScriptManager extends BaseManager<Script>
 
         if (engine == null)
         {
-            engine = ScriptUtils.sanitize(ScriptUtils.getEngineByExtension(".js"));
+            engine = ScriptUtils.sanitize(ScriptUtils.getEngineByExtension("js"));
 
             DataContext context = null;
 
