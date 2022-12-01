@@ -1,6 +1,7 @@
 package mchorse.mappet.utils;
 
 import mchorse.mappet.CommonProxy;
+import mchorse.mappet.api.scripts.Script;
 import net.minecraft.launchwrapper.Launch;
 import org.apache.commons.io.FileUtils;
 
@@ -36,9 +37,19 @@ public class ScriptUtils
 
     public static ScriptEngine getEngineByExtension(String extension)
     {
-        return ScriptUtils.getAllEngines().stream()
-                .filter(engine -> engine.getFactory().getExtensions().contains(extension))
-                .findAny().orElse(null);
+        List<ScriptEngine> engines = ScriptUtils.getAllEngines();
+
+        for (ScriptEngine engine : engines)
+        {
+            List<String> extensions = engine.getFactory().getExtensions();
+
+            if (extensions.contains(extension.replace(".","")))
+            {
+                return engine;
+            }
+        }
+
+        return null;
     }
 
     /**
