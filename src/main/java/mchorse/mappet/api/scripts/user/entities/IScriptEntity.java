@@ -654,6 +654,7 @@ public interface IScriptEntity
 
     /**
      * Get entity's world.
+     *
      * <pre>{@code
      *    var s = c.getSubject();
      *    var world = s.getWorld();
