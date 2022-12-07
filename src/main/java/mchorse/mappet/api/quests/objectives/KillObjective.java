@@ -13,6 +13,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class KillObjective extends AbstractObjective
 {
+    public static final ResourceLocation PLAYER_ID = new ResourceLocation("minecraft:player");
+
     public ResourceLocation entity = new ResourceLocation("");
     public NBTTagCompound tag;
     public int count;
@@ -29,7 +31,9 @@ public class KillObjective extends AbstractObjective
 
     public void playerKilled(EntityPlayer player, Entity mob)
     {
-        if (this.entity.equals(EntityList.getKey(mob)))
+        boolean isPlayer = mob instanceof EntityPlayer && this.entity.equals(PLAYER_ID);
+
+        if (this.entity.equals(EntityList.getKey(mob)) || isPlayer)
         {
             if (!this.compareTag(mob))
             {
