@@ -49,7 +49,7 @@ public class GuiCraftingRecipe extends GuiElement
         {
             column.add(Elements.label(IKey.lang("mappet.gui.crafting.input")).marginTop(12), this.createItems(mc, recipe.input));
         }
-        
+
         output.flex().w(recipe.output.size() > 1 ? 44 : 20);
 
         this.add(Elements.row(mc, 5, column, output));
