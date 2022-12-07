@@ -22,6 +22,7 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDrawable;
 import mchorse.mclib.client.gui.mclib.GuiDashboardPanel;
+import mchorse.mclib.client.gui.utils.GuiUtils;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
@@ -29,6 +30,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
+import org.apache.commons.io.FilenameUtils;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
@@ -76,28 +78,37 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
 
             menu.action(Icons.ADD, IKey.lang("mappet.gui.panels.context.add_folder"), this::addFolder);
 
-            return menu.actions.getList().isEmpty() ? null : menu.shadow();
+            return menu.shadow();
         });
         this.dupe = new GuiIconElement(mc, Icons.DUPE, this::dupeData);
         this.rename = new GuiIconElement(mc, Icons.EDIT, this::renameData);
         this.rename.context(() ->
         {
+            if (this.namesList.getPath().isEmpty())
+            {
+                return null;
+            }
+
             GuiSimpleContextMenu menu = new GuiSimpleContextMenu(mc);
 
             menu.action(Icons.EDIT, IKey.lang("mappet.gui.panels.context.rename_folder"), this::renameFolder);
 
-            return menu.actions.getList().isEmpty() ? null : menu.shadow();
+            return menu.shadow();
         });
         this.remove = new GuiIconElement(mc, Icons.REMOVE, this::removeData);
         this.remove.context(() ->
         {
+            if (this.namesList.getPath().isEmpty())
+            {
+                return null;
+            }
+
             GuiSimpleContextMenu menu = new GuiSimpleContextMenu(mc);
 
             menu.action(Icons.REMOVE, IKey.lang("mappet.gui.panels.context.remove_folder"), this::removeFolder);
 
-            return menu.actions.getList().isEmpty() ? null : menu.shadow();
+            return menu.shadow();
         });
-
 
         GuiDrawable drawable = new GuiDrawable((context) -> this.font.drawStringWithShadow(I18n.format(this.getTitle()), this.names.area.x, this.area.y + 10, 0xffffff));
 
@@ -125,6 +136,16 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
             }
             catch (Exception e)
             {}
+
+            if (mc.isSingleplayer())
+            {
+                menu.action(Icons.FOLDER, IKey.lang("mappet.gui.panels.context.open_folder"), () ->
+                {
+                    String path = this.getType().getManager().getFolder().getAbsolutePath() + "/" + this.namesList.getPath();
+
+                    GuiUtils.openFolder(path);
+                });
+            }
 
             return menu.actions.getList().isEmpty() ? null : menu.shadow();
         });
@@ -249,7 +270,14 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
 
     private void renameFolder()
     {
-        GuiModal.addFullModal(this.sidebar, () -> new GuiPromptModal(this.mc, IKey.lang("mappet.gui.panels.modals.rename_folder"), this::renameFolder).filename());
+        if (this.namesList.getPath().isEmpty())
+        {
+            return;
+        }
+
+        String name = FilenameUtils.getBaseName(this.namesList.getPath());
+
+        GuiModal.addFullModal(this.sidebar, () -> new GuiPromptModal(this.mc, IKey.lang("mappet.gui.panels.modals.rename_folder"), this::renameFolder).filename().setValue(name));
     }
 
     private void renameFolder(String name)
@@ -262,6 +290,11 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
 
     private void removeFolder()
     {
+        if (!this.namesList.getPath().isEmpty())
+        {
+            return;
+        }
+
         GuiModal.addFullModal(this.sidebar, () -> new GuiConfirmModal(this.mc, IKey.lang("mappet.gui.panels.modals.remove_folder"), this::removeFolder));
     }
 

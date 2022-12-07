@@ -6,11 +6,8 @@ import mchorse.mclib.client.gui.utils.Icons;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,7 +17,6 @@ public class GuiStringFolderList extends GuiStringListElement
 {
     public GuiStringFolderList(Minecraft mc, Consumer<List<String>> callback)
     {
-
         super(mc, callback);
 
         this.callback = (l) -> this.fileCallback(callback, l);
@@ -76,6 +72,11 @@ public class GuiStringFolderList extends GuiStringListElement
     public void setFileIcon(Icon icon)
     {
         this.fileIcon = icon;
+    }
+
+    public String getPath()
+    {
+        return this.path;
     }
 
     public String getPath(String name)

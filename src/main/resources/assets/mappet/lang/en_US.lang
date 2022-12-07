@@ -226,6 +226,7 @@ mappet.gui.panels.modals.rename_folder=Type in a new folder name:
 mappet.gui.panels.modals.remove_folder=Are you sure you want to remove this folder?
 mappet.gui.panels.context.copy=Copy
 mappet.gui.panels.context.paste=Paste...
+mappet.gui.panels.context.open_folder=Open folder...
 mappet.gui.panels.context.add_folder=Add folder
 mappet.gui.panels.context.rename_folder=Rename folder
 mappet.gui.panels.context.remove_folder=Remove folder

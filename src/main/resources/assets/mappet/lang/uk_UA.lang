@@ -219,6 +219,7 @@ mappet.gui.panels.modals.rename_folder=Впишіть нову назву пап
 mappet.gui.panels.modals.remove_folder=Ви впевнені, що хочете видалити цю папку?
 mappet.gui.panels.context.copy=Скопіювати
 mappet.gui.panels.context.paste=Вставити...
+mappet.gui.panels.context.open_folder=Відкрити папку...
 mappet.gui.panels.context.add_folder=Додати папку
 mappet.gui.panels.context.rename_folder=Перейменувати папку
 mappet.gui.panels.context.remove_folder=Видалити папку
