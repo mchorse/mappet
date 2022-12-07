@@ -61,7 +61,7 @@ public class GuiUserInterface extends GuiBase
             this.context.sendToPlayer();
         }
 
-        Dispatcher.sendToServer(new PacketUI());
+        Dispatcher.sendToServer(new PacketUI(new UI(this.context.ui.getUIId())));
     }
 
     @Override

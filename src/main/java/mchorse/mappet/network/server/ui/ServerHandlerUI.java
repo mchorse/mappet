@@ -16,7 +16,10 @@ public class ServerHandlerUI extends ServerMessageHandler<PacketUI>
         ICharacter character = Character.get(player);
         UIContext context = character.getUIContext();
 
-        context.close();
-        character.setUIContext(null);
+        if (context != null && context.ui.getUIId().equals(message.ui.getUIId()))
+        {
+            context.close();
+            character.setUIContext(null);
+        }
     }
 }

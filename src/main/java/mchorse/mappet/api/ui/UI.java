@@ -4,18 +4,38 @@ import mchorse.mappet.api.ui.utils.UIRootComponent;
 import mchorse.mappet.api.utils.AbstractData;
 import net.minecraft.nbt.NBTTagCompound;
 
+import java.util.UUID;
+
 public class UI extends AbstractData
 {
+    private UUID id;
+
     public UIRootComponent root = new UIRootComponent();
     public boolean background;
     public boolean closable = true;
     public boolean paused;
+
+    public UI()
+    {
+        this(UUID.randomUUID());
+    }
+
+    public UI(UUID id)
+    {
+        this.id = id;
+    }
+
+    public UUID getUIId()
+    {
+        return this.id;
+    }
 
     @Override
     public NBTTagCompound serializeNBT()
     {
         NBTTagCompound tag = new NBTTagCompound();
 
+        tag.setUniqueId("ID", this.id);
         tag.setTag("Root", this.root.serializeNBT());
         tag.setBoolean("Background", this.background);
         tag.setBoolean("Closeable", this.closable);
@@ -28,6 +48,11 @@ public class UI extends AbstractData
     public void deserializeNBT(NBTTagCompound tag)
     {
         this.root.deserializeNBT(tag.getCompoundTag("Root"));
+
+        if (tag.hasKey("IDMost"))
+        {
+            this.id = tag.getUniqueId("ID");
+        }
 
         if (tag.hasKey("Background"))
         {

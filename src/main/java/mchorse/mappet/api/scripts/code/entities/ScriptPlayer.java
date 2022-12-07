@@ -326,26 +326,27 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
         MappetUIBuilder builder = (MappetUIBuilder) in;
 
         ICharacter character = Character.get(this.entity);
+        boolean noContext = character.getUIContext() == null;
 
-        if (character.getUIContext() == null)
+        if (!noContext)
         {
-            UI ui = builder.getUI();
-            UIContext context = new UIContext(ui, this.entity, builder.getScript(), builder.getFunction());
-
-            character.setUIContext(context);
-            Dispatcher.sendTo(new PacketUI(ui), this.getMinecraftPlayer());
-
-            if (defaultData)
-            {
-                context.populateDefaultData();
-            }
-
-            context.clearChanges();
-
-            return true;
+            character.getUIContext().close();
         }
 
-        return false;
+        UI ui = builder.getUI();
+        UIContext context = new UIContext(ui, this.entity, builder.getScript(), builder.getFunction());
+
+        character.setUIContext(context);
+        Dispatcher.sendTo(new PacketUI(ui), this.getMinecraftPlayer());
+
+        if (defaultData)
+        {
+            context.populateDefaultData();
+        }
+
+        context.clearChanges();
+
+        return noContext;
     }
 
     @Override
