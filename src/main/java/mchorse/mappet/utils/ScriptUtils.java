@@ -61,7 +61,7 @@ public class ScriptUtils
             {
                 if (!engine.eval("true").equals(Boolean.TRUE))
                 {
-                    throw new Exception("Something went wrong with "+engine.getFactory().getEngineName());
+                    throw new Exception("Something went wrong with " + engine.getFactory().getEngineName());
                 }
             }
             catch (Exception e)

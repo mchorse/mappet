@@ -101,7 +101,7 @@ public class ScriptManager extends BaseManager<Script>
      */
     public Object execute(String id, String function, DataContext context) throws ScriptException, NoSuchMethodException
     {
-        Script script = getScript(id);
+        Script script = this.getScript(id);
 
         return script == null ? null : script.execute(function, context);
     }

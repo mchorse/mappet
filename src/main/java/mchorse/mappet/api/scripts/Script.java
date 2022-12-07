@@ -52,6 +52,7 @@ public class Script extends AbstractData
 
             this.engine = ScriptUtils.sanitize(this.engine);
             this.engine.getContext().setAttribute("javax.script.filename", this.getId(), ScriptContext.ENGINE_SCOPE);
+            this.engine.getContext().setAttribute("polyglot.js.allowHostAccess", true, ScriptContext.ENGINE_SCOPE);
             Mappet.EVENT_BUS.post(new RegisterScriptVariablesEvent(this.engine));
 
             StringBuilder finalCode = new StringBuilder();
