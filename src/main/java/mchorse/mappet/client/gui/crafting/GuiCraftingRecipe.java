@@ -45,7 +45,11 @@ public class GuiCraftingRecipe extends GuiElement
             column.add(new GuiText(mc).text(TextUtils.processColoredText(recipe.description)).color(0xaaaaaa, true).marginTop(4));
         }
 
-        column.add(Elements.label(IKey.lang("mappet.gui.crafting.input")).marginTop(12), this.createItems(mc, recipe.input));
+        if (!recipe.input.isEmpty())
+        {
+            column.add(Elements.label(IKey.lang("mappet.gui.crafting.input")).marginTop(12), this.createItems(mc, recipe.input));
+        }
+        
         output.flex().w(recipe.output.size() > 1 ? 44 : 20);
 
         this.add(Elements.row(mc, 5, column, output));
