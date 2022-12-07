@@ -74,7 +74,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
         {
             GuiSimpleContextMenu menu = new GuiSimpleContextMenu(mc);
 
-            menu.action(Icons.ADD, IKey.lang("mappet.gui.panels.context.addFolder"), this::addFolder);
+            menu.action(Icons.ADD, IKey.lang("mappet.gui.panels.context.add_folder"), this::addFolder);
 
             return menu.actions.getList().isEmpty() ? null : menu.shadow();
         });
@@ -84,7 +84,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
         {
             GuiSimpleContextMenu menu = new GuiSimpleContextMenu(mc);
 
-            menu.action(Icons.EDIT, IKey.lang("mappet.gui.panels.context.renameFolder"), this::renameFolder);
+            menu.action(Icons.EDIT, IKey.lang("mappet.gui.panels.context.rename_folder"), this::renameFolder);
 
             return menu.actions.getList().isEmpty() ? null : menu.shadow();
         });
@@ -93,7 +93,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
         {
             GuiSimpleContextMenu menu = new GuiSimpleContextMenu(mc);
 
-            menu.action(Icons.REMOVE, IKey.lang("mappet.gui.panels.context.removeFolder"), this::removeFolder);
+            menu.action(Icons.REMOVE, IKey.lang("mappet.gui.panels.context.remove_folder"), this::removeFolder);
 
             return menu.actions.getList().isEmpty() ? null : menu.shadow();
         });
@@ -214,13 +214,6 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
 
     protected void addNewData(String name, T data)
     {
-        if (this.getType().equals(ContentType.SCRIPTS))
-        {
-            if (name.lastIndexOf(".") == -1)
-            {
-                name = name + ".js";
-            }
-        }
         if (!this.namesList.hasInHierarchy(name))
         {
             this.save();
@@ -241,14 +234,12 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
             }
 
             this.fill(data);
-
-
         }
     }
 
     private void addFolder()
     {
-        GuiModal.addFullModal(this.sidebar, () -> new GuiPromptModal(this.mc, IKey.lang("mappet.gui.panels.modals.addFolder"), (name) -> this.addFolder(name)).filename());
+        GuiModal.addFullModal(this.sidebar, () -> new GuiPromptModal(this.mc, IKey.lang("mappet.gui.panels.modals.add_folder"), this::addFolder).filename());
     }
 
     private void addFolder(String name)
@@ -258,24 +249,25 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
 
     private void renameFolder()
     {
-        GuiModal.addFullModal(this.sidebar, () -> new GuiPromptModal(this.mc, IKey.lang("mappet.gui.panels.modals.renameFolder"), (name) -> this.renameFolder(name)).filename());
+        GuiModal.addFullModal(this.sidebar, () -> new GuiPromptModal(this.mc, IKey.lang("mappet.gui.panels.modals.rename_folder"), this::renameFolder).filename());
     }
 
     private void renameFolder(String name)
     {
         String path = this.namesList.getPath("");
+
         Dispatcher.sendToServer(new PacketContentFolder(this.getType(), "", path.substring(0, path.length() - 1)).rename(name));
         this.fill(null);
     }
 
     private void removeFolder()
     {
-        GuiModal.addFullModal(this.sidebar, () -> new GuiConfirmModal(this.mc, IKey.lang("mappet.gui.panels.modals.removeFolder"), (isDelete) -> this.removeFolder(isDelete)));
+        GuiModal.addFullModal(this.sidebar, () -> new GuiConfirmModal(this.mc, IKey.lang("mappet.gui.panels.modals.remove_folder"), this::removeFolder));
     }
 
     private void removeFolder(Boolean isDelete)
     {
-        if(isDelete)
+        if (isDelete)
         {
             String path = this.namesList.getPath("");
             Dispatcher.sendToServer(new PacketContentFolder(this.getType(), "", path.substring(0, path.length() - 1)).delete());
@@ -302,14 +294,6 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
 
     protected void dupeData(String name)
     {
-        if (this.getType().equals(ContentType.SCRIPTS))
-        {
-            if (name.lastIndexOf(".") == -1)
-            {
-                name = name + ".js";
-            }
-        }
-
         if (!this.namesList.hasInHierarchy(name))
         {
             this.save();

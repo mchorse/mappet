@@ -256,6 +256,28 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
     }
 
     @Override
+    protected void addNewData(String name, Script data)
+    {
+        if (name.lastIndexOf(".") == -1)
+        {
+            name = name + ".js";
+        }
+
+        super.addNewData(name, data);
+    }
+
+    @Override
+    protected void dupeData(String name)
+    {
+        if (name.lastIndexOf(".") == -1)
+        {
+            name = name + ".js";
+        }
+
+        super.dupeData(name);
+    }
+
+    @Override
     public ContentType getType()
     {
         return ContentType.SCRIPTS;

@@ -66,7 +66,7 @@ public class GuiLibrariesOverlayPanel extends GuiStringOverlayPanel
                 /**
                  * Checks if library extension don't match script extension
                  */
-                if(!string.endsWith(this.main.substring(this.main.lastIndexOf("."))))
+                if (!string.endsWith(this.main.substring(this.main.lastIndexOf("."))))
                 {
                     names.remove(string);
                 }

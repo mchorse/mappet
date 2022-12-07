@@ -39,11 +39,15 @@ public class NBTUtils
         return list;
     }
 
-    public static String[] getStringArray(NBTTagList list) {
+    public static String[] getStringArray(NBTTagList list)
+    {
         String[] array = new String[list.tagCount()];
-        for(int i = 0; i < list.tagCount(); ++i) {
+
+        for (int i = 0; i < list.tagCount(); i++)
+        {
             array[i] = list.getStringTagAt(i);
         }
+
         return array;
     }
 

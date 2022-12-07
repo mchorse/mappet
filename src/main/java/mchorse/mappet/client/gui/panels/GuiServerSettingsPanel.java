@@ -103,7 +103,7 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
             return title;
         }
 
-        IKey count = IKey.str(" §7(§6"+ trigger.blocks.size() + "§7)§r");
+        IKey count = IKey.str(" §7(§6" + trigger.blocks.size() + "§7)§r");
 
         return IKey.comp(title, count);
     }

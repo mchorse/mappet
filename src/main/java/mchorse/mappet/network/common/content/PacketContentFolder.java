@@ -15,6 +15,7 @@ public class PacketContentFolder extends PacketContentBase
     {
         super();
     }
+
     public PacketContentFolder(ContentType type, String name, String path)
     {
         super(type);
@@ -42,7 +43,6 @@ public class PacketContentFolder extends PacketContentBase
         super.fromBytes(buf);
 
         this.name = ByteBufUtils.readUTF8String(buf);
-
         this.path = ByteBufUtils.readUTF8String(buf);
 
         if (buf.readBoolean())
@@ -59,7 +59,6 @@ public class PacketContentFolder extends PacketContentBase
         super.toBytes(buf);
 
         ByteBufUtils.writeUTF8String(buf, this.name);
-
         ByteBufUtils.writeUTF8String(buf, this.path);
 
         buf.writeBoolean(this.rename != null);

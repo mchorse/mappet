@@ -85,10 +85,10 @@ public class Highlighters
             SyntaxHighlighter jsHighlighter = new SyntaxHighlighter();
             jsHighlighter.operators = ImmutableSet.of("+", "-", "=", "/", "*", "<", ">", "~", "&", "|", "!");
             jsHighlighter.primaryKeywords = ImmutableSet.of(
-                    "break", "continue", "switch", "case", "default", "try",
-                    "catch", "delete", "do", "while", "else", "finally", "if",
-                    "else", "for", "each", "in", "instanceof",
-                    "new", "throw", "typeof", "with", "yield", "return"
+                "break", "continue", "switch", "case", "default", "try",
+                "catch", "delete", "do", "while", "else", "finally", "if",
+                "else", "for", "each", "in", "instanceof",
+                "new", "throw", "typeof", "with", "yield", "return"
             );
             jsHighlighter.secondaryKeywords = ImmutableSet.of("const", "function", "var", "let", "prototype", "Math", "JSON", "mappet");
             jsHighlighter.special = ImmutableSet.of("this", "arguments");
@@ -103,16 +103,15 @@ public class Highlighters
             Highlighters.defaultHighlighter = Highlighters.readHighlighter(Highlighters.highlighterFile("js.json"));
         }
 
-
         if (!kts.isFile())
         {
             SyntaxHighlighter ktsHighlighter = new SyntaxHighlighter();
             ktsHighlighter.operators = ImmutableSet.of("+", "-", "=", "/", "*", "<", ">", "~", "&", "|", "!");
             ktsHighlighter.primaryKeywords = ImmutableSet.of(
-                    "break", "continue", "switch", "case", "default", "try",
-                    "catch", "delete", "do", "while", "else", "finally", "if",
-                    "else", "for", "each", "in", "instanceof",
-                    "new", "throw", "typeof", "with", "yield", "return"
+                "break", "continue", "switch", "case", "default", "try",
+                "catch", "delete", "do", "while", "else", "finally", "if",
+                "else", "for", "each", "in", "instanceof",
+                "new", "throw", "typeof", "with", "yield", "return"
             );
             ktsHighlighter.secondaryKeywords = ImmutableSet.of("const", "function", "var", "let", "prototype", "Math", "JSON", "mappet");
             ktsHighlighter.special = ImmutableSet.of("this", "arguments");

@@ -237,7 +237,7 @@ public class ScriptNBTCompound implements INBTCompound
     {
         try
         {
-            NBTTagCompound tag = JsonToNBT.getTagFromJson("{data:" + nbt +"}");
+            NBTTagCompound tag = JsonToNBT.getTagFromJson("{data:" + nbt + "}");
 
             this.tag.setTag(key, tag.getTag("data"));
 

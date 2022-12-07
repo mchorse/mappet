@@ -1,16 +1,10 @@
 package mchorse.mappet.utils;
 
-import mchorse.mappet.CommonProxy;
-import mchorse.mappet.api.scripts.Script;
-import net.minecraft.launchwrapper.Launch;
-import org.apache.commons.io.FileUtils;
-
 import javax.script.Bindings;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
-import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,12 +18,12 @@ public class ScriptUtils
 
     public static List<ScriptEngine> getAllEngines()
     {
-        if(engines == null)
+        if (engines == null)
         {
             engines = getManager().getEngineFactories().stream()
-                    .filter(factory -> !factory.getExtensions().contains("scala"))
-                    .map(ScriptEngineFactory::getScriptEngine)
-                    .collect(Collectors.toList());
+                .filter(factory -> !factory.getExtensions().contains("scala"))
+                .map(ScriptEngineFactory::getScriptEngine)
+                .collect(Collectors.toList());
         }
 
         return engines;
@@ -37,13 +31,15 @@ public class ScriptUtils
 
     public static ScriptEngine getEngineByExtension(String extension)
     {
-        List<ScriptEngine> engines = ScriptUtils.getAllEngines();
+        extension = extension.replace(".", "");
+
+        List<ScriptEngine> engines = getAllEngines();
 
         for (ScriptEngine engine : engines)
         {
             List<String> extensions = engine.getFactory().getExtensions();
 
-            if (extensions.contains(extension.replace(".","")))
+            if (extensions.contains(extension))
             {
                 return engine;
             }
@@ -57,7 +53,8 @@ public class ScriptUtils
      */
     public static void initiateScriptEngines()
     {
-        List<ScriptEngine> engineList = ScriptUtils.getAllEngines();
+        List<ScriptEngine> engineList = getAllEngines();
+
         for (ScriptEngine engine : engineList)
         {
             try
@@ -66,32 +63,6 @@ public class ScriptUtils
                 {
                     throw new Exception("Something went wrong with "+engine.getFactory().getEngineName());
                 }
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private static void tryCopyingNashorn()
-    {
-        if (copiedNashorn)
-        {
-            return;
-        }
-
-        File home = new File(System.getProperty("java.home"));
-        File nashorn = new File(home, "lib/ext/nashorn.jar");
-        File modsNashorn = new File(CommonProxy.configFolder.getParentFile(), "mods/nashorn.jar");
-
-        if (nashorn.isFile() && !modsNashorn.isFile())
-        {
-            try
-            {
-                FileUtils.copyFile(nashorn, modsNashorn);
-
-                copiedNashorn = true;
             }
             catch (Exception e)
             {

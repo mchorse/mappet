@@ -16,6 +16,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 import java.io.File;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -132,12 +133,12 @@ public class ScriptManager extends BaseManager<Script>
     @Override
     public Collection<String> getKeys()
     {
-        Set<String> set = new HashSet<String>();
-
         if (this.folder == null)
         {
-            return set;
+            return Collections.emptySet();
         }
+
+        Set<String> set = new HashSet<String>();
 
         this.recursiveFind(set, this.folder, "");
 
@@ -288,9 +289,7 @@ public class ScriptManager extends BaseManager<Script>
 
     public void initiateAllScripts()
     {
-        Collection<String> scriptIds = getKeys();
-
-        for (String id : scriptIds)
+        for (String id : this.getKeys())
         {
             try
             {

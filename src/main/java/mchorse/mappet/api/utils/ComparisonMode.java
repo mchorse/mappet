@@ -104,7 +104,7 @@ public enum ComparisonMode
         @SideOnly(Side.CLIENT)
         public String stringify(String a, double b, String expression)
         {
-            return a + " match /"+expression+"/";
+            return a + " match /" + expression + "/";
         }
 
         @Override

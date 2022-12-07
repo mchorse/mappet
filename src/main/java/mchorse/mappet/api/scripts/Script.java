@@ -24,8 +24,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Script extends AbstractData
 {
@@ -43,12 +41,15 @@ public class Script extends AbstractData
     {
         if (this.engine == null)
         {
-            this.engine = ScriptUtils.getEngineByExtension(getScriptExtension());
-            if(this.engine == null)
+            this.engine = ScriptUtils.getEngineByExtension(this.getScriptExtension());
+
+            if (this.engine == null)
             {
-                String message = "Looks like mappet can't find script engine for a \""+getScriptExtension()+"\" file extension.";
-                throw  new ScriptException(message, this.getId(), -1);
+                String message = "Looks like Mappet can't find script engine for a \"" + this.getScriptExtension() + "\" file extension.";
+
+                throw new ScriptException(message, this.getId(), -1);
             }
+
             this.engine = ScriptUtils.sanitize(this.engine);
             this.engine.getContext().setAttribute("javax.script.filename", this.getId(), ScriptContext.ENGINE_SCOPE);
             Mappet.EVENT_BUS.post(new RegisterScriptVariablesEvent(this.engine));
@@ -106,14 +107,10 @@ public class Script extends AbstractData
 
     public String getScriptExtension()
     {
-        Pattern extensionRegex = Pattern.compile("(?<=\\.)\\w+$");
-        Matcher matcher = extensionRegex.matcher(this.getId());
-        String extension = "js";
-        if(matcher.find())
-        {
-            extension = matcher.group(0);
-        }
-        return extension;
+        String id = this.getId();
+        int index = id.lastIndexOf('.');
+
+        return index >= 0 ? id.substring(index) : "js";
     }
 
     public Object execute(String function, DataContext context) throws ScriptException, NoSuchMethodException
@@ -160,7 +157,7 @@ public class Script extends AbstractData
         {
             String message = e.getMessage();
             int lineNumber = e.getLineNumber() - range.lineOffset;
-            message = message.replaceFirst(this.getId(),range.script + " (in " + this.getId() + ")");
+            message = message.replaceFirst(this.getId(), range.script + " (in " + this.getId() + ")");
             message = message.replaceFirst("at line number [\\d]+", "at line number " + lineNumber);
 
             return new ScriptException(message, range.script, lineNumber, e.getColumnNumber());

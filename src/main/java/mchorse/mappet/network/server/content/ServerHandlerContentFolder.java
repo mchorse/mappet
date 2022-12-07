@@ -20,20 +20,23 @@ public class ServerHandlerContentFolder extends ServerMessageHandler<PacketConte
     {
         IManager manager = message.type.getManager();
         Path folder = manager.getFolder().toPath();
-        if (message.rename != null && message.path.length() > 0)
+
+        if (message.rename != null && !message.path.isEmpty())
         {
             int lastIndex = message.path.lastIndexOf('/');
             String newPath = lastIndex == -1 ? "" + message.rename : message.path.substring(0, lastIndex + 1) + message.rename;
+
             folder.resolve(message.path).toFile().renameTo(folder.resolve(newPath).toFile());
         }
-        else if (message.delete && message.path.length() > 0)
+        else if (message.delete && !message.path.isEmpty())
         {
             File deleteFolder = folder.resolve(message.path).toFile();
 
-            for(File f: deleteFolder.listFiles())
+            for (File file : deleteFolder.listFiles())
             {
-                f.delete();
+                file.delete();
             }
+
             deleteFolder.delete();
         }
         else
