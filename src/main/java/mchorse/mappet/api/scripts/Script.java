@@ -111,7 +111,7 @@ public class Script extends AbstractData
         String id = this.getId();
         int index = id.lastIndexOf('.');
 
-        return index >= 0 ? id.substring(index) : "js";
+        return index >= 0 ? id.substring(index + 1) : "js";
     }
 
     public Object execute(String function, DataContext context) throws ScriptException, NoSuchMethodException
