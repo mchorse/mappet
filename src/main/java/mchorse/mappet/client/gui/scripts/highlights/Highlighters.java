@@ -106,17 +106,24 @@ public class Highlighters
         if (!kts.isFile())
         {
             SyntaxHighlighter ktsHighlighter = new SyntaxHighlighter();
-            ktsHighlighter.operators = ImmutableSet.of("+", "-", "=", "/", "*", "<", ">", "~", "&", "|", "!");
+            ktsHighlighter.operators = ImmutableSet.of("+", "-", "=", "/", "*", "<", ">", "~", "&", "|", "!", "..", "->");
             ktsHighlighter.primaryKeywords = ImmutableSet.of(
-                "break", "continue", "switch", "case", "default", "try",
+                "break", "continue", "switch", "case", "try",
                 "catch", "delete", "do", "while", "else", "finally", "if",
-                "else", "for", "each", "in", "instanceof",
-                "new", "throw", "typeof", "with", "yield", "return"
+                "else", "for", "is", "as", "in", "instanceof",
+                "new", "throw", "typeof", "with", "yield", "when", "return",
+                "by", "constructor", "delegate", "dynamic", "field", "get", "set", "init", "value",
+                "where", "actual", "annotation", "companion", "field", "external", "infix", "inline", "inner", "internal",
+                "open", "operator", "out", "override", "suspend", "vararg"
             );
-            ktsHighlighter.secondaryKeywords = ImmutableSet.of("const", "function", "var", "let", "prototype", "Math", "JSON", "mappet");
-            ktsHighlighter.special = ImmutableSet.of("this", "arguments");
-            ktsHighlighter.typeKeywords = ImmutableSet.of("true", "false", "null", "undefined");
+            ktsHighlighter.secondaryKeywords = ImmutableSet.of(
+                "abstract", "extends", "final", "implements", "interface", "super", "throws",
+                "data", "class", "fun", "var", "val", "import", "Java", "JSON", "mappet"
+            );
+            ktsHighlighter.special = ImmutableSet.of("this", "it");
+            ktsHighlighter.typeKeywords = ImmutableSet.of("true", "false", "null", "undefined", "enum");
             ktsHighlighter.functionName = Pattern.compile("[\\w_][\\d\\w_]*", Pattern.CASE_INSENSITIVE);
+
 
             writeHighlighter(kts, ktsHighlighter);
         }
