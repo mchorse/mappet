@@ -9,6 +9,7 @@ import mchorse.mappet.api.scripts.code.mappet.MappetUIBuilder;
 import mchorse.mappet.api.scripts.code.mappet.MappetUIContext;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
+import mchorse.mappet.api.scripts.user.items.IScriptItem;
 import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIContext;
@@ -487,13 +488,29 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     }
 
     @Override
+    public int getCooldown(IScriptItem item){
+        float cooldown = this.entity.getCooldownTracker().getCooldown(item.getMinecraftItem(), 0);
+        return (int) (cooldown * 20);
+    }
+
+    @Override
     public void setCooldown(int inventoryStackIndex, int cooldown){
         this.entity.getCooldownTracker().setCooldown(getInventory().getStack(inventoryStackIndex).getItem().getMinecraftItem(), cooldown);
     }
 
     @Override
+    public void setCooldown(IScriptItem item, int cooldown){
+        this.entity.getCooldownTracker().setCooldown(item.getMinecraftItem(), cooldown);
+    }
+
+    @Override
     public void resetCooldown(int inventoryStackIndex){
         this.entity.getCooldownTracker().removeCooldown(getInventory().getStack(inventoryStackIndex).getItem().getMinecraftItem());
+    }
+
+    @Override
+    public void resetCooldown(IScriptItem item){
+        this.entity.getCooldownTracker().removeCooldown(item.getMinecraftItem());
     }
 
     @Override

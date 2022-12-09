@@ -1,6 +1,7 @@
 package mchorse.mappet.api.scripts.user.entities;
 
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
+import mchorse.mappet.api.scripts.user.items.IScriptItem;
 import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIContext;
@@ -642,6 +643,19 @@ public interface IScriptPlayer extends IScriptEntity
     public int getCooldown(int inventoryStackIndex);
 
     /**
+     * Gets cooldown of a particular inventory index of the player.
+     *
+     * <pre>{@code
+     *    function main(c) {
+     *        var player = c.getSubject();
+     *        var cooldown = player.getCooldown(player.getMainItem().getItem());
+     *        c.send(The held item is on cooldown for " + cooldown + " ticks.");
+     *    }
+     * }</pre>
+     */
+    public int getCooldown(IScriptItem item);
+
+    /**
      * Sets cooldown of a particular inventory index of the player.
      *
      * <pre>{@code
@@ -654,6 +668,18 @@ public interface IScriptPlayer extends IScriptEntity
     public void setCooldown(int inventoryStackIndex, int cooldown);
 
     /**
+     * Sets cooldown of a particular inventory index of the player.
+     *
+     * <pre>{@code
+     *    function main(c) {
+     *        var player = c.getSubject();
+     *        player.setCooldown(player.getMainItem().getItem(), 100);
+     *    }
+     * }</pre>
+     */
+    public void setCooldown(IScriptItem item, int cooldown);
+
+    /**
      * Resets cooldown of a particular inventory index of the player.
      *
      * <pre>{@code
@@ -664,6 +690,18 @@ public interface IScriptPlayer extends IScriptEntity
      * }</pre>
      */
     public void resetCooldown(int inventoryStackIndex);
+
+    /**
+     * Resets cooldown of a particular inventory index of the player.
+     *
+     * <pre>{@code
+     *    function main(c) {
+     *        var player = c.getSubject();
+     *        player.resetCooldown(player.getMainItem().getItem());
+     *    }
+     * }</pre>
+     */
+    public void resetCooldown(IScriptItem item);
 
     /**
      * Gets the inventory index of main item.
