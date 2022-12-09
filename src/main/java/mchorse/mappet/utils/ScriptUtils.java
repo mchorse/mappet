@@ -18,34 +18,17 @@ public class ScriptUtils
 
     public static List<ScriptEngine> getAllEngines()
     {
-        if (engines == null)
-        {
-            engines = getManager().getEngineFactories().stream()
+        return getManager().getEngineFactories().stream()
                 .filter(factory -> !factory.getExtensions().contains("scala"))
                 .map(ScriptEngineFactory::getScriptEngine)
                 .collect(Collectors.toList());
-        }
-
-        return engines;
     }
 
     public static ScriptEngine getEngineByExtension(String extension)
     {
         extension = extension.replace(".", "");
 
-        List<ScriptEngine> engines = getAllEngines();
-
-        for (ScriptEngine engine : engines)
-        {
-            List<String> extensions = engine.getFactory().getExtensions();
-
-            if (extensions.contains(extension))
-            {
-                return engine;
-            }
-        }
-
-        return null;
+        return getManager().getEngineByExtension(extension);
     }
 
     /**
