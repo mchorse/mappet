@@ -1,3 +1,11 @@
+## Version 0.3.1
+
+This patch hot fix fixes global triggers and scripts (TorayLife).
+
+**Compatible** with McLib **2.4.1**, Blockbuster **2.6** and Metamorph **1.3.1**. It doesn't mean that future versions of McLib, Blockbuster and Metamorph would be incompatible, but older versions are most likely incompatible.
+
+* Fixed scripts not working correctly in global triggers
+
 ## Version 0.3
 
 This update is brought to you by TorayLife and McHorse.
