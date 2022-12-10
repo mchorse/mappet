@@ -10,18 +10,14 @@ import java.util.stream.Collectors;
 
 public class ScriptUtils
 {
-    public static boolean copiedNashorn;
-    public static boolean errorScriptEngine;
-
-    private static List<ScriptEngine> engines;
     private static ScriptEngineManager manager;
 
     public static List<ScriptEngine> getAllEngines()
     {
         return getManager().getEngineFactories().stream()
-                .filter(factory -> !factory.getExtensions().contains("scala"))
-                .map(ScriptEngineFactory::getScriptEngine)
-                .collect(Collectors.toList());
+            .filter(factory -> !factory.getExtensions().contains("scala"))
+            .map(ScriptEngineFactory::getScriptEngine)
+            .collect(Collectors.toList());
     }
 
     public static ScriptEngine getEngineByExtension(String extension)

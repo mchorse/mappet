@@ -730,6 +730,3 @@ mappet.translation.wiki_url=https://github.com/mchorse/mappet/wiki
 mappet.translation.community=Дискорд
 mappet.translation.community_url=https://discord.gg/QhvbgSWpYn
 mappet.translation.sounds=Відкрити теку з аудіо
-
-mappet.nashorn_copied=Якщо ви плануєте використовувати скрипти Маппету, то тоді, будь-ласка, §lперезапустить клієнт/сервер§r! Скриптовий двигун Nashorn не був завантажений за замовчуванням, но був скопійован з директории JRE та повинен бути доступним.
-mappet.nashorn_error=Неможливо завантажити чи §lзнайти§r скриптовий двигун Nashorn! Спробуйте завантажити nashorn.jar власноруч з JRE §7lib/ext/nashorn.jar§r!

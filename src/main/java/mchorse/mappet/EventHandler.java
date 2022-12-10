@@ -22,7 +22,6 @@ import mchorse.mappet.network.common.events.PacketEventHotkeys;
 import mchorse.mappet.network.common.quests.PacketQuest;
 import mchorse.mappet.network.common.quests.PacketQuests;
 import mchorse.mappet.network.common.scripts.PacketClick;
-import mchorse.mappet.utils.ScriptUtils;
 import mchorse.mclib.utils.ReflectionUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -40,7 +39,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -441,15 +439,6 @@ public class EventHandler
             DataContext context = new DataContext(event.player);
 
             Mappet.settings.playerLogIn.trigger(context);
-        }
-
-        if (ScriptUtils.copiedNashorn)
-        {
-            player.sendMessage(new TextComponentTranslation("mappet.nashorn_copied"));
-        }
-        else if (ScriptUtils.errorScriptEngine)
-        {
-            player.sendMessage(new TextComponentTranslation("mappet.nashorn_error"));
         }
 
         this.loggedInPlayers.add(player.getUniqueID());
