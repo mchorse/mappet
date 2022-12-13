@@ -116,7 +116,7 @@ public interface IScriptNpc extends IScriptEntity
      * Removes all `on tick` triggers from the NPC.
      *
      * <pre>{@code
-     *    c.getSubject().removeOnTickTriggers();
+     *    c.getSubject().clearOnTickTriggers();
      * }</pre>
      */
     public void clearOnTickTriggers();

@@ -153,7 +153,6 @@ public class ScriptNpc extends ScriptEntity<EntityNpc> implements IScriptNpc
     public void addPatrol(int x, int y, int z, String scriptName, String functionName)
     {
         INBTCompound fullData = new ScriptNBTCompound(this.entity.writeToNBT(new NBTTagCompound()));
-        fullData.getCompound("State").setString("Follow", "");
 
         //add patrol point
         ScriptFactory factory = new ScriptFactory();
