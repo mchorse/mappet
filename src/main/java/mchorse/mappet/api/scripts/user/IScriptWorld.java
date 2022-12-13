@@ -583,4 +583,122 @@ public interface IScriptWorld
      * @param range How many blocks far away will this send to players around given point.
      */
     public void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, float yaw, float pitch, int range);
+
+    /**
+     * Sets a model block with a given NBT at given position in this world.
+     *
+     <pre>{@code
+     * function main(c) {
+     *     var pos = c.getSubject().getPosition()
+     *     var NBT = '{Settings:{Hands:1b},Name:"blockbuster.fred"}';
+     *     var force = true; //whether to force the block to be placed even if it is placed (good for particles or sequences)
+     *     c.getWorld().setModelBlock(NBT, pos.x, pos.y, pos.z, force)
+     * }
+     * }</pre>
+     *
+     * @param nbt NBT of the modelBlock's morph.
+     */
+    public void setModelBlock(String nbt, int x, int y, int z, boolean force);
+
+    /**
+     * Returns whether a button, plate or lever is active or not.
+     * <pre>{@code
+     * c.getWorld().isActive(0, 4, 0);
+     * }</pre>
+     *
+     */
+    public boolean isActive(int x, int y, int z);
+
+    /**
+     * Test for a specific block and meta in a specific coordinates.
+     *
+     <pre>{@code
+     * function main(c) {
+     *     var pos = c.getSubject().getPosition()
+     *     if(c.getWorld().testForBlock(Math.floor(pos.x), Math.floor(pos.y), Math.floor(pos.z), "minecraft:light_weighted_pressure_plate", 1)){
+     *         c.send("Prussure Plate is pressed.")
+     *     }
+     * }
+     * }</pre>
+     *
+     */
+    public boolean testForBlock(int x, int y, int z, String blockId, int meta);
+
+    /**
+     * Fills a 3D area with a block.
+     *
+     * <pre>{@code
+     * var coarse_dirt = mappet.createBlockState("minecraft:dirt", 1);
+     * c.getWorld().fill(coarse_dirt, -3, 100, -3, 3, 100, 3);
+     * }</pre>
+     *
+     * @param state The block to fill the area with.
+     * @param x1 The first x coordinate.
+     * @param y1 The first y coordinate.
+     * @param z1 The first z coordinate.
+     * @param x2 The second x coordinate.
+     * @param y2 The second y coordinate.
+     * @param z2 The second z coordinate.
+     */
+    public void fill(IScriptBlockState state, int x1, int y1, int z1, int x2, int y2, int z2);
+
+    /**
+     * summons a falling block with a specific block id and meta.
+     *
+     * <pre>{@code
+     * c.getWorld().summonFallingBlock(0, 100, 0, "minecraft:dirt", 1);
+     * }</pre>
+     *
+     * @return The falling block entity.
+     */
+    public IScriptEntity summonFallingBlock(int x, int y, int z, String blockId, int meta);
+
+    /**
+     * Transforms a block to a falling block in specific coordinates.
+     *
+     * <pre>{@code
+     * c.getWorld().setFallingBlock(0, 100, 0);
+     * }</pre>
+     *
+     * @return The falling block entity.
+     */
+    public IScriptEntity setFallingBlock(int x, int y, int z);
+
+    /**
+     * Transforms a block to a falling block in specific coordinates.
+     *
+     * <pre>{@code
+     * c.getWorld().fancyExplode(-2, 100, -2, 2, 100, 2, 100);
+     * }</pre>
+     * @return The falling block entities in a list.
+     */
+    public List<IScriptEntity> fancyExplode(int x1, int y1, int z1, int x2, int y2, int z2, int blocksPercentage);
+
+    /**
+     * Transforms a block to a falling block in specific coordinates.
+     *
+     * <pre>{@code
+     * c.getWorld().fancyExplode(0, 100, 0, 3, 100);
+     * }</pre>
+     * @return The falling block entities in a list.
+     */
+    public List<IScriptEntity> fancyExplode(int x, int y, int z, int radius, int blocksPercentage);
+
+    /**
+     * Explodes the blocks in the range by teleporting them randomly in an explosive way.
+     *
+     * <pre>{@code
+     * c.getWorld().tpExplode(0, 100, 0, 2, 100, 2, 100);
+     * }</pre>
+     */
+    public void tpExplode(int x1, int y1, int z1, int x2, int y2, int z2, int blocksPercentage);
+
+    /**
+     * Explodes the blocks in the range by teleporting them randomly in an explosive way.
+     *
+     * <pre>{@code
+     * c.getWorld().tpExplode(0, 100, 0, 3, 100);
+     * }</pre>
+     */
+    public void tpExplode(int x, int y, int z, int radius, int blocksPercentage);
 }
