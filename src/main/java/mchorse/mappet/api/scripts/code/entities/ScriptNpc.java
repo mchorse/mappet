@@ -133,6 +133,34 @@ public class ScriptNpc extends ScriptEntity<EntityNpc> implements IScriptNpc
     }
 
     @Override
+    public void addOnInteractTrigger(String scriptName, String functionName)
+    {
+        INBTCompound fullData = new ScriptNBTCompound(this.entity.writeToNBT(new NBTTagCompound()));
+        ScriptFactory factory = new ScriptFactory();
+        INBTCompound triggerData = factory.createCompound();
+        triggerData.setString("Function", functionName);
+        triggerData.setString("Script", scriptName);
+        triggerData.setString("Type", "script");
+        triggerData.setString("CustomData", "");
+        triggerData.setInt("Frequency", 1);
+
+        fullData.getCompound("State").getCompound("TriggerInteract").getList("Blocks").addCompound(triggerData);
+
+        this.entity.readFromNBT(fullData.getNBTTagCompound());
+    }
+
+    @Override
+    public void clearOnInteractTriggers(){
+        INBTCompound fullData = new ScriptNBTCompound(this.entity.writeToNBT(new NBTTagCompound()));
+        if (!fullData.getCompound("State").getCompound("TriggerInteract").getList("Blocks").has(0)) {return;}
+        INBTList blocks = fullData.getCompound("State").getCompound("TriggerInteract").getList("Blocks");
+        for(int i = blocks.size()-1; i >= 0; i--){
+            blocks.remove(i);
+            this.entity.readFromNBT(fullData.getNBTTagCompound());
+        }
+    }
+
+    @Override
     public void setPatrol(int x, int y, int z, String scriptName, String functionName)
     {
         INBTCompound fullData = new ScriptNBTCompound(this.entity.writeToNBT(new NBTTagCompound()));
