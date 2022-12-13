@@ -6,6 +6,7 @@ import mchorse.mappet.api.scripts.code.entities.ScriptPlayer;
 import mchorse.mappet.api.scripts.code.mappet.MappetStates;
 import mchorse.mappet.api.scripts.user.IScriptServer;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
+import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
@@ -100,4 +101,49 @@ public class ScriptServer implements IScriptServer
 
         return this.states;
     }
+
+    @Override
+    public boolean isOnline(String username)
+    {
+        List<IScriptPlayer> playersList = getAllPlayers();
+
+        for (IScriptPlayer player : playersList){
+            String playerName = player.getName();
+            if( playerName.equals(username) ){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean testForPlayer(String username, int x, int y, int z)
+    {
+        if(isOnline(username)){
+            IScriptPlayer player = getPlayer(username);
+            ScriptVector pos = player.getPosition();
+            long playerX = Math.round(pos.x -0.5f);
+            long playerY = Math.round(pos.y -0.5f);
+            long playerZ = Math.round(pos.z -0.5f);
+            return (playerX == x && playerY == y && playerZ == z);
+        }
+        return false;
+    }
+    @Override
+    public boolean testForPlayer(String username, int x1,int y1,int z1, int x2,int y2,int z2)
+    {
+        if(isOnline(username)){
+            int[] Pos1 = {x1, y1, z1};
+            int[] Pos2 = {x2, y2, z2};
+
+            IScriptPlayer player = getPlayer(username);
+            ScriptVector pos = player.getPosition();
+            long playerX = Math.round(pos.x -0.5f);
+            long playerY = Math.round(pos.y -0.5f);
+            long playerZ = Math.round(pos.z -0.5f);
+            return (playerX >= Math.min(Pos1[0], Pos2[0]) && playerX <= Math.max(Pos1[0], Pos2[0])) && (playerY >= Math.min(Pos1[1], Pos2[1]) && playerY <= Math.max(Pos1[1], Pos2[1])) && (playerZ >= Math.min(Pos1[2], Pos2[2]) && playerZ <= Math.max(Pos1[2], Pos2[2]));
+        }
+        return false;
+    }
+
 }
