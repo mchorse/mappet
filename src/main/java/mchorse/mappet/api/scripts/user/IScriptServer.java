@@ -109,4 +109,46 @@ public interface IScriptServer
      * }</pre>
      */
     public IMappetStates getStates();
+
+    /**
+     * Check if a player is online.
+     *
+     * <pre>{@code
+     *    if (!c.getServer().isOnline("McHorse"))
+     *    {
+     *        c.send("McHorse is not online. :(")
+     *    }
+     * }</pre>
+     */
+    public boolean isOnline(String username);
+
+    /**
+     * Check if a player is in certain coordinates.
+     *
+     * <pre>{@code
+     * function main(c) {
+     *     var player_name = c.getSubject().getName();
+     *     if (c.getServer().testForPlayer(player_name, x,y,z))
+     *     {
+     *         c.send("Subject is not standing on the block.")
+     *     }
+     * }
+     * }</pre>
+     */
+    public boolean testForPlayer(String username, int x, int y, int z);
+
+    /**
+     * Check if a player is in certain coordinates.
+     *
+     * <pre>{@code
+     * function main(c) {
+     *     var player_name = c.getSubject().getName();
+     *     if (c.getServer().testForPlayer("player_name", x1,y1,z1, x2,y2,z2))
+     *     {
+     *         c.send("Subject is in range! :o")
+     *     }
+     * }
+     * }</pre>
+     */
+    public boolean testForPlayer(String username, int x1, int y1, int z1, int x2, int y2, int z2);
 }
