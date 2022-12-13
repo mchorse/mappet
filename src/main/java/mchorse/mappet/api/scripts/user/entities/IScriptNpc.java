@@ -135,6 +135,27 @@ public interface IScriptNpc extends IScriptEntity
     public void setOnInteractTrigger(String scriptName, String functionName, int blockNumber);
 
     /**
+     * Adds NPC's on interaction trigger.
+     *
+     * <pre>{@code
+     *    c.getSubject().addOnInteractTrigger("ScriptName", "FunctionName");
+     * }</pre>
+     *
+     * @param scriptName Script name
+     * @param functionName Function name
+     */
+    public void addOnInteractTrigger(String scriptName, String functionName);
+
+    /**
+     * Clears NPC's on interaction triggers.
+     *
+     * <pre>{@code
+     *    c.getSubject().clearOnInteractTriggers();
+     * }</pre>
+     */
+    public void clearOnInteractTriggers();
+
+    /**
      * Sets NPC's patrol point with a script trigger.
      *
      * <pre>{@code
