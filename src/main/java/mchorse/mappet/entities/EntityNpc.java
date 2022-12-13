@@ -7,6 +7,8 @@ import mchorse.mappet.api.factions.FactionAttitude;
 import mchorse.mappet.api.npcs.Npc;
 import mchorse.mappet.api.npcs.NpcDrop;
 import mchorse.mappet.api.npcs.NpcState;
+import mchorse.mappet.api.scripts.code.nbt.ScriptNBTCompound;
+import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.mappet.api.states.States;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.capabilities.character.Character;
@@ -26,10 +28,7 @@ import mchorse.metamorph.api.Morph;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.models.IMorphProvider;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
@@ -219,6 +218,12 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     public void initialize()
     {
         this.state.triggerInitialize.trigger(this);
+
+        if (this.state.canPickUpLoot){
+            INBTCompound fullData = new ScriptNBTCompound(this.writeToNBT(new NBTTagCompound()));
+            fullData.setByte("CanPickUpLoot", (byte) (this.state.canPickUpLoot ? 1 : 0));
+            this.readFromNBT(fullData.getNBTTagCompound());
+        }
     }
 
     /* Getter and setters */
@@ -656,5 +661,12 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         d0 = d0 * RENDER_DISTANCE;
 
         return distance < d0 * d0;
+    }
+
+    public void setStringInData(String key, String value)
+    {
+        INBTCompound fullData = new ScriptNBTCompound(this.writeToNBT(new NBTTagCompound()));
+        fullData.getCompound("State").setString(key, value);
+        this.readFromNBT(fullData.getNBTTagCompound());
     }
 }

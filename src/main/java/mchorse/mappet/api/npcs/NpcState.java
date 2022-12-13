@@ -18,6 +18,7 @@ import java.util.List;
 public class NpcState implements INBTSerializable<NBTTagCompound>
 {
     /* Meta */
+    public String stateName = "";
 
     public String id = "";
 
@@ -206,6 +207,11 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     public boolean wander;
 
     /**
+     * NPC will pick up items if this option is enabled and Gamerule canPickupItems is true
+     */
+    public boolean canPickUpLoot;
+
+    /**
      * The health threshold until NPC starts to run away
      */
     public float flee = 4F;
@@ -271,6 +277,10 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         else if (property.equals("unique"))
         {
             this.unique = Boolean.parseBoolean(value);
+        }
+        else if (property.equals("state_name"))
+        {
+            this.stateName = value;
         }
         else if (property.equals("path_distance"))
         {
@@ -401,6 +411,10 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         {
             this.flee = Float.parseFloat(value);
         }
+        else if (property.equals("can_pick_up_loot"))
+        {
+            this.canPickUpLoot = Boolean.parseBoolean(value);
+        }
         else if (property.equals("respawn"))
         {
             this.respawn = Boolean.parseBoolean(value);
@@ -459,6 +473,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (all || options.contains("states")) tag.setTag("States", this.states.serializeNBT());
         if (all || options.contains("unique")) tag.setBoolean("Unique", this.unique);
         if (all || options.contains("path_distance")) tag.setFloat("PathDistance", this.pathDistance);
+        if (all || options.contains("state_name")) tag.setString("StateName", this.stateName);
 
         /* Health */
         if (all || options.contains("max_health")) tag.setFloat("MaxHealth", this.maxHealth);
@@ -530,6 +545,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (all || options.contains("look_around")) tag.setBoolean("LookAround", this.lookAround);
         if (all || options.contains("wander")) tag.setBoolean("Wander", this.wander);
         if (all || options.contains("flee")) tag.setFloat("Flee", this.flee);
+        if (all || options.contains("can_pick_up_loot")) tag.setBoolean("canPickUpLoot", this.canPickUpLoot);
 
         /* Triggers */
         if (all || options.contains("trigger_died")) tag.setTag("TriggerDied", this.triggerDied.serializeNBT());
@@ -560,6 +576,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("States")) this.states.deserializeNBT(tag.getCompoundTag("States"));
         if (tag.hasKey("Unique")) this.unique = tag.getBoolean("Unique");
         if (tag.hasKey("PathDistance")) this.pathDistance = tag.getFloat("PathDistance");
+        if (tag.hasKey("StateName")) this.stateName = tag.getString("StateName");
 
         /* Health */
         if (tag.hasKey("MaxHealth")) this.maxHealth = tag.getFloat("MaxHealth");
@@ -651,6 +668,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("LookAround")) this.lookAround = tag.getBoolean("LookAround");
         if (tag.hasKey("Wander")) this.wander = tag.getBoolean("Wander");
         if (tag.hasKey("Flee")) this.flee = tag.getFloat("Flee");
+        if (tag.hasKey("canPickUpLoot")) this.canPickUpLoot = tag.getBoolean("canPickUpLoot");
 
         /* Triggers */
         if (tag.hasKey("TriggerDied")) this.triggerDied.deserializeNBT(tag.getCompoundTag("TriggerDied"));

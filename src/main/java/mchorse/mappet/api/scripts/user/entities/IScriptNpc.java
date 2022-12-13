@@ -41,6 +41,140 @@ public interface IScriptNpc extends IScriptEntity
      */
     public String getNpcId();
 
+    /**
+     * Get NPC's state.
+     *
+     * <pre>{@code
+     *    c.send(c.getSubject().getNpcState());
+     * }</pre>
+     */
     public String getNpcState();
-    public void setNpcState(String id);
+
+    /**
+     * Set NPC's state.
+     *
+     * <pre>{@code
+     *    c.getSubject().setNpcState("default");
+     * }</pre>
+     *
+     * @param stateId state ID
+     */
+    public void setNpcState(String stateId);
+
+    /**
+     * Make NPC can pick up stuff.
+     *
+     * <pre>{@code
+     *    c.getSubject().canPickUpLoot(true);
+     * }</pre>
+     *
+     * @param canPickUpLoot true if NPC can pick up stuff, false otherwise
+     */
+    public void canPickUpLoot(boolean canPickUpLoot);
+
+
+    /**
+     * Make NPC follow a target.
+     *
+     * <pre>{@code
+     *    c.getSubject().follow("@r");
+     * }</pre>
+     *
+     * @param target Target to follow (can be a player name, @r)
+     */
+    public void follow(String target);
+
+    /**
+     * Sets NPC's tick trigger (Use this if you want to edit an existing `on tick trigger`).
+     *
+     * <pre>{@code
+     *    c.getSubject().setOnTickTrigger("ScriptName", "FunctionName", 1, 0);
+     * }</pre>
+     *
+     * @param scriptName Script name
+     * @param functionName Function name
+     * @param frequency Frequency
+     * @param blockNumber Block number
+     */
+    public void setOnTickTrigger(String scriptName, String functionName, int frequency, int blockNumber);
+
+
+    /**
+     * Adds a new `on tick trigger` to the NPC.
+     *
+     * <pre>{@code
+     *    c.getSubject().addOnTickTrigger("ScriptName", "FunctionName", 1);
+     * }</pre>
+     *
+     * @param scriptName Script name
+     * @param functionName Function name
+     * @param frequency Frequency
+     */
+    public void addOnTickTrigger(String scriptName, String functionName, int frequency);
+
+    /**
+     * Removes all `on tick` triggers from the NPC.
+     *
+     * <pre>{@code
+     *    c.getSubject().removeOnTickTriggers();
+     * }</pre>
+     */
+    public void clearOnTickTriggers();
+
+    /**
+     * Sets NPC's on interaction trigger.
+     *
+     * <pre>{@code
+     *    c.getSubject().setOnInteractTrigger("ScriptName", "FunctionName", 0);
+     * }</pre>
+     *
+     * @param scriptName Script name
+     * @param functionName Function name
+     * @param blockNumber Block number
+     */
+    public void setOnInteractTrigger(String scriptName, String functionName, int blockNumber);
+
+    /**
+     * Sets NPC's patrol point with a script trigger.
+     *
+     * <pre>{@code
+     *    c.getSubject().setPatrol(x, y, z, "ScriptName", "FunctionName", 0);
+     * }</pre>
+     *
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @param z Z coordinate
+     * @param scriptName Script name
+     * @param functionName Function name
+     */
+    public void setPatrol(int x, int y, int z, String scriptName, String functionName);
+
+    /**
+     * Adds a new NPC's patrol point with a script trigger.
+     *
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @param z Z coordinate
+     * @param scriptName Script name
+     * @param functionName Function name
+     */
+    public void addPatrol(int x, int y, int z, String scriptName, String functionName);
+
+    /**
+     * Removes all NPC's patrol points.
+     *
+     * <pre>{@code
+     * c.getSubject().clearPatrolPoints();
+     * }</pre>
+     */
+    public void clearPatrolPoints();
+
+    /**
+     * Returns the faction of the npc as a string
+     *
+     * <pre>{@code
+     * c.send(c.getSubject().getFaction())
+     * }</pre>
+     */
+    public String getFaction();
 }
