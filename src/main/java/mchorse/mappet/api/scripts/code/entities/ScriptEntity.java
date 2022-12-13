@@ -1,5 +1,10 @@
 package mchorse.mappet.api.scripts.code.entities;
 
+import mchorse.blockbuster.common.GunProps;
+import mchorse.blockbuster.common.entity.EntityActor;
+import mchorse.blockbuster.common.entity.EntityGunProjectile;
+import mchorse.blockbuster.network.common.PacketModifyActor;
+import mchorse.mappet.api.scripts.code.ScriptFactory;
 import mchorse.mappet.api.scripts.code.ScriptRayTrace;
 import mchorse.mappet.api.scripts.code.ScriptWorld;
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
@@ -29,8 +34,11 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityTracker;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -40,6 +48,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.WorldServer;
+
+import java.util.UUID;
 
 public class ScriptEntity <T extends Entity> implements IScriptEntity
 {
@@ -580,7 +590,17 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Override
     public boolean setMorph(AbstractMorph morph)
     {
-        return false;
+        if (this.entity instanceof EntityActor)
+        {
+            EntityActor actor = (EntityActor) this.entity;
+            actor.morph.setDirect(morph);
+
+            PacketModifyActor message = new PacketModifyActor(actor);
+            mchorse.blockbuster.network.Dispatcher.sendToTracked(actor, message);
+            return true;
+        }
+        else
+            return false;
     }
 
     @Override
@@ -617,5 +637,266 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     public IScriptWorld getWorld()
     {
         return new ScriptWorld(this.entity.world);
+    }
+
+    @Override
+    public void addVelocity(double x, double y, double z)
+    {
+        this.entity.velocityChanged= true;
+        this.entity.addVelocity(x, y, z);
+    }
+
+    @Override
+    public void mount(IScriptEntity entity)
+    {
+        this.entity.startRiding(entity.getMinecraftEntity(), true);
+    }
+
+    @Override
+    public void dismount()
+    {
+        this.entity.dismountRidingEntity();
+    }
+
+    @Override
+    public EntityActor getMinecraftActor()
+    {
+        if (this.entity instanceof EntityActor)
+        {
+            return (EntityActor) this.entity;
+        }
+        return null;
+    }
+
+    @Override
+    public IScriptEntity dropItem(byte amount) {
+        IScriptItemStack heldItemStack = getMainItem();
+        if (heldItemStack.getMinecraftItemStack().isEmpty()){ return null; } //resume only if holding anything
+
+        //drop item
+        byte count = heldItemStack.serialize().getByte("Count");
+        if(amount>count){ amount = count;}
+        ScriptVector entityPosition = getPosition();
+        IScriptEntity spawnedItemEntity = getWorld().dropItemStack(heldItemStack,  entityPosition.x, (entityPosition.y+this.entity.getEyeHeight()), entityPosition.z);
+        INBTCompound spawnedItemFullData = spawnedItemEntity.getFullData();
+        spawnedItemFullData.setShort("PickupDelay", (short) 40);
+        spawnedItemFullData.getCompound("Item").setByte("Count", amount);
+        spawnedItemEntity.setFullData(spawnedItemFullData);
+
+        //give item motion
+        ScriptVector look = getLook();
+        spawnedItemEntity.addVelocity(look.x/3, look.y/3, look.z/3);
+
+        //remove dropped item from inventory
+        String heldItemStackData = heldItemStack.serialize().toString();
+        ScriptFactory factory = new ScriptFactory();
+        INBTCompound heldItemNbt = factory.createCompound("{Item:"+heldItemStackData+"}");
+        heldItemNbt.getCompound("Item").setByte("Count", (byte) (heldItemNbt.getCompound("Item").getByte("Count")-amount));
+        IScriptItemStack heldItem = factory.createItemNBT(heldItemNbt.getCompound("Item").toString());
+        heldItemNbt.setCompound("Item", heldItem.serialize());
+        setMainItem(factory.createItem(heldItemNbt.getCompound("Item")));
+
+        return spawnedItemEntity;
+    }
+
+    @Override
+    public IScriptEntity dropItem() {
+        IScriptItemStack heldItemStack = getMainItem();
+        if (heldItemStack.getMinecraftItemStack().isEmpty()){ return null; } //resume only if holding anything
+
+        byte count = heldItemStack.serialize().getByte("Count");
+        byte amount =1;
+        if(count==0){ amount = 0;}
+        IScriptEntity spawnedItemEntity = dropItem(amount);
+
+        return spawnedItemEntity;
+    }
+
+    @Override
+    public IScriptEntity dropItem(IScriptItemStack itemStack) {
+        ScriptVector entityPosition = getPosition();
+        IScriptEntity spawnedItemEntity = getWorld().dropItemStack(itemStack,  entityPosition.x, (entityPosition.y+this.entity.getEyeHeight()), entityPosition.z);
+        INBTCompound spawnedItemFullData = spawnedItemEntity.getFullData();
+        spawnedItemFullData.setShort("PickupDelay", (short) 40);
+        spawnedItemEntity.setFullData(spawnedItemFullData);
+
+        //give item motion
+        ScriptVector look = getLook();
+        spawnedItemEntity.addVelocity(look.x/3, look.y/3, look.z/3);
+
+        return spawnedItemEntity;
+    }
+
+    @Override
+    public boolean isInWater() {
+        return this.entity.isInWater();
+    }
+
+    @Override
+    public boolean isInLava() {
+        return this.entity.isInLava();
+    }
+
+    @Override
+    public float getEyeHeight(){
+        return this.entity.getEyeHeight();
+    }
+
+    @Override
+    public IScriptItemStack getHelmet() {
+        ScriptFactory factory = new ScriptFactory();
+        if (this.entity instanceof EntityLivingBase) {
+            EntityLivingBase entityLivingBase = (EntityLivingBase) this.entity;
+            INBTCompound nbt = factory.createCompound(entityLivingBase.getItemStackFromSlot(EntityEquipmentSlot.HEAD).serializeNBT().toString());
+            return factory.createItem(nbt);
+        }
+        return null;
+    }
+
+    @Override
+    public IScriptItemStack getChestplate() {
+        ScriptFactory factory = new ScriptFactory();
+        if (this.entity instanceof EntityLivingBase) {
+            EntityLivingBase entityLivingBase = (EntityLivingBase) this.entity;
+            INBTCompound nbt = factory.createCompound(entityLivingBase.getItemStackFromSlot(EntityEquipmentSlot.CHEST).serializeNBT().toString());
+            return factory.createItem(nbt);
+        }
+        return null;
+    }
+
+    @Override
+    public IScriptItemStack getLeggings() {
+        ScriptFactory factory = new ScriptFactory();
+        if (this.entity instanceof EntityLivingBase) {
+            EntityLivingBase entityLivingBase = (EntityLivingBase) this.entity;
+            INBTCompound nbt = factory.createCompound(entityLivingBase.getItemStackFromSlot(EntityEquipmentSlot.LEGS).serializeNBT().toString());
+            return factory.createItem(nbt);
+        }
+        return null;
+    }
+
+    @Override
+    public IScriptItemStack getBoots() {
+        ScriptFactory factory = new ScriptFactory();
+        if (this.entity instanceof EntityLivingBase) {
+            EntityLivingBase entityLivingBase = (EntityLivingBase) this.entity;
+            INBTCompound nbt = factory.createCompound(entityLivingBase.getItemStackFromSlot(EntityEquipmentSlot.FEET).serializeNBT().toString());
+            return factory.createItem(nbt);
+        }
+        return null;
+    }
+
+    @Override
+    public void setHelmet(IScriptItemStack itemStack) {
+        if (this.entity instanceof EntityLivingBase) {
+            EntityLivingBase entityLivingBase = (EntityLivingBase) this.entity;
+            entityLivingBase.setItemStackToSlot(EntityEquipmentSlot.HEAD, itemStack.getMinecraftItemStack());
+        }
+    }
+
+    @Override
+    public void setChestplate(IScriptItemStack itemStack) {
+        if (this.entity instanceof EntityLivingBase) {
+            EntityLivingBase entityLivingBase = (EntityLivingBase) this.entity;
+            entityLivingBase.setItemStackToSlot(EntityEquipmentSlot.CHEST, itemStack.getMinecraftItemStack());
+        }
+    }
+
+    @Override
+    public void setLeggings(IScriptItemStack itemStack) {
+        if (this.entity instanceof EntityLivingBase) {
+            EntityLivingBase entityLivingBase = (EntityLivingBase) this.entity;
+            entityLivingBase.setItemStackToSlot(EntityEquipmentSlot.LEGS, itemStack.getMinecraftItemStack());
+        }
+    }
+
+    @Override
+    public void setBoots(IScriptItemStack itemStack) {
+        if (this.entity instanceof EntityLivingBase) {
+            EntityLivingBase entityLivingBase = (EntityLivingBase) this.entity;
+            entityLivingBase.setItemStackToSlot(EntityEquipmentSlot.FEET, itemStack.getMinecraftItemStack());
+        }
+    }
+
+    @Override
+    public void setArmor(IScriptItemStack helmet, IScriptItemStack chestplate, IScriptItemStack leggings, IScriptItemStack boots) {
+        setHelmet(helmet);
+        setChestplate(chestplate);
+        setLeggings(leggings);
+        setBoots(boots);
+    }
+
+    @Override
+    public void clearArmor() {
+        ScriptFactory factory = new ScriptFactory();
+        setArmor(factory.createItem("{}"), factory.createItem("{}"), factory.createItem("{}"), factory.createItem("{}"));
+    }
+
+    @Override
+    public void setModifier(String modifierName, double value) {
+        if (this.entity instanceof EntityLivingBase) {
+            EntityLivingBase entityLivingBase = (EntityLivingBase) this.entity;
+            UUID uuid = entityLivingBase.getUniqueID();
+            IAttributeInstance attribute = entityLivingBase.getAttributeMap().getAttributeInstanceByName(modifierName);
+            AttributeModifier modifier = new AttributeModifier(uuid, "script."+modifierName, value, 0);
+            if(!attribute.hasModifier(modifier)){
+                attribute.applyModifier(modifier);
+            } else{
+                attribute.removeModifier(modifier);
+                attribute.applyModifier(modifier);
+            }
+        }
+    }
+
+    @Override
+    public double getModifier(String modifierName) {
+        if (this.entity instanceof EntityLivingBase) {
+            EntityLivingBase entityLivingBase = (EntityLivingBase) this.entity;
+            IAttributeInstance attribute = entityLivingBase.getAttributeMap().getAttributeInstanceByName(modifierName);
+            return attribute.getModifier(entityLivingBase.getUniqueID()).getAmount();
+        }
+        return 0;
+    }
+
+    @Override
+    public void removeModifier(String modifierName) {
+        if (this.entity instanceof EntityLivingBase) {
+            EntityLivingBase entityLivingBase = (EntityLivingBase) this.entity;
+            IAttributeInstance attribute = entityLivingBase.getAttributeMap().getAttributeInstanceByName(modifierName);
+            attribute.removeModifier(attribute.getModifier(entityLivingBase.getUniqueID()));
+        }
+    }
+
+    @Override
+    public void removeAllModifiers() {
+        if (this.entity instanceof EntityLivingBase) {
+            EntityLivingBase entityLivingBase = (EntityLivingBase) this.entity;
+            for (IAttributeInstance attribute : entityLivingBase.getAttributeMap().getAllAttributes()) {
+                attribute.removeModifier(entityLivingBase.getUniqueID());
+            }
+        }
+    }
+
+    @Override
+    public boolean isEntityInRadius(IScriptEntity entity, double radius) {
+        if (this.entity instanceof EntityLivingBase) {
+            EntityLivingBase entityLivingBase = (EntityLivingBase) this.entity;
+            return entityLivingBase.getDistanceSq(entity.getMinecraftEntity()) <= radius * radius;
+        }
+        return false;
+    }
+
+    @Override
+    public void BBGunShoot(String gunPropsNbtString) {
+        if (this.entity instanceof EntityLivingBase) {
+            EntityLivingBase entityLivingBase = (EntityLivingBase) this.entity;
+            ScriptFactory factory = new ScriptFactory();
+            GunProps gunProps = new GunProps( factory.createCompound(gunPropsNbtString).getNBTTagCompound() );
+            EntityGunProjectile projectile = new EntityGunProjectile(entityLivingBase.world, gunProps, gunProps.projectileMorph);
+            projectile.setPosition(entityLivingBase.posX, (entityLivingBase.posY+1.8), entityLivingBase.posZ);
+            projectile.shoot(entityLivingBase, entityLivingBase.rotationPitch, entityLivingBase.rotationYaw, 0, gunProps.speed, 0);
+            projectile.setInitialMotion();
+            entityLivingBase.world.spawnEntity(projectile);
+        }
     }
 }
