@@ -255,6 +255,10 @@ public class ScriptWorld implements IScriptWorld
         entity.world.spawnEntity(entity);
         entity.initialize();
 
+        if(!npc.serializeNBT().getString("StateName").equals("default")){
+            entity.setStringInData("StateName", state);
+        }
+
         return new ScriptNpc(entity);
     }
 
