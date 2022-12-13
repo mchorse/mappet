@@ -325,6 +325,78 @@ public class ScriptFactory implements IScriptFactory
         return output.toString();
     }
 
+    @Override
+    public double random(double max)
+    {
+        return Math.random()*max;
+    }
+
+    @Override
+    public double random(double min, double max)
+    {
+        return min + Math.random()*(max-min);
+    }
+
+    public enum colorCodes{
+        black("0"),
+        dark_blue("1"),
+        dark_green("2"),
+        dark_aqua("3"),
+        dark_red("4"),
+        dark_purple("5"),
+        gold("6"),
+        gray("7"),
+        dark_gray("8"),
+        blue("9"),
+        green("a"),
+        aqua("b"),
+        red("c"),
+        light_purple("d"),
+        yellow("e"),
+        white("f");
+
+        private final String colorName;
+
+        colorCodes(String colorName){
+            this.colorName = "\u00A7"+colorName;
+        }
+    }
+    @Override
+    public String getColorCode(String color) {
+        return colorCodes.valueOf(color).colorName;
+    }
+
+    public enum styleCodes{
+        obfuscated("k"),
+        bold("l"),
+        strikethrough("m"),
+        underline("n"),
+        italic("o"),
+        reset("r");
+        private final String styleName;
+
+        styleCodes(String styleName){
+            this.styleName = "\u00A7"+ styleName;
+        }
+    }
+
+    @Override
+    public String getStyleCode(String... styles)
+    {
+        StringBuilder builder = new StringBuilder();
+        for(String style : styles)
+        {
+            builder.append(styleCodes.valueOf(style).styleName);
+        }
+        return builder.toString();
+    }
+
+    @Override
+    public String style(String color, String... styles){
+        return getColorCode(color)+getStyleCode(styles);
+    }
+
+
     private String getModifier(int m)
     {
         String modifier = Modifier.isFinal(m) ? "final " : "";
