@@ -39,6 +39,7 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -338,11 +339,36 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Override
     public void setTarget(IScriptEntity entity)
     {
-        if (this.entity instanceof EntityLiving)
+        if (this.entity instanceof EntityLiving && entity == null)
         {
-            EntityLivingBase target = entity != null && entity.isLivingBase() ? (EntityLivingBase) entity.getMinecraftEntity() : null;
+            //This should be enough, but it does not work most of the time for some reason.
+            ((EntityLiving) this.entity).setAttackTarget(null);
+            ((EntityLiving) this.entity).setRevengeTarget(null);
 
-            ((EntityLiving) this.entity).setAttackTarget(target);
+            //So I solved it by spawning an armor stand and making the entity target it and removing it after 1 tick.
+            String id = "minecraft:armor_stand";
+            double x = this.entity.getPosition().getX();
+            double y = (this.entity.getPosition().getY())-1;
+            double z = this.entity.getPosition().getZ();
+            String nbt = "{Marker:1b,NoGravity:1,Invisible:1b,CustomName:\"target_canceler\"}";
+            NBTTagCompound tag = new NBTTagCompound();
+            try
+            {
+                tag = JsonToNBT.getTagFromJson(nbt);
+            }
+            catch (Exception e)
+            {}
+            INBTCompound compound = new ScriptNBTCompound(tag);
+            ScriptWorld world = new ScriptWorld(this.entity.world);
+
+            IScriptEntity targetCanceller = world.spawnEntity(id, x, y, z, compound);
+            ((EntityLiving) this.entity).setAttackTarget((EntityLivingBase) targetCanceller.getMinecraftEntity());
+            ((EntityLiving) this.entity).setRevengeTarget((EntityLivingBase) targetCanceller.getMinecraftEntity());
+            targetCanceller.remove();
+        }
+        else if (this.entity instanceof EntityLiving && entity.isLivingBase())
+        {
+            ((EntityLiving) this.entity).setAttackTarget((EntityLivingBase) entity.getMinecraftEntity());
         }
     }
 
