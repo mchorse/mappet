@@ -79,105 +79,105 @@ public interface IScriptItemStack
     /**
      * Gets display name of the item stack.
      */
-    String getDisplayName();
+    public String getDisplayName();
 
     /**
      * Sets display name of the item stack.
      */
-    void setDisplayName(String name);
+    public void setDisplayName(String name);
 
     /**
      * Gets lore of the item stack.
      */
-    String getLore(int index);
+    public String getLore(int index);
 
     /**
      * Gets all lore lines of the item stack as a list.
      */
-    List<String> getLoreList();
+    public List<String> getLoreList();
 
     /**
      * Sets lore of the item stack.
      */
-    void setLore(int index, String lore);
+    public void setLore(int index, String lore);
 
     /**
      * Adds a lore line to the item stack.
      */
-    void addLore(String lore);
+    public void addLore(String lore);
 
     /**
      * Removes all lore lines from the item stack.
      */
-    void clearAllLores();
+    public void clearAllLores();
 
     /**
      * Removes a lore line from the item stack.
      */
-    void clearLore(int index);
+    public void clearLore(int index);
 
     /**
      * Clears all enchantments from the item stack.
      */
-    void clearAllEnchantments();
+    public void clearAllEnchantments();
 
     /**
      * Gets a list of all blocks the item stack can destroy.
      */
-    List<String> getCanDestroyBlocks();
+    public List<String> getCanDestroyBlocks();
 
     /**
      * Adds a block that the item stack can destroy.
      */
-    void addCanDestroyBlock(String block);
+    public void addCanDestroyBlock(String block);
 
     /**
      * Clears all blocks that the item stack can destroy.
      */
-    void clearAllCanDestroyBlocks();
+    public void clearAllCanDestroyBlocks();
 
     /**
      * Clears a block that the item stack can destroy.
      */
-    void clearCanDestroyBlock(String block);
+    public void clearCanDestroyBlock(String block);
 
     /**
      * Gets a list of all blocks the item stack can place on.
      */
-    List<String> getCanPlaceOnBlocks();
+    public List<String> getCanPlaceOnBlocks();
 
     /**
      * Adds a block that the item stack can place on.
      */
-    void addCanPlaceOnBlock(String block);
+    public void addCanPlaceOnBlock(String block);
 
     /**
      * Clears all blocks that the item stack can place on.
      */
-    void clearAllCanPlaceOnBlocks();
+    public void clearAllCanPlaceOnBlocks();
 
     /**
      * Clears a block that the item stack can place on.
      */
-    void clearCanPlaceOnBlock(String block);
+    public void clearCanPlaceOnBlock(String block);
 
     /**
      * Gets repair cost of the item stack.
      */
-    int getRepairCost();
+    public int getRepairCost();
 
     /**
      * Sets repair cost of the item stack.
      */
-    void setRepairCost(int cost);
+    public void setRepairCost(int cost);
 
     /**
      * Gets if an item stack is unbreakable.
      */
-    boolean isUnbreakable();
+    public boolean isUnbreakable();
 
     /**
      * Sets whether an item stack is unbreakable or not.
      */
-    void setUnbreakable(boolean unbreakable);
+    public void setUnbreakable(boolean unbreakable);
 }
