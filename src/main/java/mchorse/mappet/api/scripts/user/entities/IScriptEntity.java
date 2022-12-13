@@ -340,6 +340,18 @@ public interface IScriptEntity
 
     /**
      * Set this entity's attack target to given entity.
+     *
+     * <pre>{@code
+     * //cancel the entity you're looking at from targeting you.
+     * function main(c) {
+     *     var s = c.getSubject();
+     *      var ray = s.rayTrace(64);
+     *      if(ray.isEntity())
+     *      {
+     *           ray.getEntity().setTarget(null)
+     *      }
+     * }
+     * }</pre>
      */
     public void setTarget(IScriptEntity entity);
 
