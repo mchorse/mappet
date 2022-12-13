@@ -197,4 +197,28 @@ public class ScriptEvent implements IScriptEvent
             player.sendMessage(new TextComponentString(message));
         }
     }
+
+    @Override
+    public void executeScript(String scriptName)
+    {
+        CommonProxy.eventHandler.addExecutable(new ScriptExecutionFork(this.context.copy(), scriptName, "main", 0));
+    }
+
+    @Override
+    public void executeScript(String scriptName, int delay)
+    {
+        CommonProxy.eventHandler.addExecutable(new ScriptExecutionFork(this.context.copy(), scriptName, "main", delay));
+    }
+
+    @Override
+    public void executeScript(String scriptName, String functionName)
+    {
+        CommonProxy.eventHandler.addExecutable(new ScriptExecutionFork(this.context.copy(), scriptName, functionName, 0));
+    }
+
+    @Override
+    public void executeScript(String scriptName, String functionName, int delay)
+    {
+        CommonProxy.eventHandler.addExecutable(new ScriptExecutionFork(this.context.copy(), scriptName, functionName, delay));
+    }
 }

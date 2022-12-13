@@ -216,4 +216,52 @@ public interface IScriptEvent
      * }</pre>
      */
     public void send(String message);
+
+    /**
+     * Executes a script by calling it by its name.
+     *
+     * <pre>{@code
+     *    c.executeScript("script.js");
+     * }</pre>
+     *
+     * @param scriptName The name of the script to execute.
+     */
+    public void executeScript(String scriptName);
+
+    /**
+     * Executes a script with a delay by calling it by its name.
+     *
+     * <pre>{@code
+     *    c.executeScript("script.js", 20);
+     * }</pre>
+     *
+     * @param scriptName The name of the script to execute.
+     * @param delay How many ticks should pass before scheduled script will be executed.
+     */
+    public void executeScript(String scriptName, int delay);
+
+    /**
+     * Executes a function of a script by calling them by their names.
+     *
+     * <pre>{@code
+     *    c.executeScript("script.js", "function");
+     * }</pre>
+     *
+     * @param scriptName The name of the script to execute.
+     * @param functionName The name of the function to execute.
+     */
+    public void executeScript(String scriptName, String functionName);
+
+    /**
+     * Executes a function of a script with a delay by calling them by their names.
+     *
+     * <pre>{@code
+     *    c.executeScript("script.js", "function", 20);
+     * }</pre>
+     *
+     * @param scriptName The name of the script to execute.
+     * @param functionName The name of the function to execute.
+     * @param delay How many ticks should pass before scheduled script will be executed.
+     */
+    public void executeScript(String scriptName, String functionName, int delay);
 }
