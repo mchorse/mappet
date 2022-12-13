@@ -3,10 +3,7 @@ package mchorse.mappet.api.scripts.code.nbt;
 import mchorse.mappet.api.scripts.user.nbt.INBT;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.mappet.api.scripts.user.nbt.INBTList;
-import net.minecraft.nbt.JsonToNBT;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.*;
 
 import java.util.Set;
 
@@ -248,4 +245,60 @@ public class ScriptNBTCompound implements INBTCompound
 
         return false;
     }
+
+    @Override
+    public Object get(String key)
+    {
+        NBTBase tag = this.tag.getTag(key);
+
+        if (tag instanceof NBTTagCompound)
+        {
+            return new ScriptNBTCompound((NBTTagCompound) tag);
+        }
+        else if (tag instanceof NBTTagList)
+        {
+            return new ScriptNBTList((NBTTagList) tag);
+        }
+        else if (tag instanceof net.minecraft.nbt.NBTTagString)
+        {
+            return getString(key);
+        }
+        else if (tag instanceof NBTTagInt)
+        {
+            return getInt(key);
+        }
+        else if (tag instanceof NBTTagDouble)
+        {
+            return getDouble(key);
+        }
+        else if (tag instanceof NBTTagFloat)
+        {
+            return getFloat(key);
+        }
+        else if (tag instanceof NBTTagLong)
+        {
+            return getLong(key);
+        }
+        else if (tag instanceof NBTTagShort)
+        {
+            return getShort(key);
+        }
+        else if (tag instanceof NBTTagByte)
+        {
+            return getByte(key);
+        }
+        else if (tag instanceof NBTTagEnd)
+        {
+            return null;
+        }
+
+        return null;
+    }
+
+    @Override
+    public boolean equals(INBTCompound compound)
+    {
+        return this.tag.equals(((ScriptNBTCompound) compound).tag);
+    }
+
 }

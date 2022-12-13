@@ -157,4 +157,35 @@ public interface INBTCompound extends INBT
      * @return Whether given NBT code was successfully was inserted.
      */
     public boolean setNBT(String key, String nbt);
+
+    /**
+     * get whatever inside the compound as a type of either
+     * INBTCompound, INBTList,
+     * String, int, double, float, long, short, byte, boolean
+     * or null
+     *
+     * <pre>{@code
+     *     var tag = mappet.createCompound("{id:\"minecraft:diamond_hoe\",Count:1b}");
+     *     c.send(tag.get("id"))
+     *     c.send(tag.get("Count"))
+     * }</pre>
+     *
+     * @param key the key of the value
+     * @return whatever inside the compound as a type of either
+     */
+    Object get(String key);
+
+    /**
+     * checks if a compound equals another compound, even if the order of the keys is different
+     *
+     * <pre>{@code
+     *    var tag1 = mappet.createCompound("{id:\"minecraft:diamond_hoe\",Count:1b}");
+     *    var tag2 = mappet.createCompound("{Count:1b,id:\"minecraft:diamond_hoe\"}");
+     *    c.send(tag1.equals(tag2))
+     * }</pre>
+     *
+     * @param compound the compound to compare to
+     * @return whether the compound is equal to the other compound
+     */
+    boolean equals(INBTCompound compound);
 }

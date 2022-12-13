@@ -314,4 +314,17 @@ public class ScriptNBTList implements INBTList
     {
         this.list.appendTag(value.getNBTTagList());
     }
+
+    @Override
+    public Object[] toArray()
+    {
+        Object[] array = new Object[this.list.tagCount()];
+
+        for (int i = 0; i < this.list.tagCount(); i++)
+        {
+            array[i] = this.list.get(i);
+        }
+
+        return array;
+    }
 }
