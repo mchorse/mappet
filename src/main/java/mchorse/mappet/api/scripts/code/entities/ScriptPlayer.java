@@ -31,8 +31,10 @@ import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
+import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagFloat;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SPacketAnimation;
 import net.minecraft.network.play.server.SPacketCustomPayload;
@@ -410,5 +412,92 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     public void closeHUD(String id)
     {
         Dispatcher.sendTo(new PacketHUDScene(id == null ? "" : id, null), this.entity);
+    }
+
+    @Override
+    public void executeCommand(String command)
+    {
+        this.entity.world.getMinecraftServer().getCommandManager().executeCommand((ICommandSender) this.entity, command);
+    }
+
+    @Override
+    public boolean isFlying(){
+        return this.entity.capabilities.isFlying;
+    }
+
+    @Override
+    public float getWalkSpeed(){
+        return this.entity.capabilities.getWalkSpeed();
+    }
+
+    @Override
+    public float getFlySpeed(){
+        return this.entity.capabilities.getWalkSpeed();
+    }
+
+    @Override
+    public boolean isSneaking(){
+        return this.entity.isSneaking();
+    }
+
+    @Override
+    public void setFlySpeed(float speed){
+        NBTTagCompound tagCompound = new NBTTagCompound();
+        NBTTagFloat speedtag = new NBTTagFloat(speed);
+        this.entity.capabilities.writeCapabilitiesToNBT(tagCompound);
+        tagCompound.getCompoundTag("abilities").setTag("flySpeed", speedtag);
+        this.entity.capabilities.readCapabilitiesFromNBT(tagCompound);
+        this.entity.sendPlayerAbilities();
+    }
+
+    @Override
+    public void setWalkSpeed(float speed){
+        NBTTagCompound tagCompound = new NBTTagCompound();
+        NBTTagFloat speedtag = new NBTTagFloat(speed);
+        this.entity.capabilities.writeCapabilitiesToNBT(tagCompound);
+        tagCompound.getCompoundTag("abilities").setTag("walkSpeed", speedtag);
+        this.entity.capabilities.readCapabilitiesFromNBT(tagCompound);
+        this.entity.sendPlayerAbilities();
+    }
+
+    @Override
+    public void resetFlySpeed(){
+        NBTTagCompound tagCompound = new NBTTagCompound();
+        NBTTagFloat speedtag = new NBTTagFloat(0.05F);
+        this.entity.capabilities.writeCapabilitiesToNBT(tagCompound);
+        tagCompound.getCompoundTag("abilities").setTag("flySpeed", speedtag);
+        this.entity.capabilities.readCapabilitiesFromNBT(tagCompound);
+        this.entity.sendPlayerAbilities();
+    }
+
+    @Override
+    public void resetWalkSpeed(){
+        NBTTagCompound tagCompound = new NBTTagCompound();
+        NBTTagFloat speedtag = new NBTTagFloat(0.1F);
+        this.entity.capabilities.writeCapabilitiesToNBT(tagCompound);
+        tagCompound.getCompoundTag("abilities").setTag("walkSpeed", speedtag);
+        this.entity.capabilities.readCapabilitiesFromNBT(tagCompound);
+        this.entity.sendPlayerAbilities();
+    }
+
+    @Override
+    public int getCooldown(int inventoryStackIndex){
+        float cooldown = this.entity.getCooldownTracker().getCooldown(getInventory().getStack(inventoryStackIndex).getItem().getMinecraftItem(), 0);
+        return (int) (cooldown * 20);
+    }
+
+    @Override
+    public void setCooldown(int inventoryStackIndex, int cooldown){
+        this.entity.getCooldownTracker().setCooldown(getInventory().getStack(inventoryStackIndex).getItem().getMinecraftItem(), cooldown);
+    }
+
+    @Override
+    public void resetCooldown(int inventoryStackIndex){
+        this.entity.getCooldownTracker().removeCooldown(getInventory().getStack(inventoryStackIndex).getItem().getMinecraftItem());
+    }
+
+    @Override
+    public int getMainItemInventoryIndex(){
+        return this.entity.inventory.currentItem;
     }
 }
