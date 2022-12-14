@@ -152,6 +152,7 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
 
         this.entity.setLocationAndAngles(this.entity.posX, this.entity.posY, this.entity.posZ, yaw, pitch);
         this.entity.setRotationYawHead(yawHead);
+        this.entity.setRenderYawOffset(yawHead);
 
         if (!this.isPlayer())
         {
