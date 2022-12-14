@@ -593,7 +593,7 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     }
 
     @Override
-    public boolean isInAnArea(double x1, double y1, double z1, double x2, double y2, double z2)
+    public boolean isInArea(double x1, double y1, double z1, double x2, double y2, double z2)
     {
         return new AxisAlignedBB(x1, y1, z1, x2, y2, z2).intersects(this.entity.getEntityBoundingBox());
     }

@@ -175,9 +175,9 @@ public interface IScriptEntity
      * Returns the eye height of the entity.
      *
      * <pre>{@code
-     *     var s = c.getSubject();
+     *    var s = c.getSubject();
      *
-     *     c.send("This entity's eye height is: "+s.getEyeHeight());
+     *    c.send("This entity's eye height is: " + s.getEyeHeight());
      * }</pre>
      */
     public float getEyeHeight();
@@ -656,7 +656,7 @@ public interface IScriptEntity
      */
     public default boolean isInBlock(int x, int y, int z)
     {
-        return this.isInAnArea(x, y, z, x + 1, y + 1, z + 1);
+        return this.isInArea(x, y, z, x + 1, y + 1, z + 1);
     }
 
     /**
@@ -671,7 +671,7 @@ public interface IScriptEntity
      *     }
      * }</pre>
      */
-    public boolean isInAnArea(double x1, double y1, double z1, double x2, double y2, double z2);
+    public boolean isInArea(double x1, double y1, double z1, double x2, double y2, double z2);
 
     /**
      * Inflict some damage on this entity (use {@link #kill()} to kill the entity though).
@@ -1001,8 +1001,8 @@ public interface IScriptEntity
      * Spawn a BB gun projectile. It works only if Blockbuster mod is present.
      *
      * <p>ProTip: To get the gun props' NBT code, configure a desired BB gun, and grab it into
-     * you main hand. Execute <code>/item_nbt</code> command in the chat, paste the NBT into
-     * the script, and remove {Gun: in the beginning and a } in the end.</p>
+     * you main hand. Execute <code>/item_nbt false</code> command in the chat, paste the NBT
+     * into the script, and remove {Gun: in the beginning and a } in the end.</p>
      *
      * <pre>{@code
      *     c.getSubject().shootBBGunProjectile('{Projectile:{Meta:0b,Block:"minecraft:stone",Name:"block"},Gravity:0.0f}');

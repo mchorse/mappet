@@ -3,15 +3,14 @@ package mchorse.mappet.api.scripts.code.entities;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.npcs.Npc;
 import mchorse.mappet.api.npcs.NpcState;
-import mchorse.mappet.api.scripts.code.ScriptFactory;
-import mchorse.mappet.api.scripts.code.nbt.ScriptNBTCompound;
 import mchorse.mappet.api.scripts.user.entities.IScriptNpc;
-import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
-import mchorse.mappet.api.scripts.user.nbt.INBTList;
+import mchorse.mappet.api.triggers.Trigger;
+import mchorse.mappet.api.triggers.blocks.AbstractTriggerBlock;
+import mchorse.mappet.api.triggers.blocks.ScriptTriggerBlock;
 import mchorse.mappet.entities.EntityNpc;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 
 public class ScriptNpc extends ScriptEntity<EntityNpc> implements IScriptNpc
 {
@@ -45,185 +44,193 @@ public class ScriptNpc extends ScriptEntity<EntityNpc> implements IScriptNpc
     @Override
     public String getNpcState()
     {
-        INBTCompound fullData = new ScriptNBTCompound(this.entity.writeToNBT(new NBTTagCompound()));
-        return fullData.getCompound("State").getString("StateName");
+        return this.entity.getState().stateName;
     }
 
     @Override
     public void setNpcState(String stateId)
     {
-        this.entity.sendMorph();
         String npcId = this.entity.getId();
         Npc npc = Mappet.npcs.load(npcId);
         NpcState state = npc == null ? null : npc.states.get(stateId);
+
         if (npc != null && state == null && npc.states.containsKey("default"))
         {
             state = npc.states.get("default");
         }
+
         if (state != null)
         {
             this.entity.setNpc(npc, state);
-            if(!npc.serializeNBT().getString("StateName").equals("default")){
-                this.entity.setStringInData("StateName", stateId);
 
+            if (!npc.serializeNBT().getString("StateName").equals("default"))
+            {
+                this.entity.setStringInData("StateName", stateId);
             }
         }
+
         this.entity.sendMorph();
     }
 
     @Override
     public void canPickUpLoot(boolean canPickUpLoot)
     {
-        INBTCompound fullData = new ScriptNBTCompound(this.entity.writeToNBT(new NBTTagCompound()));
-        fullData.setByte("CanPickUpLoot", (byte) (canPickUpLoot ? 1 : 0));
-        this.entity.readFromNBT(fullData.getNBTTagCompound());
+        this.entity.setCanPickUpLoot(canPickUpLoot);
     }
 
     @Override
     public void follow(String target)
     {
-        INBTCompound fullData = new ScriptNBTCompound(this.entity.writeToNBT(new NBTTagCompound()));
-        fullData.getCompound("State").setString("Follow", target);
-        this.entity.readFromNBT(fullData.getNBTTagCompound());
+        NpcState state = this.entity.getState();
+
+        state.follow = target;
+
+        this.entity.setState(state, false);
     }
 
     @Override
-    public void setOnTickTrigger(String scriptName, String functionName, int frequency, int blockNumber)
+    public void setOnTickTrigger(String scriptName, String functionName, int frequency, int blockIndex)
     {
-        INBTCompound fullData = new ScriptNBTCompound(this.entity.writeToNBT(new NBTTagCompound()));
-        fullData.getCompound("State").getCompound("TriggerTick").getList("Blocks").getCompound(blockNumber).setString("Script", scriptName);
-        fullData.getCompound("State").getCompound("TriggerTick").getList("Blocks").getCompound(blockNumber).setString("Function", functionName);
-        fullData.getCompound("State").getCompound("TriggerTick").getList("Blocks").getCompound(blockNumber).setInt("Frequency", frequency);
-        this.entity.readFromNBT(fullData.getNBTTagCompound());
-    }
+        NpcState state = this.entity.getState();
+        AbstractTriggerBlock block = blockIndex < state.triggerTick.blocks.size() ? state.triggerTick.blocks.get(blockIndex) : null;
 
-    @Override
-    public void addOnTickTrigger(String scriptName, String functionName, int frequency){
-        ScriptFactory factory = new ScriptFactory();
-        INBTCompound fullData = new ScriptNBTCompound(this.entity.writeToNBT(new NBTTagCompound()));
-        INBTList blocks = fullData.getCompound("State").getCompound("TriggerTick").getList("Blocks");
-        blocks.addCompound(factory.createCompound());
-        blocks.getCompound(blocks.size() - 1).setString("Script", scriptName);
-        blocks.getCompound(blocks.size() - 1).setString("Type", "script");
-        blocks.getCompound(blocks.size() - 1).setString("Function", functionName);
-        blocks.getCompound(blocks.size() - 1).setString("CustomData", "");
-        blocks.getCompound(blocks.size() - 1).setInt("Frequency", frequency);
-        this.entity.readFromNBT(fullData.getNBTTagCompound());
-    }
+        if (block instanceof ScriptTriggerBlock)
+        {
+            ScriptTriggerBlock script = (ScriptTriggerBlock) block;
 
-    @Override
-    public void clearOnTickTriggers(){
-        INBTCompound fullData = new ScriptNBTCompound(this.entity.writeToNBT(new NBTTagCompound()));
-        if (!fullData.getCompound("State").getCompound("TriggerTick").getList("Blocks").has(0)) {return;}
-        INBTList blocks = fullData.getCompound("State").getCompound("TriggerTick").getList("Blocks");
-        for(int i = blocks.size()-1; i >= 0; i--){
-            blocks.remove(i);
-            this.entity.readFromNBT(fullData.getNBTTagCompound());
+            script.string = scriptName;
+            script.function = functionName;
+            script.frequency = frequency;
+
+            this.entity.setState(state, false);
         }
     }
 
+    @Override
+    public void addOnTickTrigger(String scriptName, String functionName, int frequency)
+    {
+        NpcState state = this.entity.getState();
+        ScriptTriggerBlock block = new ScriptTriggerBlock();
+
+        block.string = scriptName;
+        block.function = functionName;
+        block.frequency = frequency;
+
+        state.triggerTick.blocks.add(block);
+        this.entity.setState(state, false);
+    }
 
     @Override
-    public void setOnInteractTrigger(String scriptName, String functionName, int blockNumber)
+    public void clearOnTickTriggers()
     {
-        INBTCompound fullData = new ScriptNBTCompound(this.entity.writeToNBT(new NBTTagCompound()));
-        fullData.getCompound("State").getCompound("TriggerInteract").getList("Blocks").getCompound(blockNumber).setString("Script", scriptName);
-        fullData.getCompound("State").getCompound("TriggerInteract").getList("Blocks").getCompound(blockNumber).setString("Function", functionName);
-        this.entity.readFromNBT(fullData.getNBTTagCompound());
+        NpcState state = this.entity.getState();
+
+        state.triggerTick.blocks.clear();
+
+        this.entity.setState(state, false);
+    }
+
+    @Override
+    public void setOnInteractTrigger(String scriptName, String functionName, int blockIndex)
+    {
+        NpcState state = this.entity.getState();
+        AbstractTriggerBlock block = blockIndex < state.triggerInteract.blocks.size() ? state.triggerInteract.blocks.get(blockIndex) : null;
+
+        if (block instanceof ScriptTriggerBlock)
+        {
+            ScriptTriggerBlock script = (ScriptTriggerBlock) block;
+
+            script.string = scriptName;
+            script.function = functionName;
+
+            this.entity.setState(state, false);
+        }
     }
 
     @Override
     public void addOnInteractTrigger(String scriptName, String functionName)
     {
-        INBTCompound fullData = new ScriptNBTCompound(this.entity.writeToNBT(new NBTTagCompound()));
-        ScriptFactory factory = new ScriptFactory();
-        INBTCompound triggerData = factory.createCompound();
-        triggerData.setString("Function", functionName);
-        triggerData.setString("Script", scriptName);
-        triggerData.setString("Type", "script");
-        triggerData.setString("CustomData", "");
-        triggerData.setInt("Frequency", 1);
+        NpcState state = this.entity.getState();
+        ScriptTriggerBlock block = new ScriptTriggerBlock();
 
-        fullData.getCompound("State").getCompound("TriggerInteract").getList("Blocks").addCompound(triggerData);
+        block.string = scriptName;
+        block.function = functionName;
 
-        this.entity.readFromNBT(fullData.getNBTTagCompound());
+        state.triggerInteract.blocks.add(block);
+        this.entity.setState(state, false);
     }
 
     @Override
-    public void clearOnInteractTriggers(){
-        INBTCompound fullData = new ScriptNBTCompound(this.entity.writeToNBT(new NBTTagCompound()));
-        if (!fullData.getCompound("State").getCompound("TriggerInteract").getList("Blocks").has(0)) {return;}
-        INBTList blocks = fullData.getCompound("State").getCompound("TriggerInteract").getList("Blocks");
-        for(int i = blocks.size()-1; i >= 0; i--){
-            blocks.remove(i);
-            this.entity.readFromNBT(fullData.getNBTTagCompound());
-        }
-    }
-
-    @Override
-    public void setPatrol(int x, int y, int z, String scriptName, String functionName)
+    public void clearOnInteractTriggers()
     {
-        INBTCompound fullData = new ScriptNBTCompound(this.entity.writeToNBT(new NBTTagCompound()));
-        fullData.getCompound("State").setString("Follow", "");
+        NpcState state = this.entity.getState();
 
-        ScriptFactory factory = new ScriptFactory();
-        INBTList patrolPoints = factory.createList();
-        patrolPoints.addInt(x);
-        patrolPoints.addInt(y);
-        patrolPoints.addInt(z);
-        fullData.getCompound("State").getList("Patrol").setList(0, patrolPoints);
-        fullData.getCompound("State").getList("PatrolTriggers").getCompound(0).getList("Blocks").getCompound(0).setString("Function", functionName);
-        fullData.getCompound("State").getList("PatrolTriggers").getCompound(0).getList("Blocks").getCompound(0).setString("Script", scriptName);
-        this.entity.readFromNBT(fullData.getNBTTagCompound());
+        state.triggerInteract.blocks.clear();
+
+        this.entity.setState(state, false);
+    }
+
+    @Override
+    public void setPatrol(int x, int y, int z, String scriptName, String functionName, int patrolIndex)
+    {
+        NpcState state = this.entity.getState();
+
+        if (patrolIndex >= 0)
+        {
+            if (patrolIndex < state.patrol.size())
+            {
+                state.patrol.set(patrolIndex, new BlockPos(x, y, z));
+            }
+
+            if (patrolIndex < state.patrolTriggers.size())
+            {
+                Trigger trigger = new Trigger();
+                ScriptTriggerBlock block = new ScriptTriggerBlock();
+
+                block.string = scriptName;
+                block.function = functionName;
+
+                trigger.blocks.add(block);
+                state.patrolTriggers.set(patrolIndex, trigger);
+            }
+        }
+
+        this.entity.setState(state, false);
     }
 
     @Override
     public void addPatrol(int x, int y, int z, String scriptName, String functionName)
     {
-        INBTCompound fullData = new ScriptNBTCompound(this.entity.writeToNBT(new NBTTagCompound()));
+        NpcState state = this.entity.getState();
 
-        //add patrol point
-        ScriptFactory factory = new ScriptFactory();
-        INBTList patrolPoints = factory.createList();
-        patrolPoints.addInt(x);
-        patrolPoints.addInt(y);
-        patrolPoints.addInt(z);
-        fullData.getCompound("State").getList("Patrol").addList(patrolPoints);
+        state.follow = "";
+        state.patrol.add(new BlockPos(x, y, z));
 
-        //add patrol trigger
-        INBTCompound triggerData = factory.createCompound();
-        triggerData.setString("Function", functionName);
-        triggerData.setString("Script", scriptName);
-        triggerData.setString("Type", "script");
-        triggerData.setString("CustomData", "");
-        triggerData.setInt("Frequency", 1);
+        Trigger trigger = new Trigger();
+        ScriptTriggerBlock block = new ScriptTriggerBlock();
 
-        INBTList triggerBlock = factory.createList();
-        triggerBlock.addCompound(triggerData);
+        block.string = scriptName;
+        block.function = functionName;
 
-        fullData.getCompound("State").getList("PatrolTriggers").addCompound(factory.createCompound());
-        fullData.getCompound("State").getList("PatrolTriggers").getCompound(fullData.getCompound("State").getList("PatrolTriggers").size() - 1).setList("Blocks", triggerBlock);
+        trigger.blocks.add(block);
+        state.patrolTriggers.add(trigger);
 
-        this.entity.readFromNBT(fullData.getNBTTagCompound());
+        this.entity.setState(state, false);
     }
 
     @Override
-    public void clearPatrolPoints(){
-        INBTCompound fullData = new ScriptNBTCompound(this.entity.writeToNBT(new NBTTagCompound()));
-        if (!fullData.getCompound("State").getList("Patrol").has(0)) {return;}
-        int sizeIndex = fullData.getCompound("State").getList("Patrol").size() - 1;
+    public void clearPatrolPoints()
+    {
+        NpcState state = this.entity.getState();
 
-        for (int i = sizeIndex; i >= 0; i--) {
-            fullData.getCompound("State").getList("Patrol").remove(i);
-            //fullData.getCompound("State").getList("PatrolTriggers").getCompound(i).getList("Blocks").remove(0);
-            this.entity.readFromNBT(fullData.getNBTTagCompound());
-        }
+        state.patrol.clear();
+
+        this.entity.setState(state, false);
     }
 
     @Override
     public String getFaction()
     {
-        INBTCompound fullData = new ScriptNBTCompound(this.entity.writeToNBT(new NBTTagCompound()));
-        return fullData.getCompound("State").getString("Faction");
+        return this.entity.getState().faction;
     }
 }

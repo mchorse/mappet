@@ -184,7 +184,9 @@ public class ItemNpcTool extends Item
             if (state != null)
             {
                 entity.setNpc(npc, state);
-                if(!npc.serializeNBT().getString("StateName").equals("default")){
+
+                if(!npc.serializeNBT().getString("StateName").equals("default"))
+                {
                     entity.setStringInData("StateName", stateId);
                 }
             }

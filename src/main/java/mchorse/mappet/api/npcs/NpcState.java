@@ -207,14 +207,14 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     public boolean wander;
 
     /**
-     * NPC will pick up items if this option is enabled and Gamerule canPickupItems is true
-     */
-    public boolean canPickUpLoot;
-
-    /**
      * The health threshold until NPC starts to run away
      */
     public float flee = 4F;
+
+    /**
+     * NPC will pick up items if this option is enabled and Gamerule canPickupItems is true
+     */
+    public boolean canPickUpLoot;
 
     /* Triggers */
 
@@ -222,7 +222,6 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     public Trigger triggerDamaged = new Trigger();
     public Trigger triggerInteract = new Trigger();
     public Trigger triggerTick = new Trigger();
-    /* TODO: implement this */
     public Trigger triggerTarget = new Trigger();
     public Trigger triggerInitialize = new Trigger();
     public Trigger triggerRespawn = new Trigger();
@@ -545,7 +544,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (all || options.contains("look_around")) tag.setBoolean("LookAround", this.lookAround);
         if (all || options.contains("wander")) tag.setBoolean("Wander", this.wander);
         if (all || options.contains("flee")) tag.setFloat("Flee", this.flee);
-        if (all || options.contains("can_pick_up_loot")) tag.setBoolean("canPickUpLoot", this.canPickUpLoot);
+        if (all || options.contains("can_pick_up_loot")) tag.setBoolean("CanPickUpLoot", this.canPickUpLoot);
 
         /* Triggers */
         if (all || options.contains("trigger_died")) tag.setTag("TriggerDied", this.triggerDied.serializeNBT());
@@ -668,7 +667,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("LookAround")) this.lookAround = tag.getBoolean("LookAround");
         if (tag.hasKey("Wander")) this.wander = tag.getBoolean("Wander");
         if (tag.hasKey("Flee")) this.flee = tag.getFloat("Flee");
-        if (tag.hasKey("canPickUpLoot")) this.canPickUpLoot = tag.getBoolean("canPickUpLoot");
+        if (tag.hasKey("CanPickUpLoot")) this.canPickUpLoot = tag.getBoolean("CanPickUpLoot");
 
         /* Triggers */
         if (tag.hasKey("TriggerDied")) this.triggerDied.deserializeNBT(tag.getCompoundTag("TriggerDied"));
@@ -678,7 +677,6 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("TriggerTarget")) this.triggerTarget.deserializeNBT(tag.getCompoundTag("TriggerTarget"));
         if (tag.hasKey("TriggerInitialize")) this.triggerInitialize.deserializeNBT(tag.getCompoundTag("TriggerInitialize"));
         if (tag.hasKey("TriggerRespawn")) this.triggerRespawn.deserializeNBT(tag.getCompoundTag("TriggerRespawn"));
-
 
         /* Respawn */
         if (tag.hasKey("Respawn")) this.respawn = tag.getBoolean("Respawn");

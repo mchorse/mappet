@@ -138,14 +138,16 @@ public class ScriptItemStack implements IScriptItemStack
     {
         NBTTagCompound tag = this.stack.getTagCompound();
 
-        if (tag.hasKey("display", Constants.NBT.TAG_COMPOUND))
+        if (tag != null && tag.hasKey("display", Constants.NBT.TAG_COMPOUND))
         {
             NBTTagCompound display = tag.getCompoundTag("display");
 
-            if (display.hasKey("Lore", Constants.NBT.TAG_LIST))
+            if (!display.hasKey("Lore", Constants.NBT.TAG_LIST))
             {
-                return display.getTagList("Lore", Constants.NBT.TAG_STRING);
+                display.setTag("Lore", new NBTTagList());
             }
+
+            return display.getTagList("Lore", Constants.NBT.TAG_STRING);
         }
 
         return null;
@@ -276,10 +278,17 @@ public class ScriptItemStack implements IScriptItemStack
     {
         NBTTagCompound tag = this.stack.getTagCompound();
 
-        if (tag != null && tag.hasKey(CAN_DESTROY, Constants.NBT.TAG_LIST))
+        if (tag == null)
         {
-            tag.getTagList(CAN_DESTROY, Constants.NBT.TAG_STRING).appendTag(new NBTTagString(block));
+            this.stack.setTagCompound(new NBTTagCompound());
         }
+
+        if (!tag.hasKey(CAN_DESTROY, Constants.NBT.TAG_LIST))
+        {
+            tag.setTag(CAN_DESTROY, new NBTTagList());
+        }
+
+        tag.getTagList(CAN_DESTROY, Constants.NBT.TAG_STRING).appendTag(new NBTTagString(block));
     }
 
     @Override
@@ -341,10 +350,17 @@ public class ScriptItemStack implements IScriptItemStack
     {
         NBTTagCompound tag = this.stack.getTagCompound();
 
-        if (tag != null && tag.hasKey(CAN_PLACE_ON, Constants.NBT.TAG_LIST))
+        if (tag == null)
         {
-            tag.getTagList(CAN_PLACE_ON, Constants.NBT.TAG_STRING).appendTag(new NBTTagString(block));
+            this.stack.setTagCompound(new NBTTagCompound());
         }
+
+        if (!tag.hasKey(CAN_PLACE_ON, Constants.NBT.TAG_LIST))
+        {
+            tag.setTag(CAN_PLACE_ON, new NBTTagList());
+        }
+
+        tag.getTagList(CAN_PLACE_ON, Constants.NBT.TAG_STRING).appendTag(new NBTTagString(block));
     }
 
     @Override

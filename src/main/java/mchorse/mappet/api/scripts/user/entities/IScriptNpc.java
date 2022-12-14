@@ -94,9 +94,9 @@ public interface IScriptNpc extends IScriptEntity
      * @param scriptName Script name
      * @param functionName Function name
      * @param frequency Frequency
-     * @param blockNumber Block number
+     * @param blockIndex Block number
      */
-    public void setOnTickTrigger(String scriptName, String functionName, int frequency, int blockNumber);
+    public void setOnTickTrigger(String scriptName, String functionName, int frequency, int blockIndex);
 
 
     /**
@@ -130,9 +130,9 @@ public interface IScriptNpc extends IScriptEntity
      *
      * @param scriptName Script name
      * @param functionName Function name
-     * @param blockNumber Block number
+     * @param blockIndex Block number
      */
-    public void setOnInteractTrigger(String scriptName, String functionName, int blockNumber);
+    public void setOnInteractTrigger(String scriptName, String functionName, int blockIndex);
 
     /**
      * Adds NPC's on interaction trigger.
@@ -167,8 +167,9 @@ public interface IScriptNpc extends IScriptEntity
      * @param z Z coordinate
      * @param scriptName Script name
      * @param functionName Function name
+     * @param patrolIndex Patrol index
      */
-    public void setPatrol(int x, int y, int z, String scriptName, String functionName);
+    public void setPatrol(int x, int y, int z, String scriptName, String functionName, int patrolIndex);
 
     /**
      * Adds a new NPC's patrol point with a script trigger.
