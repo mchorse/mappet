@@ -9,6 +9,7 @@ import mchorse.mappet.api.scripts.code.mappet.MappetUIBuilder;
 import mchorse.mappet.api.scripts.code.mappet.MappetUIContext;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
+import mchorse.mappet.api.scripts.user.items.IScriptItem;
 import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIContext;
@@ -31,14 +32,13 @@ import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
-import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagFloat;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SPacketAnimation;
 import net.minecraft.network.play.server.SPacketCustomPayload;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
+import net.minecraft.network.play.server.SPacketHeldItemChange;
 import net.minecraft.network.play.server.SPacketTitle;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
@@ -124,6 +124,81 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
         }
 
         return this.enderChest;
+    }
+
+    @Override
+    public void executeCommand(String command)
+    {
+        this.entity.world.getMinecraftServer().getCommandManager().executeCommand(this.entity, command);
+    }
+
+    @Override
+    public boolean isFlying()
+    {
+        return this.entity.capabilities.isFlying;
+    }
+
+    @Override
+    public float getWalkSpeed()
+    {
+        return this.entity.capabilities.getWalkSpeed();
+    }
+
+    @Override
+    public float getFlySpeed()
+    {
+        return this.entity.capabilities.getWalkSpeed();
+    }
+
+    @Override
+    public void setFlySpeed(float speed)
+    {
+        this.entity.capabilities.setFlySpeed(speed);
+        this.entity.sendPlayerAbilities();
+    }
+
+    @Override
+    public void setWalkSpeed(float speed)
+    {
+        this.entity.capabilities.setPlayerWalkSpeed(speed);
+        this.entity.sendPlayerAbilities();
+    }
+
+    @Override
+    public int getCooldown(IScriptItem item)
+    {
+        return (int) (this.entity.getCooldownTracker().getCooldown(item.getMinecraftItem(), 0) * 20);
+    }
+
+    @Override
+    public void setCooldown(IScriptItem item, int cooldown)
+    {
+        this.entity.getCooldownTracker().setCooldown(item.getMinecraftItem(), cooldown);
+    }
+
+    @Override
+    public void resetCooldown(IScriptItem item)
+    {
+        this.entity.getCooldownTracker().removeCooldown(item.getMinecraftItem());
+    }
+
+    @Override
+    public int getMainItemInventoryIndex()
+    {
+        return this.entity.inventory.currentItem;
+    }
+
+    @Override
+    public void setMainItemInventoryIndex(int slot)
+    {
+        if (slot < 0 || slot >= 9)
+        {
+            return;
+        }
+
+        this.entity.inventory.currentItem = slot;
+
+        this.entity.connection.sendPacket(new SPacketHeldItemChange(slot));
     }
 
     @Override
@@ -412,92 +487,5 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     public void closeHUD(String id)
     {
         Dispatcher.sendTo(new PacketHUDScene(id == null ? "" : id, null), this.entity);
-    }
-
-    @Override
-    public void executeCommand(String command)
-    {
-        this.entity.world.getMinecraftServer().getCommandManager().executeCommand((ICommandSender) this.entity, command);
-    }
-
-    @Override
-    public boolean isFlying(){
-        return this.entity.capabilities.isFlying;
-    }
-
-    @Override
-    public float getWalkSpeed(){
-        return this.entity.capabilities.getWalkSpeed();
-    }
-
-    @Override
-    public float getFlySpeed(){
-        return this.entity.capabilities.getWalkSpeed();
-    }
-
-    @Override
-    public boolean isSneaking(){
-        return this.entity.isSneaking();
-    }
-
-    @Override
-    public void setFlySpeed(float speed){
-        NBTTagCompound tagCompound = new NBTTagCompound();
-        NBTTagFloat speedtag = new NBTTagFloat(speed);
-        this.entity.capabilities.writeCapabilitiesToNBT(tagCompound);
-        tagCompound.getCompoundTag("abilities").setTag("flySpeed", speedtag);
-        this.entity.capabilities.readCapabilitiesFromNBT(tagCompound);
-        this.entity.sendPlayerAbilities();
-    }
-
-    @Override
-    public void setWalkSpeed(float speed){
-        NBTTagCompound tagCompound = new NBTTagCompound();
-        NBTTagFloat speedtag = new NBTTagFloat(speed);
-        this.entity.capabilities.writeCapabilitiesToNBT(tagCompound);
-        tagCompound.getCompoundTag("abilities").setTag("walkSpeed", speedtag);
-        this.entity.capabilities.readCapabilitiesFromNBT(tagCompound);
-        this.entity.sendPlayerAbilities();
-    }
-
-    @Override
-    public void resetFlySpeed(){
-        NBTTagCompound tagCompound = new NBTTagCompound();
-        NBTTagFloat speedtag = new NBTTagFloat(0.05F);
-        this.entity.capabilities.writeCapabilitiesToNBT(tagCompound);
-        tagCompound.getCompoundTag("abilities").setTag("flySpeed", speedtag);
-        this.entity.capabilities.readCapabilitiesFromNBT(tagCompound);
-        this.entity.sendPlayerAbilities();
-    }
-
-    @Override
-    public void resetWalkSpeed(){
-        NBTTagCompound tagCompound = new NBTTagCompound();
-        NBTTagFloat speedtag = new NBTTagFloat(0.1F);
-        this.entity.capabilities.writeCapabilitiesToNBT(tagCompound);
-        tagCompound.getCompoundTag("abilities").setTag("walkSpeed", speedtag);
-        this.entity.capabilities.readCapabilitiesFromNBT(tagCompound);
-        this.entity.sendPlayerAbilities();
-    }
-
-    @Override
-    public int getCooldown(int inventoryStackIndex){
-        float cooldown = this.entity.getCooldownTracker().getCooldown(getInventory().getStack(inventoryStackIndex).getItem().getMinecraftItem(), 0);
-        return (int) (cooldown * 20);
-    }
-
-    @Override
-    public void setCooldown(int inventoryStackIndex, int cooldown){
-        this.entity.getCooldownTracker().setCooldown(getInventory().getStack(inventoryStackIndex).getItem().getMinecraftItem(), cooldown);
-    }
-
-    @Override
-    public void resetCooldown(int inventoryStackIndex){
-        this.entity.getCooldownTracker().removeCooldown(getInventory().getStack(inventoryStackIndex).getItem().getMinecraftItem());
-    }
-
-    @Override
-    public int getMainItemInventoryIndex(){
-        return this.entity.inventory.currentItem;
     }
 }

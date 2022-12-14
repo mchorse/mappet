@@ -47,6 +47,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.WorldServer;
@@ -589,6 +590,12 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     public boolean isEntityInRadius(IScriptEntity entity, double radius)
     {
         return this.entity.getDistanceSq(entity.getMinecraftEntity()) <= radius * radius;
+    }
+
+    @Override
+    public boolean isInAnArea(double x1, double y1, double z1, double x2, double y2, double z2)
+    {
+        return new AxisAlignedBB(x1, y1, z1, x2, y2, z2).intersects(this.entity.getEntityBoundingBox());
     }
 
     @Override

@@ -83,7 +83,7 @@ public interface IScriptWorld
     public IScriptTileEntity getTileEntity(int x, int y, int z);
 
     /**
-     * Checks whether there is an inventory tile entity at given XYZ.
+     * Check whether there is an inventory tile entity at given XYZ.
      *
      * <pre>{@code
      *    var world = c.getWorld();
@@ -220,20 +220,20 @@ public interface IScriptWorld
      *    c.getWorld().spawnParticles(explode, false, pos.x, pos.y, pos.z, 10, 0.1, 0.1, 0.1, 0.1);
      * }</pre>
      *
-     * @param type Particle type, you can use {@link IScriptFactory#getParticleType(String)}
-     *             to get the desired particle type.
+     * @param type         Particle type, you can use {@link IScriptFactory#getParticleType(String)}
+     *                     to get the desired particle type.
      * @param longDistance Whether particles should be spawned regardless of the distance
-     * @param x X coordinate of position where particles should be spawned
-     * @param y Y coordinate of position where particles should be spawned
-     * @param z Z coordinate of position where particles should be spawned
-     * @param n How many particles of given type should be spawned
-     * @param dx X random offset that shift particle relative to X coordinate where it spawned
-     * @param dy Y random offset that shift particle relative to Y coordinate where it spawned
-     * @param dz Z random offset that shift particle relative to Z coordinate where it spawned
-     * @param speed The speed of particle, different particles might use this argument differently
-     * @param args Additional arguments that can be passed into a particle, for example for
-     *             "iconcrack" particle you can pass item numeric ID to spawn item particle for
-     *             a specific item (F3 + H shows the numeric ID of an item)
+     * @param x            X coordinate of position where particles should be spawned
+     * @param y            Y coordinate of position where particles should be spawned
+     * @param z            Z coordinate of position where particles should be spawned
+     * @param n            How many particles of given type should be spawned
+     * @param dx           X random offset that shift particle relative to X coordinate where it spawned
+     * @param dy           Y random offset that shift particle relative to Y coordinate where it spawned
+     * @param dz           Z random offset that shift particle relative to Z coordinate where it spawned
+     * @param speed        The speed of particle, different particles might use this argument differently
+     * @param args         Additional arguments that can be passed into a particle, for example for
+     *                     "iconcrack" particle you can pass item numeric ID to spawn item particle for
+     *                     a specific item (F3 + H shows the numeric ID of an item)
      */
     public void spawnParticles(EnumParticleTypes type, boolean longDistance, double x, double y, double z, int n, double dx, double dy, double dz, double speed, int... args);
 
@@ -247,21 +247,21 @@ public interface IScriptWorld
      *    c.getWorld().spawnParticles(c.getSubject(), explode, false, pos.x, pos.y, pos.z, 10, 0.1, 0.1, 0.1, 0.1);
      * }</pre>
      *
-     * @param player The player that you want to limit seeing the particle only to
-     * @param type Particle type, you can use {@link IScriptFactory#getParticleType(String)}
-     *             to get the desired particle type.
+     * @param player       The player that you want to limit seeing the particle only to
+     * @param type         Particle type, you can use {@link IScriptFactory#getParticleType(String)}
+     *                     to get the desired particle type.
      * @param longDistance Whether particles should be spawned regardless of the distance
-     * @param x X coordinate of position where particles should be spawned
-     * @param y Y coordinate of position where particles should be spawned
-     * @param z Z coordinate of position where particles should be spawned
-     * @param n How many particles of given type should be spawned
-     * @param dx X random offset that shift particle relative to X coordinate where it spawned
-     * @param dy Y random offset that shift particle relative to Y coordinate where it spawned
-     * @param dz Z random offset that shift particle relative to Z coordinate where it spawned
-     * @param speed The speed of particle, different particles might use this argument differently
-     * @param args Additional arguments that can be passed into a particle, for example for
-     *             "iconcrack" particle you can pass item numeric ID to spawn item particle for
-     *             a specific item (F3 + H shows the numeric ID of an item)
+     * @param x            X coordinate of position where particles should be spawned
+     * @param y            Y coordinate of position where particles should be spawned
+     * @param z            Z coordinate of position where particles should be spawned
+     * @param n            How many particles of given type should be spawned
+     * @param dx           X random offset that shift particle relative to X coordinate where it spawned
+     * @param dy           Y random offset that shift particle relative to Y coordinate where it spawned
+     * @param dz           Z random offset that shift particle relative to Z coordinate where it spawned
+     * @param speed        The speed of particle, different particles might use this argument differently
+     * @param args         Additional arguments that can be passed into a particle, for example for
+     *                     "iconcrack" particle you can pass item numeric ID to spawn item particle for
+     *                     a specific item (F3 + H shows the numeric ID of an item)
      */
     public void spawnParticles(IScriptPlayer player, EnumParticleTypes type, boolean longDistance, double x, double y, double z, int n, double dx, double dy, double dz, double speed, int... args);
 
@@ -480,12 +480,12 @@ public interface IScriptWorld
      * Make an explosion in this world at given coordinates, distance, and entity
      * that caused the explosion.
      *
-     * @param exploder Entity that causes explosion that won't receive damage from it.
-     * @param x X coordinate in the world at which explosion must be caused.
-     * @param y Y coordinate in the world at which explosion must be caused.
-     * @param z Z coordinate in the world at which explosion must be caused.
-     * @param distance Radius (in blocks of the explosion).
-     * @param blazeGround Whether fire blocks should be placed randomly on top of remaining blocks.
+     * @param exploder       Entity that causes explosion that won't receive damage from it.
+     * @param x              X coordinate in the world at which explosion must be caused.
+     * @param y              Y coordinate in the world at which explosion must be caused.
+     * @param z              Z coordinate in the world at which explosion must be caused.
+     * @param distance       Radius (in blocks of the explosion).
+     * @param blazeGround    Whether fire blocks should be placed randomly on top of remaining blocks.
      * @param destroyTerrain Whether blocks should be destroyed by the explosion.
      */
     public void explode(IScriptEntity exploder, double x, double y, double z, float distance, boolean blazeGround, boolean destroyTerrain);
@@ -516,6 +516,141 @@ public interface IScriptWorld
      */
     public IScriptRayTrace rayTraceBlock(double x1, double y1, double z1, double x2, double y2, double z2);
 
+    /**
+     * Set morph (from NBT) to a model block at given position in this world.
+     * It only works when Blockbuster mod is installed.
+     *
+     * <pre>{@code
+     *     function main(c)
+     *     {
+     *         var pos = c.getSubject().getPosition()
+     *         var nbt = '{Settings:{Hands:1b},Name:"blockbuster.fred"}';
+     *
+     *         c.getWorld().setModelBlock(nbt, pos.x, pos.y, pos.z, true);
+     *     }
+     * }</pre>
+     *
+     * @param nbt NBT of a morph to be replaced for given model block.
+     * @param x X coordinate of a model block.
+     * @param y Y coordinate of a model block.
+     * @param z Z coordinate of a model block.
+     * @param force Force update model block to update the morph even if the morph is same.
+     */
+    public void setModelBlockMorph(String nbt, int x, int y, int z, boolean force);
+
+    /**
+     * Return whether a button, plate or lever is active or not.
+     *
+     * <pre>{@code
+     *     c.getWorld().isActive(0, 4, 0);
+     * }</pre>
+     */
+    public boolean isActive(int x, int y, int z);
+
+    /**
+     * Test for a specific block and meta in a specific coordinates.
+     *
+     * <pre>{@code
+     *     function main(c)
+     *     {
+     *         var pos = c.getSubject().getPosition()
+     *
+     *         if (c.getWorld().testForBlock(Math.floor(pos.x), Math.floor(pos.y), Math.floor(pos.z), "minecraft:light_weighted_pressure_plate", 1))
+     *         {
+     *             c.send("Prussure Plate is pressed.")
+     *         }
+     *     }
+     * }</pre>
+     */
+    public boolean testForBlock(int x, int y, int z, String blockId, int meta);
+
+    /**
+     * Fill a 3D area with a block.
+     *
+     * <pre>{@code
+     *     var coarse_dirt = mappet.createBlockState("minecraft:dirt", 1);
+     *
+     *     c.getWorld().fill(coarse_dirt, -3, 100, -3, 3, 100, 3);
+     * }</pre>
+     *
+     * @param state The block to fill the area with.
+     * @param x1    The first x coordinate.
+     * @param y1    The first y coordinate.
+     * @param z1    The first z coordinate.
+     * @param x2    The second x coordinate.
+     * @param y2    The second y coordinate.
+     * @param z2    The second z coordinate.
+     */
+    public void fill(IScriptBlockState state, int x1, int y1, int z1, int x2, int y2, int z2);
+
+    /**
+     * Summon a falling block with a specific block id and meta.
+     *
+     * <pre>{@code
+     *     c.getWorld().summonFallingBlock(0, 100, 0, "minecraft:dirt", 1);
+     * }</pre>
+     *
+     * @return The falling block entity.
+     */
+    public IScriptEntity summonFallingBlock(int x, int y, int z, String blockId, int meta);
+
+    /**
+     * Transform a block to a falling block in specific coordinates.
+     *
+     * <pre>{@code
+     *     c.getWorld().setFallingBlock(0, 100, 0);
+     * }</pre>
+     *
+     * @return The falling block entity.
+     */
+    public IScriptEntity setFallingBlock(int x, int y, int z);
+
+    /**
+     * Transform a block to a falling block in specific coordinates.
+     *
+     * <pre>{@code
+     *     c.getWorld().fancyExplode(-2, 100, -2, 2, 100, 2, 100);
+     * }</pre>
+     *
+     * @return The falling block entities in a list.
+     */
+    public List<IScriptEntity> fancyExplode(int x1, int y1, int z1, int x2, int y2, int z2, int blocksPercentage);
+
+    /**
+     * Transform a block to a falling block in specific coordinates.
+     *
+     * <pre>{@code
+     *     c.getWorld().fancyExplode(0, 100, 0, 3, 100);
+     * }</pre>
+     *
+     * @return The falling block entities in a list.
+     */
+    public default List<IScriptEntity> fancyExplode(int x, int y, int z, int radius, int blocksPercentage)
+    {
+        return this.fancyExplode(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius, blocksPercentage);
+    }
+
+    /**
+     * Explode the blocks in the range by teleporting them randomly in an explosive way.
+     *
+     * <pre>{@code
+     *     c.getWorld().tpExplode(0, 100, 0, 2, 100, 2, 100);
+     * }</pre>
+     */
+    public void tpExplode(int x1, int y1, int z1, int x2, int y2, int z2, int blocksPercentage);
+
+    /**
+     * Explode the blocks in the range by teleporting them randomly in an explosive way.
+     *
+     * <pre>{@code
+     *     c.getWorld().tpExplode(0, 100, 0, 3, 100);
+     * }</pre>
+     */
+    public default void tpExplode(int x, int y, int z, int radius, int blocksPercentage)
+    {
+        this.tpExplode(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius, blocksPercentage);
+    }
+
     /* Mappet stuff */
 
     /**
@@ -539,9 +674,9 @@ public interface IScriptWorld
      *    c.getWorld().displayMorph(morph, 100, pos.x, pos.y + s.getHeight() + 0.5, pos.z, 64);
      * }</pre>
      *
-     * @param morph Morph that will be displayed (if <code>null</code>, then it won't send anything).
+     * @param morph      Morph that will be displayed (if <code>null</code>, then it won't send anything).
      * @param expiration For how many ticks will this displayed morph exist on the client side.
-     * @param range How many blocks far away will this send to players around given point.
+     * @param range      How many blocks far away will this send to players around given point.
      */
     public default void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, int range)
     {
@@ -562,10 +697,10 @@ public interface IScriptWorld
      *    c.getWorld().displayMorph(morph, 100, pos.x, pos.y + s.getHeight() + 0.5, pos.z, 90, 0);
      * }</pre>
      *
-     * @param morph Morph that will be displayed (if <code>null</code>, then it won't send anything).
+     * @param morph      Morph that will be displayed (if <code>null</code>, then it won't send anything).
      * @param expiration For how many ticks will this displayed morph exist on the client side.
-     * @param yaw Horizontal rotation in degrees.
-     * @param pitch Vertical rotation in degrees.
+     * @param yaw        Horizontal rotation in degrees.
+     * @param pitch      Vertical rotation in degrees.
      */
     public default void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, float yaw, float pitch)
     {
@@ -576,129 +711,11 @@ public interface IScriptWorld
      * Display a world morph to all players at given point with rotation
      * some blocks away in this world.
      *
-     * @param morph Morph that will be displayed (if <code>null</code>, then it won't send anything).
+     * @param morph      Morph that will be displayed (if <code>null</code>, then it won't send anything).
      * @param expiration For how many ticks will this displayed morph exist on the client side.
-     * @param yaw Horizontal rotation in degrees.
-     * @param pitch Vertical rotation in degrees.
-     * @param range How many blocks far away will this send to players around given point.
+     * @param yaw        Horizontal rotation in degrees.
+     * @param pitch      Vertical rotation in degrees.
+     * @param range      How many blocks far away will this send to players around given point.
      */
     public void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, float yaw, float pitch, int range);
-
-    /**
-     * Sets a model block with a given NBT at given position in this world.
-     *
-     <pre>{@code
-     * function main(c) {
-     *     var pos = c.getSubject().getPosition()
-     *     var NBT = '{Settings:{Hands:1b},Name:"blockbuster.fred"}';
-     *     var force = true; //whether to force the block to be placed even if it is placed (good for particles or sequences)
-     *     c.getWorld().setModelBlock(NBT, pos.x, pos.y, pos.z, force)
-     * }
-     * }</pre>
-     *
-     * @param nbt NBT of the modelBlock's morph.
-     */
-    public void setModelBlock(String nbt, int x, int y, int z, boolean force);
-
-    /**
-     * Returns whether a button, plate or lever is active or not.
-     * <pre>{@code
-     * c.getWorld().isActive(0, 4, 0);
-     * }</pre>
-     *
-     */
-    public boolean isActive(int x, int y, int z);
-
-    /**
-     * Test for a specific block and meta in a specific coordinates.
-     *
-     <pre>{@code
-     * function main(c) {
-     *     var pos = c.getSubject().getPosition()
-     *     if(c.getWorld().testForBlock(Math.floor(pos.x), Math.floor(pos.y), Math.floor(pos.z), "minecraft:light_weighted_pressure_plate", 1)){
-     *         c.send("Prussure Plate is pressed.")
-     *     }
-     * }
-     * }</pre>
-     *
-     */
-    public boolean testForBlock(int x, int y, int z, String blockId, int meta);
-
-    /**
-     * Fills a 3D area with a block.
-     *
-     * <pre>{@code
-     * var coarse_dirt = mappet.createBlockState("minecraft:dirt", 1);
-     * c.getWorld().fill(coarse_dirt, -3, 100, -3, 3, 100, 3);
-     * }</pre>
-     *
-     * @param state The block to fill the area with.
-     * @param x1 The first x coordinate.
-     * @param y1 The first y coordinate.
-     * @param z1 The first z coordinate.
-     * @param x2 The second x coordinate.
-     * @param y2 The second y coordinate.
-     * @param z2 The second z coordinate.
-     */
-    public void fill(IScriptBlockState state, int x1, int y1, int z1, int x2, int y2, int z2);
-
-    /**
-     * summons a falling block with a specific block id and meta.
-     *
-     * <pre>{@code
-     * c.getWorld().summonFallingBlock(0, 100, 0, "minecraft:dirt", 1);
-     * }</pre>
-     *
-     * @return The falling block entity.
-     */
-    public IScriptEntity summonFallingBlock(int x, int y, int z, String blockId, int meta);
-
-    /**
-     * Transforms a block to a falling block in specific coordinates.
-     *
-     * <pre>{@code
-     * c.getWorld().setFallingBlock(0, 100, 0);
-     * }</pre>
-     *
-     * @return The falling block entity.
-     */
-    public IScriptEntity setFallingBlock(int x, int y, int z);
-
-    /**
-     * Transforms a block to a falling block in specific coordinates.
-     *
-     * <pre>{@code
-     * c.getWorld().fancyExplode(-2, 100, -2, 2, 100, 2, 100);
-     * }</pre>
-     * @return The falling block entities in a list.
-     */
-    public List<IScriptEntity> fancyExplode(int x1, int y1, int z1, int x2, int y2, int z2, int blocksPercentage);
-
-    /**
-     * Transforms a block to a falling block in specific coordinates.
-     *
-     * <pre>{@code
-     * c.getWorld().fancyExplode(0, 100, 0, 3, 100);
-     * }</pre>
-     * @return The falling block entities in a list.
-     */
-    public List<IScriptEntity> fancyExplode(int x, int y, int z, int radius, int blocksPercentage);
-
-    /**
-     * Explodes the blocks in the range by teleporting them randomly in an explosive way.
-     *
-     * <pre>{@code
-     * c.getWorld().tpExplode(0, 100, 0, 2, 100, 2, 100);
-     * }</pre>
-     */
-    public void tpExplode(int x1, int y1, int z1, int x2, int y2, int z2, int blocksPercentage);
-
-    /**
-     * Explodes the blocks in the range by teleporting them randomly in an explosive way.
-     *
-     * <pre>{@code
-     * c.getWorld().tpExplode(0, 100, 0, 3, 100);
-     * }</pre>
-     */
-    public void tpExplode(int x, int y, int z, int radius, int blocksPercentage);
 }

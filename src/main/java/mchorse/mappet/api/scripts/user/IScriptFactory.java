@@ -516,7 +516,7 @@ public interface IScriptFactory
     public String dump(Object object, boolean simple);
 
     /**
-     * Gives a random number between 0 and the given max value.
+     * Generate a random number between 0 and the given max value (but not including the maximum value).
      *
      * <pre>{@code
      *    var randomNumber = mappet.random(10);
@@ -524,12 +524,12 @@ public interface IScriptFactory
      *    c.send(randomNumber);
      * }</pre>
      *
-     * @param max maximum value
+     * @param max Maximum value.
      */
     public double random(double max);
 
     /**
-     * Gives a random number between the given min value and the given max value.
+     * Generate a random number between the given min value and the given max value (but not including the maximum value).
      *
      * <pre>{@code
      *    var randomNumber = mappet.random(5, 10);
@@ -537,54 +537,26 @@ public interface IScriptFactory
      *    c.send(randomNumber);
      * }</pre>
      *
-     * @param max maximum value
+     * @param min Minimum value.
+     * @param max Maximum value.
      */
     public double random(double min, double max);
 
     /**
-     * Returns Minecraft's color code.
+     * Return Minecraft's formatting code.
      *
      * <pre>{@code
-     *    //possible: obfuscated, bold, strikethrough, underline, italic, reset
-     *    var colorCode = mappet.getStyleCode("bold", "underline");
-     *
-     *    c.send(colorStyle+"This text is in blue!");
-     * }</pre>
-     *
-     * @param style style/s name
-     */
-    public String getStyleCode(String... style);
-
-    /**
-     * Returns Minecraft's color code.
-     *
-     * <pre>{@code
-     *    //possible: black, dark_blue, dark_green, dark_aqua, dark_red, dark_purple
-     *    //gold, gray, dark_gray, blue, green, aqua, red, light_purple, yellow, white
-     *    var colorCode = mappet.getColorCode(dark_blue);
-     *
-     *    c.send(colorCode+"This text is in blue!");
-     * }</pre>
-     *
-     * @param color color name
-     */
-    public String getColorCode(String color);
-
-    /**
-     * Returns Minecraft's color code.
-     *
-     * <pre>{@code
-     *    //Colors:
-     *    //black, dark_blue, dark_green, dark_aqua, dark_red, dark_purple, gold
-     *    //gray, dark_gray, blue, green, aqua, red, light_purple, yellow, white
-     *    //Styles:
-     *    //obfuscated, bold, strikethrough, underline, italic, reset
+     *    // Colors:
+     *    // black, dark_blue, dark_green, dark_aqua, dark_red, dark_purple, gold
+     *    // gray, dark_gray, blue, green, aqua, red, light_purple, yellow, white
+     *    // Styles:
+     *    // obfuscated, bold, strikethrough, underline, italic, reset
      *    var style = mappet.style("dark_blue", "bold", "underline");
      *
-     *    c.send(colorCode+"This text is in blue!");
+     *    c.send(colorCode + "This text is in blue!");
      * }</pre>
      *
-     * @param color color name
+     * @param codes An enumeration of formatting codes.
      */
-    public String style(String color, String... styles);
+    public String style(String... codes);
 }

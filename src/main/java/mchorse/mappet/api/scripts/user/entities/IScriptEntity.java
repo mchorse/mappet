@@ -643,6 +643,37 @@ public interface IScriptEntity
     public boolean isEntityInRadius(IScriptEntity entity, double radius);
 
     /**
+     * Check if this entity is standing in a given block.
+     *
+     * <pre>{@code
+     *     var s = c.getSubject();
+     *
+     *     if (s.isInBlock(0, 0, 0))
+     *     {
+     *         c.send(s.getName() + " is at (0, 0, 0)!");
+     *     }
+     * }</pre>
+     */
+    public default boolean isInBlock(int x, int y, int z)
+    {
+        return this.isInAnArea(x, y, z, x + 1, y + 1, z + 1);
+    }
+
+    /**
+     * Check if this entity is standing in a given area.
+     *
+     * <pre>{@code
+     *     var s = c.getSubject();
+     *
+     *     if (s.isInAnArea(20, 3, 100, 30, 8, 110))
+     *     {
+     *         c.send(s.getName() + " is within given area!");
+     *     }
+     * }</pre>
+     */
+    public boolean isInAnArea(double x1, double y1, double z1, double x2, double y2, double z2);
+
+    /**
      * Inflict some damage on this entity (use {@link #kill()} to kill the entity though).
      */
     public void damage(float health);

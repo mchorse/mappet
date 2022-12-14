@@ -1,6 +1,7 @@
 package mchorse.mappet.api.scripts.user.entities;
 
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
+import mchorse.mappet.api.scripts.user.items.IScriptItem;
 import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIContext;
@@ -98,6 +99,223 @@ public interface IScriptPlayer extends IScriptEntity
      * }</pre>
      */
     public IScriptInventory getEnderChest();
+
+    /**
+     * Executes a command as a player.
+     *
+     * <pre>{@code
+     *    function main(c)
+     *    {
+     *        c.getSubject().executeCommand("/kill");
+     *    }
+     * }</pre>
+     */
+    public void executeCommand(String command);
+
+    /**
+     * Returns if the player is flying.
+     *
+     * <pre>{@code
+     *    function main(c) {
+     *        c.send("Is the player flying? " + c.getSubject().isFlying());
+     *    }
+     * }</pre>
+     */
+    public boolean isFlying();
+
+    /**
+     * Returns if the walk speed of the player.
+     *
+     * <pre>{@code
+     *    function main(c) {
+     *        c.send("The walk speed of the player is: " + c.getSubject().getWalkSpeed());
+     *    }
+     * }</pre>
+     */
+    public float getWalkSpeed();
+
+    /**
+     * Returns if the flight speed of the player.
+     *
+     * <pre>{@code
+     *    function main(c) {
+     *        c.send("The flight speed of the player is: " + c.getSubject().getFlySpeed());
+     *    }
+     * }</pre>
+     */
+    public float getFlySpeed();
+
+    /**
+     * Set the walk speed of the player.
+     *
+     * <pre>{@code
+     *    function main(c)
+     *    {
+     *        c.getSubject().setWalkSpeed(0.5);
+     *    }
+     * }</pre>
+     */
+    public void setWalkSpeed(float speed);
+
+    /**
+     * Set the flight speed of the player.
+     *
+     * <pre>{@code
+     *    function main(c)
+     *    {
+     *        c.getSubject().setFlySpeed(0.5);
+     *    }
+     * }</pre>
+     */
+    public void setFlySpeed(float speed);
+
+    /**
+     * Reset the flight speed of the player.
+     *
+     * <pre>{@code
+     *    function main(c)
+     *    {
+     *        c.getSubject().resetFlySpeed();
+     *    }
+     * }</pre>
+     */
+    public default void resetFlySpeed()
+    {
+        this.setFlySpeed(0.05F);
+    }
+
+    /**
+     * Reset the walking speed of the player.
+     *
+     * <pre>{@code
+     *    function main(c)
+     *    {
+     *        c.getSubject().resetWalkSpeed();
+     *    }
+     * }</pre>
+     */
+    public default void resetWalkSpeed()
+    {
+        this.setWalkSpeed(0.1F);
+    }
+
+    /**
+     * Get cooldown of a particular inventory index of the player.
+     *
+     * <pre>{@code
+     *    function main(c)
+     *    {
+     *        var player = c.getSubject();
+     *        var cooldown = player.getCooldown(player.getMainItemInventoryIndex()); //tip: 40 is the offhand slot
+     *
+     *        c.send(The held item is on cooldown for " + cooldown + " ticks.");
+     *    }
+     * }</pre>
+     */
+    public default int getCooldown(int inventorySlot)
+    {
+        return this.getCooldown(this.getInventory().getStack(inventorySlot).getItem());
+    }
+
+    /**
+     * Get cooldown of a particular inventory index of the player.
+     *
+     * <pre>{@code
+     *    function main(c)
+     *    {
+     *        var player = c.getSubject();
+     *        var item = mappet.createItem("minecraft:diamond_sword");
+     *        var cooldown = player.getCooldown(item);
+     *
+     *        c.send(The cooldown for diamond sword is " + cooldown + " ticks.");
+     *    }
+     * }</pre>
+     */
+    public int getCooldown(IScriptItem item);
+
+    /**
+     * Set cooldown of a particular inventory index of the player.
+     *
+     * <pre>{@code
+     *    function main(c)
+     *    {
+     *        var player = c.getSubject();
+     *
+     *        player.setCooldown(player.getMainItemInventoryIndex(), 100); // tip: 40 is the offhand slot
+     *    }
+     * }</pre>
+     */
+    public default void setCooldown(int inventorySlot, int cooldown)
+    {
+        this.setCooldown(this.getInventory().getStack(inventorySlot).getItem(), cooldown);
+    }
+
+    /**
+     * Set cooldown for given item.
+     *
+     * <pre>{@code
+     *    function main(c)
+     *    {
+     *        var player = c.getSubject();
+     *        var item = mappet.createItem("minecraft:diamond_sword");
+     *
+     *        player.setCooldown(item.getItem(), 100);
+     *    }
+     * }</pre>
+     */
+    public void setCooldown(IScriptItem item, int cooldown);
+
+    /**
+     * Reset cooldown for given item.
+     *
+     * <pre>{@code
+     *    function main(c)
+     *    {
+     *        var player = c.getSubject();
+     *
+     *        player.resetCooldown(player.getMainItemInventoryIndex()); // tip: 40 is the offhand slot
+     *    }
+     * }</pre>
+     */
+    public default void resetCooldown(int inventorySlot)
+    {
+        this.resetCooldown(this.getInventory().getStack(inventorySlot).getItem());
+    }
+
+    /**
+     * Reset cooldown of a particular inventory index of the player.
+     *
+     * <pre>{@code
+     *    function main(c)
+     *    {
+     *        var player = c.getSubject();
+     *        var item = mappet.createItem("minecraft:diamond_sword");
+     *
+     *        player.resetCooldown(item.getItem());
+     *    }
+     * }</pre>
+     */
+    public void resetCooldown(IScriptItem item);
+
+    /**
+     * Get the inventory index of main item.
+     * Useful for e.g. main hand's cooldown methods.
+     *
+     * <pre>{@code
+     *    function main(c)
+     *    {
+     *        var player = c.getSubject();
+     *
+     *        player.setCooldown(player.getMainItemInventoryIndex(), 100); //tip: 40 is the offhand slot
+     *    }
+     * }</pre>
+     */
+    public int getMainItemInventoryIndex();
+
+    /**
+     * Set forcefully player's current inventory index. Acceptable values are <code>0</code> - <code>8</code>.
+     */
+    public void setMainItemInventoryIndex(int slot);
 
     /**
      * Send a message to this player.
@@ -527,154 +745,4 @@ public interface IScriptPlayer extends IScriptEntity
      * @param id HUD scene's ID/filename.
      */
     public void closeHUD(String id);
-
-    /**
-     * Executes a command as a player.
-     *
-     * <pre>{@code
-     *    function main(c)
-     *    {
-     *        c.getSubject().executeCommand("/kill");
-     *    }
-     * }</pre>
-     */
-    public void executeCommand(String command);
-
-    /**
-     * Returns if the player is flying.
-     *
-     * <pre>{@code
-     *    function main(c) {
-     *        c.send("Is the player flying? " + c.getSubject().isFlying());
-     *    }
-     * }</pre>
-     */
-    public boolean isFlying();
-
-    /**
-     * Returns if the player is sneaking.
-     *
-     * <pre>{@code
-     *    function main(c) {
-     *        c.send("Is the player sneaking? " + c.getSubject().isSneaking());
-     *    }
-     * }</pre>
-     */
-    public boolean isSneaking();
-
-    /**
-     * Returns if the walk speed of the player.
-     *
-     * <pre>{@code
-     *    function main(c) {
-     *        c.send("The walk speed of the player is: " + c.getSubject().getWalkSpeed());
-     *    }
-     * }</pre>
-     */
-    public float getWalkSpeed();
-
-    /**
-     * Returns if the flight speed of the player.
-     *
-     * <pre>{@code
-     *    function main(c) {
-     *        c.send("The flight speed of the player is: " + c.getSubject().getFlySpeed());
-     *    }
-     * }</pre>
-     */
-    public float getFlySpeed();
-
-    /**
-     * Sets the walk speed of the player.
-     *
-     * <pre>{@code
-     *    function main(c) {
-     *        c.getSubject().setWalkSpeed(0.5);
-     *    }
-     * }</pre>
-     */
-    public void setWalkSpeed(float speed);
-
-    /**
-     * Sets the flight speed of the player.
-     *
-     * <pre>{@code
-     *    function main(c) {
-     *        c.getSubject().setFlySpeed(0.5);
-     *    }
-     * }</pre>
-     */
-    public void setFlySpeed(float speed);
-
-    /**
-     * Resets the flight speed of the player.
-     *
-     * <pre>{@code
-     *    function main(c) {
-     *        c.getSubject().resetFlySpeed();
-     *    }
-     * }</pre>
-     */
-    public void resetFlySpeed();
-
-    /**
-     * Resets the walking speed of the player.
-     *
-     * <pre>{@code
-     *    function main(c) {
-     *        c.getSubject().resetWalkSpeed();
-     *    }
-     * }</pre>
-     */
-    public void resetWalkSpeed();
-
-    /**
-     * Gets cooldown of a particular inventory index of the player.
-     *
-     * <pre>{@code
-     *    function main(c) {
-     *        var player = c.getSubject();
-     *        var cooldown = player.getCooldown(player.getMainItemInventoryIndex()); //tip: 40 is the offhand slot
-     *        c.send(The held item is on cooldown for " + cooldown + " ticks.");
-     *    }
-     * }</pre>
-     */
-    public int getCooldown(int inventoryStackIndex);
-
-    /**
-     * Sets cooldown of a particular inventory index of the player.
-     *
-     * <pre>{@code
-     *    function main(c) {
-     *        var player = c.getSubject();
-     *        player.setCooldown(player.getMainItemInventoryIndex(), 100); //tip: 40 is the offhand slot
-     *    }
-     * }</pre>
-     */
-    public void setCooldown(int inventoryStackIndex, int cooldown);
-
-    /**
-     * Resets cooldown of a particular inventory index of the player.
-     *
-     * <pre>{@code
-     *    function main(c) {
-     *        var player = c.getSubject();
-     *        player.resetCooldown(player.getMainItemInventoryIndex()); //tip: 40 is the offhand slot
-     *    }
-     * }</pre>
-     */
-    public void resetCooldown(int inventoryStackIndex);
-
-    /**
-     * Gets the inventory index of main item.
-     * Useful for e.g. main hand's cooldown methods.
-     *
-     * <pre>{@code
-     *    function main(c) {
-     *        var player = c.getSubject();
-     *        player.setCooldown(player.getMainItemInventoryIndex(), 100); //tip: 40 is the offhand slot
-     *    }
-     * }</pre>
-     */
-    public int getMainItemInventoryIndex();
 }

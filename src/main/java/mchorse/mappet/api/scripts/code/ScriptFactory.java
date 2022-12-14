@@ -35,9 +35,39 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ScriptFactory implements IScriptFactory
 {
+    private static final Map<String, String> formattingCodes = new HashMap<String, String>();
+
+    static
+    {
+        formattingCodes.put("black", "0");
+        formattingCodes.put("dark_blue", "1");
+        formattingCodes.put("dark_green", "2");
+        formattingCodes.put("dark_aqua", "3");
+        formattingCodes.put("dark_red", "4");
+        formattingCodes.put("dark_purple", "5");
+        formattingCodes.put("gold", "6");
+        formattingCodes.put("gray", "7");
+        formattingCodes.put("dark_gray", "8");
+        formattingCodes.put("blue", "9");
+        formattingCodes.put("green", "a");
+        formattingCodes.put("aqua", "b");
+        formattingCodes.put("red", "c");
+        formattingCodes.put("light_purple", "d");
+        formattingCodes.put("yellow", "e");
+        formattingCodes.put("white", "f");
+        formattingCodes.put("obfuscated", "k");
+        formattingCodes.put("bold", "l");
+        formattingCodes.put("strikethrough", "m");
+        formattingCodes.put("underline", "n");
+        formattingCodes.put("italic", "o");
+        formattingCodes.put("reset", "r");
+    }
+
     @Override
     public IScriptBlockState createBlockState(String blockId, int meta)
     {
@@ -66,7 +96,8 @@ public class ScriptFactory implements IScriptFactory
                 tag = JsonToNBT.getTagFromJson(nbt);
             }
             catch (Exception e)
-            {}
+            {
+            }
         }
 
         return new ScriptNBTCompound(tag);
@@ -92,7 +123,8 @@ public class ScriptFactory implements IScriptFactory
                 list = (NBTTagList) JsonToNBT.getTagFromJson("{List:" + nbt + "}").getTag("List");
             }
             catch (Exception e)
-            {}
+            {
+            }
         }
 
         return new ScriptNBTList(list);
@@ -278,7 +310,8 @@ public class ScriptFactory implements IScriptFactory
                 value = o == null ? "null" : o.toString();
             }
             catch (Exception e)
-            {}
+            {
+            }
 
             output.append(": ").append(value).append("\n");
         }
@@ -325,78 +358,6 @@ public class ScriptFactory implements IScriptFactory
         return output.toString();
     }
 
-    @Override
-    public double random(double max)
-    {
-        return Math.random()*max;
-    }
-
-    @Override
-    public double random(double min, double max)
-    {
-        return min + Math.random()*(max-min);
-    }
-
-    public enum colorCodes{
-        black("0"),
-        dark_blue("1"),
-        dark_green("2"),
-        dark_aqua("3"),
-        dark_red("4"),
-        dark_purple("5"),
-        gold("6"),
-        gray("7"),
-        dark_gray("8"),
-        blue("9"),
-        green("a"),
-        aqua("b"),
-        red("c"),
-        light_purple("d"),
-        yellow("e"),
-        white("f");
-
-        private final String colorName;
-
-        colorCodes(String colorName){
-            this.colorName = "\u00A7"+colorName;
-        }
-    }
-    @Override
-    public String getColorCode(String color) {
-        return colorCodes.valueOf(color).colorName;
-    }
-
-    public enum styleCodes{
-        obfuscated("k"),
-        bold("l"),
-        strikethrough("m"),
-        underline("n"),
-        italic("o"),
-        reset("r");
-        private final String styleName;
-
-        styleCodes(String styleName){
-            this.styleName = "\u00A7"+ styleName;
-        }
-    }
-
-    @Override
-    public String getStyleCode(String... styles)
-    {
-        StringBuilder builder = new StringBuilder();
-        for(String style : styles)
-        {
-            builder.append(styleCodes.valueOf(style).styleName);
-        }
-        return builder.toString();
-    }
-
-    @Override
-    public String style(String color, String... styles){
-        return getColorCode(color)+getStyleCode(styles);
-    }
-
-
     private String getModifier(int m)
     {
         String modifier = Modifier.isFinal(m) ? "final " : "";
@@ -415,5 +376,36 @@ public class ScriptFactory implements IScriptFactory
         }
 
         return modifier;
+    }
+
+    @Override
+    public double random(double max)
+    {
+        return Math.random() * max;
+    }
+
+    @Override
+    public double random(double min, double max)
+    {
+        return min + Math.random() * (max - min);
+    }
+
+    @Override
+    public String style(String... styles)
+    {
+        StringBuilder builder = new StringBuilder();
+
+        for (String style : styles)
+        {
+            String code = formattingCodes.get(style);
+
+            if (code != null)
+            {
+                builder.append('\u00A7');
+                builder.append(code);
+            }
+        }
+
+        return builder.toString();
     }
 }
