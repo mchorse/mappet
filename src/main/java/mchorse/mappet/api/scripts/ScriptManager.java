@@ -15,6 +15,7 @@ import org.apache.commons.io.FileUtils;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -204,7 +205,7 @@ public class ScriptManager extends BaseManager<Script>
     @Override
     public boolean save(String id, NBTTagCompound tag)
     {
-        String code = new String(tag.getByteArray("Code"));
+        String code = new String(tag.getByteArray("Code"), StandardCharsets.UTF_8);
 
         tag.removeTag("Code");
 

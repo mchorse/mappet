@@ -46,7 +46,6 @@ mappet.info.factions.changed=§fID 為 §7%s§f 的陣營積分為 §7%s§r，�
 
 mappet.info.data.cleared=§fGlobal states and player states were cleared.
 mappet.info.data.cleared_inventory=§f全局狀態、玩家狀態和清單已清除。
-mappet.info.data.rencoded=§fRe-encoded all the data from %s§f to %s§f.
 
 # Success
 mappet.success.quest.accepted=§fID 為 §7%s§f 的任務已分配為玩家 §7%s§f。
@@ -100,7 +99,6 @@ mappet.commands.mp.data.help=數據工具子命令，提供管理玩家背包存
 mappet.commands.mp.data.clear=清除所有全局和玩家的狀態，以及所有玩家的背包。
 mappet.commands.mp.data.load=根據 §7<id>§r 加載保存的數據。§7[全局]§r 決定是否會同時加載全局狀態（默認為 §7true§r（啟用））。§7[玩家]§r 用於選擇另一個玩家，其中的背包數據和玩家狀態會被加載至該玩家。
 mappet.commands.mp.data.save=保存全局狀態，以及當前玩家的狀態和背包至數據 §7<id>§r 中。
-mappet.commands.mp.data.rencode=Re-encode all data files within world's §7mappet/§f folder from §7<from>§r character set, to §7<to>§r character set.
 
 mappet.commands.mp.script.help=Scripts subcommand.
 mappet.commands.mp.script.eval=This command evaluates script by §7<id>§r (from world's §7mappet/scripts/§r folder, without file extension) upon players found by §7<player>§r target selector. Script's §7[function]§r (§7main§r if omitted) function will be called. You can also pass arbitrary NBT data to the event using §7[data]§r argument.
@@ -123,8 +121,6 @@ mappet.config.title=Mappet
 mappet.config.general.title=General
 mappet.config.general.tooltip=General mod options
 
-mappet.config.general.encoding=Encoding
-mappet.config.comments.general.encoding=The encoding that will be used to read and write Mappet files.
 mappet.config.general.data_caching=Data caching
 mappet.config.comments.general.data_caching=Whether data should be cached instead of being read from files every time.
 
@@ -624,7 +620,7 @@ mappet.gui.syntax_theme.context.remove=Remove this theme
 mappet.gui.syntax_theme.modal.add=Type into a name for new theme:
 
 mappet.gui.triggers.title=Trigger editor
-mappet.gui.triggers.frequency=Delay
+mappet.gui.triggers.frequency=Frequency
 mappet.gui.triggers.function=Function
 mappet.gui.triggers.script.function_tooltip=Script entry function (§7main§r is default function name)
 mappet.gui.triggers.morph.morph=Morph into %s

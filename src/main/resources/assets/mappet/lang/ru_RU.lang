@@ -46,7 +46,6 @@ mappet.info.factions.changed=§fОчки фракции с ID §7%s§f были 
 
 mappet.info.data.cleared=§fGlobal states and player states were cleared.
 mappet.info.data.cleared_inventory=§fГлобальные состояния, состояния игроков и инвентари были очищены.
-mappet.info.data.rencoded=§fRe-encoded all the data from %s§f to %s§f.
 
 # Success
 mappet.success.quest.accepted=§fКвест с ID §7%s§f был выдан игроку §7%s§f.
@@ -100,7 +99,6 @@ mappet.commands.mp.data.help=Подкоманда данных, позволяю
 mappet.commands.mp.data.clear=Очищает все глобальные состояния и состояния игроков вместе с инвентарями.
 mappet.commands.mp.data.load=Загружает сохранённые данные с ID §7<id>§r. Аргумент §7[global]§r определяет необходимо ли также загружать глобальные состояния (по умолчанию аргумент стоит на §7true§r (то есть включён). Аргумент §7[players]§r позволяет выбрать другого игрока, в которого будут загружены инвентарь и состояния игрока.
 mappet.commands.mp.data.save=Сохраняет глобальные состояния вместе с текущими состояниями игрока, а также его инвентарём в данные с ID §7<id>§r.
-mappet.commands.mp.data.rencode=Re-encode all data files within world's §7mappet/§f folder from §7<from>§r character set, to §7<to>§r character set.
 
 mappet.commands.mp.script.help=Подкоманда скриптов.
 mappet.commands.mp.script.eval=Эта команда рассчитывает скрипт с ID §7<id>§r (из папки §7mappet/scripts/§r, без приписки формата файла) для игроков найденных селектором цели §7<player>§r. Будет вызвана функция скрипта §7[function]§r (если она отсутствует, то будет вызвана §7main§r). Вы также можете передавать опциональные NBT-данные напрямую в событие используя аргумент §7[data]§r.
@@ -123,8 +121,6 @@ mappet.config.title=Маппет
 mappet.config.general.title=Общие
 mappet.config.general.tooltip=Общие настройки мода
 
-mappet.config.general.encoding=Encoding
-mappet.config.comments.general.encoding=The encoding that will be used to read and write Mappet files.
 mappet.config.general.data_caching=Data caching
 mappet.config.comments.general.data_caching=Whether data should be cached instead of being read from files every time.
 
@@ -624,7 +620,7 @@ mappet.gui.syntax_theme.context.remove=Удалить эту тему
 mappet.gui.syntax_theme.modal.add=Впишите название для новой темы:
 
 mappet.gui.triggers.title=Редактор триггеров
-mappet.gui.triggers.frequency=Задержка
+mappet.gui.triggers.frequency=Частота
 mappet.gui.triggers.function=Функция
 mappet.gui.triggers.script.function_tooltip=Функция записи скриптов (§7main§r является названием функции по умолчанию)
 mappet.gui.triggers.morph.morph=Morph into %s

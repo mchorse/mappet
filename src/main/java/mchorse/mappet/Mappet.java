@@ -101,7 +101,6 @@ public final class Mappet
     public static HUDManager huds;
 
     /* Configuration */
-    public static ValueString generalEncoding;
     public static ValueBoolean generalDataCaching;
 
     public static ValueBoolean npcsPeacefulDamage;
@@ -134,8 +133,6 @@ public final class Mappet
         ConfigBuilder builder = event.createBuilder(MOD_ID);
 
         builder.category("general").register(new ValueButtons("buttons").clientSide());
-        generalEncoding = builder.getString("encoding", "UTF-8");
-        generalEncoding.invisible();
         generalDataCaching = builder.getBoolean("data_caching", true);
 
         npcsPeacefulDamage = builder.category("npc").getBoolean("peaceful_damage", true);
