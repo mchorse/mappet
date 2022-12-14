@@ -1,6 +1,6 @@
 package mchorse.mappet.api.scripts.user.entities;
 
-import mchorse.blockbuster.common.entity.EntityActor;
+import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
 import mchorse.mappet.api.scripts.user.IScriptFactory;
 import mchorse.mappet.api.scripts.user.IScriptRayTrace;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
@@ -21,21 +21,21 @@ import net.minecraft.potion.Potion;
  * actual player, or {@link IScriptNpc} if it's a Mappet NPC!</p>
  *
  * <pre>{@code
- *    function main(c)
- *    {
- *        if (c.getSubject().isPlayer())
- *        {
- *            // Do something with the player...
- *        }
- *        if (c.getSubject().isNpc())
- *        {
- *            // Do something with the NPC...
- *        }
- *        else
- *        {
- *            // Do something with the entity...
- *        }
- *    }
+ *     function main(c)
+ *     {
+ *         if (c.getSubject().isPlayer())
+ *         {
+ *             // Do something with the player...
+ *         }
+ *         if (c.getSubject().isNpc())
+ *         {
+ *             // Do something with the NPC...
+ *         }
+ *         else
+ *         {
+ *             // Do something with the entity...
+ *         }
+ *     }
  * }</pre>
  */
 public interface IScriptEntity
@@ -45,6 +45,18 @@ public interface IScriptEntity
      * mappings in order to directly call methods on this instance!
      */
     public Entity getMinecraftEntity();
+
+    /**
+     * Get entity's world.
+     *
+     * <pre>{@code
+     *    var s = c.getSubject();
+     *    var world = s.getWorld();
+     *
+     *    world.setRaining(true);
+     * }</pre>
+     */
+    public IScriptWorld getWorld();
 
     /* Entity properties */
 
@@ -95,16 +107,30 @@ public interface IScriptEntity
     public void setMotion(double x, double y, double z);
 
     /**
+     * Set entity's server-sided motion. (<code>.setMotion()</code> causes rubber banding)
+     * Adds to the current velocity of the entity.
+     *
+     * <pre>{@code
+     *     // Throw all items in the air
+     *     for each (var item in c.getServer().getEntities("@e[type=item]"))
+     *     {
+     *         item.addVelocity(0, 0.3, 0);
+     *     }
+     * }</pre>
+     */
+    public void addMotion(double x, double y, double z);
+
+    /**
      * Get entity's rotation (x is pitch, y is yaw, and z is yaw head, if entity
      * is living base).
      *
      * <pre>{@code
-     *    var rotations = c.getSubject().getRotations();
-     *    var pitch = rotations.x;
-     *    var yaw = rotations.y;
-     *    var yaw_head = rotations.z;
+     *     var rotations = c.getSubject().getRotations();
+     *     var pitch = rotations.x;
+     *     var yaw = rotations.y;
+     *     var yaw_head = rotations.z;
      *
-     *    c.send(c.getSubject().getName() + "'s rotations are (" + pitch + ", " + yaw + ", " + yaw_head + ")");
+     *     c.send(c.getSubject().getName() + "'s rotations are (" + pitch + ", " + yaw + ", " + yaw_head + ")");
      * }</pre>
      */
     public ScriptVector getRotations();
@@ -138,12 +164,23 @@ public interface IScriptEntity
      * Get a vector in which direction entity looks.
      *
      * <pre>{@code
-     *    var look = c.getSubject().getLook();
+     *     var look = c.getSubject().getLook();
      *
-     *    c.getSubject().setMotion(look.x * 0.5, look.y * 0.5, look.z * 0.5);
+     *     c.getSubject().setMotion(look.x * 0.5, look.y * 0.5, look.z * 0.5);
      * }</pre>
      */
     public ScriptVector getLook();
+
+    /**
+     * Returns the eye height of the entity.
+     *
+     * <pre>{@code
+     *     var s = c.getSubject();
+     *
+     *     c.send("This entity's eye height is: "+s.getEyeHeight());
+     * }</pre>
+     */
+    public float getEyeHeight();
 
     /**
      * Get entity's current hitbox width (and depth, it's the same number).
@@ -194,6 +231,28 @@ public interface IScriptEntity
      * }</pre>
      */
     public float getMaxHp();
+
+    /**
+     * Check whether this entity is in water.
+     *
+     * <pre>{@code
+     *     var subject = c.getSubject();
+     *
+     *     c.send("Is the entity in water? " + subject.isInWater());
+     * }</pre>
+     */
+    public boolean isInWater();
+
+    /**
+     * Check whether this entity is in lava.
+     *
+     * <pre>{@code
+     *     var subject = c.getSubject();
+     *
+     *     c.send("Is the entity in lava? " + subject.isInLava());
+     * }</pre>
+     */
+    public boolean isInLava();
 
     /**
      * Check whether this entity is on fire.
@@ -326,6 +385,122 @@ public interface IScriptEntity
      */
     public void setOffItem(IScriptItemStack stack);
 
+    /**
+     * Return the entity's helmet's item stack.
+     *
+     * <pre>{@code
+     *   c.send( c.getSubject().getHelmet().serialize() )
+     * }</pre>
+     */
+    public IScriptItemStack getHelmet();
+
+    /**
+     * Return the entity's  chestplate's item stack.
+     *
+     * <pre>{@code
+     *   c.send( c.getSubject().getChestplate().serialize() )
+     * }</pre>
+     */
+    public IScriptItemStack getChestplate();
+
+    /**
+     * Return the entity's  leggings' item stack.
+     *
+     * <pre>{@code
+     *   c.send( c.getSubject().getLeggings().serialize() )
+     * }</pre>
+     */
+    public IScriptItemStack getLeggings();
+
+    /**
+     * Return the entity's  boots' item stack.
+     *
+     * <pre>{@code
+     *   c.send( c.getSubject().getBoots().serialize() )
+     * }</pre>
+     */
+    public IScriptItemStack getBoots();
+
+    /**
+     * Set the entity's  helemt.
+     *
+     * <pre>{@code
+     *   var item = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_helmet\",Count:1b,tag:{ench:[{lvl:3s,id:0s}],RepairCost:1},Damage:0s}"));
+     *   c.getSubject().setHelmet(item)
+     * }</pre>
+     */
+    public void setHelmet(IScriptItemStack itemStack);
+
+    /**
+     * Set the entity's  chestplate.
+     *
+     * <pre>{@code
+     *   var item = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_chestplate\",Count:1b,tag:{ench:[{id:0,lvl:4}],RepairCost:1},Damage:0s}"));
+     *   c.getSubject().setChestplate(item)
+     * }</pre>
+     */
+    public void setChestplate(IScriptItemStack itemStack);
+
+    /**
+     * Set the entity's  leggings.
+     *
+     * <pre>{@code
+     *   var item = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_leggings\",Count:1b,tag:{ench:[{id:0,lvl:4}],RepairCost:1},Damage:0s}"));
+     *   c.getSubject().setLeggings(item)
+     * }</pre>
+     */
+    public void setLeggings(IScriptItemStack itemStack);
+
+    /**
+     * Set the entity's  boots.
+     *
+     * <pre>{@code
+     *   var item = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_boots\",Count:1b,tag:{ench:[{id:0,lvl:4}],RepairCost:1},Damage:0s}"));
+     *   c.getSubject().setBoots(item)
+     * }</pre>
+     */
+    public void setBoots(IScriptItemStack itemStack);
+
+    /**
+     * Set the entity's  whole armor set.
+     *
+     * <pre>{@code
+     *     var players = c.getServer().getAllPlayers();
+     *
+     *     for each (var player in players)
+     *     {
+     *         var helmet = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_helmet\",Count:1b,tag:{ench:[{id:0s,lvl:3s}],RepairCost:1},Damage:0s}"));
+     *         var chestplate = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_chestplate\",Count:1b,tag:{ench:[{id:0,lvl:4}],RepairCost:1},Damage:0s}"));
+     *         var leggings = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_leggings\",Count:1b,tag:{ench:[{id:0,lvl:4}],RepairCost:1},Damage:0s}"));
+     *         var boots = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_boots\",Count:1b,tag:{ench:[{id:0,lvl:4}],RepairCost:1},Damage:0s}"));
+     *
+     *         player.setArmor(helmet, chestplate, leggings, boots)
+     *     }
+     * }</pre>
+     */
+    public default void setArmor(IScriptItemStack helmet, IScriptItemStack chestplate, IScriptItemStack leggings, IScriptItemStack boots)
+    {
+        this.setHelmet(helmet);
+        this.setChestplate(chestplate);
+        this.setLeggings(leggings);
+        this.setBoots(boots);
+    }
+
+    /**
+     * Clear the entity's  whole armor set.
+     *
+     * <pre>{@code
+     *   var players = c.getServer().getEntities("@e[type=player]");
+     *   for each (var player in players){
+     *       player.clearArmor()
+     *   }
+     * }</pre>
+     */
+    public default void clearArmor()
+    {
+        this.setArmor(ScriptItemStack.EMPTY, ScriptItemStack.EMPTY, ScriptItemStack.EMPTY, ScriptItemStack.EMPTY);
+    }
+
     /* Entity meta */
 
     /**
@@ -342,15 +517,17 @@ public interface IScriptEntity
      * Set this entity's attack target to given entity.
      *
      * <pre>{@code
-     * //cancel the entity you're looking at from targeting you.
-     * function main(c) {
-     *     var s = c.getSubject();
-     *      var ray = s.rayTrace(64);
-     *      if(ray.isEntity())
-     *      {
-     *           ray.getEntity().setTarget(null)
-     *      }
-     * }
+     *     // Stop the entity that you're looking at from targeting you.
+     *     function main(c)
+     *     {
+     *         var s = c.getSubject();
+     *         var ray = s.rayTrace(64);
+     *
+     *         if (ray.isEntity())
+     *         {
+     *             ray.getEntity().setTarget(null)
+     *         }
+     *     }
      * }</pre>
      */
     public void setTarget(IScriptEntity entity);
@@ -372,7 +549,7 @@ public interface IScriptEntity
     public String getUniqueId();
 
     /**
-     * Get entity's resource location ID, like "minecraft:pig" or
+     * Get entity's resource location ID, like <code>minecraft:pig</code> or
      * <code>minecraft:zombie</code>.
      */
     public String getEntityId();
@@ -388,11 +565,11 @@ public interface IScriptEntity
      * to "unpack" the combined value.
      *
      * <pre>{@code
-     *    var light = c.getPlayer().getCombinedLight();
-     *    var skyLight = light / 65536 / 15;
-     *    var torchLight = light % 65536 / 15;
+     *     var light = c.getPlayer().getCombinedLight();
+     *     var skyLight = light / 65536 / 15;
+     *     var torchLight = light % 65536 / 15;
      *
-     *    // Do something with skyLight and torchLight
+     *     // Do something with skyLight and torchLight
      * }</pre>
      */
     public int getCombinedLight();
@@ -444,6 +621,28 @@ public interface IScriptEntity
     public boolean isSame(IScriptEntity entity);
 
     /**
+     * Check if an entity is in a radius of another specific entity
+     *
+     * <pre>{@code
+     *     // Kills all cows within 5 blocks of the player
+     *     function main(c)
+     *     {
+     *         var tracker = c.getSubject();
+     *         var trackedEntities = c.getServer().getEntities("@e[type=cow]");
+     *
+     *         for each (var trackedEntity in trackedEntities)
+     *         {
+     *             if (trackedEntity.isEntityInRadius(tracker, 5))
+     *             {
+     *                 trackedEntity.kill();
+     *             }
+     *         }
+     *     }
+     * }</pre>
+     */
+    public boolean isEntityInRadius(IScriptEntity entity, double radius);
+
+    /**
      * Inflict some damage on this entity (use {@link #kill()} to kill the entity though).
      */
     public void damage(float health);
@@ -457,6 +656,70 @@ public interface IScriptEntity
      * Damage this entity as given player was the source of the attack with its equipment.
      */
     public void damageWithItemsAs(IScriptPlayer player);
+
+    /**
+     * Mount this entity to given entity.
+     *
+     * <pre>{@code
+     *     function main(c)
+     *     {
+     *         var s = c.getSubject();
+     *         var ray = s.rayTrace(64);
+     *
+     *         if (ray.isEntity())
+     *         {
+     *              s.mount(ray.getEntity(), 1);
+     *         }
+     *     }
+     * }</pre>
+     */
+    public void mount(IScriptEntity entity);
+
+    /**
+     * Dismount this entity from the entity it's riding.
+     *
+     * <pre>{@code
+     *     function main(c)
+     *     {
+     *          c.getSubject().dismount()
+     *     }
+     * }</pre>
+     */
+    public void dismount();
+
+    /**
+     * Drop the item an entity is holding.
+     *
+     * <pre>{@code
+     *     var s = c.getSubject();
+     *
+     *     s.dropItem(10);
+     * }</pre>
+     */
+    public IScriptEntity dropItem(int amount);
+
+    /**
+     * Drop one item of what the entity is holding.
+     *
+     * <pre>{@code
+     *     var s = c.getSubject();
+     *
+     *     s.dropItem();
+     * }</pre>
+     */
+    public IScriptEntity dropItem();
+
+    /**
+     * Drop an item of the entity even if it is not holding it.
+     * Therefore, it doesn't remove the item from the entity's inventory.
+     *
+     * <pre>{@code
+     *     var item = mappet.createItemNBT("{id:\"minecraft:stone\",Count:64b,Damage:0s}");
+     *
+     *     c.getSubject().dropItem(item)
+     * }</pre>
+     */
+    public IScriptEntity dropItem(IScriptItemStack itemStack);
 
     /**
      * Get entity's fall distance.
@@ -496,6 +759,44 @@ public interface IScriptEntity
      * @param arm <code>0</code> is primary (main), <code>1</code> is secondary (off-hand).
      */
     public void swingArm(int arm);
+
+    /* Modifiers */
+
+    /**
+     * Set entity's modifier to a certain value.
+     *
+     * <pre>{@code
+     *     c.getSubject().setModifier("generic.movementSpeed", "0.5");
+     * }</pre>
+     */
+    public void setModifier(String modifierName, double value);
+
+    /**
+     * Return an entity's modifier.
+     *
+     * <pre>{@code
+     *     c.send(c.getSubject().getModifier("generic.movementSpeed"));
+     * }</pre>
+     */
+    public double getModifier(String modifierName);
+
+    /**
+     * Remove entity's modifier.
+     *
+     * <pre>{@code
+     *     c.getSubject().removeModifier("generic.movementSpeed");
+     * }</pre>
+     */
+    public void removeModifier(String modifierName);
+
+    /**
+     * Remove all the modifiers of the entity.
+     *
+     * <pre>{@code
+     *     c.getSubject().removeAllModifiers();
+     * }</pre>
+     */
+    public void removeAllModifiers();
 
     /* Potion effects */
 
@@ -666,297 +967,15 @@ public interface IScriptEntity
     public void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, float yaw, float pitch, boolean rotate);
 
     /**
-     * Get entity's world.
+     * Spawn a BB gun projectile. It works only if Blockbuster mod is present.
+     *
+     * <p>ProTip: To get the gun props' NBT code, configure a desired BB gun, and grab it into
+     * you main hand. Execute <code>/item_nbt</code> command in the chat, paste the NBT into
+     * the script, and remove {Gun: in the beginning and a } in the end.</p>
      *
      * <pre>{@code
-     *    var s = c.getSubject();
-     *    var world = s.getWorld();
-     *
-     *    world.setRaining(true);
+     *     c.getSubject().shootBBGunProjectile('{Projectile:{Meta:0b,Block:"minecraft:stone",Name:"block"},Gravity:0.0f}');
      * }</pre>
      */
-    public IScriptWorld getWorld();
-
-    /**
-     * Set entity's server-sided motion. (`.setMotion()` causes rubber banding)
-     * Adds to the current velocity of the entity.
-     *
-     * <pre>{@code
-     *    //throw all items in the air
-     *    for each (var item in c.getServer().getEntities("@e[type=item]")){
-     *         item.addVelocity(0, 0.3, 0);
-     *     }
-     * }</pre>
-     */
-    public void addVelocity(double x, double y, double z);
-
-    /**
-     * Makes an entity rides another entity.
-     * <pre>{@code
-     * function main(c)
-     * {
-     *      var s = c.getSubject();
-     *      var ray = s.rayTrace(64);
-     *      if(ray.isEntity())
-     *      {
-     *           s.mount(ray.getEntity(), 1);
-     *      }
-     * }
-     *
-     * }</pre>
-     */
-    public void mount(IScriptEntity entity);
-
-    /**
-     * Dismounts this entity from the entity it is riding.
-     *
-     * <pre>{@code
-     * function main(c)
-     * {
-     *      c.getSubject().dismount()
-     * }
-     * }</pre>
-     */
-    public void dismount();
-
-    /**
-     * Get Minecraft actor entity instance. <b>BEWARE:</b> you need to know the MCP
-     * mappings in order to directly call methods on this instance!
-     */
-    public EntityActor getMinecraftActor();
-
-    /**
-     * Drops the item an entity is holding.
-     *
-     * <pre>{@code
-     *    var s = c.getSubject();
-     *
-     *    s.dropItem(10);
-     * }</pre>
-     */
-    IScriptEntity dropItem(byte amount);
-
-    /**
-     * Drops one item of what the entity is holding.
-     *
-     * <pre>{@code
-     *    var s = c.getSubject();
-     *
-     *    s.dropItem();
-     * }</pre>
-     */
-    IScriptEntity dropItem();
-
-    /**
-     * Drops an item of the entity even if it is not holding it.
-     * Therefore, it doesn't remove the item from the entity's inventory.
-     *
-     * <pre>{@code
-     *   var item = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:stone\",Count:64b,Damage:0s}"));
-     *   c.getSubject().dropItem(item)
-     * }</pre>
-     */
-    IScriptEntity dropItem(IScriptItemStack itemStack);
-
-    /**
-     * Check whether this entity is in water.
-     *
-     * <pre>{@code
-     *    var subject = c.getSubject();
-     *
-     *    c.send("Is the entity in water? " + subject.isInWater() );
-     * }</pre>
-     */
-    boolean isInWater();
-
-    /**
-     * Check whether this entity is in lava.
-     *
-     * <pre>{@code
-     *    var subject = c.getSubject();
-     *
-     *    c.send("Is the entity in lava? " + subject.isInLava() );
-     * }</pre>
-     */
-    boolean isInLava();
-
-    /**
-     * Returns the eye height of the entity.
-     *
-     * <pre>{@code
-     *    var s = c.getSubject();
-     *
-     *    c.send("This entity's eye height is: "+s.getEyeHeight());
-     * }</pre>
-     */
-    float getEyeHeight();
-
-    /**
-     * Returns the entity's  helmet's item stack.
-     *
-     * <pre>{@code
-     *   c.send( c.getSubject().getHelmet().serialize() )
-     * }</pre>
-     */
-    IScriptItemStack getHelmet();
-
-    /**
-     * Returns the entity's  chestplate's item stack.
-     *
-     * <pre>{@code
-     *   c.send( c.getSubject().getChestplate().serialize() )
-     * }</pre>
-     */
-    IScriptItemStack getChestplate();
-
-    /**
-     * Returns the entity's  leggings' item stack.
-     *
-     * <pre>{@code
-     *   c.send( c.getSubject().getLeggings().serialize() )
-     * }</pre>
-     */
-    IScriptItemStack getLeggings();
-
-    /**
-     * Returns the entity's  boots' item stack.
-     *
-     * <pre>{@code
-     *   c.send( c.getSubject().getBoots().serialize() )
-     * }</pre>
-     */
-    IScriptItemStack getBoots();
-
-    /**
-     * Sets the entity's  helemt.
-     *
-     * <pre>{@code
-     *   var item = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_helmet\",Count:1b,tag:{ench:[{lvl:3s,id:0s}],RepairCost:1},Damage:0s}"));
-     *   c.getSubject().setHelmet(item)
-     * }</pre>
-     */
-    void setHelmet(IScriptItemStack itemStack);
-
-    /**
-     * Sets the entity's  chestplate.
-     *
-     * <pre>{@code
-     *   var item = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_chestplate\",Count:1b,tag:{ench:[{id:0,lvl:4}],RepairCost:1},Damage:0s}"));
-     *   c.getSubject().setChestplate(item)
-     * }</pre>
-     */
-    void setChestplate(IScriptItemStack itemStack);
-
-    /**
-     * Sets the entity's  leggings.
-     *
-     * <pre>{@code
-     *   var item = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_leggings\",Count:1b,tag:{ench:[{id:0,lvl:4}],RepairCost:1},Damage:0s}"));
-     *   c.getSubject().setLeggings(item)
-     * }</pre>
-     */
-    void setLeggings(IScriptItemStack itemStack);
-
-    /**
-     * Sets the entity's  boots.
-     *
-     * <pre>{@code
-     *   var item = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_boots\",Count:1b,tag:{ench:[{id:0,lvl:4}],RepairCost:1},Damage:0s}"));
-     *   c.getSubject().setBoots(item)
-     * }</pre>
-     */
-    void setBoots(IScriptItemStack itemStack);
-
-    /**
-     * Sets the entity's  whole armor set.
-     *
-     * <pre>{@code
-     *   var players = c.getServer().getEntities("@e[type=player]");
-     *   for each (var player in players){
-     *       var helmet = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_helmet\",Count:1b,tag:{ench:[{id:0s,lvl:3s}],RepairCost:1},Damage:0s}"));
-     *       var chestplate = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_chestplate\",Count:1b,tag:{ench:[{id:0,lvl:4}],RepairCost:1},Damage:0s}"));
-     *       var leggings = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_leggings\",Count:1b,tag:{ench:[{id:0,lvl:4}],RepairCost:1},Damage:0s}"));
-     *       var boots = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_boots\",Count:1b,tag:{ench:[{id:0,lvl:4}],RepairCost:1},Damage:0s}"));
-     *       player.setArmor(helmet, chestplate, leggings, boots)
-     *   }
-     * }</pre>
-     */
-    void setArmor(IScriptItemStack helmet, IScriptItemStack chestplate, IScriptItemStack leggings, IScriptItemStack boots);
-
-    /**
-     * Clears the entity's  whole armor set.
-     *
-     * <pre>{@code
-     *   var players = c.getServer().getEntities("@e[type=player]");
-     *   for each (var player in players){
-     *       player.clearArmor()
-     *   }
-     * }</pre>
-     */
-    void clearArmor();
-
-    /**
-     * Sets an entity's modifier to a certain value.
-     *
-     * <pre>{@code
-     *   c.getSubject().setModifier("generic.movementSpeed", "0.5");
-     * }</pre>
-     */
-    void setModifier(String modifierName, double value);
-
-    /**
-     * Returns an entity's modifier.
-     *
-     * <pre>{@code
-     *   c.send( c.getSubject().getModifier("generic.movementSpeed") );
-     * }</pre>
-     */
-    double getModifier(String modifierName);
-
-    /**
-     * Removes an entity's modifier.
-     *
-     * <pre>{@code
-     *   c.getSubject().removeModifier("generic.movementSpeed");
-     * }</pre>
-     */
-    void removeModifier(String modifierName);
-
-    /**
-     * Removes all the modifiers of the entity.
-     *
-     * <pre>{@code
-     *   c.getSubject().removeAllModifiers();
-     * }</pre>
-     */
-    void removeAllModifiers();
-
-    /**
-     * Checks if an entity is in a radius of another specific entity
-     *
-     * <pre>{@code
-     * //Kills all cows within 5 blocks of the player
-     * function main(c) {
-     *     var tracker = c.getSubject();
-     *     var trackedEntities = c.getServer().getEntities("@e[type=cow]");
-     *     for each (var trackedEntity in trackedEntities){
-     *         (function (trackedEntity){
-     *             if( trackedEntity.isEntityInRadius(tracker, 5) ){
-     *                 trackedEntity.kill();
-     *             }
-     *         }) (trackedEntity)
-     *     }
-     * }
-     * }</pre>
-     */
-    boolean isEntityInRadius(IScriptEntity entity, double radius);
-
-    /**
-     * Spawns a bb gun projectile.
-     *
-     * <pre>{@code
-     * c.getSubject().BBGunShoot('{Projectile:{Meta:0b,Block:"minecraft:stone",Name:"block"},Gravity:0.0f}');
-     * }</pre>
-     */
-    void BBGunShoot(String gunPropsNbtString);
+    public void shootBBGunProjectile(String gunPropsNBT);
 }

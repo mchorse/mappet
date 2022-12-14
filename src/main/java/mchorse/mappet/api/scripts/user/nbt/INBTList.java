@@ -175,14 +175,15 @@ public interface INBTList extends INBT
     public void addList(INBTList value);
 
     /**
-     * Turns a NBT list into a JS array
+     * Turns a NBT list into a Java array.
      *
      * <pre>{@code
      *     var tag = mappet.createCompound("{id:[0,2,4]}");
-     *     c.send(tag.get("id").toArray()[1]) // 2
+     *
+     *     c.send(tag.get("id").toArray()[1]); // 2
      * }</pre>
      *
      * @return an array of the list's elements
      */
-    Object[] toArray();
+    public Object[] toArray();
 }

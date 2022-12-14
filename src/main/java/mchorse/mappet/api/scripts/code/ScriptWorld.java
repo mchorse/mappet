@@ -540,7 +540,7 @@ public class ScriptWorld implements IScriptWorld
                     if (Math.random() < (1 - (Math.sqrt(Math.pow(xCentre - x, 2) + Math.pow(yCentre - y, 2) + Math.pow(zCentre - z, 2)) / Math.sqrt(Math.pow(xCentre - xMin, 2) + Math.pow(yCentre - yMin, 2) + Math.pow(zCentre - zMin, 2)))) * blocksPercentage / 100) {
                         IScriptEntity entity = setFallingBlock(x, y, z);
                         if(entity != null){
-                            entity.addVelocity((x-xCentre)/2.0, (y-yCentre)/2.0, (z-zCentre)/2.0);
+                            entity.addMotion((x-xCentre)/2.0, (y-yCentre)/2.0, (z-zCentre)/2.0);
                             entities.add(entity);
 
                             //particles

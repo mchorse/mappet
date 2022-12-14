@@ -3,7 +3,17 @@ package mchorse.mappet.api.scripts.code.nbt;
 import mchorse.mappet.api.scripts.user.nbt.INBT;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.mappet.api.scripts.user.nbt.INBTList;
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagByte;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagDouble;
+import net.minecraft.nbt.NBTTagFloat;
+import net.minecraft.nbt.NBTTagInt;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagLong;
+import net.minecraft.nbt.NBTTagShort;
+import net.minecraft.nbt.NBTTagString;
 
 import java.util.Set;
 
@@ -259,37 +269,33 @@ public class ScriptNBTCompound implements INBTCompound
         {
             return new ScriptNBTList((NBTTagList) tag);
         }
-        else if (tag instanceof net.minecraft.nbt.NBTTagString)
+        else if (tag instanceof NBTTagString)
         {
-            return getString(key);
+            return this.getString(key);
         }
         else if (tag instanceof NBTTagInt)
         {
-            return getInt(key);
+            return this.getInt(key);
         }
         else if (tag instanceof NBTTagDouble)
         {
-            return getDouble(key);
+            return this.getDouble(key);
         }
         else if (tag instanceof NBTTagFloat)
         {
-            return getFloat(key);
+            return this.getFloat(key);
         }
         else if (tag instanceof NBTTagLong)
         {
-            return getLong(key);
+            return this.getLong(key);
         }
         else if (tag instanceof NBTTagShort)
         {
-            return getShort(key);
+            return this.getShort(key);
         }
         else if (tag instanceof NBTTagByte)
         {
-            return getByte(key);
-        }
-        else if (tag instanceof NBTTagEnd)
-        {
-            return null;
+            return this.getByte(key);
         }
 
         return null;
@@ -298,7 +304,6 @@ public class ScriptNBTCompound implements INBTCompound
     @Override
     public boolean equals(INBTCompound compound)
     {
-        return this.tag.equals(((ScriptNBTCompound) compound).tag);
+        return compound != null && this.tag.equals(compound.getNBTTagCompound());
     }
-
 }

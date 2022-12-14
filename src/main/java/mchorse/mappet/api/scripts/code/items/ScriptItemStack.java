@@ -5,13 +5,21 @@ import mchorse.mappet.api.scripts.user.items.IScriptItem;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraftforge.common.util.Constants;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ScriptItemStack implements IScriptItemStack
 {
     public static final ScriptItemStack EMPTY = new ScriptItemStack(ItemStack.EMPTY);
+
+    private static final String CAN_DESTROY = "CanDestroy";
+    private static final String CAN_PLACE_ON = "CanPlaceOn";
 
     private ItemStack stack;
     private IScriptItem item;
@@ -113,6 +121,7 @@ public class ScriptItemStack implements IScriptItemStack
     {
         return new ScriptNBTCompound(this.stack.serializeNBT());
     }
+
     @Override
     public String getDisplayName()
     {
@@ -125,161 +134,278 @@ public class ScriptItemStack implements IScriptItemStack
         this.stack.setStackDisplayName(name);
     }
 
+    private NBTTagList getLoreNBTList()
+    {
+        NBTTagCompound tag = this.stack.getTagCompound();
+
+        if (tag.hasKey("display", Constants.NBT.TAG_COMPOUND))
+        {
+            NBTTagCompound display = tag.getCompoundTag("display");
+
+            if (display.hasKey("Lore", Constants.NBT.TAG_LIST))
+            {
+                return display.getTagList("Lore", Constants.NBT.TAG_STRING);
+            }
+        }
+
+        return null;
+    }
+
     @Override
     public String getLore(int index)
     {
-        if (this.serialize().getCompound("tag").getCompound("display").getList("Lore").size() > index)
+        NBTTagList list = this.getLoreNBTList();
+
+        if (list != null && index < list.tagCount())
         {
-            return this.serialize().getCompound("tag").getCompound("display").getList("Lore").getString(index);
-        } else {
-            throw new IllegalStateException("Lore index out of bounds, or no lore exists.");
+            return list.getStringTagAt(index);
         }
+
+        throw new IllegalStateException("Lore index out of bounds, or no lore exists.");
     }
 
     @Override
     public List<String> getLoreList()
     {
-        List<String> loreList = new ArrayList<String>();
-        for (int i = 0; i < this.serialize().getCompound("tag").getCompound("display").getList("Lore").size(); i++)
+        NBTTagList lore = this.getLoreNBTList();
+
+        if (lore == null)
         {
-            loreList.add(this.serialize().getCompound("tag").getCompound("display").getList("Lore").getString(i));
+            return Collections.emptyList();
         }
+
+        List<String> loreList = new ArrayList<String>();
+
+        for (int i = 0; i < lore.tagCount(); i++)
+        {
+            loreList.add(lore.getStringTagAt(i));
+        }
+
         return loreList;
     }
 
     @Override
-    public void setLore(int index, String lore)
+    public void setLore(int index, String string)
     {
-        this.serialize().getCompound("tag").getCompound("display").getList("Lore").setString(index, lore);
+        NBTTagList lore = this.getLoreNBTList();
+
+        if (lore != null && index >= 0 && index < lore.tagCount())
+        {
+            lore.set(index, new NBTTagString(string));
+        }
+        else
+        {
+            throw new IllegalStateException("Lore index out of bounds, or no lore exists.");
+        }
     }
 
     @Override
-    public void addLore(String lore)
+    public void addLore(String string)
     {
-        this.serialize().getCompound("tag").getCompound("display").getList("Lore").addString(lore);
+        NBTTagList lore = this.getLoreNBTList();
+
+        if (lore != null)
+        {
+            lore.appendTag(new NBTTagString(string));
+        }
     }
 
     @Override
     public void clearAllLores()
     {
-        for (int i = this.serialize().getCompound("tag").getCompound("display").getList("Lore").size() - 1; i >= 0; i--)
+        NBTTagList lore = this.getLoreNBTList();
+
+        if (lore != null)
         {
-            this.serialize().getCompound("tag").getCompound("display").getList("Lore").remove(i);
+            while (lore.tagCount() > 0)
+            {
+                lore.removeTag(lore.tagCount() - 1);
+            }
         }
     }
 
     @Override
     public void clearLore(int index)
     {
-        this.serialize().getCompound("tag").getCompound("display").getList("Lore").remove(index);
+        NBTTagList lore = this.getLoreNBTList();
+
+        if (lore != null && index >= 0 && index < lore.tagCount())
+        {
+            lore.removeTag(index);
+        }
+        else
+        {
+            throw new IllegalStateException("Lore index out of bounds, or no lore exists.");
+        }
     }
 
     @Override
     public void clearAllEnchantments()
     {
-        for (int i = this.serialize().getCompound("tag").getList("ench").size() - 1; i >= 0; i--)
+        NBTTagCompound tag = this.stack.getTagCompound();
+
+        if (tag != null)
         {
-            this.serialize().getCompound("tag").getList("ench").remove(i);
+            tag.removeTag("ench");
         }
     }
 
     @Override
     public List<String> getCanDestroyBlocks()
     {
-        List<String> canDestroyBlocks = new ArrayList<String>();
-        for (int i = 0; i < this.serialize().getCompound("tag").getList("CanDestroy").size(); i++)
+        NBTTagCompound tag = this.stack.getTagCompound();
+
+        if (tag == null || !tag.hasKey(CAN_DESTROY, Constants.NBT.TAG_LIST))
         {
-            canDestroyBlocks.add(this.serialize().getCompound("tag").getList("CanDestroy").getString(i));
+            return Collections.emptyList();
         }
+
+        List<String> canDestroyBlocks = new ArrayList<String>();
+        NBTTagList list = tag.getTagList(CAN_DESTROY, Constants.NBT.TAG_STRING);
+
+        for (int i = 0; i < list.tagCount(); i++)
+        {
+            canDestroyBlocks.add(list.getStringTagAt(i));
+        }
+
         return canDestroyBlocks;
     }
 
     @Override
     public void addCanDestroyBlock(String block)
     {
-        this.serialize().getCompound("tag").getList("CanDestroy").addString(block);
+        NBTTagCompound tag = this.stack.getTagCompound();
+
+        if (tag != null && tag.hasKey(CAN_DESTROY, Constants.NBT.TAG_LIST))
+        {
+            tag.getTagList(CAN_DESTROY, Constants.NBT.TAG_STRING).appendTag(new NBTTagString(block));
+        }
     }
 
     @Override
     public void clearAllCanDestroyBlocks()
     {
-        for (int i = this.serialize().getCompound("tag").getList("CanDestroy").size() - 1; i >= 0; i--)
+        NBTTagCompound tag = this.stack.getTagCompound();
+
+        if (tag != null)
         {
-            this.serialize().getCompound("tag").getList("CanDestroy").remove(i);
+            tag.removeTag(CAN_DESTROY);
         }
     }
 
     @Override
     public void clearCanDestroyBlock(String block)
     {
-        for (int i = 0; i < this.serialize().getCompound("tag").getList("CanDestroy").size(); i++)
+        NBTTagCompound tag = this.stack.getTagCompound();
+
+        if (tag != null)
         {
-            if (this.serialize().getCompound("tag").getList("CanDestroy").getString(i).equals(block))
+            NBTTagList canPlaceOn = tag.getTagList(CAN_DESTROY, Constants.NBT.TAG_STRING);
+            NBTTagList newCanPlaceOn = new NBTTagList();
+
+            for (int i = 0; i < canPlaceOn.tagCount(); i++)
             {
-                this.serialize().getCompound("tag").getList("CanDestroy").remove(i);
+                if (!canPlaceOn.getStringTagAt(i).equals(block))
+                {
+                    newCanPlaceOn.appendTag(canPlaceOn.get(i));
+                }
             }
+
+            tag.setTag(CAN_DESTROY, newCanPlaceOn);
         }
     }
 
     @Override
     public List<String> getCanPlaceOnBlocks()
     {
-        List<String> canPlaceOnBlocks = new ArrayList<String>();
-        for (int i = this.serialize().getCompound("tag").getList("CanPlaceOn").size() - 1; i >= 0; i--)
+        NBTTagCompound tag = this.stack.getTagCompound();
+
+        if (tag == null || !tag.hasKey(CAN_PLACE_ON, Constants.NBT.TAG_LIST))
         {
-            canPlaceOnBlocks.add(this.serialize().getCompound("tag").getList("CanPlaceOn").getString(i));
+            return Collections.emptyList();
         }
-        return canPlaceOnBlocks;
+
+        List<String> canPlaceOn = new ArrayList<String>();
+        NBTTagList list = tag.getTagList(CAN_PLACE_ON, Constants.NBT.TAG_STRING);
+
+        for (int i = 0; i < list.tagCount(); i++)
+        {
+            canPlaceOn.add(list.getStringTagAt(i));
+        }
+
+        return canPlaceOn;
     }
 
     @Override
     public void addCanPlaceOnBlock(String block)
     {
-        this.serialize().getCompound("tag").getList("CanPlaceOn").addString(block);
+        NBTTagCompound tag = this.stack.getTagCompound();
+
+        if (tag != null && tag.hasKey(CAN_PLACE_ON, Constants.NBT.TAG_LIST))
+        {
+            tag.getTagList(CAN_PLACE_ON, Constants.NBT.TAG_STRING).appendTag(new NBTTagString(block));
+        }
     }
 
     @Override
     public void clearAllCanPlaceOnBlocks()
     {
-        for (int i = this.serialize().getCompound("tag").getList("CanPlaceOn").size() - 1; i >= 0; i--)
+        NBTTagCompound tag = this.stack.getTagCompound();
+
+        if (tag != null)
         {
-            this.serialize().getCompound("tag").getList("CanPlaceOn").remove(i);
+            tag.removeTag(CAN_PLACE_ON);
         }
     }
 
     @Override
     public void clearCanPlaceOnBlock(String block)
     {
-        for (int i = this.serialize().getCompound("tag").getList("CanPlaceOn").size() - 1; i >= 0; i--)
+        NBTTagCompound tag = this.stack.getTagCompound();
+
+        if (tag != null)
         {
-            if (this.serialize().getCompound("tag").getList("CanPlaceOn").getString(i).equals(block))
+            NBTTagList canPlaceOn = tag.getTagList(CAN_PLACE_ON, Constants.NBT.TAG_STRING);
+            NBTTagList newCanPlaceOn = new NBTTagList();
+
+            for (int i = 0; i < canPlaceOn.tagCount(); i++)
             {
-                this.serialize().getCompound("tag").getList("CanPlaceOn").remove(i);
+                if (!canPlaceOn.getStringTagAt(i).equals(block))
+                {
+                    newCanPlaceOn.appendTag(canPlaceOn.get(i));
+                }
             }
+
+            tag.setTag(CAN_PLACE_ON, newCanPlaceOn);
         }
     }
 
     @Override
     public int getRepairCost()
     {
-        return this.serialize().getCompound("tag").getInt("RepairCost");
+        return this.stack.getRepairCost();
     }
 
     @Override
     public void setRepairCost(int cost)
     {
-        this.serialize().getCompound("tag").setInt("RepairCost", cost);
+        this.stack.setRepairCost(cost);
     }
 
     @Override
     public boolean isUnbreakable()
     {
-        return this.serialize().getCompound("tag").getBoolean("Unbreakable");
+        return !this.stack.isItemStackDamageable();
     }
 
     @Override
     public void setUnbreakable(boolean unbreakable)
     {
-        this.serialize().getCompound("tag").setBoolean("Unbreakable", unbreakable);
+        NBTTagCompound tag = this.stack.getTagCompound();
+
+        if (tag != null)
+        {
+            tag.setBoolean("Unbreakable", unbreakable);
+        }
     }
 }
