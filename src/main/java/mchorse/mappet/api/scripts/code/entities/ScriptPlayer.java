@@ -482,15 +482,18 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     }
 
     @Override
-    public int getCooldown(int inventoryStackIndex){
-        float cooldown = this.entity.getCooldownTracker().getCooldown(getInventory().getStack(inventoryStackIndex).getItem().getMinecraftItem(), 0);
-        return (int) (cooldown * 20);
+    public float getCooldown(int inventoryStackIndex){
+        return this.getCooldown(getInventory().getStack(inventoryStackIndex).getItem());
     }
 
     @Override
-    public int getCooldown(IScriptItem item){
-        float cooldown = this.entity.getCooldownTracker().getCooldown(item.getMinecraftItem(), 0);
-        return (int) (cooldown * 20);
+    public float getCooldown(IScriptItem item){
+        return this.getCooldown(item, 0);
+    }
+
+    @Override
+    public float getCooldown(IScriptItem item, float partialTicks){
+        return this.entity.getCooldownTracker().getCooldown(item.getMinecraftItem(), partialTicks);
     }
 
     @Override
