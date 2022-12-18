@@ -405,7 +405,7 @@ public class ScriptWorld implements IScriptWorld
     /* Mappet stuff */
 
     @Override
-    public void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, float yaw, float pitch, int range)
+    public void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, float yaw, float pitch, int range, IScriptPlayer player)
     {
         if (morph == null)
         {
@@ -423,9 +423,17 @@ public class ScriptWorld implements IScriptWorld
         worldMorph.pitch = pitch;
 
         int dimension = this.world.provider.getDimension();
-        NetworkRegistry.TargetPoint point = new NetworkRegistry.TargetPoint(dimension, x, y, z, MathUtils.clamp(range, 1, 256));
 
-        Dispatcher.DISPATCHER.get().sendToAllAround(new PacketWorldMorph(worldMorph), point);
+        if (player == null)
+        {
+            NetworkRegistry.TargetPoint point = new NetworkRegistry.TargetPoint(dimension, x, y, z, MathUtils.clamp(range, 1, 256));
+
+            Dispatcher.DISPATCHER.get().sendToAllAround(new PacketWorldMorph(worldMorph), point);
+        }
+        else
+        {
+            Dispatcher.sendTo(new PacketWorldMorph(worldMorph), player.getMinecraftPlayer());
+        }
     }
 
     @Override

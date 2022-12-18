@@ -995,7 +995,31 @@ public interface IScriptEntity
      * @param pitch Vertical rotation in degrees.
      * @param rotate Whether attached world morph should replicate entity's rotation (i.e. copy head rotation).
      */
-    public void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, float yaw, float pitch, boolean rotate);
+    public default void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, float yaw, float pitch, boolean rotate)
+    {
+        this.displayMorph(morph, expiration, x, y, z, yaw, pitch, rotate, null);
+    }
+
+    /**
+     * Display a world morph to given player that sees this entity
+     * toggleable following rotation and rotation offsets.
+     *
+     * <pre>{@code
+     *    // Show this morph only to Notch
+     *    var s = c.getSubject();
+     *    var morph = mappet.createMorph('{Name:"item"}');
+     *
+     *    s.displayMorph(morph, 100, 0, s.getHeight() + 0.5, 0, 180, 0, true, c.getServer().getPlayer("Notch"));
+     * }</pre>
+     *
+     * @param morph Morph that will be displayed (if <code>null</code>, then it won't send anything).
+     * @param expiration For how many ticks will this displayed morph exist on the client side.
+     * @param yaw Horizontal rotation in degrees.
+     * @param pitch Vertical rotation in degrees.
+     * @param rotate Whether attached world morph should replicate entity's rotation (i.e. copy head rotation).
+     * @param player The player that only should see the morph, or null for everyone.
+     */
+    public void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, float yaw, float pitch, boolean rotate, IScriptPlayer player);
 
     /**
      * Spawn a BB gun projectile. It works only if Blockbuster mod is present.

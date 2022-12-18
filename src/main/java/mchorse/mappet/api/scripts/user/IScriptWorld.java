@@ -717,5 +717,21 @@ public interface IScriptWorld
      * @param pitch      Vertical rotation in degrees.
      * @param range      How many blocks far away will this send to players around given point.
      */
-    public void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, float yaw, float pitch, int range);
+    public default void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, float yaw, float pitch, int range)
+    {
+        this.displayMorph(morph, expiration, x, y, z, yaw, pitch, range, null);
+    }
+
+    /**
+     * Display a world morph to all players at given point with rotation
+     * some blocks away in this world only to given player.
+     *
+     * @param morph      Morph that will be displayed (if <code>null</code>, then it won't send anything).
+     * @param expiration For how many ticks will this displayed morph exist on the client side.
+     * @param yaw        Horizontal rotation in degrees.
+     * @param pitch      Vertical rotation in degrees.
+     * @param range      How many blocks far away will this send to players around given point.
+     * @param player     The player that only should see the morph, or null for everyone.
+     */
+    public void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, float yaw, float pitch, int range, IScriptPlayer player);
 }

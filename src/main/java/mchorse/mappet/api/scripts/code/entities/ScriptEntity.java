@@ -932,7 +932,7 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     }
 
     @Override
-    public void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, float yaw, float pitch, boolean rotate)
+    public void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, float yaw, float pitch, boolean rotate, IScriptPlayer player)
     {
         if (morph == null)
         {
@@ -953,11 +953,18 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
 
         PacketWorldMorph message = new PacketWorldMorph(worldMorph);
 
-        Dispatcher.sendToTracked(this.entity, message);
-
-        if (this.isPlayer())
+        if (player == null)
         {
-            Dispatcher.sendTo(message, (EntityPlayerMP) this.entity);
+            Dispatcher.sendToTracked(this.entity, message);
+
+            if (this.isPlayer())
+            {
+                Dispatcher.sendTo(message, (EntityPlayerMP) this.entity);
+            }
+        }
+        else
+        {
+            Dispatcher.sendTo(message, player.getMinecraftPlayer());
         }
     }
 
