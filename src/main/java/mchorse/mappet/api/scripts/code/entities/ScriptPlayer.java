@@ -9,7 +9,7 @@ import mchorse.mappet.api.scripts.code.mappet.MappetUIBuilder;
 import mchorse.mappet.api.scripts.code.mappet.MappetUIContext;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
-import mchorse.mappet.api.scripts.user.items.IScriptItem;
+import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIContext;
@@ -147,7 +147,7 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     @Override
     public float getFlySpeed()
     {
-        return this.entity.capabilities.getWalkSpeed();
+        return this.entity.capabilities.getFlySpeed();
     }
 
     @Override
@@ -165,31 +165,31 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     }
 
     @Override
-    public int getCooldown(IScriptItem item)
+    public float getCooldown(IScriptItemStack item)
     {
-        return (int) (this.entity.getCooldownTracker().getCooldown(item.getMinecraftItem(), 0) * 20);
+        return this.entity.getCooldownTracker().getCooldown(item.getMinecraftItemStack().getItem(), 0);
     }
 
     @Override
-    public void setCooldown(IScriptItem item, int cooldown)
+    public void setCooldown(IScriptItemStack item, int ticks)
     {
-        this.entity.getCooldownTracker().setCooldown(item.getMinecraftItem(), cooldown);
+        this.entity.getCooldownTracker().setCooldown(item.getMinecraftItemStack().getItem(), ticks);
     }
 
     @Override
-    public void resetCooldown(IScriptItem item)
+    public void resetCooldown(IScriptItemStack item)
     {
-        this.entity.getCooldownTracker().removeCooldown(item.getMinecraftItem());
+        this.entity.getCooldownTracker().removeCooldown(item.getMinecraftItemStack().getItem());
     }
 
     @Override
-    public int getMainItemInventoryIndex()
+    public int getHotbarIndex()
     {
         return this.entity.inventory.currentItem;
     }
 
     @Override
-    public void setMainItemInventoryIndex(int slot)
+    public void setHotbarIndex(int slot)
     {
         if (slot < 0 || slot >= 9)
         {

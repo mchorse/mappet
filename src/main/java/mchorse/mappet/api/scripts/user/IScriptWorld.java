@@ -592,7 +592,7 @@ public interface IScriptWorld
      *
      * @return The falling block entity.
      */
-    public IScriptEntity summonFallingBlock(int x, int y, int z, String blockId, int meta);
+    public IScriptEntity summonFallingBlock(double x, double y, double z, String blockId, int meta);
 
     /**
      * Transform a block to a falling block in specific coordinates.
@@ -609,23 +609,23 @@ public interface IScriptWorld
      * Transform a block to a falling block in specific coordinates.
      *
      * <pre>{@code
-     *     c.getWorld().fancyExplode(-2, 100, -2, 2, 100, 2, 100);
+     *     c.getWorld().fancyExplode(-2, 100, -2, 2, 100, 2, 1);
      * }</pre>
      *
      * @return The falling block entities in a list.
      */
-    public List<IScriptEntity> fancyExplode(int x1, int y1, int z1, int x2, int y2, int z2, int blocksPercentage);
+    public List<IScriptEntity> fancyExplode(int x1, int y1, int z1, int x2, int y2, int z2, float blocksPercentage);
 
     /**
      * Transform a block to a falling block in specific coordinates.
      *
      * <pre>{@code
-     *     c.getWorld().fancyExplode(0, 100, 0, 3, 100);
+     *     c.getWorld().fancyExplode(0, 100, 0, 3, 1);
      * }</pre>
      *
      * @return The falling block entities in a list.
      */
-    public default List<IScriptEntity> fancyExplode(int x, int y, int z, int radius, int blocksPercentage)
+    public default List<IScriptEntity> fancyExplode(int x, int y, int z, int radius, float blocksPercentage)
     {
         return this.fancyExplode(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius, blocksPercentage);
     }
@@ -634,19 +634,19 @@ public interface IScriptWorld
      * Explode the blocks in the range by teleporting them randomly in an explosive way.
      *
      * <pre>{@code
-     *     c.getWorld().tpExplode(0, 100, 0, 2, 100, 2, 100);
+     *     c.getWorld().tpExplode(0, 100, 0, 2, 100, 2, 1);
      * }</pre>
      */
-    public void tpExplode(int x1, int y1, int z1, int x2, int y2, int z2, int blocksPercentage);
+    public void tpExplode(int x1, int y1, int z1, int x2, int y2, int z2, float blocksPercentage);
 
     /**
      * Explode the blocks in the range by teleporting them randomly in an explosive way.
      *
      * <pre>{@code
-     *     c.getWorld().tpExplode(0, 100, 0, 3, 100);
+     *     c.getWorld().tpExplode(0, 100, 0, 3, 1);
      * }</pre>
      */
-    public default void tpExplode(int x, int y, int z, int radius, int blocksPercentage)
+    public default void tpExplode(int x, int y, int z, int radius, float blocksPercentage)
     {
         this.tpExplode(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius, blocksPercentage);
     }

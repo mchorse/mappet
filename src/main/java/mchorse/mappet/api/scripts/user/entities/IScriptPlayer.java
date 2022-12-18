@@ -1,7 +1,7 @@
 package mchorse.mappet.api.scripts.user.entities;
 
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
-import mchorse.mappet.api.scripts.user.items.IScriptItem;
+import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIContext;
@@ -138,7 +138,8 @@ public interface IScriptPlayer extends IScriptEntity
      * Returns if the flight speed of the player.
      *
      * <pre>{@code
-     *    function main(c) {
+     *    function main(c)
+     *    {
      *        c.send("The flight speed of the player is: " + c.getSubject().getFlySpeed());
      *    }
      * }</pre>
@@ -206,15 +207,15 @@ public interface IScriptPlayer extends IScriptEntity
      *    function main(c)
      *    {
      *        var player = c.getSubject();
-     *        var cooldown = player.getCooldown(player.getMainItemInventoryIndex()); //tip: 40 is the offhand slot
+     *        var cooldown = player.getCooldown(player.getMainItemInventoryIndex()); // tip: 40 is the offhand slot
      *
      *        c.send(The held item is on cooldown for " + cooldown + " ticks.");
      *    }
      * }</pre>
      */
-    public default int getCooldown(int inventorySlot)
+    public default float getCooldown(int inventorySlot)
     {
-        return this.getCooldown(this.getInventory().getStack(inventorySlot).getItem());
+        return this.getCooldown(this.getInventory().getStack(inventorySlot));
     }
 
     /**
@@ -227,11 +228,11 @@ public interface IScriptPlayer extends IScriptEntity
      *        var item = mappet.createItem("minecraft:diamond_sword");
      *        var cooldown = player.getCooldown(item);
      *
-     *        c.send(The cooldown for diamond sword is " + cooldown + " ticks.");
+     *        c.send(The held item cooldown " + ((1 - cooldown) * 100) + " percent expired.");
      *    }
      * }</pre>
      */
-    public int getCooldown(IScriptItem item);
+    public float getCooldown(IScriptItemStack item);
 
     /**
      * Set cooldown of a particular inventory index of the player.
@@ -245,9 +246,9 @@ public interface IScriptPlayer extends IScriptEntity
      *    }
      * }</pre>
      */
-    public default void setCooldown(int inventorySlot, int cooldown)
+    public default void setCooldown(int inventorySlot, int ticks)
     {
-        this.setCooldown(this.getInventory().getStack(inventorySlot).getItem(), cooldown);
+        this.setCooldown(this.getInventory().getStack(inventorySlot), ticks);
     }
 
     /**
@@ -263,7 +264,7 @@ public interface IScriptPlayer extends IScriptEntity
      *    }
      * }</pre>
      */
-    public void setCooldown(IScriptItem item, int cooldown);
+    public void setCooldown(IScriptItemStack item, int ticks);
 
     /**
      * Reset cooldown for given item.
@@ -279,7 +280,7 @@ public interface IScriptPlayer extends IScriptEntity
      */
     public default void resetCooldown(int inventorySlot)
     {
-        this.resetCooldown(this.getInventory().getStack(inventorySlot).getItem());
+        this.resetCooldown(this.getInventory().getStack(inventorySlot));
     }
 
     /**
@@ -295,11 +296,10 @@ public interface IScriptPlayer extends IScriptEntity
      *    }
      * }</pre>
      */
-    public void resetCooldown(IScriptItem item);
+    public void resetCooldown(IScriptItemStack item);
 
     /**
-     * Get the inventory index of main item.
-     * Useful for e.g. main hand's cooldown methods.
+     * Get the inventory index of main item. Useful for e.g. main hand's cooldown methods.
      *
      * <pre>{@code
      *    function main(c)
@@ -310,12 +310,12 @@ public interface IScriptPlayer extends IScriptEntity
      *    }
      * }</pre>
      */
-    public int getMainItemInventoryIndex();
+    public int getHotbarIndex();
 
     /**
-     * Set forcefully player's current inventory index. Acceptable values are <code>0</code> - <code>8</code>.
+     * Set forcefully player's current hotbar inventory index. Acceptable values are <code>0</code> - <code>8</code>.
      */
-    public void setMainItemInventoryIndex(int slot);
+    public void setHotbarIndex(int slot);
 
     /**
      * Send a message to this player.

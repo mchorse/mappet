@@ -516,7 +516,8 @@ public interface IScriptFactory
     public String dump(Object object, boolean simple);
 
     /**
-     * Generate a random number between 0 and the given max value (but not including the maximum value).
+     * Generate a random number between 0 and the given max value (but not
+     * including the maximum value).
      *
      * <pre>{@code
      *    var randomNumber = mappet.random(10);
@@ -529,7 +530,8 @@ public interface IScriptFactory
     public double random(double max);
 
     /**
-     * Generate a random number between the given min value and the given max value (but not including the maximum value).
+     * Generate a random number between the given min value and the given max value
+     * (but not including the maximum value).
      *
      * <pre>{@code
      *    var randomNumber = mappet.random(5, 10);
@@ -543,14 +545,31 @@ public interface IScriptFactory
     public double random(double min, double max);
 
     /**
-     * Return Minecraft's formatting code.
+     * Generate a random number between the given min value and the given max value
+     * (but not including the maximum value) with given seed.
      *
      * <pre>{@code
-     *    // Colors:
-     *    // black, dark_blue, dark_green, dark_aqua, dark_red, dark_purple, gold
-     *    // gray, dark_gray, blue, green, aqua, red, light_purple, yellow, white
-     *    // Styles:
-     *    // obfuscated, bold, strikethrough, underline, italic, reset
+     *    var randomNumber = mappet.random(5, 10, 4141241);
+     *
+     *    c.send(randomNumber);
+     * }</pre>
+     *
+     * @param min Minimum value.
+     * @param max Maximum value.
+     */
+    public double random(double min, double max, long seed);
+
+    /**
+     * Return Minecraft's formatting code.
+     *
+     * <p>Following colors are supported: black, dark_blue, dark_green, dark_aqua,
+     * dark_red, dark_purple, gold, gray, dark_gray, blue, green, aqua, red,
+     * light_purple, yellow, white</p>
+     *
+     * <p>Following styles are supported: obfuscated, bold, strikethrough, underline,
+     * italic, reset.</p>
+     *
+     * <pre>{@code
      *    var style = mappet.style("dark_blue", "bold", "underline");
      *
      *    c.send(colorCode + "This text is in blue!");

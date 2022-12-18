@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts.code;
 
+import com.google.common.collect.ImmutableList;
 import io.netty.buffer.Unpooled;
 import mchorse.blockbuster.common.tileentity.TileEntityModel;
 import mchorse.blockbuster.network.common.PacketModifyModelBlock;
@@ -35,6 +36,7 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockButton;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -100,7 +102,9 @@ public class ScriptWorld implements IScriptWorld
             return ScriptBlockState.AIR;
         }
 
-        return ScriptBlockState.create(this.world.getBlockState(this.pos));
+        IBlockState blockState = this.world.getBlockState(this.pos);
+
+        return ScriptBlockState.create(blockState.getActualState(this.world, this.pos));
     }
 
     @Override
@@ -492,7 +496,11 @@ public class ScriptWorld implements IScriptWorld
     @Override
     public boolean testForBlock(int x, int y, int z, String blockId, int meta)
     {
-        return this.getBlock(x, y, z).isSame(ScriptBlockState.create(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockId)).getStateFromMeta(meta)));
+        Block value = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockId));
+        ImmutableList<IBlockState> validStates = value.getBlockState().getValidStates();
+        IBlockState state = meta >= 0 && meta < validStates.size() ? validStates.get(meta) : value.getDefaultState();
+
+        return this.getBlock(x, y, z).isSame(ScriptBlockState.create(state));
     }
 
     @Override
@@ -518,7 +526,7 @@ public class ScriptWorld implements IScriptWorld
     }
 
     @Override
-    public IScriptEntity summonFallingBlock(int x, int y, int z, String blockId, int meta)
+    public IScriptEntity summonFallingBlock(double x, double y, double z, String blockId, int meta)
     {
         NBTTagCompound nbt = new NBTTagCompound();
 
@@ -569,7 +577,7 @@ public class ScriptWorld implements IScriptWorld
     }
 
     @Override
-    public List<IScriptEntity> fancyExplode(int x1, int y1, int z1, int x2, int y2, int z2, int blocksPercentage)
+    public List<IScriptEntity> fancyExplode(int x1, int y1, int z1, int x2, int y2, int z2, float blocksPercentage)
     {
         List<IScriptEntity> entities = new ArrayList<IScriptEntity>();
         int xMin = Math.min(x1, x2);
@@ -591,7 +599,7 @@ public class ScriptWorld implements IScriptWorld
                 for (int z = zMin; z <= zMax; z++)
                 {
                     /* If the blocks are closer the centre, they are more likely to be destroyed */
-                    if (Math.random() < (1 - (Math.sqrt(Math.pow(xCentre - x, 2) + Math.pow(yCentre - y, 2) + Math.pow(zCentre - z, 2)) / Math.sqrt(Math.pow(xCentre - xMin, 2) + Math.pow(yCentre - yMin, 2) + Math.pow(zCentre - zMin, 2)))) * blocksPercentage / 100)
+                    if (Math.random() < (1 - (Math.sqrt(Math.pow(xCentre - x, 2) + Math.pow(yCentre - y, 2) + Math.pow(zCentre - z, 2)) / Math.sqrt(Math.pow(xCentre - xMin, 2) + Math.pow(yCentre - yMin, 2) + Math.pow(zCentre - zMin, 2)))) * blocksPercentage)
                     {
                         IScriptEntity entity = this.setFallingBlock(x, y, z);
 
@@ -613,7 +621,7 @@ public class ScriptWorld implements IScriptWorld
     }
 
     @Override
-    public void tpExplode(int x1, int y1, int z1, int x2, int y2, int z2, int blocksPercentage)
+    public void tpExplode(int x1, int y1, int z1, int x2, int y2, int z2, float blocksPercentage)
     {
         int xMin = Math.min(x1, x2);
         int xMax = Math.max(x1, x2);
@@ -634,7 +642,7 @@ public class ScriptWorld implements IScriptWorld
                 for (int z = zMin; z <= zMax; z++)
                 {
                     /* If the blocks are closer the centre, they are more likely to be destroyed */
-                    if (Math.random() < (1 - (Math.sqrt(Math.pow(xCentre - x, 2) + Math.pow(yCentre - y, 2) + Math.pow(zCentre - z, 2)) / Math.sqrt(Math.pow(xCentre - xMin, 2) + Math.pow(yCentre - yMin, 2) + Math.pow(zCentre - zMin, 2)))) * blocksPercentage / 100)
+                    if (Math.random() < (1 - (Math.sqrt(Math.pow(xCentre - x, 2) + Math.pow(yCentre - y, 2) + Math.pow(zCentre - z, 2)) / Math.sqrt(Math.pow(xCentre - xMin, 2) + Math.pow(yCentre - yMin, 2) + Math.pow(zCentre - zMin, 2)))) * blocksPercentage)
                     {
                         IScriptBlockState state = getBlock(x, y, z);
                         if (!state.getBlockId().equals("minecraft:air"))

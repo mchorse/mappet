@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts.code;
 
+import com.google.common.collect.ImmutableList;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.scripts.code.blocks.ScriptBlockState;
@@ -37,10 +38,13 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class ScriptFactory implements IScriptFactory
 {
     private static final Map<String, String> formattingCodes = new HashMap<String, String>();
+
+    private Random random = new Random();
 
     static
     {
@@ -76,7 +80,9 @@ public class ScriptFactory implements IScriptFactory
 
         if (block != null)
         {
-            IBlockState state = block.getStateFromMeta(meta);
+            Block value = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockId));
+            ImmutableList<IBlockState> validStates = value.getBlockState().getValidStates();
+            IBlockState state = meta >= 0 && meta < validStates.size() ? validStates.get(meta) : value.getDefaultState();
 
             return ScriptBlockState.create(state);
         }
@@ -388,6 +394,14 @@ public class ScriptFactory implements IScriptFactory
     public double random(double min, double max)
     {
         return min + Math.random() * (max - min);
+    }
+
+    @Override
+    public double random(double min, double max, long seed)
+    {
+        this.random.setSeed(seed);
+
+        return min + this.random.nextDouble() * (max - min);
     }
 
     @Override
