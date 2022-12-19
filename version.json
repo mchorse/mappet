@@ -1,6 +1,7 @@
 {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/mappet",
     "1.12.2": {
+        "0.4": "This is a HUGE scripting API update by OtakuGamer with some minor contributions by TorayLife.",
         "0.3.1": "This patch hot fix fixes global triggers and scripts (TorayLife).",
         "0.3": "This update features rewrite of scripting system to support multiple scripting engines (like Kotlin scripts) and folder support in Mappet panels.",
         "0.2.3": "This quick update is compatible with McLib 2.4.1 changes.",
@@ -16,7 +17,7 @@
         "0.1-alpha": "This first release provides tons of features: states, conditions, expressions, emitter block, trigger block, region block, crafting tables, quests, NPCs, factions, events, scripts, dialogues, quest chains, many commands, custom sound events, target selectors, global triggers, and much more."
     },
     "promos": {
-        "1.12.2-latest": "0.3.1",
-        "1.12.2-recommended": "0.3.1"
+        "1.12.2-latest": "0.4",
+        "1.12.2-recommended": "0.4"
     }
 }
