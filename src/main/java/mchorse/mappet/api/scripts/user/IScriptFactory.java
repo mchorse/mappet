@@ -11,6 +11,12 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumParticleTypes;
 
+import javax.vecmath.Matrix3d;
+import javax.vecmath.Matrix4d;
+import javax.vecmath.Vector2d;
+import javax.vecmath.Vector3d;
+import javax.vecmath.Vector4d;
+
 /**
  * Scripting API factory that allows to initialize/create different stuff.
  *
@@ -578,4 +584,190 @@ public interface IScriptFactory
      * @param codes An enumeration of formatting codes.
      */
     public String style(String... codes);
+
+    /* Vector math */
+
+    /**
+     * Create an empty (0, 0) 2D vector.
+     */
+    public default Vector2d vector2()
+    {
+        return new Vector2d();
+    }
+
+    /**
+     * Create a 2D vector.
+     *
+     * <pre>{@code
+     *    var a = mappet.vector2(1, 0);
+     *    var b = mappet.vector2(-1, 1);
+     *
+     *    a.normalize();
+     *    b.normalize();
+     *
+     *    c.send("Dot product of a and b is: " + a.dot(b));
+     * }</pre>
+     */
+    public default Vector2d vector2(double x, double y)
+    {
+        return new Vector2d(x, y);
+    }
+
+    /**
+     * Copy a 2D vector.
+     *
+     * <pre>{@code
+     *    var a = mappet.vector2(25, 17);
+     *    var b = mappet.vector2(a);
+     *
+     *    b.x += 40;
+     *    b.y -= 5;
+     *
+     *    var d = mappet.vector2(b);
+     *
+     *    d.sub(a);
+     *
+     *    c.send("Distance between a and b is: " + d.length());
+     * }</pre>
+     */
+    public default Vector2d vector2(Vector2d v)
+    {
+        return new Vector2d(v);
+    }
+
+    /**
+     * Create an empty (0, 0, 0) 3D vector.
+     */
+    public default Vector3d vector3()
+    {
+        return new Vector3d();
+    }
+
+    /**
+     * Create a 3D vector.
+     *
+     * <pre>{@code
+     *    var look = c.getSubject().getLook();
+     *    var a = mappet.vector3(look.x, look.y, look.z);
+     *    var b = mappet.vector3(0, 0, 1);
+     *
+     *    a.normalize();
+     *    b.normalize();
+     *
+     *    c.send("Dot product of entity's look vector and positive Z is: " + a.dot(b));
+     * }</pre>
+     */
+    public default Vector3d vector3(double x, double y, double z)
+    {
+        return new Vector3d(x, y, z);
+    }
+
+    /**
+     * Copy a 3D vector.
+     *
+     * <pre>{@code
+     *    var pos = c.getSubject().getPosition();
+     *    var a = mappet.vector3(pos.x, pos.y, pos.z);
+     *    var b = mappet.vector3(10, 4, 50);
+     *
+     *    var d = mappet.vector3(b);
+     *
+     *    d.sub(a);
+     *
+     *    c.send("Distance between you and point (10, 4, 50) is: " + d.length());
+     * }</pre>
+     */
+    public default Vector3d vector3(Vector3d v)
+    {
+        return new Vector3d(v);
+    }
+
+    /**
+     * Create a 4D vector.
+     */
+    public default Vector4d vector4()
+    {
+        return new Vector4d();
+    }
+
+    /**
+     * Create a 4D vector.
+     */
+    public default Vector4d vector4(double x, double y, double z, double w)
+    {
+        return new Vector4d(x, y, z, w);
+    }
+
+    /**
+     * Copy a 4D vector.
+     */
+    public default Vector4d vector4(Vector4d v)
+    {
+        return new Vector4d(v);
+    }
+
+    /**
+     * Create an identity 3x3 matrix.
+     *
+     * <pre>{@code
+     *    var v = mappet.vector3(0, 0, 1);
+     *    var rotation = mappet.matrix3();
+     *
+     *    rotation.rotY(Math.PI / 2);
+     *    rotation.transform(v);
+     *
+     *    c.send("Final point is: " + v);
+     * }</pre>
+     */
+    public default Matrix3d matrix3()
+    {
+        Matrix3d m = new Matrix3d();
+
+        m.setIdentity();
+
+        return m;
+    }
+
+    /**
+     * Copy a 3x3 matrix.
+     */
+    public default Matrix3d matrix3(Matrix3d m)
+    {
+        return new Matrix3d(m);
+    }
+
+    /**
+     * Create an identity 4x4 matrix.
+     *
+     * <pre>{@code
+     *    var v = mappet.vector4(0, 0, 1, 1);
+     *    var rotation = mappet.matrix4();
+     *
+     *    rotation.rotY(Math.PI / 2);
+     *
+     *    var translation = mappet.matrix4();
+     *
+     *    translation.setTranslation(mappet.vector3(0, 4, 0));
+     *    rotation.mul(translation);
+     *    rotation.transform(v);
+     *
+     *    c.send("Final point is: " + v.x + ", " + v.y + ", " + v.z);
+     * }</pre>
+     */
+    public default Matrix4d matrix4()
+    {
+        Matrix4d m = new Matrix4d();
+
+        m.setIdentity();
+
+        return m;
+    }
+
+    /**
+     * Copy a 4x4 matrix.
+     */
+    public default Matrix4d matrix4(Matrix4d m)
+    {
+        return new Matrix4d(m);
+    }
 }
