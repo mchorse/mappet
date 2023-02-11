@@ -3,13 +3,17 @@ package mchorse.mappet.api.scripts;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.scripts.code.ScriptEvent;
+import mchorse.mappet.api.scripts.user.IScriptEvent;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.IExecutable;
+
+import java.util.function.Consumer;
 
 public class ScriptExecutionFork implements IExecutable
 {
     public DataContext context;
     public ScriptObjectMirror object;
+    public Consumer<IScriptEvent> consumer;
     public String script;
     public String function;
     public int timer;
@@ -29,6 +33,13 @@ public class ScriptExecutionFork implements IExecutable
         this.timer = timer;
     }
 
+    public ScriptExecutionFork(DataContext context, Consumer<IScriptEvent> consumer, int timer)
+    {
+        this.context = context;
+        this.consumer = consumer;
+        this.timer = timer;
+    }
+
     @Override
     public String getId()
     {
@@ -45,6 +56,10 @@ public class ScriptExecutionFork implements IExecutable
                 if (this.object != null)
                 {
                     this.object.call(null, new ScriptEvent(this.context, null, null));
+                }
+                else if (this.consumer != null)
+                {
+                    this.consumer.accept(new ScriptEvent(this.context, null, null));
                 }
                 else
                 {
