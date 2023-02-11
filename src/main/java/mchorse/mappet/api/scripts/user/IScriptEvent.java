@@ -6,6 +6,7 @@ import mchorse.mappet.api.scripts.user.entities.IScriptNpc;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Script event.
@@ -206,6 +207,12 @@ public interface IScriptEvent
      * }</pre>
      */
     public void scheduleScript(int delay, ScriptObjectMirror function);
+
+    /**
+     * Schedule a function (instead of script). Once the timer has expired,
+     * given function will be called with this context as the only argument.
+     */
+    public void scheduleScript(int delay, Consumer<IScriptEvent> consumer);
 
     /**
      * Execute a command.

@@ -16,6 +16,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextComponentString;
 
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class ScriptEvent implements IScriptEvent
 {
@@ -177,6 +178,19 @@ public class ScriptEvent implements IScriptEvent
         if (function != null && function.isFunction())
         {
             CommonProxy.eventHandler.addExecutable(new ScriptExecutionFork(this.context.copy(), function, delay));
+        }
+        else
+        {
+            throw new IllegalStateException("Given object is null in script " + this.script + " (" + this.function + " function)!");
+        }
+    }
+
+    @Override
+    public void scheduleScript(int delay, Consumer<IScriptEvent> consumer)
+    {
+        if (consumer != null)
+        {
+            CommonProxy.eventHandler.addExecutable(new ScriptExecutionFork(this.context.copy(), consumer, delay));
         }
         else
         {
