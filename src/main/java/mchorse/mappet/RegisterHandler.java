@@ -34,6 +34,7 @@ import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import java.util.Calendar;
 
 public class RegisterHandler
 {
@@ -122,10 +123,92 @@ public class RegisterHandler
     @SideOnly(Side.CLIENT)
     public void onModelRegistry(ModelRegistryEvent event)
     {
-        ModelLoader.setCustomModelResourceLocation(Mappet.npcTool, 0, new ModelResourceLocation(Mappet.MOD_ID + ":npc_tool", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(Mappet.npcTool, 0, getNpcToolTexture());
 
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(Mappet.emitterBlock), 0, new ModelResourceLocation(Mappet.MOD_ID + ":emitter", "inventory"));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(Mappet.triggerBlock), 0, new ModelResourceLocation(Mappet.MOD_ID + ":trigger", "inventory"));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(Mappet.regionBlock), 0, new ModelResourceLocation(Mappet.MOD_ID + ":region", "inventory"));
+    }
+
+    public ModelResourceLocation getNpcToolTexture()
+    {
+        String postfix = "";
+        Calendar calendar = Calendar.getInstance();
+
+        if (isWinter(calendar))
+        {
+            postfix = "_winter";
+        }
+
+        if (isChristmas(calendar))
+        {
+            postfix = "_christmas";
+        }
+        else if (isEaster(calendar))
+        {
+            postfix = "_easter";
+        }
+        else if (isAprilFoolsDay(calendar))
+        {
+            postfix = "_april";
+        }
+        else if (isHalloween(calendar))
+        {
+            postfix = "_halloween";
+        }
+
+        return new ModelResourceLocation(Mappet.MOD_ID + ":npc_tool" + postfix, "inventory");
+    }
+
+    public boolean isChristmas(Calendar calendar)
+    {
+        return calendar.get(Calendar.MONTH) == Calendar.DECEMBER && calendar.get(Calendar.DATE) >= 24 && calendar.get(Calendar.DATE) <= 26;
+    }
+
+    public boolean isAprilFoolsDay(Calendar calendar)
+    {
+        return calendar.get(Calendar.MONTH) == Calendar.APRIL && calendar.get(Calendar.DATE) <= 2;
+    }
+
+    public boolean isWinter(Calendar calendar)
+    {
+        int month = calendar.get(Calendar.MONTH);
+
+        return month == Calendar.DECEMBER || month == Calendar.JANUARY || month == Calendar.FEBRUARY;
+    }
+
+    public boolean isEaster(Calendar calendar)
+    {
+        Calendar easterDate = getEasterDate(calendar.get(Calendar.YEAR));
+
+        return calendar.get(Calendar.MONTH) == easterDate.get(Calendar.MONTH) && calendar.get(Calendar.DATE) == easterDate.get(Calendar.DATE);
+    }
+
+    public boolean isHalloween(Calendar calendar)
+    {
+        return calendar.get(Calendar.MONTH) == Calendar.OCTOBER && calendar.get(Calendar.DATE) >= 24;
+    }
+
+    public Calendar getEasterDate(int year)
+    {
+        int a = year % 19;
+        int b = year / 100;
+        int c = year % 100;
+        int d = b / 4;
+        int e = b % 4;
+        int f = (b + 8) / 25;
+        int g = (b - f + 1) / 3;
+        int h = (19 * a + b - d - g + 15) % 30;
+        int i = c / 4;
+        int k = c % 4;
+        int l = (32 + 2 * e + 2 * i - h - k) % 7;
+        int month = (h + l + 114) / 31;
+        int day = (h + l + 114) % 31;
+
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(year, month - 1, day + 1);
+
+        return calendar;
     }
 }
