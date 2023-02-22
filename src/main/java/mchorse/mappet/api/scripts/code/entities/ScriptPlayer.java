@@ -2,9 +2,6 @@ package mchorse.mappet.api.scripts.code.entities;
 
 import io.netty.buffer.Unpooled;
 import mchorse.aperture.network.common.PacketCameraState;
-import mchorse.mappet.Mappet;
-import mchorse.mappet.api.huds.HUDMorph;
-import mchorse.mappet.api.huds.HUDScene;
 import mchorse.mappet.api.scripts.code.items.ScriptInventory;
 import mchorse.mappet.api.scripts.code.mappet.MappetQuests;
 import mchorse.mappet.api.scripts.code.mappet.MappetUIBuilder;
@@ -23,16 +20,12 @@ import mchorse.mappet.api.ui.UIContext;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.network.Dispatcher;
-import mchorse.mappet.network.common.huds.PacketHUDMorph;
-import mchorse.mappet.network.common.huds.PacketHUDScene;
 import mchorse.mappet.network.common.scripts.PacketEntityRotations;
 import mchorse.mappet.network.common.scripts.PacketSound;
 import mchorse.mappet.network.common.ui.PacketCloseUI;
 import mchorse.mappet.network.common.ui.PacketUI;
 import mchorse.mappet.utils.WorldUtils;
-import mchorse.metamorph.api.Morph;
 import mchorse.metamorph.api.MorphAPI;
-import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
@@ -51,7 +44,8 @@ import net.minecraft.world.GameType;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Optional;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScriptPlayer
 {
@@ -542,6 +536,4 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     {
         mchorse.aperture.network.Dispatcher.sendTo(new PacketCameraState(sceneName, toPlay), this.entity);
     }
-
-
 }

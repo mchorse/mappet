@@ -7,6 +7,7 @@ import mchorse.mappet.api.events.EventManager;
 import mchorse.mappet.api.expressions.ExpressionManager;
 import mchorse.mappet.api.factions.FactionManager;
 import mchorse.mappet.api.huds.HUDManager;
+import mchorse.mappet.api.utils.logs.MappetLogger;
 import mchorse.mappet.api.misc.ServerSettings;
 import mchorse.mappet.api.npcs.NpcManager;
 import mchorse.mappet.api.quests.QuestManager;
@@ -27,7 +28,6 @@ import mchorse.mclib.commands.utils.L10n;
 import mchorse.mclib.config.ConfigBuilder;
 import mchorse.mclib.config.values.ValueBoolean;
 import mchorse.mclib.config.values.ValueInt;
-import mchorse.mclib.config.values.ValueString;
 import mchorse.mclib.events.RegisterConfigEvent;
 import mchorse.mclib.events.RemoveDashboardPanels;
 import net.minecraft.creativetab.CreativeTabs;
@@ -48,6 +48,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.File;
+import java.util.logging.Handler;
 
 /**
  * Mappet mod
@@ -68,6 +69,8 @@ public final class Mappet
 
     public static L10n l10n = new L10n(MOD_ID);
     public static final EventBus EVENT_BUS = new EventBus();
+
+    public static MappetLogger logger;
 
     /* Content */
     public static Item npcTool;
@@ -194,6 +197,21 @@ public final class Mappet
         File mappetWorldFolder = new File(DimensionManager.getCurrentSaveRootDirectory(), MOD_ID);
 
         mappetWorldFolder.mkdirs();
+
+        if (logger != null)
+        {
+            Handler[] handlers = logger.getHandlers();
+
+            for (Handler handler : handlers)
+            {
+                handler.close();
+                logger.removeHandler(handler);
+            }
+
+            logger = null;
+        }
+
+        logger = new MappetLogger(MOD_ID, mappetWorldFolder);
 
         settings = new ServerSettings(new File(mappetWorldFolder, "settings.json"));
         settings.load();

@@ -216,6 +216,8 @@ public class Script extends AbstractData
         {
             ScriptException exception = processScriptException(e);
 
+            Mappet.logger.error(e.getMessage());
+
             throw exception == null ? e : exception;
         }
     }

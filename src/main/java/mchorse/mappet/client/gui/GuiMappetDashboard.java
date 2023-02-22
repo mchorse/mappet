@@ -6,7 +6,7 @@ import mchorse.mappet.client.gui.panels.GuiDialoguePanel;
 import mchorse.mappet.client.gui.panels.GuiEventPanel;
 import mchorse.mappet.client.gui.panels.GuiFactionPanel;
 import mchorse.mappet.client.gui.panels.GuiHUDScenePanel;
-import mchorse.mappet.client.gui.panels.GuiMappetDashboardPanel;
+import mchorse.mappet.client.gui.panels.GuiLogPanel;
 import mchorse.mappet.client.gui.panels.GuiNpcPanel;
 import mchorse.mappet.client.gui.panels.GuiQuestChainPanel;
 import mchorse.mappet.client.gui.panels.GuiQuestPanel;
@@ -15,20 +15,19 @@ import mchorse.mappet.client.gui.panels.GuiScriptPanel;
 import mchorse.mappet.client.gui.panels.GuiServerSettingsPanel;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.content.PacketContentExit;
+import mchorse.mappet.utils.MPIcons;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.mclib.GuiAbstractDashboard;
 import mchorse.mclib.client.gui.mclib.GuiDashboardPanels;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
-import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.creative.GuiCreativeMorphsMenu;
 import mchorse.metamorph.util.MMIcons;
 import net.minecraft.client.Minecraft;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class GuiMappetDashboard extends GuiAbstractDashboard
 {
@@ -45,6 +44,7 @@ public class GuiMappetDashboard extends GuiAbstractDashboard
     public GuiQuestChainPanel chain;
     public GuiScriptPanel script;
     public GuiHUDScenePanel hud;
+    public GuiLogPanel logs;
 
     public GuiCreativeMorphsMenu morphs;
 
@@ -113,6 +113,7 @@ public class GuiMappetDashboard extends GuiAbstractDashboard
         this.chain = new GuiQuestChainPanel(mc, this);
         this.script = new GuiScriptPanel(mc, this);
         this.hud = new GuiHUDScenePanel(mc, this);
+        this.logs = new GuiLogPanel(mc, this);
 
         this.panels.registerPanel(this.settings, IKey.lang("mappet.gui.panels.settings"), Icons.GEAR);
         this.panels.registerPanel(this.crafting, IKey.lang("mappet.gui.panels.crafting"), Icons.WRENCH);
@@ -125,6 +126,7 @@ public class GuiMappetDashboard extends GuiAbstractDashboard
         this.panels.registerPanel(this.chain, IKey.lang("mappet.gui.panels.chains"), Icons.FOLDER);
         this.panels.registerPanel(this.script, IKey.lang("mappet.gui.panels.scripts"), MMIcons.PROPERTIES);
         this.panels.registerPanel(this.hud, IKey.lang("mappet.gui.panels.huds"), Icons.POSE);
+        this.panels.registerPanel(this.logs, IKey.lang("mappet.gui.panels.logs"), MPIcons.REPL);
 
         this.panels.setPanel(this.settings);
     }

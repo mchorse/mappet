@@ -3,6 +3,7 @@ package mchorse.mappet.api.scripts.user;
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
+import mchorse.mappet.api.scripts.user.logs.IMappetLogger;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.scripts.user.mappet.IMappetUIContext;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
@@ -584,6 +585,11 @@ public interface IScriptFactory
      * @param codes An enumeration of formatting codes.
      */
     public String style(String... codes);
+
+    /**
+     * Return a mappet logger instance.
+     */
+    public IMappetLogger getLogger();
 
     /* Vector math */
 

@@ -15,10 +15,12 @@ import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.mappet.api.scripts.user.nbt.INBTList;
 import mchorse.mappet.api.ui.UI;
+import mchorse.mappet.api.utils.logs.MappetLogger;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.Vector3d;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
@@ -33,7 +35,8 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
-import javax.vecmath.*;
+import javax.vecmath.Vector2d;
+import javax.vecmath.Vector4d;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -445,22 +448,25 @@ public class ScriptFactory implements IScriptFactory
         }
     }
 
-    private boolean isPointInBounds2D(Vector2d point, Vector2d bound1, Vector2d bound2) {
-        return point.x >= Math.min(bound1.x, bound2.x) && point.x <= Math.max(bound1.x, bound2.x) &&
-                point.y >= Math.min(bound1.y, bound2.y) && point.y <= Math.max(bound1.y, bound2.y);
+    private boolean isPointInBounds2D(Vector2d point, Vector2d bound1, Vector2d bound2)
+    {
+        return point.x >= Math.min(bound1.x, bound2.x) && point.x <= Math.max(bound1.x, bound2.x)
+            && point.y >= Math.min(bound1.y, bound2.y) && point.y <= Math.max(bound1.y, bound2.y);
     }
 
-    private boolean isPointInBounds3D(Vector3d point, Vector3d bound1, Vector3d bound2) {
-        return point.x >= Math.min(bound1.x, bound2.x) && point.x <= Math.max(bound1.x, bound2.x) &&
-                point.y >= Math.min(bound1.y, bound2.y) && point.y <= Math.max(bound1.y, bound2.y) &&
-                point.z >= Math.min(bound1.z, bound2.z) && point.z <= Math.max(bound1.z, bound2.z);
+    private boolean isPointInBounds3D(Vector3d point, Vector3d bound1, Vector3d bound2)
+    {
+        return point.x >= Math.min(bound1.x, bound2.x) && point.x <= Math.max(bound1.x, bound2.x)
+            && point.y >= Math.min(bound1.y, bound2.y) && point.y <= Math.max(bound1.y, bound2.y)
+            && point.z >= Math.min(bound1.z, bound2.z) && point.z <= Math.max(bound1.z, bound2.z);
     }
 
-    private boolean isPointInBounds4D(Vector4d point, Vector4d bound1, Vector4d bound2) {
-        return point.x >= Math.min(bound1.x, bound2.x) && point.x <= Math.max(bound1.x, bound2.x) &&
-                point.y >= Math.min(bound1.y, bound2.y) && point.y <= Math.max(bound1.y, bound2.y) &&
-                point.z >= Math.min(bound1.z, bound2.z) && point.z <= Math.max(bound1.z, bound2.z) &&
-                point.w >= Math.min(bound1.w, bound2.w) && point.w <= Math.max(bound1.w, bound2.w);
+    private boolean isPointInBounds4D(Vector4d point, Vector4d bound1, Vector4d bound2)
+    {
+        return point.x >= Math.min(bound1.x, bound2.x) && point.x <= Math.max(bound1.x, bound2.x)
+            && point.y >= Math.min(bound1.y, bound2.y) && point.y <= Math.max(bound1.y, bound2.y)
+            && point.z >= Math.min(bound1.z, bound2.z) && point.z <= Math.max(bound1.z, bound2.z)
+            && point.w >= Math.min(bound1.w, bound2.w) && point.w <= Math.max(bound1.w, bound2.w);
     }
 
     @Override
@@ -482,5 +488,10 @@ public class ScriptFactory implements IScriptFactory
         }
 
         return null;
+    }
+
+    public MappetLogger getLogger()
+    {
+        return Mappet.logger;
     }
 }
