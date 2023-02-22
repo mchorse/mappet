@@ -29,12 +29,14 @@ public class ServerHandlerRepl extends ServerMessageHandler<PacketRepl>
         catch (ScriptException e)
         {
             e.printStackTrace();
+            Mappet.logger.error(e.getMessage());
 
             Dispatcher.sendTo(new PacketRepl(TextFormatting.RED + e.getMessage()), player);
         }
         catch (Exception e)
         {
             e.printStackTrace();
+            Mappet.logger.error(e.getMessage());
         }
     }
 }

@@ -213,6 +213,7 @@ mappet.gui.panels.factions=Фракции
 mappet.gui.panels.chains=Цепочки квестов
 mappet.gui.panels.scripts=Скрипты
 mappet.gui.panels.huds=HUD scenes
+mappet.gui.panels.logs=Логи
 mappet.gui.panels.modals.add=Впишите название:
 mappet.gui.panels.modals.dupe=Впишите новое название для дубликата:
 mappet.gui.panels.modals.rename=Впишите новое название:
@@ -667,6 +668,12 @@ mappet.gui.huds.context.add=Add a HUD morph
 mappet.gui.huds.context.copy=Copy this HUD morph
 mappet.gui.huds.context.paste=Paste copied HUD morph
 mappet.gui.huds.context.remove=Remove this HUD morph
+
+mappet.gui.logs.context.update=Обновить
+mappet.gui.logs.context.copy=Копировать сообщение
+mappet.gui.logs.toggle.ignore_case=Игнорировать регистр
+mappet.gui.logs.toggle.regex=Регулярное выражение
+mappet.gui.logs.toggle.onlyMessage=Только сообщение
 
 # GUI enums
 

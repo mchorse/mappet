@@ -15,6 +15,7 @@ import mchorse.mappet.api.scripts.user.mappet.IMappetUIBuilder;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.mappet.api.scripts.user.nbt.INBTList;
 import mchorse.mappet.api.ui.UI;
+import mchorse.mappet.api.utils.logs.MappetLogger;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.block.Block;
@@ -421,5 +422,11 @@ public class ScriptFactory implements IScriptFactory
         }
 
         return builder.toString();
+    }
+
+    @Override
+    public MappetLogger getLogger()
+    {
+        return Mappet.logger;
     }
 }

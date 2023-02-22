@@ -16,6 +16,7 @@ import mchorse.mappet.network.client.events.ClientHandlerPlayerJournal;
 import mchorse.mappet.network.client.factions.ClientHandlerFactions;
 import mchorse.mappet.network.client.huds.ClientHandlerHUDMorph;
 import mchorse.mappet.network.client.huds.ClientHandlerHUDScene;
+import mchorse.mappet.network.client.logs.ClientHandlerLogs;
 import mchorse.mappet.network.client.npc.ClientHandlerNpcList;
 import mchorse.mappet.network.client.npc.ClientHandlerNpcMorph;
 import mchorse.mappet.network.client.npc.ClientHandlerNpcState;
@@ -53,6 +54,8 @@ import mchorse.mappet.network.common.factions.PacketFactions;
 import mchorse.mappet.network.common.factions.PacketRequestFactions;
 import mchorse.mappet.network.common.huds.PacketHUDMorph;
 import mchorse.mappet.network.common.huds.PacketHUDScene;
+import mchorse.mappet.network.common.logs.PacketLogs;
+import mchorse.mappet.network.common.logs.PacketRequestLogs;
 import mchorse.mappet.network.common.npc.PacketNpcList;
 import mchorse.mappet.network.common.npc.PacketNpcMorph;
 import mchorse.mappet.network.common.npc.PacketNpcState;
@@ -88,6 +91,7 @@ import mchorse.mappet.network.server.dialogue.ServerHandlerPickReply;
 import mchorse.mappet.network.server.events.ServerHandlerEventHotkey;
 import mchorse.mappet.network.server.events.ServerHandlerPlayerJournal;
 import mchorse.mappet.network.server.factions.ServerHandlerRequestFactions;
+import mchorse.mappet.network.server.logs.ServerHandlerLogs;
 import mchorse.mappet.network.server.npc.ServerHandlerNpcList;
 import mchorse.mappet.network.server.npc.ServerHandlerNpcState;
 import mchorse.mappet.network.server.npc.ServerHandlerNpcTool;
@@ -185,7 +189,7 @@ public class Dispatcher
             this.register(PacketSound.class, ClientHandlerSound.class, Side.CLIENT);
             this.register(PacketWorldMorph.class, ClientHandlerWorldMorph.class, Side.CLIENT);
 
-            /* HUD & UI*/
+            /* HUD & UI */
             this.register(PacketHUDScene.class, ClientHandlerHUDScene.class, Side.CLIENT);
             this.register(PacketHUDMorph.class, ClientHandlerHUDMorph.class, Side.CLIENT);
 
@@ -194,6 +198,10 @@ public class Dispatcher
             this.register(PacketUIData.class, ClientHandlerUIData.class, Side.CLIENT);
             this.register(PacketUIData.class, ServerHandlerUIData.class, Side.SERVER);
             this.register(PacketCloseUI.class, ClientHandlerCloseUI.class, Side.CLIENT);
+
+            /* Logs */
+            this.register(PacketRequestLogs.class, ServerHandlerLogs.class, Side.SERVER);
+            this.register(PacketLogs.class, ClientHandlerLogs.class, Side.CLIENT);
         }
     };
 

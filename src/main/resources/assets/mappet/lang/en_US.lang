@@ -213,6 +213,7 @@ mappet.gui.panels.factions=Factions
 mappet.gui.panels.chains=Quest chains
 mappet.gui.panels.scripts=Scripts
 mappet.gui.panels.huds=HUD scenes
+mappet.gui.panels.logs=Logs
 mappet.gui.panels.modals.add=Type in a name:
 mappet.gui.panels.modals.dupe=Type in a new name for a duplicate:
 mappet.gui.panels.modals.rename=Type in a new name:
@@ -668,6 +669,12 @@ mappet.gui.huds.context.add=Add a HUD morph
 mappet.gui.huds.context.copy=Copy this HUD morph
 mappet.gui.huds.context.paste=Paste copied HUD morph
 mappet.gui.huds.context.remove=Remove this HUD morph
+
+mappet.gui.logs.context.update=Update
+mappet.gui.logs.context.copy=Copy message
+mappet.gui.logs.toggle.ignore_case=Ignore case
+mappet.gui.logs.toggle.regex=Regex
+mappet.gui.logs.toggle.onlyMessage=Only message
 
 # GUI enums
 
