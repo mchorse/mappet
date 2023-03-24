@@ -2,11 +2,13 @@ package mchorse.mappet.api.scripts.code.entities;
 
 import io.netty.buffer.Unpooled;
 import mchorse.mappet.Mappet;
+import mchorse.mappet.api.huds.HUDMorph;
 import mchorse.mappet.api.huds.HUDScene;
 import mchorse.mappet.api.scripts.code.items.ScriptInventory;
 import mchorse.mappet.api.scripts.code.mappet.MappetQuests;
 import mchorse.mappet.api.scripts.code.mappet.MappetUIBuilder;
 import mchorse.mappet.api.scripts.code.mappet.MappetUIContext;
+import mchorse.mappet.api.scripts.code.nbt.ScriptNBTCompound;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
@@ -27,7 +29,9 @@ import mchorse.mappet.network.common.scripts.PacketSound;
 import mchorse.mappet.network.common.ui.PacketCloseUI;
 import mchorse.mappet.network.common.ui.PacketUI;
 import mchorse.mappet.utils.WorldUtils;
+import mchorse.metamorph.api.Morph;
 import mchorse.metamorph.api.MorphAPI;
+import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
@@ -43,6 +47,10 @@ import net.minecraft.network.play.server.SPacketTitle;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.GameType;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScriptPlayer
 {
@@ -444,16 +452,19 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     /* HUD scenes API */
 
     @Override
-    public boolean setupHUD(String id)
-    {
+    public boolean setupHUD(String id) {
         HUDScene scene = Mappet.huds.load(id);
 
-        if (scene != null)
-        {
+        if (scene != null) {
             Dispatcher.sendTo(new PacketHUDScene(scene.getId(), scene.serializeNBT()), this.entity);
+
+            //adds the morph to the displayedHUDs list
+            Map<String, List<HUDScene>> displayedHUDs = Character.get(this.entity).getDisplayedHUDs();
+            displayedHUDs.put(id, Arrays.asList(scene));
+            return true;
         }
 
-        return scene != null;
+        return false;
     }
 
     @Override
@@ -481,11 +492,46 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     private void changeHUDMorph(String id, int index, NBTTagCompound tag)
     {
         Dispatcher.sendTo(new PacketHUDMorph(id, index, tag), this.entity);
+
+        //changing the HUDMorph in the displayedHUDs list
+        Map<String, List<HUDScene>> displayedHUDs = Character.get(this.entity).getDisplayedHUDs();
+        for (Map.Entry<String, List<HUDScene>> entry : displayedHUDs.entrySet())
+        {
+            if (entry.getKey().equals(id))
+            {
+                List<HUDScene> scenes = entry.getValue();
+                if (!scenes.isEmpty()) {
+                    HUDScene scene = scenes.get(0);
+                    if (scene.morphs.size() > index)
+                    {
+                        HUDMorph newMorph = scene.morphs.get(index).copy();
+                        newMorph.morph = new Morph(MorphManager.INSTANCE.morphFromNBT(tag));
+                        scene.morphs.set(index, newMorph);
+                    }
+                }
+            }
+        }
     }
 
     @Override
-    public void closeHUD(String id)
-    {
+    public void closeHUD(String id) {
         Dispatcher.sendTo(new PacketHUDScene(id == null ? "" : id, null), this.entity);
+
+        Character.get(this.entity).getDisplayedHUDs().remove(id);
     }
-}
+
+    @Override
+    public void closeAllHUD()
+    {
+        this.closeHUD(null);
+
+        Character.get(this.entity).getDisplayedHUDs().clear();
+    }
+
+    @Override
+    public INBTCompound getDisplayedHUDs()
+    {
+        ICharacter character = Character.get(this.entity);
+        NBTTagCompound tag = ((Character) character).getDisplayedHUDsTag();
+        return new ScriptNBTCompound(tag);
+    }}

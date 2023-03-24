@@ -745,4 +745,15 @@ public interface IScriptPlayer extends IScriptEntity
      * @param id HUD scene's ID/filename.
      */
     public void closeHUD(String id);
+
+    /**
+     * Get all HUD scenes that are currently displayed for this player.
+     *
+     * <pre>{@code
+     *   var player = c.getSubject();
+     *   var huds = player.getDisplayedHUDs();
+     *   print(huds);
+     * }</pre>
+     */
+    public INBTCompound getDisplayedHUDs();
 }

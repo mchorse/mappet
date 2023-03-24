@@ -2,6 +2,7 @@ package mchorse.mappet;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import mchorse.mappet.api.huds.HUDScene;
 import mchorse.mappet.api.quests.Quest;
 import mchorse.mappet.api.quests.Quests;
 import mchorse.mappet.api.scripts.code.items.ScriptInventory;
@@ -19,6 +20,7 @@ import mchorse.mappet.entities.utils.MappetNpcRespawnManager;
 import mchorse.mappet.events.StateChangedEvent;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.events.PacketEventHotkeys;
+import mchorse.mappet.network.common.huds.PacketHUDScene;
 import mchorse.mappet.network.common.quests.PacketQuest;
 import mchorse.mappet.network.common.quests.PacketQuests;
 import mchorse.mappet.network.common.scripts.PacketClick;
@@ -434,6 +436,19 @@ public class EventHandler
 
             this.syncData(player, character);
         }
+        /// restore the displayed HUDs
+        Map<String, List<HUDScene>> displayedHUDs = character.getDisplayedHUDs();
+        for (Map.Entry<String, List<HUDScene>> entry : displayedHUDs.entrySet())
+        {
+            String id = entry.getKey();
+            List<HUDScene> scenes = entry.getValue();
+
+            for (HUDScene scene : scenes)
+            {
+                // Send the PacketHUDScene for each HUDScene
+                Dispatcher.sendTo(new PacketHUDScene(id, scene.serializeNBT()), player);
+            }
+        }
 
         if (!Mappet.settings.playerLogIn.isEmpty())
         {
@@ -646,6 +661,7 @@ public class EventHandler
         if (character != null && !event.player.world.isRemote)
         {
             character.getPositionCache().updatePlayer(event.player);
+            ((Character) character).updateDisplayedHUDsList();
         }
 
         if (event.player.world.isRemote && event.player == Minecraft.getMinecraft().player)
