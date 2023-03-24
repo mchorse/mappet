@@ -3,6 +3,7 @@ package mchorse.mappet.capabilities.character;
 import mchorse.mappet.api.crafting.CraftingTable;
 import mchorse.mappet.api.dialogues.Dialogue;
 import mchorse.mappet.api.dialogues.DialogueContext;
+import mchorse.mappet.api.huds.HUDScene;
 import mchorse.mappet.api.ui.UIContext;
 import mchorse.mappet.api.quests.Quests;
 import mchorse.mappet.api.states.States;
@@ -13,6 +14,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import java.time.Instant;
+import java.util.List;
+import java.util.Map;
 
 public interface ICharacter extends INBTSerializable<NBTTagCompound>
 {
@@ -55,4 +58,7 @@ public interface ICharacter extends INBTSerializable<NBTTagCompound>
     public UIContext getUIContext();
 
     public void setUIContext(UIContext context);
+
+    /* HUDs */
+    public Map<String, List<HUDScene>> getDisplayedHUDs();
 }

@@ -3,6 +3,8 @@ package mchorse.mappet.capabilities.character;
 import mchorse.mappet.api.crafting.CraftingTable;
 import mchorse.mappet.api.dialogues.Dialogue;
 import mchorse.mappet.api.dialogues.DialogueContext;
+import mchorse.mappet.api.huds.HUDMorph;
+import mchorse.mappet.api.huds.HUDScene;
 import mchorse.mappet.api.quests.Quests;
 import mchorse.mappet.api.states.States;
 import mchorse.mappet.api.ui.UIContext;
@@ -10,8 +12,11 @@ import mchorse.mappet.utils.CurrentSession;
 import mchorse.mappet.utils.PositionCache;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.util.Constants;
 
 import java.time.Instant;
+import java.util.*;
 
 public class Character implements ICharacter
 {
@@ -34,6 +39,8 @@ public class Character implements ICharacter
     private CurrentSession session = new CurrentSession();
 
     private UIContext uiContext;
+
+    private Map<String, List<HUDScene>> displayedHUDs = new HashMap<>();
 
     @Override
     public States getStates()
@@ -123,6 +130,7 @@ public class Character implements ICharacter
         tag.setTag("Quests", this.quests.serializeNBT());
         tag.setTag("States", this.states.serializeNBT());
         tag.setString("LastClear", this.lastClear.toString());
+        tag.setTag("DisplayedHUDs", serializeDisplayedHUDs());
 
         return tag;
     }
@@ -149,6 +157,10 @@ public class Character implements ICharacter
             catch (Exception e)
             {}
         }
+
+        if (tag.hasKey("DisplayedHUDs")) {
+            deserializeDisplayedHUDs(tag.getCompoundTag("DisplayedHUDs"));
+        }
     }
 
     /* GUIs */
@@ -163,5 +175,81 @@ public class Character implements ICharacter
     public void setUIContext(UIContext context)
     {
         this.uiContext = context;
+    }
+
+    /* HUDs */
+
+    @Override
+    public Map<String, List<HUDScene>> getDisplayedHUDs() {
+        return displayedHUDs;
+    }
+
+    private NBTTagCompound serializeDisplayedHUDs() {
+        return getDisplayedHUDsTag();
+    }
+
+    private void deserializeDisplayedHUDs(NBTTagCompound tag) {
+        displayedHUDs.clear();
+        for (String key : tag.getKeySet()) {
+            NBTTagList sceneList = tag.getTagList(key, Constants.NBT.TAG_COMPOUND);
+            List<HUDScene> scenes = new ArrayList<>();
+            for (int i = 0; i < sceneList.tagCount(); i++) {
+                NBTTagCompound sceneTag = sceneList.getCompoundTagAt(i);
+                HUDScene scene = new HUDScene();
+                scene.deserializeNBT(sceneTag);
+                scenes.add(scene);
+            }
+            displayedHUDs.put(key, scenes);
+        }
+    }
+
+    public NBTTagCompound getDisplayedHUDsTag(){
+        NBTTagCompound tag = new NBTTagCompound();
+        for (Map.Entry<String, List<HUDScene>> entry : displayedHUDs.entrySet()) {
+            NBTTagList sceneList = new NBTTagList();
+            for (HUDScene scene : entry.getValue()) {
+                sceneList.appendTag(scene.serializeNBT());
+            }
+            tag.setTag(entry.getKey(), sceneList);
+        }
+        return tag;
+    }
+
+    /**
+     * This method checks on character's tick if it has
+     * a scene with an HUDMorph with `expire` in one of its displayedHUDs.
+     * If it has, and it's not 0, then it should decrement it.
+     * If it's 0, then it should remove the HUDMorph from the scene.
+     * If the scene is empty, then it should remove the scene from the displayedHUDs.
+     */
+    public void updateDisplayedHUDsList() {
+        Iterator<Map.Entry<String, List<HUDScene>>> iterator = getDisplayedHUDs().entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, List<HUDScene>> entry = iterator.next();
+            List<HUDScene> scenes = entry.getValue();
+            boolean removeScene = false;
+            for (HUDScene scene : scenes) {
+                List<HUDMorph> morphs = scene.morphs;
+                boolean updated = false;
+                for (int i = 0; i < morphs.size(); i++) {
+                    HUDMorph morph = morphs.get(i);
+                    if (morph.expire > 0) {
+                        morph.expire--;
+                        if (morph.expire == 0) {
+                            morphs.remove(i);
+                            i--;
+                            updated = true;
+                        }
+                    }
+                }
+                if (updated && morphs.isEmpty()) {
+                    removeScene = true;
+                    break;
+                }
+            }
+            if (removeScene) {
+                iterator.remove();
+            }
+        }
     }
 }
