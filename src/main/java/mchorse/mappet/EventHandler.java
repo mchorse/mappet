@@ -50,6 +50,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -324,7 +325,7 @@ public class EventHandler
         Dispatcher.sendToServer(new PacketClick(EnumHand.OFF_HAND));
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onPlayerRightClickItem(PlayerInteractEvent.RightClickItem event)
     {
         EntityPlayer player = event.getEntityPlayer();
@@ -363,7 +364,7 @@ public class EventHandler
         this.trigger(event, Mappet.settings.blockClick, context);
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event)
     {
         EntityPlayer player = event.getEntityPlayer();
@@ -385,7 +386,7 @@ public class EventHandler
         this.trigger(event, Mappet.settings.blockInteract, context);
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onPlayerInteractWithEntity(PlayerInteractEvent.EntityInteract event)
     {
         EntityPlayer player = event.getEntityPlayer();
