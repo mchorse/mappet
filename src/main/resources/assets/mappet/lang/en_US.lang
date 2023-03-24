@@ -751,7 +751,7 @@ tile.mappet.trigger.tooltip=Trigger events from player right and left clicking t
 tile.mappet.region.name=Region block
 tile.mappet.region.tooltip=Trigger events when players enter and exit configured region
 
-entity.mappet.npc.name=Mappet NPC
+entity.mappet.npc.name=mappet_npc
 
 mappet.translation.credit=Mappet by McHorse, special thanks goes to Andruxioid, Centryfuga and Jvonlins
 mappet.translation.wiki=Wiki

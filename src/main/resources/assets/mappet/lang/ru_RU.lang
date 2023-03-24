@@ -750,7 +750,7 @@ tile.mappet.trigger.tooltip=Включает заданные события п�
 tile.mappet.region.name=Блок-регион
 tile.mappet.region.tooltip=Включает заданные события когда игрок заходит и/ли выходит в указанный регион
 
-entity.mappet.npc.name=NPC Маппета
+entity.mappet.npc.name=NPC_Маппета
 
 mappet.translation.credit=Перевод за авторством Дюхи Лавского из Moon Studio
 mappet.translation.wiki=Вики
