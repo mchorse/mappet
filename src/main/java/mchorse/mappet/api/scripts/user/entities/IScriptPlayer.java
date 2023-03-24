@@ -756,4 +756,27 @@ public interface IScriptPlayer extends IScriptEntity
      * }</pre>
      */
     public INBTCompound getDisplayedHUDs();
+
+
+    /**
+     * Plays an Aperture scene for this player.
+     *
+     * <pre>{@code
+     * c.getSubject().playScene("scene_name");
+     * }</pre>
+     *
+     * @param sceneName Scene's ID.
+     */
+    public void playScene(String sceneName);
+
+
+    /**
+     * Plays Aperture scenes for this player.
+     *
+     * <pre>{@code
+     * c.getSubject().stopScene();
+     * }</pre>
+     *
+     */
+    public void stopScene();
 }

@@ -1,6 +1,7 @@
 package mchorse.mappet.api.scripts.code.entities;
 
 import io.netty.buffer.Unpooled;
+import mchorse.aperture.network.common.PacketCameraState;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.huds.HUDMorph;
 import mchorse.mappet.api.huds.HUDScene;
@@ -47,6 +48,8 @@ import net.minecraft.network.play.server.SPacketTitle;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.GameType;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Optional;
 
 import java.util.Arrays;
 import java.util.List;
@@ -534,4 +537,30 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
         ICharacter character = Character.get(this.entity);
         NBTTagCompound tag = ((Character) character).getDisplayedHUDsTag();
         return new ScriptNBTCompound(tag);
-    }}
+    }
+
+    /* Aperture API */
+
+    @Override
+    public void playScene(String sceneName){
+        if (Loader.isModLoaded("aperture"))
+        {
+            this.playApertureScene(sceneName, true);
+        }
+    }
+
+    @Override
+    public void stopScene(){
+        if (Loader.isModLoaded("aperture"))
+        {
+            this.playApertureScene("", false);
+        }
+    }
+
+    @Optional.Method(modid = "aperture")
+    private void playApertureScene(String sceneName, boolean toPlay){
+        mchorse.aperture.network.Dispatcher.sendTo(new PacketCameraState(sceneName, toPlay), this.entity);
+    }
+
+
+}
