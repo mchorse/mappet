@@ -313,6 +313,22 @@ mappet.gui.settings.triggers.player_journal=Player: opened journal
 mappet.gui.settings.triggers.descriptions.player_journal=This cancelable trigger gets triggered when a player opens the player journal.\n\nYou can use this trigger to implement your own player journal using UI API. When event gets canceled, the default player journal won't be opened.
 mappet.gui.settings.triggers.variables.player_journal=§7N/A§r
 
+mappet.gui.settings.triggers.projectile_impact=Projectile: impact
+mappet.gui.settings.triggers.descriptions.projectile_impact=This cancellable gets triggered when a projectile hits an entity or a block.
+mappet.gui.settings.triggers.variables.projectile_impact=§6pos§r, the position where the projectile hit.\n§6entity§r, the entity that was hit.\n§6projectile§r, the projectile that hit the entity.\n§6thrower§r, the entity that threw the projectile.
+
+mappet.gui.settings.triggers.living_equipment_change=Living: equipment change
+mappet.gui.settings.triggers.descriptions.living_equipment_change=This gets triggered when a living entity equipment change.
+mappet.gui.settings.triggers.variables.living_equipment_change=§6item§r, the current item.\n§6slot§r, the slot where the item was picked up.
+
+mappet.gui.settings.triggers.state_changed=Mappet: state changed
+mappet.gui.settings.triggers.descriptions.state_changed=This gets triggered when a state changes.
+mappet.gui.settings.triggers.variables.state_changed=§6entity§r, the player/NPC that changed the state.(null if global)\n§6key§r, the key of the state that changed.\n§6current§r, the current value of the state.\n§6previous§r, the previous value of the state.
+
+mappet.gui.settings.triggers.living_knockback=Living: knockback
+mappet.gui.settings.triggers.descriptions.living_knockback=This cancelable trigger gets triggered when a mob/a player gets knocked back.
+mappet.gui.settings.triggers.variables.living_knockback=§6strength§r, the strength of the knockback (float), §6ratioX§r, the ratio of the knockback on X axis (float), §6ratioZ§r, the ratio of the knockback on Z axis (float).
+
 mappet.gui.quests.cancelable=Cancelable
 mappet.gui.quests.instant=Instant
 mappet.gui.quests.instant_tooltip=When enabled, this quest will be instantly completed instead of having to hand it in to an NPC/dialogue

@@ -5,8 +5,11 @@ import com.google.common.collect.Sets;
 import mchorse.mappet.api.huds.HUDScene;
 import mchorse.mappet.api.quests.Quest;
 import mchorse.mappet.api.quests.Quests;
+import mchorse.mappet.api.scripts.code.entities.ScriptEntity;
+import mchorse.mappet.api.scripts.code.entities.ScriptPlayer;
 import mchorse.mappet.api.scripts.code.items.ScriptInventory;
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
+import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.triggers.Trigger;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.IExecutable;
@@ -16,6 +19,7 @@ import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.client.KeyboardHandler;
 import mchorse.mappet.client.RenderingHandler;
 import mchorse.mappet.commands.data.CommandDataClear;
+import mchorse.mappet.entities.EntityNpc;
 import mchorse.mappet.entities.utils.MappetNpcRespawnManager;
 import mchorse.mappet.events.StateChangedEvent;
 import mchorse.mappet.network.Dispatcher;
@@ -30,8 +34,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerChest;
 import net.minecraft.inventory.ContainerPlayer;
@@ -41,11 +47,12 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.ProjectileImpactEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -61,13 +68,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.lang.reflect.Field;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class EventHandler
 {
@@ -175,6 +177,10 @@ public class EventHandler
 
         if (context.isCanceled())
         {
+            if (event instanceof LivingEquipmentChangeEvent)
+            {
+                return; //otherwise game crashes
+            }
             event.setCanceled(true);
         }
     }
@@ -231,11 +237,13 @@ public class EventHandler
     public void onEntityHurt(LivingDamageEvent event)
     {
         DamageSource source = event.getSource();
+        EntityLivingBase attacker = source.getTrueSource() instanceof EntityLivingBase ? (EntityLivingBase) source.getTrueSource() : null;
 
         if (!Mappet.settings.entityDamaged.isEmpty())
         {
             DataContext context = new DataContext(event.getEntityLiving(), source.getTrueSource())
                 .set("damage", event.getAmount());
+            context.getValues().put("attacker", ScriptEntity.create(attacker));
 
             this.trigger(event, Mappet.settings.entityDamaged, context);
         }
@@ -550,7 +558,21 @@ public class EventHandler
 
         if (!trigger.isEmpty())
         {
-            this.trigger(event, trigger, new DataContext(event.getEntityLiving(), source));
+            DataContext context = new DataContext(event.getEntityLiving(), source);
+            if (source != null){
+                context.getValues().put("killer", ScriptEntity.create(source));
+            }
+
+            Entity thrower = null;
+            if (source instanceof EntityThrowable) {
+                thrower = ((EntityThrowable) event.getEntity()).getThrower();
+            }
+
+            if (thrower != null) {
+                context.getValues().put("thrower", ScriptEntity.create(thrower));
+            }
+
+            this.trigger(event, trigger, context);
         }
 
         if (source instanceof EntityPlayer)
@@ -724,6 +746,11 @@ public class EventHandler
     @SubscribeEvent
     public void onStateChange(StateChangedEvent event)
     {
+        Trigger trigger = Mappet.settings.stateChanged;
+        if (!trigger.isEmpty()) {
+            handleStateChangedEvent(event, trigger);
+        }
+
         for (EntityPlayer player : FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers())
         {
             ICharacter character = Character.get(player);
@@ -745,11 +772,144 @@ public class EventHandler
         }
     }
 
+    private void handleStateChangedEvent(StateChangedEvent event, Trigger trigger) {
+        if (event.isGlobal()) {
+            handleGlobalStateChangedEvent(event, trigger);
+        } else {
+            handlePlayerStateChangedEvent(event, trigger);
+            handleNpcStateChangedEvent(event, trigger);
+        }
+    }
+
+    private void handleGlobalStateChangedEvent(StateChangedEvent event, Trigger trigger) {
+        this.context = new DataContext(FMLCommonHandler.instance().getMinecraftServerInstance());
+        setStateChangedEventValues(context, event);
+        trigger.trigger(context);
+    }
+
+    private void handlePlayerStateChangedEvent(StateChangedEvent event, Trigger trigger) {
+        for (EntityPlayer player : FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers()) {
+            ICharacter character = Character.get(player);
+            if (character != null && character.getStates() == event.states) {
+                this.context = new DataContext(player);
+                setStateChangedEventValues(context, event);
+                context.getValues().put("entity", ScriptEntity.create(player));
+                trigger.trigger(context);
+            }
+        }
+    }
+
+    private void handleNpcStateChangedEvent(StateChangedEvent event, Trigger trigger) {
+        for (EntityNpc npc : getAllNpcs()) {
+            if (npc != null && npc.getStates() == event.states) {
+                this.context = new DataContext(npc);
+                setStateChangedEventValues(context, event);
+                context.getValues().put("entity", ScriptEntity.create(npc));
+                trigger.trigger(context);
+            }
+        }
+    }
+
+    private void setStateChangedEventValues(DataContext context, StateChangedEvent event) {
+        context.getValues().put("key", event.key);
+        context.getValues().put("current", event.current);
+        context.getValues().put("previous", event.previous);
+    }
+
+    private List<EntityNpc> getAllNpcs(){
+        List<EntityNpc> npcs = new ArrayList<EntityNpc>();
+        try {
+            for (World world : FMLCommonHandler.instance().getMinecraftServerInstance().worlds) {
+                npcs.addAll(world.loadedEntityList.stream()
+                        .filter(entity -> entity instanceof EntityNpc)
+                        .map(entity -> (EntityNpc) entity)
+                        .collect(Collectors.toList()));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return npcs;
+    }
+
     @SubscribeEvent
     public void onWorldTick(TickEvent.WorldTickEvent event)
     {
         MappetNpcRespawnManager respawnManager = MappetNpcRespawnManager.get(event.world);
 
         respawnManager.onTick();
+    }
+
+    @SubscribeEvent
+    public void onLivingKnockBack(LivingKnockBackEvent event)
+    {
+        EntityLivingBase target = event.getEntityLiving();
+        Entity attacker = event.getAttacker();
+
+        if (target.world.isRemote || Mappet.settings.livingKnockBack.isEmpty())
+        {
+            return;
+        }
+
+        DataContext context = new DataContext(target, attacker)
+                .set("strength", event.getStrength())
+                .set("ratioX", event.getRatioX())
+                .set("ratioZ", event.getRatioZ());
+        context.getValues().put("attacker", ScriptEntity.create(attacker));
+
+        this.trigger(event, Mappet.settings.livingKnockBack, context);
+    }
+
+    @SubscribeEvent
+    public void onProjectileImpact(ProjectileImpactEvent event) {
+        if (event.getEntity().world.isRemote) {
+            return;
+        }
+
+        Trigger trigger = Mappet.settings.projectileImpact;
+        if (!trigger.isEmpty()) {
+            Entity hitEntity = event.getRayTraceResult().entityHit;
+            DataContext context = new DataContext(event.getEntity(), hitEntity);
+
+            context.getValues().put("pos", new ScriptVector(event.getRayTraceResult().hitVec));
+            context.getValues().put("projectile", ScriptEntity.create(event.getEntity()));
+
+            if (hitEntity != null && !context.getValues().containsKey("entity")){
+                context.getValues().put("entity", ScriptEntity.create(hitEntity));
+            }
+
+            Entity thrower = null;
+            if (event.getEntity() instanceof EntityThrowable) {
+                thrower = ((EntityThrowable) event.getEntity()).getThrower();
+            }
+
+            if (thrower != null) {
+                context.getValues().put("thrower", ScriptEntity.create(thrower));
+            }
+
+            this.trigger(event, trigger, context);
+        }
+    }
+
+    @SubscribeEvent
+    public void onLivingEquipmentChange(LivingEquipmentChangeEvent event) {
+        if (event.getEntity().world.isRemote) {
+            return;
+        }
+
+        Trigger trigger = Mappet.settings.onLivingEquipmentChange;
+        if (!trigger.isEmpty()) {
+            DataContext context = new DataContext(event.getEntity());
+
+            context.getValues().put("item", ScriptItemStack.create(event.getTo()));
+
+            if (event.getEntity() instanceof EntityPlayerMP) {
+                ScriptPlayer player = new ScriptPlayer((EntityPlayerMP) event.getEntity());
+                context.getValues().put("player", player.getHotbarIndex());
+            } else {
+                context.getValues().put("slot", event.getSlot().getIndex());
+            }
+
+            this.trigger(event, trigger, context);
+        }
     }
 }
