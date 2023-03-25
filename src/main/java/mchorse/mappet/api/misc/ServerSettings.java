@@ -47,6 +47,10 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
     public final Trigger playerEntityInteract;
     public final Trigger playerCloseContainer;
     public final Trigger playerJournal;
+    public final Trigger livingKnockBack;
+    public final Trigger projectileImpact;
+    public final Trigger onLivingEquipmentChange;
+    public final Trigger stateChanged;
 
     public Trigger register(String key, Trigger trigger)
     {
@@ -95,6 +99,10 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
         this.playerEntityInteract = this.register("player_entity_interact", new Trigger());
         this.playerCloseContainer = this.register("player_close_container", new Trigger());
         this.playerJournal = this.register("player_journal", new Trigger());
+        this.livingKnockBack = this.register("living_knockback", new Trigger());
+        this.projectileImpact = this.register("projectile_impact", new Trigger());
+        this.onLivingEquipmentChange = this.register("living_equipment_change", new Trigger());
+        this.stateChanged = this.register("state_changed", new Trigger());
 
         Mappet.EVENT_BUS.post(new RegisterServerTriggerEvent(this));
     }
