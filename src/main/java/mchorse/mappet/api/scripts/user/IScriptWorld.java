@@ -709,6 +709,18 @@ public interface IScriptWorld
      */
     public INBTCompound serializeSchematic(String name);
 
+    /**
+     * Gets the block stack at given position, including tile entity data.
+     *
+     * <pre>{@code
+     *    var x= 0, y = 100, z = 0;
+     *    var world = c.getWorld();
+     *    var blockItemStack = world.getBlockStackWithTile(x, y, z);
+     *    world.setBlock(mappet.createBlockState("minecraft:air", 0), x, y, z)
+     *    world.dropItemStack(blockItemStack, x+0.5, y+0.5, z+0.5);
+     */
+    public IScriptItemStack getBlockStackWithTile(int x, int y, int z);
+
     /* Mappet stuff */
 
     /**
