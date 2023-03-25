@@ -190,4 +190,25 @@ public interface INBTCompound extends INBT
      * @return whether this compound is equal to the given compound
      */
     public boolean equals(INBTCompound compound);
+    /**
+     * Adds a new compound to this compound.
+     *
+     * <pre>{@code
+     *    var tag = mappet.createCompound();
+     *    tag.addCompound("compound");
+     *    tag.get("compound").setString("x", "123")
+     *    c.send(tag) //{compound:{x:"123"}}
+     * }</pre>
+     */
+    public void addCompound(String key);
+
+    /**
+     * Dumps to a JSON String.
+     *
+     * <pre>{@code
+     *   var tag = mappet.createCompound("{id:\"minecraft:diamond_hoe\",Count:1b}");
+     *   c.send(tag.dumpJSON());
+     * }</pre>
+     */
+    public String dumpJSON();
 }

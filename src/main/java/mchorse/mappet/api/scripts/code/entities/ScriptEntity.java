@@ -4,6 +4,7 @@ import mchorse.blockbuster.common.GunProps;
 import mchorse.blockbuster.common.entity.EntityActor;
 import mchorse.blockbuster.common.entity.EntityGunProjectile;
 import mchorse.blockbuster.network.common.PacketModifyActor;
+import mchorse.mappet.Mappet;
 import mchorse.mappet.api.scripts.code.ScriptFactory;
 import mchorse.mappet.api.scripts.code.ScriptRayTrace;
 import mchorse.mappet.api.scripts.code.ScriptWorld;
@@ -19,6 +20,7 @@ import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.mappet.api.states.States;
+import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.client.morphs.WorldMorph;
 import mchorse.mappet.entities.EntityNpc;
 import mchorse.mappet.network.Dispatcher;
@@ -28,6 +30,7 @@ import mchorse.mappet.utils.EntityUtils;
 import mchorse.mclib.utils.RayTracing;
 import mchorse.metamorph.api.models.IMorphProvider;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -54,7 +57,8 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Optional;
 
-import java.util.UUID;
+import javax.script.ScriptException;
+import java.util.*;
 
 public class ScriptEntity <T extends Entity> implements IScriptEntity
 {
@@ -996,5 +1000,32 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
         projectile.shoot(livingBase, livingBase.rotationPitch, livingBase.rotationYaw, 0, gunProps.speed, 0);
         projectile.setInitialMotion();
         livingBase.world.spawnEntity(projectile);
+    }
+
+    @Override
+    public void executeCommand(String command)
+    {
+        this.entity.world.getMinecraftServer().getCommandManager().executeCommand((ICommandSender) this.entity, command);
+    }
+
+    @Override
+    public void executeScript(String scriptName) {
+        executeScript(scriptName, "main");
+    }
+
+    @Override
+    public void executeScript(String scriptName, String function) {
+        DataContext context = new DataContext(entity);
+        try {
+            Mappet.scripts.execute(scriptName, function, context);
+        } catch (ScriptException e) {
+            String fileName = e.getFileName() == null ? scriptName : e.getFileName();
+
+            e.printStackTrace();
+            throw new RuntimeException("Script Error: " + fileName + " - Line: " + e.getLineNumber() + " - Column: " + e.getColumnNumber() + " - Message: " + e.getMessage(), e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Script Empty: " + scriptName + " - Error: " + e.getClass().getSimpleName() + ": " + e.getMessage(), e);
+        }
     }
 }

@@ -422,4 +422,32 @@ public class ScriptFactory implements IScriptFactory
 
         return builder.toString();
     }
+    @Override
+    public boolean isBlockInCube(double[] block, double[] cubeEdge1, double[] cubeEdge2)
+    {
+        return block[0] >= Math.min(cubeEdge1[0], cubeEdge2[0]) && block[0] <= Math.max(cubeEdge1[0], cubeEdge2[0]) &&
+                block[1] >= Math.min(cubeEdge1[1], cubeEdge2[1]) && block[1] <= Math.max(cubeEdge1[1], cubeEdge2[1]) &&
+                block[2] >= Math.min(cubeEdge1[2], cubeEdge2[2]) && block[2] <= Math.max(cubeEdge1[2], cubeEdge2[2]);
+    }
+
+    @Override
+    public INBTCompound toNBT(Object object)
+    {
+        if (object instanceof INBTCompound)
+        {
+            return (INBTCompound) object;
+        }
+
+        if (object instanceof NBTBase)
+        {
+            return new ScriptNBTCompound((NBTTagCompound) object);
+        }
+
+        if (object instanceof AbstractMorph)
+        {
+            return new ScriptNBTCompound(((AbstractMorph) object).toNBT());
+        }
+
+        return null;
+    }
 }

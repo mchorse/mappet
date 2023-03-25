@@ -12,7 +12,9 @@ import net.minecraftforge.common.util.INBTSerializable;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -213,6 +215,19 @@ public class States implements INBTSerializable<NBTTagCompound>
     public boolean hasFaction(String id)
     {
         return this.values.containsKey(FACTIONS_PREFIX + id);
+    }
+
+    public Set<String> getFactionNames()
+    {
+        Set<String> factionNames = new HashSet<>();
+        for (String key : this.values.keySet())
+        {
+            if (key.startsWith(FACTIONS_PREFIX))
+            {
+                factionNames.add(key.replace(FACTIONS_PREFIX, ""));
+            }
+        }
+        return factionNames;
     }
 
     /* Dialogues convenience methods */

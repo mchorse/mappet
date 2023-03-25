@@ -10,6 +10,8 @@ import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.player.EntityPlayerMP;
 
+import java.util.Set;
+
 /**
  * Player entity interface.
  *
@@ -704,6 +706,17 @@ public interface IScriptPlayer extends IScriptEntity
      * for code examples.
      */
     public IMappetUIContext getUIContext();
+
+    /**
+     * Returns the faction of the npc as a string
+     *
+     * <pre>{@code
+     * for each (var faction in c.getSubject().getFactions()){
+     *    c.send(faction)
+     * }
+     * }</pre>
+     */
+    public Set<String> getFactions();
 
     /* HUD scenes API */
 

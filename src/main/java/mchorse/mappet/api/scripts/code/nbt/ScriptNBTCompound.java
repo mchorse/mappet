@@ -306,4 +306,21 @@ public class ScriptNBTCompound implements INBTCompound
     {
         return compound != null && this.tag.equals(compound.getNBTTagCompound());
     }
+
+    @Override
+    public void addCompound(String key)
+    {
+        this.tag.setTag(key, new NBTTagCompound());
+    }
+
+    @Override
+    public String dumpJSON(){
+        return stringify()
+                .replaceAll("([a-zA-Z0-9_]+):", "\"$1\":")
+                .replaceAll("([0-9]+)b", "$1")
+                .replaceAll("([0-9]+)s", "$1")
+                .replaceAll("([0-9]+)L", "$1")
+                .replaceAll("([0-9]+)d", "$1")
+                .replaceAll("([0-9]+)f", "$1");
+    }
 }

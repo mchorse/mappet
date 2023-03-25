@@ -124,4 +124,43 @@ public interface IScriptServer
      * }</pre>
      */
     public IMappetStates getStates();
+
+    /**
+     * Check if an entity with given UUID exists.
+     *
+     * <pre>{@code
+     *    if (c.getServer().entityExists("29a91933-86f2-4683-8a87-218084d8c927"))
+     *    {
+     *        // Do something...
+     *    }
+     * }</pre>
+     *
+     * @param uuid The UUID of the entity to check for existence.
+     *
+     * @return true if an entity with the specified UUID exists, false otherwise.
+     */
+    public boolean entityExists(String uuid);
+
+    /**
+     * Execute a script with a given script name and the default function "main".
+     *
+     * <pre>{@code
+     *    c.getServer().executeScript("example_script.js");
+     * }</pre>
+     *
+     * @param scriptName The name of the script to execute.
+     */
+    public void executeScript(String scriptName);
+
+    /**
+     * Execute a script with a given script name and a specified function.
+     *
+     * <pre>{@code
+     *    c.getServer().executeScript("example_script.js", "custom_function");
+     * }</pre>
+     *
+     * @param scriptName The name of the script to execute.
+     * @param function   The name of the function within the script to execute.
+     */
+    public void executeScript(String scriptName, String function);
 }
