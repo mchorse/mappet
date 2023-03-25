@@ -318,6 +318,17 @@ public interface IScriptWorld
     public IScriptNpc spawnNpc(String id, String state, double x, double y, double z);
 
     /**
+     * Spawn an NPC at given position with given state and rotation.
+     *
+     * <pre>{@code
+     *    var pos = c.getSubject().getPosition();
+     *
+     *    c.getWorld().spawnNpc("herobrine", "dabbing", pos.x, pos.y, pos.z, 0, 0, 0);
+     * }</pre>
+     */
+    IScriptNpc spawnNpc(String id, String state, double x, double y, double z, float yaw, float pitch, float headYaw);
+
+    /**
      * Get entities within the box specified by given coordinates in this world.
      * This method limits to scanning entities only within <b>100 blocks</b>
      * in any direction. If the box provided has any of its sizes that is longer
@@ -606,50 +617,97 @@ public interface IScriptWorld
     public IScriptEntity setFallingBlock(int x, int y, int z);
 
     /**
-     * Transform a block to a falling block in specific coordinates.
+     * Sets a tile entity.
      *
      * <pre>{@code
-     *     c.getWorld().fancyExplode(-2, 100, -2, 2, 100, 2, 1);
-     * }</pre>
+     * c.getWorld().setTileEntity(530, 152, 546, mappet.createBlockState("blockbuster:model", 0),mappet.createCompound('{,Morph:{Settings:{Hands:1b},Name:"blockbuster.fred"},id:"minecraft:blockbuster_model_tile_entity"}');
+     *   }</pre>
      *
-     * @return The falling block entities in a list.
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @param z Z coordinate
      */
-    public List<IScriptEntity> fancyExplode(int x1, int y1, int z1, int x2, int y2, int z2, float blocksPercentage);
+    public void setTileEntity(int x, int y, int z, IScriptBlockState blockState, INBTCompound tileData);
 
     /**
-     * Transform a block to a falling block in specific coordinates.
+     * Fills a range with tile entities.
      *
      * <pre>{@code
-     *     c.getWorld().fancyExplode(0, 100, 0, 3, 1);
-     * }</pre>
+     * c.getWorld().fillTileEntities(530, 152, 546, mappet.createBlockState("blockbuster:model", 0),mappet.createCompound('{,Morph:{Settings:{Hands:1b},Name:"blockbuster.fred"},id:"minecraft:blockbuster_model_tile_entity"}');
+     *   }</pre>
      *
-     * @return The falling block entities in a list.
+     * @param x1 X coordinate
+     * @param y1 Y coordinate
+     * @param z1 Z coordinate
+     * @param x2 X coordinate
+     * @param y2 Y coordinate
+     * @param z2 Z coordinate
      */
-    public default List<IScriptEntity> fancyExplode(int x, int y, int z, int radius, float blocksPercentage)
-    {
-        return this.fancyExplode(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius, blocksPercentage);
-    }
+    public void fillTileEntities(int x1, int y1, int z1, int x2, int y2, int z2, IScriptBlockState blockState, INBTCompound tileData);
 
     /**
-     * Explode the blocks in the range by teleporting them randomly in an explosive way.
+     * Clones am area to another area.
      *
      * <pre>{@code
-     *     c.getWorld().tpExplode(0, 100, 0, 2, 100, 2, 1);
+     * c.getWorld().clone(0, 100, 0, 3, 100, 3, 0, 101, 0, false);
      * }</pre>
+     *
+     * @param x1 The first x coordinate.
+     * @param y1 The first y coordinate.
+     * @param z1 The first z coordinate.
+     * @param x2 The second x coordinate.
+     * @param y2 The second y coordinate.
+     * @param z2 The second z coordinate.
+     * @param xNew The new x coordinate.
+     * @param yNew The new y coordinate.
+     * @param zNew The new z coordinate.
      */
-    public void tpExplode(int x1, int y1, int z1, int x2, int y2, int z2, float blocksPercentage);
+    public void clone(int x1, int y1, int z1, int x2, int y2, int z2, int xNew, int yNew, int zNew);
+
+    public void clone(int x, int y, int z, int xNew, int yNew, int zNew);
 
     /**
-     * Explode the blocks in the range by teleporting them randomly in an explosive way.
+     * Saves a schematic file in the world's schematics folder in world/mappet/schematics.
      *
      * <pre>{@code
-     *     c.getWorld().tpExplode(0, 100, 0, 3, 1);
+     * c.getWorld().saveSchematic("my_schematic", 0, 100, 0, 3, 100, 3);
      * }</pre>
+     *
+     * @param x1 The first x coordinate.
+     * @param y1 The first y coordinate.
+     * @param z1 The first z coordinate.
+     * @param x2 The second x coordinate.
+     * @param y2 The second y coordinate.
+     * @param z2 The second z coordinate.
+     * @param name The name of the schematic.
      */
-    public default void tpExplode(int x, int y, int z, int radius, float blocksPercentage)
-    {
-        this.tpExplode(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius, blocksPercentage);
-    }
+    public void saveSchematic(String name, int x1, int y1, int z1, int x2, int y2, int z2);
+
+    /**
+     * Loads a schematic file from the world's schematics folder in world/mappet/schematics.
+     *
+     * <pre>{@code
+     * c.getWorld().loadSchematic("my_schematic", 0, 100, 0);
+     * }</pre>
+     *
+     * @param name The name of the schematic.
+     * @param x The x coordinate.
+     * @param y The y coordinate.
+     * @param z The z coordinate.
+     */
+    public void loadSchematic(String name, int x, int y, int z);
+
+    /**
+     * Serialize a schematic into a NBT compound.
+     *
+     * <pre>{@code
+     *   var nbt = c.getWorld().serializeSchematic(schematic);
+     *   }</pre>
+     *
+     * @param name Schematic name
+     * @return NBT compound
+     */
+    public INBTCompound serializeSchematic(String name);
 
     /* Mappet stuff */
 
