@@ -721,6 +721,20 @@ public interface IScriptWorld
      */
     public IScriptItemStack getBlockStackWithTile(int x, int y, int z);
 
+    /**
+     * Shoots a gun projectile entity.
+     *
+     * <pre>{@code
+     *     var projectile = c.getWorld().shootBBGunProjectile(c.getSubject(), 547, 160, 497, 0, -90, '{Gun:{TickCommand:"particle heart ~ ~1 ~ 0.2 0.2 0.2 1",StoredAmmo:0,Ticking:1,Damage:1.0f,Projectile:{Meta:0b,Block:"minecraft:stone",Name:"block"},Gravity:0.0f}}')
+     *     c.scheduleScript(20, function (c){
+     *         projectile.executeCommand("summon tnt ~ ~ ~")
+     *         projectile.remove()
+     *     });
+     * }</pre>
+     */
+    public IScriptEntity shootBBGunProjectile(IScriptEntity shooter, double x, double y, double z, double yaw, double pitch, String gunPropsNbtString);
+
+
     /* Mappet stuff */
 
     /**

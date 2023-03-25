@@ -2,6 +2,8 @@ package mchorse.mappet.api.scripts.code;
 
 import com.google.common.collect.ImmutableList;
 import io.netty.buffer.Unpooled;
+import mchorse.blockbuster.common.GunProps;
+import mchorse.blockbuster.common.entity.EntityGunProjectile;
 import mchorse.blockbuster.common.tileentity.TileEntityModel;
 import mchorse.blockbuster.common.tileentity.TileEntityModelSettings;
 import mchorse.blockbuster.network.common.PacketModifyModelBlock;
@@ -39,6 +41,7 @@ import net.minecraft.block.BlockButton;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -842,4 +845,35 @@ public class ScriptWorld implements IScriptWorld
 
         return ScriptItemStack.create(itemStack);
     }
+
+    @Override
+    public IScriptEntity shootBBGunProjectile(IScriptEntity shooter, double x, double y, double z, double yaw, double pitch, String gunPropsNbtString) {
+        if (shooter.getMinecraftEntity() instanceof EntityLivingBase && Loader.isModLoaded("blockbuster")) {
+            try
+            {
+                return this.shootBBGunProjectileMethod(shooter, x, y, z, yaw, pitch, gunPropsNbtString);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    @Optional.Method(modid = "blockbuster")
+    private IScriptEntity shootBBGunProjectileMethod(IScriptEntity shooter, double x, double y, double z, double yaw, double pitch, String gunPropsNbtString) throws NBTException
+    {
+        EntityLivingBase entityLivingBase = (EntityLivingBase) shooter.getMinecraftEntity();
+        GunProps gunProps = new GunProps( (factory.createCompound(gunPropsNbtString)).getCompound("Gun").getCompound("Projectile").getNBTTagCompound() );
+        gunProps.fromNBT(factory.createCompound(gunPropsNbtString).getCompound("Gun").getNBTTagCompound());
+        EntityGunProjectile projectile = new EntityGunProjectile(entityLivingBase.world, gunProps, gunProps.projectileMorph);
+        projectile.setPosition(x, y, z);
+        projectile.shoot(entityLivingBase, (float) pitch, (float) yaw, 0, gunProps.speed, 0);
+        projectile.setInitialMotion();
+        entityLivingBase.world.spawnEntity(projectile);
+        IScriptEntity spawnedEntity = ScriptEntity.create(projectile);
+        return spawnedEntity;
+    }
+
 }
