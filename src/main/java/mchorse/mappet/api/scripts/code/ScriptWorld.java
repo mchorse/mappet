@@ -13,6 +13,7 @@ import mchorse.mappet.api.scripts.code.blocks.ScriptTileEntity;
 import mchorse.mappet.api.scripts.code.entities.ScriptEntity;
 import mchorse.mappet.api.scripts.code.entities.ScriptNpc;
 import mchorse.mappet.api.scripts.code.items.ScriptInventory;
+import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
 import mchorse.mappet.api.scripts.code.nbt.ScriptNBTCompound;
 import mchorse.mappet.api.scripts.user.IScriptRayTrace;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
@@ -41,15 +42,21 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.*;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SPacketCustomPayload;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.storage.AnvilChunkLoader;
@@ -791,5 +798,48 @@ public class ScriptWorld implements IScriptWorld
         return null;
     }
 
+    @Override
+    public IScriptItemStack getBlockStackWithTile(int x, int y, int z)
+    {
+        if (!this.world.isBlockLoaded(this.pos.setPos(x, y, z)))
+        {
+            return ScriptItemStack.EMPTY;
+        }
 
+        IBlockState blockState = this.world.getBlockState(this.pos);
+        Block block = blockState.getBlock();
+
+        if (block == Blocks.AIR)
+        {
+            return ScriptItemStack.EMPTY;
+        }
+
+        ItemStack itemStack;
+        Item itemFromBock = Item.getItemFromBlock(block);
+        if (itemFromBock == Items.AIR)
+        {
+            RayTraceResult rayTraceResult = new RayTraceResult(new Vec3d(x + 0.5, y + 0.5, z + 0.5), EnumFacing.UP, this.pos);
+            itemStack = block.getPickBlock(blockState, rayTraceResult, this.world, this.pos, null);
+            if (itemStack.isEmpty())
+            {
+                return ScriptItemStack.EMPTY;
+            }
+        }
+        else
+        {
+            itemStack = new ItemStack(itemFromBock, 1, block.getMetaFromState(blockState));
+        }
+
+        TileEntity tileEntity = this.world.getTileEntity(this.pos);
+        if (tileEntity != null)
+        {
+            NBTTagCompound tileEntityNBT = new NBTTagCompound();
+            tileEntity.writeToNBT(tileEntityNBT);
+            NBTTagCompound itemStackNBT = new NBTTagCompound();
+            itemStackNBT.setTag("BlockEntityTag", tileEntityNBT);
+            itemStack.setTagCompound(itemStackNBT);
+        }
+
+        return ScriptItemStack.create(itemStack);
+    }
 }
