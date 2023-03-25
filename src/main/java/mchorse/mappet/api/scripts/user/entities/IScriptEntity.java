@@ -1033,4 +1033,38 @@ public interface IScriptEntity
      * }</pre>
      */
     public void shootBBGunProjectile(String gunPropsNBT);
+
+    /**
+     * Executes a command as a entity.
+     *
+     * <pre>{@code
+     *    function main(c)
+     *    {
+     *        c.getSubject().executeCommand("/kill");
+     *    }
+     * }</pre>
+     */
+    public void executeCommand(String command);
+
+    /**
+     * Execute for the entity a script with a given script name
+     * and the default function "main".
+     *
+     * <pre>{@code
+     *    c.getSubject().executeScript("example_script.js");
+     * }</pre>
+     *
+     * @param scriptName The name of the script to execute.
+     */
+    public void executeScript(String scriptName);
+
+    /**
+     * Execute for the entity a script with a given script name.
+     *
+     *< pre>{@code
+     *    c.getSubject().executeScript("example_script.js", "custom_function");
+     * @param function   The name of the function within the script to execute.
+     * }</pre>
+     */
+    public void executeScript(String scriptName, String function);
 }

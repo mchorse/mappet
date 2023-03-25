@@ -51,9 +51,7 @@ import net.minecraft.world.GameType;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Optional;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScriptPlayer
 {
@@ -451,6 +449,21 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
 
         return context == null ? null : new MappetUIContext(context);
     }
+
+    @Override
+    public Set<String> getFactions()
+    {
+        Set<String> factions = new HashSet<>();
+
+        ICharacter character = Character.get(entity);
+        if (character != null)
+        {
+            factions = character.getStates().getFactionNames();
+        }
+
+        return factions;
+    }
+
 
     /* HUD scenes API */
 

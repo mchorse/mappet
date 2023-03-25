@@ -770,4 +770,25 @@ public interface IScriptFactory
     {
         return new Matrix4d(m);
     }
+
+    /**
+     * Determines whether a block is located inside a cube specified by two edges.
+     *
+     * @param block The position of the block to check as a double array with 3 elements representing x, y, and z coordinates.
+     * @param cubeEdge1 The position of one edge of the cube as a double array with 3 elements representing x, y, and z coordinates.
+     * @param cubeEdge2 The position of the opposite edge of the cube as a double array with 3 elements representing x, y, and z coordinates.
+     *
+     * @return true if the block is inside the cube, false otherwise.
+     */
+    public boolean isBlockInCube(double[] block, double[] cubeEdge1, double[] cubeEdge2);
+
+    /**
+     * Converts an object to an INBTCompound representation.
+     *
+     * @param object The object to convert to an INBTCompound.
+     *
+     * @return The INBTCompound representation of the object or null if the object is not of the expected types.
+     */
+    public INBTCompound toNBT(Object object);
+
 }
