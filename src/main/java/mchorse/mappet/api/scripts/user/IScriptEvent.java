@@ -52,6 +52,11 @@ public interface IScriptEvent
     public IScriptWorld getWorld();
 
     /**
+     * Get the fancy world in which this event happened.
+     */
+    public IScriptFancyWorld getFancyWorld();
+
+    /**
      * Get the server in which this event happened.
      */
     public IScriptServer getServer();
