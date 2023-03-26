@@ -143,7 +143,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
             if (this.state.lookAtPlayer)
             {
-                this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+                this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityPlayer.class, this.state.pathDistance, 1.0F));
             }
 
             if (this.state.wander)
