@@ -7,6 +7,10 @@ import mchorse.mappet.api.quests.Quest;
 import mchorse.mappet.api.quests.Quests;
 import mchorse.mappet.api.scripts.code.entities.ScriptEntity;
 import mchorse.mappet.api.scripts.code.entities.ScriptPlayer;
+import mchorse.mappet.api.scripts.code.entities.ai.repeatingCommand.EntityAIRepeatingCommand;
+import mchorse.mappet.api.scripts.code.entities.ai.repeatingCommand.RepeatingCommandDataStorage;
+import mchorse.mappet.api.scripts.code.entities.ai.rotations.EntityAIRotations;
+import mchorse.mappet.api.scripts.code.entities.ai.rotations.RotationDataStorage;
 import mchorse.mappet.api.scripts.code.items.ScriptInventory;
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
@@ -34,6 +38,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -588,6 +593,33 @@ public class EventHandler
                 }
 
                 this.playersToCheck.add(player);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onEntityJoinWorld(EntityJoinWorldEvent event) {
+        if (event.getEntity() instanceof EntityLiving) {
+            // Handle load AI rotation data
+            EntityLiving entityLiving = (EntityLiving) event.getEntity();
+            RotationDataStorage rotationDataStorage = RotationDataStorage.getRotationDataStorage(event.getWorld());
+            RotationDataStorage.RotationData rotationData = rotationDataStorage.getRotationData(entityLiving.getUniqueID());
+            if (rotationData != null) {
+                float yaw = rotationData.yaw;
+                float pitch = rotationData.pitch;
+                float yawHead = rotationData.yawHead;
+                entityLiving.tasks.addTask(0, new EntityAIRotations(entityLiving, yaw, pitch, yawHead, 1.0F));
+            }
+
+            // Handle load AI repeating command data
+            RepeatingCommandDataStorage repeatingCommandDataStorage = RepeatingCommandDataStorage.getRepeatingCommandDataStorage(event.getWorld());
+            List<RepeatingCommandDataStorage.RepeatingCommandData> repeatingCommandDataList = repeatingCommandDataStorage.getRepeatingCommandData(entityLiving.getUniqueID());
+            if (repeatingCommandDataList != null) {
+                for (RepeatingCommandDataStorage.RepeatingCommandData repeatingCommandData : repeatingCommandDataList) {
+                    String command = repeatingCommandData.command;
+                    int frequency = repeatingCommandData.frequency;
+                    entityLiving.tasks.addTask(10, new EntityAIRepeatingCommand(entityLiving, command, frequency));
+                }
             }
         }
     }
