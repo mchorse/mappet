@@ -16,6 +16,8 @@ import net.minecraft.nbt.NBTTagShort;
 import net.minecraft.nbt.NBTTagString;
 
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ScriptNBTCompound implements INBTCompound
 {
@@ -315,12 +317,24 @@ public class ScriptNBTCompound implements INBTCompound
 
     @Override
     public String dumpJSON(){
-        return stringify()
-                .replaceAll("([a-zA-Z0-9_]+):", "\"$1\":")
-                .replaceAll("([0-9]+)b", "$1")
-                .replaceAll("([0-9]+)s", "$1")
-                .replaceAll("([0-9]+)L", "$1")
-                .replaceAll("([0-9]+)d", "$1")
-                .replaceAll("([0-9]+)f", "$1");
+        String result = stringify()
+                .replaceAll("([a-zA-Z0-9_]+):", "\"$1\":");
+
+        Pattern pattern = Pattern.compile("([0-9]+[bLsdf])|0b|1b");
+        Matcher matcher = pattern.matcher(result);
+        StringBuffer sb = new StringBuffer();
+
+        while (matcher.find()) {
+            if (matcher.group(0).equals("0b")) {
+                matcher.appendReplacement(sb, "false");
+            } else if (matcher.group(0).equals("1b")) {
+                matcher.appendReplacement(sb, "true");
+            } else {
+                matcher.appendReplacement(sb, matcher.group(1).substring(0, matcher.group(1).length() - 1));
+            }
+        }
+        matcher.appendTail(sb);
+
+        return sb.toString();
     }
 }

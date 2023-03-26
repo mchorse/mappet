@@ -204,6 +204,12 @@ public interface INBTCompound extends INBT
 
     /**
      * Dumps to a JSON String.
+     * It first replaces the key-value colons with the proper JSON format.
+     * Then, it creates a pattern to match the desired numeric literals and boolean values.
+     * It checks if the current matched pattern is "0b" or "1b"
+     * and replaces them with "false" and "true" respectively.
+     * For the other cases, it removes the last character from the matched pattern,
+     * effectively removing the type literal.
      *
      * <pre>{@code
      *   var tag = mappet.createCompound("{id:\"minecraft:diamond_hoe\",Count:1b}");
