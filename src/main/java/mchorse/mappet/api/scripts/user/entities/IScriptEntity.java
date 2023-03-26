@@ -1079,6 +1079,79 @@ public interface IScriptEntity
     public void executeScript(String scriptName, String function);
 
     /**
+     * Lock the entity's position.
+     *
+     * <pre>{@code
+     * var s = c.getSubject();
+     * var pos = s.getPosition();
+     * s.lockPosition(pos.x, pos.y, pos.z);
+     * }</pre>
+     *
+     * @param x X position
+     * @param y Y position
+     * @param z Z position
+     */
+    public void lockPosition(double x, double y, double z);
+
+    /**
+     * Unlock the entity's position.
+     *
+     * <pre>{@code
+     *    c.getSubject().unlockPosition();
+     * }</pre>
+     */
+    public void unlockPosition();
+
+    /**
+     * Check if the entity's position is locked.
+     *
+     * <pre>{@code
+     *    if (c.getSubject().isPositionLocked())
+     *    {
+     *        // Do something
+     *    }
+     * }</pre>
+     */
+    public boolean isPositionLocked();
+
+    /**
+     * Lock the entity's rotation.
+     *
+     * <pre>{@code
+     * var s = c.getSubject();
+     * var rot = s.getRotation();
+     * s.lockRotation(rot.x, rot.y, rot.z);
+     * }</pre>
+     *
+     * @param pitch Pitch rotation
+     * @param yaw Yaw rotation
+     * @param yawHead Yaw rotation of the head
+     */
+    public void lockRotation(float pitch, float yaw, float yawHead);
+
+    /**
+     * Unlock the entity's rotation.
+     *
+     * <pre>{@code
+     *    c.getSubject().unlockRotation();
+     * }</pre>
+     */
+    public void unlockRotation();
+
+    /**
+     * Check if the entity's rotation is locked.
+     *
+     * <pre>{@code
+     *    if (c.getSubject().isRotationLocked())
+     *    {
+     *        // Do something
+     *    }
+     * }</pre>
+     */
+    public boolean isRotationLocked();
+
+    /* Entity AI */
+    /**
      * Makes the entity observe the given entity.
      *
      * <pre>{@code

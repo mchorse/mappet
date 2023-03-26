@@ -14,6 +14,7 @@ import mchorse.mappet.api.scripts.code.entities.ai.rotations.RotationDataStorage
 import mchorse.mappet.api.scripts.code.items.ScriptInventory;
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
+import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
 import mchorse.mappet.api.triggers.Trigger;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.IExecutable;
@@ -37,6 +38,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.texture.ITextureObject;
+import net.minecraft.command.EntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -624,12 +626,52 @@ public class EventHandler
         }
     }
 
+    List<Entity> getAllEntities(){
+        List<Entity> entities = new ArrayList<Entity>();
+        try
+        {
+            for (Entity entity : EntitySelector.matchEntities(FMLCommonHandler.instance().getMinecraftServerInstance(), "@e", Entity.class))
+            {
+                entities.add(entity);
+            }
+        }
+        catch (Exception e)
+        {}
+        return entities;
+    }
+
     @SubscribeEvent
     public void onServerTick(TickEvent.ServerTickEvent event)
     {
         if (event.phase == TickEvent.Phase.START)
         {
             return;
+        }
+
+        //lock entity if they should be locked
+        for (Entity entity : getAllEntities()) {
+            if (entity == null) {
+                continue;
+            }
+            //lock position if it should be locked
+            if (entity.getEntityData().getBoolean("positionLocked")) {
+                IScriptEntity scriptEntity = (ScriptEntity.create(entity));
+                scriptEntity.setPosition(
+                    entity.getEntityData().getDouble("lockX"),
+                    entity.getEntityData().getDouble("lockY"),
+                    entity.getEntityData().getDouble("lockZ")
+                );
+                scriptEntity.setMotion(0.0, 0.0, 0.0);
+            }
+            //lock rotation if it should be locked
+            if (entity.getEntityData().getBoolean("rotationLocked")) {
+                IScriptEntity scriptEntity = (ScriptEntity.create(entity));
+                scriptEntity.setRotations(
+                    entity.getEntityData().getFloat("lockPitch"),
+                    entity.getEntityData().getFloat("lockYaw"),
+                    entity.getEntityData().getFloat("lockYawHead")
+                );
+            }
         }
 
         for (EntityPlayer player : this.playersToCheck)
@@ -876,6 +918,10 @@ public class EventHandler
     {
         EntityLivingBase target = event.getEntityLiving();
         Entity attacker = event.getAttacker();
+
+        if (target != null && target.getEntityData().getBoolean("positionLocked")) {
+            event.setCanceled(true);
+        }
 
         if (target.world.isRemote || Mappet.settings.livingKnockBack.isEmpty())
         {

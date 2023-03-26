@@ -1051,6 +1051,50 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
         }
     }
 
+    @Override
+    public void lockPosition(double x, double y, double z)
+    {
+        this.entity.getEntityData().setBoolean("positionLocked", true);
+        this.entity.getEntityData().setDouble("lockX", x);
+        this.entity.getEntityData().setDouble("lockY", y);
+        this.entity.getEntityData().setDouble("lockZ", z);
+    }
+
+    @Override
+    public void unlockPosition()
+    {
+        this.entity.getEntityData().setBoolean("positionLocked", false);
+    }
+
+    @Override
+    public boolean isPositionLocked()
+    {
+        return this.entity.getEntityData().getBoolean("positionLocked");
+    }
+
+    @Override
+    public void lockRotation(float yaw, float pitch, float yawHead)
+    {
+        if (this.entity instanceof EntityPlayer) {return;}
+        this.entity.getEntityData().setBoolean("rotationLocked", true);
+        this.entity.getEntityData().setFloat("lockYaw", yaw);
+        this.entity.getEntityData().setFloat("lockPitch", pitch);
+        this.entity.getEntityData().setFloat("lockYawHead", yawHead);
+    }
+
+    @Override
+    public void unlockRotation()
+    {
+        if (this.entity instanceof EntityPlayer) {return;}
+        this.entity.getEntityData().setBoolean("rotationLocked", false);
+    }
+
+    @Override
+    public boolean isRotationLocked()
+    {
+        return this.entity.getEntityData().getBoolean("rotationLocked");
+    }
+
     /* Entity AI */
 
     @Override
