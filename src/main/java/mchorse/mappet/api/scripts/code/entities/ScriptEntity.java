@@ -1008,32 +1008,41 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     }
 
     @Override
-    public void shootBBGunProjectile(String gunPropsNBT)
+    public IScriptEntity shootBBGunProjectile(String gunPropsNBT)
     {
         if (this.entity instanceof EntityLivingBase && Loader.isModLoaded("blockbuster"))
         {
             try
             {
-                this.shootBBGunProjectileMethod(gunPropsNBT);
+                return this.shootBBGunProjectileMethod(gunPropsNBT);
             }
             catch (Exception e)
             {
                 e.printStackTrace();
             }
         }
+        return null;
     }
 
     @Optional.Method(modid = "blockbuster")
-    private void shootBBGunProjectileMethod(String gunPropsNBT) throws NBTException
+    private IScriptEntity shootBBGunProjectileMethod(String gunPropsNBT) throws NBTException
     {
-        EntityLivingBase livingBase = (EntityLivingBase) this.entity;
-        GunProps gunProps = new GunProps(JsonToNBT.getTagFromJson(gunPropsNBT));
-        EntityGunProjectile projectile = new EntityGunProjectile(livingBase.world, gunProps, gunProps.projectileMorph);
+        if (this.entity instanceof EntityLivingBase) {
+            EntityLivingBase entityLivingBase = (EntityLivingBase) this.entity;
+            NBTTagCompound gunPropsNBTCompound = JsonToNBT.getTagFromJson(gunPropsNBT).getCompoundTag("Gun");
+            GunProps gunProps = new GunProps(gunPropsNBTCompound.getCompoundTag("Projectile"));
+            gunProps.fromNBT(gunPropsNBTCompound);
+            EntityGunProjectile projectile = new EntityGunProjectile(entityLivingBase.world, gunProps, gunProps.projectileMorph);
+            projectile.setPosition(entityLivingBase.posX, (entityLivingBase.posY+1.8), entityLivingBase.posZ);
+            projectile.shoot(entityLivingBase, entityLivingBase.rotationPitch, entityLivingBase.rotationYaw, 0, gunProps.speed, 0);
+            projectile.setInitialMotion();
+            entityLivingBase.world.spawnEntity(projectile);
 
-        projectile.setPosition(livingBase.posX, (livingBase.posY + livingBase.getEyeHeight()), livingBase.posZ);
-        projectile.shoot(livingBase, livingBase.rotationPitch, livingBase.rotationYaw, 0, gunProps.speed, 0);
-        projectile.setInitialMotion();
-        livingBase.world.spawnEntity(projectile);
+            IScriptEntity spawnedEntity = ScriptEntity.create(projectile);
+            return spawnedEntity;
+
+        }
+        return null;
     }
 
     @Override
