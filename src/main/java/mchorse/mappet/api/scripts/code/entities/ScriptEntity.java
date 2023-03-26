@@ -8,6 +8,12 @@ import mchorse.mappet.Mappet;
 import mchorse.mappet.api.scripts.code.ScriptFactory;
 import mchorse.mappet.api.scripts.code.ScriptRayTrace;
 import mchorse.mappet.api.scripts.code.ScriptWorld;
+import mchorse.mappet.api.scripts.code.entities.ai.EntitiesAIPatrol;
+import mchorse.mappet.api.scripts.code.entities.ai.EntityAILookAtTarget;
+import mchorse.mappet.api.scripts.code.entities.ai.repeatingCommand.EntityAIRepeatingCommand;
+import mchorse.mappet.api.scripts.code.entities.ai.repeatingCommand.RepeatingCommandDataStorage;
+import mchorse.mappet.api.scripts.code.entities.ai.rotations.EntityAIRotations;
+import mchorse.mappet.api.scripts.code.entities.ai.rotations.RotationDataStorage;
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
 import mchorse.mappet.api.scripts.code.mappet.MappetStates;
 import mchorse.mappet.api.scripts.code.nbt.ScriptNBTCompound;
@@ -37,6 +43,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityTracker;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
@@ -550,6 +557,21 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     }
 
     @Override
+    public void setName(String name) {
+        this.entity.setCustomNameTag(name);
+        if (name.isEmpty()) {
+            this.entity.setAlwaysRenderNameTag(false);
+        } else {
+            this.entity.setAlwaysRenderNameTag(true);
+        }
+    }
+
+    @Override
+    public void setInvisible(boolean invisible) {
+        this.entity.setInvisible(invisible);
+    }
+
+    @Override
     public INBTCompound getFullData()
     {
         return new ScriptNBTCompound(this.entity.writeToNBT(new NBTTagCompound()));
@@ -1026,6 +1048,147 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Script Empty: " + scriptName + " - Error: " + e.getClass().getSimpleName() + ": " + e.getMessage(), e);
+        }
+    }
+
+    /* Entity AI */
+
+    @Override
+    public void observe(IScriptEntity entity)
+    {
+        if (this.entity instanceof EntityLiving) {
+            EntityLiving entityLiving = (EntityLiving) this.entity;
+            if (entity == null) {
+                EntityAITasks.EntityAITaskEntry taskToRemove = null;
+                for (EntityAITasks.EntityAITaskEntry task : entityLiving.tasks.taskEntries) {
+                    if (task.action instanceof EntityAILookAtTarget) {
+                        taskToRemove = task;
+                        break;
+                    }
+                }
+                if (taskToRemove != null) {
+                    entityLiving.tasks.removeTask(taskToRemove.action);
+                }
+            } else {
+                entityLiving.tasks.addTask(8, new EntityAILookAtTarget(entityLiving, entity.getMinecraftEntity(), 1.0F));
+            }
+        }
+    }
+
+    @Override
+    public void addEntityPatrol(double x, double y, double z, double speed, boolean shouldCirculate, String executeCommandOnArrival)
+    {
+        if (this.entity instanceof EntityLiving) {
+            EntityLiving entityLiving = (EntityLiving) this.entity;
+            EntityAITasks.EntityAITaskEntry taskToRemove = findEntitiesAIPatrolTask(entityLiving);
+            EntitiesAIPatrol patrolTask;
+
+            if (taskToRemove != null) {
+                patrolTask = (EntitiesAIPatrol) taskToRemove.action;
+                entityLiving.tasks.removeTask(patrolTask);
+
+                patrolTask.addPatrolPoint(new BlockPos(x, y, z), shouldCirculate, executeCommandOnArrival);
+            } else {
+                patrolTask = new EntitiesAIPatrol((EntityLiving) entity, speed, new BlockPos[]{new BlockPos(x, y, z)}, new boolean[]{shouldCirculate}, new String[]{executeCommandOnArrival});
+            }
+
+            entityLiving.tasks.addTask(1, patrolTask);
+        }
+    }
+
+    @Override
+    public void clearEntityPatrols(){
+        if (this.entity instanceof EntityLiving) {
+            EntityLiving entityLiving = (EntityLiving) this.entity;
+            EntityAITasks.EntityAITaskEntry taskToRemove = findEntitiesAIPatrolTask(entityLiving);
+
+            if (taskToRemove != null) {
+                entityLiving.tasks.removeTask(taskToRemove.action);
+            }
+        }
+    }
+
+    private EntityAITasks.EntityAITaskEntry findEntitiesAIPatrolTask(EntityLiving entityLiving) {
+        for (EntityAITasks.EntityAITaskEntry task : entityLiving.tasks.taskEntries) {
+            if (task.action instanceof EntitiesAIPatrol) {
+                return task;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void setRotationsAI(float yaw, float pitch, float yawHead) {
+        if (this.entity instanceof EntityLiving) {
+            EntityLiving entityLiving = (EntityLiving) this.entity;
+            EntityAITasks.EntityAITaskEntry taskToRemove = removeTaskIfExists(entityLiving, EntityAIRotations.class);
+            entityLiving.tasks.addTask(9, new EntityAIRotations(entityLiving, yaw, pitch, yawHead, 1.0F));
+
+            RotationDataStorage.getRotationDataStorage(entity.world).addRotationData(entityLiving.getUniqueID(), yaw, pitch, yawHead);
+        }
+    }
+
+    @Override
+    public void clearRotationsAI() {
+        if (this.entity instanceof EntityLiving) {
+            EntityLiving entityLiving = (EntityLiving) this.entity;
+            removeTaskIfExists(entityLiving, EntityAIRotations.class);
+            RotationDataStorage.getRotationDataStorage(entity.world).removeRotationData(entityLiving.getUniqueID());
+        }
+    }
+
+    private EntityAITasks.EntityAITaskEntry removeTaskIfExists(EntityLiving entityLiving, Class<?> taskClass) {
+        EntityAITasks.EntityAITaskEntry taskToRemove = null;
+        for (EntityAITasks.EntityAITaskEntry task : entityLiving.tasks.taskEntries) {
+            if (task.action.getClass().equals(taskClass)) {
+                taskToRemove = task;
+                break;
+            }
+        }
+        if (taskToRemove != null) {
+            entityLiving.tasks.removeTask(taskToRemove.action);
+        }
+        return taskToRemove;
+    }
+
+
+    @Override
+    public void executeRepeatingCommand(String command, int frequency){
+        if (this.entity instanceof EntityLiving) {
+            EntityLiving entityLiving = (EntityLiving) this.entity;
+            entityLiving.tasks.addTask(10, new EntityAIRepeatingCommand(entityLiving, command, frequency));
+            RepeatingCommandDataStorage.getRepeatingCommandDataStorage(entity.world).addRepeatingCommandData(entityLiving.getUniqueID(), command, frequency);
+        }
+    }
+
+    @Override
+    public void clearAllRepeatingCommands(){
+        if (this.entity instanceof EntityLiving)
+        {
+            EntityLiving entityLiving = (EntityLiving) this.entity;
+            removeTaskIfExists(entityLiving, EntityAIRepeatingCommand.class);
+            RepeatingCommandDataStorage.getRepeatingCommandDataStorage(entity.world).removeRepeatingCommandData(entityLiving.getUniqueID());
+        }
+    }
+
+    @Override
+    public void removeRepeatingCommand(String command) {
+        if (this.entity instanceof EntityLiving) {
+            EntityLiving entityLiving = (EntityLiving) this.entity;
+            removeSpecificRepeatingCommandTaskIfExists(entityLiving, command);
+            RepeatingCommandDataStorage.getRepeatingCommandDataStorage(entity.world).removeSpecificRepeatingCommandData(entityLiving.getUniqueID(), command);
+        }
+    }
+
+    private void removeSpecificRepeatingCommandTaskIfExists(EntityLiving entityLiving, String command) {
+        List<EntityAITasks.EntityAITaskEntry> tasksToRemove = new ArrayList<>();
+        for (EntityAITasks.EntityAITaskEntry task : entityLiving.tasks.taskEntries) {
+            if (task.action instanceof EntityAIRepeatingCommand && ((EntityAIRepeatingCommand) task.action).getCommand().equals(command)) {
+                tasksToRemove.add(task);
+            }
+        }
+        for (EntityAITasks.EntityAITaskEntry taskToRemove : tasksToRemove) {
+            entityLiving.tasks.removeTask(taskToRemove.action);
         }
     }
 }

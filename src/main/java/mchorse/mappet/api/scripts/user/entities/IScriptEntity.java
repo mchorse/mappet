@@ -580,6 +580,16 @@ public interface IScriptEntity
     public String getName();
 
     /**
+     * Set entity name.
+     */
+    public void setName(String name);
+
+    /**
+     * Set entity to invisible.
+     */
+    public void setInvisible(boolean invisible);
+
+    /**
      * Get entity's full (copy of its) NBT data.
      */
     public INBTCompound getFullData();
@@ -1067,4 +1077,82 @@ public interface IScriptEntity
      * }</pre>
      */
     public void executeScript(String scriptName, String function);
+
+    /**
+     * Makes the entity observe the given entity.
+     *
+     * <pre>{@code
+     * c.getSubject().observe(null); //to stop observing
+     * }</pre>
+     * @param entity The entity to observe
+     */
+    public void observe(IScriptEntity entity);
+
+    /**
+     * Adds a patrol point to the entity
+     *
+     * <pre>{@code
+     *     var s = c.getSubject();
+     *     s.addEntityPatrol(440, 117, 640, 1, true, "particle heart ~ ~1 ~ 0.2 0.2 0.2 1")
+     *     s.addEntityPatrol(444, 117, 640, 1, true, "particle angryVillager ~ ~1 ~ 0.2 0.2 0.2 1")
+     * }</pre>
+     * @param x x coordinate
+     * @param y y coordinate
+     * @param z z coordinate
+     * @param speed speed of the entity
+     * @param shouldCirculate should the entity patrol the points in a loop
+     * @param executeCommandOnArrival command to execute when the entity arrives at the point
+     */
+    public void addEntityPatrol(double x, double y, double z, double speed, boolean shouldCirculate, String executeCommandOnArrival);
+
+    /**
+     * Clears all patrol points from the entity
+     *
+     * <pre>{@code
+     * c.getSubject().clearEntityPatrols();
+     * }</pre>
+     */
+    public void clearEntityPatrols();
+
+    /**
+     * Sets the entity's AI to look with specific rotations
+     *
+     * <pre>{@code
+     *     c.getSubject().setRotationsAI(0, 90, 0);
+     * }</pre>
+     */
+    public void setRotationsAI(float yaw, float pitch, float yawHead);
+
+    /**
+     * Clears the entity's AI rotations
+     *
+     * <pre>{@code
+     *     c.getSubject().clearRotationsAI();
+     * }</pre>
+     */
+    public void clearRotationsAI();
+
+    /**
+     * Executes a command at a specific frequency on an entity.
+     *
+     * <pre>{@code
+     *    c.getSubject().executeRepeatingCommand("/tp @s ~ ~2 ~", 20);
+     */
+    public void executeRepeatingCommand(String command, int frequency);
+
+    /**
+     * Removes a repeating command from an entity.
+     *
+     * <pre>{@code
+     *    c.getSubject().removeRepeatingCommand("/tp @s ~ ~2 ~");
+     */
+    public void removeRepeatingCommand(String command);
+
+    /**
+     * Clears all the repeating commands of an entity.
+     *
+     * <pre>{@code
+     *    c.getSubject().clearAllRepeatingCommands();
+     */
+    public void clearAllRepeatingCommands();
 }
