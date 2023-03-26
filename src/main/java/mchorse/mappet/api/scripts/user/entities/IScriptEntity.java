@@ -2,6 +2,7 @@ package mchorse.mappet.api.scripts.user.entities;
 
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
 import mchorse.mappet.api.scripts.user.IScriptFactory;
+import mchorse.mappet.api.scripts.user.IScriptFancyWorld;
 import mchorse.mappet.api.scripts.user.IScriptRayTrace;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
@@ -57,6 +58,16 @@ public interface IScriptEntity
      * }</pre>
      */
     public IScriptWorld getWorld();
+
+    /**
+     * Get entity's fancy world.
+     *
+     * <pre>{@code
+     *    var s = c.getSubject();
+     *    var fancyWorld = s.getFancyWorld();
+     * }</pre>
+     */
+    public IScriptFancyWorld getFancyWorld();
 
     /* Entity properties */
 
