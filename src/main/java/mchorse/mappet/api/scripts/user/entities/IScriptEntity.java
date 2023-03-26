@@ -1050,10 +1050,10 @@ public interface IScriptEntity
      * into the script, and remove {Gun: in the beginning and a } in the end.</p>
      *
      * <pre>{@code
-     *     c.getSubject().shootBBGunProjectile('{Projectile:{Meta:0b,Block:"minecraft:stone",Name:"block"},Gravity:0.0f}');
+     *     c.getSubject().shootBBGunProjectile('{Gun:{Damage:1.0f,Projectile:{Meta:0b,Block:"minecraft:stone",Name:"block"},Gravity:0.0f}}')
      * }</pre>
      */
-    public void shootBBGunProjectile(String gunPropsNBT);
+    public IScriptEntity shootBBGunProjectile(String gunPropsNBT);
 
     /**
      * Executes a command as a entity.
