@@ -4,6 +4,7 @@ import mchorse.blockbuster.common.GunProps;
 import mchorse.blockbuster.common.entity.EntityActor;
 import mchorse.blockbuster.common.entity.EntityGunProjectile;
 import mchorse.blockbuster.network.common.PacketModifyActor;
+import mchorse.mappet.CommonProxy;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.scripts.code.ScriptFactory;
 import mchorse.mappet.api.scripts.code.ScriptFancyWorld;
@@ -35,6 +36,8 @@ import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.scripts.PacketEntityRotations;
 import mchorse.mappet.network.common.scripts.PacketWorldMorph;
 import mchorse.mappet.utils.EntityUtils;
+import mchorse.mappet.utils.RunnableExecutionFork;
+import mchorse.mclib.utils.Interpolation;
 import mchorse.mclib.utils.RayTracing;
 import mchorse.metamorph.api.models.IMorphProvider;
 import mchorse.metamorph.api.morphs.AbstractMorph;
@@ -645,12 +648,13 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Override
     public void damageAs(IScriptEntity entity, float damage)
     {
-        if (this.isLivingBase() && entity.isLivingBase())
+        Entity target = this.entity;
+        Entity attacker = entity.getMinecraftEntity();
+        if (attacker instanceof EntityLivingBase)
         {
-            EntityLivingBase target = (EntityLivingBase) this.entity;
-            EntityLivingBase source = (EntityLivingBase) entity.getMinecraftEntity();
-
-            target.attackEntityFrom(DamageSource.causeMobDamage(source), damage);
+            EntityLivingBase attackerLiving = (EntityLivingBase) attacker;
+            attackerLiving.setLastAttackedEntity(target);
+            target.attackEntityFrom(DamageSource.causeIndirectDamage(attacker, attackerLiving), damage);
         }
     }
 
@@ -1101,6 +1105,37 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     public boolean isRotationLocked()
     {
         return this.entity.getEntityData().getBoolean("rotationLocked");
+    }
+
+    @Override
+    public void moveTo(String interpolation, int durationTicks, double x, double y, double z, boolean disableAI){
+        if (disableAI) {
+            this.setAIEnabled(false);
+            this.moveTo(interpolation, durationTicks, x, y, z);
+            CommonProxy.eventHandler.addExecutable(new RunnableExecutionFork(durationTicks, () -> {
+                this.setAIEnabled(true);
+            }));
+        } else {
+            this.moveTo(interpolation, durationTicks, x, y, z);
+        }
+    }
+
+    private void moveTo(String interpolation, int durationTicks, double x, double y, double z) {
+        Interpolation interp = Interpolation.valueOf(interpolation.toUpperCase());
+        double startX = this.entity.posX;
+        double startY = this.entity.posY;
+        double startZ = this.entity.posZ;
+
+        for (int i = 0; i < durationTicks; i++) {
+            double progress = (double) i / (double) durationTicks;
+            double interpX = interp.interpolate(startX, x, progress);
+            double interpY = interp.interpolate(startY, y, progress);
+            double interpZ = interp.interpolate(startZ, z, progress);
+
+            CommonProxy.eventHandler.addExecutable(new RunnableExecutionFork(i, () -> {
+                this.setPosition(interpX, interpY, interpZ);
+            }));
+        }
     }
 
     /* Entity AI */

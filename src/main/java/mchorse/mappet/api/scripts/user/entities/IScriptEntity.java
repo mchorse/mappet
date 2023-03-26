@@ -1161,6 +1161,54 @@ public interface IScriptEntity
      */
     public boolean isRotationLocked();
 
+    /**
+     * Moves the entity to the specified position (<b>x, y, z</b>)
+     * with the given <b>interpolation type</b> and <b>duration</b>.
+     * The following interpolation types are supported:
+     * <ul>
+     *     §7<li>linear</li>§r
+     *     §7<li>quad_in</li>§r
+     *     §7<li>quad_out</li>§r
+     *     §7<li>quad_inout</li>§r
+     *     §7<li>cubic_in</li>§r
+     *     §7<li>cubic_out</li>§r
+     *     §7<li>cubic_inout</li>§r
+     *     §7<li>exp_in</li>§r
+     *     §7<li>exp_out</li>§r
+     *     §7<li>exp_inout</li>§r
+     *     §7<li>back_in</li>§r
+     *     §7<li>back_out</li>§r
+     *     §7<li>back_inout</li>§r
+     *     §7<li>elastic_in</li>§r
+     *     §7<li>elastic_out</li>§r
+     *     §7<li>elastic_inout</li>§r
+     *     §7<li>bounce_in</li>§r
+     *     §7<li>bounce_out</li>§r
+     *     §7<li>bounce_inout</li>§r
+     *     §7<li>sine_in</li>§r
+     *     §7<li>sine_out</li>§r
+     *     §7<li>sine_inout</li>§r
+     *     §7<li>quart_in</li>§r
+     *     §7<li>quart_out</li>§r
+     *     §7<li>quart_inout</li>§r
+     *     §7<li>quint_in</li>§r
+     *     §7<li>quint_out</li>§r
+     * </ul>
+     *
+     * <pre>{@code
+     * var s = c.getSubject();
+     * var pos = s.getPosition();
+     * s.moveTo("quad_out", 30, pos.x, pos.y+2, pos.z);
+     * }</pre>
+     *
+     * @param interpolation The interpolation type used for the movement.
+     * @param durationTicks The duration of the movement in ticks.
+     * @param x The target x-coordinate for the entity.
+     * @param y The target y-coordinate for the entity.
+     * @param z The target z-coordinate for the entity.
+     */
+    public void moveTo(String interpolation, int durationTicks, double x, double y, double z, boolean disableAI);
+
     /* Entity AI */
     /**
      * Makes the entity observe the given entity.
