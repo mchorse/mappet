@@ -200,7 +200,7 @@ public class EventHandler
         if (!Mappet.settings.playerChat.isEmpty())
         {
             DataContext context = new DataContext(event.getPlayer())
-                .set("message", event.getMessage());
+                    .set("message", event.getMessage());
 
             this.trigger(event, Mappet.settings.playerChat, context);
         }
@@ -213,11 +213,11 @@ public class EventHandler
         {
             IBlockState state = event.getState();
             DataContext context = new DataContext(event.getPlayer())
-                .set("block", state.getBlock().getRegistryName().toString())
-                .set("meta", state.getBlock().getMetaFromState(state))
-                .set("x", event.getPos().getX())
-                .set("y", event.getPos().getY())
-                .set("z", event.getPos().getZ());
+                    .set("block", state.getBlock().getRegistryName().toString())
+                    .set("meta", state.getBlock().getMetaFromState(state))
+                    .set("x", event.getPos().getX())
+                    .set("y", event.getPos().getY())
+                    .set("z", event.getPos().getZ());
 
             this.trigger(event, Mappet.settings.blockBreak, context);
         }
@@ -230,11 +230,11 @@ public class EventHandler
         {
             IBlockState state = event.getPlacedBlock();
             DataContext context = new DataContext(event.getPlayer())
-                .set("block", state.getBlock().getRegistryName().toString())
-                .set("meta", state.getBlock().getMetaFromState(state))
-                .set("x", event.getPos().getX())
-                .set("y", event.getPos().getY())
-                .set("z", event.getPos().getZ());
+                    .set("block", state.getBlock().getRegistryName().toString())
+                    .set("meta", state.getBlock().getMetaFromState(state))
+                    .set("x", event.getPos().getX())
+                    .set("y", event.getPos().getY())
+                    .set("z", event.getPos().getZ());
 
             this.trigger(event, Mappet.settings.blockPlace, context);
         }
@@ -249,7 +249,7 @@ public class EventHandler
         if (!Mappet.settings.entityDamaged.isEmpty())
         {
             DataContext context = new DataContext(event.getEntityLiving(), source.getTrueSource())
-                .set("damage", event.getAmount());
+                    .set("damage", event.getAmount());
             context.getValues().put("attacker", ScriptEntity.create(attacker));
 
             this.trigger(event, Mappet.settings.entityDamaged, context);
@@ -305,7 +305,8 @@ public class EventHandler
                         inventory = (IInventory) field.get(container);
                     }
                     catch (Exception e)
-                    {}
+                    {
+                    }
                 }
             }
         }
@@ -353,10 +354,10 @@ public class EventHandler
         }
 
         DataContext context = new DataContext(player)
-            .set("x", event.getPos().getX())
-            .set("y", event.getPos().getY())
-            .set("z", event.getPos().getZ())
-            .set("hand", event.getHand() == EnumHand.MAIN_HAND ? "main" : "off");
+                .set("x", event.getPos().getX())
+                .set("y", event.getPos().getY())
+                .set("z", event.getPos().getZ())
+                .set("hand", event.getHand() == EnumHand.MAIN_HAND ? "main" : "off");
 
         this.trigger(event, Mappet.settings.playerItemInteract, context);
     }
@@ -373,10 +374,10 @@ public class EventHandler
         }
 
         DataContext context = new DataContext(player)
-            .set("x", event.getPos().getX())
-            .set("y", event.getPos().getY())
-            .set("z", event.getPos().getZ())
-            .set("hand", event.getHand() == EnumHand.MAIN_HAND ? "main" : "off");
+                .set("x", event.getPos().getX())
+                .set("y", event.getPos().getY())
+                .set("z", event.getPos().getZ())
+                .set("hand", event.getHand() == EnumHand.MAIN_HAND ? "main" : "off");
 
         this.trigger(event, Mappet.settings.blockClick, context);
     }
@@ -393,12 +394,12 @@ public class EventHandler
 
         IBlockState state = event.getWorld().getBlockState(event.getPos());
         DataContext context = new DataContext(player)
-            .set("block", state.getBlock().getRegistryName().toString())
-            .set("meta", state.getBlock().getMetaFromState(state))
-            .set("x", event.getPos().getX())
-            .set("y", event.getPos().getY())
-            .set("z", event.getPos().getZ())
-            .set("hand", event.getHand() == EnumHand.MAIN_HAND ? "main" : "off");
+                .set("block", state.getBlock().getRegistryName().toString())
+                .set("meta", state.getBlock().getMetaFromState(state))
+                .set("x", event.getPos().getX())
+                .set("y", event.getPos().getY())
+                .set("z", event.getPos().getZ())
+                .set("hand", event.getHand() == EnumHand.MAIN_HAND ? "main" : "off");
 
         this.trigger(event, Mappet.settings.blockInteract, context);
     }
@@ -414,7 +415,7 @@ public class EventHandler
         }
 
         DataContext context = new DataContext(player, event.getTarget())
-            .set("hand", event.getHand() == EnumHand.MAIN_HAND ? "main" : "off");
+                .set("hand", event.getHand() == EnumHand.MAIN_HAND ? "main" : "off");
 
         this.trigger(event, Mappet.settings.playerEntityInteract, context);
     }
@@ -560,22 +561,25 @@ public class EventHandler
 
         Entity source = event.getSource().getTrueSource();
         Trigger trigger = event.getEntity() instanceof EntityPlayer
-            ? Mappet.settings.playerDeath
-            : Mappet.settings.entityDeath;
+                ? Mappet.settings.playerDeath
+                : Mappet.settings.entityDeath;
 
         if (!trigger.isEmpty())
         {
             DataContext context = new DataContext(event.getEntityLiving(), source);
-            if (source != null){
+            if (source != null)
+            {
                 context.getValues().put("killer", ScriptEntity.create(source));
             }
 
             Entity thrower = null;
-            if (source instanceof EntityThrowable) {
+            if (source instanceof EntityThrowable)
+            {
                 thrower = ((EntityThrowable) event.getEntity()).getThrower();
             }
 
-            if (thrower != null) {
+            if (thrower != null)
+            {
                 context.getValues().put("thrower", ScriptEntity.create(thrower));
             }
 
@@ -600,13 +604,16 @@ public class EventHandler
     }
 
     @SubscribeEvent
-    public void onEntityJoinWorld(EntityJoinWorldEvent event) {
-        if (event.getEntity() instanceof EntityLiving) {
+    public void onEntityJoinWorld(EntityJoinWorldEvent event)
+    {
+        if (event.getEntity() instanceof EntityLiving)
+        {
             // Handle load AI rotation data
             EntityLiving entityLiving = (EntityLiving) event.getEntity();
             RotationDataStorage rotationDataStorage = RotationDataStorage.getRotationDataStorage(event.getWorld());
             RotationDataStorage.RotationData rotationData = rotationDataStorage.getRotationData(entityLiving.getUniqueID());
-            if (rotationData != null) {
+            if (rotationData != null)
+            {
                 float yaw = rotationData.yaw;
                 float pitch = rotationData.pitch;
                 float yawHead = rotationData.yawHead;
@@ -616,8 +623,10 @@ public class EventHandler
             // Handle load AI repeating command data
             RepeatingCommandDataStorage repeatingCommandDataStorage = RepeatingCommandDataStorage.getRepeatingCommandDataStorage(event.getWorld());
             List<RepeatingCommandDataStorage.RepeatingCommandData> repeatingCommandDataList = repeatingCommandDataStorage.getRepeatingCommandData(entityLiving.getUniqueID());
-            if (repeatingCommandDataList != null) {
-                for (RepeatingCommandDataStorage.RepeatingCommandData repeatingCommandData : repeatingCommandDataList) {
+            if (repeatingCommandDataList != null)
+            {
+                for (RepeatingCommandDataStorage.RepeatingCommandData repeatingCommandData : repeatingCommandDataList)
+                {
                     String command = repeatingCommandData.command;
                     int frequency = repeatingCommandData.frequency;
                     entityLiving.tasks.addTask(10, new EntityAIRepeatingCommand(entityLiving, command, frequency));
@@ -626,7 +635,8 @@ public class EventHandler
         }
     }
 
-    List<Entity> getAllEntities(){
+    List<Entity> getAllEntities()
+    {
         List<Entity> entities = new ArrayList<Entity>();
         try
         {
@@ -636,7 +646,8 @@ public class EventHandler
             }
         }
         catch (Exception e)
-        {}
+        {
+        }
         return entities;
     }
 
@@ -649,27 +660,31 @@ public class EventHandler
         }
 
         //lock entity if they should be locked
-        for (Entity entity : getAllEntities()) {
-            if (entity == null) {
+        for (Entity entity : getAllEntities())
+        {
+            if (entity == null)
+            {
                 continue;
             }
             //lock position if it should be locked
-            if (entity.getEntityData().getBoolean("positionLocked")) {
+            if (entity.getEntityData().getBoolean("positionLocked"))
+            {
                 IScriptEntity scriptEntity = (ScriptEntity.create(entity));
                 scriptEntity.setPosition(
-                    entity.getEntityData().getDouble("lockX"),
-                    entity.getEntityData().getDouble("lockY"),
-                    entity.getEntityData().getDouble("lockZ")
+                        entity.getEntityData().getDouble("lockX"),
+                        entity.getEntityData().getDouble("lockY"),
+                        entity.getEntityData().getDouble("lockZ")
                 );
                 scriptEntity.setMotion(0.0, 0.0, 0.0);
             }
             //lock rotation if it should be locked
-            if (entity.getEntityData().getBoolean("rotationLocked")) {
+            if (entity.getEntityData().getBoolean("rotationLocked"))
+            {
                 IScriptEntity scriptEntity = (ScriptEntity.create(entity));
                 scriptEntity.setRotations(
-                    entity.getEntityData().getFloat("lockPitch"),
-                    entity.getEntityData().getFloat("lockYaw"),
-                    entity.getEntityData().getFloat("lockYawHead")
+                        entity.getEntityData().getFloat("lockPitch"),
+                        entity.getEntityData().getFloat("lockYaw"),
+                        entity.getEntityData().getFloat("lockYawHead")
                 );
             }
         }
@@ -821,7 +836,8 @@ public class EventHandler
     public void onStateChange(StateChangedEvent event)
     {
         Trigger trigger = Mappet.settings.stateChanged;
-        if (!trigger.isEmpty()) {
+        if (!trigger.isEmpty())
+        {
             handleStateChangedEvent(event, trigger);
         }
 
@@ -846,26 +862,36 @@ public class EventHandler
         }
     }
 
-    private void handleStateChangedEvent(StateChangedEvent event, Trigger trigger) {
-        if (event.isGlobal()) {
+    private void handleStateChangedEvent(StateChangedEvent event, Trigger trigger)
+    {
+        if (event.isGlobal())
+        {
             handleGlobalStateChangedEvent(event, trigger);
-        } else {
+        }
+        else
+        {
             handlePlayerStateChangedEvent(event, trigger);
             handleNpcStateChangedEvent(event, trigger);
         }
     }
 
-    private void handleGlobalStateChangedEvent(StateChangedEvent event, Trigger trigger) {
+    private void handleGlobalStateChangedEvent(StateChangedEvent event, Trigger trigger)
+    {
         this.context = new DataContext(FMLCommonHandler.instance().getMinecraftServerInstance());
+
         setStateChangedEventValues(context, event);
         trigger.trigger(context);
     }
 
-    private void handlePlayerStateChangedEvent(StateChangedEvent event, Trigger trigger) {
-        for (EntityPlayer player : FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers()) {
+    private void handlePlayerStateChangedEvent(StateChangedEvent event, Trigger trigger)
+    {
+        for (EntityPlayer player : FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers())
+        {
             ICharacter character = Character.get(player);
-            if (character != null && character.getStates() == event.states) {
+            if (character != null && character.getStates() == event.states)
+            {
                 this.context = new DataContext(player);
+
                 setStateChangedEventValues(context, event);
                 context.getValues().put("entity", ScriptEntity.create(player));
                 trigger.trigger(context);
@@ -873,10 +899,14 @@ public class EventHandler
         }
     }
 
-    private void handleNpcStateChangedEvent(StateChangedEvent event, Trigger trigger) {
-        for (EntityNpc npc : getAllNpcs()) {
-            if (npc != null && npc.getStates() == event.states) {
+    private void handleNpcStateChangedEvent(StateChangedEvent event, Trigger trigger)
+    {
+        for (EntityNpc npc : getAllNpcs())
+        {
+            if (npc != null && npc.getStates() == event.states)
+            {
                 this.context = new DataContext(npc);
+
                 setStateChangedEventValues(context, event);
                 context.getValues().put("entity", ScriptEntity.create(npc));
                 trigger.trigger(context);
@@ -884,22 +914,28 @@ public class EventHandler
         }
     }
 
-    private void setStateChangedEventValues(DataContext context, StateChangedEvent event) {
+    private void setStateChangedEventValues(DataContext context, StateChangedEvent event)
+    {
         context.getValues().put("key", event.key);
         context.getValues().put("current", event.current);
         context.getValues().put("previous", event.previous);
     }
 
-    private List<EntityNpc> getAllNpcs(){
+    private List<EntityNpc> getAllNpcs()
+    {
         List<EntityNpc> npcs = new ArrayList<EntityNpc>();
-        try {
-            for (World world : FMLCommonHandler.instance().getMinecraftServerInstance().worlds) {
+        try
+        {
+            for (World world : FMLCommonHandler.instance().getMinecraftServerInstance().worlds)
+            {
                 npcs.addAll(world.loadedEntityList.stream()
                         .filter(entity -> entity instanceof EntityNpc)
                         .map(entity -> (EntityNpc) entity)
                         .collect(Collectors.toList()));
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
         return npcs;
@@ -919,7 +955,8 @@ public class EventHandler
         EntityLivingBase target = event.getEntityLiving();
         Entity attacker = event.getAttacker();
 
-        if (target != null && target.getEntityData().getBoolean("positionLocked")) {
+        if (target != null && target.getEntityData().getBoolean("positionLocked"))
+        {
             event.setCanceled(true);
         }
 
@@ -938,29 +975,36 @@ public class EventHandler
     }
 
     @SubscribeEvent
-    public void onProjectileImpact(ProjectileImpactEvent event) {
-        if (event.getEntity().world.isRemote) {
+    public void onProjectileImpact(ProjectileImpactEvent event)
+    {
+        if (event.getEntity().world.isRemote)
+        {
             return;
         }
 
         Trigger trigger = Mappet.settings.projectileImpact;
-        if (!trigger.isEmpty()) {
+        if (!trigger.isEmpty())
+        {
             Entity hitEntity = event.getRayTraceResult().entityHit;
             DataContext context = new DataContext(event.getEntity(), hitEntity);
 
             context.getValues().put("pos", new ScriptVector(event.getRayTraceResult().hitVec));
             context.getValues().put("projectile", ScriptEntity.create(event.getEntity()));
 
-            if (hitEntity != null && !context.getValues().containsKey("entity")){
+            if (hitEntity != null && !context.getValues().containsKey("entity"))
+            {
                 context.getValues().put("entity", ScriptEntity.create(hitEntity));
             }
 
             Entity thrower = null;
-            if (event.getEntity() instanceof EntityThrowable) {
+
+            if (event.getEntity() instanceof EntityThrowable)
+            {
                 thrower = ((EntityThrowable) event.getEntity()).getThrower();
             }
 
-            if (thrower != null) {
+            if (thrower != null)
+            {
                 context.getValues().put("thrower", ScriptEntity.create(thrower));
             }
 
@@ -969,21 +1013,28 @@ public class EventHandler
     }
 
     @SubscribeEvent
-    public void onLivingEquipmentChange(LivingEquipmentChangeEvent event) {
-        if (event.getEntity().world.isRemote) {
+    public void onLivingEquipmentChange(LivingEquipmentChangeEvent event)
+    {
+        if (event.getEntity().world.isRemote)
+        {
             return;
         }
 
         Trigger trigger = Mappet.settings.onLivingEquipmentChange;
-        if (!trigger.isEmpty()) {
+        if (!trigger.isEmpty())
+        {
             DataContext context = new DataContext(event.getEntity());
 
             context.getValues().put("item", ScriptItemStack.create(event.getTo()));
 
-            if (event.getEntity() instanceof EntityPlayerMP) {
+            if (event.getEntity() instanceof EntityPlayerMP)
+            {
                 ScriptPlayer player = new ScriptPlayer((EntityPlayerMP) event.getEntity());
+
                 context.getValues().put("player", player.getHotbarIndex());
-            } else {
+            }
+            else
+            {
                 context.getValues().put("slot", event.getSlot().getIndex());
             }
 

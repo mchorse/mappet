@@ -12,15 +12,21 @@ import org.apache.commons.lang3.ArrayUtils;
 public class EntitiesAIPatrol extends EntityAIBase
 {
     private final EntityLiving target;
+
     private final double speed;
+
     private int timer;
+
     private float prevWaterFactor;
 
     private int index;
+
     private int direction = 1;
 
     private BlockPos[] patrolPoints;
+
     private boolean[] shouldCirculate;
+
     private String[] executeCommandOnArrival;
 
     public EntitiesAIPatrol(EntityLiving target, double speed, BlockPos[] patrolPoints, boolean[] shouldCirculate, String[] executeCommandOnArrival)
@@ -138,7 +144,8 @@ public class EntitiesAIPatrol extends EntityAIBase
         return this.executeCommandOnArrival;
     }
 
-    public void addPatrolPoint(BlockPos point, boolean shouldCirculate, String executeCommandOnArrival) {
+    public void addPatrolPoint(BlockPos point, boolean shouldCirculate, String executeCommandOnArrival)
+    {
         this.patrolPoints = ArrayUtils.add(this.patrolPoints, point);
         this.shouldCirculate = ArrayUtils.add(this.shouldCirculate, shouldCirculate);
         this.executeCommandOnArrival = ArrayUtils.add(this.executeCommandOnArrival, executeCommandOnArrival);

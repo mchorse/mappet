@@ -155,7 +155,8 @@ public class HUDMorph implements INBTSerializable<NBTTagCompound>
         NBTUtils.readFloatList(tag.getTagList("Rotate", 5), this.rotate);
     }
 
-    private void updateFrom(HUDMorph other) {
+    private void updateFrom(HUDMorph other)
+    {
         this.morph = other.morph;
         this.ortho = other.ortho;
         this.orthoX = other.orthoX;
@@ -166,7 +167,8 @@ public class HUDMorph implements INBTSerializable<NBTTagCompound>
         this.rotate.set(other.rotate);
     }
 
-    public HUDMorph copy() {
+    public HUDMorph copy()
+    {
         HUDMorph copy = new HUDMorph();
         copy.updateFrom(this);
         return copy;

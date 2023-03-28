@@ -75,6 +75,7 @@ import java.util.*;
 public class ScriptEntity <T extends Entity> implements IScriptEntity
 {
     protected T entity;
+
     protected IMappetStates states;
 
     public static IScriptEntity create(Entity entity)
@@ -568,17 +569,23 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     }
 
     @Override
-    public void setName(String name) {
+    public void setName(String name)
+    {
         this.entity.setCustomNameTag(name);
-        if (name.isEmpty()) {
+
+        if (name.isEmpty())
+        {
             this.entity.setAlwaysRenderNameTag(false);
-        } else {
+        }
+        else
+        {
             this.entity.setAlwaysRenderNameTag(true);
         }
     }
 
     @Override
-    public void setInvisible(boolean invisible) {
+    public void setInvisible(boolean invisible)
+    {
         this.entity.setInvisible(invisible);
     }
 
@@ -1027,13 +1034,14 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Optional.Method(modid = "blockbuster")
     private IScriptEntity shootBBGunProjectileMethod(String gunPropsNBT) throws NBTException
     {
-        if (this.entity instanceof EntityLivingBase) {
+        if (this.entity instanceof EntityLivingBase)
+        {
             EntityLivingBase entityLivingBase = (EntityLivingBase) this.entity;
             NBTTagCompound gunPropsNBTCompound = JsonToNBT.getTagFromJson(gunPropsNBT).getCompoundTag("Gun");
             GunProps gunProps = new GunProps(gunPropsNBTCompound.getCompoundTag("Projectile"));
             gunProps.fromNBT(gunPropsNBTCompound);
             EntityGunProjectile projectile = new EntityGunProjectile(entityLivingBase.world, gunProps, gunProps.projectileMorph);
-            projectile.setPosition(entityLivingBase.posX, (entityLivingBase.posY+1.8), entityLivingBase.posZ);
+            projectile.setPosition(entityLivingBase.posX, (entityLivingBase.posY + 1.8), entityLivingBase.posZ);
             projectile.shoot(entityLivingBase, entityLivingBase.rotationPitch, entityLivingBase.rotationYaw, 0, gunProps.speed, 0);
             projectile.setInitialMotion();
             entityLivingBase.world.spawnEntity(projectile);
@@ -1052,21 +1060,28 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     }
 
     @Override
-    public void executeScript(String scriptName) {
+    public void executeScript(String scriptName)
+    {
         executeScript(scriptName, "main");
     }
 
     @Override
-    public void executeScript(String scriptName, String function) {
+    public void executeScript(String scriptName, String function)
+    {
         DataContext context = new DataContext(entity);
-        try {
+        try
+        {
             Mappet.scripts.execute(scriptName, function, context);
-        } catch (ScriptException e) {
+        }
+        catch (ScriptException e)
+        {
             String fileName = e.getFileName() == null ? scriptName : e.getFileName();
 
             e.printStackTrace();
             throw new RuntimeException("Script Error: " + fileName + " - Line: " + e.getLineNumber() + " - Column: " + e.getColumnNumber() + " - Message: " + e.getMessage(), e);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
             throw new RuntimeException("Script Empty: " + scriptName + " - Error: " + e.getClass().getSimpleName() + ": " + e.getMessage(), e);
         }
@@ -1096,7 +1111,10 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Override
     public void lockRotation(float yaw, float pitch, float yawHead)
     {
-        if (this.entity instanceof EntityPlayer) {return;}
+        if (this.entity instanceof EntityPlayer)
+        {
+            return;
+        }
         this.entity.getEntityData().setBoolean("rotationLocked", true);
         this.entity.getEntityData().setFloat("lockYaw", yaw);
         this.entity.getEntityData().setFloat("lockPitch", pitch);
@@ -1106,7 +1124,10 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Override
     public void unlockRotation()
     {
-        if (this.entity instanceof EntityPlayer) {return;}
+        if (this.entity instanceof EntityPlayer)
+        {
+            return;
+        }
         this.entity.getEntityData().setBoolean("rotationLocked", false);
     }
 
@@ -1117,33 +1138,35 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     }
 
     @Override
-    public void moveTo(String interpolation, int durationTicks, double x, double y, double z, boolean disableAI){
-        if (disableAI) {
+    public void moveTo(String interpolation, int durationTicks, double x, double y, double z, boolean disableAI)
+    {
+        if (disableAI)
+        {
             this.setAIEnabled(false);
             this.moveTo(interpolation, durationTicks, x, y, z);
-            CommonProxy.eventHandler.addExecutable(new RunnableExecutionFork(durationTicks, () -> {
-                this.setAIEnabled(true);
-            }));
-        } else {
+            CommonProxy.eventHandler.addExecutable(new RunnableExecutionFork(durationTicks, () -> this.setAIEnabled(true)));
+        }
+        else
+        {
             this.moveTo(interpolation, durationTicks, x, y, z);
         }
     }
 
-    private void moveTo(String interpolation, int durationTicks, double x, double y, double z) {
+    private void moveTo(String interpolation, int durationTicks, double x, double y, double z)
+    {
         Interpolation interp = Interpolation.valueOf(interpolation.toUpperCase());
         double startX = this.entity.posX;
         double startY = this.entity.posY;
         double startZ = this.entity.posZ;
 
-        for (int i = 0; i < durationTicks; i++) {
+        for (int i = 0; i < durationTicks; i++)
+        {
             double progress = (double) i / (double) durationTicks;
             double interpX = interp.interpolate(startX, x, progress);
             double interpY = interp.interpolate(startY, y, progress);
             double interpZ = interp.interpolate(startZ, z, progress);
 
-            CommonProxy.eventHandler.addExecutable(new RunnableExecutionFork(i, () -> {
-                this.setPosition(interpX, interpY, interpZ);
-            }));
+            CommonProxy.eventHandler.addExecutable(new RunnableExecutionFork(i, () -> this.setPosition(interpX, interpY, interpZ)));
         }
     }
 
@@ -1152,20 +1175,30 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Override
     public void observe(IScriptEntity entity)
     {
-        if (this.entity instanceof EntityLiving) {
+        if (this.entity instanceof EntityLiving)
+        {
             EntityLiving entityLiving = (EntityLiving) this.entity;
-            if (entity == null) {
+
+            if (entity == null)
+            {
                 EntityAITasks.EntityAITaskEntry taskToRemove = null;
-                for (EntityAITasks.EntityAITaskEntry task : entityLiving.tasks.taskEntries) {
-                    if (task.action instanceof EntityAILookAtTarget) {
+
+                for (EntityAITasks.EntityAITaskEntry task : entityLiving.tasks.taskEntries)
+                {
+                    if (task.action instanceof EntityAILookAtTarget)
+                    {
                         taskToRemove = task;
                         break;
                     }
                 }
-                if (taskToRemove != null) {
+
+                if (taskToRemove != null)
+                {
                     entityLiving.tasks.removeTask(taskToRemove.action);
                 }
-            } else {
+            }
+            else
+            {
                 entityLiving.tasks.addTask(8, new EntityAILookAtTarget(entityLiving, entity.getMinecraftEntity(), 1.0F));
             }
         }
@@ -1174,18 +1207,22 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Override
     public void addEntityPatrol(double x, double y, double z, double speed, boolean shouldCirculate, String executeCommandOnArrival)
     {
-        if (this.entity instanceof EntityLiving) {
+        if (this.entity instanceof EntityLiving)
+        {
             EntityLiving entityLiving = (EntityLiving) this.entity;
             EntityAITasks.EntityAITaskEntry taskToRemove = findEntitiesAIPatrolTask(entityLiving);
             EntitiesAIPatrol patrolTask;
 
-            if (taskToRemove != null) {
+            if (taskToRemove != null)
+            {
                 patrolTask = (EntitiesAIPatrol) taskToRemove.action;
                 entityLiving.tasks.removeTask(patrolTask);
 
                 patrolTask.addPatrolPoint(new BlockPos(x, y, z), shouldCirculate, executeCommandOnArrival);
-            } else {
-                patrolTask = new EntitiesAIPatrol((EntityLiving) entity, speed, new BlockPos[]{new BlockPos(x, y, z)}, new boolean[]{shouldCirculate}, new String[]{executeCommandOnArrival});
+            }
+            else
+            {
+                patrolTask = new EntitiesAIPatrol((EntityLiving) entity, speed, new BlockPos[] {new BlockPos(x, y, z)}, new boolean[] {shouldCirculate}, new String[] {executeCommandOnArrival});
             }
 
             entityLiving.tasks.addTask(1, patrolTask);
@@ -1193,20 +1230,26 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     }
 
     @Override
-    public void clearEntityPatrols(){
-        if (this.entity instanceof EntityLiving) {
+    public void clearEntityPatrols()
+    {
+        if (this.entity instanceof EntityLiving)
+        {
             EntityLiving entityLiving = (EntityLiving) this.entity;
             EntityAITasks.EntityAITaskEntry taskToRemove = findEntitiesAIPatrolTask(entityLiving);
 
-            if (taskToRemove != null) {
+            if (taskToRemove != null)
+            {
                 entityLiving.tasks.removeTask(taskToRemove.action);
             }
         }
     }
 
-    private EntityAITasks.EntityAITaskEntry findEntitiesAIPatrolTask(EntityLiving entityLiving) {
-        for (EntityAITasks.EntityAITaskEntry task : entityLiving.tasks.taskEntries) {
-            if (task.action instanceof EntitiesAIPatrol) {
+    private EntityAITasks.EntityAITaskEntry findEntitiesAIPatrolTask(EntityLiving entityLiving)
+    {
+        for (EntityAITasks.EntityAITaskEntry task : entityLiving.tasks.taskEntries)
+        {
+            if (task.action instanceof EntitiesAIPatrol)
+            {
                 return task;
             }
         }
@@ -1214,8 +1257,10 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     }
 
     @Override
-    public void setRotationsAI(float yaw, float pitch, float yawHead) {
-        if (this.entity instanceof EntityLiving) {
+    public void setRotationsAI(float yaw, float pitch, float yawHead)
+    {
+        if (this.entity instanceof EntityLiving)
+        {
             EntityLiving entityLiving = (EntityLiving) this.entity;
             EntityAITasks.EntityAITaskEntry taskToRemove = removeTaskIfExists(entityLiving, EntityAIRotations.class);
             entityLiving.tasks.addTask(9, new EntityAIRotations(entityLiving, yaw, pitch, yawHead, 1.0F));
@@ -1225,32 +1270,44 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     }
 
     @Override
-    public void clearRotationsAI() {
-        if (this.entity instanceof EntityLiving) {
+    public void clearRotationsAI()
+    {
+        if (this.entity instanceof EntityLiving)
+        {
             EntityLiving entityLiving = (EntityLiving) this.entity;
+
             removeTaskIfExists(entityLiving, EntityAIRotations.class);
             RotationDataStorage.getRotationDataStorage(entity.world).removeRotationData(entityLiving.getUniqueID());
         }
     }
 
-    private EntityAITasks.EntityAITaskEntry removeTaskIfExists(EntityLiving entityLiving, Class<?> taskClass) {
+    private EntityAITasks.EntityAITaskEntry removeTaskIfExists(EntityLiving entityLiving, Class<?> taskClass)
+    {
         EntityAITasks.EntityAITaskEntry taskToRemove = null;
-        for (EntityAITasks.EntityAITaskEntry task : entityLiving.tasks.taskEntries) {
-            if (task.action.getClass().equals(taskClass)) {
+
+        for (EntityAITasks.EntityAITaskEntry task : entityLiving.tasks.taskEntries)
+        {
+            if (task.action.getClass().equals(taskClass))
+            {
                 taskToRemove = task;
                 break;
             }
         }
-        if (taskToRemove != null) {
+
+        if (taskToRemove != null)
+        {
             entityLiving.tasks.removeTask(taskToRemove.action);
         }
+
         return taskToRemove;
     }
 
 
     @Override
-    public void executeRepeatingCommand(String command, int frequency){
-        if (this.entity instanceof EntityLiving) {
+    public void executeRepeatingCommand(String command, int frequency)
+    {
+        if (this.entity instanceof EntityLiving)
+        {
             EntityLiving entityLiving = (EntityLiving) this.entity;
             entityLiving.tasks.addTask(10, new EntityAIRepeatingCommand(entityLiving, command, frequency));
             RepeatingCommandDataStorage.getRepeatingCommandDataStorage(entity.world).addRepeatingCommandData(entityLiving.getUniqueID(), command, frequency);
@@ -1258,32 +1315,42 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     }
 
     @Override
-    public void clearAllRepeatingCommands(){
+    public void clearAllRepeatingCommands()
+    {
         if (this.entity instanceof EntityLiving)
         {
             EntityLiving entityLiving = (EntityLiving) this.entity;
+
             removeTaskIfExists(entityLiving, EntityAIRepeatingCommand.class);
             RepeatingCommandDataStorage.getRepeatingCommandDataStorage(entity.world).removeRepeatingCommandData(entityLiving.getUniqueID());
         }
     }
 
     @Override
-    public void removeRepeatingCommand(String command) {
-        if (this.entity instanceof EntityLiving) {
+    public void removeRepeatingCommand(String command)
+    {
+        if (this.entity instanceof EntityLiving)
+        {
             EntityLiving entityLiving = (EntityLiving) this.entity;
+
             removeSpecificRepeatingCommandTaskIfExists(entityLiving, command);
             RepeatingCommandDataStorage.getRepeatingCommandDataStorage(entity.world).removeSpecificRepeatingCommandData(entityLiving.getUniqueID(), command);
         }
     }
 
-    private void removeSpecificRepeatingCommandTaskIfExists(EntityLiving entityLiving, String command) {
+    private void removeSpecificRepeatingCommandTaskIfExists(EntityLiving entityLiving, String command)
+    {
         List<EntityAITasks.EntityAITaskEntry> tasksToRemove = new ArrayList<>();
-        for (EntityAITasks.EntityAITaskEntry task : entityLiving.tasks.taskEntries) {
-            if (task.action instanceof EntityAIRepeatingCommand && ((EntityAIRepeatingCommand) task.action).getCommand().equals(command)) {
+
+        for (EntityAITasks.EntityAITaskEntry task : entityLiving.tasks.taskEntries)
+        {
+            if (task.action instanceof EntityAIRepeatingCommand && ((EntityAIRepeatingCommand) task.action).getCommand().equals(command))
+            {
                 tasksToRemove.add(task);
             }
         }
-        for (EntityAITasks.EntityAITaskEntry taskToRemove : tasksToRemove) {
+        for (EntityAITasks.EntityAITaskEntry taskToRemove : tasksToRemove)
+        {
             entityLiving.tasks.removeTask(taskToRemove.action);
         }
     }
