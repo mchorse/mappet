@@ -771,16 +771,27 @@ public interface IScriptFactory
         return new Matrix4d(m);
     }
 
+
     /**
-     * Determines whether a block is located inside a cube specified by two edges.
+     * Determines whether a point is located inside a bounding volume specified by two corners.
+     * This method works with different vector types (2D, 3D, and 4D).
      *
-     * @param block The position of the block to check as a double array with 3 elements representing x, y, and z coordinates.
-     * @param cubeEdge1 The position of one edge of the cube as a double array with 3 elements representing x, y, and z coordinates.
-     * @param cubeEdge2 The position of the opposite edge of the cube as a double array with 3 elements representing x, y, and z coordinates.
+     * <pre>{@code
+     *   var pos = c.getSubject().getPosition();
+     *   var point = mappet.Vector3(pos.x, pos.y, pos.z);
+     *   var bound1 = mappet.Vector3(0, 0, 0);
+     *   var bound2 = mappet.Vector3(10, 10, 10);
+     *   var isInside = mappet.isPointInBounds(point, bound1, bound2);
+     *   c.send("Is the point inside the bounding volume? " + isInside);
+     * }</pre>
      *
-     * @return true if the block is inside the cube, false otherwise.
+     * @param point The position of the point to check.
+     * @param bound1 The position of one corner of the bounding volume.
+     * @param bound2 The position of the opposite corner of the bounding volume.
+     * @return true if the point is inside the bounding volume, false otherwise.
+     * @throws IllegalArgumentException if the input vectors have different dimensions.
      */
-    public boolean isBlockInCube(double[] block, double[] cubeEdge1, double[] cubeEdge2);
+    public boolean isPointInBounds(Object point, Object bound1, Object bound2);
 
     /**
      * Converts an object to an INBTCompound representation.

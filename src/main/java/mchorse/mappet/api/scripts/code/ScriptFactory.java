@@ -33,6 +33,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
+import javax.vecmath.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -422,12 +423,44 @@ public class ScriptFactory implements IScriptFactory
 
         return builder.toString();
     }
+
     @Override
-    public boolean isBlockInCube(double[] block, double[] cubeEdge1, double[] cubeEdge2)
+    public boolean isPointInBounds(Object point, Object bound1, Object bound2)
     {
-        return block[0] >= Math.min(cubeEdge1[0], cubeEdge2[0]) && block[0] <= Math.max(cubeEdge1[0], cubeEdge2[0]) &&
-                block[1] >= Math.min(cubeEdge1[1], cubeEdge2[1]) && block[1] <= Math.max(cubeEdge1[1], cubeEdge2[1]) &&
-                block[2] >= Math.min(cubeEdge1[2], cubeEdge2[2]) && block[2] <= Math.max(cubeEdge1[2], cubeEdge2[2]);
+        if (point instanceof Vector2d)
+        {
+            return isPointInBounds2D((Vector2d) point, (Vector2d) bound1, (Vector2d) bound2);
+        }
+        else if (point instanceof Vector3d)
+        {
+            return isPointInBounds3D((Vector3d) point, (Vector3d) bound1, (Vector3d) bound2);
+        }
+        else if (point instanceof Vector4d)
+        {
+            return isPointInBounds4D((Vector4d) point, (Vector4d) bound1, (Vector4d) bound2);
+        }
+        else
+        {
+            throw new IllegalArgumentException("Invalid vector type: " + point.getClass().getName());
+        }
+    }
+
+    private boolean isPointInBounds2D(Vector2d point, Vector2d bound1, Vector2d bound2) {
+        return point.x >= Math.min(bound1.x, bound2.x) && point.x <= Math.max(bound1.x, bound2.x) &&
+                point.y >= Math.min(bound1.y, bound2.y) && point.y <= Math.max(bound1.y, bound2.y);
+    }
+
+    private boolean isPointInBounds3D(Vector3d point, Vector3d bound1, Vector3d bound2) {
+        return point.x >= Math.min(bound1.x, bound2.x) && point.x <= Math.max(bound1.x, bound2.x) &&
+                point.y >= Math.min(bound1.y, bound2.y) && point.y <= Math.max(bound1.y, bound2.y) &&
+                point.z >= Math.min(bound1.z, bound2.z) && point.z <= Math.max(bound1.z, bound2.z);
+    }
+
+    private boolean isPointInBounds4D(Vector4d point, Vector4d bound1, Vector4d bound2) {
+        return point.x >= Math.min(bound1.x, bound2.x) && point.x <= Math.max(bound1.x, bound2.x) &&
+                point.y >= Math.min(bound1.y, bound2.y) && point.y <= Math.max(bound1.y, bound2.y) &&
+                point.z >= Math.min(bound1.z, bound2.z) && point.z <= Math.max(bound1.z, bound2.z) &&
+                point.w >= Math.min(bound1.w, bound2.w) && point.w <= Math.max(bound1.w, bound2.w);
     }
 
     @Override
