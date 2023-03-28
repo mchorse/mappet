@@ -28,6 +28,8 @@ import mchorse.metamorph.api.Morph;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.models.IMorphProvider;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import net.minecraft.command.EntitySelector;
+import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -308,6 +310,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         return this.morph.get();
     }
 
+
     public EntityLivingBase getFollowTarget()
     {
         if (this.state.follow.isEmpty())
@@ -318,9 +321,28 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         if (this.state.follow.equals("@r"))
         {
             List<EntityPlayer> players = this.world.playerEntities;
-            int index = (int) MathUtils.clamp(Math.random() * players.size() - 1, 0, players.size() - 1);
+            int index = MathHelper.clamp((int) (Math.random() * players.size() - 1), 0, players.size() - 1);
 
             return players.isEmpty() ? null : players.get(index);
+        }
+        else if (this.state.follow.startsWith("@"))
+        {
+            try
+            {
+                ICommandSender sender = CommandNpc.getCommandSender(this);
+                List<Entity> entities = EntitySelector.matchEntities(sender, this.state.follow, Entity.class);
+                for (Entity entity : entities)
+                {
+                    if (entity instanceof EntityLivingBase)
+                    {
+                        return (EntityLivingBase) entity;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
         else
         {
