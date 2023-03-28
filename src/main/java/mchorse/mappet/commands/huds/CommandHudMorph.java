@@ -1,7 +1,6 @@
 package mchorse.mappet.commands.huds;
 
-import mchorse.mappet.network.Dispatcher;
-import mchorse.mappet.network.common.huds.PacketHUDMorph;
+import mchorse.mappet.capabilities.character.Character;
 import mchorse.mclib.commands.SubCommandBase;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -58,6 +57,6 @@ public class CommandHudMorph extends CommandHudBase
         catch (Exception e)
         {}
 
-        Dispatcher.sendTo(new PacketHUDMorph(scene, index, tag), player);
+        Character.get(player).changeHUDMorph(scene, index, tag);
     }
 }

@@ -1,5 +1,6 @@
 package mchorse.mappet.capabilities.character;
 
+import mchorse.mappet.Mappet;
 import mchorse.mappet.api.crafting.CraftingTable;
 import mchorse.mappet.api.dialogues.Dialogue;
 import mchorse.mappet.api.dialogues.DialogueContext;
@@ -8,9 +9,15 @@ import mchorse.mappet.api.huds.HUDScene;
 import mchorse.mappet.api.quests.Quests;
 import mchorse.mappet.api.states.States;
 import mchorse.mappet.api.ui.UIContext;
+import mchorse.mappet.network.Dispatcher;
+import mchorse.mappet.network.common.huds.PacketHUDMorph;
+import mchorse.mappet.network.common.huds.PacketHUDScene;
 import mchorse.mappet.utils.CurrentSession;
 import mchorse.mappet.utils.PositionCache;
+import mchorse.metamorph.api.Morph;
+import mchorse.metamorph.api.MorphManager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
@@ -20,9 +27,16 @@ import java.util.*;
 
 public class Character implements ICharacter
 {
-    public static ICharacter get(EntityPlayer player)
-    {
-        return player == null ? null : player.getCapability(CharacterProvider.CHARACTER, null);
+    private EntityPlayer player;
+
+    public static Character get(EntityPlayer player) {
+        ICharacter characterCapability = player == null ? null : player.getCapability(CharacterProvider.CHARACTER, null);
+        if (characterCapability instanceof Character) {
+            Character character = (Character) characterCapability;
+            character.player = player;
+            return character;
+        }
+        return null;
     }
 
     private Quests quests = new Quests();
@@ -179,8 +193,61 @@ public class Character implements ICharacter
 
     /* HUDs */
 
+    public boolean setupHUD(String id)
+    {
+        HUDScene scene = Mappet.huds.load(id);
+
+        if (scene != null) {
+            Dispatcher.sendTo(new PacketHUDScene(scene.getId(), scene.serializeNBT()), (EntityPlayerMP) this.player);
+
+            // Adds the morph to the displayedHUDs list
+            getDisplayedHUDs().put(id, Arrays.asList(scene));
+            return true;
+        }
+
+        return false;
+    }
+
     @Override
-    public Map<String, List<HUDScene>> getDisplayedHUDs() {
+    public void changeHUDMorph(String id, int index, NBTTagCompound tag)
+    {
+        Dispatcher.sendTo(new PacketHUDMorph(id, index, tag), (EntityPlayerMP) this.player);
+
+        // Changing the HUDMorph in the displayedHUDs list
+        for (Map.Entry<String, List<HUDScene>> entry : getDisplayedHUDs().entrySet()) {
+            if (entry.getKey().equals(id)) {
+                List<HUDScene> scenes = entry.getValue();
+                if (!scenes.isEmpty()) {
+                    HUDScene scene = scenes.get(0);
+                    if (scene.morphs.size() > index) {
+                        HUDMorph newMorph = scene.morphs.get(index).copy();
+                        newMorph.morph = new Morph(MorphManager.INSTANCE.morphFromNBT(tag));
+                        scene.morphs.set(index, newMorph);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void closeHUD(String id)
+    {
+        Dispatcher.sendTo(new PacketHUDScene(id == null ? "" : id, null), (EntityPlayerMP) this.player);
+
+        getDisplayedHUDs().remove(id);
+    }
+
+    @Override
+    public void closeAllHUD()
+    {
+        this.closeHUD(null);
+
+        getDisplayedHUDs().clear();
+    }
+
+    @Override
+    public Map<String, List<HUDScene>> getDisplayedHUDs()
+    {
         return displayedHUDs;
     }
 

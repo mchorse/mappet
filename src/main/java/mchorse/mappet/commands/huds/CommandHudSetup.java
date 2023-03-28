@@ -1,8 +1,6 @@
 package mchorse.mappet.commands.huds;
 
-import mchorse.mappet.api.huds.HUDScene;
-import mchorse.mappet.network.Dispatcher;
-import mchorse.mappet.network.common.huds.PacketHUDScene;
+import mchorse.mappet.capabilities.character.Character;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -38,8 +36,6 @@ public class CommandHudSetup extends CommandHudBase
     public void executeCommand(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         EntityPlayerMP player = getPlayer(server, sender, args[0]);
-        HUDScene scene = this.getHud(args[1]);
-
-        Dispatcher.sendTo(new PacketHUDScene(scene.getId(), scene.serializeNBT()), player);
+        Character.get(player).setupHUD(args[1]);
     }
 }

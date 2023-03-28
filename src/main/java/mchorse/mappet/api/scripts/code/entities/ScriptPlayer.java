@@ -468,80 +468,40 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     /* HUD scenes API */
 
     @Override
-    public boolean setupHUD(String id) {
-        HUDScene scene = Mappet.huds.load(id);
-
-        if (scene != null) {
-            Dispatcher.sendTo(new PacketHUDScene(scene.getId(), scene.serializeNBT()), this.entity);
-
-            //adds the morph to the displayedHUDs list
-            Map<String, List<HUDScene>> displayedHUDs = Character.get(this.entity).getDisplayedHUDs();
-            displayedHUDs.put(id, Arrays.asList(scene));
-            return true;
-        }
-
-        return false;
+    public boolean setupHUD(String id)
+    {
+        return Character.get(this.entity).setupHUD(id);
     }
 
     @Override
     public void changeHUDMorph(String id, int index, AbstractMorph morph)
     {
-        if (morph == null)
-        {
+        if (morph == null) {
             return;
         }
 
-        this.changeHUDMorph(id, index, MorphUtils.toNBT(morph));
+        Character.get(this.entity).changeHUDMorph(id, index, MorphUtils.toNBT(morph));
     }
 
     @Override
     public void changeHUDMorph(String id, int index, INBTCompound morph)
     {
-        if (morph == null)
-        {
+        if (morph == null) {
             return;
         }
 
-        this.changeHUDMorph(id, index, morph.getNBTTagCompound());
-    }
-
-    private void changeHUDMorph(String id, int index, NBTTagCompound tag)
-    {
-        Dispatcher.sendTo(new PacketHUDMorph(id, index, tag), this.entity);
-
-        //changing the HUDMorph in the displayedHUDs list
-        Map<String, List<HUDScene>> displayedHUDs = Character.get(this.entity).getDisplayedHUDs();
-        for (Map.Entry<String, List<HUDScene>> entry : displayedHUDs.entrySet())
-        {
-            if (entry.getKey().equals(id))
-            {
-                List<HUDScene> scenes = entry.getValue();
-                if (!scenes.isEmpty()) {
-                    HUDScene scene = scenes.get(0);
-                    if (scene.morphs.size() > index)
-                    {
-                        HUDMorph newMorph = scene.morphs.get(index).copy();
-                        newMorph.morph = new Morph(MorphManager.INSTANCE.morphFromNBT(tag));
-                        scene.morphs.set(index, newMorph);
-                    }
-                }
-            }
-        }
+        Character.get(this.entity).changeHUDMorph(id, index, morph.getNBTTagCompound());
     }
 
     @Override
     public void closeHUD(String id) {
-        Dispatcher.sendTo(new PacketHUDScene(id == null ? "" : id, null), this.entity);
-
-        Character.get(this.entity).getDisplayedHUDs().remove(id);
+        Character.get(this.entity).closeHUD(id);
     }
 
     @Override
     public void closeAllHUD()
     {
-        this.closeHUD(null);
-
-        Character.get(this.entity).getDisplayedHUDs().clear();
+        Character.get(this.entity).closeAllHUD();
     }
 
     @Override

@@ -1,7 +1,7 @@
 package mchorse.mappet.commands.huds;
 
-import mchorse.mappet.network.Dispatcher;
-import mchorse.mappet.network.common.huds.PacketHUDScene;
+import mchorse.mappet.capabilities.character.Character;
+import mchorse.mappet.capabilities.character.ICharacter;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -43,7 +43,20 @@ public class CommandHudClose extends CommandHudBase
     public void executeCommand(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         EntityPlayerMP player = getPlayer(server, sender, args[0]);
+        ICharacter character = Character.get(player);
 
-        Dispatcher.sendTo(new PacketHUDScene(args.length > 1 ? args[1] : "", null), player);
+        if (character == null)
+        {
+            return;
+        }
+
+        if (args.length > 1)
+        {
+            character.closeHUD(args[1]);
+        }
+        else
+        {
+            character.closeAllHUD();
+        }
     }
 }
