@@ -310,7 +310,8 @@ public class ScriptWorld implements IScriptWorld
         entity.world.spawnEntity(entity);
         entity.initialize();
 
-        if(!npc.serializeNBT().getString("StateName").equals("default")){
+        if (!npc.serializeNBT().getString("StateName").equals("default"))
+        {
             entity.setStringInData("StateName", state);
         }
 
@@ -624,7 +625,8 @@ public class ScriptWorld implements IScriptWorld
     }
 
     @Override
-    public void setTileEntity(int x, int y, int z, IScriptBlockState blockState, INBTCompound tileData) {
+    public void setTileEntity(int x, int y, int z, IScriptBlockState blockState, INBTCompound tileData)
+    {
         setBlock(blockState, x, y, z);
         tileData.setInt("x", x);
         tileData.setInt("y", y);
@@ -633,16 +635,21 @@ public class ScriptWorld implements IScriptWorld
     }
 
     @Override
-    public void fillTileEntities(int x1, int y1, int z1, int x2, int y2, int z2, IScriptBlockState blockState, INBTCompound tileData) {
+    public void fillTileEntities(int x1, int y1, int z1, int x2, int y2, int z2, IScriptBlockState blockState, INBTCompound tileData)
+    {
         int xMin = Math.min(x1, x2);
         int xMax = Math.max(x1, x2);
         int yMin = Math.min(y1, y2);
         int yMax = Math.max(y1, y2);
         int zMin = Math.min(z1, z2);
         int zMax = Math.max(z1, z2);
-        for (int x = xMin; x <= xMax; x++) {
-            for (int y = yMin; y <= yMax; y++) {
-                for (int z = zMin; z <= zMax; z++) {
+
+        for (int x = xMin; x <= xMax; x++)
+        {
+            for (int y = yMin; y <= yMax; y++)
+            {
+                for (int z = zMin; z <= zMax; z++)
+                {
                     setTileEntity(x, y, z, blockState, tileData);
                 }
             }
@@ -650,11 +657,16 @@ public class ScriptWorld implements IScriptWorld
     }
 
     @Override
-    public void clone(int x, int y, int z, int xNew, int yNew, int zNew) {
+    public void clone(int x, int y, int z, int xNew, int yNew, int zNew)
+    {
         IScriptBlockState state = getBlock(x, y, z);
-        if (!state.getBlockId().equals("minecraft:air")) {
+
+        if (!state.getBlockId().equals("minecraft:air"))
+        {
             setBlock(state, xNew, yNew, zNew);
-            if (getTileEntity(x, y, z) != null) {
+
+            if (getTileEntity(x, y, z) != null)
+            {
                 INBTCompound tile = getTileEntity(x, y, z).getData();
                 tile.setInt("x", xNew);
                 tile.setInt("y", yNew);
@@ -666,7 +678,8 @@ public class ScriptWorld implements IScriptWorld
     }
 
     @Override
-    public void clone(int x1, int y1, int z1, int x2, int y2, int z2, int xNew, int yNew, int zNew) {
+    public void clone(int x1, int y1, int z1, int x2, int y2, int z2, int xNew, int yNew, int zNew)
+    {
         int xMin = Math.min(x1, x2);
         int xMax = Math.max(x1, x2);
         int yMin = Math.min(y1, y2);
@@ -676,9 +689,13 @@ public class ScriptWorld implements IScriptWorld
         int xCentre = (xMin + xMax) / 2;
         int yCentre = (yMin + yMax) / 2;
         int zCentre = (zMin + zMax) / 2;
-        for (int x = xMin; x <= xMax; x++) {
-            for (int y = yMin; y <= yMax; y++) {
-                for (int z = zMin; z <= zMax; z++) {
+
+        for (int x = xMin; x <= xMax; x++)
+        {
+            for (int y = yMin; y <= yMax; y++)
+            {
+                for (int z = zMin; z <= zMax; z++)
+                {
                     clone(x, y, z, xNew + x - xCentre, yNew + y - yCentre, zNew + z - zCentre);
                 }
             }
@@ -686,7 +703,8 @@ public class ScriptWorld implements IScriptWorld
     }
 
     @Override
-    public void saveSchematic(String name, int x1, int y1, int z1, int x2, int y2, int z2) {
+    public void saveSchematic(String name, int x1, int y1, int z1, int x2, int y2, int z2)
+    {
         int xMin = Math.min(x1, x2);
         int xMax = Math.max(x1, x2);
         int yMin = Math.min(y1, y2);
@@ -699,32 +717,48 @@ public class ScriptWorld implements IScriptWorld
 
         //to-do: make this process on server start
         File path = new File("saves/" + this.world.getWorldInfo().getWorldName() + "/mappet/schematics");
-        if (!path.exists()) {
+
+        if (!path.exists())
+        {
             path.mkdirs();
         }
 
         File file = new File("saves/" + this.world.getWorldInfo().getWorldName() + "/mappet/schematics/" + name + ".nbt");
-        try {
+
+        try
+        {
             file.createNewFile();
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             e.printStackTrace();
         }
+
         NBTTagCompound tag = new NBTTagCompound();
         NBTTagList blocks = new NBTTagList();
-        for (int x = xMin; x <= xMax; x++) {
-            for (int y = yMin; y <= yMax; y++) {
-                for (int z = zMin; z <= zMax; z++) {
+
+        for (int x = xMin; x <= xMax; x++)
+        {
+            for (int y = yMin; y <= yMax; y++)
+            {
+                for (int z = zMin; z <= zMax; z++)
+                {
                     IScriptBlockState state = getBlock(x, y, z);
-                    if (!state.getBlockId().equals("minecraft:air")) {
+
+                    if (!state.getBlockId().equals("minecraft:air"))
+                    {
                         NBTTagCompound block = new NBTTagCompound();
                         block.setInteger("x", x);
                         block.setInteger("y", y);
                         block.setInteger("z", z);
                         block.setString("block", state.getBlockId());
                         block.setInteger("meta", state.getMeta());
-                        if (getTileEntity(x, y, z) != null) {
+
+                        if (getTileEntity(x, y, z) != null)
+                        {
                             block.setTag("tile", getTileEntity(x, y, z).getData().getNBTTagCompound());
                         }
+
                         blocks.appendTag(block);
                     }
                 }
@@ -741,7 +775,9 @@ public class ScriptWorld implements IScriptWorld
         tag.setInteger("xCentre", 0);
         tag.setInteger("yCentre", 0);
         tag.setInteger("zCentre", 0);
-        for (int i = 0; i < blocks.tagCount(); i++) {
+
+        for (int i = 0; i < blocks.tagCount(); i++)
+        {
             NBTTagCompound block = blocks.getCompoundTagAt(i);
             block.setInteger("x", block.getInteger("x") - xCentre);
             block.setInteger("y", block.getInteger("y") - yCentre);
@@ -749,52 +785,75 @@ public class ScriptWorld implements IScriptWorld
         }
 
         tag.setTag("blocks", blocks);
-        try {
+
+        try
+        {
             CompressedStreamTools.write(tag, file);
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void loadSchematic(String name, int x, int y, int z) {
+    public void loadSchematic(String name, int x, int y, int z)
+    {
         File file = new File("saves/" + this.world.getWorldInfo().getWorldName() + "/mappet/schematics/" + name + ".nbt");
-        if (file.exists()) {
-            try {
+
+        if (file.exists())
+        {
+            try
+            {
                 NBTTagCompound tag = CompressedStreamTools.read(file);
                 int xMin = tag.getInteger("xMin");
                 int yMin = tag.getInteger("yMin");
                 int zMin = tag.getInteger("zMin");
                 NBTTagList blocks = tag.getTagList("blocks", 10);
-                for (int i = 0; i < blocks.tagCount(); i++) {
+
+                for (int i = 0; i < blocks.tagCount(); i++)
+                {
                     NBTTagCompound block = blocks.getCompoundTagAt(i);
                     int x1 = block.getInteger("x");
                     int y1 = block.getInteger("y");
                     int z1 = block.getInteger("z");
                     IScriptBlockState state = factory.createBlockState(block.getString("block"), block.getInteger("meta"));
+
                     setBlock(state, x + x1 - xMin, y + y1 - yMin, z + z1 - zMin);
-                    if (block.hasKey("tile")) {
+
+                    if (block.hasKey("tile"))
+                    {
                         INBTCompound tile = factory.createCompound(block.getCompoundTag("tile").toString());
+
                         tile.setInt("x", x + x1 - xMin);
                         tile.setInt("y", y + y1 - yMin);
                         tile.setInt("z", z + z1 - zMin);
                         getTileEntity(x + x1 - xMin, y + y1 - yMin, z + z1 - zMin).setData(tile);
                     }
                 }
-            } catch (IOException e) {
+            }
+            catch (IOException e)
+            {
                 e.printStackTrace();
             }
         }
     }
 
     @Override
-    public INBTCompound serializeSchematic(String name){
+    public INBTCompound serializeSchematic(String name)
+    {
         File file = new File("saves/" + this.world.getWorldInfo().getWorldName() + "/mappet/schematics/" + name + ".nbt");
-        if (file.exists()) {
-            try {
+
+        if (file.exists())
+        {
+            try
+            {
                 NBTTagCompound tag = CompressedStreamTools.read(file);
+
                 return new ScriptNBTCompound(tag);
-            } catch (IOException e) {
+            }
+            catch (IOException e)
+            {
                 e.printStackTrace();
             }
         }
@@ -818,11 +877,13 @@ public class ScriptWorld implements IScriptWorld
         }
 
         ItemStack itemStack;
-        Item itemFromBock = Item.getItemFromBlock(block);
-        if (itemFromBock == Items.AIR)
+        Item itemFromBlock = Item.getItemFromBlock(block);
+
+        if (itemFromBlock == Items.AIR)
         {
             RayTraceResult rayTraceResult = new RayTraceResult(new Vec3d(x + 0.5, y + 0.5, z + 0.5), EnumFacing.UP, this.pos);
             itemStack = block.getPickBlock(blockState, rayTraceResult, this.world, this.pos, null);
+
             if (itemStack.isEmpty())
             {
                 return ScriptItemStack.EMPTY;
@@ -830,15 +891,19 @@ public class ScriptWorld implements IScriptWorld
         }
         else
         {
-            itemStack = new ItemStack(itemFromBock, 1, block.getMetaFromState(blockState));
+            itemStack = new ItemStack(itemFromBlock, 1, block.getMetaFromState(blockState));
         }
 
         TileEntity tileEntity = this.world.getTileEntity(this.pos);
+
         if (tileEntity != null)
         {
             NBTTagCompound tileEntityNBT = new NBTTagCompound();
+
             tileEntity.writeToNBT(tileEntityNBT);
+
             NBTTagCompound itemStackNBT = new NBTTagCompound();
+
             itemStackNBT.setTag("BlockEntityTag", tileEntityNBT);
             itemStack.setTagCompound(itemStackNBT);
         }
@@ -847,8 +912,10 @@ public class ScriptWorld implements IScriptWorld
     }
 
     @Override
-    public IScriptEntity shootBBGunProjectile(IScriptEntity shooter, double x, double y, double z, double yaw, double pitch, String gunPropsNbtString) {
-        if (shooter.getMinecraftEntity() instanceof EntityLivingBase && Loader.isModLoaded("blockbuster")) {
+    public IScriptEntity shootBBGunProjectile(IScriptEntity shooter, double x, double y, double z, double yaw, double pitch, String gunPropsNbtString)
+    {
+        if (shooter.getMinecraftEntity() instanceof EntityLivingBase && Loader.isModLoaded("blockbuster"))
+        {
             try
             {
                 return this.shootBBGunProjectileMethod(shooter, x, y, z, yaw, pitch, gunPropsNbtString);
@@ -865,14 +932,19 @@ public class ScriptWorld implements IScriptWorld
     private IScriptEntity shootBBGunProjectileMethod(IScriptEntity shooter, double x, double y, double z, double yaw, double pitch, String gunPropsNbtString) throws NBTException
     {
         EntityLivingBase entityLivingBase = (EntityLivingBase) shooter.getMinecraftEntity();
-        GunProps gunProps = new GunProps( (factory.createCompound(gunPropsNbtString)).getCompound("Gun").getCompound("Projectile").getNBTTagCompound() );
+        GunProps gunProps = new GunProps((factory.createCompound(gunPropsNbtString)).getCompound("Gun").getCompound("Projectile").getNBTTagCompound());
+
         gunProps.fromNBT(factory.createCompound(gunPropsNbtString).getCompound("Gun").getNBTTagCompound());
+
         EntityGunProjectile projectile = new EntityGunProjectile(entityLivingBase.world, gunProps, gunProps.projectileMorph);
+
         projectile.setPosition(x, y, z);
         projectile.shoot(entityLivingBase, (float) pitch, (float) yaw, 0, gunProps.speed, 0);
         projectile.setInitialMotion();
         entityLivingBase.world.spawnEntity(projectile);
+
         IScriptEntity spawnedEntity = ScriptEntity.create(projectile);
+
         return spawnedEntity;
     }
 

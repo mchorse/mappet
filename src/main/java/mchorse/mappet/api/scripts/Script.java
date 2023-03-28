@@ -29,17 +29,23 @@ import java.util.Set;
 public class Script extends AbstractData
 {
     public String code = "";
+
     public boolean unique = true;
+
     public List<String> libraries = new ArrayList<String>();
 
     private ScriptEngine engine;
+
     private List<ScriptRange> ranges;
 
     public Script()
-    {}
+    {
+    }
 
-    public void start(ScriptManager manager) throws ScriptException {
-        if (this.engine == null) {
+    public void start(ScriptManager manager) throws ScriptException
+    {
+        if (this.engine == null)
+        {
             initializeEngine();
             configureEngineContext();
             registerScriptVariables();
@@ -51,8 +57,10 @@ public class Script extends AbstractData
 
             boolean isKotlin = isKotlinEngine();
 
-            for (String library : this.libraries) {
-                if (shouldSkipLibrary(library, alreadyLoaded)) {
+            for (String library : this.libraries)
+            {
+                if (shouldSkipLibrary(library, alreadyLoaded))
+                {
                     continue;
                 }
 
@@ -61,7 +69,9 @@ public class Script extends AbstractData
             }
 
             processScriptCode(isKotlin, uniqueImports, finalCode);
-            if (this.ranges != null) {
+
+            if (this.ranges != null)
+            {
                 this.ranges.add(new ScriptRange(total, this.getId()));
             }
 
@@ -70,10 +80,12 @@ public class Script extends AbstractData
         }
     }
 
-    private void initializeEngine() throws ScriptException {
+    private void initializeEngine() throws ScriptException
+    {
         this.engine = ScriptUtils.getEngineByExtension(this.getScriptExtension());
 
-        if (this.engine == null) {
+        if (this.engine == null)
+        {
             String message = "Looks like Mappet can't find script engine for a \"" + this.getScriptExtension() + "\" file extension.";
             throw new ScriptException(message, this.getId(), -1);
         }
@@ -81,43 +93,53 @@ public class Script extends AbstractData
         this.engine = ScriptUtils.sanitize(this.engine);
     }
 
-    private void configureEngineContext() {
+    private void configureEngineContext()
+    {
         this.engine.getContext().setAttribute("javax.script.filename", this.getId(), ScriptContext.ENGINE_SCOPE);
         this.engine.getContext().setAttribute("polyglot.js.allowHostAccess", true, ScriptContext.ENGINE_SCOPE);
     }
 
-    private void registerScriptVariables() {
+    private void registerScriptVariables()
+    {
         Mappet.EVENT_BUS.post(new RegisterScriptVariablesEvent(this.engine));
     }
 
-    private boolean isKotlinEngine() {
+    private boolean isKotlinEngine()
+    {
         return this.engine.getFactory().getLanguageName().equals("kotlin");
     }
 
-    private boolean shouldSkipLibrary(String library, Set<String> alreadyLoaded) {
+    private boolean shouldSkipLibrary(String library, Set<String> alreadyLoaded)
+    {
         return library.equals(this.getId()) || alreadyLoaded.contains(library);
     }
 
-    private int processLibrary(ScriptManager manager, String library, boolean isKotlin, Set<String> uniqueImports, StringBuilder finalCode, int total) {
-        try {
+    private int processLibrary(ScriptManager manager, String library, boolean isKotlin, Set<String> uniqueImports, StringBuilder finalCode, int total)
+    {
+        try
+        {
             File scriptFile = manager.getScriptFile(library);
             String code = FileUtils.readFileToString(scriptFile, Utils.getCharset());
 
-            if (isKotlin) {
+            if (isKotlin)
+            {
                 code = processKotlinCode(code, uniqueImports);
             }
 
             finalCode.append(code);
             finalCode.append("\n");
 
-            if (this.ranges == null) {
+            if (this.ranges == null)
+            {
                 this.ranges = new ArrayList<ScriptRange>();
             }
 
             this.ranges.add(new ScriptRange(total, library));
 
             total += StringUtils.countMatches(code, "\n") + 1;
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             System.err.println("[Mappet] Script library " + library + ".js failed to load...");
             e.printStackTrace();
         }
@@ -125,14 +147,19 @@ public class Script extends AbstractData
         return total;
     }
 
-    private String processKotlinCode(String code, Set<String> uniqueImports) {
+    private String processKotlinCode(String code, Set<String> uniqueImports)
+    {
         String[] lines = code.split("\n");
         StringBuilder currentCode = new StringBuilder();
 
-        for (String line : lines) {
-            if (line.trim().startsWith("import")) {
+        for (String line : lines)
+        {
+            if (line.trim().startsWith("import"))
+            {
                 uniqueImports.add(line.trim());
-            } else {
+            }
+            else
+            {
                 currentCode.append(line);
                 currentCode.append("\n");
             }
@@ -141,19 +168,27 @@ public class Script extends AbstractData
         return currentCode.toString();
     }
 
-    private void processScriptCode(boolean isKotlin, Set<String> uniqueImports, StringBuilder finalCode) {
-        if (isKotlin) {
+    private void processScriptCode(boolean isKotlin, Set<String> uniqueImports, StringBuilder finalCode)
+    {
+        if (isKotlin)
+        {
             String processedCode = processKotlinCode(this.code, uniqueImports);
             finalCode.insert(0, processedCode);
-        } else {
+        }
+        else
+        {
             finalCode.append(this.code);
         }
     }
 
-    private void evalEngineCode(boolean isKotlin, Set<String> uniqueImports, StringBuilder finalCode) throws ScriptException {
-        if (isKotlin) {
+    private void evalEngineCode(boolean isKotlin, Set<String> uniqueImports, StringBuilder finalCode) throws ScriptException
+    {
+        if (isKotlin)
+        {
             this.engine.eval(String.join("\n", uniqueImports) + "\n" + finalCode.toString());
-        } else {
+        }
+        else
+        {
             this.engine.eval(finalCode.toString());
         }
     }

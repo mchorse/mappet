@@ -253,7 +253,8 @@ public class ScriptNBTCompound implements INBTCompound
             return true;
         }
         catch (Exception e)
-        {}
+        {
+        }
 
         return false;
     }
@@ -316,23 +317,30 @@ public class ScriptNBTCompound implements INBTCompound
     }
 
     @Override
-    public String dumpJSON(){
-        String result = stringify()
-                .replaceAll("([a-zA-Z0-9_]+):", "\"$1\":");
+    public String dumpJSON()
+    {
+        String result = stringify().replaceAll("([a-zA-Z0-9_]+):", "\"$1\":");
 
         Pattern pattern = Pattern.compile("([0-9]+[bLsdf])|0b|1b");
         Matcher matcher = pattern.matcher(result);
         StringBuffer sb = new StringBuffer();
 
-        while (matcher.find()) {
-            if (matcher.group(0).equals("0b")) {
+        while (matcher.find())
+        {
+            if (matcher.group(0).equals("0b"))
+            {
                 matcher.appendReplacement(sb, "false");
-            } else if (matcher.group(0).equals("1b")) {
+            }
+            else if (matcher.group(0).equals("1b"))
+            {
                 matcher.appendReplacement(sb, "true");
-            } else {
+            }
+            else
+            {
                 matcher.appendReplacement(sb, matcher.group(1).substring(0, matcher.group(1).length() - 1));
             }
         }
+
         matcher.appendTail(sb);
 
         return sb.toString();

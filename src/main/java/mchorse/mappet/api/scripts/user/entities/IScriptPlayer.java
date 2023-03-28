@@ -70,7 +70,7 @@ public interface IScriptPlayer extends IScriptEntity
      * }</pre>
      *
      * @param gameMode Player's game mode <code>0</code> is survival, <code>1</code>
-     * is creative, <code>2</code> is adventure , and <code>3</code> is spectator.
+     *                 is creative, <code>2</code> is adventure , and <code>3</code> is spectator.
      */
     public void setGameMode(int gameMode);
 
@@ -378,8 +378,8 @@ public interface IScriptPlayer extends IScriptEntity
      *    player.sendSubtitle("Get into cover!");
      * }</pre>
      *
-     * @param fadeIn How many ticks it will take for title and subtitle to appear.
-     * @param idle For how many ticks will title and subtitle stay after fading in.
+     * @param fadeIn  How many ticks it will take for title and subtitle to appear.
+     * @param idle    For how many ticks will title and subtitle stay after fading in.
      * @param fadeOut How many ticks it will take for title and subtitle to disappear after idling.
      */
     public void sendTitleDurations(int fadeIn, int idle, int fadeOut);
@@ -426,7 +426,7 @@ public interface IScriptPlayer extends IScriptEntity
      *    c.getSubject().setXp(17, 21);
      * }</pre>
      *
-     * @param level Experience level.
+     * @param level  Experience level.
      * @param points Amount of experience points in that particular level.
      */
     public void setXp(int level, int points);
@@ -478,8 +478,11 @@ public interface IScriptPlayer extends IScriptEntity
     /* Hunger */
 
     public void setHunger(int value);
+
     public int getHunger();
+
     public void setSaturation(float value);
+
     public float getSaturation();
 
     /* Sounds */
@@ -730,7 +733,7 @@ public interface IScriptPlayer extends IScriptEntity
     /**
      * Change a morph in a HUD scene at given index with given morph.
      *
-     * @param id HUD scene's ID/filename.
+     * @param id    HUD scene's ID/filename.
      * @param index Index of the morph in the scene that should be changed (0 is the first, and so on).
      */
     public void changeHUDMorph(String id, int index, AbstractMorph morph);
@@ -738,7 +741,7 @@ public interface IScriptPlayer extends IScriptEntity
     /**
      * Change a morph in a HUD scene at given index with a morph described by given NBT data.
      *
-     * @param id HUD scene's ID/filename.
+     * @param id    HUD scene's ID/filename.
      * @param index Index of the morph in the scene that should be changed (0 is the first, and so on).
      * @param morph NBT data of the morph.
      */
@@ -789,7 +792,6 @@ public interface IScriptPlayer extends IScriptEntity
      * <pre>{@code
      * c.getSubject().stopScene();
      * }</pre>
-     *
      */
     public void stopScene();
 }

@@ -6,11 +6,15 @@ import net.minecraft.entity.ai.EntityAIBase;
 public class EntityAIRepeatingCommand extends EntityAIBase
 {
     private Entity entity;
+
     private String command;
+
     private int executionInterval;
+
     private int tickCounter;
 
-    public EntityAIRepeatingCommand(Entity entity, String command, int executionInterval) {
+    public EntityAIRepeatingCommand(Entity entity, String command, int executionInterval)
+    {
         this.entity = entity;
         this.command = command;
         this.executionInterval = executionInterval;
@@ -18,20 +22,24 @@ public class EntityAIRepeatingCommand extends EntityAIBase
     }
 
     @Override
-    public boolean shouldExecute() {
+    public boolean shouldExecute()
+    {
         return true;
     }
 
     @Override
-    public void updateTask() {
+    public void updateTask()
+    {
         tickCounter++;
-        if (tickCounter >= executionInterval) {
+        if (tickCounter >= executionInterval)
+        {
             this.entity.getServer().getCommandManager().executeCommand(this.entity, this.command);
             tickCounter = 0;
         }
     }
 
-    public String getCommand() {
+    public String getCommand()
+    {
         return command;
     }
 }

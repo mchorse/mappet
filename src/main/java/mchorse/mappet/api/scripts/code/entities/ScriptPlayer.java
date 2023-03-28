@@ -56,7 +56,9 @@ import java.util.*;
 public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScriptPlayer
 {
     private IMappetQuests quests;
+
     private IScriptInventory inventory;
+
     private IScriptInventory enderChest;
 
     public ScriptPlayer(EntityPlayerMP entity)
@@ -476,7 +478,8 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     @Override
     public void changeHUDMorph(String id, int index, AbstractMorph morph)
     {
-        if (morph == null) {
+        if (morph == null)
+        {
             return;
         }
 
@@ -486,7 +489,8 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     @Override
     public void changeHUDMorph(String id, int index, INBTCompound morph)
     {
-        if (morph == null) {
+        if (morph == null)
+        {
             return;
         }
 
@@ -494,7 +498,8 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     }
 
     @Override
-    public void closeHUD(String id) {
+    public void closeHUD(String id)
+    {
         Character.get(this.entity).closeHUD(id);
     }
 
@@ -515,7 +520,8 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     /* Aperture API */
 
     @Override
-    public void playScene(String sceneName){
+    public void playScene(String sceneName)
+    {
         if (Loader.isModLoaded("aperture"))
         {
             this.playApertureScene(sceneName, true);
@@ -523,7 +529,8 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     }
 
     @Override
-    public void stopScene(){
+    public void stopScene()
+    {
         if (Loader.isModLoaded("aperture"))
         {
             this.playApertureScene("", false);
@@ -531,7 +538,8 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     }
 
     @Optional.Method(modid = "aperture")
-    private void playApertureScene(String sceneName, boolean toPlay){
+    private void playApertureScene(String sceneName, boolean toPlay)
+    {
         mchorse.aperture.network.Dispatcher.sendTo(new PacketCameraState(sceneName, toPlay), this.entity);
     }
 

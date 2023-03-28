@@ -24,6 +24,7 @@ import java.util.UUID;
 public class ScriptServer implements IScriptServer
 {
     private MinecraftServer server;
+
     private IMappetStates states;
 
     public ScriptServer(MinecraftServer server)
@@ -62,7 +63,8 @@ public class ScriptServer implements IScriptServer
             }
         }
         catch (Exception e)
-        {}
+        {
+        }
 
         return entities;
     }
@@ -111,31 +113,43 @@ public class ScriptServer implements IScriptServer
     }
 
     @Override
-    public boolean entityExists(String uuid) throws IllegalArgumentException {
-        try {
+    public boolean entityExists(String uuid) throws IllegalArgumentException
+    {
+        try
+        {
             UUID parsedUuid = UUID.fromString(uuid);
+
             return this.server.getEntityFromUuid(parsedUuid) != null;
-        } catch (IllegalArgumentException ex) {
+        }
+        catch (IllegalArgumentException ex)
+        {
             throw new IllegalArgumentException("Invalid UUID string: " + uuid, ex);
         }
     }
 
     @Override
-    public void executeScript(String scriptName) {
+    public void executeScript(String scriptName)
+    {
         executeScript(scriptName, "main");
     }
 
     @Override
-    public void executeScript(String scriptName, String function) {
+    public void executeScript(String scriptName, String function)
+    {
         DataContext context = new DataContext(server);
-        try {
+        try
+        {
             Mappet.scripts.execute(scriptName, function, context);
-        } catch (ScriptException e) {
+        }
+        catch (ScriptException e)
+        {
             String fileName = e.getFileName() == null ? scriptName : e.getFileName();
 
             e.printStackTrace();
             throw new RuntimeException("Script Error: " + fileName + " - Line: " + e.getLineNumber() + " - Column: " + e.getColumnNumber() + " - Message: " + e.getMessage(), e);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
             throw new RuntimeException("Script Empty: " + scriptName + " - Error: " + e.getClass().getSimpleName() + ": " + e.getMessage(), e);
         }
