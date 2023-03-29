@@ -1042,7 +1042,7 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
             gunProps.fromNBT(gunPropsNBTCompound);
             EntityGunProjectile projectile = new EntityGunProjectile(entityLivingBase.world, gunProps, gunProps.projectileMorph);
             projectile.setPosition(entityLivingBase.posX, (entityLivingBase.posY + 1.8), entityLivingBase.posZ);
-            projectile.shoot(entityLivingBase, entityLivingBase.rotationPitch, entityLivingBase.rotationYaw, 0, gunProps.speed, 0);
+            projectile.shoot(entityLivingBase, entityLivingBase.rotationPitch, entityLivingBase.getRotationYawHead(), 0, gunProps.speed, 0);
             projectile.setInitialMotion();
             entityLivingBase.world.spawnEntity(projectile);
 
