@@ -59,11 +59,15 @@ public class CommandScriptExec extends CommandScriptBase
             String fileName = e.getFileName() == null ? args[1] : e.getFileName();
 
             e.printStackTrace();
+            Mappet.logger.error(e.getMessage());
+
             throw new CommandException("script.error", fileName, e.getLineNumber(), e.getColumnNumber(), e.getMessage());
         }
         catch (Exception e)
         {
             e.printStackTrace();
+            Mappet.logger.error(e.getMessage());
+
             throw new CommandException("script.empty", args[1], e.getClass().getSimpleName() + ": " + e.getMessage());
         }
     }
