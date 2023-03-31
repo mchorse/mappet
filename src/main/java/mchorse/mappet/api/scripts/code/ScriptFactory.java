@@ -24,6 +24,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagDouble;
 import net.minecraft.nbt.NBTTagInt;
@@ -158,6 +159,10 @@ public class ScriptFactory implements IScriptFactory
         else if (object instanceof Integer)
         {
             return new NBTTagInt((Integer) object);
+        }
+        else if (object instanceof Boolean)
+        {
+            return new NBTTagByte((Boolean)object ? Byte.valueOf("1") : Byte.valueOf("0"));
         }
         else if (object instanceof ScriptObjectMirror)
         {
