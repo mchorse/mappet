@@ -771,7 +771,7 @@ tile.mappet.region.tooltip=Включает заданные события ко
 tile.mappet.condition_model.name=Блок модели с условием
 tile.mappet.condition_model.tooltip=Показывает игроку разные морфы в зависимости от заданных условий
 
-entity.mappet.npc.name=NPC_Маппета
+entity.mappet.npc.name=NPC Маппета
 
 mappet.translation.credit=Перевод за авторством Дюхи Лавского из Moon Studio
 mappet.translation.wiki=Вики

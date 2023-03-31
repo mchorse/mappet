@@ -801,7 +801,7 @@ tile.mappet.region.tooltip=Trigger events when players enter and exit configured
 tile.mappet.condition_model.name=Condition model block
 tile.mappet.condition_model.tooltip=Shows the player different morphs depending on the given conditions
 
-entity.mappet.npc.name=mappet_npc
+entity.mappet.npc.name=Mappet NPC
 
 mappet.translation.credit=Mappet by McHorse, special thanks goes to Andruxioid, Centryfuga and Jvonlins
 mappet.translation.wiki=Wiki

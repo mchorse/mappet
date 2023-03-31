@@ -718,7 +718,7 @@ tile.mappet.trigger.tooltip=Вмикає поставлені події при 
 tile.mappet.region.name=Блок-регіон
 tile.mappet.region.tooltip=Вмикає поставлені події коли гравець заходить та/або виходить в вказаний регіон
 
-entity.mappet.npc.name=NPC_Маппету
+entity.mappet.npc.name=NPC Маппету
 
 mappet.translation.credit=Переклад модифікації зробив Kirkus
 mappet.translation.wiki=Вікі (англійською)

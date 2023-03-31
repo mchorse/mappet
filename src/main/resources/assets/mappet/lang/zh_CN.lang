@@ -750,7 +750,7 @@ tile.mappet.trigger.tooltip=玩家通过左右点击该方块触发事件
 tile.mappet.region.name=区域方块
 tile.mappet.region.tooltip=当玩家进入或离开设置的区域时触发事件
 
-entity.mappet.npc.name=mappet_npc
+entity.mappet.npc.name=Mappet NPC
 
 mappet.translation.credit=本文由 McHorse 摘录
 mappet.translation.wiki=Wiki
