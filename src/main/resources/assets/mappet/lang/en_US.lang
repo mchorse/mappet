@@ -259,8 +259,8 @@ mappet.gui.settings.triggers.descriptions.entity_damaged=This cancelable trigger
 mappet.gui.settings.triggers.variables.entity_damaged=§6damage§r, how many HP this mob/player took of damage.
 
 mappet.gui.settings.triggers.entity_attacked=Entity: attacked
-mappet.gui.settings.triggers.descriptions.entity_attack=This cancelable trigger gets triggered when a mob/a player attacked by another entity.
-mappet.gui.settings.triggers.variables.entity_attack=§6damage§r, how many HP this mob/player took of damage.
+mappet.gui.settings.triggers.descriptions.entity_attacked=This cancelable trigger gets triggered when a mob/a player attacked by another entity.
+mappet.gui.settings.triggers.variables.entity_attacked=§6damage§r, how many HP this mob/player took of damage.
 
 mappet.gui.settings.triggers.entity_death=Entity: death
 mappet.gui.settings.triggers.descriptions.entity_death=This gets triggered when a mob dies.
