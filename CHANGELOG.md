@@ -1,4 +1,46 @@
-## Verson 0.4
+## Version 0.5
+
+This is another HUGE update developed by OtakuGamer and TorayLife! This update features lots of new scripting API methods, global triggers, scripting logs panel and a conditional model block!
+
+**IMPORTANT**: `IScriptEntity.shootBBGunProjectile()` to shoot the projectile with the whole data of the bb-gun settings (e.g. damage, etc.).
+
+**Compatible** with McLib **2.4.1**, Aperture **1.8.1**, Blockbuster **2.6** and Metamorph **1.3.1**. It doesn't mean that future versions of McLib, Blockbuster and Metamorph would be incompatible, but older versions are most likely incompatible.
+
+* Added new global triggers: 
+    * By TorayLife: `Entity: attacked` and `Player: open container`
+    * By OtakuGamer: `Projectile: impact`, `Living: equipment change`, `Mappet: state changed`, and `Living: knockback`
+* Added **logs** panel, which will display script error logs, or records entered by scripts (TorayLife)
+* Added **Condition model block**, which will display different morphs depends on given conditions (TorayLife)
+* Added **Check entities** option to region block (TorayLife)
+* Added **onTick** trigger to region block (TorayLife)
+* Added `/mp script engines` command, which returns list of installed script engines (TorayLife)
+* Added **Look at player** option's range now depends on path finding distance
+* Added more scripting API:
+    * Added `IScriptEvent.scheduleScript(int, Consumer<IScriptEvent>)` overload with Consumer argument, so it works in different engines, such as Kotlin or Python (TorayLife)
+    * Added `IScriptEntity.setName()`, `IScriptEntity.setInvisible()`, `IScriptEntity.moveTo()`, `IScriptEntity.executeCommand()`, `IScriptEntity.executeScript()`, `IScriptEntity.getFactions()`, `IScriptEntity.lockPosition()`, `IScriptEntity.unlockPosition()`, `IScriptEntity.isPositionLocked()`, `IScriptEntity.lockRotation()`, `IScriptEntity.unlockRotation()`, and `IScriptEntity.isRotationLocked()` (OtakuGamer)
+    * Added `IScriptEntity.getMount()` method (TorayLife)
+    * Added `IScriptFactory.getLogger()` method, which returns a `MappetLogger` which can be used to log messages (TorayLife)
+    * Added `IScriptFactory.isPointInBounds()` and `IScriptFactory.toNBT()` (OtakuGamer)
+    * Added `info()`, `debug()`, `warning()`, `error()` methods to MappetLogger (TorayLife)
+    * Added `IScriptWorld.getBlockStackWithTile()`, `IScriptWorld.shootBBGunProjectile()` (OtakuGamer)
+    * Added `IScriptServer.entityExists()` and `IScriptServer.executeScript()` (OtakuGamer)
+    * Added `IScriptNBTCompound.addCompound()` and `IScriptNBTCompound.dumpJSON()` (OtakuGamer)
+    * Added AI methods `IScriptEntity.observe()`, `IScriptEntity.addEntityPatrol()`, `IScriptEntity.clearEntityPatrols()`, `IScriptEntity.setRotationsAI()`, `IScriptEntity.clearRotationsAI()`, `IScriptEntity.executeRepeatingCommand()`, `IScriptEntity.removeRepeatingCommand()`, and `IScriptEntity.clearAllRepeatingCommands()` (OtakuGamer)
+    * Added `IScriptFancyWorld` and moved some `IScriptWorld` methods to it (OtakuGamer)
+    * Added `getFancyWorld()` to `IScriptEvent`, `IScriptServer` and `IScriptEntity` (just like `getWorld()`) (OtakuGamer)
+    * Added `IScriptFancyWorld.explode()`, `IScriptFancyWorld.tpExplode()`, `IScriptFancyWorld.setBlock()`, `IScriptFancyWorld.fill()`, `IScriptFancyWorld.setTileEntity()`, `IScriptFancyWorld.fillTileEntities()`, `IScriptFancyWorld.clone()`, `IScriptFancyWorld.loadSchematic()`, and `IScriptFancyWorld.spawnNpc()` (OtakuGamer)
+    * Added `IScriptPlayer.getDisplayedHUDs()`, `IScriptPlayer.playScene()`, and `IScriptPlayer.stopScene()` (OtakuGamer)
+* Fixed `IScriptFactory.convertToNBT()` method (TorayLife)
+* Fixed `IScriptItemStack.setLore()` method that doesn't add lore if item has no lore (TorayLife)
+* Fixed python errors in console (TorayLife)
+* Fixed python doesn't print unicode characters (TorayLife)
+* Fixed Kotlin libraries issue (OtakuGamer)
+* Improved HUD morphs to persist upon player's relogging (OtakuGamer)
+* Improved `/mp hud *` commands' tab completion (OtakuGamer)
+* Improved interaction events to support Little Tiles mod's doors (OtakuGamer)
+* Updated NPC tool texture, added holiday textures (by TorayLife, textures by 3DMmc)
+
+## Version 0.4
 
 This is a HUGE scripting API update by OtakuGamer with some minor contributions by TorayLife.
 

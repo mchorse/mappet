@@ -437,15 +437,15 @@ public class ScriptFactory implements IScriptFactory
     {
         if (point instanceof Vector2d)
         {
-            return isPointInBounds2D((Vector2d) point, (Vector2d) bound1, (Vector2d) bound2);
+            return this.isPointInBounds2D((Vector2d) point, (Vector2d) bound1, (Vector2d) bound2);
         }
         else if (point instanceof Vector3d)
         {
-            return isPointInBounds3D((Vector3d) point, (Vector3d) bound1, (Vector3d) bound2);
+            return this.isPointInBounds3D((Vector3d) point, (Vector3d) bound1, (Vector3d) bound2);
         }
         else if (point instanceof Vector4d)
         {
-            return isPointInBounds4D((Vector4d) point, (Vector4d) bound1, (Vector4d) bound2);
+            return this.isPointInBounds4D((Vector4d) point, (Vector4d) bound1, (Vector4d) bound2);
         }
         else
         {
@@ -482,7 +482,7 @@ public class ScriptFactory implements IScriptFactory
             return (INBTCompound) object;
         }
 
-        if (object instanceof NBTBase)
+        if (object instanceof NBTTagCompound)
         {
             return new ScriptNBTCompound((NBTTagCompound) object);
         }

@@ -1033,6 +1033,7 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
                 e.printStackTrace();
             }
         }
+
         return null;
     }
 
@@ -1046,15 +1047,15 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
             GunProps gunProps = new GunProps(gunPropsNBTCompound.getCompoundTag("Projectile"));
             gunProps.fromNBT(gunPropsNBTCompound);
             EntityGunProjectile projectile = new EntityGunProjectile(entityLivingBase.world, gunProps, gunProps.projectileMorph);
+
             projectile.setPosition(entityLivingBase.posX, (entityLivingBase.posY + 1.8), entityLivingBase.posZ);
             projectile.shoot(entityLivingBase, entityLivingBase.rotationPitch, entityLivingBase.getRotationYawHead(), 0, gunProps.speed, 0);
             projectile.setInitialMotion();
             entityLivingBase.world.spawnEntity(projectile);
 
-            IScriptEntity spawnedEntity = ScriptEntity.create(projectile);
-            return spawnedEntity;
-
+            return ScriptEntity.create(projectile);
         }
+
         return null;
     }
 

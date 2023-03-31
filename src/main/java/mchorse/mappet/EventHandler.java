@@ -1048,7 +1048,7 @@ public class EventHandler
         }
 
         Trigger trigger = Mappet.settings.onLivingEquipmentChange;
-        
+
         if (!trigger.isEmpty())
         {
             DataContext context = new DataContext(event.getEntity());

@@ -1174,9 +1174,9 @@ public interface IScriptEntity
     public boolean isRotationLocked();
 
     /**
-     * Moves the entity to the specified position (<b>x, y, z</b>)
+     * <p>Moves the entity to the specified position (<b>x, y, z</b>)
      * with the given <b>interpolation type</b> and <b>duration</b>.
-     * The following interpolation types are supported:
+     * The following interpolation types are supported:</p>
      * <ul>
      *     §7<li>linear</li>§r
      *     §7<li>quad_in</li>§r
@@ -1208,9 +1208,9 @@ public interface IScriptEntity
      * </ul>
      *
      * <pre>{@code
-     * var s = c.getSubject();
-     * var pos = s.getPosition();
-     * s.moveTo("quad_out", 30, pos.x, pos.y+2, pos.z);
+     *    var s = c.getSubject();
+     *    var pos = s.getPosition();
+     *    s.moveTo("quad_out", 30, pos.x, pos.y+2, pos.z);
      * }</pre>
      *
      * @param interpolation The interpolation type used for the movement.
@@ -1222,12 +1222,14 @@ public interface IScriptEntity
     public void moveTo(String interpolation, int durationTicks, double x, double y, double z, boolean disableAI);
 
     /* Entity AI */
+
     /**
      * Makes the entity observe the given entity.
      *
      * <pre>{@code
-     * c.getSubject().observe(null); //to stop observing
+     *    c.getSubject().observe(null); //to stop observing
      * }</pre>
+     *
      * @param entity The entity to observe
      */
     public void observe(IScriptEntity entity);
@@ -1240,6 +1242,7 @@ public interface IScriptEntity
      *     s.addEntityPatrol(440, 117, 640, 1, true, "particle heart ~ ~1 ~ 0.2 0.2 0.2 1")
      *     s.addEntityPatrol(444, 117, 640, 1, true, "particle angryVillager ~ ~1 ~ 0.2 0.2 0.2 1")
      * }</pre>
+     *
      * @param x x coordinate
      * @param y y coordinate
      * @param z z coordinate
@@ -1289,6 +1292,7 @@ public interface IScriptEntity
      *
      * <pre>{@code
      *    c.getSubject().removeRepeatingCommand("/tp @s ~ ~2 ~");
+     * }</pre>
      */
     public void removeRepeatingCommand(String command);
 
@@ -1297,6 +1301,7 @@ public interface IScriptEntity
      *
      * <pre>{@code
      *    c.getSubject().clearAllRepeatingCommands();
+     * }</pre>
      */
     public void clearAllRepeatingCommands();
 }
