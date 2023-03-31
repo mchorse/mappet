@@ -138,19 +138,24 @@ public class ScriptItemStack implements IScriptItemStack
     {
         NBTTagCompound tag = this.stack.getTagCompound();
 
-        if (tag != null && tag.hasKey("display", Constants.NBT.TAG_COMPOUND))
+        if (tag == null)
         {
-            NBTTagCompound display = tag.getCompoundTag("display");
-
-            if (!display.hasKey("Lore", Constants.NBT.TAG_LIST))
-            {
-                display.setTag("Lore", new NBTTagList());
-            }
-
-            return display.getTagList("Lore", Constants.NBT.TAG_STRING);
+            return null;
         }
 
-        return null;
+        if (!tag.hasKey("display", Constants.NBT.TAG_COMPOUND))
+        {
+            tag.setTag("display", new NBTTagCompound());
+        }
+
+        NBTTagCompound display = tag.getCompoundTag("display");
+
+        if (!display.hasKey("Lore", Constants.NBT.TAG_LIST))
+        {
+            display.setTag("Lore", new NBTTagList());
+        }
+
+        return display.getTagList("Lore", Constants.NBT.TAG_STRING);
     }
 
     @Override
