@@ -683,6 +683,11 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
         this.entity.dismountRidingEntity();
     }
 
+    public IScriptEntity getMount()
+    {
+        return ScriptEntity.create(this.entity.getRidingEntity());
+    }
+
     @Override
     public IScriptEntity dropItem(int amount)
     {

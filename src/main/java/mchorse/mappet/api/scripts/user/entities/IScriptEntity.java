@@ -740,6 +740,18 @@ public interface IScriptEntity
     public void dismount();
 
     /**
+     * Returns the entity that this entity rides on.
+     *
+     * <pre>{@code
+     *     var s = c.getSubject();
+     *
+     *     s.getMount();
+     * }</pre
+     */
+
+    public IScriptEntity getMount();
+
+    /**
      * Drop the item an entity is holding.
      *
      * <pre>{@code
