@@ -30,6 +30,7 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
     public final Trigger blockInteract;
     public final Trigger blockClick;
     public final Trigger entityDamaged;
+    public final Trigger entityAttacked;
     public final Trigger entityDeath;
     public final Trigger serverLoad;
     public final Trigger serverTick;
@@ -46,6 +47,7 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
     public final Trigger playerItemInteract;
     public final Trigger playerEntityInteract;
     public final Trigger playerCloseContainer;
+    public final Trigger playerOpenContainer;
     public final Trigger playerJournal;
 
     public Trigger register(String key, Trigger trigger)
@@ -79,6 +81,7 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
         this.blockInteract = this.register("block_interact", "interact_block", new Trigger());
         this.blockClick = this.register("block_click", new Trigger());
         this.entityDamaged = this.register("entity_damaged", "damage_entity", new Trigger());
+        this.entityAttacked = this.register("entity_attacked", "attack_entity", new Trigger());
         this.entityDeath = this.register("entity_death", new Trigger());
         this.serverLoad = this.register("server_load", new Trigger());
         this.serverTick = this.register("server_tick", new Trigger());
@@ -94,6 +97,7 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
         this.playerItemInteract = this.register("player_item_interact", new Trigger());
         this.playerEntityInteract = this.register("player_entity_interact", new Trigger());
         this.playerCloseContainer = this.register("player_close_container", new Trigger());
+        this.playerOpenContainer = this.register("player_open_container", new Trigger());
         this.playerJournal = this.register("player_journal", new Trigger());
 
         Mappet.EVENT_BUS.post(new RegisterServerTriggerEvent(this));

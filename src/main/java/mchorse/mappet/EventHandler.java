@@ -42,6 +42,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
@@ -239,12 +240,28 @@ public class EventHandler
     }
 
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
-    public void onPlayerCloseContainer(PlayerContainerEvent.Close event)
+    public void onEntityAttacked(LivingAttackEvent event)
     {
+        DamageSource source = event.getSource();
+
+        if (!Mappet.settings.entityAttacked.isEmpty())
+        {
+            DataContext context = new DataContext(event.getEntityLiving(), source.getTrueSource())
+                    .set("damage", event.getAmount());
+
+            this.trigger(event, Mappet.settings.entityAttacked, context);
+        }
+    }
+
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onPlayerOpenOrCloseContainer(PlayerContainerEvent event)
+    {
+        Trigger trigger = (event instanceof PlayerContainerEvent.Close) ? Mappet.settings.playerCloseContainer : Mappet.settings.playerOpenContainer;
+
         this.playersToCheck.add(event.getEntityPlayer());
 
-        if (Mappet.settings.playerCloseContainer.isEmpty())
+        if (trigger.isEmpty())
         {
             return;
         }
@@ -297,7 +314,7 @@ public class EventHandler
             context.getValues().put("inventory", new ScriptInventory(inventory));
         }
 
-        Mappet.settings.playerCloseContainer.trigger(context);
+        trigger.trigger(context);
     }
 
     @SubscribeEvent

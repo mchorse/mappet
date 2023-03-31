@@ -258,6 +258,10 @@ mappet.gui.settings.triggers.entity_damaged=Entity: hurt
 mappet.gui.settings.triggers.descriptions.entity_damaged=This cancelable trigger gets triggered when a mob/a player gets hurt (damaged).
 mappet.gui.settings.triggers.variables.entity_damaged=§6damage§r, how many HP this mob/player took of damage.
 
+mappet.gui.settings.triggers.entity_attacked=Entity: attacked
+mappet.gui.settings.triggers.descriptions.entity_attack=This cancelable trigger gets triggered when a mob/a player attacked by another entity.
+mappet.gui.settings.triggers.variables.entity_attack=§6damage§r, how many HP this mob/player took of damage.
+
 mappet.gui.settings.triggers.entity_death=Entity: death
 mappet.gui.settings.triggers.descriptions.entity_death=This gets triggered when a mob dies.
 mappet.gui.settings.triggers.variables.entity_death=§7N/A§r
@@ -309,6 +313,10 @@ mappet.gui.settings.triggers.variables.player_item_interact=§7N/A§r
 mappet.gui.settings.triggers.player_entity_interact=Player: interact with an entity
 mappet.gui.settings.triggers.descriptions.player_entity_interact=This cancelable trigger gets triggered when a player right clicks an entity. Subject is the player, and object is the entity that player has interacted with.\n\nDepending on entity interaction handling, this trigger §6might get triggered twice§r for every hand (see variables below). 
 mappet.gui.settings.triggers.variables.player_entity_interact=§6hand§r, the hand that interacted with the entity (§7main§r or §7off§r).
+
+mappet.gui.settings.triggers.player_open_container=Player: open container
+mappet.gui.settings.triggers.descriptions.player_open_container=This gets triggered when a player opens a container screen like chest, ender chest, furnace, crafting table, etc.
+mappet.gui.settings.triggers.variables.player_open_container=§6inventory§r, §7IScriptInventory§r instance of the opened inventory (this is useful only in scripts).\n§6x§r, §6y§r, and §6z§r of the inventory block in the world (only if it was a block).
 
 mappet.gui.settings.triggers.player_close_container=Player: closed container
 mappet.gui.settings.triggers.descriptions.player_close_container=This gets triggered when a player exits a container screen like chest, ender chest, furnace, crafting table, etc.
