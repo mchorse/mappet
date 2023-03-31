@@ -4,6 +4,7 @@ import mchorse.mappet.api.regions.Region;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.utils.PositionCache;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,6 +22,7 @@ import org.apache.commons.lang3.mutable.MutableInt;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -29,7 +31,8 @@ public class TileRegion extends TileEntity implements ITickable
 {
     public Region region = new Region();
 
-    private Set<UUID> players = new HashSet<UUID>(10);
+
+    private Set<UUID> entities = new HashSet<UUID>(10);
     private Map<UUID, MutableInt> delays = new HashMap<UUID, MutableInt>();
     private int tick;
 
@@ -92,33 +95,38 @@ public class TileRegion extends TileEntity implements ITickable
 
     private void checkRegion()
     {
-        for (EntityPlayer player : this.world.playerEntities)
+        List<? extends Entity> list = this.region.checkEntities ? this.world.loadedEntityList : this.world.playerEntities;
+        for (Entity entity : list)
         {
-            boolean enabled = this.region.isEnabled(player);
+            boolean enabled = this.region.isEnabled(entity);
 
             if (!this.region.passable)
             {
                 enabled = !enabled;
             }
 
-            if (player.isSpectator())
+
+            if (entity instanceof EntityPlayer && ((EntityPlayer) entity).isSpectator())
             {
                 continue;
             }
 
-            UUID id = player.getGameProfile().getId();
-            boolean wasInside = this.players.contains(id);
+            //UUID id = entity.getGameProfile().getId();
+            UUID id = entity.getUniqueID();
+            boolean wasInside = this.entities.contains(id);
 
-            if (this.region.isPlayerInside(player, this.getPos()))
+            if (this.region.isPlayerInside(entity, this.getPos()))
             {
                 if (!enabled)
                 {
                     continue;
                 }
 
-                if (!this.region.passable)
+                this.region.triggerTick(entity, this.getPos());
+
+                if (!this.region.passable && entity instanceof EntityPlayer)
                 {
-                    this.handlePassing(player);
+                    this.handlePassing((EntityPlayer) entity);
                 }
                 else if (!wasInside)
                 {
@@ -128,10 +136,10 @@ public class TileRegion extends TileEntity implements ITickable
                     }
                     else
                     {
-                        this.region.triggerEnter(player, this.getPos());
+                        this.region.triggerEnter(entity, this.getPos());
                     }
 
-                    this.players.add(id);
+                    this.entities.add(id);
                 }
             }
             else if (wasInside)
@@ -142,10 +150,10 @@ public class TileRegion extends TileEntity implements ITickable
                 }
                 else
                 {
-                    this.region.triggerExit(player, this.getPos());
+                    this.region.triggerExit(entity, this.getPos());
                 }
 
-                this.players.remove(id);
+                this.entities.remove(id);
             }
         }
     }
@@ -165,7 +173,7 @@ public class TileRegion extends TileEntity implements ITickable
 
         if (vec != null && !this.region.isPlayerInside(vec.x, vec.y + player.height / 2, vec.z, this.getPos()))
         {
-            this.teleportPlayer(player, vec, last);
+            this.teleportEntity(player, vec, last);
 
             cache.resetLastPositionTimer();
 
@@ -176,7 +184,7 @@ public class TileRegion extends TileEntity implements ITickable
 
         if (vec != null && !this.region.isPlayerInside(vec.x, vec.y + player.height / 2, vec.z, this.getPos()))
         {
-            this.teleportPlayer(player, vec, last);
+            this.teleportEntity(player, vec, last);
 
             cache.resetLastPositionTimer();
 
@@ -212,17 +220,17 @@ public class TileRegion extends TileEntity implements ITickable
             player.posY = y;
             player.posZ = z;
 
-            this.teleportPlayer(player, vec, last);
+            this.teleportEntity(player, vec, last);
         }
 
         cache.resetLastPositionTimer();
     }
 
-    private void teleportPlayer(EntityPlayer player, Vec3d vec, Vec3d last)
+    private void teleportEntity(Entity entity, Vec3d vec, Vec3d last)
     {
-        player.setPositionAndUpdate(vec.x, vec.y, vec.z);
+        entity.setPositionAndUpdate(vec.x, vec.y, vec.z);
 
-        Vec3d motion = last.subtract(player.getPositionVector()).scale(-0.5);
+        Vec3d motion = last.subtract(entity.getPositionVector()).scale(-0.5);
 
         if (motion.distanceTo(Vec3d.ZERO) < 0.5 * 0.5)
         {
@@ -231,7 +239,7 @@ public class TileRegion extends TileEntity implements ITickable
 
         double y = Math.abs(motion.y) < 0.01 ? 0.2 : motion.y;
 
-        ((EntityPlayerMP) player).connection.sendPacket(new SPacketEntityVelocity(player.getEntityId(), motion.x, y, motion.z));
+        ((EntityPlayerMP) entity).connection.sendPacket(new SPacketEntityVelocity(entity.getEntityId(), motion.x, y, motion.z));
     }
 
     /* Rendering related stuff */

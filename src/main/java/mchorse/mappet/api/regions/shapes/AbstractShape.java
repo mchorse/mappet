@@ -1,6 +1,6 @@
 package mchorse.mappet.api.regions.shapes;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -39,17 +39,17 @@ public abstract class AbstractShape implements INBTSerializable<NBTTagCompound>
         this.pos.set(shape.pos);
     }
 
-    public boolean isPlayerInside(EntityPlayer player, BlockPos tile)
+    public boolean isEntityInside(Entity entity, BlockPos tile)
     {
         if (this.pos == null)
         {
             return false;
         }
 
-        return this.isPlayerInside(player.posX, (player.posY + player.height / 2), player.posZ, tile);
+        return this.isEntityInside(entity.posX, (entity.posY + entity.height / 2), entity.posZ, tile);
     }
 
-    public boolean isPlayerInside(double x, double y, double z, BlockPos tile)
+    public boolean isEntityInside(double x, double y, double z, BlockPos tile)
     {
         if (this.pos == null)
         {

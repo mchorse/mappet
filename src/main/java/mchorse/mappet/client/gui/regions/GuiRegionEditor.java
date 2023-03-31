@@ -25,8 +25,11 @@ public class GuiRegionEditor extends GuiElement
     public GuiCheckerElement enabled;
     public GuiTrackpadElement delay;
     public GuiTrackpadElement update;
+    public GuiToggleElement checkEntities;
     public GuiTriggerElement onEnter;
     public GuiTriggerElement onExit;
+
+    public GuiTriggerElement onTick;
 
     public GuiToggleElement writeState;
     public GuiElement stateOptions;
@@ -47,8 +50,11 @@ public class GuiRegionEditor extends GuiElement
         this.enabled = new GuiCheckerElement(mc);
         this.delay = new GuiTrackpadElement(mc, (value) -> this.region.delay = value.intValue()).limit(0).integer();
         this.update = new GuiTrackpadElement(mc, (value) -> this.region.update = value.intValue()).limit(1).integer();
+        this.checkEntities = new GuiToggleElement(mc, IKey.lang("mappet.gui.region.check_entities"), (b) -> this.region.checkEntities = b.isToggled());
+
         this.onEnter = new GuiTriggerElement(mc);
         this.onExit = new GuiTriggerElement(mc);
+        this.onTick = new GuiTriggerElement(mc);
 
         this.writeState = new GuiToggleElement(mc, IKey.lang("mappet.gui.region.write_states"), (b) -> this.toggleStates());
         this.stateOptions = Elements.column(mc, 5);
@@ -71,11 +77,13 @@ public class GuiRegionEditor extends GuiElement
         this.shapes = Elements.column(mc, 5);
 
         this.add(this.passable);
+        this.add(this.checkEntities);
         this.add(Elements.label(IKey.lang("mappet.gui.region.enabled")).marginTop(6), this.enabled);
         this.add(Elements.label(IKey.lang("mappet.gui.region.delay")).marginTop(12), this.delay);
         this.add(Elements.label(IKey.lang("mappet.gui.region.update")).marginTop(12), this.update);
         this.add(Elements.label(IKey.lang("mappet.gui.region.on_enter")).background().marginTop(12).marginBottom(5), this.onEnter);
         this.add(Elements.label(IKey.lang("mappet.gui.region.on_exit")).background().marginTop(12).marginBottom(5), this.onExit);
+        this.add(Elements.label(IKey.lang("mappet.gui.region.on_tick")).background().marginTop(12).marginBottom(5), this.onTick);
 
         this.add(this.writeState.marginTop(12));
         this.add(this.stateOptions);
@@ -124,11 +132,13 @@ public class GuiRegionEditor extends GuiElement
         if (region != null)
         {
             this.passable.toggled(region.passable);
+            this.checkEntities.toggled(region.checkEntities);
             this.enabled.set(region.enabled);
             this.delay.setValue(region.delay);
             this.update.setValue(region.update);
             this.onEnter.set(region.onEnter);
             this.onExit.set(region.onExit);
+            this.onTick.set(region.onTick);
 
             this.shapes.removeAll();
 
