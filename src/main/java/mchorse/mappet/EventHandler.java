@@ -59,7 +59,11 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
-import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
+import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -75,7 +79,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.lang.reflect.Field;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class EventHandler
@@ -257,12 +267,28 @@ public class EventHandler
     }
 
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
-    public void onPlayerCloseContainer(PlayerContainerEvent.Close event)
+    public void onEntityAttacked(LivingAttackEvent event)
     {
+        DamageSource source = event.getSource();
+
+        if (!Mappet.settings.entityAttacked.isEmpty())
+        {
+            DataContext context = new DataContext(event.getEntityLiving(), source.getTrueSource())
+                    .set("damage", event.getAmount());
+
+            this.trigger(event, Mappet.settings.entityAttacked, context);
+        }
+    }
+
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onPlayerOpenOrCloseContainer(PlayerContainerEvent event)
+    {
+        Trigger trigger = (event instanceof PlayerContainerEvent.Close) ? Mappet.settings.playerCloseContainer : Mappet.settings.playerOpenContainer;
+
         this.playersToCheck.add(event.getEntityPlayer());
 
-        if (Mappet.settings.playerCloseContainer.isEmpty())
+        if (trigger.isEmpty())
         {
             return;
         }
@@ -316,7 +342,7 @@ public class EventHandler
             context.getValues().put("inventory", new ScriptInventory(inventory));
         }
 
-        Mappet.settings.playerCloseContainer.trigger(context);
+        trigger.trigger(context);
     }
 
     @SubscribeEvent
@@ -561,18 +587,20 @@ public class EventHandler
 
         Entity source = event.getSource().getTrueSource();
         Trigger trigger = event.getEntity() instanceof EntityPlayer
-                ? Mappet.settings.playerDeath
-                : Mappet.settings.entityDeath;
+            ? Mappet.settings.playerDeath
+            : Mappet.settings.entityDeath;
 
         if (!trigger.isEmpty())
         {
             DataContext context = new DataContext(event.getEntityLiving(), source);
+
             if (source != null)
             {
                 context.getValues().put("killer", ScriptEntity.create(source));
             }
 
             Entity thrower = null;
+
             if (source instanceof EntityThrowable)
             {
                 thrower = ((EntityThrowable) event.getEntity()).getThrower();
@@ -646,8 +674,7 @@ public class EventHandler
             }
         }
         catch (Exception e)
-        {
-        }
+        {}
         return entities;
     }
 
@@ -966,9 +993,9 @@ public class EventHandler
         }
 
         DataContext context = new DataContext(target, attacker)
-                .set("strength", event.getStrength())
-                .set("ratioX", event.getRatioX())
-                .set("ratioZ", event.getRatioZ());
+            .set("strength", event.getStrength())
+            .set("ratioX", event.getRatioX())
+            .set("ratioZ", event.getRatioZ());
         context.getValues().put("attacker", ScriptEntity.create(attacker));
 
         this.trigger(event, Mappet.settings.livingKnockBack, context);
@@ -1021,6 +1048,7 @@ public class EventHandler
         }
 
         Trigger trigger = Mappet.settings.onLivingEquipmentChange;
+        
         if (!trigger.isEmpty())
         {
             DataContext context = new DataContext(event.getEntity());
