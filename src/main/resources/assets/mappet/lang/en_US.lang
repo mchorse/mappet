@@ -47,6 +47,8 @@ mappet.info.factions.changed=§fFaction score by ID §7%s§f was §7%s§r, and i
 mappet.info.data.cleared=§fGlobal states and player states were cleared.
 mappet.info.data.cleared_inventory=§fGlobal states, player states and inventories were cleared.
 
+mappet.info.scripts.engines=§fEngines found: §7%s.
+
 # Success
 mappet.success.quest.accepted=§fQuest by ID §7%s§f was given to player §7%s§f.
 mappet.success.quest.completed=§fQuest by ID §7%s§f was force completed by player §7%s§f.
@@ -103,6 +105,7 @@ mappet.commands.mp.data.save=Saves global states, and current player's states an
 mappet.commands.mp.script.help=Scripts subcommand.
 mappet.commands.mp.script.eval=This command executes JS code snippet provided in §7<code...>§r. Variable §7c§r is provided which is a §7IScriptEvent§r which has either player subject (if the command was executed from player) or with server.
 mappet.commands.mp.script.exec=This command executes script by §7<id>§r (from world's §7mappet/scripts/§r folder, without file extension) upon player(s) or server (if §7~§r was provided) found by §7<target>§r selector. Script's §7[function]§r (§7main§r if omitted) function will be called. You can also pass arbitrary NBT data to the event using §7[data]§r argument.
+mappet.commands.mp.script.engines=This command returns a list of found script engines.
 
 mappet.commands.mp.hud.help=HUD scenes management command.
 mappet.commands.mp.hud.close=Closes an HUD scene by §7[id]§r of all players found by §7<target>§r selector. If player(s) didn't have such HUD scene by §7[id]§r nothing will happen. If §7[id]§r was omitted, then all HUD scenes will be removed from players by §7<target>§r selector.
