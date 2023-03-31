@@ -1,6 +1,7 @@
 package mchorse.mappet.client.gui;
 
 import mchorse.mappet.client.RenderingHandler;
+import mchorse.mappet.client.gui.panels.GuiConditionModelPanel;
 import mchorse.mappet.client.gui.panels.GuiCraftingTablePanel;
 import mchorse.mappet.client.gui.panels.GuiDialoguePanel;
 import mchorse.mappet.client.gui.panels.GuiEventPanel;
@@ -39,6 +40,7 @@ public class GuiMappetDashboard extends GuiAbstractDashboard
     public GuiEventPanel event;
     public GuiDialoguePanel dialogue;
     public GuiRegionPanel region;
+    public GuiConditionModelPanel conditionModel;
     public GuiNpcPanel npc;
     public GuiFactionPanel faction;
     public GuiQuestChainPanel chain;
@@ -108,6 +110,7 @@ public class GuiMappetDashboard extends GuiAbstractDashboard
         this.event = new GuiEventPanel(mc, this);
         this.dialogue = new GuiDialoguePanel(mc, this);
         this.region = new GuiRegionPanel(mc, this);
+        this.conditionModel = new GuiConditionModelPanel(mc, this);
         this.npc = new GuiNpcPanel(mc, this);
         this.faction = new GuiFactionPanel(mc, this);
         this.chain = new GuiQuestChainPanel(mc, this);
@@ -121,6 +124,7 @@ public class GuiMappetDashboard extends GuiAbstractDashboard
         this.panels.registerPanel(this.event, IKey.lang("mappet.gui.panels.events"), Icons.FILE);
         this.panels.registerPanel(this.dialogue, IKey.lang("mappet.gui.panels.dialogues"), Icons.BUBBLE);
         this.panels.registerPanel(this.region, IKey.lang("mappet.gui.panels.regions"), Icons.FULLSCREEN);
+        this.panels.registerPanel(this.conditionModel, IKey.lang("mappet.gui.panels.condition_models"), Icons.BLOCK);
         this.panels.registerPanel(this.npc, IKey.lang("mappet.gui.panels.npcs"), Icons.PROCESSOR);
         this.panels.registerPanel(this.faction, IKey.lang("mappet.gui.panels.factions"), Icons.BOOKMARK);
         this.panels.registerPanel(this.chain, IKey.lang("mappet.gui.panels.chains"), Icons.FOLDER);

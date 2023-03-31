@@ -1,6 +1,7 @@
 package mchorse.mappet.network;
 
 import mchorse.mappet.Mappet;
+import mchorse.mappet.network.client.blocks.ClientHandlerEditConditionModel;
 import mchorse.mappet.network.client.blocks.ClientHandlerEditEmitter;
 import mchorse.mappet.network.client.blocks.ClientHandlerEditRegion;
 import mchorse.mappet.network.client.blocks.ClientHandlerEditTrigger;
@@ -29,6 +30,7 @@ import mchorse.mappet.network.client.scripts.ClientHandlerWorldMorph;
 import mchorse.mappet.network.client.ui.ClientHandlerCloseUI;
 import mchorse.mappet.network.client.ui.ClientHandlerUI;
 import mchorse.mappet.network.client.ui.ClientHandlerUIData;
+import mchorse.mappet.network.common.blocks.PacketEditConditionModel;
 import mchorse.mappet.network.common.blocks.PacketEditEmitter;
 import mchorse.mappet.network.common.blocks.PacketEditRegion;
 import mchorse.mappet.network.common.blocks.PacketEditTrigger;
@@ -72,6 +74,7 @@ import mchorse.mappet.network.common.scripts.PacketWorldMorph;
 import mchorse.mappet.network.common.ui.PacketCloseUI;
 import mchorse.mappet.network.common.ui.PacketUI;
 import mchorse.mappet.network.common.ui.PacketUIData;
+import mchorse.mappet.network.server.blocks.ServerHandlerEditConditionModel;
 import mchorse.mappet.network.server.blocks.ServerHandlerEditEmitter;
 import mchorse.mappet.network.server.blocks.ServerHandlerEditRegion;
 import mchorse.mappet.network.server.blocks.ServerHandlerEditTrigger;
@@ -140,6 +143,9 @@ public class Dispatcher
 
             this.register(PacketEditRegion.class, ClientHandlerEditRegion.class, Side.CLIENT);
             this.register(PacketEditRegion.class, ServerHandlerEditRegion.class, Side.SERVER);
+
+            this.register(PacketEditConditionModel.class, ClientHandlerEditConditionModel.class, Side.CLIENT);
+            this.register(PacketEditConditionModel.class, ServerHandlerEditConditionModel.class, Side.SERVER);
 
             /* Creative editing */
             this.register(PacketContentRequestNames.class, ServerHandlerContentRequestNames.class, Side.SERVER);

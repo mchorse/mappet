@@ -15,6 +15,7 @@ import mchorse.mappet.api.quests.chains.QuestChainManager;
 import mchorse.mappet.api.scripts.ScriptManager;
 import mchorse.mappet.api.states.States;
 import mchorse.mappet.api.utils.DataContext;
+import mchorse.mappet.blocks.BlockConditionModel;
 import mchorse.mappet.blocks.BlockEmitter;
 import mchorse.mappet.blocks.BlockRegion;
 import mchorse.mappet.blocks.BlockTrigger;
@@ -78,6 +79,7 @@ public final class Mappet
     public static BlockEmitter emitterBlock;
     public static BlockTrigger triggerBlock;
     public static BlockRegion regionBlock;
+    public static BlockConditionModel conditionModelBlock;
 
     public static CreativeTabs creativeTab = new CreativeTabs(MOD_ID)
     {

@@ -208,6 +208,7 @@ mappet.gui.panels.events_run=Trigger event
 mappet.gui.panels.dialogues=Dialogues
 mappet.gui.panels.dialogues_run=Open dialogue
 mappet.gui.panels.regions=Regions
+mappet.gui.panels.condition_models=Condition models
 mappet.gui.panels.npcs=NPCs
 mappet.gui.panels.factions=Factions
 mappet.gui.panels.chains=Quest chains
@@ -401,12 +402,14 @@ mappet.gui.crafting.info.empty=Select or create a crafting table in the list on 
 mappet.gui.crafting.info.empty_recipe=Select or create a new crafting recipe in the list on the left...
 mappet.gui.crafting.keys.craft=Craft %s
 
-mappet.gui.region.passable=Passable
+mappet.gui.region.passable=Passable for players
+mappet.gui.region.check_entities=Check entities
 mappet.gui.region.enabled=Enabled
 mappet.gui.region.delay=Trigger delay
 mappet.gui.region.update=Update frequency
-mappet.gui.region.on_enter=On player enter trigger
-mappet.gui.region.on_exit=On player exit trigger
+mappet.gui.region.on_enter=On player/entity enter trigger
+mappet.gui.region.on_exit=On player/entity exit trigger
+mappet.gui.region.on_tick=On player/entity tick trigger
 mappet.gui.region.shapes=Shapes
 mappet.gui.region.offset=Offset
 mappet.gui.region.box_size=Half size
@@ -419,6 +422,17 @@ mappet.gui.region.additive_tooltip=Instead of adding §71§r upon entering, and 
 mappet.gui.region.once=Once
 mappet.gui.region.once_tooltip=When enabled, this region block will work only the first time it gets triggered (or more specifically, before the state was written).\n\nAdditive mode §lmust be enabled§r for this feature to work how you intend it.
 mappet.gui.region.context.remove=Remove this shape
+
+mappet.gui.conditionModel.global=Global
+mappet.gui.conditionModel.shadow=Shadow
+mappet.gui.conditionModel.frequency=Frequency
+mappet.gui.conditionModel.list=Models list
+mappet.gui.conditionModel.add=Add
+mappet.gui.conditionModel.remove=Remove
+mappet.gui.conditionModel.move_up=Move up
+mappet.gui.conditionModel.move_down=Move down
+mappet.gui.conditionModel.info.empty=Select a condition model block in the list on the right, or interact with any condition model blocks in the world, to start editing...
+
 
 mappet.gui.nodes.node.title=Title
 mappet.gui.nodes.event.binary=Binary
@@ -773,6 +787,8 @@ tile.mappet.trigger.name=Trigger block
 tile.mappet.trigger.tooltip=Trigger events from player right and left clicking the block
 tile.mappet.region.name=Region block
 tile.mappet.region.tooltip=Trigger events when players enter and exit configured region
+tile.mappet.condition_model.name=Condition model block
+tile.mappet.condition_model.tooltip=Shows the player different morphs depending on the given conditions
 
 entity.mappet.npc.name=mappet_npc
 
