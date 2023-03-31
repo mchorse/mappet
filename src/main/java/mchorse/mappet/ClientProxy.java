@@ -7,11 +7,13 @@ import mchorse.mappet.client.SoundPack;
 import mchorse.mappet.client.gui.scripts.highlights.Highlighters;
 import mchorse.mappet.client.gui.scripts.themes.Themes;
 import mchorse.mappet.client.renders.entity.RenderNpc;
+import mchorse.mappet.client.renders.tile.TileConditionModelRenderer;
 import mchorse.mappet.client.renders.tile.TileRegionRenderer;
 import mchorse.mappet.client.renders.tile.TileTriggerRenderer;
 import mchorse.mappet.entities.EntityNpc;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.content.PacketContentRequestNames;
+import mchorse.mappet.tile.TileConditionModel;
 import mchorse.mappet.tile.TileRegion;
 import mchorse.mappet.tile.TileTrigger;
 import mchorse.mclib.McLib;
@@ -69,6 +71,7 @@ public class ClientProxy extends CommonProxy
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileTrigger.class, new TileTriggerRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileRegion.class, new TileRegionRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileConditionModel.class, new TileConditionModelRenderer());
 
         RenderingRegistry.registerEntityRenderingHandler(EntityNpc.class, new RenderNpc.Factory());
 

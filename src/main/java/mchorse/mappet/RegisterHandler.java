@@ -9,6 +9,7 @@ import mchorse.mappet.api.npcs.NpcManager;
 import mchorse.mappet.api.quests.QuestManager;
 import mchorse.mappet.api.quests.chains.QuestChainManager;
 import mchorse.mappet.api.scripts.ScriptManager;
+import mchorse.mappet.blocks.BlockConditionModel;
 import mchorse.mappet.blocks.BlockEmitter;
 import mchorse.mappet.blocks.BlockRegion;
 import mchorse.mappet.blocks.BlockTrigger;
@@ -16,6 +17,7 @@ import mchorse.mappet.client.KeyboardHandler;
 import mchorse.mappet.client.RenderingHandler;
 import mchorse.mappet.entities.EntityNpc;
 import mchorse.mappet.items.ItemNpcTool;
+import mchorse.mappet.tile.TileConditionModel;
 import mchorse.mappet.tile.TileEmitter;
 import mchorse.mappet.tile.TileRegion;
 import mchorse.mappet.tile.TileTrigger;
@@ -82,6 +84,7 @@ public class RegisterHandler
         event.getRegistry().register(Mappet.emitterBlock = new BlockEmitter());
         event.getRegistry().register(Mappet.triggerBlock = new BlockTrigger());
         event.getRegistry().register(Mappet.regionBlock = new BlockRegion());
+        event.getRegistry().register(Mappet.conditionModelBlock = new BlockConditionModel());
     }
 
     @SubscribeEvent
@@ -102,6 +105,10 @@ public class RegisterHandler
         event.getRegistry().register(new ItemBlock(Mappet.regionBlock)
             .setRegistryName(new ResourceLocation(Mappet.MOD_ID, "region"))
             .setUnlocalizedName(Mappet.MOD_ID + ".region"));
+
+        event.getRegistry().register(new ItemBlock(Mappet.conditionModelBlock)
+                .setRegistryName(new ResourceLocation(Mappet.MOD_ID, "condition_model"))
+                .setUnlocalizedName(Mappet.MOD_ID + ".condition_model"));
     }
 
     @SubscribeEvent
@@ -117,6 +124,7 @@ public class RegisterHandler
         GameRegistry.registerTileEntity(TileEmitter.class, Mappet.MOD_ID + ":emitter");
         GameRegistry.registerTileEntity(TileTrigger.class, Mappet.MOD_ID + ":trigger");
         GameRegistry.registerTileEntity(TileRegion.class, Mappet.MOD_ID + ":region");
+        GameRegistry.registerTileEntity(TileConditionModel.class, Mappet.MOD_ID + ":condition_model");
     }
 
     @SubscribeEvent
@@ -128,6 +136,7 @@ public class RegisterHandler
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(Mappet.emitterBlock), 0, new ModelResourceLocation(Mappet.MOD_ID + ":emitter", "inventory"));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(Mappet.triggerBlock), 0, new ModelResourceLocation(Mappet.MOD_ID + ":trigger", "inventory"));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(Mappet.regionBlock), 0, new ModelResourceLocation(Mappet.MOD_ID + ":region", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(Mappet.conditionModelBlock), 0, new ModelResourceLocation(Mappet.MOD_ID + ":condition_model", "inventory"));
     }
 
     public ModelResourceLocation getNpcToolTexture()
