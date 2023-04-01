@@ -1,6 +1,7 @@
 {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/mappet",
     "1.12.2": {
+        "0.5.1": "This patch update features Entity attacked trigger by TorayLife.",
         "0.5": "This is another HUGE update developed by OtakuGamer and TorayLife! This update features lots of new scripting API methods, global triggers, scripting logs panel and a conditional model block!",
         "0.4": "This is a HUGE scripting API update by OtakuGamer with some minor contributions by TorayLife.",
         "0.3.1": "This patch hot fix fixes global triggers and scripts (TorayLife).",
@@ -18,7 +19,7 @@
         "0.1-alpha": "This first release provides tons of features: states, conditions, expressions, emitter block, trigger block, region block, crafting tables, quests, NPCs, factions, events, scripts, dialogues, quest chains, many commands, custom sound events, target selectors, global triggers, and much more."
     },
     "promos": {
-        "1.12.2-latest": "0.5",
-        "1.12.2-recommended": "0.5"
+        "1.12.2-latest": "0.5.1",
+        "1.12.2-recommended": "0.5.1"
     }
 }
