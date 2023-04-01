@@ -271,13 +271,16 @@ public class EventHandler
     {
         DamageSource source = event.getSource();
 
-        if (!Mappet.settings.entityAttacked.isEmpty())
+        if (event.getEntity().world.isRemote || Mappet.settings.entityAttacked.isEmpty())
         {
-            DataContext context = new DataContext(event.getEntityLiving(), source.getTrueSource())
-                    .set("damage", event.getAmount());
-
-            this.trigger(event, Mappet.settings.entityAttacked, context);
+          return;
         }
+
+        DataContext context = new DataContext(event.getEntityLiving(), source.getTrueSource())
+                .set("damage", event.getAmount());
+
+        this.trigger(event, Mappet.settings.entityAttacked, context);
+
     }
 
     @SubscribeEvent
