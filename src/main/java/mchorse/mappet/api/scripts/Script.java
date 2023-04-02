@@ -82,7 +82,14 @@ public class Script extends AbstractData
 
     private void initializeEngine() throws ScriptException
     {
-        this.engine = ScriptUtils.getEngineByExtension(this.getScriptExtension());
+        String extension = this.getScriptExtension();
+
+        if (extension.equals("kts"))
+        {
+            System.setProperty("kotlin.jsr223.experimental.resolve.dependencies.from.context.classloader", "true");
+        }
+
+        this.engine = ScriptUtils.getEngineByExtension(extension);
 
         if (this.engine == null)
         {
