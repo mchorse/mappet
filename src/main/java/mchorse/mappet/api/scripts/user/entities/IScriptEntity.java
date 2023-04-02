@@ -1094,10 +1094,10 @@ public interface IScriptEntity
     /**
      * Execute for the entity a script with a given script name.
      *
-     *< pre>{@code
+     *<pre>{@code
      *    c.getSubject().executeScript("example_script.js", "custom_function");
-     * @param function   The name of the function within the script to execute.
      * }</pre>
+     * @param function The name of the function within the script to execute.
      */
     public void executeScript(String scriptName, String function);
 
