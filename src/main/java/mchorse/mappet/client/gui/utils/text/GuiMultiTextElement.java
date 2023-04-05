@@ -36,32 +36,45 @@ import java.util.stream.Collectors;
 public class GuiMultiTextElement <T extends TextLine> extends GuiElement implements IFocusedGuiElement, ITextColoring
 {
     public ScrollArea horizontal = new ScrollArea();
+
     public ScrollArea vertical = new ScrollArea();
 
     public Consumer<String> callback;
 
     /* Visual properties */
     private boolean background;
+
     protected int padding = 10;
+
     protected int lineHeight = 12;
+
     protected int textColor = 0xffffff;
+
     protected boolean textShadow;
+
     protected boolean wrapping;
 
     /* Editing */
     private boolean focused;
+
     private int dragging;
+
     protected List<T> text = new ArrayList<T>();
+
     public final Cursor cursor = new Cursor();
+
     public final Cursor selection = new Cursor(-1, 0);
 
     /* Last mouse position */
     private int lastMX;
+
     private int lastMY;
+
     private long lastClick;
 
     /* Callback update (to avoid joining a huge array of text every keystroke) */
     private long update;
+
     private long lastUpdate;
 
     private StringGroup lastGroup;
@@ -1306,6 +1319,21 @@ public class GuiMultiTextElement <T extends TextLine> extends GuiElement impleme
 
             return true;
         }
+        else if (ctrl && context.keyCode == Keyboard.KEY_D)
+        {
+            this.deselect();
+            String copy = this.text.get(this.cursor.line).text;
+            this.moveCursorToLineEnd();
+            this.writeNewLine();
+            this.moveCursorToLineStart();
+
+            this.writeString(copy);
+
+            undo.ready().post(copy + "\n" + copy, this.cursor, this.selection);
+            this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE);
+
+            return true;
+        }
         /* Text input */
         else if (context.keyCode == Keyboard.KEY_TAB)
         {
@@ -1534,7 +1562,8 @@ public class GuiMultiTextElement <T extends TextLine> extends GuiElement impleme
     }
 
     protected void drawForeground(GuiContext context)
-    {}
+    {
+    }
 
     /**
      * Handle dragging scrollbars and selecting text
