@@ -201,12 +201,8 @@ public class EventHandler
 
         trigger.trigger(context);
 
-        if (context.isCanceled())
+        if (event.isCancelable() && context.isCanceled())
         {
-            if (event instanceof LivingEquipmentChangeEvent)
-            {
-                return; //otherwise game crashes
-            }
             event.setCanceled(true);
         }
     }
