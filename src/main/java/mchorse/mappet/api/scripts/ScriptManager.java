@@ -6,10 +6,12 @@ import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.manager.BaseManager;
 import mchorse.mappet.utils.ScriptUtils;
 import mchorse.mappet.utils.Utils;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import org.apache.commons.io.FileUtils;
 
 import javax.script.ScriptEngine;
@@ -60,17 +62,22 @@ public class ScriptManager extends BaseManager<Script>
             {
                 context = new DataContext((MinecraftServer) key);
             }
+            else if (key instanceof EntityLiving)
+            {
+                context = new DataContext((EntityLiving) key);
+            }
+            else
+            {
+                MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+                context = new DataContext(server);
+            }
 
             engine.put("____manager____", this);
             engine.put("mappet", new ScriptFactory());
 
-            if (context != null)
-            {
-                ScriptEvent event = new ScriptEvent(context, "", "");
-
-                engine.put("c", event);
-                engine.put("s", event.getSubject());
-            }
+            ScriptEvent event = new ScriptEvent(context, "", "");
+            engine.put("c", event);
+            engine.put("s", event.getSubject());
 
             engine.eval("var __p__ = print; print = function(message) { ____manager____.replPrint(message); __p__(message); };");
 

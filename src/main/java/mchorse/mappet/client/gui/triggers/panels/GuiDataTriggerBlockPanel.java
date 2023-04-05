@@ -22,6 +22,10 @@ public abstract class GuiDataTriggerBlockPanel <T extends DataTriggerBlock> exte
         );
         this.data.tooltip(IKey.lang("mappet.gui.nodes.event.data_tooltip"));
         this.data.setText(block.customData);
+    }
+
+    public void addData()
+    {
         this.add(Elements.label(IKey.lang("mappet.gui.nodes.event.data")).marginTop(12), this.data);
     }
 }

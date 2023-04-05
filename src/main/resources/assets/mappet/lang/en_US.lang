@@ -678,6 +678,7 @@ mappet.gui.triggers.title=Trigger editor
 mappet.gui.triggers.frequency=Frequency
 mappet.gui.triggers.function=Function
 mappet.gui.triggers.script.function_tooltip=Script entry function (§7main§r is default function name)
+mappet.gui.triggers.script.inline=Inline
 mappet.gui.triggers.morph.morph=Morph into %s
 mappet.gui.triggers.morph.demorph=Demorph
 mappet.gui.triggers.context.add=Add a trigger...
