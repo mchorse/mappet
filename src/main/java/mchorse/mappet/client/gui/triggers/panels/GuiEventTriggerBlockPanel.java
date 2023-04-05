@@ -11,7 +11,8 @@ public class GuiEventTriggerBlockPanel extends GuiDataTriggerBlockPanel<EventTri
     public GuiEventTriggerBlockPanel(Minecraft mc, GuiTriggerOverlayPanel overlay, EventTriggerBlock block)
     {
         super(mc, overlay, block);
-
+        this.addPicker();
+        this.addData();
         this.addDelay();
     }
 

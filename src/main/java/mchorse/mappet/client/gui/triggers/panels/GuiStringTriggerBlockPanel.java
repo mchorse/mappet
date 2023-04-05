@@ -17,9 +17,12 @@ public abstract class GuiStringTriggerBlockPanel <T extends StringTriggerBlock> 
         super(mc, overlay, block);
 
         this.picker = new GuiButtonElement(mc, this.getLabel(), (b) -> this.openOverlay());
-        this.add(this.picker);
     }
 
+    public void addPicker()
+    {
+        this.add(this.picker);
+    }
     protected abstract IKey getLabel();
 
     protected abstract ContentType getType();
