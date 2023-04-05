@@ -7,7 +7,6 @@ import mchorse.mappet.api.events.EventManager;
 import mchorse.mappet.api.expressions.ExpressionManager;
 import mchorse.mappet.api.factions.FactionManager;
 import mchorse.mappet.api.huds.HUDManager;
-import mchorse.mappet.api.utils.logs.MappetLogger;
 import mchorse.mappet.api.misc.ServerSettings;
 import mchorse.mappet.api.npcs.NpcManager;
 import mchorse.mappet.api.quests.QuestManager;
@@ -15,6 +14,7 @@ import mchorse.mappet.api.quests.chains.QuestChainManager;
 import mchorse.mappet.api.scripts.ScriptManager;
 import mchorse.mappet.api.states.States;
 import mchorse.mappet.api.utils.DataContext;
+import mchorse.mappet.api.utils.logs.MappetLogger;
 import mchorse.mappet.blocks.BlockConditionModel;
 import mchorse.mappet.blocks.BlockEmitter;
 import mchorse.mappet.blocks.BlockRegion;
@@ -53,13 +53,14 @@ import java.util.logging.Handler;
 
 /**
  * Mappet mod
- * 
+ * <p>
  * Adventure map toolset mod
  */
 @Mod(modid = Mappet.MOD_ID, name = "Mappet", version = Mappet.VERSION, dependencies = "required-after:mclib@[%MCLIB%,);required-after:metamorph@[%METAMORPH%,);after:blockbuster@[%BLOCKBUSTER%,);after:aperture@[%APERTURE%,);", updateJSON = "https://raw.githubusercontent.com/mchorse/mappet/master/version.json")
 public final class Mappet
 {
     public static final String MOD_ID = "mappet";
+
     public static final String VERSION = "0.1";
 
     @Mod.Instance
@@ -69,6 +70,7 @@ public final class Mappet
     public static CommonProxy proxy;
 
     public static L10n l10n = new L10n(MOD_ID);
+
     public static final EventBus EVENT_BUS = new EventBus();
 
     public static MappetLogger logger;
@@ -77,8 +79,11 @@ public final class Mappet
     public static Item npcTool;
 
     public static BlockEmitter emitterBlock;
+
     public static BlockTrigger triggerBlock;
+
     public static BlockRegion regionBlock;
+
     public static BlockConditionModel conditionModelBlock;
 
     public static CreativeTabs creativeTab = new CreativeTabs(MOD_ID)
@@ -92,39 +97,64 @@ public final class Mappet
 
     /* Server side data */
     public static ServerSettings settings;
+
     public static States states;
+
     public static QuestManager quests;
+
     public static CraftingManager crafting;
+
     public static EventManager events;
+
     public static DialogueManager dialogues;
+
     public static ExpressionManager expressions;
+
     public static NpcManager npcs;
+
     public static FactionManager factions;
+
     public static DataManager data;
+
     public static QuestChainManager chains;
+
     public static ScriptManager scripts;
+
     public static HUDManager huds;
 
     /* Configuration */
     public static ValueBoolean generalDataCaching;
 
     public static ValueBoolean npcsPeacefulDamage;
+
     public static ValueBoolean npcsToolOnlyOP;
+
     public static ValueBoolean npcsToolOnlyCreative;
+
     public static ValueBoolean dashboardOnlyCreative;
 
     public static ValueInt eventMaxExecutions;
+
     public static ValueBoolean eventUseServerForCommands;
 
+    public static ValueBoolean enableForgeTriggers;
+
     public static ValueInt nodePulseBackgroundColor;
+
     public static ValueBoolean nodePulseBackgroundMcLibPrimary;
+
     public static ValueInt nodeThickness;
+
     public static ValueBoolean questsPreviewRewards;
+
     public static ValueInt journalButtonX;
+
     public static ValueInt journalButtonY;
 
     public static ValueSyntaxStyle scriptEditorSyntaxStyle;
+
     public static ValueBoolean scriptEditorSounds;
+
     public static ValueBoolean scriptUIDebug;
 
     public Mappet()
@@ -139,11 +169,13 @@ public final class Mappet
 
         builder.category("general").register(new ValueButtons("buttons").clientSide());
         generalDataCaching = builder.getBoolean("data_caching", true);
+        enableForgeTriggers = builder.getBoolean("enable_forge_triggers", false);
 
         npcsPeacefulDamage = builder.category("npc").getBoolean("peaceful_damage", true);
         npcsToolOnlyOP = builder.getBoolean("tool_only_op", true);
         npcsToolOnlyCreative = builder.getBoolean("tool_only_creative", false);
         dashboardOnlyCreative = builder.getBoolean("dashboard_only_creative", false);
+
 
         eventMaxExecutions = builder.category("events").getInt("max_executions", 10000, 100, 1000000);
         eventUseServerForCommands = builder.getBoolean("use_server_for_commands", false);
@@ -240,6 +272,8 @@ public final class Mappet
 
         ScriptUtils.initiateScriptEngines();
         scripts.initiateAllScripts();
+
+        EventHandler.getRegisteredEvents();
     }
 
     @Mod.EventHandler

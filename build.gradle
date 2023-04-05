@@ -49,6 +49,7 @@ dependencies {
     compileOnly files("run/libs/metamorph-${metamorph}-${project.minecraft.version}-dev.jar")
     compileOnly files("run/libs/mclib-${mclib}-${project.minecraft.version}-dev.jar")
     compileOnly files("run/libs/aperture-${aperture}-${project.minecraft.version}-dev.jar")
+    implementation 'org.reflections:reflections:0.10.2'
 }
 
 processResources

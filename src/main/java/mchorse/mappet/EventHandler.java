@@ -49,14 +49,18 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerChest;
 import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.ServerChatEvent;
+import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -68,14 +72,17 @@ import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.reflections.Reflections;
 
 import java.lang.reflect.Field;
 import java.time.Instant;
@@ -123,6 +130,8 @@ public class EventHandler
      * triggering the player respawn trigger when player logs in)
      */
     private Set<UUID> loggedInPlayers = new HashSet<UUID>();
+
+    private static Set<Class<? extends Event>> registeredEvents = new HashSet<>();
 
     private int skinCounter;
 
@@ -202,6 +211,70 @@ public class EventHandler
         }
     }
 
+    /* Universal forge event handler */
+    @SubscribeEvent
+    public void onAnyEvent(Event event)
+    {
+        if (!Mappet.enableForgeTriggers.get())
+        {
+            return;
+        }
+
+        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+
+        if (server == null || Mappet.settings == null)
+        {
+            return;
+        }
+
+        if (event instanceof TickEvent && ((TickEvent) event).side == Side.CLIENT)
+        {
+            return;
+        }
+
+        if (event instanceof EntityEvent && (((EntityEvent) event).getEntity() == null || ((EntityEvent) event).getEntity().world.isRemote))
+        {
+            return;
+        }
+
+        if (event instanceof WorldEvent && ((WorldEvent) event).getWorld().isRemote)
+        {
+            return;
+        }
+
+
+        String name = getEventClassName(event.getClass());
+        Trigger trigger = Mappet.settings.registeredForgeTriggers.get(name);
+
+        if (trigger == null || trigger.isEmpty())
+        {
+            return;
+        }
+
+        this.trigger(event, trigger, new DataContext(server));
+    }
+
+    public static String getEventClassName(Class<? extends Event> clazz)
+    {
+        return  clazz.getName().replace("$", ".");
+    }
+
+    public static Set<Class<? extends Event>> getRegisteredEvents()
+    {
+        if (Mappet.enableForgeTriggers.get() && (registeredEvents == null || registeredEvents.isEmpty()))
+        {
+            Reflections reflections = new Reflections();
+            registeredEvents = reflections.getSubTypesOf(Event.class).stream()
+                    .filter(clazz -> !(FMLNetworkEvent.class.isAssignableFrom(clazz)))
+                    .filter(clazz -> clazz != Event.class)
+                    .filter(clazz -> clazz != CommandEvent.class)
+                    .filter(clazz -> !(TextureStitchEvent.class.isAssignableFrom(clazz)))
+                    .collect(Collectors.toSet());
+        }
+
+        return registeredEvents;
+    }
+
     /* Server trigger handlers */
 
     @SubscribeEvent
@@ -273,7 +346,7 @@ public class EventHandler
 
         if (event.getEntity().world.isRemote || Mappet.settings.entityAttacked.isEmpty())
         {
-          return;
+            return;
         }
 
         DataContext context = new DataContext(event.getEntityLiving(), source.getTrueSource())
@@ -590,8 +663,8 @@ public class EventHandler
 
         Entity source = event.getSource().getTrueSource();
         Trigger trigger = event.getEntity() instanceof EntityPlayer
-            ? Mappet.settings.playerDeath
-            : Mappet.settings.entityDeath;
+                ? Mappet.settings.playerDeath
+                : Mappet.settings.entityDeath;
 
         if (!trigger.isEmpty())
         {
@@ -677,7 +750,8 @@ public class EventHandler
             }
         }
         catch (Exception e)
-        {}
+        {
+        }
         return entities;
     }
 
@@ -996,9 +1070,9 @@ public class EventHandler
         }
 
         DataContext context = new DataContext(target, attacker)
-            .set("strength", event.getStrength())
-            .set("ratioX", event.getRatioX())
-            .set("ratioZ", event.getRatioZ());
+                .set("strength", event.getStrength())
+                .set("ratioX", event.getRatioX())
+                .set("ratioZ", event.getRatioZ());
         context.getValues().put("attacker", ScriptEntity.create(attacker));
 
         this.trigger(event, Mappet.settings.livingKnockBack, context);

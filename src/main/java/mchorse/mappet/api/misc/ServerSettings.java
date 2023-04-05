@@ -20,38 +20,66 @@ import java.util.Map;
 public class ServerSettings implements INBTSerializable<NBTTagCompound>
 {
     private File file;
+
     private Map<String, String> keyToAlias = new HashMap<String, String>();
 
     public final Map<String, Trigger> registered = new LinkedHashMap<String, Trigger>();
+
+    public final Map<String, Trigger> registeredForgeTriggers = new LinkedHashMap<String, Trigger>();
+
     public final TriggerHotkeys hotkeys = new TriggerHotkeys();
 
     public final Trigger blockBreak;
+
     public final Trigger blockPlace;
+
     public final Trigger blockInteract;
+
     public final Trigger blockClick;
+
     public final Trigger entityDamaged;
+
     public final Trigger entityAttacked;
+
     public final Trigger entityDeath;
+
     public final Trigger serverLoad;
+
     public final Trigger serverTick;
 
     /* Player triggers */
     public final Trigger playerChat;
+
     public final Trigger playerLogIn;
+
     public final Trigger playerLogOut;
+
     public final Trigger playerLeftClick;
+
     public final Trigger playerRightClick;
+
     public final Trigger playerRespawn;
+
     public final Trigger playerDeath;
+
     public final Trigger playerItemPickup;
+
     public final Trigger playerItemInteract;
+
     public final Trigger playerEntityInteract;
+
     public final Trigger playerCloseContainer;
+
     public final Trigger playerOpenContainer;
+
     public final Trigger playerJournal;
+
     public final Trigger livingKnockBack;
+
     public final Trigger projectileImpact;
+
     public final Trigger onLivingEquipmentChange;
+
     public final Trigger stateChanged;
 
     public Trigger register(String key, Trigger trigger)
@@ -139,7 +167,8 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
                         hotkeys.delete();
                     }
                     catch (Exception e)
-                    {}
+                    {
+                    }
                 }
             }
 
@@ -181,6 +210,18 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
             tag.setTag("Triggers", triggers);
         }
 
+        NBTTagCompound forgeTriggers = new NBTTagCompound();
+
+        for (Map.Entry<String, Trigger> entry : this.registeredForgeTriggers.entrySet())
+        {
+            this.writeTrigger(forgeTriggers, entry.getKey(), entry.getValue());
+        }
+
+        if (!forgeTriggers.hasNoTags())
+        {
+            tag.setTag("ForgeTriggers", forgeTriggers);
+        }
+
         tag.setTag("Hotkeys", this.hotkeys.serializeNBT());
 
         return tag;
@@ -218,6 +259,20 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
                 {
                     this.readTrigger(triggers, entry.getKey(), entry.getValue());
                 }
+            }
+        }
+
+        if (tag.hasKey("ForgeTriggers"))
+        {
+            this.registeredForgeTriggers.clear();
+
+            NBTTagCompound forgeTriggers = tag.getCompoundTag("ForgeTriggers");
+
+            for (String key : forgeTriggers.getKeySet())
+            {
+                Trigger trigger = new Trigger();
+                trigger.deserializeNBT(forgeTriggers.getCompoundTag(key));
+                this.registeredForgeTriggers.put(key, trigger);
             }
         }
 

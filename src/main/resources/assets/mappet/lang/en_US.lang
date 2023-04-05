@@ -127,6 +127,9 @@ mappet.config.general.tooltip=General mod options
 mappet.config.general.data_caching=Data caching
 mappet.config.comments.general.data_caching=Whether data should be cached instead of being read from files every time.
 
+mappet.config.general.enable_forge_triggers=Enable forge triggers
+mappet.config.comments.general.enable_forge_triggers=Whether to enable forge triggers. \n\n§c§lATTENTION!§r\n\nThis feature is dangerous and can §c§lbreak your world§r. Use only if you know what you are doing, at your own risk.
+
 mappet.config.npc.title=NPCs
 mappet.config.npc.tooltip=Mod options related to NPCs
 
@@ -341,6 +344,15 @@ mappet.gui.settings.triggers.variables.state_changed=§6entity§r, the player/NP
 mappet.gui.settings.triggers.living_knockback=Living: knockback
 mappet.gui.settings.triggers.descriptions.living_knockback=This cancelable trigger gets triggered when a mob/a player gets knocked back.
 mappet.gui.settings.triggers.variables.living_knockback=§6strength§r, the strength of the knockback (float), §6ratioX§r, the ratio of the knockback on X axis (float), §6ratioZ§r, the ratio of the knockback on Z axis (float).
+
+mappet.gui.settings.forge.add=Add custom forge trigger
+mappet.gui.settings.forge.add_from_list=Add forge trigger from event list
+mappet.gui.settings.forge.remove=Remove chosen forge event
+mappet.gui.settings.forge_title=Forge triggers
+mappet.gui.settings.toggle_triggers=Toggle Global/Forge triggers
+mappet.gui.settings.forge.attention=Use §6RMB§r to add/remove forge trigger. \n\n§c§lATTENTION!§r\n\nThis feature is dangerous and can §c§lbreak your world§r. Use only if you know what you are doing, at your own risk.
+mappet.gui.settings.forge.pick=Pick forge event
+mappet.gui.settings.forge.disabled=Forge triggers disabled by config
 
 mappet.gui.quests.cancelable=Cancelable
 mappet.gui.quests.instant=Instant
