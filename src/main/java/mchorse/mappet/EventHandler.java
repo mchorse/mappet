@@ -211,14 +211,14 @@ public class EventHandler
     @SubscribeEvent
     public void onAnyEvent(Event event)
     {
-        if (!Mappet.enableForgeTriggers.get())
+        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+
+        if (server == null || Mappet.settings == null)
         {
             return;
         }
 
-        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-
-        if (server == null || Mappet.settings == null)
+        if (!Mappet.enableForgeTriggers.get())
         {
             return;
         }
