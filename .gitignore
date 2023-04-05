@@ -17,6 +17,8 @@ out
 build
 .gradle
 
+gradle/wrapper/gradle-wrapper.properties
+
 # other
 eclipse
 run
