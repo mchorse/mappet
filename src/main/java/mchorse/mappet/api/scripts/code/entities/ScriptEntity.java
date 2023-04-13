@@ -49,6 +49,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityTracker;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAITasks;
+import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.item.EntityItem;
@@ -68,6 +69,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.Optional;
 
 import javax.script.ScriptException;
@@ -1228,6 +1230,42 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
             }
         }
     }
+
+    public IScriptEntity getObservedEntity() {
+        if (this.entity instanceof EntityLiving) {
+            EntityLiving entityLiving = (EntityLiving) this.entity;
+
+            for (EntityAITasks.EntityAITaskEntry task : entityLiving.tasks.taskEntries) {
+                Entity target = null;
+
+                if (task.action instanceof EntityAILookAtTarget) {
+                    EntityAILookAtTarget lookAtTask = (EntityAILookAtTarget) task.action;
+                    target = lookAtTask.getTarget();
+                } else if (task.action instanceof EntityAIWatchClosest) {
+                    EntityAIWatchClosest watchClosestTask = (EntityAIWatchClosest) task.action;
+                    target = getEntityFromWatchClosest(watchClosestTask);
+                }
+
+                if (target != null) {
+                    return ScriptEntity.create(target);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private Entity getEntityFromWatchClosest(EntityAIWatchClosest watchClosestTask) {
+        Entity target = null;
+        try {
+            target = ObfuscationReflectionHelper.getPrivateValue(EntityAIWatchClosest.class, watchClosestTask, "field_75334_a", "closestEntity");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return target;
+    }
+
 
     @Override
     public void addEntityPatrol(double x, double y, double z, double speed, boolean shouldCirculate, String executeCommandOnArrival)

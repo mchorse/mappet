@@ -62,4 +62,9 @@ public class EntityAILookAtTarget extends EntityAIBase
         this.entity.getLookHelper().setLookPosition(this.target.posX, this.target.posY + (double) this.target.getEyeHeight(), this.target.posZ, (float) this.entity.getHorizontalFaceSpeed(), (float) this.entity.getVerticalFaceSpeed());
         this.lookTime--;
     }
+
+    public Entity getTarget()
+    {
+        return this.target;
+    }
 }
