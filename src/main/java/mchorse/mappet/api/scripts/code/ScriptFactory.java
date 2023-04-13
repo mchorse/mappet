@@ -95,6 +95,10 @@ public class ScriptFactory implements IScriptFactory
         return ScriptBlockState.create(null);
     }
 
+    public IScriptBlockState createBlockState(String blockId){
+        return createBlockState(blockId, -1);
+    }
+
     @Override
     public INBTCompound createCompound(String nbt)
     {

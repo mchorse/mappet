@@ -7,6 +7,7 @@ import mchorse.mappet.api.scripts.code.mappet.MappetQuests;
 import mchorse.mappet.api.scripts.code.mappet.MappetUIBuilder;
 import mchorse.mappet.api.scripts.code.mappet.MappetUIContext;
 import mchorse.mappet.api.scripts.code.nbt.ScriptNBTCompound;
+import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
@@ -41,6 +42,7 @@ import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.network.play.server.SPacketHeldItemChange;
 import net.minecraft.network.play.server.SPacketTitle;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.GameType;
@@ -138,6 +140,25 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     public void executeCommand(String command)
     {
         this.entity.world.getMinecraftServer().getCommandManager().executeCommand(this.entity, command);
+    }
+
+    @Override
+    public void setSpawnPoint(double x, double y, double z)
+    {
+        this.entity.setSpawnPoint(new BlockPos(x, y, z), true);
+    }
+
+    @Override
+    public ScriptVector getSpawnPoint()
+    {
+        BlockPos pos = this.entity.getBedLocation(this.entity.dimension);
+
+        if (pos == null)
+        {
+            pos = this.entity.world.getSpawnPoint();
+        }
+
+        return new ScriptVector(pos.getX(), pos.getY(), pos.getZ());
     }
 
     @Override
