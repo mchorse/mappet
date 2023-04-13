@@ -717,15 +717,15 @@ public class ScriptWorld implements IScriptWorld
         int yCentre = (yMin + yMax) / 2;
         int zCentre = (zMin + zMax) / 2;
 
-        //to-do: make this process on server start
-        File path = new File("saves/" + this.world.getWorldInfo().getWorldName() + "/mappet/schematics");
+        File worldDirectory = this.world.getSaveHandler().getWorldDirectory();
+        File path = new File(worldDirectory, "mappet/schematics");
 
         if (!path.exists())
         {
             path.mkdirs();
         }
 
-        File file = new File("saves/" + this.world.getWorldInfo().getWorldName() + "/mappet/schematics/" + name + ".nbt");
+        File file = new File(path, name + ".nbt");
 
         try
         {
@@ -802,7 +802,9 @@ public class ScriptWorld implements IScriptWorld
     @Deprecated
     public void loadSchematic(String name, int x, int y, int z)
     {
-        File file = new File("saves/" + this.world.getWorldInfo().getWorldName() + "/mappet/schematics/" + name + ".nbt");
+        File worldDirectory = this.world.getSaveHandler().getWorldDirectory();
+        File path = new File(worldDirectory, "mappet/schematics");
+        File file = new File(path, name + ".nbt");
 
         if (file.exists())
         {
@@ -846,7 +848,9 @@ public class ScriptWorld implements IScriptWorld
     @Deprecated
     public INBTCompound serializeSchematic(String name)
     {
-        File file = new File("saves/" + this.world.getWorldInfo().getWorldName() + "/mappet/schematics/" + name + ".nbt");
+        File worldDirectory = this.world.getSaveHandler().getWorldDirectory();
+        File path = new File(worldDirectory, "mappet/schematics");
+        File file = new File(path, name + ".nbt");
 
         if (file.exists())
         {
