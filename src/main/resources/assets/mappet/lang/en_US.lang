@@ -129,6 +129,8 @@ mappet.config.comments.general.data_caching=Whether data should be cached instea
 
 mappet.config.general.enable_forge_triggers=Enable forge triggers
 mappet.config.comments.general.enable_forge_triggers=Whether to enable forge triggers. \n\n§c§lATTENTION!§r\n\nThis feature is dangerous and can §c§lbreak your world§r. Use only if you know what you are doing, at your own risk.
+mappet.config.general.load_custom_sounds_on_login=Reload all custom sounds on login
+mappet.config.comments.general.load_custom_sounds_on_login=When enabled, reloads all custom sounds when the player logs in.
 
 mappet.config.npc.title=NPCs
 mappet.config.npc.tooltip=Mod options related to NPCs
