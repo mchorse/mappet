@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts.user.entities;
 
+import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
@@ -113,6 +114,25 @@ public interface IScriptPlayer extends IScriptEntity
      * }</pre>
      */
     public void executeCommand(String command);
+
+    /**
+     * Sets the player's spawn point.
+     *
+     * <pre>{@code
+     *   c.getSubject().setSpawnPoint(0, 0, 0);
+     * }</pre>
+     */
+    public void setSpawnPoint(double x, double y, double z);
+
+    /**
+     * Gets the player's spawn point.
+     *
+     * <pre>{@code
+     *   var spawnPoint = c.getSubject().getSpawnPoint();
+     *   c.send("Spawn point: " + spawnPoint.x + ", " + spawnPoint.y + ", " + spawnPoint.z);
+     * }</pre>
+     */
+    public ScriptVector getSpawnPoint();
 
     /**
      * Returns if the player is flying.

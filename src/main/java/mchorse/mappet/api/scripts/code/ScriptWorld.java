@@ -524,9 +524,8 @@ public class ScriptWorld implements IScriptWorld
                 model.setMorph(morph);
 
                 PacketModifyModelBlock message = new PacketModifyModelBlock(model.getPos(), model, true);
-                NetworkRegistry.TargetPoint point = new NetworkRegistry.TargetPoint(this.world.provider.getDimension(), x, y, z, 64);
 
-                mchorse.blockbuster.network.Dispatcher.DISPATCHER.get().sendToAllAround(message, point);
+                mchorse.blockbuster.network.Dispatcher.DISPATCHER.get().sendToAll(message);
             }
         }
         catch (Exception e)
