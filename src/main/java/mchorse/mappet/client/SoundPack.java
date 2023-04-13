@@ -2,7 +2,9 @@ package mchorse.mappet.client;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import mchorse.mappet.CommonProxy;
 import mchorse.mappet.utils.Utils;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.client.resources.data.IMetadataSection;
@@ -18,6 +20,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 
 /**
@@ -91,6 +96,19 @@ public class SoundPack implements IResourcePack
         }
 
         return object;
+    }
+
+    public static List<String> getCustomSoundEvents() {
+        List<String> soundEvents = new ArrayList<>();
+        File soundsFolder = new File(CommonProxy.configFolder, "sounds");
+        SoundPack soundPack = new SoundPack(soundsFolder);
+        JsonObject soundJson = soundPack.generateJson(soundsFolder, "", new JsonObject());
+
+        for (Entry<String, JsonElement> entry : soundJson.entrySet()) {
+            soundEvents.add("mp.sounds:" + entry.getKey());
+        }
+
+        return soundEvents;
     }
 
     @Override

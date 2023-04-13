@@ -16,6 +16,7 @@ import mchorse.mappet.api.scripts.code.items.ScriptInventory;
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
+import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.triggers.Trigger;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.IExecutable;
@@ -24,6 +25,7 @@ import mchorse.mappet.capabilities.character.CharacterProvider;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.client.KeyboardHandler;
 import mchorse.mappet.client.RenderingHandler;
+import mchorse.mappet.client.SoundPack;
 import mchorse.mappet.commands.data.CommandDataClear;
 import mchorse.mappet.entities.EntityNpc;
 import mchorse.mappet.entities.utils.MappetNpcRespawnManager;
@@ -34,6 +36,7 @@ import mchorse.mappet.network.common.huds.PacketHUDScene;
 import mchorse.mappet.network.common.quests.PacketQuest;
 import mchorse.mappet.network.common.quests.PacketQuests;
 import mchorse.mappet.network.common.scripts.PacketClick;
+import mchorse.mappet.utils.RunnableExecutionFork;
 import mchorse.mclib.utils.ReflectionUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -563,6 +566,20 @@ public class EventHandler
             {
                 // Send the PacketHUDScene for each HUDScene
                 Dispatcher.sendTo(new PacketHUDScene(id, scene.serializeNBT()), player);
+            }
+        }
+
+        // play sounds for the player if he has config "reload all sounds on log in" set to true
+        if (Mappet.loadCustomSoundsOnLogin.get())
+        {
+            IScriptPlayer scriptPlayer = new ScriptPlayer(player);
+            for (String sound : SoundPack.getCustomSoundEvents())
+            {
+                scriptPlayer.playStaticSound(sound, 0.000000001f, 1);
+                CommonProxy.eventHandler.addExecutable(new RunnableExecutionFork(1, () ->
+                {
+                    scriptPlayer.stopSound(sound);
+                }));
             }
         }
 
