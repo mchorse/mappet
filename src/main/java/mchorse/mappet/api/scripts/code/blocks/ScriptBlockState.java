@@ -52,7 +52,8 @@ public class ScriptBlockState implements IScriptBlockState
     @Override
     public boolean isSame(IScriptBlockState state)
     {
-        return this.state == ((ScriptBlockState) state).state;
+        ScriptBlockState otherState = (ScriptBlockState) state;
+        return this.state.getBlock() == otherState.state.getBlock() && this.getMeta() == otherState.getMeta();
     }
 
     @Override

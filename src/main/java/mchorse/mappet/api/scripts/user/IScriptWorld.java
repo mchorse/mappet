@@ -3,6 +3,7 @@ package mchorse.mappet.api.scripts.user;
 import mchorse.mappet.api.scripts.code.mappet.MappetSchematic;
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.blocks.IScriptTileEntity;
+import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntityItem;
 import mchorse.mappet.api.scripts.user.entities.IScriptNpc;
@@ -15,6 +16,7 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 
+import javax.vecmath.Vector3d;
 import java.util.List;
 
 /**
@@ -72,6 +74,19 @@ public interface IScriptWorld
     public IScriptBlockState getBlock(int x, int y, int z);
 
     /**
+     * Get block state at given XYZ.
+     *
+     * <pre>{@code
+     *    var block = c.getWorld().getBlock(mappet.vector3(214, 3, 509));
+     *
+     *    c.send("Block at (214, 3, 509) is " + block.getBlockId());
+     * }</pre>
+     *
+     * @return a block state at given XYZ, or null if the chunk isn't loaded
+     */
+    public IScriptBlockState getBlock(ScriptVector pos);
+
+    /**
      * Whether a tile entity is present at given XYZ.
      *
      * <pre>{@code
@@ -84,6 +99,35 @@ public interface IScriptWorld
      * }</pre>
      */
     public boolean hasTileEntity(int x, int y, int z);
+
+    /**
+     * Replace all blocks in the given area with the given block state.
+     *
+     * <pre>{@code
+     * c.getWorld().replaceBlocks(
+     *    mappet.createBlockState("minecraft:dirt", 0),
+     *    mappet.createBlockState("minecraft:dirt", 1),
+     *    mappet.vector3(214, 3, 509),
+     *    mappet.vector3(214, 3, 509)
+     * );
+     * }</pre>
+     */
+    public void replaceBlocks(IScriptBlockState blockToBeReplaced, IScriptBlockState newBlock, Vector3d pos1, Vector3d pos2);
+
+    /**
+     * Replace all blocks in the given area with the given block state and tile entity data.
+     *
+     * <pre>{@code
+     * c.getWorld().replaceBlocks(
+     *    mappet.createBlockState("minecraft:dirt", 0),
+     *    mappet.createBlockState("blockbuster:model", 0),
+     *    mappet.createCompound('{Morph:{Settings:{Hands:1b},Name:"blockbuster.fred"},id:"minecraft:blockbuster_model_tile_entity"}'),
+     *    mappet.vector3(171, 61, 279),
+     *    mappet.vector3(176, 64, 276)
+     * );
+     * }</pre>
+     */
+    public void replaceBlocks(IScriptBlockState blockToBeReplaced, IScriptBlockState newBlock, INBTCompound tileData, Vector3d pos1, Vector3d pos2);
 
     /**
      * Get tile entity at given XYZ.
@@ -671,7 +715,11 @@ public interface IScriptWorld
      * Sets a tile entity.
      *
      * <pre>{@code
-     * c.getWorld().setTileEntity(530, 152, 546, mappet.createBlockState("blockbuster:model", 0),mappet.createCompound('{,Morph:{Settings:{Hands:1b},Name:"blockbuster.fred"},id:"minecraft:blockbuster_model_tile_entity"}');
+     * c.getWorld().setTileEntity(
+     *     530, 152, 546,
+     *     mappet.createBlockState("blockbuster:model", 0),
+     *     mappet.createCompound('{Morph:{Settings:{Hands:1b},Name:"blockbuster.fred"},id:"minecraft:blockbuster_model_tile_entity"}')
+     * );
      *   }</pre>
      *
      * @param x X coordinate
@@ -684,7 +732,7 @@ public interface IScriptWorld
      * Fills a range with tile entities.
      *
      * <pre>{@code
-     * c.getWorld().fillTileEntities(530, 152, 546, mappet.createBlockState("blockbuster:model", 0),mappet.createCompound('{,Morph:{Settings:{Hands:1b},Name:"blockbuster.fred"},id:"minecraft:blockbuster_model_tile_entity"}');
+     * c.getWorld().fillTileEntities(530, 152, 546, mappet.createBlockState("blockbuster:model", 0), mappet.createCompound('{Morph:{Settings:{Hands:1b},Name:"blockbuster.fred"},id:"minecraft:blockbuster_model_tile_entity"}'));
      *   }</pre>
      *
      * @param x1 X coordinate
