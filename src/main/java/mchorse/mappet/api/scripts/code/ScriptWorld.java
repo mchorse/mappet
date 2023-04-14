@@ -22,6 +22,7 @@ import mchorse.mappet.api.scripts.user.IScriptRayTrace;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.blocks.IScriptTileEntity;
+import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntityItem;
 import mchorse.mappet.api.scripts.user.entities.IScriptNpc;
@@ -71,6 +72,7 @@ import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
+import javax.vecmath.Vector3d;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -104,7 +106,7 @@ public class ScriptWorld implements IScriptWorld
             return;
         }
 
-        this.world.setBlockState(this.pos, state.getMinecraftBlockState());
+        this.world.setBlockState(this.pos, state.getMinecraftBlockState(), 2|4);
     }
 
     @Override
@@ -121,6 +123,12 @@ public class ScriptWorld implements IScriptWorld
     }
 
     @Override
+    public IScriptBlockState getBlock(ScriptVector pos)
+    {
+        return getBlock((int) pos.x, (int) pos.y, (int) pos.z);
+    }
+
+    @Override
     public boolean hasTileEntity(int x, int y, int z)
     {
         if (!this.world.isBlockLoaded(this.pos.setPos(x, y, z)))
@@ -129,6 +137,47 @@ public class ScriptWorld implements IScriptWorld
         }
 
         return this.world.getTileEntity(this.pos) != null;
+    }
+
+    @Override
+    public void replaceBlocks(IScriptBlockState blockToBeReplaced, IScriptBlockState newBlock, Vector3d pos1, Vector3d pos2) {
+        processBlocksInRegion(pos1, pos2, (x, y, z) -> {
+            IScriptBlockState currentBlock = getBlock(x, y, z);
+
+            if (currentBlock.isSame(blockToBeReplaced)) {
+                setBlock(newBlock, x, y, z);
+            }
+        });
+    }
+
+    @Override
+    public void replaceBlocks(IScriptBlockState blockToBeReplaced, IScriptBlockState newBlock, INBTCompound tileData, Vector3d pos1, Vector3d pos2) {
+        processBlocksInRegion(pos1, pos2, (x, y, z) -> {
+            IScriptBlockState currentBlock = getBlock(x, y, z);
+
+            if (currentBlock.isSame(blockToBeReplaced)) {
+                setTileEntity(x, y, z, newBlock, tileData);
+            }
+        });
+    }
+
+    private void processBlocksInRegion(Vector3d pos1, Vector3d pos2, BlockPosConsumer consumer) {
+        for (int x = (int) Math.min(pos1.x, pos2.x); x <= Math.max(pos1.x, pos2.x); x++) {
+            for (int y = (int) Math.min(pos1.y, pos2.y); y <= Math.max(pos1.y, pos2.y); y++) {
+                for (int z = (int) Math.min(pos1.z, pos2.z); z <= Math.max(pos1.z, pos2.z); z++) {
+                    if (!this.world.isBlockLoaded(this.pos.setPos(x, y, z))) {
+                        continue;
+                    }
+
+                    consumer.accept(x, y, z);
+                }
+            }
+        }
+    }
+
+    @FunctionalInterface
+    private interface BlockPosConsumer {
+        void accept(int x, int y, int z);
     }
 
     @Override
