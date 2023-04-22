@@ -139,6 +139,58 @@ public class ScriptWorld implements IScriptWorld
         return this.world.getTileEntity(this.pos) != null;
     }
 
+
+
+    //@Override
+    public void replaceBlocks(IScriptBlockState blockToBeReplaced, IScriptBlockState newBlock, Vector3d pos, int radius) {
+        processBlocksInRegion(pos, radius, (x, y, z) -> {
+            IScriptBlockState currentBlock = getBlock(x, y, z);
+
+            if (currentBlock.isSame(blockToBeReplaced)) {
+                setBlock(newBlock, x, y, z);
+            }
+        });
+    }
+
+    //@Override
+    public void replaceBlocks(IScriptBlockState blockToBeReplaced, IScriptBlockState newBlock, INBTCompound tileData, Vector3d pos, int radius) {
+        processBlocksInRegion(pos, radius, (x, y, z) -> {
+            IScriptBlockState currentBlock = getBlock(x, y, z);
+
+            if (currentBlock.isSame(blockToBeReplaced)) {
+                setTileEntity(x, y, z, newBlock, tileData);
+            }
+        });
+    }
+
+    private void processBlocksInRegion(Vector3d pos, int radius, BlockPosConsumer consumer) {
+        int minX = (int) Math.floor(pos.x - radius);
+        int maxX = (int) Math.ceil(pos.x + radius);
+        int minY = (int) Math.floor(pos.y - radius);
+        int maxY = (int) Math.ceil(pos.y + radius);
+        int minZ = (int) Math.floor(pos.z - radius);
+        int maxZ = (int) Math.ceil(pos.z + radius);
+
+        for (int x = minX; x <= maxX; x++) {
+            for (int y = minY; y <= maxY; y++) {
+                for (int z = minZ; z <= maxZ; z++) {
+                    if (!this.world.isBlockLoaded(this.pos.setPos(x, y, z))) {
+                        continue;
+                    }
+
+                    double dx = pos.x - (x + 0.5);
+                    double dy = pos.y - (y + 0.5);
+                    double dz = pos.z - (z + 0.5);
+                    double distanceSquared = dx * dx + dy * dy + dz * dz;
+
+                    if (distanceSquared <= (radius * radius)) {
+                        consumer.accept(x, y, z);
+                    }
+                }
+            }
+        }
+    }
+
     @Override
     public void replaceBlocks(IScriptBlockState blockToBeReplaced, IScriptBlockState newBlock, Vector3d pos1, Vector3d pos2) {
         processBlocksInRegion(pos1, pos2, (x, y, z) -> {
