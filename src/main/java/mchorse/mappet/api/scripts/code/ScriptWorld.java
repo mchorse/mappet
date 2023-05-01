@@ -65,6 +65,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.Loader;
@@ -78,6 +79,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import com.google.common.base.Predicate;
 
 public class ScriptWorld implements IScriptWorld
 {
@@ -107,6 +109,17 @@ public class ScriptWorld implements IScriptWorld
         }
 
         this.world.setBlockState(this.pos, state.getMinecraftBlockState(), 2|4);
+    }
+
+    @Override
+    public void removeBlock(int x, int y, int z)
+    {
+        if (!this.world.isBlockLoaded(this.pos.setPos(x, y, z)))
+        {
+            return;
+        }
+
+        this.world.setBlockToAir(this.pos);
     }
 
     @Override
@@ -422,8 +435,12 @@ public class ScriptWorld implements IScriptWorld
     }
 
     @Override
-    public List<IScriptEntity> getEntities(double x1, double y1, double z1, double x2, double y2, double z2)
-    {
+    public List<IScriptEntity> getEntities(double x1, double y1, double z1, double x2, double y2, double z2) {
+        return getEntities(x1, y1, z1, x2, y2, z2, false);
+    }
+
+    @Override
+    public List<IScriptEntity> getEntities(double x1, double y1, double z1, double x2, double y2, double z2, boolean ignoreVolumeLimit) {
         List<IScriptEntity> entities = new ArrayList<IScriptEntity>();
 
         double minX = Math.min(x1, x2);
@@ -433,19 +450,37 @@ public class ScriptWorld implements IScriptWorld
         double maxY = Math.max(y1, y2);
         double maxZ = Math.max(z1, z2);
 
-        if (maxX - minX > MAX_VOLUME || maxY - minY > MAX_VOLUME || maxZ - minZ > MAX_VOLUME)
-        {
+        if (!ignoreVolumeLimit && (maxX - minX > MAX_VOLUME || maxY - minY > MAX_VOLUME || maxZ - minZ > MAX_VOLUME)) {
             return entities;
         }
 
-        if (!this.world.isBlockLoaded(this.pos.setPos(minX, minY, minZ)) || !this.world.isBlockLoaded(this.pos.setPos(maxX, maxY, maxZ)))
-        {
-            return entities;
-        }
+        int minChunkX = ((int) minX) >> 4;
+        int minChunkZ = ((int) minZ) >> 4;
+        int maxChunkX = ((int) maxX) >> 4;
+        int maxChunkZ = ((int) maxZ) >> 4;
 
-        for (Entity entity : this.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ)))
-        {
-            entities.add(ScriptEntity.create(entity));
+        Predicate<Entity> filter = entity -> entity != null;
+
+        for (int chunkX = minChunkX; chunkX <= maxChunkX; chunkX++) {
+            for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; chunkZ++) {
+                if (this.world.isChunkGeneratedAt(chunkX, chunkZ)) {
+                    Chunk chunk = this.world.getChunkFromChunkCoords(chunkX, chunkZ);
+                    AxisAlignedBB chunkAABB = new AxisAlignedBB(
+                            Math.max(chunk.getPos().getXStart(), minX),
+                            minY,
+                            Math.max(chunk.getPos().getZStart(), minZ),
+                            Math.min(chunk.getPos().getXEnd(), maxX),
+                            maxY,
+                            Math.min(chunk.getPos().getZEnd(), maxZ)
+                    );
+
+                    List<Entity> chunkEntities = new ArrayList<>();
+                    chunk.getEntitiesWithinAABBForEntity(null, chunkAABB, chunkEntities, filter);
+                    for (Entity entity : chunkEntities) {
+                        entities.add(ScriptEntity.create(entity));
+                    }
+                }
+            }
         }
 
         return entities;

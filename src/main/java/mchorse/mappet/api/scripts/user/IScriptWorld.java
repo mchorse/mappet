@@ -61,6 +61,15 @@ public interface IScriptWorld
     public void setBlock(IScriptBlockState state, int x, int y, int z);
 
     /**
+     * Remove a block at given XYZ.
+     *
+     * <pre>{@code
+     *   c.getWorld().removeBlock(214, 3, 509);
+     * }</pre>
+     */
+    public void removeBlock(int x, int y, int z);
+
+    /**
      * Get block state at given XYZ.
      *
      * <pre>{@code
@@ -416,6 +425,28 @@ public interface IScriptWorld
      * }</pre>
      */
     public List<IScriptEntity> getEntities(double x1, double y1, double z1, double x2, double y2, double z2);
+
+    /**
+     * Get entities within the box specified by given coordinates in this world ignoring the volume limit.
+     * This method does not limit to scanning entities only within <b>100 blocks</b>
+     *
+     * <pre>{@code
+     *    // Y position is at the feet, while X and Z is at center
+     *    var pos = c.getSubject().getPosition();
+     *    var entities = c.getWorld().getEntities(pos.x - 30, pos.y - 30, pos.z - 30, pos.x + 30, pos.y + 30, pos.z + 30, true);
+     *
+     *    for (var i in entities)
+     *    {
+     *        var entity = entities[i];
+     *
+     *        if (!entity.isSame(c.getSubject()))
+     *        {
+     *            entity.damage(2.0);
+     *        }
+     *    }
+     * }</pre>
+     */
+    public List<IScriptEntity> getEntities(double x1, double y1, double z1, double x2, double y2, double z2, boolean ignoreVolumeLimit);
 
     /**
      * Get entities within the sphere specified by given coordinates and radius in
