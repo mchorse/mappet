@@ -538,6 +538,27 @@ public class EventHandler
     }
 
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onPlayerClientLogsIn(PlayerEvent.PlayerLoggedInEvent event)
+    {
+        EntityPlayerMP player = (EntityPlayerMP) event.player;
+
+        // play sounds for the player if he has config "reload all sounds on log in" set to true
+        if (Mappet.loadCustomSoundsOnLogin.get())
+        {
+            IScriptPlayer scriptPlayer = new ScriptPlayer(player);
+            for (String sound : SoundPack.getCustomSoundEvents())
+            {
+                scriptPlayer.playStaticSound(sound, 0.000000001f, 1);
+                CommonProxy.eventHandler.addExecutable(new RunnableExecutionFork(1, () ->
+                {
+                    scriptPlayer.stopSound(sound);
+                }));
+            }
+        }
+    }
+
+    @SubscribeEvent
     public void onPlayerLogsIn(PlayerEvent.PlayerLoggedInEvent event)
     {
         EntityPlayerMP player = (EntityPlayerMP) event.player;
@@ -566,20 +587,6 @@ public class EventHandler
             {
                 // Send the PacketHUDScene for each HUDScene
                 Dispatcher.sendTo(new PacketHUDScene(id, scene.serializeNBT()), player);
-            }
-        }
-
-        // play sounds for the player if he has config "reload all sounds on log in" set to true
-        if (Mappet.loadCustomSoundsOnLogin.get())
-        {
-            IScriptPlayer scriptPlayer = new ScriptPlayer(player);
-            for (String sound : SoundPack.getCustomSoundEvents())
-            {
-                scriptPlayer.playStaticSound(sound, 0.000000001f, 1);
-                CommonProxy.eventHandler.addExecutable(new RunnableExecutionFork(1, () ->
-                {
-                    scriptPlayer.stopSound(sound);
-                }));
             }
         }
 
