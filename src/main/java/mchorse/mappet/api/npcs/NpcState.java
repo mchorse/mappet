@@ -225,6 +225,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     public Trigger triggerTarget = new Trigger();
     public Trigger triggerInitialize = new Trigger();
     public Trigger triggerRespawn = new Trigger();
+    public Trigger triggerEntityCollision = new Trigger();
 
     /* Respawn */
 
@@ -554,6 +555,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (all || options.contains("trigger_target")) tag.setTag("TriggerTarget", this.triggerTarget.serializeNBT());
         if (all || options.contains("trigger_initialize")) tag.setTag("TriggerInitialize", this.triggerInitialize.serializeNBT());
         if (all || options.contains("trigger_respawn")) tag.setTag("TriggerRespawn", this.triggerRespawn.serializeNBT());
+        if (all || options.contains("trigger_entity_collision")) tag.setTag("TriggerEntityCollision", this.triggerEntityCollision.serializeNBT());
 
         /* Respawn */
         if (all || options.contains("respawn")) tag.setBoolean("Respawn", this.respawn);
@@ -677,6 +679,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("TriggerTarget")) this.triggerTarget.deserializeNBT(tag.getCompoundTag("TriggerTarget"));
         if (tag.hasKey("TriggerInitialize")) this.triggerInitialize.deserializeNBT(tag.getCompoundTag("TriggerInitialize"));
         if (tag.hasKey("TriggerRespawn")) this.triggerRespawn.deserializeNBT(tag.getCompoundTag("TriggerRespawn"));
+        if (tag.hasKey("TriggerEntityCollision")) this.triggerEntityCollision.deserializeNBT(tag.getCompoundTag("TriggerEntityCollision"));
 
         /* Respawn */
         if (tag.hasKey("Respawn")) this.respawn = tag.getBoolean("Respawn");

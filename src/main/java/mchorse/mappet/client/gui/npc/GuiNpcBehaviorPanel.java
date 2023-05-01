@@ -20,6 +20,7 @@ public class GuiNpcBehaviorPanel extends GuiNpcPanel
     public GuiTriggerElement triggerTick;
     public GuiTriggerElement triggerTarget;
     public GuiTriggerElement triggerInitialize;
+    public GuiTriggerElement triggerEntityCollision;
 
     public GuiNpcBehaviorPanel(Minecraft mc)
     {
@@ -35,6 +36,7 @@ public class GuiNpcBehaviorPanel extends GuiNpcPanel
         this.triggerInteract = new GuiTriggerElement(mc);
         this.triggerTick = new GuiTriggerElement(mc);
         this.triggerTarget = new GuiTriggerElement(mc);
+        this.triggerEntityCollision = new GuiTriggerElement(mc);
         this.triggerInitialize = new GuiTriggerElement(mc);
 
         this.add(this.lookAtPlayer, this.lookAround, this.wander, this.canPickUpLoot);
@@ -44,6 +46,7 @@ public class GuiNpcBehaviorPanel extends GuiNpcPanel
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.behavior.died")).background().marginTop(12).marginBottom(5), this.triggerDied);
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.behavior.tick")).background().marginTop(12).marginBottom(5), this.triggerTick);
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.behavior.target")).background().marginTop(12).marginBottom(5), this.triggerTarget);
+        this.add(Elements.label(IKey.lang("mappet.gui.npcs.behavior.collision")).background().marginTop(12).marginBottom(5), this.triggerEntityCollision);
     }
 
     @Override
@@ -61,6 +64,7 @@ public class GuiNpcBehaviorPanel extends GuiNpcPanel
         this.triggerInteract.set(state.triggerInteract);
         this.triggerTick.set(state.triggerTick);
         this.triggerTarget.set(state.triggerTarget);
+        this.triggerEntityCollision.set(state.triggerEntityCollision);
         this.triggerInitialize.set(state.triggerInitialize);
     }
 }

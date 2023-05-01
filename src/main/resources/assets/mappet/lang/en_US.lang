@@ -533,6 +533,7 @@ mappet.gui.npcs.behavior.damaged=On NPC getting damaged trigger
 mappet.gui.npcs.behavior.died=On NPC death trigger
 mappet.gui.npcs.behavior.tick=On NPC tick trigger
 mappet.gui.npcs.behavior.target=On NPC target trigger
+mappet.gui.npcs.behavior.collision=On NPC collision trigger
 mappet.gui.npcs.health.title=Health
 mappet.gui.npcs.health.max_hp=Max HP
 mappet.gui.npcs.health.hp=Initial HP
