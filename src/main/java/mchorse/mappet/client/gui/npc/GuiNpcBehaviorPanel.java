@@ -13,6 +13,7 @@ public class GuiNpcBehaviorPanel extends GuiNpcPanel
     public GuiToggleElement lookAround;
     public GuiToggleElement wander;
     public GuiToggleElement canPickUpLoot;
+    public GuiToggleElement canBeSteered;
 
     public GuiTriggerElement triggerDied;
     public GuiTriggerElement triggerDamaged;
@@ -30,6 +31,7 @@ public class GuiNpcBehaviorPanel extends GuiNpcPanel
         this.lookAround = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.behavior.look_around"), (b) -> this.state.lookAround = b.isToggled());
         this.wander = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.behavior.wander"), (b) -> this.state.wander = b.isToggled());
         this.canPickUpLoot = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.behavior.can_pick_up_loot"), (b) -> this.state.canPickUpLoot = b.isToggled());
+        this.canBeSteered = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.behavior.can_be_steered"), (b) -> this.state.canBeSteered = b.isToggled());
 
         this.triggerDied = new GuiTriggerElement(mc);
         this.triggerDamaged = new GuiTriggerElement(mc);
@@ -39,7 +41,7 @@ public class GuiNpcBehaviorPanel extends GuiNpcPanel
         this.triggerEntityCollision = new GuiTriggerElement(mc);
         this.triggerInitialize = new GuiTriggerElement(mc);
 
-        this.add(this.lookAtPlayer, this.lookAround, this.wander, this.canPickUpLoot);
+        this.add(this.lookAtPlayer, this.lookAround, this.wander, this.canPickUpLoot, this.canBeSteered);
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.behavior.initialize")).background().marginTop(12).marginBottom(5), this.triggerInitialize);
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.behavior.interact")).background().marginTop(12).marginBottom(5), this.triggerInteract);
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.behavior.damaged")).background().marginTop(12).marginBottom(5), this.triggerDamaged);
@@ -58,6 +60,7 @@ public class GuiNpcBehaviorPanel extends GuiNpcPanel
         this.lookAround.toggled(state.lookAround);
         this.wander.toggled(state.wander);
         this.canPickUpLoot.toggled(state.canPickUpLoot);
+        this.canBeSteered.toggled(state.canBeSteered);
 
         this.triggerDied.set(state.triggerDied);
         this.triggerDamaged.set(state.triggerDamaged);

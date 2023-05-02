@@ -104,6 +104,11 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     public float speed = 1F;
 
     /**
+     * NPC's jumping power when it's steered
+     */
+    public float jumpPower = 0.5F;
+
+    /**
      * Can NPC move around in the water
      */
     public boolean canSwim = true;
@@ -227,6 +232,11 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
      */
     public boolean hasNoGravity = false;
 
+    /**
+     * Whether NPC can be steered by a player
+     */
+    public boolean canBeSteered = false;
+
     /* Triggers */
 
     public Trigger triggerDied = new Trigger();
@@ -348,6 +358,10 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         {
             this.speed = Float.parseFloat(value);
         }
+        else if (property.equals("jump_power"))
+        {
+            this.jumpPower = Float.parseFloat(value);
+        }
         else if (property.equals("can_swim"))
         {
             this.canSwim = Boolean.parseBoolean(value);
@@ -408,6 +422,10 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         else if (property.equals("has_no_gravity"))
         {
             this.hasNoGravity = Boolean.parseBoolean(value);
+        }
+        else if (property.equals("can_be_steered"))
+        {
+            this.canBeSteered = Boolean.parseBoolean(value);
         }
         else if (property.equals("shadow_size"))
         {
@@ -511,6 +529,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
 
         /* Movement */
         if (all || options.contains("speed")) tag.setFloat("Speed", this.speed);
+        if (all || options.contains("jump_power")) tag.setFloat("JumpPower", this.jumpPower);
         if (all || options.contains("can_swim")) tag.setBoolean("CanSwim", this.canSwim);
         if (all || options.contains("immovable")) tag.setBoolean("Immovable", this.immovable);
         if (all || options.contains("has_post")) tag.setBoolean("HasPost", this.hasPost);
@@ -559,6 +578,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         }
         if (all || options.contains("xp")) tag.setInteger("Xp", this.xp);
         if (all || options.contains("has_no_gravity")) tag.setBoolean("HasNoGravity", this.hasNoGravity);
+        if (all || options.contains("can_be_steered")) tag.setBoolean("CanBeSteered", this.canBeSteered);
         if (all || options.contains("shadow_size")) tag.setFloat("ShadowSize", this.shadowSize);
 
         /* Behavior */
@@ -617,6 +637,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
 
         /* Movement */
         if (tag.hasKey("Speed")) this.speed = tag.getFloat("Speed");
+        if (tag.hasKey("JumpPower")) this.jumpPower = tag.getFloat("JumpPower");
         if (tag.hasKey("CanSwim")) this.canSwim = tag.getBoolean("CanSwim");
         if (tag.hasKey("Immovable")) this.immovable = tag.getBoolean("Immovable");
         if (tag.hasKey("HasPost")) this.hasPost = tag.getBoolean("HasPost");
@@ -685,6 +706,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         }
         if (tag.hasKey("Xp")) this.xp = tag.getInteger("Xp");
         if (tag.hasKey("HasNoGravity")) this.hasNoGravity = tag.getBoolean("HasNoGravity");
+        if (tag.hasKey("CanBeSteered")) this.canBeSteered = tag.getBoolean("CanBeSteered");
         if (tag.hasKey("ShadowSize")) this.shadowSize = tag.getFloat("ShadowSize");
 
         /* Behavior */
@@ -716,9 +738,11 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
 
     public void writeToBuf(ByteBuf buf) {
         buf.writeFloat(shadowSize);
+        buf.writeFloat(jumpPower);
     }
 
     public void readFromBuf(ByteBuf buf) {
         shadowSize = buf.readFloat();
+        jumpPower = buf.readFloat();
     }
 }

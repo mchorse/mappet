@@ -31,6 +31,7 @@ import mchorse.mappet.entities.EntityNpc;
 import mchorse.mappet.entities.utils.MappetNpcRespawnManager;
 import mchorse.mappet.events.StateChangedEvent;
 import mchorse.mappet.network.Dispatcher;
+import mchorse.mappet.network.client.npc.PacketNpcJump;
 import mchorse.mappet.network.common.events.PacketEventHotkeys;
 import mchorse.mappet.network.common.huds.PacketHUDScene;
 import mchorse.mappet.network.common.quests.PacketQuest;
@@ -82,6 +83,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
@@ -1184,6 +1186,25 @@ public class EventHandler
             }
 
             this.trigger(event, trigger, context);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void onKeyInput(InputEvent.KeyInputEvent event) {
+        if (Minecraft.getMinecraft().gameSettings.keyBindJump.isPressed()) {
+            EntityPlayer player = Minecraft.getMinecraft().player;
+
+            if (
+                    player.isRiding() &&
+                    player.getRidingEntity() instanceof EntityNpc
+                    /*TODO: Make the line below work,
+                       it does not work now as canBeSteered is only server/client sided, idk
+                       && ((EntityNpc) player.getRidingEntity()).getState().canBeSteered*/
+            ) {
+                float jumpPower = ((EntityNpc) player.getRidingEntity()).getState().jumpPower;
+                Dispatcher.sendToServer(new PacketNpcJump(player.getRidingEntity().getEntityId(), jumpPower));
+            }
         }
     }
 }

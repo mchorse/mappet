@@ -120,6 +120,63 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     }
 
     @Override
+    public boolean canBeSteered() {
+        return this.state.canBeSteered;
+    }
+
+    @Override
+    public void updatePassenger(Entity passenger) {
+        super.updatePassenger(passenger);
+
+        // Check if the passenger is a player and the entity can be steered
+        if (passenger instanceof EntityPlayer && canBeSteered()) {
+            handleSteering((EntityPlayer) passenger);
+        }
+    }
+
+    private void handleSteering(EntityPlayer player) {
+        if (!this.world.isRemote) {
+            float forward = player.moveForward;
+            float strafe = player.moveStrafing;
+            this.rotationYaw = player.rotationYaw;
+            this.rotationYawHead = player.rotationYawHead;
+
+            if (forward != 0 || strafe != 0) {
+                float baseSpeed = state.speed / 15; // slightly faster speed than walking (from testing)
+                //boolean sprinting = GameSettings.isKeyDown(Minecraft.getMinecraft().gameSettings.keyBindSprint);
+                //float sprintMultiplier = sprinting ? 1.5F : 1.0F; // adjust the multiplier according to desired sprint speed
+                float speed = baseSpeed;// * sprintMultiplier
+
+                // Calculate motion based on player input
+                double motionX = -Math.sin(Math.toRadians(this.rotationYaw)) * forward;
+                double motionZ = Math.cos(Math.toRadians(this.rotationYaw)) * forward;
+
+                // Normalize motion vector
+                double motionMagnitude = Math.sqrt(motionX * motionX + motionZ * motionZ);
+                motionX /= motionMagnitude;
+                motionZ /= motionMagnitude;
+
+                // Apply speed
+                this.motionX = motionX * speed;
+                this.motionZ = motionZ * speed;
+
+                // Use the move method to handle collisions and movement more accurately
+                this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
+
+                // Set position and rotation on the client side
+                this.setPositionAndRotation(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+            }
+        }
+    }
+
+    @Override
+    public void fall(float distance, float damageMultiplier) {
+        if (!this.isBeingRidden()) {
+            super.fall(distance, damageMultiplier);
+        }
+    }
+
+    @Override
     protected void initEntityAI()
     {
         super.initEntityAI();
