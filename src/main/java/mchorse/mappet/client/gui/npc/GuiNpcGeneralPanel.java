@@ -6,6 +6,7 @@ import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.npc.utils.GuiNpcDrops;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;
@@ -20,6 +21,8 @@ public class GuiNpcGeneralPanel extends GuiNpcPanel
     public GuiNestedEdit morph;
     public GuiNpcDrops drops;
     public GuiTrackpadElement xp;
+    public GuiToggleElement hasNoGravity;
+    public GuiTrackpadElement shadowSize;
 
     public GuiNpcGeneralPanel(Minecraft mc)
     {
@@ -29,11 +32,16 @@ public class GuiNpcGeneralPanel extends GuiNpcPanel
         this.morph = new GuiNestedEdit(mc, this::openMorphMenu);
         this.drops = new GuiNpcDrops(mc);
         this.xp = new GuiTrackpadElement(mc, (v) -> this.state.xp = v.intValue());
+        this.hasNoGravity = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.general.has_no_gravity"), (b) -> this.state.hasNoGravity = b.isToggled());
+        this.shadowSize = new GuiTrackpadElement(mc, (v) -> this.state.shadowSize = v.floatValue());
+
         this.xp.limit(0).integer();
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.general.faction")), this.faction);
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.general.morph")).marginTop(12), this.morph);
         this.add(this.drops.marginTop(12));
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.general.xp")).marginTop(12), this.xp);
+        this.add(this.hasNoGravity.marginTop(12));
+        this.add(Elements.label(IKey.lang("mappet.gui.npcs.general.shadow_size")).marginTop(12), this.shadowSize);
     }
 
     private void openFactions()
@@ -60,5 +68,7 @@ public class GuiNpcGeneralPanel extends GuiNpcPanel
         this.morph.setMorph(state.morph);
         this.drops.set(state.drops);
         this.xp.setValue(state.xp);
+        this.hasNoGravity.toggled(state.hasNoGravity);
+        this.shadowSize.setValue(state.shadowSize);
     }
 }

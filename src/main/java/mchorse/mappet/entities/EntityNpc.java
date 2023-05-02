@@ -110,6 +110,16 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     }
 
     @Override
+    public boolean hasNoGravity() {
+        return this.state.hasNoGravity;
+    }
+
+    @Override
+    public boolean canPickUpLoot() {
+        return this.state.canPickUpLoot;
+    }
+
+    @Override
     protected void initEntityAI()
     {
         super.initEntityAI();
@@ -223,12 +233,6 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     public void initialize()
     {
         this.state.triggerInitialize.trigger(this);
-
-        if (this.state.canPickUpLoot){
-            INBTCompound fullData = new ScriptNBTCompound(this.writeToNBT(new NBTTagCompound()));
-            fullData.setByte("CanPickUpLoot", (byte) (this.state.canPickUpLoot ? 1 : 0));
-            this.readFromNBT(fullData.getNBTTagCompound());
-        }
     }
 
     /* Getter and setters */
@@ -653,12 +657,14 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     public void writeSpawnData(ByteBuf buf)
     {
         MorphUtils.morphToBuf(buf, this.morph.get());
+        this.state.writeToBuf(buf);
     }
 
     @Override
     public void readSpawnData(ByteBuf buf)
     {
         this.morph.setDirect(MorphUtils.morphFromBuf(buf));
+        this.state.readFromBuf(buf);
 
         this.prevRotationYawHead = this.rotationYawHead;
         this.smoothYawHead = this.rotationYawHead;
