@@ -1,5 +1,6 @@
 package mchorse.mappet.api.npcs;
 
+import io.netty.buffer.ByteBuf;
 import mchorse.mappet.api.states.States;
 import mchorse.mappet.api.triggers.Trigger;
 import mchorse.mappet.utils.NBTUtils;
@@ -188,6 +189,11 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
      */
     public int xp = 0;
 
+    /**
+     * NPC shadow size
+     */
+    public float shadowSize = 0.6F;
+
     /* Behavior */
 
     /**
@@ -215,6 +221,11 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
      * NPC will pick up items if this option is enabled and Gamerule canPickupItems is true
      */
     public boolean canPickUpLoot;
+
+    /**
+     * Whether NPC has gravity or not
+     */
+    public boolean hasNoGravity = false;
 
     /* Triggers */
 
@@ -394,6 +405,14 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         {
             this.xp = Integer.parseInt(value);
         }
+        else if (property.equals("has_no_gravity"))
+        {
+            this.hasNoGravity = Boolean.parseBoolean(value);
+        }
+        else if (property.equals("shadow_size"))
+        {
+            this.shadowSize = Float.parseFloat(value);
+        }
         /* Behavior */
         else if (property.equals("look_at_player"))
         {
@@ -539,6 +558,8 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
             tag.setTag("Drops", drops);
         }
         if (all || options.contains("xp")) tag.setInteger("Xp", this.xp);
+        if (all || options.contains("has_no_gravity")) tag.setBoolean("HasNoGravity", this.hasNoGravity);
+        if (all || options.contains("shadow_size")) tag.setFloat("ShadowSize", this.shadowSize);
 
         /* Behavior */
         if (all || options.contains("look_at_player")) tag.setBoolean("LookAtPlayer", this.lookAtPlayer);
@@ -663,6 +684,8 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
             }
         }
         if (tag.hasKey("Xp")) this.xp = tag.getInteger("Xp");
+        if (tag.hasKey("HasNoGravity")) this.hasNoGravity = tag.getBoolean("HasNoGravity");
+        if (tag.hasKey("ShadowSize")) this.shadowSize = tag.getFloat("ShadowSize");
 
         /* Behavior */
         if (tag.hasKey("LookAtPlayer")) this.lookAtPlayer = tag.getBoolean("LookAtPlayer");
@@ -689,5 +712,13 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("RespawnPosY")) this.respawnPosY = tag.getDouble("RespawnPosY");
         if (tag.hasKey("RespawnPosZ")) this.respawnPosZ = tag.getDouble("RespawnPosZ");
         if (tag.hasKey("RespawnSaveUUID")) this.respawnSaveUUID = tag.getBoolean("RespawnSaveUUID");
+    }
+
+    public void writeToBuf(ByteBuf buf) {
+        buf.writeFloat(shadowSize);
+    }
+
+    public void readFromBuf(ByteBuf buf) {
+        shadowSize = buf.readFloat();
     }
 }
