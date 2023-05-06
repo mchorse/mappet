@@ -56,12 +56,12 @@ import java.util.logging.Handler;
  * <p>
  * Adventure map toolset mod
  */
-@Mod(modid = Mappet.MOD_ID, name = "Mappet", version = Mappet.VERSION, dependencies = "required-after:mclib@[%MCLIB%,);required-after:metamorph@[%METAMORPH%,);after:blockbuster@[%BLOCKBUSTER%,);after:aperture@[%APERTURE%,);", updateJSON = "https://raw.githubusercontent.com/mchorse/mappet/master/version.json")
+@Mod(modid = Mappet.MOD_ID, name = "Mappet", version = Mappet.VERSION, dependencies = "required-after:mclib@[@MCLIB@,);required-after:metamorph@[@METAMORPH@,);after:blockbuster@[@BLOCKBUSTER@,);after:aperture@[@APERTURE@,);", updateJSON = "https://raw.githubusercontent.com/mchorse/mappet/master/version.json")
 public final class Mappet
 {
     public static final String MOD_ID = "mappet";
 
-    public static final String VERSION = "0.1";
+    public static final String VERSION = "@MAPPET@";
 
     @Mod.Instance
     public static Mappet instance;

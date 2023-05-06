@@ -1,20 +1,25 @@
-buildscript
-{
-    repositories 
-    {
+buildscript {
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net/' }
+        mavenCentral()
         jcenter()
-        maven { url = "http://files.minecraftforge.net/maven" }
+        gradlePluginPortal()
     }
-    
-    dependencies 
-    {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:5.1.73'
+        classpath "org.apache.maven.plugins:maven-resources-plugin:3.2.0"
+        classpath 'gradle.plugin.com.github.johnrengelman:shadow:7.1.2'
     }
 }
 
-apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'com.github.johnrengelman.shadow'
 
-if (project.hasProperty("dev")) 
+version = project.version
+
+var dev = "dev"
+
+if (project.hasProperty("dev"))
 {
     version += "-" + dev
 }
@@ -22,49 +27,140 @@ if (project.hasProperty("dev"))
 group = "mchorse.mappet"
 archivesBaseName = "mappet"
 sourceCompatibility = targetCompatibility = "1.8"
+compileJava.options.encoding = 'UTF-8'
 
-compileJava {
-    sourceCompatibility = targetCompatibility = "1.8"
+minecraft {
+
+    mappings channel: 'snapshot', version: '20171003-1.12'
+
+    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+
+    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
+    // Default run configurations.
+    // These can be tweaked, removed, or duplicated as needed.
+    runs {
+        client {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            property 'forge.logging.console.level', 'debug'
+
+            jvmArgs("-Xmx1G")
+        }
+
+        server {
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            property 'forge.logging.console.level', 'debug'
+
+            jvmArgs("-Xmx1G")
+        }
+    }
 }
 
-minecraft 
-{
-    version = "1.12.2-14.23.3.2655"
-    runDir = "run"
-    
-    mappings = "snapshot_20171003"
-    
-    clientJvmArgs = ["-Xmx1G"]
-    serverJvmArgs = ["-Xmx1G"]
 
-    replace "%VERSION%", project.version
-    replace "%MCLIB%", project.mclib
-    replace "%METAMORPH%", project.metamorph
-    replace "%BLOCKBUSTER%", project.blockbuster
-    replace "%APERTURE%", project.aperture
-}
 
 dependencies {
-    compileOnly files("run/libs/blockbuster-${blockbuster}-${project.minecraft.version}-dev.jar")
-    compileOnly files("run/libs/metamorph-${metamorph}-${project.minecraft.version}-dev.jar")
-    compileOnly files("run/libs/mclib-${mclib}-${project.minecraft.version}-dev.jar")
-    compileOnly files("run/libs/aperture-${aperture}-${project.minecraft.version}-dev.jar")
-    implementation 'org.reflections:reflections:0.10.2'
+    // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
+    // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
+    // The userdev artifact is a special name and will get all sorts of transformations applied to it.
+    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
+
+    compileOnly files("run/libs/blockbuster-${blockbuster}-${mcversion}-dev.jar")
+    compileOnly files("run/libs/metamorph-${metamorph}-${mcversion}-dev.jar")
+    compileOnly files("run/libs/mclib-${mclib}-${mcversion}-dev.jar")
+    compileOnly files("run/libs/aperture-${aperture}-${mcversion}-dev.jar")
+    implementation("org.reflections:reflections:0.10.2")
+
+    // You may put jars on which you depend on in ./libs or you may define them like so..
+    // compile "some.group:artifact:version:classifier"
+    // compile "some.group:artifact:version"
+
+    // Real examples
+    // compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
+    // compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
+
+    // The 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
+    // provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+
+    // These dependencies get remapped to your current MCP mappings
+    // deobf 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+
+    // For more info...
+    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
+    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+
 }
 
-processResources
-{
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+// Example for how to get properties into the manifest for reading by the runtime...
+jar {
 
-    project.version += "-" + project.minecraft.version
+}
+
+// Example configuration to allow publishing using the maven-publish task
+// This is the preferred method to reobfuscate your jar file
+jar.finalizedBy('shadowJar')
+jar.finalizedBy('reobfJar')
+// However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
+//publish.dependsOn('reobfJar')
+
+
+// BY DYAMO BOLSHOY UMNI MALCHEG
+import org.apache.tools.ant.filters.ReplaceTokens
+
+task processSource(type: Sync) {
+    from sourceSets.main.java
+    filter(ReplaceTokens, tokens: [
+            MAPPET: version,
+            MCLIB: mclib,
+            METAMORPH: metamorph,
+            BLOCKBUSTER: blockbuster,
+            APERTURE: aperture,
+    ])
+    into "$buildDir/src"
+}
+
+compileJava {
+    source = processSource.outputs
+}
+
+shadowJar {
+    dependencies {
+        include(dependency("org.reflections:reflections:0.10.2"))
+        include(dependency("org.slf4j:slf4j-api:1.7.32"))
+        include(dependency("org.javassist:javassist:3.28.0-GA"))
+    }
+    archiveClassifier.set("")
+
+    var dependenciesToRelocate = [
+            "org.reflections",
+            "org.slf4j",
+            "org.javaassist"
+    ]
+
+    for (dependency in dependenciesToRelocate) {
+        relocate dependency, "mchorse.mappet." + dependency
+    }
+}
+
+processResources {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+    // This will ensure that this task is redone when the versions change.
+    inputs.property 'version', project.version
+    inputs.property "mcversion", mcversion
+
+    project.version += "-" + mcversion
 
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-                
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+
+        // Replace version
+        expand(project.properties)
     }
-        
+
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
@@ -129,7 +225,7 @@ task compareLangFiles {
 
             return map
         }
-        
+
         if (!help.exists()) {
             return
         }
@@ -205,7 +301,7 @@ task copyLangStrings {
 
             return map
         }
-        
+
         def help = file("src/main/resources/assets/${project.archivesBaseName}/lang/")
         def en = file("${help.getAbsolutePath()}/en_US.lang")
 
