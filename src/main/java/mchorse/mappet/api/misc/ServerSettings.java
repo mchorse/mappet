@@ -262,10 +262,10 @@ public class ServerSettings implements INBTSerializable<NBTTagCompound>
             }
         }
 
+        this.registeredForgeTriggers.clear();
+
         if (tag.hasKey("ForgeTriggers"))
         {
-            this.registeredForgeTriggers.clear();
-
             NBTTagCompound forgeTriggers = tag.getCompoundTag("ForgeTriggers");
 
             for (String key : forgeTriggers.getKeySet())

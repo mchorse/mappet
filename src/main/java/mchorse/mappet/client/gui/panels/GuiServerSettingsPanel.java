@@ -191,6 +191,7 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
 
         this.forgeTriggers.remove(current);
         this.settings.registeredForgeTriggers.remove(name);
+        this.forgeTrigger.setVisible(false);
     }
 
     public void addForgeTriggerFromList()
