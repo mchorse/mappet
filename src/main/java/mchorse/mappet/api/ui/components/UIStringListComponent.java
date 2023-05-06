@@ -279,7 +279,7 @@ public class UIStringListComponent extends UIComponent
             list.appendTag(new NBTTagString(value));
         }
 
-        if (list.tagCount() > 0)
+        if (list.tagCount() > 0 || this.changedProperties.contains("Values"))
         {
             tag.setTag("Values", list);
         }
@@ -301,11 +301,11 @@ public class UIStringListComponent extends UIComponent
     {
         super.deserializeNBT(tag);
 
+        this.values.clear();
+
         if (tag.hasKey("Values"))
         {
             NBTTagList list = tag.getTagList("Values", Constants.NBT.TAG_STRING);
-
-            this.values.clear();
 
             for (int i = 0, c = list.tagCount(); i < c; i++)
             {
