@@ -100,18 +100,11 @@ public class TileRegion extends TileEntity implements ITickable
         {
             boolean enabled = this.region.isEnabled(entity);
 
-            if (!this.region.passable)
-            {
-                enabled = !enabled;
-            }
-
-
             if (entity instanceof EntityPlayer && ((EntityPlayer) entity).isSpectator())
             {
                 continue;
             }
 
-            //UUID id = entity.getGameProfile().getId();
             UUID id = entity.getUniqueID();
             boolean wasInside = this.entities.contains(id);
 
@@ -119,16 +112,17 @@ public class TileRegion extends TileEntity implements ITickable
             {
                 if (!enabled)
                 {
+                    if (!this.region.passable && entity instanceof EntityPlayer)
+                    {
+                        this.handlePassing((EntityPlayer) entity);
+                    }
+
                     continue;
                 }
 
                 this.region.triggerTick(entity, this.getPos());
 
-                if (!this.region.passable && entity instanceof EntityPlayer)
-                {
-                    this.handlePassing((EntityPlayer) entity);
-                }
-                else if (!wasInside)
+                if (!wasInside)
                 {
                     if (this.region.delay > 0)
                     {
