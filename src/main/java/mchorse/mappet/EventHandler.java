@@ -64,6 +64,7 @@ import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
+import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -648,6 +649,18 @@ public class EventHandler
             context.getValues().put("item", ScriptItemStack.create(event.getItem().getItem()));
             context.getValues().put("entityItem", ScriptEntityItem.create(event.getItem()));
             this.trigger(event, Mappet.settings.playerItemPickup, context);
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerToss(ItemTossEvent event)
+    {
+        if (!Mappet.settings.playerItemToss.isEmpty())
+        {
+            DataContext context = new DataContext(event.getPlayer());
+
+            context.getValues().put("entityItem", ScriptEntityItem.create(event.getEntityItem()));
+            this.trigger(event, Mappet.settings.playerItemToss, context);
         }
     }
 
