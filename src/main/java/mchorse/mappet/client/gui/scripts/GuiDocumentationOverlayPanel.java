@@ -12,6 +12,7 @@ import mchorse.mappet.client.gui.utils.overlays.GuiOverlayPanel;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
+import mchorse.mclib.client.gui.framework.elements.list.GuiSearchListElement;
 import mchorse.mclib.client.gui.utils.GuiUtils;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
@@ -31,7 +32,7 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
     private static DocEntry top;
     private static DocEntry entry;
 
-    public GuiDocEntryList list;
+    public GuiDocEntrySearchList list;
     public GuiScrollElement documentation;
     public GuiIconElement javadocs;
 
@@ -129,7 +130,8 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
     {
         super(mc, IKey.lang("mappet.gui.scripts.documentation.title"));
 
-        this.list = new GuiDocEntryList(mc, (l) -> this.pick(l.get(0)));
+        this.list = new GuiDocEntrySearchList(mc, (l) -> this.pick(l.get(0)));
+        this.list.label(IKey.lang("mappet.gui.search"));
         this.documentation = new GuiScrollElement(mc);
 
         this.list.flex().relative(this.content).w(120).h(1F);
@@ -150,25 +152,25 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
 
         entryIn = entryIn.getEntry();
         List<DocEntry> entries = entryIn.getEntries();
-        boolean wasSame = this.list.getList().size() >= 2 && this.list.getList().get(1).parent == entryIn.parent;
+        boolean wasSame = this.list.list.getList().size() >= 2 && this.list.list.getList().get(1).parent == entryIn.parent;
 
         /* If the list isn't the same or if the the current item got double clicked
          * to enter into the section */
         if (entry == entryIn || !wasSame)
         {
-            this.list.clear();
+            this.list.list.clear();
 
             if (entryIn.parent != null)
             {
-                this.list.add(new DocDelegate(entryIn.parent));
+                this.list.list.add(new DocDelegate(entryIn.parent));
             }
 
-            this.list.add(entries);
-            this.list.sort();
+            this.list.list.add(entries);
+            this.list.list.sort();
 
             if (isMethod)
             {
-                this.list.setCurrentScroll(entryIn);
+                this.list.list.setCurrentScroll(entryIn);
             }
         }
 
@@ -210,6 +212,20 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
         GuiUtils.openWebLink(I18n.format("mappet.gui.scripts.documentation.javadocs_url"));
     }
 
+    public static class GuiDocEntrySearchList extends GuiSearchListElement<DocEntry>
+    {
+
+        public GuiDocEntrySearchList(Minecraft mc, Consumer<List<DocEntry>> callback)
+        {
+            super(mc, callback);
+        }
+
+        @Override
+        protected GuiListElement<DocEntry> createList(Minecraft minecraft, Consumer<List<DocEntry>> consumer)
+        {
+            return new GuiDocEntryList(minecraft, consumer);
+        }
+    }
     public static class GuiDocEntryList extends GuiListElement<DocEntry>
     {
         public GuiDocEntryList(Minecraft mc, Consumer<List<DocEntry>> callback)
