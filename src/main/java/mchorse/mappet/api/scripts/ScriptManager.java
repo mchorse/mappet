@@ -52,30 +52,10 @@ public class ScriptManager extends BaseManager<Script>
         {
             engine = ScriptUtils.sanitize(ScriptUtils.getEngineByExtension("js"));
 
-            DataContext context = null;
-
-            if (key instanceof EntityPlayerMP)
-            {
-                context = new DataContext((EntityPlayerMP) key);
-            }
-            else if (key instanceof MinecraftServer)
-            {
-                context = new DataContext((MinecraftServer) key);
-            }
-            else if (key instanceof EntityLiving)
-            {
-                context = new DataContext((EntityLiving) key);
-            }
-            else
-            {
-                MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-                context = new DataContext(server);
-            }
-
             engine.put("____manager____", this);
             engine.put("mappet", new ScriptFactory());
 
-            ScriptEvent event = new ScriptEvent(context, "", "");
+            ScriptEvent event = new ScriptEvent(this.prepareContext(key), "", "");
             engine.put("c", event);
             engine.put("s", event.getSubject());
 
@@ -92,6 +72,40 @@ public class ScriptManager extends BaseManager<Script>
         }
 
         return this.replOutput;
+    }
+
+    public Object eval(ScriptEngine engine, String code, DataContext context) throws ScriptException
+    {
+        ScriptEvent event = new ScriptEvent(context, "", "");
+        engine.put("mappet", new ScriptFactory());
+        engine.put("c", event);
+
+        return engine.eval(code);
+    }
+
+    public DataContext prepareContext(Object key)
+    {
+        DataContext context;
+
+        if (key instanceof EntityPlayerMP)
+        {
+            context = new DataContext((EntityPlayerMP) key);
+        }
+        else if (key instanceof MinecraftServer)
+        {
+            context = new DataContext((MinecraftServer) key);
+        }
+        else if (key instanceof EntityLiving)
+        {
+            context = new DataContext((EntityLiving) key);
+        }
+        else
+        {
+            MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+            context = new DataContext(server);
+        }
+
+        return context;
     }
 
     public void replPrint(Object object)

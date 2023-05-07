@@ -2,6 +2,7 @@ package mchorse.mappet.api.triggers.blocks;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.utils.DataContext;
+import mchorse.mappet.utils.ScriptUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextFormatting;
 
@@ -48,20 +49,15 @@ public class ScriptTriggerBlock extends DataTriggerBlock
     {
         if (this.inline)
         {
-            DataContext data = this.apply(context);
-
-            Object key = data.subject != null ? data.subject : data.server;
-
             try
             {
-                Mappet.scripts.executeRepl(key, this.code);
+                Mappet.scripts.eval(ScriptUtils.sanitize(ScriptUtils.getEngineByExtension("js")), this.code, context);
             }
             catch (ScriptException scriptException)
             {
                 Mappet.logger.error(scriptException.getMessage());
             }
         }
-
 
         if (!this.string.isEmpty())
         {
