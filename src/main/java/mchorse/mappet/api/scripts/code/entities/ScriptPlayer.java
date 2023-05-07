@@ -31,6 +31,8 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SPacketAnimation;
@@ -38,6 +40,7 @@ import net.minecraft.network.play.server.SPacketCustomPayload;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.network.play.server.SPacketHeldItemChange;
 import net.minecraft.network.play.server.SPacketTitle;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.GameType;
@@ -204,6 +207,37 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
         this.entity.inventory.currentItem = slot;
 
         this.entity.connection.sendPacket(new SPacketHeldItemChange(slot));
+    }
+
+    @Override
+    public boolean giveItem(IScriptItemStack itemStack)
+    {
+        return this.giveItem(itemStack, true);
+    }
+
+    public boolean giveItem(IScriptItemStack itemStack, boolean playSound)
+    {
+        ItemStack minecraftItemStack = itemStack.getMinecraftItemStack();
+
+        if (minecraftItemStack.isEmpty())
+        {
+            return false;
+        }
+
+        boolean result = this.entity.inventory.addItemStackToInventory(minecraftItemStack.copy());
+
+        if (result)
+        {
+            if (playSound)
+            {
+                float pitch = ((this.entity.getRNG().nextFloat() - this.entity.getRNG().nextFloat()) * 0.7F + 1.0F) * 2.0F;
+                this.entity.world.playSound(null, this.entity.getPosition(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.NEUTRAL, 0.2F, pitch);
+            }
+
+            this.entity.inventoryContainer.detectAndSendChanges();
+        }
+
+        return result;
     }
 
     @Override

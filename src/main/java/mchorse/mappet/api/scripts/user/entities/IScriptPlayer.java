@@ -320,6 +320,42 @@ public interface IScriptPlayer extends IScriptEntity
     public void setHotbarIndex(int slot);
 
     /**
+     * Gives the player an item (directly to the inventory)
+     *
+     * <pre>{@code
+     *    function main(c)
+     *    {
+     *        var player = c.getSubject();
+     *        var item = mappet.createItem("minecraft:diamond_sword");
+     *
+     *        player.giveItem(item);
+     *    }
+     * }</pre>
+     *
+     * @return Returns the result of giving the item. (true if the item was given, false if it failed.
+     */
+
+    public boolean giveItem(IScriptItemStack itemStack);
+
+    /**
+     * Gives the player an item (directly to the inventory)
+     *
+     * <pre>{@code
+     *    function main(c)
+     *    {
+     *        var player = c.getSubject();
+     *        var item = mappet.createItem("minecraft:diamond_sword");
+     *
+     *        player.giveItem(item, false);
+     *    }
+     * }</pre>
+     *
+     * @return Returns the result of giving the item. (true if the item was given, false if it failed.
+     */
+
+    public boolean giveItem(IScriptItemStack itemStack, boolean playSound);
+
+    /**
      * Send a message to this player.
      *
      * <pre>{@code
