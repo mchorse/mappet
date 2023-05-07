@@ -3,6 +3,7 @@ package mchorse.mappet.api.scripts.user;
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.blocks.IScriptTileEntity;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
+import mchorse.mappet.api.scripts.user.entities.IScriptEntityItem;
 import mchorse.mappet.api.scripts.user.entities.IScriptNpc;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
@@ -468,7 +469,7 @@ public interface IScriptWorld
      *    c.getWorld().dropItemStack(item, pos.x, pos.y + 3, pos.z);
      * }</pre>
      */
-    public default IScriptEntity dropItemStack(IScriptItemStack stack, double x, double y, double z)
+    public default IScriptEntityItem dropItemStack(IScriptItemStack stack, double x, double y, double z)
     {
         return this.dropItemStack(stack, x, y, z, 0, 0, 0);
     }
@@ -483,7 +484,7 @@ public interface IScriptWorld
      *    c.getWorld().dropItemStack(item, pos.x, pos.y + 3, pos.z, 0, 1, 0);
      * }</pre>
      */
-    public IScriptEntity dropItemStack(IScriptItemStack stack, double x, double y, double z, double mx, double my, double mz);
+    public IScriptEntityItem dropItemStack(IScriptItemStack stack, double x, double y, double z, double mx, double my, double mz);
 
     /**
      * Make an explosion in this world at given coordinates, and distance that

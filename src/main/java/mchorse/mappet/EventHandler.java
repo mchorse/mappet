@@ -6,6 +6,7 @@ import mchorse.mappet.api.huds.HUDScene;
 import mchorse.mappet.api.quests.Quest;
 import mchorse.mappet.api.quests.Quests;
 import mchorse.mappet.api.scripts.code.entities.ScriptEntity;
+import mchorse.mappet.api.scripts.code.entities.ScriptEntityItem;
 import mchorse.mappet.api.scripts.code.entities.ScriptPlayer;
 import mchorse.mappet.api.scripts.code.entities.ai.repeatingCommand.EntityAIRepeatingCommand;
 import mchorse.mappet.api.scripts.code.entities.ai.repeatingCommand.RepeatingCommandDataStorage;
@@ -645,6 +646,7 @@ public class EventHandler
             DataContext context = new DataContext(event.getEntityPlayer());
 
             context.getValues().put("item", ScriptItemStack.create(event.getItem().getItem()));
+            context.getValues().put("entityItem", ScriptEntityItem.create(event.getItem()));
             this.trigger(event, Mappet.settings.playerItemPickup, context);
         }
     }

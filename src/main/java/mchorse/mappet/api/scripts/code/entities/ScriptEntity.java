@@ -51,6 +51,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -87,6 +88,10 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
         else if (entity instanceof EntityNpc)
         {
             return new ScriptNpc((EntityNpc) entity);
+        }
+        else if (entity instanceof EntityItem)
+        {
+            return new ScriptEntityItem((EntityItem) entity);
         }
         else if (entity != null)
         {
@@ -625,6 +630,12 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     public boolean isNpc()
     {
         return this.entity instanceof EntityNpc;
+    }
+
+    @Override
+    public boolean isItem()
+    {
+        return this.entity instanceof EntityItem;
     }
 
     @Override

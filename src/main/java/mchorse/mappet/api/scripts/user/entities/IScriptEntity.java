@@ -663,6 +663,11 @@ public interface IScriptEntity
     public boolean isNpc();
 
     /**
+     * Check whether this entity is an item.
+     */
+    public boolean isItem();
+
+    /**
      * Check whether this entity is living base.
      */
     public boolean isLivingBase();

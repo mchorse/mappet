@@ -22,6 +22,7 @@ import mchorse.mappet.api.scripts.user.IScriptWorld;
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.blocks.IScriptTileEntity;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
+import mchorse.mappet.api.scripts.user.entities.IScriptEntityItem;
 import mchorse.mappet.api.scripts.user.entities.IScriptNpc;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
@@ -415,7 +416,7 @@ public class ScriptWorld implements IScriptWorld
     }
 
     @Override
-    public IScriptEntity dropItemStack(IScriptItemStack stack, double x, double y, double z, double mx, double my, double mz)
+    public IScriptEntityItem dropItemStack(IScriptItemStack stack, double x, double y, double z, double mx, double my, double mz)
     {
         if (stack == null || stack.isEmpty())
         {
@@ -430,7 +431,7 @@ public class ScriptWorld implements IScriptWorld
 
         this.world.spawnEntity(item);
 
-        return ScriptEntity.create(item);
+        return (IScriptEntityItem) ScriptEntity.create(item);
     }
 
     @Override

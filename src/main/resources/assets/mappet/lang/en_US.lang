@@ -307,7 +307,7 @@ mappet.gui.settings.triggers.variables.player_respawn=§7N/A§r
 
 mappet.gui.settings.triggers.player_item_pickup=Player: picked up an item
 mappet.gui.settings.triggers.descriptions.player_item_pickup=This cancelable trigger gets triggered when a player picks up an item in the world.
-mappet.gui.settings.triggers.variables.player_item_pickup=§6item§r, §7IScriptItemStack§r item that player picked (this is useful only in scripts).
+mappet.gui.settings.triggers.variables.player_item_pickup=§6item§r, §7IScriptItemStack§r item that player picked (this is useful only in scripts).\n§6entityItem§r, §7IScriptEntityItem§r entity item that player picked (this is useful only in scripts).
 
 mappet.gui.settings.triggers.player_item_interact=Player: interact with an item
 mappet.gui.settings.triggers.descriptions.player_item_interact=This cancelable trigger gets triggered when a player right clicks in the air with item.
