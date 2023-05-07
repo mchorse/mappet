@@ -1,6 +1,7 @@
 package mchorse.mappet.api.scripts.user;
 
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
+import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.logs.IMappetLogger;
@@ -9,6 +10,7 @@ import mchorse.mappet.api.scripts.user.mappet.IMappetUIContext;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.mappet.api.scripts.user.nbt.INBTList;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import net.minecraft.entity.Entity;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumParticleTypes;
 
@@ -590,6 +592,20 @@ public interface IScriptFactory
      * Return a mappet logger instance.
      */
     public IMappetLogger getLogger();
+
+    /**
+     * Return a mappet entity/player/npc by given minecraft entity.
+     * <pre>{@code
+     * function main(c)
+     * {
+     *     var s = c.getSubject();
+     *     var minecraftPlayer = s.minecraftPlayer;
+     *     var mappetPlayer = mappet.getMappetEntity(minecraftPlayer);
+     *     c.send(mappetPlayer.name);
+     * }
+     * }</pre>
+     */
+    public IScriptEntity getMappetEntity(Entity minecraftEntity);
 
     /* Vector math */
 
