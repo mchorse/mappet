@@ -77,12 +77,17 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
 
             DocList topPackage = new DocList();
             DocList scripting = new DocList();
+            DocList entities = new DocList();
             DocList ui = new DocList();
 
             topPackage.doc = docs.getPackage("mchorse.mappet.api.scripts.user.mappet").doc;
             scripting.name = "Scripting API";
             scripting.doc = docs.getPackage("mchorse.mappet.api.scripts.user").doc;
             scripting.parent = topPackage;
+            entities.name = "Entities API";
+            entities.doc = docs.getPackage("mchorse.mappet.api.scripts.user.entities").doc;
+            entities.parent = scripting;
+            scripting.entries.add(entities);
             ui.name = "UI API";
             ui.doc = docs.getPackage("mchorse.mappet.api.ui.components").doc;
             ui.parent = topPackage;
@@ -95,6 +100,11 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
                 {
                     ui.entries.add(docClass);
                     docClass.parent = ui;
+                }
+                else if (docClass.name.contains("entities"))
+                {
+                    entities.entries.add(docClass);
+                    docClass.parent = entities;
                 }
                 else if (!docClass.name.endsWith("Graphic"))
                 {
