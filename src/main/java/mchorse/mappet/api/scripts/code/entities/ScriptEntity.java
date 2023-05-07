@@ -260,6 +260,14 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
 
         return 0;
     }
+    @Override
+    public void setMaxHp(float hp)
+    {
+        if (this.isLivingBase() && hp > 0.0F)
+        {
+            ((EntityLivingBase) this.entity).getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(hp);
+        }
+    }
 
     @Override
     public boolean isInWater()

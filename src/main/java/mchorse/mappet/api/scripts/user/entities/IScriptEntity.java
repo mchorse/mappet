@@ -244,6 +244,17 @@ public interface IScriptEntity
     public float getMaxHp();
 
     /**
+     * Set entity's maximum health points.
+     *
+     * <pre>{@code
+     *    var subject = c.getSubject();
+     *    subject.setMaxHp(100);
+     *    subject.send(subject.getName() + " can have up to " + subject.getMaxHp() + " HP!);
+     * }</pre>
+     */
+    public void setMaxHp(float hp);
+
+    /**
      * Check whether this entity is in water.
      *
      * <pre>{@code
