@@ -10,9 +10,13 @@ import mchorse.mappet.client.gui.scripts.utils.documentation.DocMethod;
 import mchorse.mappet.client.gui.scripts.utils.documentation.Docs;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlayPanel;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
+import mchorse.mclib.client.gui.utils.GuiUtils;
+import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.launchwrapper.Launch;
 
 import java.io.InputStream;
@@ -29,6 +33,7 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
 
     public GuiDocEntryList list;
     public GuiScrollElement documentation;
+    public GuiIconElement javadocs;
 
     public static List<DocClass> search(String text)
     {
@@ -121,7 +126,11 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
         this.documentation.flex().relative(this.content).x(120).w(1F, -120).h(1F).column(4).vertical().stretch().scroll().padding(10);
 
         this.content.add(this.list, this.documentation);
+        this.javadocs = new GuiIconElement(mc, Icons.SERVER, (b) -> this.openJavadocs());
+        this.javadocs.tooltip(IKey.lang("mappet.gui.scripts.documentation.javadocs")).flex().wh(16, 16);
 
+        this.icons.flex().row(0).reverse().resize().width(32).height(16);
+        this.icons.addAfter(this.close, this.javadocs);
         this.setupDocs(entry);
     }
 
@@ -184,6 +193,11 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
         }
 
         this.pick(entry);
+    }
+
+    private void openJavadocs()
+    {
+        GuiUtils.openWebLink(I18n.format("mappet.gui.scripts.documentation.javadocs_url"));
     }
 
     public static class GuiDocEntryList extends GuiListElement<DocEntry>
