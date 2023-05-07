@@ -6,25 +6,7 @@ import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 /**
  * EntityItem interface.
  *
- * <p>This interface represents an item entity</p>
- *
- * <pre>{@code
- *     function main(c)
- *     {
- *         if (c.getSubject().isPlayer())
- *         {
- *             // Do something with the player...
- *         }
- *         if (c.getSubject().isNpc())
- *         {
- *             // Do something with the NPC...
- *         }
- *         else
- *         {
- *             // Do something with the entity...
- *         }
- *     }
- * }</pre>
+ * <p>This interface represents an item entity.</p>
  */
 public interface IScriptEntityItem extends IScriptEntity
 {
@@ -295,7 +277,7 @@ public interface IScriptEntityItem extends IScriptEntity
     public void setNoDespawn();
 
     /**
-     * is it possible to pick up this item.
+     * Returns whether it's possible to pick up this item, or not.
      *
      * <pre>{@code
      * // Item magnet :D
