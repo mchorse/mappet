@@ -44,6 +44,14 @@ public interface IScriptEntity
     /**
      * Get Minecraft entity instance. <b>BEWARE:</b> you need to know the MCP
      * mappings in order to directly call methods on this instance!
+     *
+     * <pre>{@code
+     * function main(c)
+     * {
+     *     //c.getSubject().getMinecraftEntity().abilities.disableDamage = true
+     *     c.getSubject().getMinecraftEntity().field_71075_bZ.field_75102_a = true // or false
+     * }
+     * }</pre>
      */
     public Entity getMinecraftEntity();
 
@@ -238,7 +246,7 @@ public interface IScriptEntity
      * <pre>{@code
      *    var subject = c.getSubject();
      *
-     *    subject.send(subject.getName() + " can have up to " + subject.getMaxHp() + " HP!);
+     *    subject.send(subject.getName() + " can have up to " + subject.getMaxHp() + " HP!");
      * }</pre>
      */
     public float getMaxHp();
@@ -249,7 +257,7 @@ public interface IScriptEntity
      * <pre>{@code
      *    var subject = c.getSubject();
      *    subject.setMaxHp(100);
-     *    subject.send(subject.getName() + " can have up to " + subject.getMaxHp() + " HP!);
+     *    subject.send(subject.getName() + " can have up to " + subject.getMaxHp() + " HP!");
      * }</pre>
      */
     public void setMaxHp(float hp);
@@ -402,7 +410,7 @@ public interface IScriptEntity
      * Set item held in off hand.
      *
      * <pre>{@code
-     *    c.getSubject().setMainItem(mappet.createItem("minecraft:shield"));
+     *    c.getSubject().setOffItem(mappet.createItem("minecraft:shield"));
      * }</pre>
      */
     public void setOffItem(IScriptItemStack stack);
@@ -567,6 +575,18 @@ public interface IScriptEntity
     /**
      * Get unique ID of this entity, which can be used, if needed, in
      * commands as a target selector.
+     *
+     * <pre>{@code
+     * function main(c)
+     * {
+     *     var uuid = c.getSubject().getUniqueId()
+     *     var entity = c.getServer().getEntity(uuid)
+     *
+     *     var motion = c.getSubject().getMotion();
+     *
+     *     entity.setMotion(motion.x, motion.y+3, motion.z)
+     * }
+     * }</pre>
      */
     public String getUniqueId();
 
@@ -697,7 +717,7 @@ public interface IScriptEntity
      * <pre>{@code
      *     var s = c.getSubject();
      *
-     *     if (s.isInAnArea(20, 3, 100, 30, 8, 110))
+     *     if (s.isInArea(20, 3, 100, 30, 8, 110))
      *     {
      *         c.send(s.getName() + " is within given area!");
      *     }
@@ -707,16 +727,46 @@ public interface IScriptEntity
 
     /**
      * Inflict some damage on this entity (use {@link #kill()} to kill the entity though).
+     *
+     * <pre>{@code
+     * c.getSubject().damage(1); //dealt you 1 damage
+     * }</pre>
      */
     public void damage(float health);
 
     /**
      * Damage this entity as given entity was the source of attack.
+     *
+     * <pre>{@code
+     * function main(c)
+     * {
+     *     var player = c.getSubject();
+     *     var result = player.rayTrace(32);
+     *
+     *     if (result.isEntity())
+     *     {
+     *         result.getEntity().damageAs(player, 1);
+     *     }
+     * }
+     * }</pre>
      */
     public void damageAs(IScriptEntity entity, float health);
 
     /**
      * Damage this entity as given player was the source of the attack with its equipment.
+     *
+     * <pre>{@code
+     * function main(c)
+     * {
+     *     var player = c.getSubject();
+     *     var result = player.rayTrace(32);
+     *
+     *     if (result.isEntity())
+     *     {
+     *         result.getEntity().damageWithItemsAs(player);
+     *     }
+     * }
+     * }</pre>
      */
     public void damageWithItemsAs(IScriptPlayer player);
 
@@ -731,7 +781,7 @@ public interface IScriptEntity
      *
      *         if (ray.isEntity())
      *         {
-     *              s.mount(ray.getEntity(), 1);
+     *              s.mount(ray.getEntity());
      *         }
      *     }
      * }</pre>
@@ -841,7 +891,7 @@ public interface IScriptEntity
      * Set entity's modifier to a certain value.
      *
      * <pre>{@code
-     *     c.getSubject().setModifier("generic.movementSpeed", "0.5");
+     *     c.getSubject().setModifier("generic.movementSpeed", 0.5);
      * }</pre>
      */
     public void setModifier(String modifierName, double value);
@@ -959,6 +1009,16 @@ public interface IScriptEntity
     /**
      * Get entity's states (if it has some, only players and NPCs have states).
      *
+     * <pre>{@code
+     * function main(c)
+     * {
+     *     var states = c.getSubject().getStates()
+     *     states.add("run", 1)
+     *
+     *     c.send("state run: \u00A76"+states.getNumber("run"))
+     * }
+     * }</pre>
+     *
      * @return entity's states, or null if this entity doesn't have states.
      */
     public IMappetStates getStates();
@@ -996,6 +1056,16 @@ public interface IScriptEntity
 
     /**
      * Display a world morph to all players that see this entity (including themselves).
+     *
+     * <pre>{@code
+     * function main(c)
+     * {
+     *     var s = c.getSubject();
+     *     var morph = mappet.createMorph('{Name:"item"}');
+     *
+     *     s.displayMorph(morph, 100, 0, s.getHeight() + 0.5, 0);
+     * }
+     * }</pre>
      */
     public default void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z)
     {
@@ -1221,7 +1291,7 @@ public interface IScriptEntity
      * <pre>{@code
      *    var s = c.getSubject();
      *    var pos = s.getPosition();
-     *    s.moveTo("quad_out", 30, pos.x, pos.y+2, pos.z);
+     *    s.moveTo("quad_out", 30, pos.x, pos.y+2, pos.z, false);
      * }</pre>
      *
      * @param interpolation The interpolation type used for the movement.

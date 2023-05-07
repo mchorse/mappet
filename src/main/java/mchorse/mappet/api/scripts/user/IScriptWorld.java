@@ -31,6 +31,15 @@ public interface IScriptWorld
     /**
      * Get Minecraft world instance. <b>BEWARE:</b> you need to know the MCP
      * mappings in order to directly call methods on this instance!
+     *
+     * <pre>{@code
+     * function main(c)
+     * {
+     *     var seaLevel = c.getWorld().getMinecraftWorld().field_181546_a //Sea level
+     *
+     *     c.send(seaLevel)
+     * }
+     * }</pre>
      */
     public World getMinecraftWorld();
 
@@ -61,6 +70,15 @@ public interface IScriptWorld
 
     /**
      * Whether a tile entity is present at given XYZ.
+     *
+     * <pre>{@code
+     * function main(c)
+     * {
+     *     var hasTileEntity = c.getWorld().hasTileEntity(0, 80, 0)
+     *
+     *     c.send(hasTileEntity)
+     * }
+     * }</pre>
      */
     public boolean hasTileEntity(int x, int y, int z);
 
@@ -471,6 +489,16 @@ public interface IScriptWorld
      * Make an explosion in this world at given coordinates, and distance that
      * destroys blocks, damages entities but not places fire. See {@link IScriptWorld#explode(IScriptEntity, double, double, double, float, boolean, boolean)}
      * for more thorough definition of arguments.
+     *
+     * <pre>{@code
+     * function main(c)
+     * {
+     *     var s = c.getSubject();
+     *     var pos = s.getPosition();
+     *
+     *     c.getWorld().explode(pos.x, pos.y, pos.z, 10)
+     * }
+     * }</pre>
      */
     public default void explode(double x, double y, double z, float distance)
     {
@@ -481,6 +509,16 @@ public interface IScriptWorld
      * Make an explosion in this world at given coordinates, and distance with
      * options to place fire and destroy blocks. See {@link IScriptWorld#explode(IScriptEntity, double, double, double, float, boolean, boolean)}
      * for more thorough definition of arguments.
+     *
+     * <pre>{@code
+     * function main(c)
+     * {
+     *     var s = c.getSubject();
+     *     var pos = s.getPosition();
+     *
+     *     c.getWorld().explode(pos.x, pos.y, pos.z, 10, false, false)
+     * }
+     * }</pre>
      */
     public default void explode(double x, double y, double z, float distance, boolean blazeGround, boolean destroyTerrain)
     {
@@ -490,6 +528,16 @@ public interface IScriptWorld
     /**
      * Make an explosion in this world at given coordinates, distance, and entity
      * that caused the explosion.
+     *
+     * <pre>{@code
+     * function main(c)
+     * {
+     *     var s = c.getSubject();
+     *     var pos = s.getPosition();
+     *
+     *     c.getWorld().explode(s, pos.x, pos.y, pos.z, 10, false, false)
+     * }
+     * }</pre>
      *
      * @param exploder       Entity that causes explosion that won't receive damage from it.
      * @param x              X coordinate in the world at which explosion must be caused.
@@ -649,7 +697,7 @@ public interface IScriptWorld
      * Clones am area to another area.
      *
      * <pre>{@code
-     * c.getWorld().clone(0, 100, 0, 3, 100, 3, 0, 101, 0, false);
+     * c.getWorld().clone(0, 100, 0, 3, 100, 3, 0, 101, 0);
      * }</pre>
      *
      * @param x1 The first x coordinate.
@@ -664,6 +712,16 @@ public interface IScriptWorld
      */
     public void clone(int x1, int y1, int z1, int x2, int y2, int z2, int xNew, int yNew, int zNew);
 
+    /**
+     * Clones the block to another coordinates.
+     *
+     * <pre>{@code
+     * function main(c)
+     * {
+     *     c.getWorld().clone(0, 80, 0, 0, 83, 0)
+     * }
+     * }</pre>
+     */
     public void clone(int x, int y, int z, int xNew, int yNew, int zNew);
 
     /**
@@ -718,6 +776,7 @@ public interface IScriptWorld
      *    var blockItemStack = world.getBlockStackWithTile(x, y, z);
      *    world.setBlock(mappet.createBlockState("minecraft:air", 0), x, y, z)
      *    world.dropItemStack(blockItemStack, x+0.5, y+0.5, z+0.5);
+     * }</pre>
      */
     public IScriptItemStack getBlockStackWithTile(int x, int y, int z);
 
@@ -739,6 +798,17 @@ public interface IScriptWorld
 
     /**
      * Display a world morph to all players around 64 blocks away from given point.
+     *
+     * <pre>{@code
+     * function main(c)
+     * {
+     *     var s = c.getSubject();
+     *     var morph = mappet.createMorph('{Name:"item"}');
+     *     var pos = s.getPosition();
+     *
+     *     c.getWorld().displayMorph(morph, 100, pos.x, pos.y + s.getHeight() + 0.5, pos.z);
+     * }
+     * }</pre>
      */
     public default void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z)
     {
@@ -795,6 +865,20 @@ public interface IScriptWorld
      * Display a world morph to all players at given point with rotation
      * some blocks away in this world.
      *
+     * <pre>{@code
+     * function main(c)
+     * {
+     *     var s = c.getSubject();
+     *     var morph = mappet.createMorph('{Name:"item"}');
+     *     var pos = s.getPosition();
+     *
+     *     var yaw = s.getYaw()
+     *     var pitch = s.getPitch()
+     *
+     *     c.getWorld().displayMorph(morph, 100, pos.x, pos.y + s.getHeight() + 0.5, pos.z, yaw, pitch, 90);
+     * }
+     * }</pre>
+     *
      * @param morph      Morph that will be displayed (if <code>null</code>, then it won't send anything).
      * @param expiration For how many ticks will this displayed morph exist on the client side.
      * @param yaw        Horizontal rotation in degrees.
@@ -809,6 +893,20 @@ public interface IScriptWorld
     /**
      * Display a world morph to all players at given point with rotation
      * some blocks away in this world only to given player.
+     *
+     * <pre>{@code
+     * function main(c)
+     * {
+     *     var s = c.getSubject();
+     *     var morph = mappet.createMorph('{Name:"item"}');
+     *     var pos = s.getPosition();
+     *
+     *     var yaw = s.getYaw()
+     *     var pitch = s.getPitch()
+     *
+     *     c.getWorld().displayMorph(morph, 100, pos.x, pos.y + s.getHeight() + 0.5, pos.z, yaw, pitch, 90, s);
+     * }
+     * }</pre>
      *
      * @param morph      Morph that will be displayed (if <code>null</code>, then it won't send anything).
      * @param expiration For how many ticks will this displayed morph exist on the client side.

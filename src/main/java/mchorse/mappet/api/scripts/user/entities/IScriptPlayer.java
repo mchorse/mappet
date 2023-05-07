@@ -206,13 +206,13 @@ public interface IScriptPlayer extends IScriptEntity
      * Get cooldown of a particular inventory index of the player.
      *
      * <pre>{@code
-     *    function main(c)
-     *    {
-     *        var player = c.getSubject();
-     *        var cooldown = player.getCooldown(player.getMainItemInventoryIndex()); // tip: 40 is the offhand slot
+     * function main(c)
+     * {
+     *     var player = c.getSubject();
+     *     var cooldown = player.getCooldown(40); // tip: 40 is the offhand slot
      *
-     *        c.send(The held item is on cooldown for " + cooldown + " ticks.");
-     *    }
+     *     c.send(The held item cooldown " + ((1 - cooldown) * 100) + " percent expired.");
+     * }
      * }</pre>
      */
     public default float getCooldown(int inventorySlot)
@@ -244,7 +244,7 @@ public interface IScriptPlayer extends IScriptEntity
      *    {
      *        var player = c.getSubject();
      *
-     *        player.setCooldown(player.getMainItemInventoryIndex(), 100); // tip: 40 is the offhand slot
+     *        player.setCooldown(player.getHotbarIndex(), 100); // tip: 40 is the offhand slot
      *    }
      * }</pre>
      */
@@ -308,7 +308,7 @@ public interface IScriptPlayer extends IScriptEntity
      *    {
      *        var player = c.getSubject();
      *
-     *        player.setCooldown(player.getMainItemInventoryIndex(), 100); //tip: 40 is the offhand slot
+     *        player.setCooldown(player.getHotbarIndex(), 100); //tip: 40 is the offhand slot
      *    }
      * }</pre>
      */

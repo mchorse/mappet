@@ -581,7 +581,7 @@ public interface IScriptFactory
      * <pre>{@code
      *    var style = mappet.style("dark_blue", "bold", "underline");
      *
-     *    c.send(colorCode + "This text is in blue!");
+     *    c.send(style + "This text is in blue!");
      * }</pre>
      *
      * @param codes An enumeration of formatting codes.
