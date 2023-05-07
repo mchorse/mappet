@@ -295,7 +295,7 @@ public interface IScriptEntityItem extends IScriptEntity
     public void setNoDespawn();
 
     /**
-     * is it possible to pick up this item.
+     * Returns whether it's possible to pick up this item, or not.
      *
      * <pre>{@code
      * // Item magnet :D
