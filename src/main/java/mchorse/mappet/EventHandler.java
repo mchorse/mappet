@@ -604,11 +604,11 @@ public class EventHandler
     }
 
     @SubscribeEvent
-    public void onPlayerSpawn(EntityJoinWorldEvent event)
+    public void onPlayerSpawn(PlayerEvent.PlayerRespawnEvent event)
     {
-        if (event.getEntity() instanceof EntityPlayer && !event.getEntity().world.isRemote)
+        if (!event.player.world.isRemote)
         {
-            EntityPlayerMP player = (EntityPlayerMP) event.getEntity();
+            EntityPlayerMP player = (EntityPlayerMP) event.player;
             ICharacter character = Character.get(player);
 
             this.syncData(player, character);
