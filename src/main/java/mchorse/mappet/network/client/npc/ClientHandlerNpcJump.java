@@ -3,14 +3,14 @@ package mchorse.mappet.network.client.npc;
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public class PacketNpcJump implements IMessage {
+public class ClientHandlerNpcJump implements IMessage {
     public int entityId;
     public float jumpPower;
 
-    public PacketNpcJump() {
+    public ClientHandlerNpcJump() {
     }
 
-    public PacketNpcJump(int entityId, float jumpPower) {
+    public ClientHandlerNpcJump(int entityId, float jumpPower) {
         this.entityId = entityId;
         this.jumpPower = jumpPower;
     }
