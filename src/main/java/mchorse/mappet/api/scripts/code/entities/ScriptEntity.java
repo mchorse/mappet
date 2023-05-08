@@ -22,6 +22,7 @@ import mchorse.mappet.api.scripts.code.nbt.ScriptNBTCompound;
 import mchorse.mappet.api.scripts.user.IScriptFancyWorld;
 import mchorse.mappet.api.scripts.user.IScriptRayTrace;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
+import mchorse.mappet.api.scripts.user.data.ScriptBox;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
@@ -704,9 +705,18 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
         this.entity.dismountRidingEntity();
     }
 
+    @Override
     public IScriptEntity getMount()
     {
         return ScriptEntity.create(this.entity.getRidingEntity());
+    }
+
+    @Override
+    public ScriptBox getBoundingBox()
+    {
+        AxisAlignedBB aabb = this.entity.getEntityBoundingBox();
+
+        return new ScriptBox(aabb.minX, aabb.minY, aabb.minZ, aabb.maxX, aabb.maxY, aabb.maxZ);
     }
 
     @Override

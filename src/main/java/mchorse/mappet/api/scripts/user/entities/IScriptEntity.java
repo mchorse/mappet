@@ -5,6 +5,7 @@ import mchorse.mappet.api.scripts.user.IScriptFactory;
 import mchorse.mappet.api.scripts.user.IScriptFancyWorld;
 import mchorse.mappet.api.scripts.user.IScriptRayTrace;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
+import mchorse.mappet.api.scripts.user.data.ScriptBox;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
@@ -816,6 +817,19 @@ public interface IScriptEntity
      */
 
     public IScriptEntity getMount();
+
+    /**
+     * Returns the bounding box of this entity.
+     *
+     * <pre>{@code
+     *    var s = c.getSubject();
+     *    var box = s.getBoundingBox();
+     *    c.send("The bounding box of " + s.getName() + " is " + box.minX + ", " + box.minY + ", " + box.minZ + " to " + box.maxX + ", " + box.maxY + ", " + box.maxZ);
+     * }</pre>
+     *
+     * @return the bounding box of this entity
+     */
+    public ScriptBox getBoundingBox();
 
     /**
      * Drop the item an entity is holding.

@@ -7,6 +7,7 @@ import mchorse.blockbuster.common.entity.EntityGunProjectile;
 import mchorse.blockbuster.common.tileentity.TileEntityModel;
 import mchorse.blockbuster.common.tileentity.TileEntityModelSettings;
 import mchorse.blockbuster.network.common.PacketModifyModelBlock;
+import mchorse.mappet.CommonProxy;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.npcs.Npc;
 import mchorse.mappet.api.npcs.NpcState;
@@ -35,6 +36,7 @@ import mchorse.mappet.client.morphs.WorldMorph;
 import mchorse.mappet.entities.EntityNpc;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.scripts.PacketWorldMorph;
+import mchorse.mappet.utils.RunnableExecutionFork;
 import mchorse.mappet.utils.WorldUtils;
 import mchorse.mclib.utils.MathUtils;
 import mchorse.metamorph.api.MorphManager;
@@ -705,6 +707,45 @@ public class ScriptWorld implements IScriptWorld
                 for (int z = zMin; z <= zMax; z++)
                 {
                     this.setBlock(state, x, y, z);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void fill(IScriptBlockState state, int x1, int y1, int z1, int x2, int y2, int z2, int chunkSize, int delayTicks) {
+        int xMin = Math.min(x1, x2);
+        int xMax = Math.max(x1, x2);
+        int yMin = Math.min(y1, y2);
+        int yMax = Math.max(y1, y2);
+        int zMin = Math.min(z1, z2);
+        int zMax = Math.max(z1, z2);
+
+        for (int xChunk = xMin; xChunk <= xMax; xChunk += chunkSize) {
+            for (int yChunk = yMin; yChunk <= yMax; yChunk += chunkSize) {
+                for (int zChunk = zMin; zChunk <= zMax; zChunk += chunkSize) {
+                    int finalXChunk = xChunk;
+                    int finalYChunk = yChunk;
+                    int finalZChunk = zChunk;
+                    CommonProxy.eventHandler.addExecutable(new RunnableExecutionFork(delayTicks, () -> {
+                        fillChunk(state, xMin, yMin, zMin, xMax, yMax, zMax, finalXChunk, finalYChunk, finalZChunk);
+                    }));
+
+                    delayTicks += 2;
+                }
+            }
+        }
+    }
+
+    private void fillChunk(IScriptBlockState state, int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, int xChunk, int yChunk, int zChunk) {
+        int xChunkMax = Math.min(xChunk + 16, xMax + 1);
+        int yChunkMax = Math.min(yChunk + 16, yMax + 1);
+        int zChunkMax = Math.min(zChunk + 16, zMax + 1);
+
+        for (int x = xChunk; x < xChunkMax; x++) {
+            for (int y = yChunk; y < yChunkMax; y++) {
+                for (int z = zChunk; z < zChunkMax; z++) {
+                    setBlock(state, x, y, z);
                 }
             }
         }
