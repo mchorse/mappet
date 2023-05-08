@@ -2,6 +2,7 @@ package mchorse.mappet.client;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.misc.hotkeys.TriggerHotkey;
+import mchorse.mappet.api.scripts.Script;
 import mchorse.mappet.client.gui.GuiJournalScreen;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.network.Dispatcher;
@@ -48,6 +49,7 @@ public class KeyboardHandler
 
     public KeyBinding openMappetDashboard;
     public KeyBinding openJournal;
+    public KeyBinding runCurrentScript;
 
     private GuiButton button;
 
@@ -93,9 +95,11 @@ public class KeyboardHandler
 
         this.openMappetDashboard = new KeyBinding(prefix + "dashboard", Keyboard.KEY_EQUALS, prefix + "category");
         this.openJournal = new KeyBinding(prefix + "journal", Keyboard.KEY_J, prefix + "category");
+        this.runCurrentScript = new KeyBinding(prefix + "runCurrentScript", Keyboard.KEY_F6, prefix + "category");
 
         ClientRegistry.registerKeyBinding(this.openMappetDashboard);
         ClientRegistry.registerKeyBinding(this.openJournal);
+        ClientRegistry.registerKeyBinding(this.runCurrentScript);
     }
 
     @SubscribeEvent
@@ -121,6 +125,18 @@ public class KeyboardHandler
         if (this.openJournal.isPressed())
         {
             openPlayerJournal();
+        }
+
+        if (this.runCurrentScript.isPressed())
+        {
+            Script script = GuiMappetDashboard.get(mc).script.getData();
+
+            if (script == null)
+            {
+                return;
+            }
+
+            mc.player.sendChatMessage("/mp script exec " + mc.player.getName() + " " + script.getId());
         }
 
         if (Keyboard.getEventKeyState())

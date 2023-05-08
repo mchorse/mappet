@@ -372,4 +372,9 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
             this.repl.repl.resetHighlight();
         }
     }
+
+    public Script getData()
+    {
+        return this.data;
+    }
 }

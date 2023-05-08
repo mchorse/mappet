@@ -806,6 +806,7 @@ mappet.gui.state_trigger.mode.remove=Remove
 mappet.keys.category=Mappet
 mappet.keys.dashboard=Creative dashboard
 mappet.keys.journal=Player's journal
+mappet.keys.runCurrentScript=Run current script
 
 # Items, blocks and entities
 itemGroup.mappet=Mappet
