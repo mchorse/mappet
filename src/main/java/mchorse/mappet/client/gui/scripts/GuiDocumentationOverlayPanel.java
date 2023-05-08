@@ -2,6 +2,7 @@ package mchorse.mappet.client.gui.scripts;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import mchorse.mappet.Mappet;
 import mchorse.mappet.client.gui.scripts.utils.documentation.DocClass;
 import mchorse.mappet.client.gui.scripts.utils.documentation.DocDelegate;
 import mchorse.mappet.client.gui.scripts.utils.documentation.DocEntry;
@@ -79,19 +80,44 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
             DocList topPackage = new DocList();
             DocList scripting = new DocList();
             DocList entities = new DocList();
+            DocList nbt = new DocList();
+            DocList items = new DocList();
+            DocList blocks = new DocList();
             DocList ui = new DocList();
 
             topPackage.doc = docs.getPackage("mchorse.mappet.api.scripts.user.mappet").doc;
             scripting.name = "Scripting API";
             scripting.doc = docs.getPackage("mchorse.mappet.api.scripts.user").doc;
             scripting.parent = topPackage;
-            entities.name = "Entities API";
-            entities.doc = docs.getPackage("mchorse.mappet.api.scripts.user.entities").doc;
-            entities.parent = scripting;
-            scripting.entries.add(entities);
+
             ui.name = "UI API";
             ui.doc = docs.getPackage("mchorse.mappet.api.ui.components").doc;
             ui.parent = topPackage;
+
+            boolean useNewStructure = Mappet.scriptDocsNewStructure.get();
+
+            if (useNewStructure)
+            {
+                entities.name = "/ Entities";
+                entities.doc = docs.getPackage("mchorse.mappet.api.scripts.user.entities").doc;
+                entities.parent = scripting;
+                scripting.entries.add(entities);
+
+                nbt.name = "/ NBT";
+                nbt.doc = docs.getPackage("mchorse.mappet.api.scripts.user.nbt").doc;
+                nbt.parent = scripting;
+                scripting.entries.add(nbt);
+
+                items.name = "/ Items";
+                items.doc = docs.getPackage("mchorse.mappet.api.scripts.user.items").doc;
+                items.parent = scripting;
+                scripting.entries.add(items);
+
+                blocks.name = "/ Blocks";
+                blocks.doc = docs.getPackage("mchorse.mappet.api.scripts.user.blocks").doc;
+                blocks.parent = scripting;
+                scripting.entries.add(blocks);
+            }
 
             for (DocClass docClass : docs.classes)
             {
@@ -102,10 +128,33 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
                     ui.entries.add(docClass);
                     docClass.parent = ui;
                 }
-                else if (docClass.name.contains("entities"))
+                else if (useNewStructure)
                 {
-                    entities.entries.add(docClass);
-                    docClass.parent = entities;
+                    if (docClass.name.contains("entities"))
+                    {
+                        entities.entries.add(docClass);
+                        docClass.parent = entities;
+                    }
+                    else if (docClass.name.contains("nbt"))
+                    {
+                        nbt.entries.add(docClass);
+                        docClass.parent = nbt;
+                    }
+                    else if (docClass.name.contains("items"))
+                    {
+                        items.entries.add(docClass);
+                        docClass.parent = items;
+                    }
+                    else if (docClass.name.contains("blocks"))
+                    {
+                        blocks.entries.add(docClass);
+                        docClass.parent = blocks;
+                    }
+                    else if (!docClass.name.endsWith("Graphic"))
+                    {
+                        scripting.entries.add(docClass);
+                        docClass.parent = scripting;
+                    }
                 }
                 else if (!docClass.name.endsWith("Graphic"))
                 {

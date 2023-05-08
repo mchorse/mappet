@@ -157,6 +157,8 @@ public final class Mappet
 
     public static ValueBoolean scriptUIDebug;
 
+    public static ValueBoolean scriptDocsNewStructure;
+
     public Mappet()
     {
         MinecraftForge.EVENT_BUS.register(new RegisterHandler());
@@ -191,6 +193,7 @@ public final class Mappet
         builder.category("script_editor").register(scriptEditorSyntaxStyle = new ValueSyntaxStyle("syntax_style"));
         scriptEditorSounds = builder.getBoolean("sounds", true);
         scriptUIDebug = builder.getBoolean("ui_debug", false);
+        scriptDocsNewStructure = builder.getBoolean("docs_new_structure", false);
         builder.getCategory().markClientSide();
     }
 
