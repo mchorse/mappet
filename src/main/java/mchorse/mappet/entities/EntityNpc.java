@@ -20,6 +20,7 @@ import mchorse.mappet.entities.ai.EntityAIPatrol;
 import mchorse.mappet.entities.ai.EntityAIReturnToPost;
 import mchorse.mappet.entities.utils.MappetNpcRespawnManager;
 import mchorse.mappet.entities.utils.NpcDamageSource;
+import mchorse.mappet.items.ItemNpcTool;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.npc.PacketNpcMorph;
 import mchorse.mclib.utils.Interpolations;
@@ -654,6 +655,16 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
             if (!player.getHeldItem(hand).interactWithEntity(player, this, hand))
             {
                 this.state.triggerInteract.trigger(new DataContext(this, player));
+            }
+
+            // Start riding the NPC when interacted with
+            if (
+                    this.getPassengers().isEmpty() &&
+                    this.canBeSteered() &&
+                    !(player.getHeldItem(hand).getItem() instanceof ItemNpcTool)
+            )
+            {
+                player.startRiding(this);
             }
         }
 

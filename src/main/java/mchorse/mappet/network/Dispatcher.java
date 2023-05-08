@@ -21,7 +21,7 @@ import mchorse.mappet.network.client.logs.ClientHandlerLogs;
 import mchorse.mappet.network.client.npc.ClientHandlerNpcList;
 import mchorse.mappet.network.client.npc.ClientHandlerNpcMorph;
 import mchorse.mappet.network.client.npc.ClientHandlerNpcState;
-import mchorse.mappet.network.client.npc.PacketNpcJump;
+import mchorse.mappet.network.client.npc.ClientHandlerNpcJump;
 import mchorse.mappet.network.client.quests.ClientHandlerQuest;
 import mchorse.mappet.network.client.quests.ClientHandlerQuests;
 import mchorse.mappet.network.client.scripts.ClientHandlerEntityRotations;
@@ -172,7 +172,7 @@ public class Dispatcher
             this.register(PacketNpcList.class, ClientHandlerNpcList.class, Side.CLIENT);
             this.register(PacketNpcList.class, ServerHandlerNpcList.class, Side.SERVER);
             this.register(PacketNpcTool.class, ServerHandlerNpcTool.class, Side.SERVER);
-            this.register(PacketNpcJump.class, ServerHandlerNpcJump.class, Side.SERVER);
+            this.register(ClientHandlerNpcJump.class, ServerHandlerNpcJump.class, Side.SERVER);
 
             /* Quests */
             this.register(PacketQuest.class, ClientHandlerQuest.class, Side.CLIENT);
