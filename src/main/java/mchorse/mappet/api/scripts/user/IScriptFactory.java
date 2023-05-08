@@ -2,6 +2,7 @@ package mchorse.mappet.api.scripts.user;
 
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
+import mchorse.mappet.api.scripts.user.data.ScriptBox;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.logs.IMappetLogger;
@@ -794,6 +795,13 @@ public interface IScriptFactory
         return new Matrix4d(m);
     }
 
+    /**
+     * Create a bounding box.
+     */
+    public default ScriptBox box(double minX, double minY, double minZ, double maxX, double maxY, double maxZ)
+    {
+        return new ScriptBox(minX, minY, minZ, maxX, maxY, maxZ);
+    }
 
     /**
      * Determines whether a point is located inside a bounding volume specified by two corners.
@@ -801,9 +809,9 @@ public interface IScriptFactory
      *
      * <pre>{@code
      *   var pos = c.getSubject().getPosition();
-     *   var point = mappet.Vector3(pos.x, pos.y, pos.z);
-     *   var bound1 = mappet.Vector3(0, 0, 0);
-     *   var bound2 = mappet.Vector3(10, 10, 10);
+     *   var point = mappet.vector3(pos.x, pos.y, pos.z);
+     *   var bound1 = mappet.vector3(0, 0, 0);
+     *   var bound2 = mappet.vector3(10, 10, 10);
      *   var isInside = mappet.isPointInBounds(point, bound1, bound2);
      *   c.send("Is the point inside the bounding volume? " + isInside);
      * }</pre>

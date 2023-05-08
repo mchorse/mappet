@@ -721,6 +721,25 @@ public interface IScriptWorld
     public void fill(IScriptBlockState state, int x1, int y1, int z1, int x2, int y2, int z2);
 
     /**
+     * Fill a 3D area with a block with a delay (for huge areas).
+     *
+     * <pre>{@code
+     *     var coarse_dirt = mappet.createBlockState("minecraft:dirt", 1);
+     *
+     *     c.getWorld().fill(coarse_dirt, -3, 100, -3, 3, 100, 3, 16, 5);
+     * }</pre>
+     *
+     * @param state The block to fill the area with.
+     * @param x1    The first x coordinate.
+     * @param y1    The first y coordinate.
+     * @param z1    The first z coordinate.
+     * @param x2    The second x coordinate.
+     * @param y2    The second y coordinate.
+     * @param z2    The second z coordinate.
+     */
+    public void fill(IScriptBlockState state, int x1, int y1, int z1, int x2, int y2, int z2, int chunkSize, int delayTicks);
+
+    /**
      * Summon a falling block with a specific block id and meta.
      *
      * <pre>{@code
