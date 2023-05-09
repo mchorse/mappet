@@ -2,6 +2,7 @@ package mchorse.mappet.client.gui.scripts;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import mchorse.mappet.ClientProxy;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.client.gui.scripts.utils.documentation.DocClass;
 import mchorse.mappet.client.gui.scripts.utils.documentation.DocDelegate;
@@ -19,9 +20,16 @@ import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.resources.Language;
 import net.minecraft.launchwrapper.Launch;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -66,10 +74,27 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
 
         if (dev || docs == null)
         {
-            InputStream stream = GuiDocumentationOverlayPanel.class.getResourceAsStream("/assets/mappet/docs.json");
-            Gson gson = new GsonBuilder().create();
-            Scanner scanner = new Scanner(stream, "UTF-8");
 
+            InputStream localeStream = null;
+            Language language = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage();
+
+            if (!language.equals(Minecraft.getMinecraft().getLanguageManager().getLanguage("en_us")))
+            {
+                try
+                {
+                    Path path = Paths.get(ClientProxy.configFolder.getPath(), "documentation");
+                    Files.createDirectories(path);
+                    localeStream = new FileInputStream(path.resolve(language.getLanguageCode() + ".json").toFile());
+                }
+                catch (FileNotFoundException ignored1) {}
+                catch (IOException e) {}
+            }
+
+            InputStream stream = GuiDocumentationOverlayPanel.class.getResourceAsStream("/assets/mappet/docs.json");
+
+            Scanner scanner = new Scanner(localeStream != null ? localeStream : stream, "UTF-8");
+
+            Gson gson = new GsonBuilder().create();
             docs = gson.fromJson(scanner.useDelimiter("\\A").next(), Docs.class);
             entry = null;
 
