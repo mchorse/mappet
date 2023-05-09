@@ -54,6 +54,16 @@ public class DocMethod extends DocEntry
 
         target.add(new GuiText(mc).text("Returns " + TextFormatting.GOLD + this.returns.getType()).marginTop(8));
 
+        List<String> annotations = this.annotations.stream()
+                .map(annotation -> "@" + annotation.substring(annotation.lastIndexOf(".") + 1))
+                .filter(annotation -> !annotation.equals("@Override"))
+                .collect(Collectors.toList());
+        if (annotations.size() > 0)
+        {
+            String annotationsText = String.join(", ", annotations);
+            target.add(new GuiText(mc).text(String.valueOf(TextFormatting.GRAY) + TextFormatting.BOLD + annotationsText).marginTop(8));
+        }
+
         if (!this.returns.doc.isEmpty())
         {
             DocEntry.process(this.returns.doc, mc, target);
