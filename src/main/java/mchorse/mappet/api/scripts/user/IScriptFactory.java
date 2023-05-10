@@ -3,6 +3,7 @@ package mchorse.mappet.api.scripts.user;
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
 import mchorse.mappet.api.scripts.user.data.ScriptBox;
+import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.logs.IMappetLogger;
@@ -610,6 +611,14 @@ public interface IScriptFactory
     public IScriptEntity getMappetEntity(Entity minecraftEntity);
 
     /* Vector math */
+
+    /**
+     * Create a ScriptVector.
+     */
+    public default ScriptVector vector(double x, double y, double z)
+    {
+        return new ScriptVector(x, y, z);
+    }
 
     /**
      * Create an empty (0, 0) 2D vector.
