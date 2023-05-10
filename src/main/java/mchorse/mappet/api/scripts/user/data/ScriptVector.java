@@ -49,4 +49,25 @@ public class ScriptVector
     {
         return "ScriptVector(" + this.x + ", " + this.y + ", " + this.z + ")";
     }
+
+    public ScriptVector add(ScriptVector other) {
+        return new ScriptVector(this.x + other.x, this.y + other.y, this.z + other.z);
+    }
+
+    public ScriptVector subtract(ScriptVector other) {
+        return new ScriptVector(this.x - other.x, this.y - other.y, this.z - other.z);
+    }
+
+    public ScriptVector multiply(double scalar) {
+        return new ScriptVector(this.x * scalar, this.y * scalar, this.z * scalar);
+    }
+
+    public double length() {
+        return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+    }
+
+    public ScriptVector normalize() {
+        double length = this.length();
+        return new ScriptVector(this.x / length, this.y / length, this.z / length);
+    }
 }
