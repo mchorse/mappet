@@ -22,10 +22,9 @@ import mchorse.mappet.entities.utils.MappetNpcRespawnManager;
 import mchorse.mappet.entities.utils.NpcDamageSource;
 import mchorse.mappet.items.ItemNpcTool;
 import mchorse.mappet.network.Dispatcher;
-import mchorse.mappet.network.common.npc.PacketNpcMorph;
+import mchorse.mappet.network.common.npc.PacketNpcStateChange;
 import mchorse.mappet.utils.EntityUtils;
 import mchorse.mclib.utils.Interpolations;
-import mchorse.mclib.utils.MathUtils;
 import mchorse.metamorph.api.Morph;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.models.IMorphProvider;
@@ -46,6 +45,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -354,6 +354,11 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
     public void setState(NpcState state, boolean notify)
     {
+        notify = true;
+        // I added this because it is fine if it always notified the clients.
+        // If I faced issues later I can revert this and check all usages of this method
+        // to see if they need to notify the clients or not. (to make sure that e.g. shadowSize, steer-, etc.)
+
         this.state = new NpcState();
         this.state.deserializeNBT(state.serializeNBT());
 
@@ -376,7 +381,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
         if (notify)
         {
-            this.sendMorph();
+            this.sendNpcStateChangePacket();
         }
 
         this.faction = null;
@@ -384,9 +389,11 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         this.initEntityAI();
     }
 
-    public void sendMorph()
+    public void sendNpcStateChangePacket()
     {
-        Dispatcher.sendToTracked(this, new PacketNpcMorph(this));
+        if (this.world instanceof WorldServer){
+            Dispatcher.sendToTracked(this, new PacketNpcStateChange(this));
+        }
     }
 
     @Override

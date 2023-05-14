@@ -19,7 +19,7 @@ import mchorse.mappet.network.client.huds.ClientHandlerHUDMorph;
 import mchorse.mappet.network.client.huds.ClientHandlerHUDScene;
 import mchorse.mappet.network.client.logs.ClientHandlerLogs;
 import mchorse.mappet.network.client.npc.ClientHandlerNpcList;
-import mchorse.mappet.network.client.npc.ClientHandlerNpcMorph;
+import mchorse.mappet.network.client.npc.ClientHandlerNpcStateChange;
 import mchorse.mappet.network.client.npc.ClientHandlerNpcState;
 import mchorse.mappet.network.client.npc.ClientHandlerNpcJump;
 import mchorse.mappet.network.client.quests.ClientHandlerQuest;
@@ -60,7 +60,7 @@ import mchorse.mappet.network.common.huds.PacketHUDScene;
 import mchorse.mappet.network.common.logs.PacketLogs;
 import mchorse.mappet.network.common.logs.PacketRequestLogs;
 import mchorse.mappet.network.common.npc.PacketNpcList;
-import mchorse.mappet.network.common.npc.PacketNpcMorph;
+import mchorse.mappet.network.common.npc.PacketNpcStateChange;
 import mchorse.mappet.network.common.npc.PacketNpcState;
 import mchorse.mappet.network.common.npc.PacketNpcTool;
 import mchorse.mappet.network.common.quests.PacketQuest;
@@ -166,7 +166,7 @@ public class Dispatcher
             this.register(PacketRequestStates.class, ServerHandlerRequestStates.class, Side.SERVER);
 
             /* NPCs */
-            this.register(PacketNpcMorph.class, ClientHandlerNpcMorph.class, Side.CLIENT);
+            this.register(PacketNpcStateChange.class, ClientHandlerNpcStateChange.class, Side.CLIENT);
             this.register(PacketNpcState.class, ClientHandlerNpcState.class, Side.CLIENT);
             this.register(PacketNpcState.class, ServerHandlerNpcState.class, Side.SERVER);
             this.register(PacketNpcList.class, ClientHandlerNpcList.class, Side.CLIENT);

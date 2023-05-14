@@ -53,7 +53,7 @@ public class MorphTriggerBlock extends AbstractTriggerBlock
             EntityNpc npc = (EntityNpc) entity;
 
             npc.setMorph(MorphManager.INSTANCE.morphFromNBT(this.morph));
-            npc.sendMorph();
+            npc.sendNpcStateChangePacket();
         }
     }
 
