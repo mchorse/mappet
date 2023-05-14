@@ -149,8 +149,8 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
                 float speed = baseSpeed;// * sprintMultiplier
 
                 // Calculate motion based on player input
-                double motionX = -Math.sin(Math.toRadians(this.rotationYaw)) * forward;
-                double motionZ = Math.cos(Math.toRadians(this.rotationYaw)) * forward;
+                double motionX = -Math.sin(Math.toRadians(this.rotationYaw)) * forward + Math.cos(Math.toRadians(this.rotationYaw)) * strafe;
+                double motionZ = Math.cos(Math.toRadians(this.rotationYaw)) * forward + Math.sin(Math.toRadians(this.rotationYaw)) * strafe;
 
                 // Normalize motion vector
                 double motionMagnitude = Math.sqrt(motionX * motionX + motionZ * motionZ);
