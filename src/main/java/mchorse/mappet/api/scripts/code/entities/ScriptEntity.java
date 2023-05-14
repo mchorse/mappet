@@ -42,6 +42,7 @@ import mchorse.mclib.utils.Interpolation;
 import mchorse.mclib.utils.RayTracing;
 import mchorse.metamorph.api.models.IMorphProvider;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import net.minecraft.command.CommandResultStats;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -56,7 +57,9 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
@@ -65,6 +68,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -402,6 +406,73 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
         if (this.isLivingBase())
         {
             ((EntityLivingBase) this.entity).setHeldItem(hand, stack.getMinecraftItemStack().copy());
+        }
+    }
+
+    @Override
+    public void giveItem(IScriptItemStack stack)
+    {
+        if (stack == null || stack.isEmpty())
+        {
+            return;
+        }
+
+        if (this.isPlayer())
+        {
+            EntityPlayer player = (EntityPlayer) this.entity;
+            ItemStack itemStack = stack.getMinecraftItemStack().copy();
+            boolean flag = player.inventory.addItemStackToInventory(itemStack);
+
+            if (flag)
+            {
+                player.world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((player.getRNG().nextFloat() - player.getRNG().nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                player.inventoryContainer.detectAndSendChanges();
+            }
+
+            EntityItem entityItem;
+
+            if (flag && itemStack.isEmpty())
+            {
+                itemStack.setCount(1);
+                player.setCommandStat(CommandResultStats.Type.AFFECTED_ITEMS, stack.getCount());
+                entityItem = player.dropItem(itemStack, false);
+
+                if (entityItem != null)
+                {
+                    entityItem.makeFakeItem();
+                }
+            }
+            else
+            {
+                player.setCommandStat(CommandResultStats.Type.AFFECTED_ITEMS, stack.getCount() - itemStack.getCount());
+                entityItem = player.dropItem(itemStack, false);
+
+                if (entityItem != null)
+                {
+                    entityItem.setNoPickupDelay();
+                    entityItem.setOwner(player.getName());
+                }
+            }
+        }
+        else if (this.isLivingBase())
+        {
+            if (this.entity instanceof EntityLivingBase)
+            {
+                EntityLivingBase living = (EntityLivingBase) this.entity;
+
+                if (living.getHeldItemMainhand().isEmpty())
+                {
+                    living.setHeldItem(EnumHand.MAIN_HAND, stack.getMinecraftItemStack().copy());
+                }
+                else if (living.getHeldItemOffhand().isEmpty())
+                {
+                    living.setHeldItem(EnumHand.OFF_HAND, stack.getMinecraftItemStack().copy());
+                }
+                else
+                {
+                    living.entityDropItem(stack.getMinecraftItemStack().copy(), getEyeHeight());
+                }
+            }
         }
     }
 
