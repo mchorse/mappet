@@ -102,12 +102,12 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     /**
      * What is NPC's movement speed
      */
-    public float speed = 1F;
+    public float speed = 3F;
 
     /**
      * NPC's jumping power when it's steered
      */
-    public float jumpPower = 0.5F;
+    public float jumpPower = 0.6F;
 
     /**
      * NPC's x-offset when steered
