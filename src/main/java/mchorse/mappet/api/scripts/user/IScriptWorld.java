@@ -676,6 +676,41 @@ public interface IScriptWorld
     public void setModelBlockMorph(String nbt, int x, int y, int z, boolean force);
 
     /**
+     * Enable or disable a model block at a given position in this world.
+     * It only works when Blockbuster mod is installed.
+     *
+     * <pre>{@code
+     *     function main(c)
+     *     {
+     *         var pos = c.getSubject().getPosition()
+     *         var enabled = true;
+     *
+     *         c.getWorld().setModelBlockEnabled(pos.x, pos.y, pos.z, enabled);
+     *     }
+     * }</pre>
+     *
+     * @param x X coordinate of a model block.
+     * @param y Y coordinate of a model block.
+     * @param z Z coordinate of a model block.
+     * @param enabled Whether to enable or disable the model block.
+     */
+    public void setModelBlockEnabled(int x, int y, int z, boolean enabled);
+
+    /**
+     * Check whether a model block at a given position in this world is enabled or not.
+     * It only works when Blockbuster mod is installed.
+     *
+     * <pre>{@code
+     *     c.send(c.getWorld().isModelBlockEnabled(0, 4, 0));
+     * }</pre>
+     *
+     * @param x X coordinate of a model block.
+     * @param y Y coordinate of a model block.
+     * @param z Z coordinate of a model block.
+     */
+    public boolean isModelBlockEnabled(int x, int y, int z);
+
+    /**
      * Return whether a button, plate or lever is active or not.
      *
      * <pre>{@code

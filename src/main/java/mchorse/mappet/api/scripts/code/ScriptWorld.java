@@ -673,6 +673,79 @@ public class ScriptWorld implements IScriptWorld
     }
 
     @Override
+    public void setModelBlockEnabled(int x, int y, int z, boolean enabled)
+    {
+        if (!this.world.isBlockLoaded(this.pos.setPos(x, y, z)))
+        {
+            return;
+        }
+
+        if (Loader.isModLoaded("blockbuster"))
+        {
+            this.setModelBlockEnabledBlockbuster(x, y, z, enabled);
+        }
+    }
+
+    @Optional.Method(modid = "blockbuster")
+    private void setModelBlockEnabledBlockbuster(int x, int y, int z, boolean enabled)
+    {
+        try
+        {
+            TileEntity tile = this.world.getTileEntity(new BlockPos(x, y, z));
+
+            if (tile instanceof TileEntityModel)
+            {
+                TileEntityModel model = (TileEntityModel) tile;
+                model.getSettings().setEnabled(enabled);
+
+                PacketModifyModelBlock message = new PacketModifyModelBlock(model.getPos(), model, true);
+
+                mchorse.blockbuster.network.Dispatcher.DISPATCHER.get().sendToAll(message);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean isModelBlockEnabled(int x, int y, int z)
+    {
+        if (!this.world.isBlockLoaded(this.pos.setPos(x, y, z)))
+        {
+            return false;
+        }
+
+        if (Loader.isModLoaded("blockbuster"))
+        {
+            return this.isModelBlockEnabledBlockbuster(x, y, z);
+        }
+
+        return false;
+    }
+
+    @Optional.Method(modid = "blockbuster")
+    private boolean isModelBlockEnabledBlockbuster(int x, int y, int z)
+    {
+        try
+        {
+            TileEntity tile = this.world.getTileEntity(new BlockPos(x, y, z));
+
+            if (tile instanceof TileEntityModel)
+            {
+                TileEntityModel model = (TileEntityModel) tile;
+                return model.getSettings().isEnabled();
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
     public boolean isActive(int x, int y, int z)
     {
         IBlockState blockState = this.world.getBlockState(this.pos.setPos(x, y, z));
