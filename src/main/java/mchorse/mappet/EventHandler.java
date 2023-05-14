@@ -1198,9 +1198,7 @@ public class EventHandler
             if (
                     player.isRiding() &&
                     player.getRidingEntity() instanceof EntityNpc
-                    /*TODO: Make the line below work,
-                       it does not work now as canBeSteered is only server/client sided, idk
-                       && ((EntityNpc) player.getRidingEntity()).getState().canBeSteered*/
+                    && ((EntityNpc) player.getRidingEntity()).getState().canBeSteered
             ) {
                 float jumpPower = ((EntityNpc) player.getRidingEntity()).getState().jumpPower;
                 Dispatcher.sendToServer(new ClientHandlerNpcJump(player.getRidingEntity().getEntityId(), jumpPower));
