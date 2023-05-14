@@ -23,6 +23,7 @@ import mchorse.mappet.entities.utils.NpcDamageSource;
 import mchorse.mappet.items.ItemNpcTool;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.npc.PacketNpcMorph;
+import mchorse.mappet.utils.EntityUtils;
 import mchorse.mclib.utils.Interpolations;
 import mchorse.mclib.utils.MathUtils;
 import mchorse.metamorph.api.Morph;
@@ -127,7 +128,26 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
     @Override
     public void updatePassenger(Entity passenger) {
-        super.updatePassenger(passenger);
+        if (this.isPassenger(passenger)) {
+            double offsetX = this.state.steeringXOffset;
+            double offsetY = this.posY - 0.5 + EntityUtils.getHeight(this) + this.state.steeringYOffset;
+            double offsetZ = this.state.steeringZOffset;
+
+            // Convert bodyYaw to radians as Java Math functions expect arguments in radians
+            double bodyYaw = Math.toRadians(this.renderYawOffset);
+
+            // Rotate the offset vector by the entity's bodyYaw
+            double rotatedOffsetX = offsetX * Math.cos(bodyYaw) - offsetZ * Math.sin(bodyYaw);
+            double rotatedOffsetZ = offsetX * Math.sin(bodyYaw) + offsetZ * Math.cos(bodyYaw);
+
+            // Add the rotated offset to the entity's position
+            double finalPosX = this.posX + rotatedOffsetX;
+            double finalPosZ = this.posZ + rotatedOffsetZ;
+
+            // Update the passenger's position on both the server and the client
+            passenger.setPosition(finalPosX, offsetY, finalPosZ);
+            passenger.setPositionAndRotationDirect(finalPosX, offsetY, finalPosZ, passenger.rotationYaw, passenger.rotationPitch, 3, true);
+        }
 
         // Check if the passenger is a player and the entity can be steered
         if (passenger instanceof EntityPlayer && canBeSteered()) {
