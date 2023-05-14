@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import mchorse.mappet.api.states.States;
 import mchorse.mappet.api.triggers.Trigger;
 import mchorse.mappet.utils.NBTUtils;
+import mchorse.mappet.utils.NpcStateUtils;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.nbt.JsonToNBT;
@@ -771,18 +772,27 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     }
 
     public void writeToBuf(ByteBuf buf) {
+        // these should not be needed, only last line should be needed, but idk why they are still needed
+        // I mean, when they're here everything works perfectly,
+        // when not, the other things work fine but not these (if you left the world and rejoined,
+        // you have to open the npc gui and close it for these to work)
         buf.writeFloat(shadowSize);
         buf.writeFloat(jumpPower);
         buf.writeFloat(steeringXOffset);
         buf.writeFloat(steeringYOffset);
         buf.writeFloat(steeringZOffset);
+
+        NpcStateUtils.stateToBuf(buf, this);
     }
 
     public void readFromBuf(ByteBuf buf) {
+        // same comment as writeToBuf above
         shadowSize = buf.readFloat();
         jumpPower = buf.readFloat();
         steeringXOffset = buf.readFloat();
         steeringYOffset = buf.readFloat();
         steeringZOffset = buf.readFloat();
+
+        NpcStateUtils.stateFromBuf(buf);
     }
 }

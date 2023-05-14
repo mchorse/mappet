@@ -36,7 +36,7 @@ public class ScriptNpc extends ScriptEntity<EntityNpc> implements IScriptNpc
     {
         this.entity.getState().morph = MorphUtils.copy(morph);
         this.entity.setMorph(this.entity.getState().morph);
-        this.entity.sendMorph();
+        this.entity.sendNpcStateChangePacket();
 
         return true;
     }
@@ -69,7 +69,7 @@ public class ScriptNpc extends ScriptEntity<EntityNpc> implements IScriptNpc
             }
         }
 
-        this.entity.sendMorph();
+        this.entity.sendNpcStateChangePacket();
     }
 
     @Override
