@@ -109,6 +109,22 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     public float jumpPower = 0.5F;
 
     /**
+     * NPC's x-offset when steered
+     */
+    public float steeringXOffset = 0.0F;
+
+    /**
+     * NPC's y-offset when steered
+     */
+    public float steeringYOffset = 0.0F;
+
+    /**
+     * NPC's z-offset when steered
+     */
+    public float steeringZOffset = 0.0F;
+
+
+    /**
      * Can NPC move around in the water
      */
     public boolean canSwim = true;
@@ -362,6 +378,18 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         {
             this.jumpPower = Float.parseFloat(value);
         }
+        else if (property.equals("x_offset"))
+        {
+            this.steeringXOffset = Float.parseFloat(value);
+        }
+        else if (property.equals("y_offset"))
+        {
+            this.steeringYOffset = Float.parseFloat(value);
+        }
+        else if (property.equals("z_offset"))
+        {
+            this.steeringZOffset = Float.parseFloat(value);
+        }
         else if (property.equals("can_swim"))
         {
             this.canSwim = Boolean.parseBoolean(value);
@@ -530,6 +558,9 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         /* Movement */
         if (all || options.contains("speed")) tag.setFloat("Speed", this.speed);
         if (all || options.contains("jump_power")) tag.setFloat("JumpPower", this.jumpPower);
+        if (all || options.contains("steering_x_offset")) tag.setFloat("steering_x_offset", this.steeringXOffset);
+        if (all || options.contains("steering_y_offset")) tag.setFloat("steering_y_offset", this.steeringYOffset);
+        if (all || options.contains("steering_z_offset")) tag.setFloat("steering_z_offset", this.steeringZOffset);
         if (all || options.contains("can_swim")) tag.setBoolean("CanSwim", this.canSwim);
         if (all || options.contains("immovable")) tag.setBoolean("Immovable", this.immovable);
         if (all || options.contains("has_post")) tag.setBoolean("HasPost", this.hasPost);
@@ -638,6 +669,9 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         /* Movement */
         if (tag.hasKey("Speed")) this.speed = tag.getFloat("Speed");
         if (tag.hasKey("JumpPower")) this.jumpPower = tag.getFloat("JumpPower");
+        if (tag.hasKey("steering_x_offset")) this.steeringXOffset = tag.getFloat("steering_x_offset");
+        if (tag.hasKey("steering_y_offset")) this.steeringYOffset = tag.getFloat("steering_y_offset");
+        if (tag.hasKey("steering_z_offset")) this.steeringZOffset = tag.getFloat("steering_z_offset");
         if (tag.hasKey("CanSwim")) this.canSwim = tag.getBoolean("CanSwim");
         if (tag.hasKey("Immovable")) this.immovable = tag.getBoolean("Immovable");
         if (tag.hasKey("HasPost")) this.hasPost = tag.getBoolean("HasPost");
@@ -739,10 +773,16 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     public void writeToBuf(ByteBuf buf) {
         buf.writeFloat(shadowSize);
         buf.writeFloat(jumpPower);
+        buf.writeFloat(steeringXOffset);
+        buf.writeFloat(steeringYOffset);
+        buf.writeFloat(steeringZOffset);
     }
 
     public void readFromBuf(ByteBuf buf) {
         shadowSize = buf.readFloat();
         jumpPower = buf.readFloat();
+        steeringXOffset = buf.readFloat();
+        steeringYOffset = buf.readFloat();
+        steeringZOffset = buf.readFloat();
     }
 }

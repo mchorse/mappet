@@ -18,6 +18,9 @@ public class GuiNpcMovementPanel extends GuiNpcPanel
 {
     public GuiTrackpadElement speed;
     public GuiTrackpadElement jumpPower;
+    public GuiTrackpadElement steeringXOffset;
+    public GuiTrackpadElement steeringYOffset;
+    public GuiTrackpadElement steeringZOffset;
     public GuiToggleElement canSwim;
     public GuiToggleElement immovable;
     public GuiToggleElement hasPost;
@@ -33,6 +36,9 @@ public class GuiNpcMovementPanel extends GuiNpcPanel
 
         this.speed = new GuiTrackpadElement(mc, (v) -> this.state.speed = v.floatValue());
         this.jumpPower = new GuiTrackpadElement(mc, (v) -> this.state.jumpPower = v.floatValue());
+        this.steeringXOffset = new GuiTrackpadElement(mc, (v) -> this.state.steeringXOffset = v.floatValue());
+        this.steeringYOffset = new GuiTrackpadElement(mc, (v) -> this.state.steeringYOffset = v.floatValue());
+        this.steeringZOffset = new GuiTrackpadElement(mc, (v) -> this.state.steeringZOffset = v.floatValue());
         this.canSwim = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.movement.can_swim"), (b) -> this.state.canSwim = b.isToggled());
         this.immovable = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.movement.immovable"), (b) -> this.state.immovable = b.isToggled());
         this.hasPost = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.movement.post"), (b) -> this.state.hasPost = b.isToggled());
@@ -50,6 +56,9 @@ public class GuiNpcMovementPanel extends GuiNpcPanel
 
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.movement.speed")), this.speed);
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.movement.jump_power")), this.jumpPower);
+        this.add(Elements.label(IKey.lang("mappet.gui.npcs.movement.steering_x_offset")), this.steeringXOffset);
+        this.add(Elements.label(IKey.lang("mappet.gui.npcs.movement.steering_y_offset")), this.steeringYOffset);
+        this.add(Elements.label(IKey.lang("mappet.gui.npcs.movement.steering_z_offset")), this.steeringZOffset);
         this.add(this.canSwim, this.immovable);
         this.add(this.hasPost.marginTop(12), this.postPosition, this.postRadius);
 
@@ -69,6 +78,9 @@ public class GuiNpcMovementPanel extends GuiNpcPanel
 
         this.speed.setValue(state.speed);
         this.jumpPower.setValue(state.jumpPower);
+        this.steeringXOffset.setValue(state.steeringXOffset);
+        this.steeringYOffset.setValue(state.steeringYOffset);
+        this.steeringZOffset.setValue(state.steeringZOffset);
         this.canSwim.toggled(state.canSwim);
         this.immovable.toggled(state.immovable);
         this.hasPost.toggled(state.hasPost);
