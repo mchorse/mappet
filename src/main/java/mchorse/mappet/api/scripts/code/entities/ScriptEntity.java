@@ -223,6 +223,22 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Override
     public float getEyeHeight()
     {
+        if (this.entity instanceof IMorphProvider)
+        {
+            AbstractMorph morphProvider = ((IMorphProvider) this.entity).getMorph();
+
+            if (this.entity instanceof EntityPlayer) {
+                float height = this.entity.isSneaking() ? morphProvider.hitbox.sneakingHeight : morphProvider.hitbox.height;
+                float eyeHeight = height * morphProvider.hitbox.eye;
+                float minEyeToHeadDifference = 0.1F;
+                if (eyeHeight + minEyeToHeadDifference > height) {
+                    eyeHeight = height - minEyeToHeadDifference;
+                }
+
+                return eyeHeight;
+            }
+        }
+
         return this.entity.getEyeHeight();
     }
 
