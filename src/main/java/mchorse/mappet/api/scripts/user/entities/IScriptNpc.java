@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts.user.entities;
 
+import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.entities.EntityNpc;
 
 /**
@@ -201,11 +202,401 @@ public interface IScriptNpc extends IScriptEntity
     public String getFaction();
 
     /**
-     * Sets presented faction to the NPC
+     * Sets whether the NPC can be steered.
      *
      * <pre>{@code
-     * c.getSubject().setFaction("Guards")
+     * c.getSubject().setCanBeSteered(true);
      * }</pre>
      */
-    public void setFaction(String factionName);
+    public void setCanBeSteered(boolean enabled);
+
+    /**
+     * Checks if the NPC can be steered.
+     *
+     * <pre>{@code
+     * c.getSubject().canBeSteered();
+     * }</pre>
+     */
+    public boolean canBeSteered();
+
+    /**
+     * Sets the steering offset for the NPC.
+     *
+     * <pre>{@code
+     * c.getSubject().setSteeringOffset(x, y, z);
+     * }</pre>
+     */
+    public void setSteeringOffset(float x, float y, float z);
+
+    /**
+     * Gets the steering offset of the NPC.
+     *
+     * <pre>{@code
+     * var steeringOffset = c.getSubject().getSteeringOffset();
+     * c.send(steeringOffset.x+" "+steeringOffset.y+" "+steeringOffset.z);
+     * }</pre>
+     */
+    public ScriptVector getSteeringOffset();
+
+    /**
+     * Sets the speed of the NPC.
+     *
+     * <pre>{@code
+     * c.getSubject().setNpcSpeed(speed);
+     * }</pre>
+     */
+    public void setNpcSpeed(float speed);
+
+    /**
+     * Gets the speed of the NPC.
+     *
+     * <pre>{@code
+     * c.getSubject().getNpcSpeed();
+     * }</pre>
+     */
+    public float getNpcSpeed();
+
+    /**
+     * Sets the jump power of the NPC.
+     *
+     * <pre>{@code
+     * c.getSubject().setjumpPower(jumpHeight);
+     * }</pre>
+     */
+    public void setjumpPower(float jumpHeight);
+
+    /**
+     * Gets the jump power of the NPC.
+     *
+     * <pre>{@code
+     * c.getSubject().getjumpPower();
+     * }</pre>
+     */
+    public float getjumpPower();
+
+    /**
+     * Sets whether the NPC is invincible.
+     *
+     * <pre>{@code
+     * c.getSubject().setInvincible(true);
+     * }</pre>
+     */
+    public void setInvincible(boolean invencible);
+
+    /**
+     * Checks if the NPC is invincible.
+     *
+     * <pre>{@code
+     * c.getSubject().isInvincible();
+     * }</pre>
+     */
+    public boolean isInvincible();
+
+    /**
+     * Sets whether the NPC can swim.
+     *
+     * <pre>{@code
+     * c.getSubject().setCanSwim(true);
+     * }</pre>
+     */
+    public void setCanSwim(boolean canSwim);
+
+    /**
+     * Checks if the NPC can swim.
+     *
+     * <pre>{@code
+     * c.getSubject().canSwim();
+     * }</pre>
+     */
+    public boolean canSwim();
+
+    /**
+     * Sets whether the NPC is immovable.
+     *
+     * <pre>{@code
+     * c.getSubject().setImmovable(true);
+     * }</pre>
+     */
+    public void setImmovable(boolean immovable);
+
+    /**
+     * Checks if the NPC is immovable.
+     *
+     * <pre>{@code
+     * c.getSubject().isImmovable();
+     * }</pre>
+     */
+    public boolean isImmovable();
+
+    /**
+     * Sets the shadow size of the NPC.
+     *
+     * <pre>{@code
+     * c.getSubject().setShadowSize(0.8);
+     * }</pre>
+     *
+     * @param size the new shadow size for the NPC.
+     */
+    public void setShadowSize(float size);
+
+    /**
+     * Gets the shadow size of the NPC.
+     *
+     * <pre>{@code
+     * var size = c.getSubject().getShadowSize();
+     * }</pre>
+     *
+     * @return the shadow size of the NPC.
+     */
+    public float getShadowSize();
+
+    /**
+     * Sets the XP value of the NPC.
+     *
+     * <pre>{@code
+     * c.getSubject().setXpValue(10);
+     * }</pre>
+     *
+     * @param xp the new XP value for the NPC.
+     * @return the new XP value.
+     */
+    public float setXpValue(int xp);
+
+    /**
+     * Gets the XP value of the NPC.
+     *
+     * <pre>{@code
+     * var xp = c.getSubject().getXpValue();
+     * }</pre>
+     *
+     * @return the XP value of the NPC.
+     */
+    public int getXpValue();
+
+    /**
+     * Gets the path distance of the NPC. Also determines the NPC's sight radius of "look at player" option.
+     *
+     * <pre>{@code
+     * var distance = c.getSubject().getPathDistance();
+     * }</pre>
+     *
+     * @return the path distance of the NPC.
+     */
+    public float getPathDistance();
+
+    /**
+     * Sets the path distance of the NPC. Also determines the NPC's sight radius of "look at player" option.
+     *
+     * <pre>{@code
+     * c.getSubject().setPathDistance(10);
+     * }</pre>
+     *
+     * @param sightRadius the new path distance for the NPC.
+     */
+    public void setPathDistance(float sightRadius);
+
+    /**
+     * Sets the attack range of the NPC.
+     *
+     * <pre>{@code
+     * c.getSubject().setAttackRange(5);
+     * }</pre>
+     *
+     * @param sightDistance the new attack range for the NPC.
+     */
+    public void setAttackRange(float sightDistance);
+
+    /**
+     * Gets the attack range of the NPC.
+     *
+     * <pre>{@code
+     * var range = c.getSubject().getAttackRange();
+     * }</pre>
+     *
+     * @return the attack range of the NPC.
+     */
+    public float getAttackRange();
+
+    /**
+     * Sets the killable status of the NPC.
+     *  If false, then NPCs can be killed only by a command.
+     *  Regardless of the state, killable allows to make this NPC damaged
+     *  until 0 health.
+     *
+     * <pre>{@code
+     * c.getSubject().setKillable(true);
+     * }</pre>
+     *
+     * @param killable the new killable status for the NPC.
+     */
+    public void setKillable(boolean killable);
+
+    /**
+     * Gets the killable status of the NPC.
+     *  If false, then NPCs can be killed only by a command.
+     *  Regardless of the state, killable allows to make this NPC damaged
+     *  until 0 health.
+     *
+     * <pre>{@code
+     * var isKillable = c.getSubject().isKillable();
+     * }</pre>
+     *
+     * @return true if the NPC is killable, false otherwise.
+     */
+    public boolean isKillable();
+
+    /**
+     * Gets the burnable status of the NPC.
+     *
+     * <pre>{@code
+     * var canGetBurned = c.getSubject().canGetBurned();
+     * }</pre>
+     *
+     * @return true if the NPC can get burned, false otherwise.
+     */
+    public boolean canGetBurned();
+
+    /**
+     * Sets the burnable status of the NPC.
+     *
+     * <pre>{@code
+     * c.getSubject().canGetBurned(true);
+     * }</pre>
+     *
+     * @param canGetBurned the new burnable status for the NPC.
+     */
+    public void canGetBurned(boolean canGetBurned);
+
+    /**
+     * Gets the status if the NPC can take fall damage.
+     *
+     * <pre>{@code
+     * var canFallDamage = c.getSubject().canFallDamage();
+     * }</pre>
+     *
+     * @return true if the NPC can take fall damage, false otherwise.
+     */
+    public boolean canFallDamage();
+
+    /**
+     * Sets the status if the NPC can take fall damage.
+     *
+     * <pre>{@code
+     * c.getSubject().canFallDamage(true);
+     * }</pre>
+     *
+     * @param canFallDamage the new status for the NPC's fall damage.
+     */
+    public void canFallDamage(boolean canFallDamage);
+
+    /**
+     * Gets the damage strength points of the NPC.
+     *
+     * <pre>{@code
+     * var damage = c.getSubject().getDamage();
+     * }</pre>
+     *
+     * @return the damage of the NPC.
+     */
+    public float getDamage();
+
+    /**
+     * Sets the damage strength points of the NPC.
+     *
+     * <pre>{@code
+     * c.getSubject().setDamage(10);
+     * }</pre>
+     *
+     * @param damage the new damage for the NPC.
+     */
+    public void setDamage(float damage);
+
+    /**
+     * Gets the damage delay of the NPC.
+     *
+     * <pre>{@code
+     * var delay = c.getSubject().getDamageDelay();
+     * }</pre>
+     *
+     * @return the damage delay of the NPC.
+     */
+    public int getDamageDelay();
+
+    /**
+     * Sets the damage delay of the NPC.
+     *
+     * <pre>{@code
+     * c.getSubject().setDamageDelay(5);
+     * }</pre>
+     *
+     * @param damageDelay the new damage delay for the NPC.
+     */
+    public void setDamageDelay(int damageDelay);
+
+    /**
+     * Gets the wandering status of the NPC.
+     *
+     * <pre>{@code
+     * var doesWander = c.getSubject().doesWander();
+     * }</pre>
+     *
+     * @return true if the NPC wanders, false otherwise.
+     */
+    public boolean doesWander();
+
+    /**
+     * Sets the wandering status of the NPC.
+     *
+     * <pre>{@code
+     * c.getSubject().setWander(true);
+     * }</pre>
+     *
+     * @param wander the new wandering status for the NPC.
+     */
+    public void setWander(boolean wander);
+
+    /**
+     * Gets the status of the NPC's idle look around behavior.
+     *
+     * <pre>{@code
+     * var doesLookAround = c.getSubject().doesLookAround();
+     * }</pre>
+     *
+     * @return true if the NPC looks around while idle, false otherwise.
+     */
+    public boolean doesLookAround();
+
+    /**
+     * Sets the status of the NPC's idle look around behavior.
+     *
+     * <pre>{@code
+     * c.getSubject().setLookAround(true);
+     * }</pre>
+     *
+     * @param lookAround the new idle look around status for the NPC.
+     */
+    public void setLookAround(boolean lookAround);
+
+    /**
+     * Gets the status of the NPC's behavior to look at the player.
+     *
+     * <pre>{@code
+     * var doesLookAtPlayer = c.getSubject().doesLookAtPlayer();
+     * }</pre>
+     *
+     * @return true if the NPC looks at the player, false otherwise.
+     */
+    public boolean doesLookAtPlayer();
+
+    /**
+     * Sets the status of the NPC's behavior to look at the player.
+     *
+     * <pre>{@code
+     * c.getSubject().setLookAtPlayer(true);
+     * }</pre>
+     *
+     * @param lookAtPlayer the new status for the NPC's behavior to look at the player.
+     */
+    public void setLookAtPlayer(boolean lookAtPlayer);
+
 }
