@@ -285,15 +285,30 @@ public class ScriptItemStack implements IScriptItemStack
 
         if (tag == null)
         {
-            this.stack.setTagCompound(new NBTTagCompound());
+            tag = new NBTTagCompound();
+            this.stack.setTagCompound(tag);
         }
 
+        NBTTagList canDestroyList;
         if (!tag.hasKey(CAN_DESTROY, Constants.NBT.TAG_LIST))
         {
-            tag.setTag(CAN_DESTROY, new NBTTagList());
+            canDestroyList = new NBTTagList();
+            tag.setTag(CAN_DESTROY, canDestroyList);
+        }
+        else
+        {
+            canDestroyList = tag.getTagList(CAN_DESTROY, Constants.NBT.TAG_STRING);
         }
 
-        tag.getTagList(CAN_DESTROY, Constants.NBT.TAG_STRING).appendTag(new NBTTagString(block));
+        for (int i = 0; i < canDestroyList.tagCount(); i++)
+        {
+            if (canDestroyList.getStringTagAt(i).equals(block))
+            {
+                return; // If the block is already in the list, do not add it again.
+            }
+        }
+
+        canDestroyList.appendTag(new NBTTagString(block));
     }
 
     @Override
