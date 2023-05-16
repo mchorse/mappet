@@ -444,4 +444,16 @@ public class ScriptItemStack implements IScriptItemStack
             tag.setBoolean("Unbreakable", unbreakable);
         }
     }
+
+    @Override
+    public void add(int amount)
+    {
+        int newCount = this.stack.getCount() + amount;
+
+        if (newCount <= 0) {
+            this.stack.shrink(this.stack.getCount());
+        } else {
+            this.stack.setCount(newCount);
+        }
+    }
 }
