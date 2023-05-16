@@ -180,4 +180,9 @@ public interface IScriptItemStack
      * Set whether an item stack is unbreakable or not.
      */
     public void setUnbreakable(boolean unbreakable);
+
+    /**
+     * Add/remove more items to the stack.
+     */
+    public void add(int amount);
 }
