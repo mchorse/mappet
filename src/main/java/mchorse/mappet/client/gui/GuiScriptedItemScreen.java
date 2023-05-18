@@ -9,6 +9,7 @@ import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.Elements;
+import mchorse.mclib.client.gui.utils.ScrollDirection;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.ColorUtils;
 import net.minecraft.client.Minecraft;
@@ -17,49 +18,68 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Arrays;
+import java.util.List;
+
 @SideOnly(Side.CLIENT)
 public class GuiScriptedItemScreen extends GuiBase {
-    public ScriptedItemProps props;
-    GuiTriggerElement interactWithAir;
-    GuiTriggerElement interactWithEntity;
-    GuiTriggerElement interactWithBlock;
-    GuiTriggerElement attackEntity;
-    GuiTriggerElement breakBlock;
-    GuiTriggerElement placeBlock;
-    GuiTriggerElement hitBlock;
-    GuiTriggerElement onHolderTick;
-    GuiTriggerElement pickup;
+    private ScriptedItemProps props;
 
-    public GuiScriptedItemScreen(ItemStack stack)
-    {
+    private List<GuiTriggerElement> triggerElements;
+    private List<String> triggerLabels;
+
+    public GuiScriptedItemScreen(ItemStack stack) {
         super();
+
+        // Initialize properties and store initial state
         this.props = NBTUtils.getScriptedItemProps(stack);
         this.props.storeInitialState();
 
+        // Initialize the scrolling element
         Minecraft mc = Minecraft.getMinecraft();
-        GuiScrollElement scroll = new GuiScrollElement(mc);
-        scroll.flex().relative(this.viewport).xy(0.5F, 0.5F).w(0.5F).h(1F).anchor(0.5F, 0.5F).column(5).vertical().stretch().scroll().padding(10);
-        this.interactWithAir = new GuiTriggerElement(mc, props.interactWithAir);
-        this.interactWithEntity = new GuiTriggerElement(mc, props.interactWithEntity);
-        this.interactWithBlock = new GuiTriggerElement(mc, props.interactWithBlock);
-        this.attackEntity = new GuiTriggerElement(mc, props.attackEntity);
-        this.breakBlock = new GuiTriggerElement(mc, props.breakBlock);
-        this.placeBlock = new GuiTriggerElement(mc, props.placeBlock);
-        this.hitBlock = new GuiTriggerElement(mc, props.hitBlock);
-        this.onHolderTick = new GuiTriggerElement(mc, props.onHolderTick);
-        this.pickup = new GuiTriggerElement(mc, props.pickup);
+        GuiScrollElement scroll = new GuiScrollElement(mc, ScrollDirection.VERTICAL);
+        scroll.flex().relative(this.root).w(1F).h(1F);
+        scroll.scroll.scrollSpeed *= 2;
+        scroll.flex().column(5).scroll().width(180).padding(15);
 
-        scroll.add(Elements.label(IKey.lang("mappet.gui.scripted_item.interact_with_air")).background().marginTop(12).marginBottom(5), this.interactWithAir.marginTop(6));
-        scroll.add(Elements.label(IKey.lang("mappet.gui.scripted_item.interact_with_entity")).background().marginTop(12).marginBottom(5), this.interactWithEntity.marginTop(6));
-        scroll.add(Elements.label(IKey.lang("mappet.gui.scripted_item.interact_with_block")).background().marginTop(12).marginBottom(5), this.interactWithBlock.marginTop(6));
-        scroll.add(Elements.label(IKey.lang("mappet.gui.scripted_item.attack_entity")).background().marginTop(12).marginBottom(5), this.attackEntity.marginTop(6));
-        scroll.add(Elements.label(IKey.lang("mappet.gui.scripted_item.break_block")).background().marginTop(12).marginBottom(5), this.breakBlock.marginTop(6));
-        scroll.add(Elements.label(IKey.lang("mappet.gui.scripted_item.place_block")).background().marginTop(12).marginBottom(5), this.placeBlock.marginTop(6));
-        scroll.add(Elements.label(IKey.lang("mappet.gui.scripted_item.hit_block")).background().marginTop(12).marginBottom(5), this.hitBlock.marginTop(6));
-        scroll.add(Elements.label(IKey.lang("mappet.gui.scripted_item.on_holder_tick")).background().marginTop(12).marginBottom(5), this.onHolderTick.marginTop(6));
-        scroll.add(Elements.label(IKey.lang("mappet.gui.scripted_item.pickup")).background().marginTop(12).marginBottom(5), this.pickup.marginTop(6));
+        // Initialize triggers
+        this.triggerElements = Arrays.asList(
+                new GuiTriggerElement(mc, props.interactWithAir),
+                new GuiTriggerElement(mc, props.interactWithEntity),
+                new GuiTriggerElement(mc, props.interactWithBlock),
+                new GuiTriggerElement(mc, props.attackEntity),
+                new GuiTriggerElement(mc, props.breakBlock),
+                new GuiTriggerElement(mc, props.placeBlock),
+                new GuiTriggerElement(mc, props.hitBlock),
+                new GuiTriggerElement(mc, props.onHolderTick),
+                new GuiTriggerElement(mc, props.pickup)
+        );
+
+        // Initialize trigger labels
+        this.triggerLabels = Arrays.asList(
+                "mappet.gui.scripted_item.interact_with_air",
+                "mappet.gui.scripted_item.interact_with_entity",
+                "mappet.gui.scripted_item.interact_with_block",
+                "mappet.gui.scripted_item.attack_entity",
+                "mappet.gui.scripted_item.break_block",
+                "mappet.gui.scripted_item.place_block",
+                "mappet.gui.scripted_item.hit_block",
+                "mappet.gui.scripted_item.on_holder_tick",
+                "mappet.gui.scripted_item.pickup"
+        );
+
+        // Add each trigger to the scroll panel with its label
+        for (int i = 0; i < triggerElements.size(); i++) {
+            GuiTriggerElement triggerElement = triggerElements.get(i);
+            String triggerLabel = triggerLabels.get(i);
+
+            scroll.add(Elements.label(IKey.lang(triggerLabel)).background().marginBottom(6).marginTop(24), triggerElement);
+        }
+
+        // Add the scroll element to the root
         this.root.add(scroll);
     }
+
 
     @Override
     public boolean doesGuiPauseGame()
@@ -83,7 +103,7 @@ public class GuiScriptedItemScreen extends GuiBase {
 
         String title = I18n.format("mappet.gui.scripted_item.title");
 
-        GuiDraw.drawTextBackground(this.fontRenderer, title, this.viewport.mx(this.fontRenderer.getStringWidth(title)), this.viewport.y + 20, 0xffffff, ColorUtils.HALF_BLACK);
+        GuiDraw.drawTextBackground(this.fontRenderer, title, this.viewport.x + 15, this.viewport.y + 10, 0xffffff, ColorUtils.HALF_BLACK);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
