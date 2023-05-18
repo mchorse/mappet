@@ -427,6 +427,16 @@ mappet.gui.scripted_item.place_block=On Block Place
 mappet.gui.scripted_item.hit_block=On Block Hit
 mappet.gui.scripted_item.on_holder_tick=On Holder Tick
 mappet.gui.scripted_item.pickup=On Item Pickup
+mappet.gui.scripted_item.descriptions.interact_with_air=This trigger fires when the player interacts with air (empty space) while holding a scripted item. The variables provided in the context are §6x§r, §6y§r, §6z§r coordinates of the interaction, and §6hand§r the hand used for the interaction.
+mappet.gui.scripted_item.descriptions.interact_with_entity=This trigger fires when the player interacts with an entity while holding a scripted item. The variables provided in the context are the §6hand§r the player used to interact with the entity.
+mappet.gui.scripted_item.descriptions.interact_with_block=This trigger fires when the player interacts with a block while holding a scripted item. The variables provided in the context are §6x§r, §6y§r, §6z§r coordinates of the block, §6block§r the block's registry name, §6meta§r the block's meta-data, and §6hand§r the hand used for the interaction.
+mappet.gui.scripted_item.descriptions.attack_entity=This trigger fires when the player attacks an entity while holding a scripted item. The variable provided in the context is §6damage§r the amount of damage dealt to the entity.
+mappet.gui.scripted_item.descriptions.break_block=This trigger fires when the player breaks a block while holding a scripted item. The variables provided in the context are §6x§r, §6y§r, §6z§r coordinates of the block, §6block§r the block's registry name, and §6meta§r the block's meta-data.
+mappet.gui.scripted_item.descriptions.place_block=This trigger fires when the player places a block while holding a scripted item. The variables provided in the context are §6x§r, §6y§r, §6z§r coordinates of the block, §6block§r the block's registry name, §6meta§r the block's meta-data, and §6hand§r the hand used for the action.
+mappet.gui.scripted_item.descriptions.hit_block=This trigger fires when the player hits a block while holding a scripted item. The variables provided in the context are §6x§r, §6y§r, §6z§r coordinates of the block, and §6hand§r the hand used for the action.
+mappet.gui.scripted_item.descriptions.on_holder_tick=This trigger fires on each game tick when the player is holding the scripted item. The variable provided in the context is §6hand§r the hand that's holding the item.
+mappet.gui.scripted_item.descriptions.pickup=This trigger fires when the player picks up a scripted item. The variable provided in the context is §6item§r the item stack that was picked up.
+
 
 mappet.gui.crafting.title=Crafting table's title
 mappet.gui.crafting.action="Craft" button's title
