@@ -316,7 +316,7 @@ public class GuiServerSettingsPanel extends GuiDashboardPanel<GuiMappetDashboard
     private void fillTrigger(Label<String> trigger, boolean select)
     {
         this.editor.removeAll();
-        this.editor.add(new GuiText(this.mc).text(IKey.lang("mappet.gui.settings.triggers.descriptions." + trigger.value)));
+        this.editor.add(new GuiText(this.mc).text(IKey.lang("mappet.gui.settings.triggers.descriptions." + trigger.value))); //THIS
         this.editor.add(Elements.label(IKey.lang("mappet.gui.settings.variables")).background().marginTop(16).marginBottom(8));
         this.editor.add(new GuiText(this.mc).text(IKey.lang("mappet.gui.settings.triggers.variables." + trigger.value)));
 

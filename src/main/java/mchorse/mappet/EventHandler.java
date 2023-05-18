@@ -1241,9 +1241,11 @@ public class EventHandler
     private void triggerInteractWithAir(PlayerInteractEvent.RightClickItem event, Trigger interactWithAirTrigger, RayTraceResult rayTraceResult, List<Entity> entityList, EntityPlayer playerIn) {
         if (interactWithAirTrigger != null && !interactWithAirTrigger.blocks.isEmpty() &&
                 (rayTraceResult == null || rayTraceResult.typeOfHit != RayTraceResult.Type.BLOCK) && entityList.isEmpty()) {
-            interactWithAirTrigger.trigger(playerIn);
-
-            DataContext context = new DataContext(playerIn);
+            DataContext context = new DataContext(playerIn)
+                .set("x", event.getPos().getX())
+                .set("y", event.getPos().getY())
+                .set("z", event.getPos().getZ())
+                .set("hand", event.getHand() == EnumHand.MAIN_HAND ? "main" : "off");
             this.trigger(event, interactWithAirTrigger, context);
         }
     }
@@ -1272,6 +1274,7 @@ public class EventHandler
 
             if (props != null && props.interactWithEntity != null && !props.interactWithEntity.blocks.isEmpty()) {
                 DataContext context = new DataContext(event.getEntityPlayer(), event.getTarget());
+                context.set("hand", event.getHand() == EnumHand.MAIN_HAND ? "main" : "off");
                 this.trigger(event, props.interactWithEntity, context);
             }
         }
@@ -1286,7 +1289,9 @@ public class EventHandler
             ScriptedItemProps props = NBTUtils.getScriptedItemProps(item);
 
             if (props != null && props.attackEntity != null && !props.attackEntity.blocks.isEmpty()) {
-                DataContext context = new DataContext(player, event.getEntityLiving());
+                DamageSource source = event.getSource();
+                DataContext context = new DataContext(event.getEntityLiving(), source.getTrueSource())
+                    .set("damage", event.getAmount());
                 this.trigger(event, props.interactWithEntity, context);
             }
         }
@@ -1300,7 +1305,14 @@ public class EventHandler
             ScriptedItemProps props = NBTUtils.getScriptedItemProps(item);
 
             if (props != null && props.interactWithBlock != null && !props.interactWithBlock.blocks.isEmpty()) {
-                DataContext context = new DataContext(event.getWorld(), event.getPos());
+                IBlockState state = event.getWorld().getBlockState(event.getPos());
+                DataContext context = new DataContext(event.getWorld(), event.getPos())
+                    .set("block", state.getBlock().getRegistryName().toString())
+                    .set("meta", state.getBlock().getMetaFromState(state))
+                    .set("x", event.getPos().getX())
+                    .set("y", event.getPos().getY())
+                    .set("z", event.getPos().getZ())
+                    .set("hand", event.getHand() == EnumHand.MAIN_HAND ? "main" : "off");
                 this.trigger(event, props.interactWithBlock, context);
             }
         }
@@ -1310,12 +1322,15 @@ public class EventHandler
     public void onPlayerHoldingScriptedItemTick(TickEvent.PlayerTickEvent event)
     {
         if (!event.player.world.isRemote) {
-            ItemStack item = event.player.getHeldItem(EnumHand.MAIN_HAND);
-            ScriptedItemProps props = NBTUtils.getScriptedItemProps(item);
+            for (EnumHand hand : EnumHand.values()) { // Check for both main and off hands
+                ItemStack item = event.player.getHeldItem(hand);
+                ScriptedItemProps props = NBTUtils.getScriptedItemProps(item);
 
-            if (props != null && props.onHolderTick != null && !props.onHolderTick.blocks.isEmpty()) {
-                DataContext context = new DataContext(event.player);
-                this.trigger(event, props.onHolderTick, context);
+                if (props != null && props.onHolderTick != null && !props.onHolderTick.blocks.isEmpty()) {
+                    DataContext context = new DataContext(event.player);
+                    context.set("hand", hand == EnumHand.MAIN_HAND ? "main" : "off"); // Add the hand used to the context
+                    this.trigger(event, props.onHolderTick, context);
+                }
             }
         }
     }
@@ -1328,7 +1343,11 @@ public class EventHandler
             ScriptedItemProps props = NBTUtils.getScriptedItemProps(item);
 
             if (props != null && props.hitBlock != null && !props.hitBlock.blocks.isEmpty()) {
-                DataContext context = new DataContext(event.getEntityPlayer());
+                DataContext context = new DataContext(event.getEntityPlayer())
+                    .set("x", event.getPos().getX())
+                    .set("y", event.getPos().getY())
+                    .set("z", event.getPos().getZ())
+                    .set("hand", event.getHand() == EnumHand.MAIN_HAND ? "main" : "off");
                 this.trigger(event, props.hitBlock, context);
             }
         }
@@ -1339,11 +1358,26 @@ public class EventHandler
     {
         if (!event.getWorld().isRemote) {
             EntityPlayer player = event.getPlayer();
-            ItemStack item = player.getHeldItem(EnumHand.MAIN_HAND);
+            EnumHand handIn = EnumHand.MAIN_HAND;
+            ItemStack item = player.getHeldItem(handIn);
+
+            // Check if the item is not in the main hand, if so, switch to off hand
+            if (item.isEmpty()) {
+                handIn = EnumHand.OFF_HAND;
+                item = player.getHeldItem(handIn);
+            }
+
             ScriptedItemProps props = NBTUtils.getScriptedItemProps(item);
 
             if (props != null && props.placeBlock != null && !props.placeBlock.blocks.isEmpty()) {
-                DataContext context = new DataContext(player);
+                IBlockState state = event.getPlacedBlock();
+                DataContext context = new DataContext(player)
+                    .set("block", state.getBlock().getRegistryName().toString())
+                    .set("meta", state.getBlock().getMetaFromState(state))
+                    .set("x", event.getPos().getX())
+                    .set("y", event.getPos().getY())
+                    .set("z", event.getPos().getZ())
+                    .set("hand", handIn == EnumHand.MAIN_HAND ? "main" : "off");
                 this.trigger(event, props.placeBlock, context);
             }
         }
@@ -1359,6 +1393,7 @@ public class EventHandler
 
             if (props != null && props.pickup != null && !props.pickup.blocks.isEmpty()) {
                 DataContext context = new DataContext(player);
+                context.getValues().put("item", ScriptItemStack.create(event.getItem().getItem()));
                 this.trigger(event, props.pickup, context);
             }
         }
@@ -1372,7 +1407,13 @@ public class EventHandler
             ScriptedItemProps props = NBTUtils.getScriptedItemProps(item);
 
             if (props != null && props.breakBlock != null && !props.breakBlock.blocks.isEmpty()) {
-                DataContext context = new DataContext(player);
+                IBlockState state = event.getState();
+                DataContext context = new DataContext(player)
+                    .set("block", state.getBlock().getRegistryName().toString())
+                    .set("meta", state.getBlock().getMetaFromState(state))
+                    .set("x", event.getPos().getX())
+                    .set("y", event.getPos().getY())
+                    .set("z", event.getPos().getZ());
                 this.trigger(event, props.breakBlock, context);
             }
         }
