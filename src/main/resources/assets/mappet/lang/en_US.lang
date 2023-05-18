@@ -417,6 +417,17 @@ mappet.gui.npc_tool.title=NPC tool configuration
 mappet.gui.npc_tool.npc=NPC
 mappet.gui.npc_tool.state=State
 
+mappet.gui.scripted_item.title=Scripted item configuration
+mappet.gui.scripted_item.interact_with_air=On Air Interaction
+mappet.gui.scripted_item.interact_with_entity=On Entity Interaction
+mappet.gui.scripted_item.interact_with_block=On Block Interaction
+mappet.gui.scripted_item.attack_entity=On Entity Attack
+mappet.gui.scripted_item.break_block=On Block Break
+mappet.gui.scripted_item.place_block=On Block Place
+mappet.gui.scripted_item.hit_block=On Block Hit
+mappet.gui.scripted_item.on_holder_tick=On Holder Tick
+mappet.gui.scripted_item.pickup=On Item Pickup
+
 mappet.gui.crafting.title=Crafting table's title
 mappet.gui.crafting.action="Craft" button's title
 mappet.gui.crafting.recipe.title=Recipe's title
@@ -826,6 +837,9 @@ itemGroup.mappet=Mappet
 
 item.mappet.npc_tool.name=NPC tool
 item.mappet.npc_tool.tooltip=This tool allows summoning and editing NPCs.
+
+item.mappet.scripted_item.name=Scripted item
+item.mappet.scripted_item.tooltip=This is an item that can be used to trigger scripts.
 
 tile.mappet.emitter.name=Emitter block
 tile.mappet.emitter.tooltip=Checks for expression condition and emits redstone signal upon non-zero value

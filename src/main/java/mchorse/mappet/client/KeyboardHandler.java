@@ -1,10 +1,13 @@
 package mchorse.mappet.client;
 
+import mchorse.blockbuster.Blockbuster;
+import mchorse.blockbuster.client.gui.GuiGun;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.misc.hotkeys.TriggerHotkey;
 import mchorse.mappet.api.scripts.Script;
 import mchorse.mappet.client.gui.GuiJournalScreen;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
+import mchorse.mappet.client.gui.GuiScriptedItemScreen;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.events.PacketEventHotkey;
 import mchorse.mappet.network.common.events.PacketPlayerJournal;
@@ -19,6 +22,8 @@ import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -52,6 +57,7 @@ public class KeyboardHandler
     public KeyBinding runCurrentScript;
 
     private GuiButton button;
+    private KeyBinding openScriptedItem;
 
     public static void openPlayerJournal()
     {
@@ -96,6 +102,7 @@ public class KeyboardHandler
         this.openMappetDashboard = new KeyBinding(prefix + "dashboard", Keyboard.KEY_EQUALS, prefix + "category");
         this.openJournal = new KeyBinding(prefix + "journal", Keyboard.KEY_J, prefix + "category");
         this.runCurrentScript = new KeyBinding(prefix + "runCurrentScript", Keyboard.KEY_F6, prefix + "category");
+        this.openScriptedItem = new KeyBinding(prefix + "scripted_item", Keyboard.KEY_END, prefix + "category");
 
         ClientRegistry.registerKeyBinding(this.openMappetDashboard);
         ClientRegistry.registerKeyBinding(this.openJournal);
@@ -127,6 +134,7 @@ public class KeyboardHandler
             openPlayerJournal();
         }
 
+<<<<<<< HEAD
         if (this.runCurrentScript.isPressed())
         {
             Script script = GuiMappetDashboard.get(mc).script.getData();
@@ -137,6 +145,16 @@ public class KeyboardHandler
             }
 
             mc.player.sendChatMessage("/mp script exec " + mc.player.getName() + " " + script.getId());
+=======
+        if (this.openScriptedItem.isPressed())
+        {
+            ItemStack stack = mc.player.getHeldItemMainhand();
+
+            if (!stack.getItem().equals(Items.AIR))
+            {
+                mc.displayGuiScreen(new GuiScriptedItemScreen(stack));
+            }
+>>>>>>> f471073a (Added ScriptedItems feature.)
         }
 
         if (Keyboard.getEventKeyState())

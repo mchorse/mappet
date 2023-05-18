@@ -17,6 +17,7 @@ import mchorse.mappet.network.client.events.ClientHandlerPlayerJournal;
 import mchorse.mappet.network.client.factions.ClientHandlerFactions;
 import mchorse.mappet.network.client.huds.ClientHandlerHUDMorph;
 import mchorse.mappet.network.client.huds.ClientHandlerHUDScene;
+import mchorse.mappet.network.client.items.ClientHandlerScriptedItemInfo;
 import mchorse.mappet.network.client.logs.ClientHandlerLogs;
 import mchorse.mappet.network.client.npc.ClientHandlerNpcList;
 import mchorse.mappet.network.client.npc.ClientHandlerNpcStateChange;
@@ -57,6 +58,7 @@ import mchorse.mappet.network.common.factions.PacketFactions;
 import mchorse.mappet.network.common.factions.PacketRequestFactions;
 import mchorse.mappet.network.common.huds.PacketHUDMorph;
 import mchorse.mappet.network.common.huds.PacketHUDScene;
+import mchorse.mappet.network.common.items.PacketScriptedItemInfo;
 import mchorse.mappet.network.common.logs.PacketLogs;
 import mchorse.mappet.network.common.logs.PacketRequestLogs;
 import mchorse.mappet.network.common.npc.PacketNpcList;
@@ -95,6 +97,7 @@ import mchorse.mappet.network.server.dialogue.ServerHandlerPickReply;
 import mchorse.mappet.network.server.events.ServerHandlerEventHotkey;
 import mchorse.mappet.network.server.events.ServerHandlerPlayerJournal;
 import mchorse.mappet.network.server.factions.ServerHandlerRequestFactions;
+import mchorse.mappet.network.server.items.ServerHandlerScriptedItemInfo;
 import mchorse.mappet.network.server.logs.ServerHandlerLogs;
 import mchorse.mappet.network.server.npc.ServerHandlerNpcJump;
 import mchorse.mappet.network.server.npc.ServerHandlerNpcList;
@@ -148,6 +151,10 @@ public class Dispatcher
 
             this.register(PacketEditConditionModel.class, ClientHandlerEditConditionModel.class, Side.CLIENT);
             this.register(PacketEditConditionModel.class, ServerHandlerEditConditionModel.class, Side.SERVER);
+
+            /* Scripted item */
+            this.register(PacketScriptedItemInfo.class, ClientHandlerScriptedItemInfo.class, Side.CLIENT);
+            this.register(PacketScriptedItemInfo.class, ServerHandlerScriptedItemInfo.class, Side.SERVER);
 
             /* Creative editing */
             this.register(PacketContentRequestNames.class, ServerHandlerContentRequestNames.class, Side.SERVER);

@@ -1,10 +1,9 @@
 package mchorse.mappet.utils;
 
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTPrimitive;
-import net.minecraft.nbt.NBTTagInt;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
+import mchorse.mappet.common.ScriptedItemProps;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.*;
 import net.minecraft.util.math.BlockPos;
 import java.util.Set;
 
@@ -54,5 +53,47 @@ public class NBTUtils
     public static void writeStringList(NBTTagList list, Set<String> set)
     {
         set.stream().forEach(string -> list.appendTag(new NBTTagString(string)));
+    }
+
+    public static boolean saveScriptedItemProps(ItemStack stack, NBTTagCompound tag)
+    {
+        if (stack.getItem().equals(Items.AIR))
+        {
+            return false;
+        }
+
+        if (!stack.hasTagCompound())
+        {
+            stack.setTagCompound(new NBTTagCompound());
+        }
+
+        if (stack.hasTagCompound())
+        {
+            stack.getTagCompound().setTag("ScriptedItem", tag);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public static ScriptedItemProps getScriptedItemProps(ItemStack stack)
+    {
+        if (stack.getItem().equals(Items.AIR))
+        {
+            return null;
+        }
+
+        if (stack.hasTagCompound())
+        {
+            NBTTagCompound tag = stack.getTagCompound();
+
+            if (tag.hasKey("ScriptedItem"))
+            {
+                return new ScriptedItemProps(tag.getCompoundTag("ScriptedItem"));
+            }
+        }
+
+        return new ScriptedItemProps();
     }
 }
