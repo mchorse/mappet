@@ -819,7 +819,7 @@ public interface IScriptPlayer extends IScriptEntity
     public void closeHUD(String id);
 
     /**
-     * Get all HUD scenes that are currently displayed for this player.
+     * Get all HUD scenes (including global HUDs) that are currently displayed for this player.
      *
      * <pre>{@code
      *   var player = c.getSubject();
@@ -828,6 +828,17 @@ public interface IScriptPlayer extends IScriptEntity
      * }</pre>
      */
     public INBTCompound getDisplayedHUDs();
+
+    /**
+     * Get all global HUD scenes that are currently saved on player and displayed for him and other players.
+     *
+     * <pre>{@code
+     *   var player = c.getSubject();
+     *   var huds = player.getGlobalDisplayedHUDs();
+     *   print(huds);
+     * }</pre>
+     */
+    public INBTCompound getGlobalDisplayedHUDs();
 
 
     /**

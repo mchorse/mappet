@@ -603,6 +603,29 @@ public class EventHandler
             }
         }
 
+        // display present global HUDs player on any player that has a global HUD in his displayed HUDs scenes list
+        for (EntityPlayerMP p : FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers())
+        {
+            ICharacter c = Character.get(p);
+            if (c != null)
+            {
+                Map<String, List<HUDScene>> displayed = c.getDisplayedHUDs();
+                for (Map.Entry<String, List<HUDScene>> entry : displayed.entrySet())
+                {
+                    String id = entry.getKey();
+                    List<HUDScene> scenes = entry.getValue();
+
+                    for (HUDScene scene : scenes)
+                    {
+                        if (scene.global)
+                        {
+                            Dispatcher.sendTo(new PacketHUDScene(id, scene.serializeNBT()), player);
+                        }
+                    }
+                }
+            }
+        }
+
         if (!Mappet.settings.playerLogIn.isEmpty())
         {
             DataContext context = new DataContext(event.player);

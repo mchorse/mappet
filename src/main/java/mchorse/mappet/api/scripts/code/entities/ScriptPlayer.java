@@ -521,7 +521,7 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     @Override
     public boolean setupHUD(String id)
     {
-        return Character.get(this.entity).setupHUD(id);
+        return Character.get(this.entity).setupHUD(id, true);
     }
 
     @Override
@@ -563,6 +563,14 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     {
         ICharacter character = Character.get(this.entity);
         NBTTagCompound tag = ((Character) character).getDisplayedHUDsTag();
+        return new ScriptNBTCompound(tag);
+    }
+
+    @Override
+    public INBTCompound getGlobalDisplayedHUDs()
+    {
+        ICharacter character = Character.get(this.entity);
+        NBTTagCompound tag = ((Character) character).getGlobalDisplayedHUDsTag();
         return new ScriptNBTCompound(tag);
     }
 

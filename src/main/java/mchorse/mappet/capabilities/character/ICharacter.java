@@ -60,7 +60,7 @@ public interface ICharacter extends INBTSerializable<NBTTagCompound>
     public void setUIContext(UIContext context);
 
     /* HUDs */
-    public boolean setupHUD(String id);
+    public boolean setupHUD(String id, boolean addToDisplayedList);
 
     public void changeHUDMorph(String id, int index, NBTTagCompound tag);
 
