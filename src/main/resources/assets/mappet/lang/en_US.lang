@@ -759,6 +759,7 @@ mappet.gui.huds.ortho=Orthographic
 mappet.gui.huds.expire=Expiration
 mappet.gui.huds.fov=Field of View
 mappet.gui.huds.hide=Hide in F1
+mappet.gui.huds.global=Global
 mappet.gui.huds.overlay.title=HUD morphs
 mappet.gui.huds.context.add=Add a HUD morph
 mappet.gui.huds.context.copy=Copy this HUD morph

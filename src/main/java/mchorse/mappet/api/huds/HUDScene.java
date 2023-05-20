@@ -15,6 +15,7 @@ public class HUDScene extends AbstractData
     public List<HUDMorph> morphs = new ArrayList<HUDMorph>();
     public float fov = 70F;
     public boolean hide;
+    public boolean global;
 
     @SideOnly(Side.CLIENT)
     public boolean update(boolean allowExpiring)
@@ -38,6 +39,7 @@ public class HUDScene extends AbstractData
         tag.setTag("Morphs", morphs);
         tag.setFloat("Fov", this.fov);
         tag.setBoolean("Hide", this.hide);
+        tag.setBoolean("Global", this.global);
 
         return tag;
     }
@@ -66,6 +68,10 @@ public class HUDScene extends AbstractData
         if (tag.hasKey("Hide"))
         {
             this.hide = tag.getBoolean("Hide");
+        }
+        if (tag.hasKey("Global"))
+        {
+            this.global = tag.getBoolean("Global");
         }
     }
 }

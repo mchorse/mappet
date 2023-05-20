@@ -194,15 +194,26 @@ public class Character implements ICharacter
 
     /* HUDs */
 
-    public boolean setupHUD(String id)
+    public boolean setupHUD(String id, boolean addToDisplayedList)
     {
         HUDScene scene = Mappet.huds.load(id);
 
         if (scene != null) {
             Dispatcher.sendTo(new PacketHUDScene(scene.getId(), scene.serializeNBT()), (EntityPlayerMP) this.player);
 
+            //if the hud is global, display it to all players as well
+            if (scene.global) {
+                for (EntityPlayer player : this.player.world.playerEntities) {
+                    if (player != this.player) {
+                        Dispatcher.sendTo(new PacketHUDScene(scene.getId(), scene.serializeNBT()), (EntityPlayerMP) player);
+                    }
+                }
+            }
+
             // Adds the morph to the displayedHUDs list
-            getDisplayedHUDs().put(id, Arrays.asList(scene));
+            if (addToDisplayedList) {
+                getDisplayedHUDs().put(id, Arrays.asList(scene));
+            }
             return true;
         }
 
@@ -213,6 +224,13 @@ public class Character implements ICharacter
     public void changeHUDMorph(String id, int index, NBTTagCompound tag)
     {
         Dispatcher.sendTo(new PacketHUDMorph(id, index, tag), (EntityPlayerMP) this.player);
+
+        //if the hud is global, display change it for all players as well
+        for (EntityPlayer player : this.player.world.playerEntities) {
+            if (player != this.player) {
+                Dispatcher.sendTo(new PacketHUDMorph(id, index, tag), (EntityPlayerMP) player);
+            }
+        }
 
         // Changing the HUDMorph in the displayedHUDs list
         for (Map.Entry<String, List<HUDScene>> entry : getDisplayedHUDs().entrySet()) {
@@ -235,6 +253,13 @@ public class Character implements ICharacter
     {
         Dispatcher.sendTo(new PacketHUDScene(id == null ? "" : id, null), (EntityPlayerMP) this.player);
 
+        //if the hud is global, close it for all players as well
+        for (EntityPlayer player : this.player.world.playerEntities) {
+            if (player != this.player) {
+                Dispatcher.sendTo(new PacketHUDScene(id == null ? "" : id, null), (EntityPlayerMP) player);
+            }
+        }
+
         getDisplayedHUDs().remove(id);
     }
 
@@ -242,6 +267,17 @@ public class Character implements ICharacter
     public void closeAllHUD()
     {
         this.closeHUD(null);
+
+        //if the player has any global huds, close them for all players as well
+        for (Map.Entry<String, List<HUDScene>> entry : getDisplayedHUDs().entrySet()) {
+            if (entry.getValue().get(0).global) {
+                for (EntityPlayer player : this.player.world.playerEntities) {
+                    if (player != this.player) {
+                        Dispatcher.sendTo(new PacketHUDScene(entry.getKey(), null), (EntityPlayerMP) player);
+                    }
+                }
+            }
+        }
 
         getDisplayedHUDs().clear();
     }
@@ -279,6 +315,20 @@ public class Character implements ICharacter
                 sceneList.appendTag(scene.serializeNBT());
             }
             tag.setTag(entry.getKey(), sceneList);
+        }
+        return tag;
+    }
+
+    public NBTTagCompound getGlobalDisplayedHUDsTag(){
+        NBTTagCompound tag = new NBTTagCompound();
+        for (Map.Entry<String, List<HUDScene>> entry : displayedHUDs.entrySet()) {
+            if (entry.getValue().get(0).global) {
+                NBTTagList sceneList = new NBTTagList();
+                for (HUDScene scene : entry.getValue()) {
+                    sceneList.appendTag(scene.serializeNBT());
+                }
+                tag.setTag(entry.getKey(), sceneList);
+            }
         }
         return tag;
     }

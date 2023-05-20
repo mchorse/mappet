@@ -36,6 +36,6 @@ public class CommandHudSetup extends CommandHudBase
     public void executeCommand(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         EntityPlayerMP player = getPlayer(server, sender, args[0]);
-        Character.get(player).setupHUD(args[1]);
+        Character.get(player).setupHUD(args[1], true);
     }
 }

@@ -38,6 +38,7 @@ public class GuiHUDScenePanel extends GuiMappetDashboardPanel<HUDScene>
 
     public GuiTrackpadElement fov;
     public GuiToggleElement hide;
+    public GuiToggleElement global;
 
     private HUDStage stage = new HUDStage(true);
     private HUDMorph current;
@@ -64,13 +65,14 @@ public class GuiHUDScenePanel extends GuiMappetDashboardPanel<HUDScene>
         this.fov = new GuiTrackpadElement(mc, (v) -> this.data.fov = v.floatValue());
         this.fov.limit(0, 180);
         this.hide = new GuiToggleElement(mc, IKey.lang("mappet.gui.huds.hide"), (b) -> this.data.hide = b.isToggled());
+        this.global = new GuiToggleElement(mc, IKey.lang("mappet.gui.huds.global"), (b) -> this.data.global = b.isToggled());
 
         this.morphs.flex().relative(this.editor);
         this.column.flex().relative(this.editor).y(1F).w(130).anchorY(1F);
         this.transformations.flex().relative(dashboard.root).x(0.5F).y(1F, -10).wh(190, 70).anchor(0.5F, 1F);
 
         this.column.add(this.morph, this.ortho, this.orthoX, this.orthoY, Elements.label(IKey.lang("mappet.gui.huds.expire")).marginTop(12), this.expire);
-        this.column.add(Elements.label(IKey.lang("mappet.gui.huds.fov")).marginTop(12), this.fov, this.hide);
+        this.column.add(Elements.label(IKey.lang("mappet.gui.huds.fov")).marginTop(12), this.fov, this.hide, this.global);
         this.editor.add(this.column, this.transformations, this.morphs);
 
         this.fill(null);
@@ -128,6 +130,7 @@ public class GuiHUDScenePanel extends GuiMappetDashboardPanel<HUDScene>
 
             this.fov.setValue(data.fov);
             this.hide.toggled(data.hide);
+            this.global.toggled(data.global);
 
             this.pickMorph(this.data.morphs.isEmpty() ? null : this.data.morphs.get(0));
         }
