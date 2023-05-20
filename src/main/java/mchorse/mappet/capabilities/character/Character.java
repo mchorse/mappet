@@ -134,6 +134,7 @@ public class Character implements ICharacter
         this.quests.copy(character.getQuests());
         this.states.copy(character.getStates());
         this.lastClear = character.getLastClear();
+        this.displayedHUDs = character.getDisplayedHUDs();
     }
 
     @Override
