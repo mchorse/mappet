@@ -1,14 +1,14 @@
 package mchorse.mappet.network.server.npc;
 
 import mchorse.mappet.entities.EntityNpc;
-import mchorse.mappet.network.client.npc.ClientHandlerNpcJump;
+import mchorse.mappet.network.common.npc.PacketNpcJump;
 import mchorse.mclib.network.ServerMessageHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 
-public class ServerHandlerNpcJump extends ServerMessageHandler<ClientHandlerNpcJump> {
+public class ServerHandlerNpcJump extends ServerMessageHandler<PacketNpcJump> {
     @Override
-    public void run(EntityPlayerMP player, ClientHandlerNpcJump message) {
+    public void run(EntityPlayerMP player, PacketNpcJump message) {
         Entity npc = player.world.getEntityByID(message.entityId);
 
         if (npc instanceof EntityNpc) {

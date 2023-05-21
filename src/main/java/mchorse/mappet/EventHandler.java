@@ -32,7 +32,7 @@ import mchorse.mappet.entities.EntityNpc;
 import mchorse.mappet.entities.utils.MappetNpcRespawnManager;
 import mchorse.mappet.events.StateChangedEvent;
 import mchorse.mappet.network.Dispatcher;
-import mchorse.mappet.network.client.npc.ClientHandlerNpcJump;
+import mchorse.mappet.network.common.npc.PacketNpcJump;
 import mchorse.mappet.network.common.events.PacketEventHotkeys;
 import mchorse.mappet.network.common.huds.PacketHUDScene;
 import mchorse.mappet.network.common.quests.PacketQuest;
@@ -1235,7 +1235,7 @@ public class EventHandler
                     && ((EntityNpc) player.getRidingEntity()).getState().canBeSteered
             ) {
                 float jumpPower = ((EntityNpc) player.getRidingEntity()).getState().jumpPower;
-                Dispatcher.sendToServer(new ClientHandlerNpcJump(player.getRidingEntity().getEntityId(), jumpPower));
+                Dispatcher.sendToServer(new PacketNpcJump(player.getRidingEntity().getEntityId(), jumpPower));
             }
         }
     }
