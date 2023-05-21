@@ -127,6 +127,15 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     }
 
     @Override
+    public double getMountedYOffset() {
+        if (this.getPassengers().isEmpty()) {
+            return super.getMountedYOffset();
+        } else {
+            return (this.height * 0.75D) * (this.getPassengers().size() % 2 == 0 ? 1 : -1);
+        }
+    }
+
+    @Override
     public void updatePassenger(Entity passenger) {
         if (this.isPassenger(passenger)) {
             double offsetX = this.state.steeringXOffset;
@@ -141,8 +150,8 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
             double rotatedOffsetZ = offsetX * Math.sin(bodyYaw) + offsetZ * Math.cos(bodyYaw);
 
             // Add the rotated offset to the entity's position
-            double finalPosX = this.posX + rotatedOffsetX;
-            double finalPosZ = this.posZ + rotatedOffsetZ;
+            double finalPosX = this.posX + rotatedOffsetX * (this.getPassengers().indexOf(passenger) % 2 == 0 ? 1 : -1);
+            double finalPosZ = this.posZ + rotatedOffsetZ * (this.getPassengers().indexOf(passenger) % 2 == 0 ? 1 : -1);
 
             // Update the passenger's position on both the server and the client
             passenger.setPosition(finalPosX, offsetY, finalPosZ);
@@ -150,7 +159,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         }
 
         // Check if the passenger is a player and the entity can be steered
-        if (passenger instanceof EntityPlayer && canBeSteered()) {
+        if (passenger instanceof EntityPlayer && canBeSteered() && this.getPassengers().indexOf(passenger) == (this.getPassengers().size()-1)) {
             handleSteering((EntityPlayer) passenger);
         }
     }
@@ -686,12 +695,12 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
             // Start riding the NPC when interacted with
             if (
-                    this.getPassengers().isEmpty() &&
+                    this.getPassengers().size() < 2 &&
                     this.canBeSteered() &&
                     !(player.getHeldItem(hand).getItem() instanceof ItemNpcTool)
             )
             {
-                player.startRiding(this);
+                player.startRiding(this, true);
             }
         }
 

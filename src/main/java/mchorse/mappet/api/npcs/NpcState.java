@@ -110,22 +110,6 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     public float jumpPower = 0.6F;
 
     /**
-     * NPC's x-offset when steered
-     */
-    public float steeringXOffset = 0.0F;
-
-    /**
-     * NPC's y-offset when steered
-     */
-    public float steeringYOffset = 0.0F;
-
-    /**
-     * NPC's z-offset when steered
-     */
-    public float steeringZOffset = 0.0F;
-
-
-    /**
      * Can NPC move around in the water
      */
     public boolean canSwim = true;
@@ -172,6 +156,17 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
      *  List of triggers on each patrol point
      */
     public List<Trigger> patrolTriggers = new ArrayList<Trigger>();
+
+
+    /**
+     * List of NPC's x-offset when steered
+     */
+    //TODO: public List<BlockPos> steeringOffset = new ArrayList<BlockPos>();
+
+    public float steeringXOffset = 0.0F;
+    public float steeringYOffset = 0.0F;
+    public float steeringZOffset = 0.0F;
+
 
     /**
      * The UUID of the player that must be followed
