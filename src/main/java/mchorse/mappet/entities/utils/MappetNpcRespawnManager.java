@@ -5,10 +5,8 @@ import mchorse.mappet.entities.EntityNpc;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 
@@ -21,7 +19,7 @@ public class MappetNpcRespawnManager extends WorldSavedData
 
     public final List<DiedNpcHolder> diedNpcHolders = new ArrayList<>();
     public final List<DiedNpcHolder> deleteCache = new ArrayList<>();
-    public MinecraftServer server;
+    public World world;
 
     private BlockPos.MutableBlockPos block = new BlockPos.MutableBlockPos();
 
@@ -34,11 +32,9 @@ public class MappetNpcRespawnManager extends WorldSavedData
     {
         for (DiedNpcHolder diedNpcHolder : this.diedNpcHolders)
         {
-            WorldServer world = this.server.getWorld(diedNpcHolder.worldID);
-
             block.setPos(diedNpcHolder.posX, diedNpcHolder.posY, diedNpcHolder.posZ);
 
-            if (diedNpcHolder.respawnTime <= world.getTotalWorldTime() && world.isBlockLoaded(block))
+            if (diedNpcHolder.respawnTime <= this.world.getTotalWorldTime() && this.world.isBlockLoaded(block))
             {
                 this.respawnNpc(diedNpcHolder);
             }
@@ -61,7 +57,7 @@ public class MappetNpcRespawnManager extends WorldSavedData
 
     public void respawnNpc(DiedNpcHolder diedNpcHolder)
     {
-        diedNpcHolder.spawn(this.server.getWorld(diedNpcHolder.worldID));
+        diedNpcHolder.spawn(this.world);
 
         this.deleteCache.add(diedNpcHolder);
     }
@@ -138,7 +134,7 @@ public class MappetNpcRespawnManager extends WorldSavedData
             world.getMapStorage().setData(DATA_NAME, data);
         }
 
-        data.server = world.getMinecraftServer();
+        data.world = world;
 
         return data;
     }
