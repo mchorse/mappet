@@ -1,6 +1,5 @@
 package mchorse.mappet.api.scripts.code;
 
-import com.google.common.collect.ImmutableList;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.scripts.code.blocks.ScriptBlockState;
@@ -88,9 +87,7 @@ public class ScriptFactory implements IScriptFactory
 
         if (block != null)
         {
-            Block value = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockId));
-            ImmutableList<IBlockState> validStates = value.getBlockState().getValidStates();
-            IBlockState state = meta >= 0 && meta < validStates.size() ? validStates.get(meta) : value.getDefaultState();
+            IBlockState state = block.getStateFromMeta(meta);
 
             return ScriptBlockState.create(state);
         }
