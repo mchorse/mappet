@@ -8,6 +8,7 @@ import mchorse.mappet.api.huds.HUDManager;
 import mchorse.mappet.api.npcs.NpcManager;
 import mchorse.mappet.api.quests.QuestManager;
 import mchorse.mappet.api.quests.chains.QuestChainManager;
+import mchorse.mappet.api.schematics.SchematicManager;
 import mchorse.mappet.api.scripts.ScriptManager;
 import mchorse.mappet.blocks.BlockConditionModel;
 import mchorse.mappet.blocks.BlockEmitter;
@@ -36,6 +37,7 @@ import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import java.util.Calendar;
 
 public class RegisterHandler
@@ -47,6 +49,7 @@ public class RegisterHandler
         if (!event.isLocal())
         {
             Mappet.quests = new QuestManager(null);
+            Mappet.schematics = new SchematicManager(null);
             Mappet.crafting = new CraftingManager(null);
             Mappet.events = new EventManager(null);
             Mappet.dialogues = new DialogueManager(null);

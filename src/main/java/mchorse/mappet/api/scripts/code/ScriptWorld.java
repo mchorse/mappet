@@ -16,6 +16,7 @@ import mchorse.mappet.api.scripts.code.entities.ScriptEntity;
 import mchorse.mappet.api.scripts.code.entities.ScriptNpc;
 import mchorse.mappet.api.scripts.code.items.ScriptInventory;
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
+import mchorse.mappet.api.scripts.code.mappet.MappetSchematic;
 import mchorse.mappet.api.scripts.code.nbt.ScriptNBTCompound;
 import mchorse.mappet.api.scripts.user.IScriptRayTrace;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
@@ -704,6 +705,7 @@ public class ScriptWorld implements IScriptWorld
     }
 
     @Override
+    @Deprecated
     public void saveSchematic(String name, int x1, int y1, int z1, int x2, int y2, int z2)
     {
         int xMin = Math.min(x1, x2);
@@ -798,6 +800,7 @@ public class ScriptWorld implements IScriptWorld
     }
 
     @Override
+    @Deprecated
     public void loadSchematic(String name, int x, int y, int z)
     {
         File file = new File("saves/" + this.world.getWorldInfo().getWorldName() + "/mappet/schematics/" + name + ".nbt");
@@ -841,6 +844,7 @@ public class ScriptWorld implements IScriptWorld
     }
 
     @Override
+    @Deprecated
     public INBTCompound serializeSchematic(String name)
     {
         File file = new File("saves/" + this.world.getWorldInfo().getWorldName() + "/mappet/schematics/" + name + ".nbt");
@@ -861,6 +865,11 @@ public class ScriptWorld implements IScriptWorld
         return null;
     }
 
+    @Override
+    public MappetSchematic createSchematic()
+    {
+        return MappetSchematic.create(this);
+    }
     @Override
     public IScriptItemStack getBlockStackWithTile(int x, int y, int z)
     {

@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts.user;
 
+import mchorse.mappet.api.scripts.code.mappet.MappetSchematic;
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.blocks.IScriptTileEntity;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
@@ -8,6 +9,7 @@ import mchorse.mappet.api.scripts.user.entities.IScriptNpc;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
+import mchorse.mappet.api.scripts.user.mappet.IMappetSchematic;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.util.EnumParticleTypes;
@@ -740,6 +742,7 @@ public interface IScriptWorld
      * @param z2 The second z coordinate.
      * @param name The name of the schematic.
      */
+    @Deprecated
     public void saveSchematic(String name, int x1, int y1, int z1, int x2, int y2, int z2);
 
     /**
@@ -754,6 +757,7 @@ public interface IScriptWorld
      * @param y The y coordinate.
      * @param z The z coordinate.
      */
+    @Deprecated
     public void loadSchematic(String name, int x, int y, int z);
 
     /**
@@ -766,7 +770,24 @@ public interface IScriptWorld
      * @param name Schematic name
      * @return NBT compound
      */
+    @Deprecated
     public INBTCompound serializeSchematic(String name);
+
+    /**
+     * Returns a new empty Schematic object.
+     *
+     * <pre>{@code
+     * function main(c)
+     * {
+     *     var schematic = c.world.createSchematic();
+     *     schematic.loadFromWorld(0, 4, 0, 4, 8, 4).saveToFile("mySchematic").place(0, 4, 4).place(0, 4, 8);
+     * }
+     * }</pre>
+     *
+     *
+     * @return {@link IMappetSchematic}
+     */
+    public MappetSchematic createSchematic();
 
     /**
      * Gets the block stack at given position, including tile entity data.

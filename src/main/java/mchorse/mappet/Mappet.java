@@ -11,6 +11,7 @@ import mchorse.mappet.api.misc.ServerSettings;
 import mchorse.mappet.api.npcs.NpcManager;
 import mchorse.mappet.api.quests.QuestManager;
 import mchorse.mappet.api.quests.chains.QuestChainManager;
+import mchorse.mappet.api.schematics.SchematicManager;
 import mchorse.mappet.api.scripts.ScriptManager;
 import mchorse.mappet.api.states.States;
 import mchorse.mappet.api.utils.DataContext;
@@ -101,6 +102,8 @@ public final class Mappet
     public static States states;
 
     public static QuestManager quests;
+
+    public static SchematicManager schematics;
 
     public static CraftingManager crafting;
 
@@ -256,6 +259,7 @@ public final class Mappet
         states.load();
 
         quests = new QuestManager(new File(mappetWorldFolder, "quests"));
+        schematics = new SchematicManager(new File(mappetWorldFolder, "schematics"));
         crafting = new CraftingManager(new File(mappetWorldFolder, "crafting"));
         events = new EventManager(new File(mappetWorldFolder, "events"));
         dialogues = new DialogueManager(new File(mappetWorldFolder, "dialogues"));
