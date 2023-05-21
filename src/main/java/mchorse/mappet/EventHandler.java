@@ -655,6 +655,11 @@ public class EventHandler
     @SubscribeEvent
     public void onPlayerToss(ItemTossEvent event)
     {
+        if (event.getPlayer().world.isRemote)
+        {
+            return;
+        }
+
         if (!Mappet.settings.playerItemToss.isEmpty())
         {
             DataContext context = new DataContext(event.getPlayer());
