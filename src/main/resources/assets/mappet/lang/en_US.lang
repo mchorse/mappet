@@ -579,6 +579,7 @@ mappet.gui.npcs.movement.can_swim=Can swim
 mappet.gui.npcs.movement.immovable=Immovable
 mappet.gui.npcs.movement.post=Post point
 mappet.gui.npcs.movement.patrol_circulate=Circular patrol
+mappet.gui.npcs.movement.steering_offset=Steering offset points
 mappet.gui.npcs.movement.patrol_points=Patrol points
 mappet.gui.npcs.movement.follow=Follow target
 mappet.gui.npcs.general.title=General

@@ -157,16 +157,10 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
      */
     public List<Trigger> patrolTriggers = new ArrayList<Trigger>();
 
-
     /**
      * List of NPC's x-offset when steered
      */
-    //TODO: public List<BlockPos> steeringOffset = new ArrayList<BlockPos>();
-
-    public float steeringXOffset = 0.0F;
-    public float steeringYOffset = 0.0F;
-    public float steeringZOffset = 0.0F;
-
+    public List<BlockPos> steeringOffset = new ArrayList<BlockPos>();
 
     /**
      * The UUID of the player that must be followed
@@ -374,18 +368,32 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         {
             this.jumpPower = Float.parseFloat(value);
         }
-        else if (property.equals("x_offset"))
+        /*
+        else if (property.equals("steering_offset"))
         {
-            this.steeringXOffset = Float.parseFloat(value);
+            int index = Integer.parseInt(property.substring(15));
+            String[] coords = value.split(",");
+            if (coords.length == 3)
+            {
+                try
+                {
+                    int x = Integer.parseInt(coords[0]);
+                    int y = Integer.parseInt(coords[1]);
+                    int z = Integer.parseInt(coords[2]);
+                    BlockPos pos = new BlockPos(x, y, z);
+                    if (index < steeringOffset.size())
+                    {
+                        steeringOffset.set(index, pos);
+                    }
+                    else
+                    {
+                        steeringOffset.add(pos);
+                    }
+                }
+                catch (NumberFormatException ignored) {}
+            }
         }
-        else if (property.equals("y_offset"))
-        {
-            this.steeringYOffset = Float.parseFloat(value);
-        }
-        else if (property.equals("z_offset"))
-        {
-            this.steeringZOffset = Float.parseFloat(value);
-        }
+        */
         else if (property.equals("can_swim"))
         {
             this.canSwim = Boolean.parseBoolean(value);
@@ -554,9 +562,17 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         /* Movement */
         if (all || options.contains("speed")) tag.setFloat("Speed", this.speed);
         if (all || options.contains("jump_power")) tag.setFloat("JumpPower", this.jumpPower);
-        if (all || options.contains("steering_x_offset")) tag.setFloat("steering_x_offset", this.steeringXOffset);
-        if (all || options.contains("steering_y_offset")) tag.setFloat("steering_y_offset", this.steeringYOffset);
-        if (all || options.contains("steering_z_offset")) tag.setFloat("steering_z_offset", this.steeringZOffset);
+        if ((all || options.contains("steering_offset")))
+        {
+            NBTTagList offsets = new NBTTagList();
+
+            for (int i = 0; i < this.steeringOffset.size(); i++)
+            {
+                offsets.appendTag(NBTUtils.blockPosTo(this.steeringOffset.get(i)));
+            }
+
+            tag.setTag("SteeringOffsets", offsets);
+        }
         if (all || options.contains("can_swim")) tag.setBoolean("CanSwim", this.canSwim);
         if (all || options.contains("immovable")) tag.setBoolean("Immovable", this.immovable);
         if (all || options.contains("has_post")) tag.setBoolean("HasPost", this.hasPost);
@@ -665,9 +681,22 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         /* Movement */
         if (tag.hasKey("Speed")) this.speed = tag.getFloat("Speed");
         if (tag.hasKey("JumpPower")) this.jumpPower = tag.getFloat("JumpPower");
-        if (tag.hasKey("steering_x_offset")) this.steeringXOffset = tag.getFloat("steering_x_offset");
-        if (tag.hasKey("steering_y_offset")) this.steeringYOffset = tag.getFloat("steering_y_offset");
-        if (tag.hasKey("steering_z_offset")) this.steeringZOffset = tag.getFloat("steering_z_offset");
+        if (tag.hasKey("SteeringOffsets", Constants.NBT.TAG_LIST))
+        {
+            NBTTagList offsets = tag.getTagList("SteeringOffsets", Constants.NBT.TAG_LIST);
+
+            this.steeringOffset.clear();
+
+            for (int i = 0; i < offsets.tagCount(); i++)
+            {
+                BlockPos pos = NBTUtils.blockPosFrom(offsets.get(i));
+
+                if (pos != null)
+                {
+                    this.steeringOffset.add(pos);
+                }
+            }
+        }
         if (tag.hasKey("CanSwim")) this.canSwim = tag.getBoolean("CanSwim");
         if (tag.hasKey("Immovable")) this.immovable = tag.getBoolean("Immovable");
         if (tag.hasKey("HasPost")) this.hasPost = tag.getBoolean("HasPost");
@@ -773,9 +802,14 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         // you have to open the npc gui and close it for these to work)
         buf.writeFloat(shadowSize);
         buf.writeFloat(jumpPower);
-        buf.writeFloat(steeringXOffset);
-        buf.writeFloat(steeringYOffset);
-        buf.writeFloat(steeringZOffset);
+        /*
+        buf.writeInt(steeringOffset.size());
+        for (BlockPos pos : steeringOffset) {
+            buf.writeInt(pos.getX());
+            buf.writeInt(pos.getY());
+            buf.writeInt(pos.getZ());
+        }
+         */
 
         NpcStateUtils.stateToBuf(buf, this);
     }
@@ -784,9 +818,16 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         // same comment as writeToBuf above
         shadowSize = buf.readFloat();
         jumpPower = buf.readFloat();
-        steeringXOffset = buf.readFloat();
-        steeringYOffset = buf.readFloat();
-        steeringZOffset = buf.readFloat();
+        /*
+        int size = buf.readInt();
+        steeringOffset.clear();
+        for (int i = 0; i < size; i++) {
+            int x = buf.readInt();
+            int y = buf.readInt();
+            int z = buf.readInt();
+            steeringOffset.add(new BlockPos(x, y, z));
+        }
+         */
 
         NpcStateUtils.stateFromBuf(buf);
     }

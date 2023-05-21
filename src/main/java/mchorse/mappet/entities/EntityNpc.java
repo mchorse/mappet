@@ -127,20 +127,25 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     }
 
     @Override
-    public double getMountedYOffset() {
-        if (this.getPassengers().isEmpty()) {
-            return super.getMountedYOffset();
-        } else {
-            return (this.height * 0.75D) * (this.getPassengers().size() % 2 == 0 ? 1 : -1);
-        }
-    }
+    public void updatePassenger(Entity passenger)
+    {
+        if (this.isPassenger(passenger))
+        {
+            int index = this.getPassengers().indexOf(passenger);
 
-    @Override
-    public void updatePassenger(Entity passenger) {
-        if (this.isPassenger(passenger)) {
-            double offsetX = this.state.steeringXOffset;
-            double offsetY = this.posY - 0.5 + EntityUtils.getHeight(this) + this.state.steeringYOffset;
-            double offsetZ = this.state.steeringZOffset;
+            BlockPos offsetPos;
+            if (this.state.steeringOffset.isEmpty() || index >= this.state.steeringOffset.size())
+            {
+                offsetPos = new BlockPos(0, 0, 0); // default offset
+            }
+            else
+            {
+                offsetPos = this.state.steeringOffset.get(index);
+            }
+
+            double offsetX = offsetPos.getX();
+            double offsetY = this.posY - 0.5 + EntityUtils.getHeight(this) + offsetPos.getY();
+            double offsetZ = offsetPos.getZ();
 
             // Convert bodyYaw to radians as Java Math functions expect arguments in radians
             double bodyYaw = Math.toRadians(this.renderYawOffset);
@@ -150,16 +155,17 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
             double rotatedOffsetZ = offsetX * Math.sin(bodyYaw) + offsetZ * Math.cos(bodyYaw);
 
             // Add the rotated offset to the entity's position
-            double finalPosX = this.posX + rotatedOffsetX * (this.getPassengers().indexOf(passenger) % 2 == 0 ? 1 : -1);
-            double finalPosZ = this.posZ + rotatedOffsetZ * (this.getPassengers().indexOf(passenger) % 2 == 0 ? 1 : -1);
+            double finalPosX = this.posX + rotatedOffsetX;
+            double finalPosZ = this.posZ + rotatedOffsetZ;
 
             // Update the passenger's position on both the server and the client
             passenger.setPosition(finalPosX, offsetY, finalPosZ);
             passenger.setPositionAndRotationDirect(finalPosX, offsetY, finalPosZ, passenger.rotationYaw, passenger.rotationPitch, 3, true);
         }
 
-        // Check if the passenger is a player and the entity can be steered
-        if (passenger instanceof EntityPlayer && canBeSteered() && this.getPassengers().indexOf(passenger) == (this.getPassengers().size()-1)) {
+        // Check if the passenger is a player and the entity can be steered and only allow the first passanger to steer it.
+        if (passenger instanceof EntityPlayer && canBeSteered() && this.getPassengers().indexOf(passenger) == (this.getPassengers().size()-1))
+        {
             handleSteering((EntityPlayer) passenger);
         }
     }
@@ -695,7 +701,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
             // Start riding the NPC when interacted with
             if (
-                    this.getPassengers().size() < 2 &&
+                    ((this.getPassengers().size() < this.state.steeringOffset.size()) || this.state.steeringOffset.isEmpty()) &&
                     this.canBeSteered() &&
                     !(player.getHeldItem(hand).getItem() instanceof ItemNpcTool)
             )
