@@ -595,6 +595,7 @@ public interface IScriptFactory
 
     /**
      * Return a mappet entity/player/npc by given minecraft entity.
+     *
      * <pre>{@code
      * function main(c)
      * {
