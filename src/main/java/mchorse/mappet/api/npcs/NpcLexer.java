@@ -21,9 +21,9 @@ public class NpcLexer
         "id", "unique", "path_distance",
         "max_health", "health", "regen_delay", "regen_frequency",
         "damage", "can_ranged", "can_fall_damage", "can_get_burned", "invincible", "killable",
-        "speed", "can_swim", "immovable", "has_post", "post", "post_radius", "fallback", "patrol_circulate", "patrol", "follow",
+        "speed", "can_swim", "immovable", "has_post", "post", "post_radius", "fallback", "patrol_circulate", "patrol", "steering_offset", "follow",
         "faction", "morph", "sight_distance", "sight_radius", "drops", "xp",
-        "look_at_player", "look_around", "wander", "flee", "can_pick_up_loot",
+        "look_at_player", "look_around", "wander", "flee", "can_pick_up_loot", "can_be_steered",
         "trigger_died", "trigger_damaged", "trigger_interact", "trigger_tick", "trigger_target", "trigger_initialize", "damage_delay",
         "respawn", "respawn_delay", "respawn_on_coordinates", "respawn_pos_x", "respawn_pos_y", "respawn_pos_z", "respawn_save_uuid"
     );

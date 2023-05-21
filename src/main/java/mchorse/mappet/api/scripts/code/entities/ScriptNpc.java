@@ -253,9 +253,9 @@ public class ScriptNpc extends ScriptEntity<EntityNpc> implements IScriptNpc
     public void setSteeringOffset(float x, float y, float z)
     {
         NpcState state = this.entity.getState();
-        state.steeringXOffset = x;
-        state.steeringYOffset = y;
-        state.steeringZOffset = z;
+        //state.steeringXOffset = x;
+        //state.steeringYOffset = y;
+        //state.steeringZOffset = z;
         this.entity.sendNpcStateChangePacket();
     }
 
@@ -263,7 +263,7 @@ public class ScriptNpc extends ScriptEntity<EntityNpc> implements IScriptNpc
     public ScriptVector getSteeringOffset()
     {
         NpcState state = this.entity.getState();
-        return new ScriptVector(state.steeringXOffset, state.steeringYOffset, state.steeringZOffset);
+        return new ScriptVector(0, 0, 0/*state.steeringXOffset, state.steeringYOffset, state.steeringZOffset*/);
     }
 
     @Override
