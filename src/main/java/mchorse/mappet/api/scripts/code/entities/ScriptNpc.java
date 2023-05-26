@@ -233,4 +233,10 @@ public class ScriptNpc extends ScriptEntity<EntityNpc> implements IScriptNpc
     {
         return this.entity.getState().faction;
     }
+
+    @Override
+    public void setFaction(String factionName)
+    {
+        this.entity.getState().faction = factionName;
+    }
 }

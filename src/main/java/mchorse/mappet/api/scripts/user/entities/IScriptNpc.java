@@ -192,11 +192,20 @@ public interface IScriptNpc extends IScriptEntity
     public void clearPatrolPoints();
 
     /**
-     * Returns the faction of the npc as a string
+     * Returns the faction of the NPC as a string
      *
      * <pre>{@code
      * c.send(c.getSubject().getFaction())
      * }</pre>
      */
     public String getFaction();
+
+    /**
+     * Sets presented faction to the NPC
+     *
+     * <pre>{@code
+     * c.getSubject().setFaction("Guards")
+     * }</pre>
+     */
+    public void setFaction(String factionName);
 }
