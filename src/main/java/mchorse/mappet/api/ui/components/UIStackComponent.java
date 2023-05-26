@@ -62,6 +62,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class UIStackComponent extends UIComponent
 {
     public ItemStack stack = ItemStack.EMPTY;
+    public boolean showCount = true;
+
+    public boolean showSearch = true;
 
     /**
      * Set item stack component's item from scripts.
@@ -95,6 +98,26 @@ public class UIStackComponent extends UIComponent
         return this;
     }
 
+    /**
+     * Determines whether to show the trackpad with the number of items setting.
+     */
+    public UIStackComponent count(boolean flag)
+    {
+        this.showCount = flag;
+
+        return this;
+    }
+
+    /**
+     * Determines whether to show the search button.
+     */
+    public UIStackComponent search(boolean flag)
+    {
+        this.showSearch = flag;
+
+        return this;
+    }
+
     @Override
     @DiscardMethod
     protected int getDefaultUpdateDelay()
@@ -121,6 +144,8 @@ public class UIStackComponent extends UIComponent
     public GuiElement create(Minecraft mc, UIContext context)
     {
         final GuiSlotElement element = new GuiSlotElement(mc, 0, null);
+        element.inventory.count.setVisible(this.showCount);
+        element.inventory.toggle.setVisible(this.showSearch);
 
         element.callback = this.id.isEmpty() ? null : (stack) ->
         {
@@ -153,6 +178,8 @@ public class UIStackComponent extends UIComponent
         super.serializeNBT(tag);
 
         tag.setTag("Stack", this.stack.serializeNBT());
+        tag.setBoolean("ShowCount", this.showCount);
+        tag.setBoolean("ShowSearch", this.showSearch);
     }
 
     @Override
@@ -164,6 +191,16 @@ public class UIStackComponent extends UIComponent
         if (tag.hasKey("Stack"))
         {
             this.stack = new ItemStack(tag.getCompoundTag("Stack"));
+        }
+
+        if (tag.hasKey("ShowCount"))
+        {
+            this.showCount = tag.getBoolean("ShowCount");
+        }
+
+        if (tag.hasKey("ShowSearch"))
+        {
+            this.showSearch = tag.getBoolean("ShowSearch");
         }
     }
 }
