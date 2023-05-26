@@ -1,3 +1,11 @@
+## Version 0.5.1
+
+This patch update features Entity attacked trigger by TorayLife.
+
+**Compatible** with McLib **2.4.1**, Aperture **1.8.1**, Blockbuster **2.6** and Metamorph **1.3.1**. It doesn't mean that future versions of McLib, Blockbuster and Metamorph would be incompatible, but older versions are most likely incompatible.
+
+* Fixed `Entity: attacked` global trigger and its description
+
 ## Version 0.5
 
 This is another HUGE update developed by OtakuGamer and TorayLife! This update features lots of new scripting API methods, global triggers, scripting logs panel and a conditional model block!
