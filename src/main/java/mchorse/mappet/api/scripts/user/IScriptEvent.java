@@ -131,7 +131,7 @@ public interface IScriptEvent
      */
     public default void scheduleScript(int delay)
     {
-        this.scheduleScript(this.getScript(), delay);
+        this.scheduleScript(this.getFunction(), delay);
     }
 
     /**
