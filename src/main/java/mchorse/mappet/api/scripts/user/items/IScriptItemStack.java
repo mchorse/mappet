@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts.user.items;
 
+import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import net.minecraft.item.ItemStack;
 
@@ -185,4 +186,9 @@ public interface IScriptItemStack
      * Add/remove more items to the stack.
      */
     public void add(int amount);
+
+    /**
+     * Check if this item stack is equal to another item stack.
+     */
+    public boolean equals(ScriptItemStack other);
 }

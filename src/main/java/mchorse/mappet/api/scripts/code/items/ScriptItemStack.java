@@ -456,4 +456,10 @@ public class ScriptItemStack implements IScriptItemStack
             this.stack.setCount(newCount);
         }
     }
+
+    @Override
+    public boolean equals(ScriptItemStack other)
+    {
+        return this.stack.isItemEqual(other.stack) && ItemStack.areItemStackTagsEqual(this.stack, other.stack);
+    }
 }
