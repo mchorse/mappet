@@ -1208,11 +1208,13 @@ public class EventHandler
 
             context.getValues().put("item", ScriptItemStack.create(event.getTo()));
 
+            context.getValues().put("previous", ScriptItemStack.create(event.getFrom()));
+
             if (event.getEntity() instanceof EntityPlayerMP)
             {
                 ScriptPlayer player = new ScriptPlayer((EntityPlayerMP) event.getEntity());
 
-                context.getValues().put("player", player.getHotbarIndex());
+                context.getValues().put("slot", player.getHotbarIndex());
             }
             else
             {
