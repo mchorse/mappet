@@ -107,6 +107,10 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
             super.collideWithEntity(entityIn);
         }
 
+        if (world.isRemote) {
+            return;
+        }
+
         // Call the trigger for entity collision
         this.state.triggerEntityCollision.trigger(new DataContext(this, entityIn));
     }
