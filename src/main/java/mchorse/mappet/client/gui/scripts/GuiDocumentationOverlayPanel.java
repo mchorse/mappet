@@ -23,13 +23,9 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.Language;
 import net.minecraft.launchwrapper.Launch;
 
+import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -74,7 +70,6 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
 
         if (dev || docs == null)
         {
-
             InputStream localeStream = null;
             Language language = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage();
 
@@ -82,12 +77,14 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
             {
                 try
                 {
-                    Path path = Paths.get(ClientProxy.configFolder.getPath(), "documentation");
-                    Files.createDirectories(path);
-                    localeStream = new FileInputStream(path.resolve(language.getLanguageCode() + ".json").toFile());
+                    File folder = new File(ClientProxy.configFolder.getPath(), "mappet/documentation");
+
+                    folder.mkdirs();
+
+                    localeStream = new FileInputStream(new File(folder, language.getLanguageCode() + ".json"));
                 }
-                catch (FileNotFoundException ignored1) {}
-                catch (IOException e) {}
+                catch (Exception e)
+                {}
             }
 
             InputStream stream = GuiDocumentationOverlayPanel.class.getResourceAsStream("/assets/mappet/docs.json");
