@@ -24,6 +24,7 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
     public Checker visible = new Checker(true);
     public int hotkey = -1;
     public Trigger trigger = new Trigger();
+    public boolean ignoreNBT = true;
 
     public boolean isAvailable(EntityPlayer player)
     {
@@ -49,7 +50,8 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
 
         for (ItemStack stack : this.input)
         {
-            player.inventory.clearMatchingItems(stack.getItem(), -1, stack.getCount(), null);
+            NBTTagCompound tagCompound = this.ignoreNBT ? null : stack.getTagCompound();
+            player.inventory.clearMatchingItems(stack.getItem(), -1, stack.getCount(), tagCompound);
         }
 
         for (ItemStack stack : this.output)
@@ -137,6 +139,8 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
             tag.setInteger("Hotkey", this.hotkey);
         }
 
+        tag.setBoolean("IgnoreNBT", this.ignoreNBT);
+
         return tag;
     }
 
@@ -191,6 +195,11 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("Hotkey"))
         {
             this.hotkey = tag.getInteger("Hotkey");
+        }
+
+        if (tag.hasKey("IgnoreNBT"))
+        {
+            this.ignoreNBT = tag.getBoolean("IgnoreNBT");
         }
     }
 

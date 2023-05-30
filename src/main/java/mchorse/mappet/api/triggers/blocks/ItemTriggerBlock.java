@@ -18,6 +18,7 @@ public class ItemTriggerBlock extends AbstractTriggerBlock
     public Target target = new Target(TargetMode.SUBJECT);
     public ItemStack stack = ItemStack.EMPTY;
     public ItemMode mode = ItemMode.TAKE;
+    public boolean ignoreNBT = true;
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -30,9 +31,15 @@ public class ItemTriggerBlock extends AbstractTriggerBlock
             displayName += TextFormatting.GOLD + " (" + TextFormatting.GRAY + this.stack.getCount() + TextFormatting.GOLD + ")";
         }
 
+
         if (this.mode == ItemMode.GIVE)
         {
             return I18n.format("mappet.gui.nodes.item.give", displayName);
+        }
+
+        if (!this.ignoreNBT)
+        {
+            displayName += String.valueOf(TextFormatting.DARK_PURPLE) + TextFormatting.ITALIC + " (+NBT)";
         }
 
         return I18n.format("mappet.gui.nodes.item.take", displayName);
@@ -63,9 +70,10 @@ public class ItemTriggerBlock extends AbstractTriggerBlock
             return;
         }
 
-        if (InventoryUtils.countItems(player, this.stack) >= this.stack.getCount())
+        if (InventoryUtils.countItems(player, this.stack, true, this.ignoreNBT) >= this.stack.getCount())
         {
-            player.inventory.clearMatchingItems(this.stack.getItem(), -1, this.stack.getCount(), null);
+            NBTTagCompound nbt = this.ignoreNBT ? null : this.stack.getTagCompound();
+            player.inventory.clearMatchingItems(this.stack.getItem(), -1, this.stack.getCount(), nbt);
         }
         else
         {
@@ -87,6 +95,7 @@ public class ItemTriggerBlock extends AbstractTriggerBlock
         tag.setTag("Target", this.target.serializeNBT());
         tag.setTag("Stack", this.stack.serializeNBT());
         tag.setInteger("Mode", this.mode.ordinal());
+        tag.setBoolean("IgnoreNBT", this.ignoreNBT);
     }
 
     @Override
@@ -107,6 +116,11 @@ public class ItemTriggerBlock extends AbstractTriggerBlock
         if (tag.hasKey("Mode"))
         {
             this.mode = EnumUtils.getValue(tag.getInteger("Mode"), ItemMode.values(), ItemMode.TAKE);
+        }
+
+        if (tag.hasKey("IgnoreNBT"))
+        {
+            this.ignoreNBT = tag.getBoolean("IgnoreNBT");
         }
     }
 

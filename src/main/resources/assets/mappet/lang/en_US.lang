@@ -423,6 +423,7 @@ mappet.gui.crafting.recipe.visible=Visible
 mappet.gui.crafting.recipe.hotkey=Crafting hotkey
 mappet.gui.crafting.recipe.trigger=Crafting trigger
 mappet.gui.crafting.input=Ingredients
+mappet.gui.crafting.ignoreNBT=Ignore NBT
 mappet.gui.crafting.output=Result
 mappet.gui.crafting.craft=Craft
 mappet.gui.crafting.context.add=Add a crafting recipe
@@ -797,6 +798,7 @@ mappet.gui.entity_property.pitch=X head rotation (pitch)
 
 mappet.gui.item_trigger.mode.take=Take item
 mappet.gui.item_trigger.mode.give=Give item
+mappet.gui.item_trigger.ignoreNBT=Ignore NBT
 
 mappet.gui.state_trigger.mode.add=Add
 mappet.gui.state_trigger.mode.set=Set

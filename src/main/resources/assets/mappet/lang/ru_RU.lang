@@ -423,6 +423,7 @@ mappet.gui.crafting.recipe.visible=Видимый
 mappet.gui.crafting.recipe.hotkey=Горячая клавиша крафта
 mappet.gui.crafting.recipe.trigger=Триггер крафта
 mappet.gui.crafting.input=Ингридиенты
+mappet.gui.crafting.ignoreNBT=Игнорировать NBT
 mappet.gui.crafting.output=Результат
 mappet.gui.crafting.craft=Крафт
 mappet.gui.crafting.context.add=Добавить рецепт крафта
@@ -683,6 +684,7 @@ mappet.gui.triggers.title=Редактор триггеров
 mappet.gui.triggers.frequency=Частота
 mappet.gui.triggers.function=Функция
 mappet.gui.triggers.script.function_tooltip=Вызываемая функция скрипта (§7main§r является названием функции по умолчанию)
+mappet.gui.triggers.script.inline=Встроенный
 mappet.gui.triggers.morph.morph=Изменить морф на %s
 mappet.gui.triggers.morph.demorph=Убрать морф
 mappet.gui.triggers.context.add=Добавьте триггер...
@@ -799,6 +801,7 @@ mappet.gui.item_trigger.mode.give=Выдать предмет
 mappet.gui.state_trigger.mode.add=Добавить
 mappet.gui.state_trigger.mode.set=Установить
 mappet.gui.state_trigger.mode.remove=Удалить
+mappet.gui.item_trigger.ignoreNBT=Игнорировать NBT
 
 # Keys
 mappet.keys.category=Маппет

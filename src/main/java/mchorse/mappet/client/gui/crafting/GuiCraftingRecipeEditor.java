@@ -4,8 +4,8 @@ import mchorse.mappet.api.crafting.CraftingRecipe;
 import mchorse.mappet.client.gui.conditions.GuiCheckerElement;
 import mchorse.mappet.client.gui.triggers.GuiTriggerElement;
 import mchorse.mappet.client.gui.utils.GuiItemsElement;
-import mchorse.mappet.client.gui.utils.text.GuiMultiTextElement;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiKeybindElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.utils.Elements;
@@ -22,6 +22,7 @@ public class GuiCraftingRecipeEditor extends GuiElement
     public GuiCheckerElement checker;
     public GuiTriggerElement trigger;
     public GuiKeybindElement hotkey;
+    public GuiToggleElement ignoreNBT;
 
     public CraftingRecipe recipe;
 
@@ -33,6 +34,8 @@ public class GuiCraftingRecipeEditor extends GuiElement
         this.description = new GuiTextElement(mc, 1000, (text) -> this.recipe.description = text);
         this.input = new GuiItemsElement(mc, IKey.lang("mappet.gui.crafting.input"), null);
         this.input.marginTop(12);
+        this.ignoreNBT = new GuiToggleElement(mc, IKey.lang("mappet.gui.crafting.ignoreNBT"), (b) -> this.recipe.ignoreNBT = b.isToggled());
+        this.ignoreNBT.flex().h(30);
         this.output = new GuiItemsElement(mc, IKey.lang("mappet.gui.crafting.output"), null);
         this.checker = new GuiCheckerElement(mc);
         this.trigger = new GuiTriggerElement(mc);
@@ -52,7 +55,7 @@ public class GuiCraftingRecipeEditor extends GuiElement
         this.flex().column(5).vertical().stretch().padding(10);
 
         this.add(Elements.label(IKey.lang("mappet.gui.crafting.recipe.title")), this.title);
-        this.add(Elements.label(IKey.lang("mappet.gui.crafting.recipe.description")).marginTop(12), this.description, this.input, this.output);
+        this.add(Elements.label(IKey.lang("mappet.gui.crafting.recipe.description")).marginTop(12), this.description, this.input, this.ignoreNBT, this.output);
         this.add(Elements.row(mc, 5,
             Elements.column(mc, 4, Elements.label(IKey.lang("mappet.gui.crafting.recipe.visible")), this.checker),
             Elements.column(mc, 4, Elements.label(IKey.lang("mappet.gui.crafting.recipe.hotkey")), this.hotkey)
@@ -67,6 +70,7 @@ public class GuiCraftingRecipeEditor extends GuiElement
         this.title.setText(recipe.title);
         this.description.setText(recipe.description);
         this.input.set(recipe.input);
+        this.ignoreNBT.toggled(recipe.ignoreNBT);
         this.output.set(recipe.output);
         this.checker.set(recipe.visible);
         this.trigger.set(recipe.trigger);
