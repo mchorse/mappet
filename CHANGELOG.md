@@ -1,6 +1,6 @@
 ## Version 0.6
 
-This update is brought to you by TorayLife. If features a lot of scripting related features like listening to Forge events, inline scripts, documentation improvements, and more!
+This update is brought to you by TorayLife. It features a lot of scripting related features like listening to Forge events, inline scripts, documentation improvements, and more!
 
 **Compatible** with McLib **2.4.1**, Aperture **1.8.1**, Blockbuster **2.6** and Metamorph **1.3.1**. It doesn't mean that future versions of McLib, Blockbuster and Metamorph would be incompatible, but older versions are most likely incompatible.
 
