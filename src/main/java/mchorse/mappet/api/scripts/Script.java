@@ -188,11 +188,28 @@ public class Script extends AbstractData
         }
     }
 
+
+    private String DEFAULT_KOTLIN_IMPORTS =
+            "import mchorse.mappet.api.scripts.user.*"+"\n"+
+            "import mchorse.mappet.api.scripts.user.blocks.*"+"\n"+
+            "import mchorse.mappet.api.scripts.user.entities.*"+"\n"+
+            "import mchorse.mappet.api.scripts.user.items.*"+"\n"+
+            "import mchorse.mappet.api.scripts.user.mappet.*"+"\n"+
+            "import mchorse.mappet.api.scripts.user.nbt.*"+"\n"+
+
+            "import mchorse.mappet.api.scripts.code.*"+"\n"+
+            "import mchorse.mappet.api.scripts.code.blocks.*"+"\n"+
+            "import mchorse.mappet.api.scripts.code.entities.*"+"\n"+
+            "import mchorse.mappet.api.scripts.code.items.*"+"\n"+
+            "import mchorse.mappet.api.scripts.code.mappet.*"+"\n"+
+            "import mchorse.mappet.api.scripts.code.nbt.*"+"\n";
+
     private void evalEngineCode(boolean isKotlin, Set<String> uniqueImports, StringBuilder finalCode) throws ScriptException
     {
         if (isKotlin)
         {
-            this.engine.eval(String.join("\n", uniqueImports) + "\n" + finalCode.toString());
+            String allCode = DEFAULT_KOTLIN_IMPORTS + "\n" + String.join("\n", uniqueImports) + "\n" + finalCode.toString();
+            this.engine.eval(allCode);
         }
         else
         {
