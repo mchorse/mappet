@@ -8,27 +8,22 @@ import net.minecraft.util.math.RayTraceResult;
  * This interface represents a ray tracing result.
  *
  * <pre>{@code
- *    function main(c)
- *    {
- *        var result = c.getSubject().rayTrace(32);
+ * fun main(c: IScriptEvent) {
+ *     val result : IScriptRayTrace = c.getSubject().rayTrace(32.0);
  *
- *        if (result.isBlock())
- *        {
- *            // Ray hit a block, so we'll change the block to diamond block
- *            var pos = result.getBlock();
+ *     if (result.isBlock()) {
+ *         // Ray hit a block, so we'll change the block to diamond block
+ *         val pos : ScriptVector = result.getBlock();
  *
- *            c.getWorld().setBlock(mappet.createBlockState("minecraft:diamond_block", 0), pos.x, pos.y, pos.z);
- *        }
- *        else if (result.isEntity())
- *        {
- *            // Ray hit an entity, so we'll throw it in the air
- *            result.getEntity().setMotion(0, 1, 0);
- *        }
- *        else // if (result.isMissed())
- *        {
- *            c.send("Good luck next time!");
- *        }
- *    }
+ *         c.getWorld().setBlock(mappet.createBlockState("minecraft:diamond_block"), pos.x.toInt(), pos.y.toInt(), pos.z.toInt())
+ *     } else if (result.isEntity()) {
+ *         // Ray hit an entity, so we'll throw it in the air
+ *         result.getEntity().setMotion(0.0, 1.0, 0.0)
+ *     } else // if (result.isMissed())
+ *     {
+ *         c.send("Good luck next time!")
+ *     }
+ * }
  * }</pre>
  */
 public interface IScriptRayTrace

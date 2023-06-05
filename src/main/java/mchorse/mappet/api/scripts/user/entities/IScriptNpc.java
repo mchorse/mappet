@@ -7,13 +7,11 @@ import mchorse.mappet.entities.EntityNpc;
  * Mappet's NPC entity interface.
  *
  * <pre>{@code
- *    function main(c)
- *    {
- *        if (c.getSubject().isNpc())
- *        {
- *            // Do something with the NPC...
- *        }
- *    }
+ * fun main(c: IScriptEvent) {
+ *     if (c.getSubject().isNpc()) {
+ *         // Do something with the NPC...
+ *     }
+ * }
  * }</pre>
  */
 public interface IScriptNpc extends IScriptEntity
@@ -32,12 +30,14 @@ public interface IScriptNpc extends IScriptEntity
      * Get NPC's NPC ID.
      *
      * <pre>{@code
-     *    var pos = c.getSubject().getPosition();
-     *    var npc = c.getWorld().spawnNpc("test", pos.x, pos.y + 2, pos.z);
+     * fun main(c: IScriptEvent) {
+     *     val pos : ScriptVector = c.getSubject().getPosition()
+     *     val npc : IScriptNpc = c.getWorld().spawnNpc("test", pos.x, pos.y + 2, pos.z)
      *
-     *    // This will output "true" as long as you have an NPC configured
-     *    // in Mappet's NPC dashboard panel
-     *    c.send(npc.getNpcId() === "test");
+     *     // This will output "true" as long as you have an NPC configured
+     *     // in Mappet's NPC dashboard panel
+     *     c.send(npc.getNpcId() == "test")
+     * }
      * }</pre>
      */
     public String getNpcId();
@@ -193,7 +193,7 @@ public interface IScriptNpc extends IScriptEntity
     public void clearPatrolPoints();
 
     /**
-     * Returns the faction of the NPC as a string
+     * Returns the faction of the npc as a string
      *
      * <pre>{@code
      * c.send(c.getSubject().getFaction())

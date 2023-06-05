@@ -178,9 +178,11 @@ public interface INBTList extends INBT
      * Turns a NBT list into a Java array.
      *
      * <pre>{@code
-     *     var tag = mappet.createCompound("{id:[0,2,4]}");
-     *
-     *     c.send(tag.get("id").toArray()[1]); // 2
+     * fun main(c: IScriptEvent) {
+     *     val tag: INBTCompound = mappet.createCompound("{id:[0,2,4]}")
+     *     val array: Array<Any> = (tag.get("id") as INBTList).toArray()
+     *     c.send(array[1].toString()) // 2
+     * }
      * }</pre>
      *
      * @return an array of the list's elements

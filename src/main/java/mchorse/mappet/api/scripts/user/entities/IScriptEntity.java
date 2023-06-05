@@ -23,21 +23,21 @@ import net.minecraft.potion.Potion;
  * actual player, or {@link IScriptNpc} if it's a Mappet NPC!</p>
  *
  * <pre>{@code
- *     function main(c)
+ * fun main(c: IScriptEvent) {
+ *     val subject : IScriptEntity = c.getSubject()
+ *     if (subject.isPlayer())
  *     {
- *         if (c.getSubject().isPlayer())
- *         {
- *             // Do something with the player...
- *         }
- *         if (c.getSubject().isNpc())
- *         {
- *             // Do something with the NPC...
- *         }
- *         else
- *         {
- *             // Do something with the entity...
- *         }
+ *         (subject as? IScriptPlayer)?.send("Hello, ${subject.getName()}!")
  *     }
+ *     else if (subject.isNpc())
+ *     {
+ *         (subject as IScriptNpc).send("x");
+ *     }
+ *     else
+ *     {
+ *
+ *     }
+ * }
  * }</pre>
  */
 public interface IScriptEntity
@@ -45,14 +45,6 @@ public interface IScriptEntity
     /**
      * Get Minecraft entity instance. <b>BEWARE:</b> you need to know the MCP
      * mappings in order to directly call methods on this instance!
-     *
-     * <pre>{@code
-     * function main(c)
-     * {
-     *     //c.getSubject().getMinecraftEntity().abilities.disableDamage = true
-     *     c.getSubject().getMinecraftEntity().field_71075_bZ.field_75102_a = true // or false
-     * }
-     * }</pre>
      */
     public Entity getMinecraftEntity();
 
@@ -60,10 +52,12 @@ public interface IScriptEntity
      * Get entity's world.
      *
      * <pre>{@code
-     *    var s = c.getSubject();
-     *    var world = s.getWorld();
+     * fun main(c: IScriptEvent) {
+     *     val s : IScriptEntity = c.getSubject()
+     *     val world : IScriptWorld = s.getWorld()
      *
-     *    world.setRaining(true);
+     *     world.setRaining(false)
+     * }
      * }</pre>
      */
     public IScriptWorld getWorld();
@@ -72,10 +66,13 @@ public interface IScriptEntity
      * Get entity's fancy world.
      *
      * <pre>{@code
-     *    var s = c.getSubject();
-     *    var fancyWorld = s.getFancyWorld();
+     * fun main(c: IScriptEvent) {
+     *     val s : IScriptEntity = c.getSubject()
+     *     val fancyWorld : IScriptFancyWorld = s.getFancyWorld()
+     * }
      * }</pre>
      */
+
     public IScriptFancyWorld getFancyWorld();
 
     /* Entity properties */
@@ -84,18 +81,25 @@ public interface IScriptEntity
      * Get entity's position.
      *
      * <pre>{@code
-     *    var pos = c.getSubject().getPosition();
+     * fun main(c: IScriptEvent) {
+     *     val pos : ScriptVector = c.getSubject().getPosition()
      *
-     *    c.send(c.getSubject().getName() + "'s position is (" + pos.x + ", " + pos.y + ", " + pos.z + ")");
+     *     c.send("${c.getSubject().getName()}'s position is (${pos.x}, ${pos.y}, ${pos.z})")
+     * }
      * }</pre>
      */
+
     public ScriptVector getPosition();
 
     /**
      * Set entity's position (teleport).
      *
      * <pre>{@code
-     *    c.getSubject().setPosition(800, 8, -135);
+     * fun main(c: IScriptEvent) {
+     *     val pos : ScriptVector = c.getSubject().getPosition()
+     *
+     *     c.getSubject().setPosition(pos.x, pos.y+2, pos.z)
+     * }
      * }</pre>
      */
     public void setPosition(double x, double y, double z);
@@ -104,9 +108,11 @@ public interface IScriptEntity
      * Get entity's motion.
      *
      * <pre>{@code
-     *    var motion = c.getSubject().getMotion();
+     * fun main(c: IScriptEvent) {
+     *    val motion : ScriptVector = c.getSubject().getMotion()
      *
-     *    c.send(c.getSubject().getName() + "'s motion is (" + motion.x + ", " + motion.y + ", " + motion.z + ")");
+     *    c.send("${c.getSubject().getName()}'s motion is (${motion.x}, ${motion.y}, ${motion.z})")
+     * }
      * }</pre>
      */
     public ScriptVector getMotion();
@@ -115,13 +121,15 @@ public interface IScriptEntity
      * Set entity's motion.
      *
      * <pre>{@code
-     *    var motion = c.getSubject().getMotion();
+     * fun main(c: IScriptEvent) {
+     *     val motion : ScriptVector = c.getSubject().getMotion()
      *
-     *    if (motion.y < 0)
-     *    {
-     *        // Reverse the falling motion into a jumping up motion
-     *        c.getSubject().setMotion(motion.x, -motion.y, motion.z);
-     *    }
+     *     if (motion.y < 0)
+     *     {
+     *         // Reverse the falling motion into a jumping up motion
+     *         c.getSubject().setMotion(motion.x, -motion.y, motion.z)
+     *     }
+     * }
      * }</pre>
      */
     public void setMotion(double x, double y, double z);
@@ -131,13 +139,16 @@ public interface IScriptEntity
      * Adds to the current velocity of the entity.
      *
      * <pre>{@code
+     * fun main(c: IScriptEvent) {
+     *     val allItems : List<IScriptEntity> = c.getServer().getEntities("@e[type=item]")
      *     // Throw all items in the air
-     *     for each (var item in c.getServer().getEntities("@e[type=item]"))
-     *     {
-     *         item.addVelocity(0, 0.3, 0);
+     *     for (item : IScriptEntity in allItems) {
+     *         item.addMotion(0.0, 0.3, 0.0)
      *     }
+     * }
      * }</pre>
      */
+
     public void addMotion(double x, double y, double z);
 
     /**
@@ -145,12 +156,14 @@ public interface IScriptEntity
      * is living base).
      *
      * <pre>{@code
-     *     var rotations = c.getSubject().getRotations();
-     *     var pitch = rotations.x;
-     *     var yaw = rotations.y;
-     *     var yaw_head = rotations.z;
+     * fun main(c: IScriptEvent) {
+     *     val rotations : ScriptVector = c.getSubject().getRotations()
+     *     val pitch = rotations.x
+     *     val yaw = rotations.y
+     *     val yawHead = rotations.z
      *
-     *     c.send(c.getSubject().getName() + "'s rotations are (" + pitch + ", " + yaw + ", " + yaw_head + ")");
+     *     c.send("${c.getSubject().getName()}'s rotations are (${pitch}, ${yaw}, ${yawHead})")
+     * }
      * }</pre>
      */
     public ScriptVector getRotations();
@@ -159,10 +172,13 @@ public interface IScriptEntity
      * Set entity's rotation.
      *
      * <pre>{@code
-     *    // Make entity look at west
-     *    c.getSubject().setRotations(0, 0, 0);
+     * fun main(c: IScriptEvent) {
+     *     // Make entity look at west
+     *     c.getSubject().setRotations(0f, 0f, 0f)
+     * }
      * }</pre>
      */
+
     public void setRotations(float pitch, float yaw, float yawHead);
 
     /**
@@ -184,9 +200,11 @@ public interface IScriptEntity
      * Get a vector in which direction entity looks.
      *
      * <pre>{@code
-     *     var look = c.getSubject().getLook();
+     * fun main(c: IScriptEvent) {
+     *     val look : ScriptVector = c.getSubject().getLook()
      *
-     *     c.getSubject().setMotion(look.x * 0.5, look.y * 0.5, look.z * 0.5);
+     *     c.send("${c.getSubject().getName()} is looking at (${look.x}, ${look.y}, ${look.z})")
+     * }
      * }</pre>
      */
     public ScriptVector getLook();
@@ -195,9 +213,11 @@ public interface IScriptEntity
      * Returns the eye height of the entity.
      *
      * <pre>{@code
-     *    var s = c.getSubject();
+     * fun main(c: IScriptEvent) {
+     *     val s : IScriptEntity = c.getSubject()
      *
-     *    c.send("This entity's eye height is: " + s.getEyeHeight());
+     *     c.send("This entity's eye height is: ${s.getEyeHeight()}")
+     * }
      * }</pre>
      */
     public float getEyeHeight();
@@ -216,12 +236,14 @@ public interface IScriptEntity
      * Get health points of this entity (20 is the max default for players).
      *
      * <pre>{@code
-     *    var subject = c.getSubject();
+     * fun main(c: IScriptEvent) {
+     *     val subject : IScriptEntity = c.getSubject()
      *
-     *    if (subject.getHp() < 10)
-     *    {
-     *        subject.send("Man, you need to replenish your health!");
-     *    }
+     *     if (subject.getHp() < 10)
+     *     {
+     *         subject.send("Man, you need to replenish your health!")
+     *     }
+     * }
      * }</pre>
      */
     public float getHp();
@@ -230,12 +252,14 @@ public interface IScriptEntity
      * Set entity's health points. Given value that is more than max HP will get limited to max HP.
      *
      * <pre>{@code
-     *    // If entity's health goes below 5 hearts, restore to max
-     *    var subject = c.getSubject();
+     *    fun main(c: IScriptEvent) {
+     *        // If entity's health goes below 5 hearts, restore to max
+     *        val subject: IScriptEntity = c.getSubject()
      *
-     *    if (subject.getHp() < 10)
-     *    {
-     *        subject.setHp(subject.getMaxHp());
+     *        if (subject.getHp() < 10)
+     *        {
+     *            subject.setHp(subject.getMaxHp())
+     *        }
      *    }
      * }</pre>
      */
@@ -245,9 +269,11 @@ public interface IScriptEntity
      * Get maximum health points this entity can have.
      *
      * <pre>{@code
-     *    var subject = c.getSubject();
+     *    fun main(c: IScriptEvent) {
+     *        val subject: IScriptEntity = c.getSubject()
      *
-     *    subject.send(subject.getName() + " can have up to " + subject.getMaxHp() + " HP!");
+     *        subject.send("You can have up to ${subject.getMaxHp()} HP!")
+     *    }
      * }</pre>
      */
     public float getMaxHp();
@@ -256,9 +282,9 @@ public interface IScriptEntity
      * Set entity's maximum health points.
      *
      * <pre>{@code
-     *    var subject = c.getSubject();
+     *    val subject: IScriptEntity = c.getSubject();
      *    subject.setMaxHp(100);
-     *    subject.send(subject.getName() + " can have up to " + subject.getMaxHp() + " HP!");
+     *    c.send(subject.getName() + " can have up to " + subject.getMaxHp() + " HP!");
      * }</pre>
      */
     public void setMaxHp(float hp);
@@ -267,9 +293,11 @@ public interface IScriptEntity
      * Check whether this entity is in water.
      *
      * <pre>{@code
-     *     var subject = c.getSubject();
+     *     fun main(c: IScriptEvent) {
+     *         val subject: IScriptEntity = c.getSubject()
      *
-     *     c.send("Is the entity in water? " + subject.isInWater());
+     *         c.send("Is the entity in water? ${subject.isInWater()}")
+     *     }
      * }</pre>
      */
     public boolean isInWater();
@@ -278,9 +306,11 @@ public interface IScriptEntity
      * Check whether this entity is in lava.
      *
      * <pre>{@code
-     *     var subject = c.getSubject();
+     *     fun main(c: IScriptEvent) {
+     *         val subject: IScriptEntity = c.getSubject()
      *
-     *     c.send("Is the entity in lava? " + subject.isInLava());
+     *         c.send("Is the entity in lava? ${subject.isInLava()}")
+     *     }
      * }</pre>
      */
     public boolean isInLava();
@@ -289,12 +319,14 @@ public interface IScriptEntity
      * Check whether this entity is on fire.
      *
      * <pre>{@code
-     *    var subject = c.getSubject();
+     *    fun main(c: IScriptEvent) {
+     *        val subject: IScriptEntity = c.getSubject()
      *
-     *    // Extinguish the entity if it's on fire
-     *    if (subject.isBurning())
-     *    {
-     *        subject.setBurning(0);
+     *        // Extinguish the entity if it's on fire
+     *        if (subject.isBurning())
+     *        {
+     *            subject.setBurning(0)
+     *        }
      *    }
      * }</pre>
      */
@@ -305,12 +337,14 @@ public interface IScriptEntity
      * provided as the sole argument, then entity's fire will be extinguished.
      *
      * <pre>{@code
-     *    var subject = c.getSubject();
-     *    var ray = subject.rayTrace(32);
+     *    fun main(c: IScriptEvent) {
+     *        val subject: IScriptEntity = c.getSubject()
+     *        val ray : IScriptRayTrace = subject.rayTrace(32)
      *
-     *    if (ray.isEntity())
-     *    {
-     *        ray.getEntity().setBurning(2);
+     *        if (ray.isEntity())
+     *        {
+     *            ray.getEntity().setBurning(2)
+     *        }
      *    }
      * }</pre>
      */
@@ -320,11 +354,13 @@ public interface IScriptEntity
      * Is this entity is sneaking.
      *
      * <pre>{@code
-     *    var subject = c.getSubject();
+     *    fun main(c: IScriptEvent) {
+     *        val subject: IScriptEntity = c.getSubject()
      *
-     *    if (subject.isSneaking())
-     *    {
-     *        subject.send("You completed Simon's task!");
+     *        if (subject.isSneaking())
+     *        {
+     *            subject.send("You completed Simon's task!")
+     *        }
      *    }
      * }</pre>
      */
@@ -334,11 +370,13 @@ public interface IScriptEntity
      * Is this entity is sprinting.
      *
      * <pre>{@code
-     *    var subject = c.getSubject();
+     *    fun main(c: IScriptEvent) {
+     *        val subject: IScriptEntity = c.getSubject()
      *
-     *    if (subject.isSprinting())
-     *    {
-     *        subject.send("This way, you'll run away way faster from zombies!");
+     *        if (subject.isSprinting())
+     *        {
+     *            subject.send("This way, you'll run away way faster from zombies!")
+     *        }
      *    }
      * }</pre>
      */
@@ -369,14 +407,15 @@ public interface IScriptEntity
      * Get item held in main hand.
      *
      * <pre>{@code
-     *    var subject = c.getSubject();
-     *    var item = subject.getMainItem();
+     * fun main(c: IScriptEvent) {
+     *     val subject: IScriptEntity = c.getSubject()
+     *     val item: IScriptItemStack = subject.getMainItem()
      *
-     *    // Lightning bolt admin stick idk I didn't play on servers
-     *    if (item.getItem().getId() === "minecraft:stick")
-     *    {
-     *        c.executeCommand("/summon lightning_bolt ~ ~ ~");
-     *    }
+     *     // Lightning bolt admin stick
+     *     if (item.getItem().getId() == "minecraft:stick") {
+     *         c.executeCommand("/summon lightning_bolt ~ ~ ~")
+     *     }
+     * }
      * }</pre>
      */
     public IScriptItemStack getMainItem();
@@ -395,13 +434,13 @@ public interface IScriptEntity
      * Get item held in off hand.
      *
      * <pre>{@code
-     *    var subject = c.getSubject();
-     *    var item = subject.getOffItem();
+     *    val subject: IScriptEntity = c.getSubject()
+     *    val offItem: IScriptItemStack = subject.getOffItem()
      *
      *    // Lightning bolt admin stick (but in off hand) idk I didn't play on servers
-     *    if (item.getItem().getId() === "minecraft:stick")
+     *    if (offItem.getItem().getId() == "minecraft:stick")
      *    {
-     *        c.executeCommand("/summon lightning_bolt ~ ~ ~");
+     *        c.executeCommand("/summon lightning_bolt ~ ~ ~")
      *    }
      * }</pre>
      */
@@ -411,7 +450,9 @@ public interface IScriptEntity
      * Set item held in off hand.
      *
      * <pre>{@code
-     *    c.getSubject().setOffItem(mappet.createItem("minecraft:shield"));
+     * fun main(c: IScriptEvent) {
+     *     c.getSubject().setOffItem(mappet.createItem("minecraft:shield"))
+     * }
      * }</pre>
      */
     public void setOffItem(IScriptItemStack stack);
@@ -420,7 +461,9 @@ public interface IScriptEntity
      * Give item to this entity. (like the /give command)
      *
      * <pre>{@code
-     *    c.getSubject().giveItem(mappet.createItem("minecraft:diamond", 64));
+     * fun main(c: IScriptEvent) {
+     *     c.getSubject().giveItem(mappet.createItem("minecraft:diamond", 64))
+     * }
      * }</pre>
      */
     public void giveItem(IScriptItemStack stack);
@@ -429,93 +472,108 @@ public interface IScriptEntity
      * Return the entity's helmet's item stack.
      *
      * <pre>{@code
-     *   c.send( c.getSubject().getHelmet().serialize() )
+     * fun main(c: IScriptEvent) {
+     *     c.send( c.getSubject().getHelmet().serialize() )
+     * }
      * }</pre>
      */
     public IScriptItemStack getHelmet();
 
     /**
-     * Return the entity's  chestplate's item stack.
+     * Return the entity's chestplate's item stack.
      *
      * <pre>{@code
-     *   c.send( c.getSubject().getChestplate().serialize() )
+     * fun main(c: IScriptEvent) {
+     *     c.send( c.getSubject().getChestplate().serialize() )
+     * }
      * }</pre>
      */
     public IScriptItemStack getChestplate();
 
     /**
-     * Return the entity's  leggings' item stack.
+     * Return the entity's leggings' item stack.
      *
      * <pre>{@code
-     *   c.send( c.getSubject().getLeggings().serialize() )
+     * fun main(c: IScriptEvent) {
+     *     c.send( c.getSubject().getLeggings().serialize() )
+     * }
      * }</pre>
      */
     public IScriptItemStack getLeggings();
 
     /**
-     * Return the entity's  boots' item stack.
+     * Return the entity's boots' item stack.
      *
      * <pre>{@code
-     *   c.send( c.getSubject().getBoots().serialize() )
+     * fun main(c: IScriptEvent) {
+     *     c.send( c.getSubject().getBoots().serialize() )
+     * }
      * }</pre>
      */
     public IScriptItemStack getBoots();
 
     /**
-     * Set the entity's  helemt.
+     * Set the entity's helmet.
      *
      * <pre>{@code
-     *   var item = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_helmet\",Count:1b,tag:{ench:[{lvl:3s,id:0s}],RepairCost:1},Damage:0s}"));
-     *   c.getSubject().setHelmet(item)
+     * fun main(c: IScriptEvent) {
+     *     val item : IScriptItemStack = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_helmet\",Count:1b,tag:{ench:[{lvl:3s,id:0s}],RepairCost:1},Damage:0s}"))
+     *     c.getSubject().setHelmet(item)
+     * }
      * }</pre>
      */
     public void setHelmet(IScriptItemStack itemStack);
 
     /**
-     * Set the entity's  chestplate.
+     * Set the entity's chestplate.
      *
      * <pre>{@code
-     *   var item = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_chestplate\",Count:1b,tag:{ench:[{id:0,lvl:4}],RepairCost:1},Damage:0s}"));
-     *   c.getSubject().setChestplate(item)
+     * fun main(c: IScriptEvent) {
+     *     val item : IScriptItemStack = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_chestplate\",Count:1b,tag:{ench:[{id:0,lvl:4}],RepairCost:1},Damage:0s}"))
+     *     c.getSubject().setChestplate(item)
+     * }
      * }</pre>
      */
     public void setChestplate(IScriptItemStack itemStack);
 
     /**
-     * Set the entity's  leggings.
+     * Set the entity's leggings.
      *
      * <pre>{@code
-     *   var item = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_leggings\",Count:1b,tag:{ench:[{id:0,lvl:4}],RepairCost:1},Damage:0s}"));
-     *   c.getSubject().setLeggings(item)
+     * fun main(c: IScriptEvent) {
+     *     val item : IScriptItemStack = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_leggings\",Count:1b,tag:{ench:[{id:0,lvl:4}],RepairCost:1},Damage:0s}"))
+     *     c.getSubject().setLeggings(item)
+     * }
      * }</pre>
      */
     public void setLeggings(IScriptItemStack itemStack);
 
     /**
-     * Set the entity's  boots.
+     * Set the entity's boots.
      *
      * <pre>{@code
-     *   var item = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_boots\",Count:1b,tag:{ench:[{id:0,lvl:4}],RepairCost:1},Damage:0s}"));
-     *   c.getSubject().setBoots(item)
+     * fun main(c: IScriptEvent) {
+     *     val item : IScriptItemStack = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_boots\",Count:1b,tag:{ench:[{id:0,lvl:4}],RepairCost:1},Damage:0s}"))
+     *     c.getSubject().setBoots(item)
+     * }
      * }</pre>
      */
     public void setBoots(IScriptItemStack itemStack);
 
     /**
-     * Set the entity's  whole armor set.
+     * Set the entity's whole armor set.
      *
      * <pre>{@code
-     *     var players = c.getServer().getAllPlayers();
-     *
-     *     for each (var player in players)
-     *     {
-     *         var helmet = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_helmet\",Count:1b,tag:{ench:[{id:0s,lvl:3s}],RepairCost:1},Damage:0s}"));
-     *         var chestplate = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_chestplate\",Count:1b,tag:{ench:[{id:0,lvl:4}],RepairCost:1},Damage:0s}"));
-     *         var leggings = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_leggings\",Count:1b,tag:{ench:[{id:0,lvl:4}],RepairCost:1},Damage:0s}"));
-     *         var boots = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_boots\",Count:1b,tag:{ench:[{id:0,lvl:4}],RepairCost:1},Damage:0s}"));
-     *
+     * fun main(c: IScriptEvent) {
+     *     val players : List<IScriptPlayer> = c.getServer().getAllPlayers()
+     *     for (player in players) {
+     *         val helmet : IScriptItemStack = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_helmet\",Count:1b,tag:{ench:[{id:0s,lvl:3s}],RepairCost:1},Damage:0s}"))
+     *         val chestplate : IScriptItemStack = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_chestplate\",Count:1b,tag:{ench:[{id:0,lvl:4}],RepairCost:1},Damage:0s}"))
+     *         val leggings : IScriptItemStack = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_leggings\",Count:1b,tag:{ench:[{id:0,lvl:4}],RepairCost:1},Damage:0s}"))
+     *         val boots : IScriptItemStack = mappet.createItemNBT(mappet.createCompound("{id:\"minecraft:diamond_boots\",Count:1b,tag:{ench:[{id:0,lvl:4}],RepairCost:1},Damage:0s}"))
      *         player.setArmor(helmet, chestplate, leggings, boots)
      *     }
+     * }
      * }</pre>
      */
     public default void setArmor(IScriptItemStack helmet, IScriptItemStack chestplate, IScriptItemStack leggings, IScriptItemStack boots)
@@ -527,13 +585,15 @@ public interface IScriptEntity
     }
 
     /**
-     * Clear the entity's  whole armor set.
+     * Clear the entity's whole armor set.
      *
      * <pre>{@code
-     *   var players = c.getServer().getEntities("@e[type=player]");
-     *   for each (var player in players){
-     *       player.clearArmor()
-     *   }
+     * fun main(c: IScriptEvent) {
+     *     val allPlayers : List<IScriptPlayer> = c.getServer().getEntities("@e[type=player]")
+     *     for (player in allPlayers) {
+     *         player.clearArmor()
+     *     }
+     * }
      * }</pre>
      */
     public default void clearArmor()
@@ -557,17 +617,15 @@ public interface IScriptEntity
      * Set this entity's attack target to given entity.
      *
      * <pre>{@code
-     *     // Stop the entity that you're looking at from targeting you.
-     *     function main(c)
-     *     {
-     *         var s = c.getSubject();
-     *         var ray = s.rayTrace(64);
+     * // Stop the entity that you're looking at from targeting you.
+     * fun main(c: IScriptEvent) {
+     *     val s: IScriptEntity = c.getSubject();
+     *     val ray: IScriptRayTrace = s.rayTrace(64.0);
      *
-     *         if (ray.isEntity())
-     *         {
-     *             ray.getEntity().setTarget(null)
-     *         }
+     *     if (ray.isEntity()) {
+     *         ray.getEntity()?.setTarget(null)
      *     }
+     * }
      * }</pre>
      */
     public void setTarget(IScriptEntity entity);
@@ -587,12 +645,11 @@ public interface IScriptEntity
      * commands as a target selector.
      *
      * <pre>{@code
-     * function main(c)
-     * {
-     *     var uuid = c.getSubject().getUniqueId()
-     *     var entity = c.getServer().getEntity(uuid)
+     * fun main(c: IScriptEvent) {
+     *     val uuid: String = c.getSubject().getUniqueId()
+     *     val entity: IScriptEntity = c.getServer().getEntity(uuid)
      *
-     *     var motion = c.getSubject().getMotion();
+     *     var motion: ScriptVector = c.getSubject().getMotion();
      *
      *     entity.setMotion(motion.x, motion.y+3, motion.z)
      * }
@@ -617,11 +674,13 @@ public interface IScriptEntity
      * to "unpack" the combined value.
      *
      * <pre>{@code
-     *     var light = c.getPlayer().getCombinedLight();
-     *     var skyLight = light / 65536 / 15;
-     *     var torchLight = light % 65536 / 15;
+     * fun main(c: IScriptEvent) {
+     *     val light = c.getPlayer().getCombinedLight();
+     *     val skyLight = light / 65536 / 15;
+     *     val torchLight = light % 65536 / 15;
      *
      *     // Do something with skyLight and torchLight
+     * }
      * }</pre>
      */
     public int getCombinedLight();
@@ -691,20 +750,17 @@ public interface IScriptEntity
      * Check if an entity is in a radius of another specific entity
      *
      * <pre>{@code
-     *     // Kills all cows within 5 blocks of the player
-     *     function main(c)
-     *     {
-     *         var tracker = c.getSubject();
-     *         var trackedEntities = c.getServer().getEntities("@e[type=cow]");
+     * // Kills all cows within 5 blocks of the player
+     * fun main(c: IScriptEvent) {
+     *     val tracker: IScriptEntity = c.getSubject();
+     *     val trackedEntities: List<IScriptEntity> = c.getServer().getEntities("@e[type=cow]");
      *
-     *         for each (var trackedEntity in trackedEntities)
-     *         {
-     *             if (trackedEntity.isEntityInRadius(tracker, 5))
-     *             {
-     *                 trackedEntity.kill();
-     *             }
+     *     for (trackedEntity in trackedEntities) {
+     *         if (trackedEntity.isEntityInRadius(tracker, 5.0)) {
+     *             trackedEntity.kill();
      *         }
      *     }
+     * }
      * }</pre>
      */
     public boolean isEntityInRadius(IScriptEntity entity, double radius);
@@ -713,12 +769,13 @@ public interface IScriptEntity
      * Check if this entity is standing in a given block.
      *
      * <pre>{@code
-     *     var s = c.getSubject();
+     * fun main(c: IScriptEvent) {
+     *     val s: IScriptEntity = c.getSubject();
      *
-     *     if (s.isInBlock(0, 0, 0))
-     *     {
-     *         c.send(s.getName() + " is at (0, 0, 0)!");
+     *     if (s.isInBlock(0, 0, 0)) {
+     *         c.send("${s.getName()} is standing in block at 0, 0, 0!");
      *     }
+     * }
      * }</pre>
      */
     public default boolean isInBlock(int x, int y, int z)
@@ -730,12 +787,13 @@ public interface IScriptEntity
      * Check if this entity is standing in a given area.
      *
      * <pre>{@code
-     *     var s = c.getSubject();
+     * fun main(c: IScriptEvent) {
+     *     val s: IScriptEntity = c.getSubject();
      *
-     *     if (s.isInArea(20, 3, 100, 30, 8, 110))
-     *     {
-     *         c.send(s.getName() + " is within given area!");
+     *     if (s.isInArea(20.0, 3.0, 100.0, 30.0, 8.0, 110.0)) {
+     *         c.send("${s.getName()} is standing in area from 20, 3, 100 to 30, 8, 110!");
      *     }
+     * }
      * }</pre>
      */
     public boolean isInArea(double x1, double y1, double z1, double x2, double y2, double z2);
@@ -753,13 +811,11 @@ public interface IScriptEntity
      * Damage this entity as given entity was the source of attack.
      *
      * <pre>{@code
-     * function main(c)
-     * {
-     *     var player = c.getSubject();
-     *     var result = player.rayTrace(32);
+     * fun main(c: IScriptEvent) {
+     *     var subject: IScriptEntity = c.getSubject();
+     *     var result: IScriptRayTrace = player.rayTrace(32);
      *
-     *     if (result.isEntity())
-     *     {
+     *     if (result.isEntity()) {
      *         result.getEntity().damageAs(player, 1);
      *     }
      * }
@@ -771,13 +827,11 @@ public interface IScriptEntity
      * Damage this entity as given player was the source of the attack with its equipment.
      *
      * <pre>{@code
-     * function main(c)
-     * {
-     *     var player = c.getSubject();
-     *     var result = player.rayTrace(32);
+     * fun main(c: IScriptEvent) {
+     *     val subject: IScriptEntity = c.getSubject();
+     *     var result: IScriptRayTrace = subject.rayTrace(32);
      *
-     *     if (result.isEntity())
-     *     {
+     *     if (result.isEntity()) {
      *         result.getEntity().damageWithItemsAs(player);
      *     }
      * }
@@ -789,16 +843,14 @@ public interface IScriptEntity
      * Mount this entity to given entity.
      *
      * <pre>{@code
-     *     function main(c)
-     *     {
-     *         var s = c.getSubject();
-     *         var ray = s.rayTrace(64);
+     * fun main(c: IScriptEvent) {
+     *     val s: IScriptEntity = c.getSubject();
+     *     val ray: IScriptRayTrace = s.rayTrace(64.0);
      *
-     *         if (ray.isEntity())
-     *         {
-     *              s.mount(ray.getEntity());
-     *         }
+     *     if (ray.isEntity()) {
+     *          s.mount(ray.getEntity(), 1);
      *     }
+     * }
      * }</pre>
      */
     public void mount(IScriptEntity entity);
@@ -807,10 +859,9 @@ public interface IScriptEntity
      * Dismount this entity from the entity it's riding.
      *
      * <pre>{@code
-     *     function main(c)
-     *     {
-     *          c.getSubject().dismount()
-     *     }
+     * fun main(c: IScriptEvent) {
+     *      c.getSubject().dismount()
+     * }
      * }</pre>
      */
     public void dismount();
@@ -819,21 +870,26 @@ public interface IScriptEntity
      * Returns the entity that this entity rides on.
      *
      * <pre>{@code
-     *     var s = c.getSubject();
+     * fun main(c: IScriptEvent) {
+     *    val s: IScriptEntity = c.getSubject();
+     *    val mounted: IScriptEntity = s.getMount();
      *
-     *     s.getMount();
+     *    c.send("${s.getName()} is riding ${mounted.getName()}");
+     * }
      * }</pre
      */
-
     public IScriptEntity getMount();
 
     /**
      * Returns the bounding box of this entity.
      *
      * <pre>{@code
-     *    var s = c.getSubject();
-     *    var box = s.getBoundingBox();
-     *    c.send("The bounding box of " + s.getName() + " is " + box.minX + ", " + box.minY + ", " + box.minZ + " to " + box.maxX + ", " + box.maxY + ", " + box.maxZ);
+     * fun main(c: IScriptEvent) {
+     *     val s: IScriptEntity = c.getSubject()
+     *     val box: ScriptBox = s.getBoundingBox()
+     *
+     *     c.send("The bounding box of ${s.getName()} is ${box.minX}, ${box.minY}, ${box.minZ} to ${box.maxX}, ${box.maxY}, ${box.maxZ}")
+     * }
      * }</pre>
      *
      * @return the bounding box of this entity
@@ -844,9 +900,11 @@ public interface IScriptEntity
      * Drop the item an entity is holding.
      *
      * <pre>{@code
-     *     var s = c.getSubject();
+     * fun main(c: IScriptEvent) {
+     *     val s: IScriptEntity = c.getSubject()
      *
-     *     s.dropItem(10);
+     *     s.dropItem(10)
+     * }
      * }</pre>
      */
     public IScriptEntity dropItem(int amount);
@@ -855,9 +913,11 @@ public interface IScriptEntity
      * Drop one item of what the entity is holding.
      *
      * <pre>{@code
-     *     var s = c.getSubject();
+     * fun main(c: IScriptEvent) {
+     *     val s: IScriptEntity = c.getSubject()
      *
-     *     s.dropItem();
+     *     s.dropItem()
+     * }
      * }</pre>
      */
     public IScriptEntity dropItem();
@@ -867,9 +927,11 @@ public interface IScriptEntity
      * Therefore, it doesn't remove the item from the entity's inventory.
      *
      * <pre>{@code
-     *     var item = mappet.createItemNBT("{id:\"minecraft:stone\",Count:64b,Damage:0s}");
+     * fun main(c: IScriptEvent) {
+     *     val item: IScriptItemStack = mappet.createItemNBT("{id:\"minecraft:stone\",Count:64b,Damage:0s}")
      *
      *     c.getSubject().dropItem(item)
+     * }
      * }</pre>
      */
     public IScriptEntity dropItem(IScriptItemStack itemStack);
@@ -919,7 +981,9 @@ public interface IScriptEntity
      * Set entity's modifier to a certain value.
      *
      * <pre>{@code
-     *     c.getSubject().setModifier("generic.movementSpeed", 0.5);
+     * fun main(c: IScriptEvent) {
+     *     c.getSubject().setModifier("generic.movementSpeed", 0.5)
+     * }
      * }</pre>
      */
     public void setModifier(String modifierName, double value);
@@ -928,7 +992,9 @@ public interface IScriptEntity
      * Return an entity's modifier.
      *
      * <pre>{@code
-     *     c.send(c.getSubject().getModifier("generic.movementSpeed"));
+     * fun main(c: IScriptEvent) {
+     *     c.send(c.getSubject().getModifier("generic.movementSpeed").toString())
+     * }
      * }</pre>
      */
     public double getModifier(String modifierName);
@@ -937,7 +1003,9 @@ public interface IScriptEntity
      * Remove entity's modifier.
      *
      * <pre>{@code
-     *     c.getSubject().removeModifier("generic.movementSpeed");
+     * fun main(c: IScriptEvent) {
+     *     c.getSubject().removeModifier("generic.movementSpeed")
+     * }
      * }</pre>
      */
     public void removeModifier(String modifierName);
@@ -946,7 +1014,9 @@ public interface IScriptEntity
      * Remove all the modifiers of the entity.
      *
      * <pre>{@code
-     *     c.getSubject().removeAllModifiers();
+     * fun main(c: IScriptEvent) {
+     *     c.getSubject().removeAllModifiers()
+     * }
      * }</pre>
      */
     public void removeAllModifiers();
@@ -962,10 +1032,12 @@ public interface IScriptEntity
      * {@link IScriptFactory#getPotion(String)}.</p>
      *
      * <pre>{@code
-     *    var slowness = mappet.getPotion("slowness");
-     *    var subject = c.getSubject();
+     * fun main(c: IScriptEvent) {
+     *     val slowness: Potion = mappet.getPotion("slowness")
+     *     val subject: IScriptEntity = c.getSubject()
      *
-     *    subject.applyPotion(slowness, 200, 1, false);
+     *     subject.applyPotion(slowness, 200, 1, false)
+     * }
      * }</pre>
      *
      * @param potion Potion that should be applied.
@@ -983,13 +1055,14 @@ public interface IScriptEntity
      * {@link IScriptFactory#getPotion(String)}.</p>
      *
      * <pre>{@code
-     *    var slowness = mappet.getPotion("slowness");
-     *    var subject = c.getSubject();
+     * fun main(c: IScriptEvent) {
+     *     val slowness: Potion = mappet.getPotion("slowness")
+     *     val subject: IScriptEntity = c.getSubject()
      *
-     *    if (subject.hasPotion(slowness))
-     *    {
-     *        subject.send("You're kind of slow, my dude...");
-     *    }
+     *     if (subject.hasPotion(slowness)) {
+     *         subject.send("You're kind of slow, my dude...")
+     *     }
+     * }
      * }</pre>
      */
     public boolean hasPotion(Potion potion);
@@ -1002,13 +1075,14 @@ public interface IScriptEntity
      * {@link IScriptFactory#getPotion(String)}.</p>
      *
      * <pre>{@code
-     *    var slowness = mappet.getPotion("slowness");
-     *    var subject = c.getSubject();
+     * fun main(c: IScriptEvent) {
+     *     val slowness : Potion = mappet.getPotion("slowness")
+     *     val subject : IScriptEntity = c.getSubject()
      *
-     *    if (subject.removePotion(slowness))
-     *    {
-     *        subject.send("I made you faster, no need to thank me ;)");
-     *    }
+     *     if (subject.removePotion(slowness)) {
+     *         subject.send("I made you faster, no need to thank me ;)")
+     *     }
+     * }
      * }</pre>
      *
      * @return <code>true</code> if there was effect, and it was successfully removed,
@@ -1024,10 +1098,12 @@ public interface IScriptEntity
      * {@link IScriptFactory#getPotion(String)}.</p>
      *
      * <pre>{@code
-     *    var subject = c.getSubject();
+     * fun main(c: IScriptEvent) {
+     *     val subject : IScriptEntity = c.getSubject()
      *
-     *    subject.clearPotions();
-     *    subject.send("You've been freed from all potion effects!");
+     *     subject.clearPotions()
+     *     subject.send("You've been freed from all potion effects!")
+     * }
      * }</pre>
      */
     public void clearPotions();
@@ -1038,9 +1114,8 @@ public interface IScriptEntity
      * Get entity's states (if it has some, only players and NPCs have states).
      *
      * <pre>{@code
-     * function main(c)
-     * {
-     *     var states = c.getSubject().getStates()
+     * fun main(c: IScriptEvent) {
+     *     val states: IMappetStates = c.getSubject().getStates()
      *     states.add("run", 1)
      *
      *     c.send("state run: \u00A76"+states.getNumber("run"))
@@ -1055,15 +1130,16 @@ public interface IScriptEntity
      * Get entity's morph (works with player and NPCs).
      *
      * <pre>{@code
-     *    // Assuming s is a player
-     *    var s = c.getSubject();
-     *    var morph = mappet.createMorph("{Name:\"blockbuster.alex\"}");
-     *    var entityMorph = s.getMorph();
+     * fun main(c: IScriptEvent) {
+     *     // Assuming s is a player
+     *     val s : IScriptEntity = c.getSubject()
+     *     val morph : AbstractMorph = mappet.createMorph("{Name:\"blockbuster.alex\"}")
+     *     val entityMorph : AbstractMorph? = s.getMorph()
      *
-     *    if (entityMorph != null && entityMorph.equals(morph))
-     *    {
-     *        c.send(s.getName() + " is morphed into Alex morph!");
-     *    }
+     *     if (entityMorph != null && entityMorph.equals(morph)) {
+     *         c.send(s.getName() + " is morphed into Alex morph!")
+     *     }
+     * }
      * }</pre>
      */
     public AbstractMorph getMorph();
@@ -1072,10 +1148,12 @@ public interface IScriptEntity
      * Set entity's morph (works with player and NPCs).
      *
      * <pre>{@code
-     *    var morph = mappet.createMorph("{Name:\"blockbuster.alex\"}");
+     * fun main(c: IScriptEvent) {
+     *     val morph : AbstractMorph = mappet.createMorph("{Name:\"blockbuster.alex\"}")
      *
-     *    // Assuming c.getSubject() is a player or an NPC
-     *    c.getSubject().setMorph(morph);
+     *     // Assuming c.getSubject() is a player or an NPC
+     *     c.getSubject().setMorph(morph)
+     * }
      * }</pre>
      *
      * @return if entity's morph was changed successfully.
@@ -1084,16 +1162,6 @@ public interface IScriptEntity
 
     /**
      * Display a world morph to all players that see this entity (including themselves).
-     *
-     * <pre>{@code
-     * function main(c)
-     * {
-     *     var s = c.getSubject();
-     *     var morph = mappet.createMorph('{Name:"item"}');
-     *
-     *     s.displayMorph(morph, 100, 0, s.getHeight() + 0.5, 0);
-     * }
-     * }</pre>
      */
     public default void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z)
     {
@@ -1105,10 +1173,12 @@ public interface IScriptEntity
      * toggleable following rotation.
      *
      * <pre>{@code
-     *    var s = c.getSubject();
-     *    var morph = mappet.createMorph('{Name:"item"}');
+     * fun main(c: IScriptEvent) {
+     *     val s : IScriptEntity = c.getSubject()
+     *     val morph : AbstractMorph = mappet.createMorph("""{Name:"item"}""")
      *
-     *    s.displayMorph(morph, 100, 0, s.getHeight() + 0.5, 0, true);
+     *     s.displayMorph(morph, 100, 0.0, s.getHeight() + 0.5, 0.0, true)
+     * }
      * }</pre>
      *
      * @param morph Morph that will be displayed (if <code>null</code>, then it won't send anything).
@@ -1125,10 +1195,12 @@ public interface IScriptEntity
      * toggleable following rotation and rotation offsets.
      *
      * <pre>{@code
-     *    var s = c.getSubject();
-     *    var morph = mappet.createMorph('{Name:"item"}');
+     * fun main(c: IScriptEvent) {
+     *     val s : IScriptEntity = c.getSubject()
+     *     val morph : AbstractMorph = mappet.createMorph("""{Name:"item"}""")
      *
-     *    s.displayMorph(morph, 100, 0, s.getHeight() + 0.5, 0, 180, 0, true);
+     *     s.displayMorph(morph, 100, 0.0, s.getHeight() + 0.5, 0.0, 180f, 0f, true)
+     * }
      * }</pre>
      *
      * @param morph Morph that will be displayed (if <code>null</code>, then it won't send anything).
@@ -1147,11 +1219,13 @@ public interface IScriptEntity
      * toggleable following rotation and rotation offsets.
      *
      * <pre>{@code
-     *    // Show this morph only to Notch
-     *    var s = c.getSubject();
-     *    var morph = mappet.createMorph('{Name:"item"}');
+     * fun main(c: IScriptEvent) {
+     *     // Show this morph only to Notch
+     *     val s : IScriptEntity = c.getSubject()
+     *     val morph : AbstractMorph = mappet.createMorph("""{Name:"item"}""")
      *
-     *    s.displayMorph(morph, 100, 0, s.getHeight() + 0.5, 0, 180, 0, true, c.getServer().getPlayer("Notch"));
+     *     s.displayMorph(morph, 100, 0.0, s.getHeight() + 0.5, 0.0, 180f, 0f, true, c.getServer().getPlayer("Notch"))
+     * }
      * }</pre>
      *
      * @param morph Morph that will be displayed (if <code>null</code>, then it won't send anything).
@@ -1171,7 +1245,10 @@ public interface IScriptEntity
      * into the script, and remove {Gun: in the beginning and a } in the end.</p>
      *
      * <pre>{@code
-     *     c.getSubject().shootBBGunProjectile('{Gun:{Damage:1.0f,Projectile:{Meta:0b,Block:"minecraft:stone",Name:"block"},Gravity:0.0f}}')
+     * fun main(c: IScriptEvent) {
+     *     val s : IScriptEntity = c.getSubject()
+     *     s.shootBBGunProjectile("""{Gun:{StoredAmmo:0,Projectile:{Meta:0b,Block:"minecraft:stone",Name:"block"}}}""")
+     * }
      * }</pre>
      */
     public IScriptEntity shootBBGunProjectile(String gunPropsNBT);
@@ -1180,10 +1257,9 @@ public interface IScriptEntity
      * Executes a command as a entity.
      *
      * <pre>{@code
-     *    function main(c)
-     *    {
-     *        c.getSubject().executeCommand("/kill");
-     *    }
+     * fun main(c: IScriptEvent) {
+     *     c.getSubject().executeCommand("/kill")
+     * }
      * }</pre>
      */
     public void executeCommand(String command);
@@ -1193,7 +1269,9 @@ public interface IScriptEntity
      * and the default function "main".
      *
      * <pre>{@code
-     *    c.getSubject().executeScript("example_script.js");
+     * fun main(c: IScriptEvent) {
+     *     c.getSubject().executeScript("example_script.js")
+     * }
      * }</pre>
      *
      * @param scriptName The name of the script to execute.
@@ -1203,8 +1281,10 @@ public interface IScriptEntity
     /**
      * Execute for the entity a script with a given script name.
      *
-     *<pre>{@code
-     *    c.getSubject().executeScript("example_script.js", "custom_function");
+     * <pre>{@code
+     * fun main(c: IScriptEvent) {
+     *     c.getSubject().executeScript("example_script.js", "custom_function")
+     * }
      * }</pre>
      * @param function The name of the function within the script to execute.
      */
@@ -1214,9 +1294,11 @@ public interface IScriptEntity
      * Lock the entity's position.
      *
      * <pre>{@code
-     * var s = c.getSubject();
-     * var pos = s.getPosition();
-     * s.lockPosition(pos.x, pos.y, pos.z);
+     * fun main(c: IScriptEvent) {
+     *     val s : IScriptEntity = c.getSubject()
+     *     val pos : ScriptVector= s.getPosition()
+     *     s.lockPosition(pos.x, pos.y, pos.z)
+     * }
      * }</pre>
      *
      * @param x X position
@@ -1229,7 +1311,9 @@ public interface IScriptEntity
      * Unlock the entity's position.
      *
      * <pre>{@code
-     *    c.getSubject().unlockPosition();
+     * fun main(c: IScriptEvent) {
+     *     c.getSubject().unlockPosition()
+     * }
      * }</pre>
      */
     public void unlockPosition();
@@ -1238,10 +1322,12 @@ public interface IScriptEntity
      * Check if the entity's position is locked.
      *
      * <pre>{@code
-     *    if (c.getSubject().isPositionLocked())
-     *    {
-     *        // Do something
-     *    }
+     * fun main(c: IScriptEvent) {
+     *     if (c.getSubject().isPositionLocked())
+     *     {
+     *         // Do something
+     *     }
+     * }
      * }</pre>
      */
     public boolean isPositionLocked();
@@ -1250,9 +1336,11 @@ public interface IScriptEntity
      * Lock the entity's rotation.
      *
      * <pre>{@code
-     * var s = c.getSubject();
-     * var rot = s.getRotation();
-     * s.lockRotation(rot.x, rot.y, rot.z);
+     * fun main(c: IScriptEvent) {
+     *     val s : IScriptEntity = c.getSubject()
+     *     val rot : ScriptVector = s.getRotation()
+     *     s.lockRotation(rot.x, rot.y, rot.z)
+     * }
      * }</pre>
      *
      * @param pitch Pitch rotation
@@ -1265,7 +1353,9 @@ public interface IScriptEntity
      * Unlock the entity's rotation.
      *
      * <pre>{@code
-     *    c.getSubject().unlockRotation();
+     * fun main(c: IScriptEvent) {
+     *     c.getSubject().unlockRotation()
+     * }
      * }</pre>
      */
     public void unlockRotation();
@@ -1274,10 +1364,12 @@ public interface IScriptEntity
      * Check if the entity's rotation is locked.
      *
      * <pre>{@code
-     *    if (c.getSubject().isRotationLocked())
-     *    {
-     *        // Do something
-     *    }
+     * fun main(c: IScriptEvent) {
+     *     if (c.getSubject().isRotationLocked())
+     *     {
+     *         // Do something
+     *     }
+     * }
      * }</pre>
      */
     public boolean isRotationLocked();
@@ -1317,9 +1409,11 @@ public interface IScriptEntity
      * </ul>
      *
      * <pre>{@code
-     *    var s = c.getSubject();
-     *    var pos = s.getPosition();
-     *    s.moveTo("quad_out", 30, pos.x, pos.y+2, pos.z, false);
+     * fun main(c: IScriptEvent) {
+     *     val s : IScriptEntity = c.getSubject();
+     *     val pos : ScriptVector = s.getPosition();
+     *     s.moveTo("quad_out", 30, pos.x, pos.y+2, pos.z, false);
+     * }
      * }</pre>
      *
      * @param interpolation The interpolation type used for the movement.
@@ -1336,7 +1430,9 @@ public interface IScriptEntity
      * Makes the entity observe the given entity.
      *
      * <pre>{@code
-     *    c.getSubject().observe(null); //to stop observing
+     * fun main(c: IScriptEvent) {
+     *     c.getSubject().observe(null) //to stop observing
+     * }
      * }</pre>
      *
      * @param entity The entity to observe
@@ -1347,9 +1443,11 @@ public interface IScriptEntity
      * Adds a patrol point to the entity
      *
      * <pre>{@code
-     *     var s = c.getSubject();
-     *     s.addEntityPatrol(440, 117, 640, 1, true, "particle heart ~ ~1 ~ 0.2 0.2 0.2 1")
-     *     s.addEntityPatrol(444, 117, 640, 1, true, "particle angryVillager ~ ~1 ~ 0.2 0.2 0.2 1")
+     * fun main(c: IScriptEvent) {
+     *     val s = c.getSubject()
+     *     s.addEntityPatrol(440.0, 117.0, 640.0, 1.0, true, "particle heart ~ ~1 ~ 0.2 0.2 0.2 1")
+     *     s.addEntityPatrol(444.0, 117.0, 640.0, 1.0, true, "particle angryVillager ~ ~1 ~ 0.2 0.2 0.2 1")
+     * }
      * }</pre>
      *
      * @param x x coordinate
@@ -1365,7 +1463,9 @@ public interface IScriptEntity
      * Clears all patrol points from the entity
      *
      * <pre>{@code
-     * c.getSubject().clearEntityPatrols();
+     * fun main(c: IScriptEvent) {
+     *     c.getSubject().clearEntityPatrols()
+     * }
      * }</pre>
      */
     public void clearEntityPatrols();
@@ -1374,7 +1474,9 @@ public interface IScriptEntity
      * Sets the entity's AI to look with specific rotations
      *
      * <pre>{@code
-     *     c.getSubject().setRotationsAI(0, 90, 0);
+     * fun main(c: IScriptEvent) {
+     *     c.getSubject().setRotationsAI(0f, 90f, 0f)
+     * }
      * }</pre>
      */
     public void setRotationsAI(float yaw, float pitch, float yawHead);
@@ -1383,7 +1485,9 @@ public interface IScriptEntity
      * Clears the entity's AI rotations
      *
      * <pre>{@code
-     *     c.getSubject().clearRotationsAI();
+     * fun main(c: IScriptEvent) {
+     *     c.getSubject().clearRotationsAI()
+     * }
      * }</pre>
      */
     public void clearRotationsAI();
@@ -1392,7 +1496,10 @@ public interface IScriptEntity
      * Executes a command at a specific frequency on an entity.
      *
      * <pre>{@code
-     *    c.getSubject().executeRepeatingCommand("/tp @s ~ ~2 ~", 20);
+     * fun main(c: IScriptEvent) {
+     *     c.getSubject().executeRepeatingCommand("/tp @s ~ ~2 ~", 20)
+     * }
+     * }</pre>
      */
     public void executeRepeatingCommand(String command, int frequency);
 
@@ -1400,7 +1507,9 @@ public interface IScriptEntity
      * Removes a repeating command from an entity.
      *
      * <pre>{@code
-     *    c.getSubject().removeRepeatingCommand("/tp @s ~ ~2 ~");
+     * fun main(c: IScriptEvent) {
+     *     c.getSubject().removeRepeatingCommand("/tp @s ~ ~2 ~")
+     * }
      * }</pre>
      */
     public void removeRepeatingCommand(String command);
@@ -1409,7 +1518,9 @@ public interface IScriptEntity
      * Clears all the repeating commands of an entity.
      *
      * <pre>{@code
-     *    c.getSubject().clearAllRepeatingCommands();
+     * fun main(c: IScriptEvent) {
+     *     c.getSubject().clearAllRepeatingCommands()
+     * }
      * }</pre>
      */
     public void clearAllRepeatingCommands();
