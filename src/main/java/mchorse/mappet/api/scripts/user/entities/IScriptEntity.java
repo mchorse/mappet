@@ -1287,33 +1287,33 @@ public interface IScriptEntity
      * with the given <b>interpolation type</b> and <b>duration</b>.
      * The following interpolation types are supported:</p>
      * <ul>
-     *     §7<li>linear</li>§r
-     *     §7<li>quad_in</li>§r
-     *     §7<li>quad_out</li>§r
-     *     §7<li>quad_inout</li>§r
-     *     §7<li>cubic_in</li>§r
-     *     §7<li>cubic_out</li>§r
-     *     §7<li>cubic_inout</li>§r
-     *     §7<li>exp_in</li>§r
-     *     §7<li>exp_out</li>§r
-     *     §7<li>exp_inout</li>§r
-     *     §7<li>back_in</li>§r
-     *     §7<li>back_out</li>§r
-     *     §7<li>back_inout</li>§r
-     *     §7<li>elastic_in</li>§r
-     *     §7<li>elastic_out</li>§r
-     *     §7<li>elastic_inout</li>§r
-     *     §7<li>bounce_in</li>§r
-     *     §7<li>bounce_out</li>§r
-     *     §7<li>bounce_inout</li>§r
-     *     §7<li>sine_in</li>§r
-     *     §7<li>sine_out</li>§r
-     *     §7<li>sine_inout</li>§r
-     *     §7<li>quart_in</li>§r
-     *     §7<li>quart_out</li>§r
-     *     §7<li>quart_inout</li>§r
-     *     §7<li>quint_in</li>§r
-     *     §7<li>quint_out</li>§r
+     *     <li>§7linear§r</li>
+     *     <li>§7quad_in§r</li>
+     *     <li>§7quad_out§r</li>
+     *     <li>§7quad_inout§r</li>
+     *     <li>§7cubic_in§r</li>
+     *     <li>§7cubic_out§r</li>
+     *     <li>§7cubic_inout§r</li>
+     *     <li>§7exp_in§r</li>
+     *     <li>§7exp_out§r</li>
+     *     <li>§7exp_inout§r</li>
+     *     <li>§7back_in§r</li>
+     *     <li>§7back_out§r</li>
+     *     <li>§7back_inout§r</li>
+     *     <li>§7elastic_in§r</li>
+     *     <li>§7elastic_out§r</li>
+     *     <li>§7elastic_inout§r</li>
+     *     <li>§7bounce_in§r</li>
+     *     <li>§7bounce_out§r</li>
+     *     <li>§7bounce_inout§r</li>
+     *     <li>§7sine_in§r</li>
+     *     <li>§7sine_out§r</li>
+     *     <li>§7sine_inout§r</li>
+     *     <li>§7quart_in§r</li>
+     *     <li>§7quart_out§r</li>
+     *     <li>§7quart_inout§r</li>
+     *     <li>§7quint_in§r</li>
+     *     <li>§7quint_out§r</li>
      * </ul>
      *
      * <pre>{@code

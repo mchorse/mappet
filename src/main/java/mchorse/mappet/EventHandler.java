@@ -214,13 +214,10 @@ public class EventHandler
 
         if (event.isCancelable() && context.isCanceled())
         {
-<<<<<<< HEAD
-=======
             if (event instanceof LivingEquipmentChangeEvent || event instanceof TickEvent.PlayerTickEvent)
             {
                 return; //otherwise game crashes
             }
->>>>>>> f471073a (Added ScriptedItems feature.)
             event.setCanceled(true);
         }
     }
