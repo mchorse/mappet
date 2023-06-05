@@ -121,6 +121,8 @@ dependencies {
     implementation files("run/libs/mclib-${project.mclib}-${project.mcversion}-dev.jar")
     implementation files("run/libs/aperture-${project.aperture}-${project.mcversion}-dev.jar")
 
+    implementation("org.reflections:reflections:0.10.2")
+
     if (project.use_mixins.toBoolean()) {
         // Change your mixin refmap name here:
         String mixin = modUtils.enableMixins('org.spongepowered:mixin:0.8.3', "mixins.${project.archives_base_name}.refmap.json")
@@ -229,7 +231,6 @@ tasks.named("processIdeaSettings").configure {
 // #############################
 
 /* adding dependencies to the build jar */
-
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.gtnewhorizons.retrofuturagradle.mcp.ReobfuscatedJar
 import org.apache.tools.ant.filters.ReplaceTokens
