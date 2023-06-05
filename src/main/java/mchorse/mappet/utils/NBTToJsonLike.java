@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * NBT to JSON-like utility
  *
- * This is successor of {@link NBTToJson} which is better because
+ * This is successor of {@link NBTToJsonLike} which is better because
  * it also stores the data type of the
  */
 public class NBTToJsonLike

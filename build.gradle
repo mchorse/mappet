@@ -1,21 +1,20 @@
-buildscript {
-    repositories {
-        maven { url = 'https://maven.minecraftforge.net/' }
-        mavenCentral()
-        jcenter()
-        gradlePluginPortal()
-    }
-    dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:5.1.73'
-        classpath "org.apache.maven.plugins:maven-resources-plugin:3.2.0"
-        classpath 'gradle.plugin.com.github.johnrengelman:shadow:7.1.2'
-    }
+/**
+ * Template used: https://github.com/CleanroomMC/TemplateDevEnv
+ */
+
+plugins {
+    id 'java'
+    id 'java-library'
+    id 'maven-publish'
+    id 'org.jetbrains.gradle.plugin.idea-ext' version '1.1.7'
+    id 'com.gtnewhorizons.retrofuturagradle' version '1.3.16'
+    id 'com.matthewprenger.cursegradle' version '1.4.0'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'com.github.johnrengelman.shadow'
-
-version = project.version
+version = project.mod_version
+group = project.maven_group
+archivesBaseName = project.archives_base_name
 
 var dev = "dev"
 
@@ -24,91 +23,231 @@ if (project.hasProperty("dev"))
     version += "-" + dev
 }
 
-group = "mchorse.mappet"
-archivesBaseName = "mappet"
-sourceCompatibility = targetCompatibility = "1.8"
-compileJava.options.encoding = 'UTF-8'
+// Set the toolchain version to decouple the Java we run Gradle with from the Java used to compile and run the mod
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+        // Azul covers the most platforms for Java 8 toolchains, crucially including MacOS arm64
+        vendor.set(JvmVendorSpec.AZUL)
+    }
+    // Generate sources and javadocs jars when building and publishing
+    withSourcesJar()
+    // withJavadocJar()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+configurations {
+    embed
+    implementation.extendsFrom(embed)
+}
 
 minecraft {
+    mcVersion = project.mcversion
 
-    mappings channel: 'snapshot', version: '20171003-1.12'
+    // MCP Mappings
+    mcpMappingChannel = "snapshot"
+    mcpMappingVersion = "20171003"
 
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+    // Set username here, the UUID will be looked up automatically
+    username = 'OtakuGamer_'
 
-    accessTransformer = file('src/main/resources/META-INF/mappet_at.cfg')
+    // Add any additional tweaker classes here
+    // extraTweakClasses.add('org.spongepowered.asm.launch.MixinTweaker')
 
-    // Default run configurations.
-    // These can be tweaked, removed, or duplicated as needed.
-    runs {
-        client {
-            workingDirectory project.file('run')
+    // Add various JVM arguments here for runtime
+    def args = ["-ea:${project.group}"]
+    if (project.use_coremod.toBoolean()) {
+        args << '-Dfml.coreMods.load=' + coremod_plugin_class_name
+    }
+    if (project.use_mixins.toBoolean()) {
+        args << '-Dmixin.hotSwap=true'
+        args << '-Dmixin.checks.interfaces=true'
+        args << '-Dmixin.debug.export=true'
+    }
+    extraRunJvmArguments.addAll(args)
 
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+    // Include and use dependencies' Access Transformer files
+    useDependencyAccessTransformers = true
 
-            property 'forge.logging.console.level', 'debug'
+    // Add any properties you want to swap out for a dynamic value at build time here
+    // Any properties here will be added to a class at build time, the name can be configured below
+    // Example:
+    // injectedTags.put('VERSION', project.version)
+    // injectedTags.put('MOD_ID', project.archives_base_name)
+}
 
-            jvmArgs("-Xmx1G")
+// Generate a group.archives_base_name.Tags class
+tasks.injectTags.configure {
+    // Change Tags class' name here:
+    outputClassName.set("${project.group}.${project.archives_base_name}.Tags")
+}
+
+repositories {
+    maven {
+        name 'CleanroomMC Maven'
+        url 'https://maven.cleanroommc.com'
+    }
+    maven {
+        name 'SpongePowered Maven'
+        url 'https://repo.spongepowered.org/maven'
+    }
+    maven {
+        name 'CurseMaven'
+        url 'https://cursemaven.com'
+        content {
+            includeGroup 'curse.maven'
         }
+    }
+    mavenLocal() // Must be last for caching to work
+}
 
-        server {
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+dependencies {
+    if (project.use_assetmover.toBoolean()) {
+        implementation 'com.cleanroommc:assetmover:2.5'
+    }
+    if (project.use_mixins.toBoolean()) {
+        implementation 'zone.rong:mixinbooter:7.1'
+    }
 
-            property 'forge.logging.console.level', 'debug'
+    // Example of deobfuscating a dependency
+    // implementation rfg.deobf('curse.maven:had-enough-items-557549:4543375')
 
-            jvmArgs("-Xmx1G")
+    // Mappet dependencies
+    implementation files("run/libs/blockbuster-${project.blockbuster}-${project.mcversion}-dev.jar")
+    implementation files("run/libs/metamorph-${project.metamorph}-${project.mcversion}-dev.jar")
+    implementation files("run/libs/mclib-${project.mclib}-${project.mcversion}-dev.jar")
+    implementation files("run/libs/aperture-${project.aperture}-${project.mcversion}-dev.jar")
+
+    if (project.use_mixins.toBoolean()) {
+        // Change your mixin refmap name here:
+        String mixin = modUtils.enableMixins('org.spongepowered:mixin:0.8.3', "mixins.${project.archives_base_name}.refmap.json")
+        api (mixin) {
+            transitive = false
+        }
+        annotationProcessor 'org.ow2.asm:asm-debug-all:5.2'
+        annotationProcessor 'com.google.guava:guava:24.1.1-jre'
+        annotationProcessor 'com.google.code.gson:gson:2.8.6'
+        annotationProcessor (mixin) {
+            transitive = false
+        }
+    }
+
+}
+
+// Adds Access Transformer files to tasks
+if (project.use_access_transformer.toBoolean()) {
+    for (File at : sourceSets.getByName("main").resources.files) {
+        if (at.name.toLowerCase().endsWith("_at.cfg")) {
+            tasks.deobfuscateMergedJarToSrg.accessTransformerFiles.from(at)
+            tasks.srgifyBinpatchedJar.accessTransformerFiles.from(at)
         }
     }
 }
 
+processResources {
+    // This will ensure that this task is redone when the versions change
+    inputs.property 'version', project.version
+    inputs.property 'mcversion', project.minecraft.version
 
+    // Replace various properties in mcmod.info and pack.mcmeta if applicable
+    filesMatching(['mcmod.info', 'pack.mcmeta']) { fcd ->
+        // Replace version and mcversion
+        fcd.expand (
+                'version': project.version,
+                'mcversion': project.minecraft.version
+        )
+    }
+
+    if (project.use_access_transformer.toBoolean()) {
+        rename '(.+_at.cfg)', 'META-INF/$1' // Make sure Access Transformer files are in META-INF folder
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
+jar {
+    manifest {
+        def attribute_map = [:]
+        if (project.use_coremod.toBoolean()) {
+            attribute_map['FMLCorePlugin'] = project.coremod_plugin_class_name
+            if (project.include_mod.toBoolean()) {
+                attribute_map['FMLCorePluginContainsFMLMod'] = true
+                attribute_map['ForceLoadAsMod'] = project.gradle.startParameter.taskNames[0] == "build"
+            }
+        }
+        if (project.use_access_transformer.toBoolean()) {
+            attribute_map['FMLAT'] = project.archives_base_name + '_at.cfg'
+        }
+        attributes(attribute_map)
+    }
+    // Add all embedded dependencies into the jar
+    from(provider{ configurations.embed.collect {it.isDirectory() ? it : zipTree(it)} })
+}
+
+import org.jetbrains.gradle.ext.Gradle
+idea {
+    module {
+        inheritOutputDirs = true
+    }
+    project {
+        settings {
+            runConfigurations {
+                "1. Run Client"(Gradle) {
+                    taskNames = ["runClient"]
+                }
+                "2. Run Server"(Gradle) {
+                    taskNames = ["runServer"]
+                }
+                "3. Run Obfuscated Client"(Gradle) {
+                    taskNames = ["runObfClient"]
+                }
+                "4. Run Obfuscated Server"(Gradle) {
+                    taskNames = ["runObfServer"]
+                }
+            }
+            compiler.javac {
+                afterEvaluate {
+                    javacAdditionalOptions = "-encoding utf8"
+                    moduleJavacAdditionalOptions = [
+                            (project.name + ".main"): tasks.compileJava.options.compilerArgs.collect { '"' + it + '"' }.join(' ')
+                    ]
+                }
+            }
+        }
+    }
+}
+
+tasks.named("processIdeaSettings").configure {
+    dependsOn("injectTags")
+}
+
+// #############################
+// Mappet tasks
+// #############################
+
+/* adding dependencies to the build jar */
+
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import com.gtnewhorizons.retrofuturagradle.mcp.ReobfuscatedJar
+import org.apache.tools.ant.filters.ReplaceTokens
+
+configurations {
+    for (config in [compileClasspath, runtimeClasspath, testCompileClasspath, testRuntimeClasspath]) {
+        config.extendsFrom(shade)
+    }
+}
 
 dependencies {
-    // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
-    // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
-    // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2859'
-
-    compileOnly files("run/libs/blockbuster-${blockbuster}-${mcversion}-dev.jar")
-    compileOnly files("run/libs/metamorph-${metamorph}-${mcversion}-dev.jar")
-    compileOnly files("run/libs/mclib-${mclib}-${mcversion}-dev.jar")
-    compileOnly files("run/libs/aperture-${aperture}-${mcversion}-dev.jar")
-    implementation("org.reflections:reflections:0.10.2")
-
-    // You may put jars on which you depend on in ./libs or you may define them like so..
-    // compile "some.group:artifact:version:classifier"
-    // compile "some.group:artifact:version"
-
-    // Real examples
-    // compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
-    // compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
-
-    // The 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
-    // provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-
-    // These dependencies get remapped to your current MCP mappings
-    // deobf 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-
-    // For more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
-
+    implementation rfg.deobf('org.reflections:reflections:0.10.2')
+    shade rfg.deobf('org.reflections:reflections:0.10.2')
+    implementation rfg.deobf('org.slf4j:slf4j-api:1.7.32')
+    shade rfg.deobf('org.slf4j:slf4j-api:1.7.32')
+    implementation rfg.deobf('org.javassist:javassist:3.28.0-GA')
+    shade rfg.deobf('org.javassist:javassist:3.28.0-GA')
 }
-
-// Example for how to get properties into the manifest for reading by the runtime...
-jar {
-
-}
-
-// Example configuration to allow publishing using the maven-publish task
-// This is the preferred method to reobfuscate your jar file
-jar.finalizedBy('shadowJar')
-jar.finalizedBy('reobfJar')
-// However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
-//publish.dependsOn('reobfJar')
-
-
-// BY DYAMO BOLSHOY UMNI MALCHEG
-import org.apache.tools.ant.filters.ReplaceTokens
 
 task processSource(type: Sync) {
     from sourceSets.main.java
@@ -126,60 +265,68 @@ compileJava {
     source = processSource.outputs
 }
 
-shadowJar {
-    dependencies {
-        include(dependency("org.reflections:reflections:0.10.2"))
-        include(dependency("org.slf4j:slf4j-api:1.7.32"))
-        include(dependency("org.javassist:javassist:3.28.0-GA"))
-    }
-    archiveClassifier.set("")
-
+// --- shadow
+tasks.named("shadowJar", ShadowJar).configure {
+    configurations = [
+            project.configurations.shade
+    ]
+    archiveClassifier.set('')
     var dependenciesToRelocate = [
             "org.reflections",
             "org.slf4j",
-            "org.javaassist"
+            "org.javassist"
     ]
-
     for (dependency in dependenciesToRelocate) {
         relocate dependency, "mchorse.mappet." + dependency
     }
 }
 
-processResources {
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+configurations.runtimeElements.outgoing.artifacts.clear()
+configurations.apiElements.outgoing.artifacts.clear()
+configurations.runtimeElements.outgoing.artifact(tasks.named("shadowJar", ShadowJar))
+configurations.apiElements.outgoing.artifact(tasks.named("shadowJar", ShadowJar))
+tasks.named("jar", Jar) {
+    enabled = false
+    finalizedBy(tasks.shadowJar)
+}
+tasks.named("reobfJar", ReobfuscatedJar) {
+    inputJar.set(tasks.named("shadowJar", ShadowJar).flatMap({it.archiveFile}))
+}
+// --- shadow end
 
-    // This will ensure that this task is redone when the versions change.
-    inputs.property 'version', project.version
-    inputs.property "mcversion", mcversion
+tasks.named("assemble").configure {
+    dependsOn("shadowJar")
+}
 
-    project.version += "-" + mcversion
+publish.dependsOn('reobfJar')
 
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-
-        // Replace version
-        expand(project.properties)
+publishing {
+    tasks.publish.dependsOn 'build'
+    publications {
+        mavenJava(MavenPublication) {
+            artifact jar
+        }
     }
-
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+    repositories {
+        maven {
+            url "file:///${project.projectDir}/mcmodsrepo"
+        }
     }
 }
 
-/* Dev build */
-task deobfJar(type: Jar) {
-    from sourceSets.main.output
-    classifier = 'dev'
+/* docs.json */
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+        vendor.set(JvmVendorSpec.AZUL)
+    }
 }
 
-task sourcesJar(type: Jar) {
-    from sourceSets.main.allJava
-    classifier = 'sources'
-}
-
-artifacts {
-    archives deobfJar
-    archives sourcesJar
+def getJavaToolchainLauncher() {
+    return javaToolchains.launcherFor {
+        languageVersion.set(JavaLanguageVersion.of(8))
+        vendor.set(JvmVendorSpec.AZUL)
+    }
 }
 
 task scriptingJavadocs(type: Javadoc) {
@@ -195,7 +342,10 @@ task scriptingJavadocsJson(type: Exec) {
     // https://github.com/mchorse/jsonDoclet
     //
     // Rename it to jsonDoclet.jar, and place it in the run/ folder
-    executable "javadoc"
+    def javaLauncher = getJavaToolchainLauncher().get()
+    def javaInstallationPath = javaLauncher.getMetadata().getInstallationPath().getAsFile().toPath()
+    def javadocPath = javaInstallationPath.resolve("bin").resolve("javadoc")
+    executable javadocPath.toFile()
     args "-doclet", "mchorse.utils.doclets.JsonDoclet", "-docletpath", "./run/jsonDoclet.jar", "-sourcepath", "./src/main/java/", "-subpackages", "mchorse.mappet.api.scripts.user:mchorse.mappet.api.ui.components:mchorse.mappet.client.gui.utils.graphics"
 
     doLast {

@@ -61,11 +61,12 @@ import java.util.logging.Handler;
     modid = Mappet.MOD_ID,
     name = "Mappet",
     version = Mappet.VERSION,
-    dependencies = "required-after:mclib@[%MCLIB%,);"+
+    dependencies =
+        "required-after:mclib@[%MCLIB%,);"+
         "required-after:metamorph@[%METAMORPH%,);"+
         "after:blockbuster@[%BLOCKBUSTER%,);"+
         "after:aperture@[%APERTURE%,);",
-        updateJSON = "https://raw.githubusercontent.com/mchorse/mappet/master/version.json"
+    updateJSON = "https://raw.githubusercontent.com/mchorse/mappet/master/version.json"
 )
 
 public final class Mappet

@@ -231,37 +231,6 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     }
 
     @Override
-    public boolean giveItem(IScriptItemStack itemStack)
-    {
-        return this.giveItem(itemStack, true);
-    }
-
-    public boolean giveItem(IScriptItemStack itemStack, boolean playSound)
-    {
-        ItemStack minecraftItemStack = itemStack.getMinecraftItemStack();
-
-        if (minecraftItemStack.isEmpty())
-        {
-            return false;
-        }
-
-        boolean result = this.entity.inventory.addItemStackToInventory(minecraftItemStack.copy());
-
-        if (result)
-        {
-            if (playSound)
-            {
-                float pitch = ((this.entity.getRNG().nextFloat() - this.entity.getRNG().nextFloat()) * 0.7F + 1.0F) * 2.0F;
-                this.entity.world.playSound(null, this.entity.getPosition(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.NEUTRAL, 0.2F, pitch);
-            }
-
-            this.entity.inventoryContainer.detectAndSendChanges();
-        }
-
-        return result;
-    }
-
-    @Override
     public void send(String message)
     {
         this.entity.sendMessage(new TextComponentString(message));
