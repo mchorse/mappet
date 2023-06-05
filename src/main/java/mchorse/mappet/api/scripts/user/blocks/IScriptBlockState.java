@@ -11,10 +11,9 @@ import net.minecraft.block.state.IBlockState;
  * to query for comparison.</p>
  *
  * <pre>{@code
- *    var andesite = mappet.createBlockState("minecraft:stone", 5);
+ *    val andesite : IScriptBlockState = mappet.createBlockState("minecraft:stone", 5);
  *
- *    function main(c)
- *    {
+ *    fun main(c: IScriptEvent) {
  *        if (c.getWorld().getBlock(214, 3, 511).isSame(andesite))
  *        {
  *            c.getSubject().send("Block at (214, 3, 511) is indeed andesite!");
@@ -34,9 +33,11 @@ public interface IScriptBlockState
      * Get block's ID like <code>minecraft:stone</code>.
      *
      * <pre>{@code
-     *    var block = c.getWorld().getBlock(214, 3, 511);
+     *    val block : IScriptBlockState = c.getWorld().getBlock(214, 3, 511);
      *
-     *    c.getSubject().send("Block at (214, 3, 511) is " + block.getBlockId());
+     *    fun main(c: IScriptEvent) {
+     *        c.getSubject().send("Block at (214, 3, 511) is ${block.getBlockId()}");
+     *    }
      * }</pre>
      */
     public String getBlockId();
@@ -45,10 +46,12 @@ public interface IScriptBlockState
      * Get meta value of this state (it will always be between 0 and 15).
      *
      * <pre>{@code
-     *    var andesite = mappet.createBlockState("minecraft:stone", 5);
+     *    val andesite : IScriptBlockState = mappet.createBlockState("minecraft:stone", 5);
      *
      *    // This will print "Andesite's meta is 5"
-     *    c.getSubject().send("Andesite's meta is " + andesite.getMeta());
+     *    fun main(c: IScriptEvent) {
+     *        c.getSubject().send("Andesite's meta is ${andesite.getMeta()}");
+     *    }
      * }</pre>
      */
     public int getMeta();
@@ -57,11 +60,13 @@ public interface IScriptBlockState
      * Check whether this block state is same as given block state.
      *
      * <pre>{@code
-     *    var andesite = mappet.createBlockState("minecraft:stone", 5);
+     *    val andesite : IScriptBlockState = mappet.createBlockState("minecraft:stone", 5);
      *
-     *    if (c.getWorld().getBlock(214, 3, 511).isSame(andesite))
-     *    {
-     *        c.getSubject().send("Block at (214, 3, 511) is indeed andesite!");
+     *    fun main(c: IScriptEvent) {
+     *        if (c.getWorld().getBlock(214, 3, 511).isSame(andesite))
+     *        {
+     *            c.getSubject().send("Block at (214, 3, 511) is indeed andesite!");
+     *        }
      *    }
      * }</pre>
      */
@@ -72,11 +77,13 @@ public interface IScriptBlockState
      * not necessarily the same meta value.
      *
      * <pre>{@code
-     *    var andesite = mappet.createBlockState("minecraft:stone", 5);
-     *    var stone = mappet.createBlockState("minecraft:stone", 0);
+     *    val andesite : IScriptBlockState = mappet.createBlockState("minecraft:stone", 5);
+     *    val stone : IScriptBlockState = mappet.createBlockState("minecraft:stone", 0);
      *
      *    // This will print true
-     *    c.getSubject().send(stone.isSameBlock(andesite));
+     *    fun main(c: IScriptEvent) {
+     *        c.getSubject().send("${stone.isSameBlock(andesite)}");
+     *    }
      * }</pre>
      */
     public boolean isSameBlock(IScriptBlockState state);

@@ -12,20 +12,23 @@ import net.minecraft.inventory.IInventory;
  * inventories from player and world, respectively.</p>
  *
  * <pre>{@code
- *    function main(c)
- *    {
+ *    fun main(c: IScriptEvent) {
  *        // Get player's inventory
- *        if (c.getSubject().isPlayer())
+ *        val subject : IScriptEntity = c.getSubject();
+ *        val player : IScriptPlayer? = subject as? IScriptPlayer;
+ *
+ *        if (subject.isPlayer())
  *        {
- *            var inventory = c.getSubject().getInventory();
+ *            val inventory : IScriptInventory = player?.getInventory();
  *
  *            // Do something with player's inventory
  *        }
  *
  *        // Get chest's inventory in the world
- *        if (c.getWorld().hasInventory(214, 4, 512))
+ *        val world : IScriptWorld = c.getWorld();
+ *        if (world.hasInventory(214, 4, 512))
  *        {
- *            var inventory = c.getWorld().getInventory(214, 4, 512);
+ *            val inventory : IScriptInventory = world.getInventory(214, 4, 512);
  *
  *            // Do something with chest's inventory
  *        }
@@ -49,15 +52,20 @@ public interface IScriptInventory
      * Return the maximum amount of item stacks in this inventory.
      *
      * <pre>{@code
-     *    // Assuming that c.getSubject() is a player
-     *    var inventory = c.getSubject().getInventory();
-     *    var item = mappet.createItem("minecraft:stick");
+     * fun main(c: IScriptEvent) {
+     *     // Assuming that c.getSubject() is a player
+     *     val subject : IScriptEntity = c.getSubject();
+     *     val player : IScriptPlayer? = subject as? IScriptPlayer;
+     *     val inventory : IScriptInventory? = player?.getInventory();
+     *     val item : IScriptItemStack? = mappet.createItem("minecraft:stick");
      *
-     *    for (var i = 0; i < inventory.size(); i++)
-     *    {
-     *        // We do a little bit of trolling
-     *        inventory.setStack(i, item);
-     *    }
+     *     if (inventory != null && item != null) {
+     *         for (i in 0 until inventory.size()) {
+     *             // We do a little bit of trolling
+     *             inventory.setStack(i, item);
+     *         }
+     *     }
+     * }
      * }</pre>
      */
     public int size();
@@ -66,15 +74,21 @@ public interface IScriptInventory
      * Get stack in slot at given index.
      *
      * <pre>{@code
-     *    // Assuming that c.getSubject() is a player
-     *    var inventory = c.getSubject().getInventory();
-     *    var first = inventory.getStack(0);
+     * fun main(c: IScriptEvent) {
+     *     // Assuming that c.getSubject() is a player
+     *     val subject : IScriptEntity = c.getSubject();
+     *     val player : IScriptPlayer? = subject as? IScriptPlayer;
+     *     val inventory : IScriptInventory? = player?.getInventory();
      *
-     *    if (first.isEmpty())
-     *    {
-     *        // Give a stick into first player's hotbar slot
-     *        inventory.setStack(0, mappet.createItem("minecraft:stick"));
-     *    }
+     *     if (inventory != null) {
+     *         val first : IScriptItemStack = inventory.getStack(0);
+     *
+     *         if (first.isEmpty()) {
+     *             // Give a stick into first player's hotbar slot
+     *             inventory.setStack(0, mappet.createItem("minecraft:stick"));
+     *         }
+     *     }
+     * }
      * }</pre>
      *
      * @return an item stack at given index
@@ -85,18 +99,23 @@ public interface IScriptInventory
      * Remove a stack at given index
      *
      * <pre>{@code
-     *    // Assuming that c.getSubject() is a player
-     *    var inventory = c.getSubject().getInventory();
-     *    var first = inventory.removeStack(0);
+     * fun main(c: IScriptEvent) {
+     *     // Assuming that c.getSubject() is a player
+     *     val subject : IScriptEntity = c.getSubject();
+     *     val player : IScriptPlayer? = subject as? IScriptPlayer;
+     *     val inventory : IScriptInventory? = player?.getInventory();
      *
-     *    if (first.isEmpty())
-     *    {
-     *        c.getSubject().send("Oh... you had nothing...");
-     *    }
-     *    else
-     *    {
-     *        c.getSubject().send("Ha-ha, I stole your " + first.getItem().getId());
-     *    }
+     *     if (inventory != null) {
+     *         val first : IScriptItemStack = inventory.removeStack(0);
+     *
+     *         if (first.isEmpty()) {
+     *             player?.send("Oh... you had nothing...");
+     *         }
+     *         else {
+     *             player?.send("Ha-ha, I stole your " + first.getItem().getId());
+     *         }
+     *     }
+     * }
      * }</pre>
      *
      * @return removed item stack
@@ -107,10 +126,16 @@ public interface IScriptInventory
      * Replace given stack at index.
      *
      * <pre>{@code
-     *    // Assuming that c.getSubject() is a player
-     *    var inventory = c.getSubject().getInventory();
+     * fun main(c: IScriptEvent) {
+     *     // Assuming that c.getSubject() is a player
+     *     val subject : IScriptEntity = c.getSubject();
+     *     val player : IScriptPlayer? = subject as? IScriptPlayer;
+     *     val inventory : IScriptInventory? = player?.getInventory();
      *
-     *    inventory.setStack(4, mappet.createItem("minecraft:diamond_sword"));
+     *     if (inventory != null) {
+     *         inventory.setStack(4, mappet.createItem("minecraft:diamond_sword"));
+     *     }
+     * }
      * }</pre>
      */
     public void setStack(int index, IScriptItemStack stack);
@@ -119,8 +144,12 @@ public interface IScriptInventory
      * Empty the inventory.
      *
      * <pre>{@code
-     *    // Assuming that c.getSubject() is a player
-     *    c.getSubject().getInventory().clear();
+     * fun main(c: IScriptEvent) {
+     *     // Assuming that c.getSubject() is a player
+     *     val subject : IScriptEntity = c.getSubject();
+     *     val player : IScriptPlayer? = subject as? IScriptPlayer;
+     *     player?.getInventory()?.clear();
+     * }
      * }</pre>
      */
     public void clear();

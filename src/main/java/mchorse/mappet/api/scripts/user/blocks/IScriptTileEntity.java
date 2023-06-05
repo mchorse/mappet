@@ -11,19 +11,17 @@ import net.minecraft.tileentity.TileEntity;
  * furnance, etc.).</p>
  *
  * <pre>{@code
- *    function main(c)
- *    {
- *        var te = c.getWorld().getTileEntity(371, 4, -100);
+ * fun main(c: IScriptEvent) {
+ *     val te: IScriptTileEntity = c.getWorld().getTileEntity(371, 4, -100);
  *
- *        if (te.getId() === "mappet:region")
- *        {
- *            var data = te.getData();
+ *     if (te.getId() == "mappet:region") {
+ *         val data: IScriptNBTCompound = te.getData();
  *
- *            // Replace on enter trigger of the tile entity to /toggledownfall
- *            data.getCompound("Region").setNBT("OnEnter", '{Blocks:[{Command:"/toggledownfall",Type:"command"}]}');
- *            te.setData(data);
- *        }
- *    }
+ *         // Replace on enter trigger of the tile entity to /toggledownfall
+ *         data.getCompound("Region").setNBT("OnEnter", """{Blocks:[{Command:"/toggledownfall",Type:"command"}]}""");
+ *         te.setData(data);
+ *     }
+ * }
  * }</pre>
  */
 public interface IScriptTileEntity
