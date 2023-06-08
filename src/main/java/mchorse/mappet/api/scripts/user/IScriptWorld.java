@@ -23,11 +23,12 @@ import java.util.List;
  * This interface represent a world passed in the event.
  *
  * <pre>{@code
- * fun main(c: IScriptEvent) {
- *     val world : IScriptWorld = c.getWorld();
+ *    function main(c)
+ *    {
+ *        var world = c.getWorld();
  *
- *     // Do something with world...
- * }
+ *        // Do something with world...
+ *    }
  * }</pre>
  */
 public interface IScriptWorld
@@ -35,6 +36,15 @@ public interface IScriptWorld
     /**
      * Get Minecraft world instance. <b>BEWARE:</b> you need to know the MCP
      * mappings in order to directly call methods on this instance!
+     *
+     * <pre>{@code
+     * function main(c)
+     * {
+     *     var seaLevel = c.getWorld().getMinecraftWorld().field_181546_a //Sea level
+     *
+     *     c.send(seaLevel)
+     * }
+     * }</pre>
      */
     public World getMinecraftWorld();
 
@@ -43,11 +53,9 @@ public interface IScriptWorld
      * to get the block state.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val coarse_dirt : IScriptBlockState = mappet.createBlockState("minecraft:dirt", 1)
+     *    var coarse_dirt = mappet.createBlockState("minecraft:dirt", 1);
      *
-     *     c.getWorld().setBlock(coarse_dirt, 214, 3, 509)
-     * }
+     *    c.getWorld().setBlock(coarse_dirt, 214, 3, 509);
      * }</pre>
      */
     public void setBlock(IScriptBlockState state, int x, int y, int z);
@@ -56,9 +64,7 @@ public interface IScriptWorld
      * Remove a block at given XYZ.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     c.getWorld().removeBlock(214, 3, 509)
-     * }
+     *   c.getWorld().removeBlock(214, 3, 509);
      * }</pre>
      */
     public void removeBlock(int x, int y, int z);
@@ -67,13 +73,9 @@ public interface IScriptWorld
      * Get block state at given XYZ.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val block : IScriptBlockState? = c.getWorld().getBlock(498, 68, 2725)
+     *    var block = c.getWorld().getBlock(214, 3, 509);
      *
-     *     if (block != null) {
-     *         c.send("Block at (214, 3, 509) is " + block.getBlockId())
-     *     }
-     * }
+     *    c.send("Block at (214, 3, 509) is " + block.getBlockId());
      * }</pre>
      *
      * @return a block state at given XYZ, or null if the chunk isn't loaded
@@ -84,13 +86,9 @@ public interface IScriptWorld
      * Get block state at given XYZ.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val block : IScriptBlockState? = c.getWorld().getBlock(498, 69, 2725)
+     *    var block = c.getWorld().getBlock(mappet.vector3(214, 3, 509));
      *
-     *     if (block != null) {
-     *         c.send("Block at (214, 3, 509) is " + block.getBlockId())
-     *     }
-     * }
+     *    c.send("Block at (214, 3, 509) is " + block.getBlockId());
      * }</pre>
      *
      * @return a block state at given XYZ, or null if the chunk isn't loaded
@@ -101,8 +99,9 @@ public interface IScriptWorld
      * Whether a tile entity is present at given XYZ.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val hasTileEntity: Boolean = c.getWorld().hasTileEntity(0, 80, 0)
+     * function main(c)
+     * {
+     *     var hasTileEntity = c.getWorld().hasTileEntity(0, 80, 0)
      *
      *     c.send(hasTileEntity)
      * }
@@ -114,14 +113,12 @@ public interface IScriptWorld
      * Replace all blocks in the given area with the given block state.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     c.getWorld().replaceBlocks(
-     *        mappet.createBlockState("minecraft:dirt", 0),
-     *        mappet.createBlockState("minecraft:dirt", 1),
-     *        mappet.vector3(498.0, 69.0, 2725.0),
-     *        mappet.vector3(498.0, 69.0, 2725.0)
-     *     )
-     * }
+     * c.getWorld().replaceBlocks(
+     *    mappet.createBlockState("minecraft:dirt", 0),
+     *    mappet.createBlockState("minecraft:dirt", 1),
+     *    mappet.vector3(214, 3, 509),
+     *    mappet.vector3(214, 3, 509)
+     * );
      * }</pre>
      */
     public void replaceBlocks(IScriptBlockState blockToBeReplaced, IScriptBlockState newBlock, Vector3d pos1, Vector3d pos2);
@@ -130,15 +127,13 @@ public interface IScriptWorld
      * Replace all blocks in the given area with the given block state and tile entity data.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     c.getWorld().replaceBlocks(
-     *        mappet.createBlockState("minecraft:dirt", 0),
-     *        mappet.createBlockState("blockbuster:model", 0),
-     *        mappet.createCompound("""{Morph:{Settings:{Hands:1b},Name:"blockbuster.fred"},id:"minecraft:blockbuster_model_tile_entity"}"""),
-     *        mappet.vector3(498.0, 69.0, 2725.0),
-     *        mappet.vector3(498.0, 71.0, 2723.0)
-     *     )
-     * }
+     * c.getWorld().replaceBlocks(
+     *    mappet.createBlockState("minecraft:dirt", 0),
+     *    mappet.createBlockState("blockbuster:model", 0),
+     *    mappet.createCompound('{Morph:{Settings:{Hands:1b},Name:"blockbuster.fred"},id:"minecraft:blockbuster_model_tile_entity"}'),
+     *    mappet.vector3(171, 61, 279),
+     *    mappet.vector3(176, 64, 276)
+     * );
      * }</pre>
      */
     public void replaceBlocks(IScriptBlockState blockToBeReplaced, IScriptBlockState newBlock, INBTCompound tileData, Vector3d pos1, Vector3d pos2);
@@ -147,15 +142,16 @@ public interface IScriptWorld
      * Get tile entity at given XYZ.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val tile : IScriptTileEntity? = c.getWorld().getTileEntity(498, 70, 2724)
+     *    var tile = c.getWorld().getBlock(214, 3, 509);
      *
-     *     if (tile != null) {
-     *         c.send("Tile entity at (214, 3, 509) is ${tile.getId()}")
-     *     } else {
-     *         c.send("There is no tile entity at (214, 3, 509)")
-     *     }
-     * }
+     *    if (tile)
+     *    {
+     *        c.send("Tile entity at (214, 3, 509) is " + tile.getId());
+     *    }
+     *    else
+     *    {
+     *        c.send("There is no tile entity at (214, 3, 509)");
+     *    }
      * }</pre>
      */
     public IScriptTileEntity getTileEntity(int x, int y, int z);
@@ -164,18 +160,19 @@ public interface IScriptWorld
      * Check whether there is an inventory tile entity at given XYZ.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val world : IScriptWorld = c.getWorld()
+     *    var world = c.getWorld();
      *
-     *     if (world.hasInventory(498, 70, 2724)) {
-     *         val inventory : IScriptInventory = world.getInventory(498, 70, 2724)
+     *    if (world.hasInventory(214, 4, 512))
+     *    {
+     *        var inventory = world.getInventory(214, 4, 512);
      *
-     *         inventory.setStack(0, mappet.createItem("minecraft:diamond_hoe"))
-     *         c.send("There is a surprise for you in chest at (214, 4, 512) :)")
-     *     } else {
-     *         c.send("There is no chest at (214, 4, 512)...")
-     *     }
-     * }
+     *        inventory.setStack(0, mappet.createItem("minecraft:diamond_hoe"));
+     *        c.send("There is a surprise for you in chest at (214, 4, 512) :)");
+     *    }
+     *    else
+     *    {
+     *        c.send("There is no chest at (214, 4, 512)...");
+     *    }
      * }</pre>
      */
     public boolean hasInventory(int x, int y, int z);
@@ -184,13 +181,15 @@ public interface IScriptWorld
      * Get inventory tile entity at given XYZ.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val world: IScriptWorld = c.getWorld()
-     *     fun main(c: IScriptEvent) {
-     *     val world: IScriptWorld = c.getWorld()
-     *     val inventory: IScriptInventory? = world.getInventory(498, 70, 2724)
-     *     inventory?.clear()
-     * }
+     *    var world = c.getWorld();
+     *    var inventory = world.getInventory(214, 4, 512);
+     *
+     *    if (world.hasInventory(214, 4, 512))
+     *    {
+     *        var inventory = world.getInventory(214, 4, 512);
+     *
+     *        inventory.clear();
+     *    }
      * }</pre>
      *
      * @return an inventory at given XYZ, or <code>null</code> if an inventory tile entity isn't present.
@@ -201,18 +200,19 @@ public interface IScriptWorld
      * Check whether it's raining in the world.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val world: IScriptWorld = c.getWorld()
-     *     val pos: ScriptVector = c.getSubject().getPosition()
+     *    var world = c.getWorld();
+     *    var pos = c.getSubject().getPosition();
      *
-     *     // If it's raining in the world, then drop a diamond
-     *     // If not, then drop a dirt block
-     *     if (world.isRaining()) {
-     *         world.dropItemStack(mappet.createItem("minecraft:diamond"), pos.x, pos.y + 3, pos.z)
-     *     } else {
-     *         world.dropItemStack(mappet.createItem("minecraft:dirt"), pos.x, pos.y + 3, pos.z)
-     *     }
-     * }
+     *    // If it's raining in the world, then drop a diamond
+     *    // If not, then drop a dirt block
+     *    if (world.isRaining())
+     *    {
+     *        world.dropItemStack(mappet.createItem("minecraft:diamond"), pos.x, pos.y + 3, pos.z);
+     *    }
+     *    else
+     *    {
+     *        world.dropItemStack(mappet.createItem("minecraft:dirt"), pos.x, pos.y + 3, pos.z);
+     *    }
      * }</pre>
      */
     public boolean isRaining();
@@ -221,10 +221,8 @@ public interface IScriptWorld
      * Set raining state.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     c.getWorld().setRaining(true)
-     *     c.send("The ritual dance got successfully completed!")
-     * }
+     *    c.getWorld().setRaining(true);
+     *    c.send("The ritual dance got successfully completed!");
      * }</pre>
      */
     public void setRaining(boolean raining);
@@ -233,13 +231,14 @@ public interface IScriptWorld
      * Get current time of day (the one that is set by <code>/time set</code> command).
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     if (c.getWorld().getTime() % 24000 > 12000) {
-     *         c.send("Good night!")
-     *     } else {
-     *         c.send("Good day!")
-     *     }
-     * }
+     *    if (c.getWorld().getTime() % 24000 > 12000)
+     *    {
+     *        c.getSubject().send("Good night!");
+     *    }
+     *    else
+     *    {
+     *        c.getSubject().send("Good day!");
+     *    }
      * }</pre>
      */
     public long getTime();
@@ -248,10 +247,8 @@ public interface IScriptWorld
      * Set current time of day.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     c.getWorld().setTime(14000)
-     *     c.send("Another ritual dance got successfully completed!")
-     * }
+     *    c.getWorld().setTime(14000);
+     *    c.send("Another ritual dance got successfully completed!");
      * }</pre>
      */
     public void setTime(long time);
@@ -260,11 +257,13 @@ public interface IScriptWorld
      * Get total time that this world existed for (in ticks).
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     if (c.getWorld().getTotalTime() > 20 * 600) {
-     *         c.send("You had only 10 minutes to complete the map...")
-     *     }
-     * }
+     *    if (c.getWorld().getTotalTime() > 20 * 600)
+     *    {
+     *        c.send("You had only 10 minutes to complete the map...");
+     *        c.send("Initiating SELF-DESTRUCT mode!");
+     *
+     *        // TODO: implement self-destruction
+     *    }
      * }</pre>
      */
     public long getTotalTime();
@@ -273,13 +272,14 @@ public interface IScriptWorld
      * Get world's dimension ID.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     if (c.getWorld().getDimensionId() == 0) {
-     *         (c.getSubject() as? IScriptPlayer)?.send("You're in overworld!")
-     *     } else {
-     *         (c.getSubject() as? IScriptPlayer)?.send("*shrugs*")
-     *     }
-     * }
+     *    if (c.getWorld().getDimensionId() == 0)
+     *    {
+     *        c.getSubject().send("You're in overworld!");
+     *    }
+     *    else
+     *    {
+     *        c.getSubject().send("*shrugs*");
+     *    }
      * }</pre>
      */
     public int getDimensionId();
@@ -288,12 +288,10 @@ public interface IScriptWorld
      * Spawn vanilla particles.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val explode: EnumParticleTypes = mappet.getParticleType("explode")
-     *     val pos: ScriptVector = c.getSubject().getPosition()
+     *    var explode = mappet.getParticleType("explode");
+     *    var pos = c.getSubject().getPosition();
      *
-     *     c.getWorld().spawnParticles(explode, false, pos.x, pos.y, pos.z, 10, 0.1, 0.1, 0.1, 0.1)
-     * }
+     *    c.getWorld().spawnParticles(explode, false, pos.x, pos.y, pos.z, 10, 0.1, 0.1, 0.1, 0.1);
      * }</pre>
      *
      * @param type         Particle type, you can use {@link IScriptFactory#getParticleType(String)}
@@ -317,12 +315,10 @@ public interface IScriptWorld
      * Spawn vanilla particles only to a specific player.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val explode: EnumParticleTypes = mappet.getParticleType("explode")
-     *     val pos: ScriptVector = c.getSubject().getPosition()
+     *    var explode = mappet.getParticleType("explode");
+     *    var pos = c.getSubject().getPosition();
      *
-     *     c.getWorld().spawnParticles((c.getSubject() as? IScriptPlayer), explode, false, pos.x, pos.y, pos.z, 10, 0.1, 0.1, 0.1, 0.1)
-     * }
+     *    c.getWorld().spawnParticles(c.getSubject(), explode, false, pos.x, pos.y, pos.z, 10, 0.1, 0.1, 0.1, 0.1);
      * }</pre>
      *
      * @param player       The player that you want to limit seeing the particle only to
@@ -347,10 +343,10 @@ public interface IScriptWorld
      * Spawn an entity at given position.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val pos: ScriptVector = c.getSubject().getPosition()
-     *     val entity: IScriptEntity = c.getWorld().spawnEntity("minecraft:tnt", pos.x, pos.y, pos.z)
-     * }
+     *    var pos = c.getSubject().getPosition();
+     *
+     *    // Make an explosion at player's feet
+     *    c.getWorld().spawnEntity("minecraft:tnt", pos.x, pos.y, pos.z);
      * }</pre>
      */
     public default IScriptEntity spawnEntity(String id, double x, double y, double z)
@@ -362,10 +358,10 @@ public interface IScriptWorld
      * Spawn an entity at given position with additional data.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val pos: ScriptVector = c.getSubject().getPosition()
-     *     val entity: IScriptEntity = c.getWorld().spawnEntity("minecraft:zombie", pos.x, pos.y + 3, pos.z, mappet.createCompound("{IsBaby:1b}"))
-     * }
+     *    var pos = c.getSubject().getPosition();
+     *
+     *    // Spawn a baby zombie
+     *    c.getWorld().spawnEntity("minecraft:zombie", pos.x, pos.y + 3, pos.z, mappet.createCompound("{IsBaby:1b}"));
      * }</pre>
      */
     public IScriptEntity spawnEntity(String id, double x, double y, double z, INBTCompound compound);
@@ -374,10 +370,9 @@ public interface IScriptWorld
      * Spawn an NPC at given position with default state.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val pos: ScriptVector = c.getSubject().getPosition()
-     *     val npc: IScriptNpc = c.getWorld().spawnNpc("herobrine", pos.x, pos.y, pos.z)
-     * }
+     *    var pos = c.getSubject().getPosition();
+     *
+     *    c.getWorld().spawnNpc("herobrine", pos.x, pos.y, pos.z);
      * }</pre>
      */
     public default IScriptNpc spawnNpc(String id, double x, double y, double z)
@@ -389,21 +384,20 @@ public interface IScriptWorld
      * Spawn an NPC at given position with given state.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val pos: ScriptVector = c.getSubject().getPosition()
-     *     val npc: IScriptNpc = c.getWorld().spawnNpc("herobrine", "dabbing", pos.x, pos.y, pos.z)
-     * }
+     *    var pos = c.getSubject().getPosition();
+     *
+     *    c.getWorld().spawnNpc("herobrine", "dabbing", pos.x, pos.y, pos.z);
      * }</pre>
      */
     public IScriptNpc spawnNpc(String id, String state, double x, double y, double z);
 
     /**
      * Spawn an NPC at given position with given state and rotation.
-     * fun main(c: IScriptEvent) {
-     *     val pos: ScriptVector = c.getSubject().getPosition()
-     *     val npc: IScriptNpc = c.getWorld().spawnNpc("herobrine", "dabbing", pos.x, pos.y, pos.z)
-     * }
+     *
      * <pre>{@code
+     *    var pos = c.getSubject().getPosition();
+     *
+     *    c.getWorld().spawnNpc("herobrine", "dabbing", pos.x, pos.y, pos.z, 0, 0, 0);
      * }</pre>
      */
     IScriptNpc spawnNpc(String id, String state, double x, double y, double z, float yaw, float pitch, float headYaw);
@@ -415,15 +409,19 @@ public interface IScriptWorld
      * than 100 blocks, then it will simply return an empty list.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val pos = c.getSubject().getPosition()
-     *     val entities: List<IScriptEntity> = c.getWorld().getEntities(pos.x - 2, pos.y - 1, pos.z - 2, pos.x + 2, pos.y + 3, pos.z + 2)
-     *     for (entity in entities) {
-     *         if (!entity.isSame(c.getSubject())) {
-     *             entity.damage(2.0f)
-     *         }
-     *     }
-     * }
+     *    // Y position is at the feet, while X and Z is at center
+     *    var pos = c.getSubject().getPosition();
+     *    var entities = c.getWorld().getEntities(pos.x - 2, pos.y - 1, pos.z - 2, pos.x + 2, pos.y + 3, pos.z + 2);
+     *
+     *    for (var i in entities)
+     *    {
+     *        var entity = entities[i];
+     *
+     *        if (!entity.isSame(c.getSubject()))
+     *        {
+     *            entity.damage(2.0);
+     *        }
+     *    }
      * }</pre>
      */
     public List<IScriptEntity> getEntities(double x1, double y1, double z1, double x2, double y2, double z2);
@@ -433,16 +431,19 @@ public interface IScriptWorld
      * This method does not limit to scanning entities only within <b>100 blocks</b>
      *
      * <pre>{@code
-     * // Y position is at the feet, while X and Z is at center
-     * fun main(c: IScriptEvent) {
-     *     val pos = c.getSubject().getPosition()
-     *     val entities: List<IScriptEntity> = c.getWorld().getEntities(pos.x - 30, pos.y - 30, pos.z - 30, pos.x + 30, pos.y + 30, pos.z + 30, true)
-     *     for (entity in entities) {
-     *         if (!entity.isSame(c.getSubject())) {
-     *             entity.damage(2.0f)
-     *         }
-     *     }
-     * }
+     *    // Y position is at the feet, while X and Z is at center
+     *    var pos = c.getSubject().getPosition();
+     *    var entities = c.getWorld().getEntities(pos.x - 30, pos.y - 30, pos.z - 30, pos.x + 30, pos.y + 30, pos.z + 30, true);
+     *
+     *    for (var i in entities)
+     *    {
+     *        var entity = entities[i];
+     *
+     *        if (!entity.isSame(c.getSubject()))
+     *        {
+     *            entity.damage(2.0);
+     *        }
+     *    }
      * }</pre>
      */
     public List<IScriptEntity> getEntities(double x1, double y1, double z1, double x2, double y2, double z2, boolean ignoreVolumeLimit);
@@ -453,15 +454,19 @@ public interface IScriptWorld
      * radius</b> in any direction. If the sphere provided has the radius that is
      * longer than 100 blocks, then it will simply return an empty list.
      *
-     * <pre>{@codefun main(c : IScriptEvent) {
-     *     val pos: ScriptVector = c.getSubject().getPosition()
-     *     val entities: List<IScriptEntity> = c.getWorld().getEntities(pos.x, pos.y + 1, pos.z, 3.0)
-     *     for (entity in entities) {
-     *         if (!entity.isSame(c.getSubject())) {
-     *             entity.damage(2.0f)
-     *         }
-     *     }
-     * }
+     * <pre>{@code
+     *    var pos = c.getSubject().getPosition();
+     *    var entities = c.getWorld().getEntities(pos.x, pos.y + 1, pos.z, 3);
+     *
+     *    for (var i in entities)
+     *    {
+     *        var entity = entities[i];
+     *
+     *        if (!entity.isSame(c.getSubject()))
+     *        {
+     *            entity.damage(2.0);
+     *        }
+     *    }
      * }</pre>
      */
     public List<IScriptEntity> getEntities(double x, double y, double z, double radius);
@@ -473,10 +478,9 @@ public interface IScriptWorld
      * command, or script editor's sound picker.</p>
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val pos: ScriptVector = c.getSubject().getPosition()
-     *     c.getWorld().playSound("minecraft:entity.pig.ambient", pos.x, pos.y, pos.z)
-     * }
+     *    var pos = c.getSubject().getPosition();
+     *
+     *    c.getWorld().playSound("minecraft:entity.pig.ambient", pos.x, pos.y, pos.z);
      * }</pre>
      */
     public default void playSound(String event, double x, double y, double z)
@@ -488,10 +492,9 @@ public interface IScriptWorld
      * Play a sound event in the world with volume and pitch.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val pos: ScriptVector = c.getSubject().getPosition()
-     *     c.getWorld().playSound("minecraft:entity.pig.ambient", pos.x, pos.y, pos.z, 1.0F, 0.8F)
-     * }
+     *    var pos = c.getSubject().getPosition();
+     *
+     *    c.getWorld().playSound("minecraft:entity.pig.ambient", pos.x, pos.y, pos.z, 1.0, 0.8);
      * }</pre>
      */
     public void playSound(String event, double x, double y, double z, float volume, float pitch);
@@ -500,9 +503,7 @@ public interface IScriptWorld
      * Stop all playing sound events for every player.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     c.getWorld().stopAllSounds()
-     * }
+     *    c.getWorld().stopAllSounds();
      * }</pre>
      */
     public default void stopAllSounds()
@@ -514,9 +515,7 @@ public interface IScriptWorld
      * Stop specific sound event for every player.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     c.getWorld().stopSound("minecraft:entity.pig.ambient")
-     * }
+     *    c.getWorld().stopSound("minecraft:entity.pig.ambient");
      * }</pre>
      */
     public default void stopSound(String event)
@@ -532,9 +531,7 @@ public interface IScriptWorld
      * Tab key. The list of sounds categories will be displayed.</p>
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     c.getWorld().stopSound("minecraft:entity.pig.ambient", "master")
-     * }
+     *    c.getWorld().stopSound("minecraft:entity.pig.ambient", "master");
      * }</pre>
      */
     public void stopSound(String event, String category);
@@ -543,16 +540,13 @@ public interface IScriptWorld
      * Drop item stack at given XYZ position with no velocity applied.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     // Drop item stack at given XYZ position with no velocity applied.
-     *     val item: IScriptItemStack = mappet.createItem("minecraft:diamond_hoe")
-     *     val pos: ScriptVector = c.getSubject().getPosition()
+     *    var item = mappet.createItem("minecraft:diamond_hoe");
+     *    var pos = c.getSubject().getPosition();
      *
-     *     c.getWorld().dropItemStack(item, pos.x, pos.y + 3, pos.z)
-     * }
+     *    c.getWorld().dropItemStack(item, pos.x, pos.y + 3, pos.z);
      * }</pre>
      */
-    public default IScriptEntity dropItemStack(IScriptItemStack stack, double x, double y, double z)
+    public default IScriptEntityItem dropItemStack(IScriptItemStack stack, double x, double y, double z)
     {
         return this.dropItemStack(stack, x, y, z, 0, 0, 0);
     }
@@ -561,16 +555,13 @@ public interface IScriptWorld
      * Drop an item stack at given XYZ position in this world with desired velocity.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     // Drop an item stack at given XYZ position in this world with desired velocity.
-     *     val item: IScriptItemStack = mappet.createItem("minecraft:diamond_hoe")
-     *     val pos: ScriptVector = c.getSubject().getPosition()
+     *    var item = mappet.createItem("minecraft:diamond_hoe");
+     *    var pos = c.getSubject().getPosition();
      *
-     *     c.getWorld().dropItemStack(item, pos.x, pos.y + 3, pos.z, 0.0, 1.0, 0.0)
-     * }
+     *    c.getWorld().dropItemStack(item, pos.x, pos.y + 3, pos.z, 0, 1, 0);
      * }</pre>
      */
-    public IScriptEntity dropItemStack(IScriptItemStack stack, double x, double y, double z, double mx, double my, double mz);
+    public IScriptEntityItem dropItemStack(IScriptItemStack stack, double x, double y, double z, double mx, double my, double mz);
 
     /**
      * Make an explosion in this world at given coordinates, and distance that
@@ -578,9 +569,12 @@ public interface IScriptWorld
      * for more thorough definition of arguments.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val pos: ScriptVector = c.getSubject().getPosition();
-     *     c.getWorld().explode(pos.x, pos.y, pos.z, 3.0);
+     * function main(c)
+     * {
+     *     var s = c.getSubject();
+     *     var pos = s.getPosition();
+     *
+     *     c.getWorld().explode(pos.x, pos.y, pos.z, 10)
      * }
      * }</pre>
      */
@@ -595,9 +589,10 @@ public interface IScriptWorld
      * for more thorough definition of arguments.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     var s: IScriptEntity = c.getSubject();
-     *     var pos: ScriptVector = s.getPosition();
+     * function main(c)
+     * {
+     *     var s = c.getSubject();
+     *     var pos = s.getPosition();
      *
      *     c.getWorld().explode(pos.x, pos.y, pos.z, 10, false, false)
      * }
@@ -613,9 +608,10 @@ public interface IScriptWorld
      * that caused the explosion.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     var s: IScriptEntity = c.getSubject();
-     *     var pos: ScriptVector = s.getPosition();
+     * function main(c)
+     * {
+     *     var s = c.getSubject();
+     *     var pos = s.getPosition();
      *
      *     c.getWorld().explode(s, pos.x, pos.y, pos.z, 10, false, false)
      * }
@@ -662,13 +658,13 @@ public interface IScriptWorld
      * It only works when Blockbuster mod is installed.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     // Set morph (from NBT) to a model block at given position in this world.
-     *     val pos: ScriptVector = c.getSubject().getPosition()
-     *     val nbt: String = """{Settings:{Hands:1b},Name:"blockbuster.fred"}"""
+     *     function main(c)
+     *     {
+     *         var pos = c.getSubject().getPosition()
+     *         var nbt = '{Settings:{Hands:1b},Name:"blockbuster.fred"}';
      *
-     *     c.getWorld().setModelBlockMorph(nbt, pos.x, pos.y, pos.z, true)
-     * }
+     *         c.getWorld().setModelBlock(nbt, pos.x, pos.y, pos.z, true);
+     *     }
      * }</pre>
      *
      * @param nbt NBT of a morph to be replaced for given model block.
@@ -684,13 +680,13 @@ public interface IScriptWorld
      * It only works when Blockbuster mod is installed.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     // Enable or disable a model block at a given position in this world.
-     *     val pos: ScriptVector = c.getSubject().getPosition()
-     *     val enabled: Boolean = true
+     *     function main(c)
+     *     {
+     *         var pos = c.getSubject().getPosition()
+     *         var enabled = true;
      *
-     *     c.getWorld().setModelBlockEnabled(pos.x, pos.y, pos.z, enabled)
-     * }
+     *         c.getWorld().setModelBlockEnabled(pos.x, pos.y, pos.z, enabled);
+     *     }
      * }</pre>
      *
      * @param x X coordinate of a model block.
@@ -705,10 +701,7 @@ public interface IScriptWorld
      * It only works when Blockbuster mod is installed.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     // Check whether a model block at a given position in this world is enabled or not.
-     *     c.send(c.getWorld().isModelBlockEnabled(0, 4, 0).toString())
-     * }
+     *     c.send(c.getWorld().isModelBlockEnabled(0, 4, 0));
      * }</pre>
      *
      * @param x X coordinate of a model block.
@@ -721,14 +714,7 @@ public interface IScriptWorld
      * Return whether a button, plate or lever is active or not.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     // Test for a specific block and meta in a specific coordinates.
-     *     val pos: IScriptPosition = c.getSubject().getPosition()
-     *
-     *     if ( c.getWorld().isActive(pos.x.toInt(), pos.y.toInt(), pos.z.toInt()) ) {
-     *         c.send("Pressure Plate is pressed.")
-     *     }
-     * }
+     *     c.getWorld().isActive(0, 4, 0);
      * }</pre>
      */
     public boolean isActive(int x, int y, int z);
@@ -737,14 +723,15 @@ public interface IScriptWorld
      * Test for a specific block and meta in a specific coordinates.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     // Test for a specific block and meta in a specific coordinates.
-     *     val pos: ScriptVector = c.getSubject().getPosition()
+     *     function main(c)
+     *     {
+     *         var pos = c.getSubject().getPosition()
      *
-     *     if (c.getWorld().testForBlock(pos.x.toInt(), pos.y.toInt(), pos.z.toInt(), "minecraft:light_weighted_pressure_plate", 1)) {
-     *         c.send("Pressure Plate is pressed.")
+     *         if (c.getWorld().testForBlock(Math.floor(pos.x), Math.floor(pos.y), Math.floor(pos.z), "minecraft:light_weighted_pressure_plate", 1))
+     *         {
+     *             c.send("Prussure Plate is pressed.")
+     *         }
      *     }
-     * }
      * }</pre>
      */
     public boolean testForBlock(int x, int y, int z, String blockId, int meta);
@@ -753,10 +740,9 @@ public interface IScriptWorld
      * Fill a 3D area with a block.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val coarse_dirt: IScriptBlockState = mappet.createBlockState("minecraft:dirt", 1)
-     *     c.getWorld().fill(coarse_dirt, -3, 100, -3, 3, 100, 3)
-     * }
+     *     var coarse_dirt = mappet.createBlockState("minecraft:dirt", 1);
+     *
+     *     c.getWorld().fill(coarse_dirt, -3, 100, -3, 3, 100, 3);
      * }</pre>
      *
      * @param state The block to fill the area with.
@@ -773,10 +759,9 @@ public interface IScriptWorld
      * Fill a 3D area with a block with a delay (for huge areas).
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val coarse_dirt: IScriptBlockState = mappet.createBlockState("minecraft:dirt", 1)
-     *     c.getWorld().fill(coarse_dirt, -3, 100, -3, 3, 100, 3, 16, 5) //16, 5 are chunk size and delay in ticks
-     * }
+     *     var coarse_dirt = mappet.createBlockState("minecraft:dirt", 1);
+     *
+     *     c.getWorld().fill(coarse_dirt, -3, 100, -3, 3, 100, 3, 16, 5);
      * }</pre>
      *
      * @param state The block to fill the area with.
@@ -793,9 +778,7 @@ public interface IScriptWorld
      * Summon a falling block with a specific block id and meta.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     c.getWorld().summonFallingBlock(0.0, 100.0, 0.0, "minecraft:dirt", 1)
-     * }
+     *     c.getWorld().summonFallingBlock(0, 100, 0, "minecraft:dirt", 1);
      * }</pre>
      *
      * @return The falling block entity.
@@ -806,9 +789,7 @@ public interface IScriptWorld
      * Transform a block to a falling block in specific coordinates.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     c.getWorld().setFallingBlock(0, 100, 0)
-     * }
+     *     c.getWorld().setFallingBlock(0, 100, 0);
      * }</pre>
      *
      * @return The falling block entity.
@@ -819,13 +800,11 @@ public interface IScriptWorld
      * Sets a tile entity.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     c.getWorld().setTileEntity(
-     *         530, 152, 546,
-     *         mappet.createBlockState("blockbuster:model", 0),
-     *         mappet.createCompound("""{Morph:{Settings:{Hands:1b},Name:"blockbuster.fred"},id:"minecraft:blockbuster_model_tile_entity"}""")
-     *     )
-     * }
+     * c.getWorld().setTileEntity(
+     *     530, 152, 546,
+     *     mappet.createBlockState("blockbuster:model", 0),
+     *     mappet.createCompound('{Morph:{Settings:{Hands:1b},Name:"blockbuster.fred"},id:"minecraft:blockbuster_model_tile_entity"}')
+     * );
      *   }</pre>
      *
      * @param x X coordinate
@@ -838,14 +817,7 @@ public interface IScriptWorld
      * Fills a range with tile entities.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     c.getWorld().fillTileEntities(
-     *         478, 73, 2718,
-     *         478, 75, 2718,
-     *         mappet.createBlockState("blockbuster:model", 0),
-     *         mappet.createCompound("""{Morph:{Settings:{Hands:1b},Name:"blockbuster.fred"},id:"minecraft:blockbuster_model_tile_entity"}""")
-     *     )
-     * }
+     * c.getWorld().fillTileEntities(530, 152, 546, mappet.createBlockState("blockbuster:model", 0), mappet.createCompound('{Morph:{Settings:{Hands:1b},Name:"blockbuster.fred"},id:"minecraft:blockbuster_model_tile_entity"}'));
      *   }</pre>
      *
      * @param x1 X coordinate
@@ -861,9 +833,7 @@ public interface IScriptWorld
      * Clones am area to another area.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     c.getWorld().clone(0, 100, 0, 3, 100, 3, 0, 101, 0, false)
-     * }
+     * c.getWorld().clone(0, 100, 0, 3, 100, 3, 0, 101, 0);
      * }</pre>
      *
      * @param x1 The first x coordinate.
@@ -882,7 +852,8 @@ public interface IScriptWorld
      * Clones the block to another coordinates.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
+     * function main(c)
+     * {
      *     c.getWorld().clone(0, 80, 0, 0, 83, 0)
      * }
      * }</pre>
@@ -893,9 +864,7 @@ public interface IScriptWorld
      * Saves a schematic file in the world's schematics folder in world/mappet/schematics.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     c.getWorld().saveSchematic("my_schematic", 0, 100, 0, 3, 100, 3)
-     * }
+     * c.getWorld().saveSchematic("my_schematic", 0, 100, 0, 3, 100, 3);
      * }</pre>
      *
      * @param x1 The first x coordinate.
@@ -906,15 +875,14 @@ public interface IScriptWorld
      * @param z2 The second z coordinate.
      * @param name The name of the schematic.
      */
+    @Deprecated
     public void saveSchematic(String name, int x1, int y1, int z1, int x2, int y2, int z2);
 
     /**
      * Loads a schematic file from the world's schematics folder in world/mappet/schematics.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     c.getWorld().loadSchematic("my_schematic", 0, 100, 0)
-     * }
+     * c.getWorld().loadSchematic("my_schematic", 0, 100, 0);
      * }</pre>
      *
      * @param name The name of the schematic.
@@ -929,8 +897,7 @@ public interface IScriptWorld
      * Serialize a schematic into a NBT compound.
      *
      * <pre>{@code
-     *   var nbt: INBTCompound = c.getWorld().serializeSchematic(schematic);
-     *   c.send(nbt.toString());
+     *   var nbt = c.getWorld().serializeSchematic(schematic);
      *   }</pre>
      *
      * @param name Schematic name
@@ -943,7 +910,8 @@ public interface IScriptWorld
      * Returns a new empty Schematic object.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
+     * function main(c)
+     * {
      *     var schematic = c.world.createSchematic();
      *     schematic.loadFromWorld(0, 4, 0, 4, 8, 4).saveToFile("mySchematic").place(0, 4, 4).place(0, 4, 8);
      * }
@@ -958,15 +926,11 @@ public interface IScriptWorld
      * Gets the block stack at given position, including tile entity data.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val x = 480
-     *     val y = 73
-     *     val z = 2715
-     *     val world: IScriptWorld = c.getWorld()
-     *     val blockItemStack: IScriptItemStack = world.getBlockStackWithTile(x, y, z)
-     *     world.setBlock(mappet.createBlockState("minecraft:air", 0), x, y, z)
-     *     world.dropItemStack(blockItemStack, x+0.5, y+0.5, z+0.5)
-     * }
+     *    var x= 0, y = 100, z = 0;
+     *    var world = c.getWorld();
+     *    var blockItemStack = world.getBlockStackWithTile(x, y, z);
+     *    world.setBlock(mappet.createBlockState("minecraft:air", 0), x, y, z)
+     *    world.dropItemStack(blockItemStack, x+0.5, y+0.5, z+0.5);
      * }</pre>
      */
     public IScriptItemStack getBlockStackWithTile(int x, int y, int z);
@@ -975,16 +939,11 @@ public interface IScriptWorld
      * Shoots a gun projectile entity.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val subject: IScriptEntity = c.getSubject();
-     *     val pos: ScriptVector = subject.getPosition();
-     *     val projectile : IScriptEntity? = c.getWorld().shootBBGunProjectile(subject, pos.x, pos.y, pos.z, 0.0, -90.0, """{Gun:{TickCommand:"particle heart ~ ~1 ~ 0.2 0.2 0.2 1",StoredAmmo:0,Ticking:1,Damage:1.0f,Projectile:{Meta:0b,Block:"minecraft:stone",Name:"block"},Gravity:0.0f}}""")
-     *     c.send(projectile?.toString())
-     *     c.scheduleScript(20) { c ->
-     *         projectile?.executeCommand("summon tnt ~ ~ ~")
-     *         projectile?.remove()
-     *     }
-     * }
+     *     var projectile = c.getWorld().shootBBGunProjectile(c.getSubject(), 547, 160, 497, 0, -90, '{Gun:{TickCommand:"particle heart ~ ~1 ~ 0.2 0.2 0.2 1",StoredAmmo:0,Ticking:1,Damage:1.0f,Projectile:{Meta:0b,Block:"minecraft:stone",Name:"block"},Gravity:0.0f}}')
+     *     c.scheduleScript(20, function (c){
+     *         projectile.executeCommand("summon tnt ~ ~ ~")
+     *         projectile.remove()
+     *     });
      * }</pre>
      */
     public IScriptEntity shootBBGunProjectile(IScriptEntity shooter, double x, double y, double z, double yaw, double pitch, String gunPropsNbtString);
@@ -996,10 +955,11 @@ public interface IScriptWorld
      * Display a world morph to all players around 64 blocks away from given point.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     var s: IScriptEntity = c.getSubject();
-     *     var morph: AbstractMorph = mappet.createMorph('{Name:"item"}');
-     *     var pos: ScriptVector = s.getPosition();
+     * function main(c)
+     * {
+     *     var s = c.getSubject();
+     *     var morph = mappet.createMorph('{Name:"item"}');
+     *     var pos = s.getPosition();
      *
      *     c.getWorld().displayMorph(morph, 100, pos.x, pos.y + s.getHeight() + 0.5, pos.z);
      * }
@@ -1014,16 +974,13 @@ public interface IScriptWorld
      * Display a world morph to all players at given point.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val subject : IScriptEntity = c.getSubject();
-     *     val player : IScriptPlayer? = subject as? IScriptPlayer;
-     *     val morph : AbstractMorph = mappet.createMorph("""{Name:"item"}""");
-     *     val pos : ScriptVector = subject.getPosition();
+     *    var s = c.getSubject();
+     *    var morph = mappet.createMorph('{Name:"item"}');
+     *    var pos = s.getPosition();
      *
-     *     if(player != null) {
-     *         c.getWorld().displayMorph(morph, 100, pos.x, pos.y + subject.getHeight() + 0.5, pos.z, 64);
-     *     }
-     * }
+     *    // This will display a diamond hoe morph on top of the
+     *    // player's head (but it won't track player's movement)
+     *    c.getWorld().displayMorph(morph, 100, pos.x, pos.y + s.getHeight() + 0.5, pos.z, 64);
      * }</pre>
      *
      * @param morph      Morph that will be displayed (if <code>null</code>, then it won't send anything).
@@ -1039,16 +996,14 @@ public interface IScriptWorld
      * Display a world morph to all players at given point with rotation.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val subject : IScriptEntity = c.getSubject();
-     *     val player : IScriptPlayer? = subject as? IScriptPlayer;
-     *     val morph : AbstractMorph = mappet.createMorph("""{Name:"item"}""");
-     *     val pos : ScriptVector = subject.getPosition();
+     *    var s = c.getSubject();
+     *    var morph = mappet.createMorph('{Name:"item"}');
+     *    var pos = s.getPosition();
      *
-     *     if(player != null) {
-     *         c.getWorld().displayMorph(morph, 100, pos.x, pos.y + subject.getHeight() + 0.5, pos.z, 90f, 0f);
-     *     }
-     * }
+     *    // This will display a diamond hoe morph on top of the
+     *    // player's head (but it won't track player's movement)
+     *    // oriented at west
+     *    c.getWorld().displayMorph(morph, 100, pos.x, pos.y + s.getHeight() + 0.5, pos.z, 90, 0);
      * }</pre>
      *
      * @param morph      Morph that will be displayed (if <code>null</code>, then it won't send anything).
@@ -1066,10 +1021,11 @@ public interface IScriptWorld
      * some blocks away in this world.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     var s: IScriptEntity = c.getSubject();
-     *     var morph: AbstractMorph = mappet.createMorph('{Name:"item"}');
-     *     var pos: ScriptVector = s.getPosition();
+     * function main(c)
+     * {
+     *     var s = c.getSubject();
+     *     var morph = mappet.createMorph('{Name:"item"}');
+     *     var pos = s.getPosition();
      *
      *     var yaw = s.getYaw()
      *     var pitch = s.getPitch()
@@ -1094,15 +1050,16 @@ public interface IScriptWorld
      * some blocks away in this world only to given player.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val subject : IScriptEntity = c.getSubject();
-     *     val player : IScriptPlayer? = subject as? IScriptPlayer;
-     *     val morph : AbstractMorph = mappet.createMorph("""{Name:"item"}""");
-     *     val pos : ScriptVector = subject.getPosition();
+     * function main(c)
+     * {
+     *     var s = c.getSubject();
+     *     var morph = mappet.createMorph('{Name:"item"}');
+     *     var pos = s.getPosition();
      *
-     *     if(player != null) {
-     *         c.getWorld().displayMorph(morph, 100, pos.x, pos.y + subject.getHeight() + 0.5, pos.z, 90f, 0f, 64, player);
-     *     }
+     *     var yaw = s.getYaw()
+     *     var pitch = s.getPitch()
+     *
+     *     c.getWorld().displayMorph(morph, 100, pos.x, pos.y + s.getHeight() + 0.5, pos.z, yaw, pitch, 90, s);
      * }
      * }</pre>
      *

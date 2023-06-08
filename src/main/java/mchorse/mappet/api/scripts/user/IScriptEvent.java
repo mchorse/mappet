@@ -87,13 +87,15 @@ public interface IScriptEvent
      * send the message into the chat).</p>
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     // Assuming this script was attached to global trigger "On block placed,"
-     *     // this script will cancel placing of the block by a player
-     *     if (c.getValue("block") == "minecraft:stone") {
-     *         c.cancel()
-     *     }
-     * }
+     *    // Assuming this script was attached to global trigger "On block placed,"
+     *    // this script will cancel placing of the block by a player
+     *    function main(c)
+     *    {
+     *        if (c.getValue("block") === "minecraft:stone")
+     *        {
+     *            c.cancel();
+     *        }
+     *    }
      * }</pre>
      */
     public void cancel();
@@ -105,27 +107,31 @@ public interface IScriptEvent
      * <p>Read {@link #scheduleScript(String, String, int)} for more information.</p>
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *      val states : IMappetStates = c.getServer().getStates();
-     *      val counter : Double = states.getNumber("counter");
+     *    function main(c)
+     *    {
+     *        var states = c.getServer().getStates();
+     *        var counter = states.getNumber("counter");
      *
-     *      if (counter < 10) {
-     *          c.send("${counter} Mississippi...");
-     *          states.add("counter", 1.0);
+     *        if (counter < 10)
+     *        {
+     *            c.send(counter + " Mississippi...");
+     *            states.add("counter", 1);
      *
-     *          c.scheduleScript(20);
-     *      } else {
-     *          states.reset("counter");
-     *          c.send("Here I go!");
-     *      }
-     * }
+     *            c.scheduleScript(20);
+     *        }
+     *        else
+     *        {
+     *            states.reset("counter");
+     *            c.send("Here I go!");
+     *        }
+     *    }
      * }</pre>
      *
      * @param delay How many ticks should pass before scheduled script will be executed.
      */
     public default void scheduleScript(int delay)
     {
-        this.scheduleScript(this.getScript(), delay);
+        this.scheduleScript(this.getFunction(), delay);
     }
 
     /**
@@ -135,15 +141,17 @@ public interface IScriptEvent
      * <p>Read {@link #scheduleScript(String, String, int)} for more information.</p>
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     // Schedule script execution of function other
-     *     // within same script a second later
-     *     c.scheduleScript("other", 20);
-     * }
+     *    function main(c)
+     *    {
+     *        // Schedule script execution of function other
+     *        // within same script a second later
+     *        c.scheduleScript("other", 20);
+     *    }
      *
-     * fun other(c: IScriptEvent) {
-     *     c.send("A second ago, function \"main\" told me to say \"hi\" to you... :)");
-     * }
+     *    function other(c)
+     *    {
+     *        c.send("A second ago, function \"main\" told me to say \"hi\" to you... :)")
+     *    }
      * }</pre>
      */
     public default void scheduleScript(String function, int delay)
@@ -164,20 +172,22 @@ public interface IScriptEvent
      * when the scheduled script will be executed.</p>
      *
      * <pre>{@code
-     * // Script "a"
-     * fun main(c: IScriptEvent) {
-     *     // As ProTip states, you can pass some value using
-     *     // setValue() and getValue() event's functions
-     *     c.setValue("message", "Hello!");
+     *    // Script "a"
+     *    function main(c)
+     *    {
+     *        // As ProTip states, you can pass some value using
+     *        // setValue() and getValue() event's functions
+     *        c.setValue("message", "Hello!");
      *
-     *     // Schedule script "b" execution a second later
-     *     c.scheduleScript("b", "main", 20);
-     * }
+     *        // Schedule script "b" execution a second later
+     *        c.scheduleScript("b", "main", 20);
+     *    }
      *
-     * // Script "b"
-     * fun main(c: IScriptEvent) {
-     *     c.send("A second ago, script \"a\" told me to deliver this message: " + c.getValue("message"));
-     * }
+     *    // Script "b"
+     *    function main(c)
+     *    {
+     *        c.send("A second ago, script \"a\" told me deliver this message: " + c.getValue("message"));
+     *    }
      * }</pre>
      */
     public void scheduleScript(String script, String function, int delay);
@@ -187,11 +197,13 @@ public interface IScriptEvent
      * given function will be called with this context as the only argument.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     c.scheduleScript(60) { c ->
-     *         c.send("This was called three seconds later!");
-     *     };
-     * }
+     *    function main(c)
+     *    {
+     *        c.scheduleScript(60, function (context)
+     *        {
+     *            context.send("This was called three seconds later!");
+     *        });
+     *    }
      * }</pre>
      */
     public void scheduleScript(int delay, ScriptObjectMirror function);
@@ -206,9 +218,7 @@ public interface IScriptEvent
      * Execute a command.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     c.executeCommand("/kick Creeper501");
-     * }
+     *    c.executeCommand("/kick Creeper501");
      * }</pre>
      *
      * @return How many successful commands were run. 0 - command errored, 1 - command was successful,
@@ -220,9 +230,7 @@ public interface IScriptEvent
      * Send a message to all players in the chat.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     c.send("Hi :)");
-     * }
+     *    c.send("Hi :)");
      * }</pre>
      */
     public void send(String message);

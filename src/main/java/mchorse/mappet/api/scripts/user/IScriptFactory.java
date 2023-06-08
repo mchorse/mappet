@@ -1,6 +1,7 @@
 package mchorse.mappet.api.scripts.user;
 
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
+import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
 import mchorse.mappet.api.scripts.user.data.ScriptBox;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
@@ -11,6 +12,7 @@ import mchorse.mappet.api.scripts.user.mappet.IMappetUIContext;
 import mchorse.mappet.api.scripts.user.nbt.INBTCompound;
 import mchorse.mappet.api.scripts.user.nbt.INBTList;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import net.minecraft.entity.Entity;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumParticleTypes;
 
@@ -27,13 +29,12 @@ import javax.vecmath.Vector4d;
  * code example:</p>
  *
  * <pre>{@code
- * fun main(c: IScriptEvent) {
- *     // Create a diamond hoe using Mappet's factory
- *     val item : IScriptItemStack = mappet.createItem("minecraft:diamond_hoe")
+ *    function main(c) {
+ *        // Create a diamond hoe using Mappet's factory
+ *        var item = mappet.createItem("minecraft:diamond_hoe");
  *
- *     val subject : IScriptEntity = c.getSubject()
- *     subject.setMainItem(item)
- * }
+ *        c.getSubject().setMainItem(item);
+ *    }
  * }</pre>
  */
 public interface IScriptFactory
@@ -43,11 +44,10 @@ public interface IScriptFactory
      * the {@link IScriptWorld}.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val fence : IScriptBlockState = mappet.createBlockState("minecraft:fence", 0)
+     *    var fence = mappet.createBlockState("minecraft:fence", 0);
      *
-     *     c.send("Block id: ${fence.getBlockId()}, meta: ${fence.getMeta()}")
-     * }
+     *    // minecraft:fence 0
+     *    c.send(fence.getBlockId() + " " + fence.getMeta());
      * }</pre>
      */
     public IScriptBlockState createBlockState(String blockId, int meta);
@@ -56,16 +56,15 @@ public interface IScriptFactory
      * Create an empty NBT compound.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val tag : INBTCompound = mappet.createCompound()
+     *    var tag = mappet.createCompound();
      *
-     *     tag.setString("id", "minecraft:diamond_hoe")
-     *     tag.setByte("Count", 1)
+     *    tag.setString("id", "minecraft:diamond_hoe");
+     *    tag.setByte("Count", 1);
      *
-     *     val item : IScriptItemStack = mappet.createItem(tag)
+     *    var item = mappet.createItemNBT(tag);
      *
-     *     c.send(item.serialize().toString())
-     * }
+     *    // {id:"minecraft:diamond_hoe",Count:1b,Damage:0s}
+     *    c.send(item.serialize());
      * }</pre>
      */
     public default INBTCompound createCompound()
@@ -78,10 +77,11 @@ public interface IScriptFactory
      * invalid then an empty compound will be returned.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val tag : INBTCompound = mappet.createCompound("{id:\"minecraft:diamond_hoe\",Count:1b}")
-     *     c.send(tag.getString("id"))
-     * }
+     *    var tag = mappet.createCompound("{id:\"minecraft:diamond_hoe\",Count:1b}");
+     *    var item = mappet.createItemNBT(tag);
+     *
+     *    // {id:"minecraft:diamond_hoe",Count:1b,Damage:0s}
+     *    c.send(item.serialize());
      * }</pre>
      */
     public INBTCompound createCompound(String nbt);
@@ -107,7 +107,11 @@ public interface IScriptFactory
      * </ul>
      *
      * <pre>{@code
-     *    //not related to kts
+     *    var tag = mappet.createCompoundFromJS({id:"minecraft:diamond_hoe",Count:1});
+     *    var item = mappet.createItemNBT(tag);
+     *
+     *    // {id:"minecraft:diamond_hoe",Count:1b,Damage:0s}
+     *    c.send(item.serialize());
      * }</pre>
      */
     public INBTCompound createCompoundFromJS(Object jsObject);
@@ -116,19 +120,17 @@ public interface IScriptFactory
      * Create an empty NBT list.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val list = mappet.createList()
+     *    var list = mappet.createList();
      *
-     *     list.addInt(1)
-     *     list.addInt(2)
-     *     list.addInt(3)
-     *     list.addInt(4)
-     *     list.addInt(5)
-     *     list.addInt(6)
+     *    list.addInt(1);
+     *    list.addInt(2);
+     *    list.addInt(3);
+     *    list.addInt(4);
+     *    list.addInt(5);
+     *    list.addInt(6);
      *
-     *     // [1,2,3,4,5,6]
-     *     c.send(list.stringify().toString())
-     * }
+     *    // [1,2,3,4,5,6]
+     *    c.send(list.stringify());
      * }</pre>
      */
     public default INBTList createList()
@@ -141,12 +143,10 @@ public interface IScriptFactory
      * invalid then an empty list will be returned.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val list = mappet.createList("[1, 2, 3, 4, 5, 6]")
+     *    var list = mappet.createList("[1, 2, 3, 4, 5, 6]");
      *
-     *     // [1,2,3,4,5,6]
-     *     c.send(list.stringify().toString())
-     * }
+     *    // [1,2,3,4,5,6]
+     *    c.send(list.stringify());
      * }</pre>
      */
     public INBTList createList(String nbt);
@@ -158,7 +158,10 @@ public interface IScriptFactory
      * for information about JS to NBT object conversion limitations!</p>
      *
      * <pre>{@code
-     *    //not related to kts
+     *    var list = mappet.createListFromJS([1, 2, 3, 4, 5, 6]);
+     *
+     *    // [1,2,3,4,5,6]
+     *    c.send(list.stringify());
      * }</pre>
      */
     public INBTList createListFromJS(Object jsObject);
@@ -167,12 +170,10 @@ public interface IScriptFactory
      * Create an item stack out of string NBT.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val item : IScriptItemStack = mappet.createItemNBT("{id:\"minecraft:enchanted_book\",Count:1b,tag:{StoredEnchantments:[{lvl:4s,id:4s}]},Damage:0s}")
+     *    var item = mappet.createItemNBT("{id:\"minecraft:enchanted_book\",Count:1b,tag:{StoredEnchantments:[{lvl:4s,id:4s}]},Damage:0s}");
      *
-     *     // It will output "minecraft:enchanted_book"
-     *     c.send(item.getItem().getId())
-     * }
+     *    // It will output "minecraft:enchanted_book"
+     *    c.send(item.getItem().getId());
      * }</pre>
      *
      * @return an item stack from the string NBT data, or an empty item stack
@@ -187,12 +188,11 @@ public interface IScriptFactory
      * Create an item stack out of string NBT.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val itemCompound : INBTCompound = mappet.createCompound("{id:\"minecraft:diamond\",Count:1b,Damage:0s}")
-     *     val itemStack : IScriptItemStack = mappet.createItem(itemCompound)
+     *    var tag = mappet.createCompound("{id:\"minecraft:diamond_hoe\",Count:1b}");
+     *    var item = mappet.createItemNBT(tag);
      *
-     *     c.getSubject().giveItem(itemStack)
-     * }
+     *    // {id:"minecraft:diamond_hoe",Count:1b,Damage:0s}
+     *    c.send(item.serialize());
      * }</pre>
      *
      * @return an item stack from the NBT data, or an empty item stack if the
@@ -202,12 +202,12 @@ public interface IScriptFactory
 
     /**
      * Create an item stack with item ID.
-     * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val item : IScriptItemStack = mappet.createItem("minecraft:diamond")
      *
-     *     c.getSubject().giveItem(item)
-     * }
+     * <pre>{@code
+     *    var item = mappet.createItem("minecraft:diamond");
+     *
+     *    // {id:"minecraft:diamond",Count:1b,Damage:0s}
+     *    c.send(item.serialize());
      * }</pre>
      *
      * @return an item stack with an item specified by ID, or an empty item
@@ -222,11 +222,10 @@ public interface IScriptFactory
      * Create an item stack with item ID, count
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val item : IScriptItemStack = mappet.createItem("minecraft:diamond", 64)
+     *    var item = mappet.createItem("minecraft:diamond", 64);
      *
-     *     c.getSubject().giveItem(item)
-     * }
+     *    // {id:"minecraft:diamond",Count:64b,Damage:0s}
+     *    c.send(item.serialize());
      * }</pre>
      *
      * @return an item stack with an item specified by ID, or an empty item
@@ -241,11 +240,10 @@ public interface IScriptFactory
      * Create an item stack with item ID, count and meta
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val item : IScriptItemStack = mappet.createItem("minecraft:dirt", 64, 1)
+     *    var damaged_hoe = mappet.createItem("minecraft:diamond_hoe", 64, 5);
      *
-     *     c.getSubject().giveItem(item)
-     * }
+     *    // {id:"minecraft:diamond_hoe",Count:64b,Damage:5s}
+     *    c.send(damaged_hoe.serialize());
      * }</pre>
      *
      * @return an item stack with an item specified by ID, or an empty item
@@ -257,11 +255,10 @@ public interface IScriptFactory
      * Create an item stack with block ID.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val item : IScriptItemStack = mappet.createBlockItem("minecraft:dirt")
+     *    var stone = mappet.createBlockItem("minecraft:stone");
      *
-     *     c.getSubject().giveItem(item)
-     * }
+     *    // {id:"minecraft:stone",Count:1b,Damage:0s}
+     *    c.send(stone.serialize());
      * }</pre>
      *
      * @return an item stack with an item specified by ID, or an empty item
@@ -276,11 +273,10 @@ public interface IScriptFactory
      * Create an item stack with block ID and count.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val item : IScriptItemStack = mappet.createBlockItem("minecraft:dirt", 64)
+     *    var stone = mappet.createBlockItem("minecraft:stone", 64);
      *
-     *     c.getSubject().giveItem(item)
-     * }
+     *    // {id:"minecraft:stone",Count:64b,Damage:0s}
+     *    c.send(stone.serialize());
      * }</pre>
      *
      * @return an item stack with an item specified by ID, or an empty item
@@ -295,11 +291,10 @@ public interface IScriptFactory
      * Create an item stack with block ID, count and meta.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val item : IScriptItemStack = mappet.createBlockItem("minecraft:dirt", 64, 1)
+     *    var andesite = mappet.createBlockItem("minecraft:stone", 64, 5);
      *
-     *     c.getSubject().giveItem(item)
-     * }
+     *    // {id:"minecraft:stone",Count:64b,Damage:5s}
+     *    c.send(andesite.serialize());
      * }</pre>
      *
      * @return an item stack with block specified by ID, or an empty item
@@ -315,12 +310,10 @@ public interface IScriptFactory
      * typing in <code>/particle</code> and a space).</p>
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val explode : EnumParticleTypes = mappet.getParticleType("explode")
-     *     val pos : ScriptVector = c.getSubject().getPosition()
+     *    var explode = mappet.getParticleType("explode");
+     *    var pos = c.getSubject().getPosition();
      *
-     *     c.getWorld().spawnParticles(explode, true, pos.x, pos.y + 1, pos.z, 50, 0.5, 0.5, 0.5, 0.1)
-     * }
+     *    c.getWorld().spawnParticles(explode, true, pos.x, pos.y + 1, pos.z, 50, 0.5, 0.5, 0.5, 0.1);
      * }</pre>
      */
     public EnumParticleTypes getParticleType(String type);
@@ -333,10 +326,9 @@ public interface IScriptFactory
      * typing in <code>/particle Player</code> and a space).</p>
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val slowness : Potion = mappet.getPotion("slowness")
-     *     c.getSubject().applyPotion(slowness, 200, 1, false)
-     * }
+     *    var slowness = mappet.getPotion("slowness");
+     *
+     *    c.getSubject().applyPotion(slowness, 200, 1, false);
      * }</pre>
      */
     public Potion getPotion(String type);
@@ -345,12 +337,10 @@ public interface IScriptFactory
      * Create a morph out of string NBT.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val morph : AbstractMorph = mappet.createMorph("{Name:\"blockbuster.alex\"}")
+     *    var morph = mappet.createMorph("{Name:\"blockbuster.alex\"}");
      *
-     *     // Assuming c.getSubject() is a player or an NPC
-     *     c.getSubject().setMorph(morph)
-     * }
+     *    // Assuming c.getSubject() is a player
+     *    c.getSubject().setMorph(morph);
      * }</pre>
      */
     public default AbstractMorph createMorph(String nbt)
@@ -362,16 +352,14 @@ public interface IScriptFactory
      * Create a morph out of NBT.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val tag : INBTCompound = mappet.createCompound()
+     *    var tag = mappet.createCompound();
      *
-     *     tag.setString("Name", "blockbuster.alex")
+     *    tag.setString("Name", "blockbuster.alex");
      *
-     *     val morph : AbstractMorph = mappet.createMorph(tag)
+     *    var morph = mappet.createMorph(tag);
      *
-     *     // Assuming c.getSubject() is a player
-     *     c.getSubject().setMorph(morph)
-     * }
+     *    // Assuming c.getSubject() is a player
+     *    c.getSubject().setMorph(morph);
      * }</pre>
      */
     public AbstractMorph createMorph(INBTCompound compound);
@@ -481,15 +469,13 @@ public interface IScriptFactory
      * Get a global arbitrary object.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     var number = mappet.get("number")
+     *    var number = mappet.get("number");
      *
-     *     if (number == null)
-     *     {
-     *         number = 42
-     *         mappet.set("number", number)
-     *     }
-     * }
+     *    if (number === null || number === undefined)
+     *    {
+     *        number = 42;
+     *        mappet.set("number", number);
+     *    }
      * }</pre>
      */
     public Object get(String key);
@@ -499,15 +485,13 @@ public interface IScriptFactory
      * can access this data too).
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     var number = mappet.get("number")
+     *    var number = mappet.get("number");
      *
-     *     if (number == null)
-     *     {
-     *         number = 42
-     *         mappet.set("number", number)
-     *     }
-     * }
+     *    if (number === null || number === undefined)
+     *    {
+     *        number = 42;
+     *        mappet.set("number", number);
+     *    }
      * }</pre>
      */
     public void set(String key, Object object);
@@ -517,10 +501,9 @@ public interface IScriptFactory
      * what fields and methods are available for use).
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     var morph : AbstractMorph = mappet.createMorph("{Name:\"blockbuster.alex\"}")
-     *     c.send(mappet.dump(morph))
-     * }
+     *    var morph = mappet.createMorph("{Name:\"blockbuster.alex\"}");
+     *
+     *    c.send(mappet.dump(morph));
      * }</pre>
      */
     public default String dump(Object object)
@@ -533,11 +516,9 @@ public interface IScriptFactory
      * available for use).
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *    var morph : AbstractMorph= mappet.createMorph("{Name:\"blockbuster.alex\"}");
+     *    var morph = mappet.createMorph("{Name:\"blockbuster.alex\"}");
      *
      *    c.send(mappet.dump(morph, true));
-     * }
      * }</pre>
      *
      * @param simple Whether you want to see simple or full information about
@@ -550,10 +531,9 @@ public interface IScriptFactory
      * including the maximum value).
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val randomNumber : Double = mappet.random(10.0)
-     *     c.send("${randomNumber}")
-     * }
+     *    var randomNumber = mappet.random(10);
+     *
+     *    c.send(randomNumber);
      * }</pre>
      *
      * @param max Maximum value.
@@ -565,10 +545,9 @@ public interface IScriptFactory
      * (but not including the maximum value).
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val randomNumber : Double = mappet.random(5.0, 10.0)
-     *     c.send("${randomNumber}")
-     * }
+     *    var randomNumber = mappet.random(5, 10);
+     *
+     *    c.send(randomNumber);
      * }</pre>
      *
      * @param min Minimum value.
@@ -581,10 +560,9 @@ public interface IScriptFactory
      * (but not including the maximum value) with given seed.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val randomNumber = mappet.random(5.0, 10.0, 4141241)
-     *     c.send(randomNumber.toString()) //8.016058986062115
-     * }
+     *    var randomNumber = mappet.random(5, 10, 4141241);
+     *
+     *    c.send(randomNumber);
      * }</pre>
      *
      * @param min Minimum value.
@@ -603,10 +581,9 @@ public interface IScriptFactory
      * italic, reset.</p>
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val style = mappet.style("dark_blue", "bold", "underline")
-     *     c.send(style + "This text is in blue!")
-     * }
+     *    var style = mappet.style("dark_blue", "bold", "underline");
+     *
+     *    c.send(style + "This text is in blue!");
      * }</pre>
      *
      * @param codes An enumeration of formatting codes.
@@ -617,6 +594,21 @@ public interface IScriptFactory
      * Return a mappet logger instance.
      */
     public IMappetLogger getLogger();
+
+    /**
+     * Return a mappet entity/player/npc by given minecraft entity.
+     *
+     * <pre>{@code
+     * function main(c)
+     * {
+     *     var s = c.getSubject();
+     *     var minecraftPlayer = s.minecraftPlayer;
+     *     var mappetPlayer = mappet.getMappetEntity(minecraftPlayer);
+     *     c.send(mappetPlayer.name);
+     * }
+     * }</pre>
+     */
+    public IScriptEntity getMappetEntity(Entity minecraftEntity);
 
     /* Vector math */
 
@@ -640,15 +632,13 @@ public interface IScriptFactory
      * Create a 2D vector.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val a = mappet.vector2(1.0, 0.0)
-     *     val b = mappet.vector2(-1.0, 1.0)
+     *    var a = mappet.vector2(1, 0);
+     *    var b = mappet.vector2(-1, 1);
      *
-     *     a.normalize()
-     *     b.normalize()
+     *    a.normalize();
+     *    b.normalize();
      *
-     *     c.send("Dot product of a and b is: ${a.dot(b)}")
-     * }
+     *    c.send("Dot product of a and b is: " + a.dot(b));
      * }</pre>
      */
     public default Vector2d vector2(double x, double y)
@@ -660,18 +650,17 @@ public interface IScriptFactory
      * Copy a 2D vector.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val a = mappet.vector2(25.0, 17.0)
-     *     val b = mappet.vector2(a)
+     *    var a = mappet.vector2(25, 17);
+     *    var b = mappet.vector2(a);
      *
-     *     b.x += 40
-     *     b.y -= 5
+     *    b.x += 40;
+     *    b.y -= 5;
      *
-     *     val d = mappet.vector2(b)
-     *     d.sub(a)
+     *    var d = mappet.vector2(b);
      *
-     *     c.send("Distance between a and b is: ${d.length()}")
-     * }
+     *    d.sub(a);
+     *
+     *    c.send("Distance between a and b is: " + d.length());
      * }</pre>
      */
     public default Vector2d vector2(Vector2d v)
@@ -691,16 +680,14 @@ public interface IScriptFactory
      * Create a 3D vector.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val pos = c.getSubject().getPosition()
-     *     val a = mappet.vector3(pos.x, pos.y, pos.z)
-     *     val b = mappet.vector3(10.0, 4.0, 50.0)
+     *    var look = c.getSubject().getLook();
+     *    var a = mappet.vector3(look.x, look.y, look.z);
+     *    var b = mappet.vector3(0, 0, 1);
      *
-     *     val d = mappet.vector3(b)
-     *     d.sub(a)
+     *    a.normalize();
+     *    b.normalize();
      *
-     *     c.send("Distance between you and point (10, 4, 50) is: ${d.length()}")
-     * }
+     *    c.send("Dot product of entity's look vector and positive Z is: " + a.dot(b));
      * }</pre>
      */
     public default Vector3d vector3(double x, double y, double z)
@@ -712,14 +699,15 @@ public interface IScriptFactory
      * Copy a 3D vector.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val pos = c.getSubject().getPosition()
-     *     val a = mappet.vector3(pos.x, pos.y, pos.z)
-     *     val b = mappet.vector3(10.0, 4.0, 50.0)
-     *     val d = mappet.vector3(b)
-     *     d.sub(a)
-     *     c.send("Distance between you and point (10, 4, 50) is: ${d.length()}")
-     * }
+     *    var pos = c.getSubject().getPosition();
+     *    var a = mappet.vector3(pos.x, pos.y, pos.z);
+     *    var b = mappet.vector3(10, 4, 50);
+     *
+     *    var d = mappet.vector3(b);
+     *
+     *    d.sub(a);
+     *
+     *    c.send("Distance between you and point (10, 4, 50) is: " + d.length());
      * }</pre>
      */
     public default Vector3d vector3(Vector3d v)
@@ -755,15 +743,13 @@ public interface IScriptFactory
      * Create an identity 3x3 matrix.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val v = mappet.vector3(0.0, 0.0, 1.0)
-     *     val rotation = mappet.matrix3()
+     *    var v = mappet.vector3(0, 0, 1);
+     *    var rotation = mappet.matrix3();
      *
-     *     rotation.rotY(Math.PI / 2)
-     *     rotation.transform(v)
+     *    rotation.rotY(Math.PI / 2);
+     *    rotation.transform(v);
      *
-     *     c.send("Final point is: ${v}")
-     * }
+     *    c.send("Final point is: " + v);
      * }</pre>
      */
     public default Matrix3d matrix3()
@@ -787,19 +773,18 @@ public interface IScriptFactory
      * Create an identity 4x4 matrix.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val v = mappet.vector4(0.0, 0.0, 1.0, 1.0)
-     *     val rotation = mappet.matrix4()
+     *    var v = mappet.vector4(0, 0, 1, 1);
+     *    var rotation = mappet.matrix4();
      *
-     *     rotation.rotY(Math.PI / 2)
+     *    rotation.rotY(Math.PI / 2);
      *
-     *     val translation = mappet.matrix4()
-     *     translation.setTranslation(mappet.vector3(0.0, 4.0, 0.0))
-     *     rotation.mul(translation)
-     *     rotation.transform(v)
+     *    var translation = mappet.matrix4();
      *
-     *     c.send("Final point is: " + v.x + ", " + v.y + ", " + v.z)
-     * }
+     *    translation.setTranslation(mappet.vector3(0, 4, 0));
+     *    rotation.mul(translation);
+     *    rotation.transform(v);
+     *
+     *    c.send("Final point is: " + v.x + ", " + v.y + ", " + v.z);
      * }</pre>
      */
     public default Matrix4d matrix4()
@@ -832,8 +817,12 @@ public interface IScriptFactory
      * This method works with different vector types (2D, 3D, and 4D).
      *
      * <pre>{@code
-     * // import does not work for some reason
-     * // but this method can be replaced using ScriptBox
+     *   var pos = c.getSubject().getPosition();
+     *   var point = mappet.vector3(pos.x, pos.y, pos.z);
+     *   var bound1 = mappet.vector3(0, 0, 0);
+     *   var bound2 = mappet.vector3(10, 10, 10);
+     *   var isInside = mappet.isPointInBounds(point, bound1, bound2);
+     *   c.send("Is the point inside the bounding volume? " + isInside);
      * }</pre>
      *
      * @param point The position of the point to check.

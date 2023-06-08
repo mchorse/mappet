@@ -19,14 +19,11 @@ import java.util.Set;
  * <p>This interface represents a player entity.</p>
  *
  * <pre>{@code
- *    fun main(c: IScriptEvent) {
+ *    function main(c)
  *    {
- *        val subject : IScriptEntity = c.getSubject();
- *        val player : IScriptPlayer? = subject as? IScriptPlayer;
- *
- *        if (subject.isPlayer())
+ *        if (c.getSubject().isPlayer())
  *        {
- *            (subject as? IScriptPlayer)?.send("Hello, ${subject.getName()}!");
+ *            // Do something with the player...
  *        }
  *    }
  * }</pre>
@@ -44,11 +41,13 @@ public interface IScriptPlayer extends IScriptEntity
      *
      * <pre>{@code
      *    // Assuming that c.getSubject() is a player
-     *    val subject : IScriptEntity = c.getSubject();
-     *    val player : IScriptPlayer? = subject as? IScriptPlayer;
-     *    val gamemode : int = player?.getGameMode();
+     *    var player = c.getSubject();
+     *    var gamemode = player.getGameMode();
      *
-     *    player.send("You're in gamemode ${gamemode}");
+     *    if (gamemode === 0)
+     *    {
+     *        player.send("You're in survival mode!");
+     *    }
      * }</pre>
      *
      * @return Player's game mode as an integer, <code>0</code> is survival, <code>1</code>
@@ -61,12 +60,11 @@ public interface IScriptPlayer extends IScriptEntity
      *
      * <pre>{@code
      *    // Assuming that c.getSubject() is a player
-     *    val subject : IScriptEntity = c.getSubject();
-     *    val player : IScriptPlayer? = subject as? IScriptPlayer;
-     *    val gamemode : int = player?.getGameMode();
+     *    var player = c.getSubject();
+     *    var gamemode = c.getSubject().getGameMode();
      *
      *    // When player exits the mining region, set their game mode back to adventure
-     *    if (gamemode == 0 && !player.getStates().has("region.mining_factory"))
+     *    if (gamemode === 0 && !player.getStates().has("region.mining_factory"))
      *    {
      *        player.setGameMode(2);
      *    }
@@ -81,10 +79,9 @@ public interface IScriptPlayer extends IScriptEntity
      * Get player's inventory.
      *
      * <pre>{@code
-     *    val subject : IScriptEntity = c.getSubject();
-     *    val player : IScriptPlayer? = subject as? IScriptPlayer;
-     *    val inventory : IScriptInventory = player?.getInventory();
-     *    val item : IScriptItemStack = mappet.createItem("minecraft:diamond_sword");
+     *    // Assuming that c.getSubject() is a player
+     *    var inventory = c.getSubject().getInventory();
+     *    var item = mappet.createItem("minecraft:diamond_sword");
      *
      *    // This will change the first slot in the hotbar to a diamond sword
      *    inventory.setStack(0, item);
@@ -96,10 +93,9 @@ public interface IScriptPlayer extends IScriptEntity
      * Get player's ender chest inventory.
      *
      * <pre>{@code
-     *    val subject : IScriptEntity = c.getSubject();
-     *    val player : IScriptPlayer? = subject as? IScriptPlayer;
-     *    val inventory : IScriptInventory = player?.getEnderChest();
-     *    val item : IScriptItemStack = mappet.createItem("minecraft:diamond_sword");
+     *    // Assuming that c.getSubject() is a player
+     *    var inventory = c.getSubject().getEnderChest();
+     *    var item = mappet.createItem("minecraft:diamond_sword");
      *
      *    // This will change the first slot in player's ender chest to a diamond sword
      *    inventory.setStack(0, item);
@@ -111,11 +107,10 @@ public interface IScriptPlayer extends IScriptEntity
      * Executes a command as a player.
      *
      * <pre>{@code
-     *    val subject : IScriptEntity = c.getSubject();
-     *    val player : IScriptPlayer? = subject as? IScriptPlayer;
-     *
-     *    // This will execute the command as the player
-     *    player?.executeCommand("/say Hello, world!");
+     *    function main(c)
+     *    {
+     *        c.getSubject().executeCommand("/kill");
+     *    }
      * }</pre>
      */
     public void executeCommand(String command);
@@ -124,12 +119,7 @@ public interface IScriptPlayer extends IScriptEntity
      * Sets the player's spawn point.
      *
      * <pre>{@code
-     *    val subject : IScriptEntity = c.getSubject();
-     *    val player : IScriptPlayer? = subject as? IScriptPlayer;
-     *    var playerPosition : ScriptVector = player?.getPosition();
-     *
-     *    // This will set the player's spawn point to the current position
-     *    player?.setSpawnPoint(playerPosition.x, playerPosition.y, playerPosition.z);
+     *   c.getSubject().setSpawnPoint(0, 0, 0);
      * }</pre>
      */
     public void setSpawnPoint(double x, double y, double z);
@@ -138,12 +128,8 @@ public interface IScriptPlayer extends IScriptEntity
      * Gets the player's spawn point.
      *
      * <pre>{@code
-     *     val subject : IScriptEntity = c.getSubject();
-     *     val player : IScriptPlayer? = subject as? IScriptPlayer;
-     *     var playerSpawnPoint : ScriptVector = player?.getSpawnPoint();
-     *
-     *     // This will send the player's spawn point to the player
-     *     player?.send("Your spawn point is: ${playerSpawnPoint.x}, ${playerSpawnPoint.y}, ${playerSpawnPoint.z}");
+     *   var spawnPoint = c.getSubject().getSpawnPoint();
+     *   c.send("Spawn point: " + spawnPoint.x + ", " + spawnPoint.y + ", " + spawnPoint.z);
      * }</pre>
      */
     public ScriptVector getSpawnPoint();
@@ -152,11 +138,9 @@ public interface IScriptPlayer extends IScriptEntity
      * Returns if the player is flying.
      *
      * <pre>{@code
-     *    val subject : IScriptEntity = c.getSubject();
-     *    val player : IScriptPlayer? = subject as? IScriptPlayer;
-     *
-     *    // This will send the player's flying state to the player
-     *    player?.send("Are you flying? ${player?.isFlying()}");
+     *    function main(c) {
+     *        c.send("Is the player flying? " + c.getSubject().isFlying());
+     *    }
      * }</pre>
      */
     public boolean isFlying();
@@ -165,12 +149,9 @@ public interface IScriptPlayer extends IScriptEntity
      * Returns if the walk speed of the player.
      *
      * <pre>{@code
-     *    val subject : IScriptEntity = c.getSubject();
-     *    val player : IScriptPlayer? = subject as? IScriptPlayer;
-     *    val walkSpeed : float = player?.getWalkSpeed();
-     *
-     *    // This will send the player's walk speed to the player
-     *    player?.send("Your walk speed is: ${walkSpeed}");
+     *    function main(c) {
+     *        c.send("The walk speed of the player is: " + c.getSubject().getWalkSpeed());
+     *    }
      * }</pre>
      */
     public float getWalkSpeed();
@@ -179,12 +160,10 @@ public interface IScriptPlayer extends IScriptEntity
      * Returns if the flight speed of the player.
      *
      * <pre>{@code
-     *     val subject : IScriptEntity = c.getSubject();
-     *     val player : IScriptPlayer? = subject as? IScriptPlayer;
-     *     val flySpeed : float = player?.getFlySpeed();
-     *
-     *     // This will send the player's flight speed to the player
-     *     player?.send("Your flight speed is: ${flySpeed}");
+     *    function main(c)
+     *    {
+     *        c.send("The flight speed of the player is: " + c.getSubject().getFlySpeed());
+     *    }
      * }</pre>
      */
     public float getFlySpeed();
@@ -193,11 +172,10 @@ public interface IScriptPlayer extends IScriptEntity
      * Set the walk speed of the player.
      *
      * <pre>{@code
-     *    val subject : IScriptEntity = c.getSubject();
-     *    val player : IScriptPlayer? = subject as? IScriptPlayer;
-     *
-     *    // This will set the player's walk speed to 0.5
-     *    player?.setWalkSpeed(0.5);
+     *    function main(c)
+     *    {
+     *        c.getSubject().setWalkSpeed(0.5);
+     *    }
      * }</pre>
      */
     public void setWalkSpeed(float speed);
@@ -206,11 +184,10 @@ public interface IScriptPlayer extends IScriptEntity
      * Set the flight speed of the player.
      *
      * <pre>{@code
-     *    val subject : IScriptEntity = c.getSubject();
-     *    val player : IScriptPlayer? = subject as? IScriptPlayer;
-     *
-     *    // This will set the player's flight speed to 0.5
-     *    player?.setFlySpeed(0.5);
+     *    function main(c)
+     *    {
+     *        c.getSubject().setFlySpeed(0.5);
+     *    }
      * }</pre>
      */
     public void setFlySpeed(float speed);
@@ -219,11 +196,10 @@ public interface IScriptPlayer extends IScriptEntity
      * Reset the flight speed of the player.
      *
      * <pre>{@code
-     *    val subject : IScriptEntity = c.getSubject();
-     *    val player : IScriptPlayer? = subject as? IScriptPlayer;
-     *
-     *    // This will reset the player's flight speed
-     *    player?.resetFlySpeed();
+     *    function main(c)
+     *    {
+     *        c.getSubject().resetFlySpeed();
+     *    }
      * }</pre>
      */
     public default void resetFlySpeed()
@@ -235,11 +211,10 @@ public interface IScriptPlayer extends IScriptEntity
      * Reset the walking speed of the player.
      *
      * <pre>{@code
-     *    val subject : IScriptEntity = c.getSubject();
-     *    val player : IScriptPlayer? = subject as? IScriptPlayer;
-     *
-     *    // This will reset the player's walk speed
-     *    player?.resetWalkSpeed();
+     *    function main(c)
+     *    {
+     *        c.getSubject().resetWalkSpeed();
+     *    }
      * }</pre>
      */
     public default void resetWalkSpeed()
@@ -251,10 +226,13 @@ public interface IScriptPlayer extends IScriptEntity
      * Get cooldown of a particular inventory index of the player.
      *
      * <pre>{@code
-     *    fun main(c: IScriptEvent) {
-     *        val player = c.getSubject() as? IScriptPlayer ?: return
-     *        val cooldown = player.getCooldown(player.getMainItemInventoryIndex()) // tip: 40 is the offhand slot
-     *        c.send("The held item is on cooldown for $cooldown ticks.")
+     * function main(c)
+     * {
+     *     var player = c.getSubject();
+     *     var cooldown = player.getCooldown(40); // tip: 40 is the offhand slot
+     *
+     *     c.send(The held item cooldown " + ((1 - cooldown) * 100) + " percent expired.");
+     * }
      * }</pre>
      */
     public default float getCooldown(int inventorySlot)
@@ -266,12 +244,13 @@ public interface IScriptPlayer extends IScriptEntity
      * Get cooldown of a particular inventory index of the player.
      *
      * <pre>{@code
-     *    fun main(c: IScriptEvent) {
-     *        val player = c.getSubject() as? IScriptPlayer ?: return
-     *        val item : IScriptItemStack = mappet.createItem("minecraft:diamond_sword")
-     *        val cooldown = player.getCooldown(item)
+     *    function main(c)
+     *    {
+     *        var player = c.getSubject();
+     *        var item = mappet.createItem("minecraft:diamond_sword");
+     *        var cooldown = player.getCooldown(item);
      *
-     *        c.send("The held item cooldown ${((1 - cooldown) * 100)} percent expired.")
+     *        c.send(The held item cooldown " + ((1 - cooldown) * 100) + " percent expired.");
      *    }
      * }</pre>
      */
@@ -281,12 +260,12 @@ public interface IScriptPlayer extends IScriptEntity
      * Set cooldown of a particular inventory index of the player.
      *
      * <pre>{@code
-     *    val subject : IScriptEntity = c.getSubject();
-     *    val player : IScriptPlayer? = subject as? IScriptPlayer;
-     *    val item : IScriptItemStack = mappet.createItem("minecraft:diamond_sword");
-     *    val ticks : int = 100;
+     *    function main(c)
+     *    {
+     *        var player = c.getSubject();
      *
-     *    player.setCooldown(player.getMainItemInventoryIndex(), 100); // tip: 40 is the offhand slot
+     *        player.setCooldown(player.getHotbarIndex(), 100); // tip: 40 is the offhand slot
+     *    }
      * }</pre>
      */
     public default void setCooldown(int inventorySlot, int ticks)
@@ -298,13 +277,13 @@ public interface IScriptPlayer extends IScriptEntity
      * Set cooldown for given item.
      *
      * <pre>{@code
-     *    val subject : IScriptEntity = c.getSubject();
-     *    val player : IScriptPlayer? = subject as? IScriptPlayer;
-     *    val item : IScriptItemStack = mappet.createItem("minecraft:diamond_sword");
-     *    val ticks : int = 100;
+     *    function main(c)
+     *    {
+     *        var player = c.getSubject();
+     *        var item = mappet.createItem("minecraft:diamond_sword");
      *
-     *    player.setCooldown(item, ticks);
-     *    player.send("The item is now on cooldown for ${ticks} ticks.");
+     *        player.setCooldown(item.getItem(), 100);
+     *    }
      * }</pre>
      */
     public void setCooldown(IScriptItemStack item, int ticks);
@@ -313,10 +292,12 @@ public interface IScriptPlayer extends IScriptEntity
      * Reset cooldown for given item.
      *
      * <pre>{@code
-     *    val subject : IScriptEntity = c.getSubject();
-     *    val player : IScriptPlayer? = subject as? IScriptPlayer;
+     *    function main(c)
+     *    {
+     *        var player = c.getSubject();
      *
-     *    player.resetCooldown(player.getMainItemInventoryIndex()); // tip: 40 is the offhand slot
+     *        player.resetCooldown(player.getMainItemInventoryIndex()); // tip: 40 is the offhand slot
+     *    }
      * }</pre>
      */
     public default void resetCooldown(int inventorySlot)
@@ -328,13 +309,13 @@ public interface IScriptPlayer extends IScriptEntity
      * Reset cooldown of a particular inventory index of the player.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val subject: IScriptEntity = c.getSubject()
-     *     val player: IScriptPlayer? = subject as? IScriptPlayer
-     *     val item: IScriptItemStack = mappet.createItem("minecraft:diamond_sword")
+     *    function main(c)
+     *    {
+     *        var player = c.getSubject();
+     *        var item = mappet.createItem("minecraft:diamond_sword");
      *
-     *     player?.resetCooldown(item.getItem())
-     * }
+     *        player.resetCooldown(item.getItem());
+     *    }
      * }</pre>
      */
     public void resetCooldown(IScriptItemStack item);
@@ -343,12 +324,12 @@ public interface IScriptPlayer extends IScriptEntity
      * Get the inventory index of main item. Useful for e.g. main hand's cooldown methods.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val subject: IScriptEntity = c.getSubject()
-     *     val player: IScriptPlayer? = subject as? IScriptPlayer
+     *    function main(c)
+     *    {
+     *        var player = c.getSubject();
      *
-     *     player?.setCooldown(player.getMainItemInventoryIndex(), 100) // tip: 40 is the offhand slot
-     * }
+     *        player.setCooldown(player.getHotbarIndex(), 100); //tip: 40 is the offhand slot
+     *    }
      * }</pre>
      */
     public int getHotbarIndex();
@@ -362,12 +343,9 @@ public interface IScriptPlayer extends IScriptEntity
      * Send a message to this player.
      *
      * <pre>{@code
-     *    fun main(c: IScriptEvent) {
-     *        c.send("I love all my players equally.");
-     *        val subject : IScriptEntity = c.getSubject();
-     *        val player : IScriptPlayer? = subject as? IScriptPlayer;
-     *        player?.send("...but between you and me, you're my favorite player ;)");
-     *    }
+     *    // Assuming that c.getSubject() is a player
+     *    c.send("I love all my players equally.");
+     *    c.getSubject().send("...but between you and me, you're my favorite player ;)");
      * }</pre>
      */
     public void send(String message);
@@ -376,17 +354,13 @@ public interface IScriptPlayer extends IScriptEntity
      * Send a message to this player using text component (like <code>/tellraw</code> command).
      *
      * <pre>{@code
-     *    fun main(c: IScriptEvent) {
-     *        val message : INBTCompound = mappet.createCompound();
+     *    var message = mappet.createCompound();
      *
-     *        message.setString("text", "This message displays an item...");
-     *        message.setString("color", "gold");
-     *        message.setNBT("hoverEvent",'''{action:"show_item",value:"{id:\"minecraft:diamond_hoe\",Count:1b}"}''');
+     *    message.setString("text", "This message displays an item...");
+     *    message.setString("color", "gold");
+     *    message.setNBT("hoverEvent",'{action:"show_item",value:"{id:\\"minecraft:diamond_hoe\\",Count:1b}"}');
      *
-     *        val subject : IScriptEntity = c.getSubject();
-     *        val player : IScriptPlayer? = subject as? IScriptPlayer;
-     *        player?.sendRaw(message);
-     *    }
+     *    c.getSubject().sendRaw(message);
      * }</pre>
      */
     public void sendRaw(INBT message);
@@ -395,14 +369,11 @@ public interface IScriptPlayer extends IScriptEntity
      * Get player's skin.
      *
      * <pre>{@code
-     *    fun main(c: IScriptEvent) {
-     *        val subject : IScriptEntity = c.getSubject();
-     *        val player : IScriptPlayer? = subject as? IScriptPlayer;
-     *        val skin = player?.getSkin() ?: ""
-     *        val morph : AbstractMorph = mappet.createMorph("""{Name:"blockbuster.fred",Skin:"$skin",Pose:"dabbing"}""")
+     *    // Assuming that c.getSubject() is a player
+     *    var player = c.getSubject();
+     *    var morph = mappet.createMorph('{Name:"blockbuster.fred",Skin:"' + player.getSkin() + '",Pose:"dabbing"}');
      *
-     *        player?.setMorph(morph);
-     *    }
+     *    player.setMorph(morph);
      * }</pre>
      *
      * @return Resource location in format of "minecraft:skins/..." (which can be used in morphs)
@@ -420,14 +391,11 @@ public interface IScriptPlayer extends IScriptEntity
      * fadeOut = <code>20</code> ticks.</p>
      *
      * <pre>{@code
-     *    fun main(c: IScriptEvent) {
-     *        val subject : IScriptEntity = c.getSubject();
-     *        val player : IScriptPlayer? = subject as? IScriptPlayer;
+     *    var player = c.getSubject();
      *
-     *        player?.sendTitleDurations(5, 10, 5);
-     *        player?.sendTitle("Quick!");
-     *        player?.sendSubtitle("Get into cover!");
-     *    }
+     *    player.sendTitleDurations(5, 10, 5);
+     *    player.sendTitle("Quick!");
+     *    player.sendSubtitle("Get into cover!");
      * }</pre>
      *
      * @param fadeIn  How many ticks it will take for title and subtitle to appear.
@@ -440,12 +408,7 @@ public interface IScriptPlayer extends IScriptEntity
      * Send the title to this player that will be displayed in the middle of the screen.
      *
      * <pre>{@code
-     *    fun main(c: IScriptEvent) {
-     *        val subject : IScriptEntity = c.getSubject();
-     *        val player : IScriptPlayer? = subject as? IScriptPlayer;
-     *
-     *        player?.sendTitle("Hello, world!");
-     *    }
+     *    c.getSubject().sendTitle("Hello, world!");
      * }</pre>
      */
     public void sendTitle(String title);
@@ -456,13 +419,8 @@ public interface IScriptPlayer extends IScriptEntity
      * for subtitle to appear.
      *
      * <pre>{@code
-     *    fun main(c: IScriptEvent) {
-     *        val subject : IScriptEntity = c.getSubject();
-     *        val player : IScriptPlayer? = subject as? IScriptPlayer;
-     *
-     *        player?.sendTitle("Hello,");
-     *        player?.sendSubtitle("world!");
-     *    }
+     *    c.getSubject().sendTitle("Hello,");
+     *    c.getSubject().sendSubtitle("world!");
      * }</pre>
      */
     public void sendSubtitle(String title);
@@ -470,15 +428,6 @@ public interface IScriptPlayer extends IScriptEntity
     /**
      * Send a message to this player that will be displayed in action bar. The duration
      * of action bar line is <code>60</code> ticks (<code>3</code> seconds).
-     *
-     * <pre>{@code
-     *    fun main(c: IScriptEvent) {
-     *        val subject : IScriptEntity = c.getSubject();
-     *        val player : IScriptPlayer? = subject as? IScriptPlayer;
-     *
-     *        player?.sendActionBar("This is an action bar message!");
-     *    }
-     * }</pre>
      */
     public void sendActionBar(String title);
 
@@ -491,14 +440,10 @@ public interface IScriptPlayer extends IScriptEntity
      *    // For more information of how levels work (i.e. how many points per
      *    // level to level up) see this table:
      *    // https://minecraft.fandom.com/wiki/Experience#Leveling_up
-     *    fun main(c: IScriptEvent) {
-     *        val subject : IScriptEntity = c.getSubject();
-     *        val player : IScriptPlayer? = subject as? IScriptPlayer;
      *
-     *        // Set player's XP level to 17 and half of the bar (level 17 has
-     *        // 42 points in total to level up)
-     *        player?.setXp(17, 21);
-     *    }
+     *    // Set player's XP level to 17 and half of the bar (level 17 has
+     *    // 42 points in total to level up)
+     *    c.getSubject().setXp(17, 21);
      * }</pre>
      *
      * @param level  Experience level.
@@ -507,17 +452,19 @@ public interface IScriptPlayer extends IScriptEntity
     public void setXp(int level, int points);
 
     /**
-     * Add experience points to this player.
+     * Add experience points to this player. Inputting more points than player's
+     * current level can contain will result into leveling up one or more times.
      *
      * <pre>{@code
-     *    fun main(c: IScriptEvent) {
-     *        val subject : IScriptEntity = c.getSubject();
-     *        val player : IScriptPlayer? = subject as? IScriptPlayer;
+     *    // For more information of how levels work (i.e. how many points per
+     *    // level to level up) see this table:
+     *    // https://minecraft.fandom.com/wiki/Experience#Leveling_up
      *
-     *        // Add 1000 experience points
-     *        player?.addXp(1000);
-     *    }
+     *    // Add 1000 experience points
+     *    c.getSubject().addXp(1000);
      * }</pre>
+     *
+     * @param points Amount of experience points to add to player.
      */
     public void addXp(int points);
 
@@ -525,15 +472,19 @@ public interface IScriptPlayer extends IScriptEntity
      * Get player's current experience level.
      *
      * <pre>{@code
-     *    fun main(c: IScriptEvent) {
-     *        val subject : IScriptEntity = c.getSubject();
-     *        val player : IScriptPlayer? = subject as? IScriptPlayer;
+     *    // For more information of how levels work (i.e. how many points per
+     *    // level to level up) see this table:
+     *    // https://minecraft.fandom.com/wiki/Experience#Leveling_up
      *
-     *        if (player?.getXpLevel() < 50) {
-     *            // Teleport the player out of the area
-     *            player.setPosition(10, 4, -15);
-     *            player.send("Come back when you're level\u00A7 50\u00A7r!");
-     *        }
+     *    var s = c.getSubject();
+     *
+     *    if (s.getXpLevel() < 50)
+     *    {
+     *        var section = "\u00A7";
+     *
+     *        // Teleport the player out of the area
+     *        s.setPosition(10, 4, -15);
+     *        s.send("Come back when you're level" + section + "7 50" + section + "r!");
      *    }
      * }</pre>
      */
@@ -563,12 +514,10 @@ public interface IScriptPlayer extends IScriptEntity
      * command, or script editor's sound picker.</p>
      *
      * <pre>{@code
-     *    fun main(c: IScriptEvent) {
-     *        val player : IScriptPlayer? = c.getSubject() as? IScriptPlayer;
-     *        val pos = player?.getPosition();
+     *    var player = c.getSubject();
+     *    var pos = player.getPosition();
      *
-     *        player?.playSound("minecraft:entity.pig.ambient", pos.x, pos.y, pos.z);
-     *    }
+     *    player.playSound("minecraft:entity.pig.ambient", pos.x, pos.y, pos.z);
      * }</pre>
      */
     public default void playSound(String event, double x, double y, double z)
@@ -580,12 +529,10 @@ public interface IScriptPlayer extends IScriptEntity
      * Play a sound event only to this player at specific sound channel.
      *
      * <pre>{@code
-     *    fun main(c: IScriptEvent) {
-     *        val player : IScriptPlayer? = c.getSubject() as? IScriptPlayer;
-     *        val pos = player?.getPosition();
+     *    var player = c.getSubject();
+     *    var pos = player.getPosition();
      *
-     *        player?.playSound("minecraft:entity.pig.ambient", "voice", pos.x, pos.y, pos.z);
-     *    }
+     *    player.playSound("minecraft:entity.pig.ambient", "voice", pos.x, pos.y, pos.z);
      * }</pre>
      */
     public void playSound(String event, String soundCategory, double x, double y, double z);
@@ -594,12 +541,10 @@ public interface IScriptPlayer extends IScriptEntity
      * Play a sound event only to this player with volume and pitch at specific channel.
      *
      * <pre>{@code
-     *    fun main(c: IScriptEvent) {
-     *        val player : IScriptPlayer? = c.getSubject() as? IScriptPlayer;
-     *        val pos = player?.getPosition();
+     *    var player = c.getSubject();
+     *    var pos = player.getPosition();
      *
-     *        player?.playSound("minecraft:entity.pig.ambient", "voice", pos.x, pos.y, pos.z, 1.0, 0.8);
-     *    }
+     *    player.playSound("minecraft:entity.pig.ambient", "voice", pos.x, pos.y, pos.z, 1.0, 0.8);
      * }</pre>
      */
     public void playSound(String event, String soundCategory, double x, double y, double z, float volume, float pitch);
@@ -608,12 +553,10 @@ public interface IScriptPlayer extends IScriptEntity
      * Play a sound event only to this player with volume and pitch.
      *
      * <pre>{@code
-     *    fun main(c: IScriptEvent) {
-     *        val player : IScriptPlayer? = c.getSubject() as? IScriptPlayer;
-     *        val pos = player?.getPosition();
+     *    var player = c.getSubject();
+     *    var pos = player.getPosition();
      *
-     *        player?.playSound("minecraft:entity.pig.ambient", pos.x, pos.y, pos.z, 1.0, 0.8);
-     *    }
+     *    player.playSound("minecraft:entity.pig.ambient", pos.x, pos.y, pos.z, 1.0, 0.8);
      * }</pre>
      */
     public void playSound(String event, double x, double y, double z, float volume, float pitch);
@@ -622,11 +565,7 @@ public interface IScriptPlayer extends IScriptEntity
      * Stop all playing sound events for this player.
      *
      * <pre>{@code
-     *    fun main(c: IScriptEvent) {
-     *        val player : IScriptPlayer? = c.getSubject() as? IScriptPlayer;
-     *
-     *        player?.stopAllSounds();
-     *    }
+     *    c.getWorld().stopAllSounds();
      * }</pre>
      */
     public default void stopAllSounds()
@@ -638,11 +577,7 @@ public interface IScriptPlayer extends IScriptEntity
      * Stop specific sound event for this player.
      *
      * <pre>{@code
-     *    fun main(c: IScriptEvent) {
-     *        val player : IScriptPlayer? = c.getSubject() as? IScriptPlayer;
-     *
-     *        player?.stopSound("minecraft:entity.pig.ambient");
-     *    }
+     *    c.getWorld().stopSound("minecraft:entity.pig.ambient");
      * }</pre>
      */
     public default void stopSound(String event)
@@ -658,11 +593,7 @@ public interface IScriptPlayer extends IScriptEntity
      * Tab key. The list of sounds categories will be displayed.</p>
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *    val player : IScriptPlayer? = c.getSubject() as? IScriptPlayer;
-     *
-     *    player?.stopSound("minecraft:entity.pig.ambient", "voice");
-     * }
+     *    c.getWorld().stopSound("minecraft:entity.pig.ambient", "master");
      * }</pre>
      */
     public void stopSound(String event, String category);
@@ -674,15 +605,14 @@ public interface IScriptPlayer extends IScriptEntity
      * is that if player will get teleported, the sound will continue playing.</p>
      *
      * <pre>{@code
-     *    fun main(c: IScriptEvent) {
-     *        val player : IScriptPlayer? = c.getSubject() as? IScriptPlayer;
+     *    var player = c.getSubject();
      *
-     *        player?.playStaticSound("minecraft:block.portal.ambient", 1.0f, 0.8f);
+     *    player.playStaticSound("minecraft:block.portal.ambient", 1.0, 0.8);
      *
-     *        c.scheduleScript(20) { c ->
-     *            c.getSubject().setPosition(-15, 4, 561);
-     *        }
-     *    }
+     *    c.scheduleScript(20, function (c)
+     *    {
+     *        c.getSubject().setPosition(-15, 4, 561);
+     *    });
      * }</pre>
      */
     public void playStaticSound(String event, float volume, float pitch);
@@ -694,15 +624,14 @@ public interface IScriptPlayer extends IScriptEntity
      * is that if player will get teleported, the sound will continue playing.</p>
      *
      * <pre>{@code
-     *    fun main(c: IScriptEvent) {
-     *        val player : IScriptPlayer? = c.getSubject() as? IScriptPlayer;
+     *    var player = c.getSubject();
      *
-     *        player?.playStaticSound("minecraft:block.portal.ambient", "voice", 1.0f, 0.8f);
+     *    player.playStaticSound("minecraft:block.portal.ambient", "voice", 1.0, 0.8);
      *
-     *        c.scheduleScript(20) { c ->
-     *            c.getSubject().setPosition(-15, 4, 561);
-     *        }
-     *    }
+     *    c.scheduleScript(20, function (c)
+     *    {
+     *        c.getSubject().setPosition(-15, 4, 561);
+     *    });
      * }</pre>
      */
     public void playStaticSound(String event, String soundCategory, float volume, float pitch);
@@ -713,13 +642,12 @@ public interface IScriptPlayer extends IScriptEntity
      * Get entity's quests (if it has some, only players have quests).
      *
      * <pre>{@code
-     *    fun main(c: IScriptEvent) {
-     *        val player : IScriptPlayer? = c.getSubject() as? IScriptPlayer;
-     *        val quests : IMappetQuests = player?.getQuests();
+     *    // Assuming that c.getSubject() is a player
+     *    var quests = c.getSubject().getQuests();
      *
-     *        if (!quests.has("important_quest")) {
-     *            player.send("I think you should complete the main quest chain before attempting side quests...");
-     *        }
+     *    if (!quests.has("important_quest"))
+     *    {
+     *        c.getSubject().send("I think you should complete the main quest chain before attempting side quests...");
      *    }
      * }</pre>
      */
@@ -806,13 +734,8 @@ public interface IScriptPlayer extends IScriptEntity
      * Returns the faction of the npc as a string
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val player : IScriptPlayer? = c.getSubject() as? IScriptPlayer
-     *     var factions = "";
-     *     player?.getFactions()?.forEach { faction ->
-     *         factions += faction + ", "
-     *     }
-     *     player?.send("Your factions are: $factions")
+     * for each (var faction in c.getSubject().getFactions()){
+     *    c.send(faction)
      * }
      * }</pre>
      */
@@ -863,13 +786,9 @@ public interface IScriptPlayer extends IScriptEntity
      * Get all HUD scenes (including global HUDs) that are currently displayed for this player.
      *
      * <pre>{@code
-     *    fun main(c: IScriptEvent) {
-     *        val subject : IScriptEntity = c.getSubject();
-     *        val player : IScriptPlayer? = subject as? IScriptPlayer;
-     *        val huds : INBTCompound = player?.getDisplayedHUDs();
-     *
-     *        println(huds);
-     *    }
+     *   var player = c.getSubject();
+     *   var huds = player.getDisplayedHUDs();
+     *   print(huds);
      * }</pre>
      */
     public INBTCompound getDisplayedHUDs();
@@ -878,13 +797,9 @@ public interface IScriptPlayer extends IScriptEntity
      * Get all global HUD scenes that are currently saved on player and displayed for him and other players.
      *
      * <pre>{@code
-     *    fun main(c: IScriptEvent) {
-     *        val subject : IScriptEntity = c.getSubject();
-     *        val player : IScriptPlayer? = subject as? IScriptPlayer;
-     *        val huds : INBTCompound = player?.getGlobalDisplayedHUDs();
-     *
-     *        println(huds);
-     *    }
+     *   var player = c.getSubject();
+     *   var huds = player.getGlobalDisplayedHUDs();
+     *   print(huds);
      * }</pre>
      */
     public INBTCompound getGlobalDisplayedHUDs();
@@ -894,11 +809,10 @@ public interface IScriptPlayer extends IScriptEntity
      * Plays an Aperture scene for this player.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val player : IScriptPlayer? = c.getSubject() as? IScriptPlayer
-     *     player?.playScene("scene_name")
-     * }
+     * c.getSubject().playScene("scene_name");
      * }</pre>
+     *
+     * @param sceneName Scene's ID.
      */
     public void playScene(String sceneName);
 
@@ -907,10 +821,7 @@ public interface IScriptPlayer extends IScriptEntity
      * Plays Aperture scenes for this player.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val player : IScriptPlayer? = c.getSubject() as? IScriptPlayer
-     *     player?.stopScene()
-     * }
+     * c.getSubject().stopScene();
      * }</pre>
      */
     public void stopScene();

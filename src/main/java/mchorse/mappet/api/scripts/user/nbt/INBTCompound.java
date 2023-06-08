@@ -146,11 +146,12 @@ public interface INBTCompound extends INBT
      * Set arbitrary NBT.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val compound: INBTCompound = mappet.createCompound()
-     *     compound.setNBT("stack", """{id:"minecraft:diamond",Count:64b}""")
-     *     c.send(compound.stringify())
-     * }
+     *    var compound = mappet.createCompound();
+     *
+     *    compound.setNBT("stack", '{id:"minecraft:diamond",Count:64b}');
+     *
+     *    // {stack:{id:"minecraft:diamond",Count:64b}}
+     *    print(compound.stringify());
      * }</pre>
      *
      * @return Whether given NBT code was successfully was inserted.
@@ -164,11 +165,10 @@ public interface INBTCompound extends INBT
      * null if the value is absent by given key.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val tag: INBTCompound = mappet.createCompound("""{id:"minecraft:diamond_hoe",Count:1b}""")
-     *     c.send(tag.get("id").toString())
-     *     c.send(tag.get("Count").toString())
-     * }
+     *     var tag = mappet.createCompound("{id:\"minecraft:diamond_hoe\",Count:1b}");
+     *
+     *     c.send(tag.get("id"));
+     *     c.send(tag.get("Count"));
      * }</pre>
      *
      * @param key the key of the value
@@ -180,11 +180,10 @@ public interface INBTCompound extends INBT
      * Check if this compound is equal to given compound (order of keys doesn't matter).
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val tag1: INBTCompound = mappet.createCompound("""{id:"minecraft:diamond_hoe",Count:1b}""")
-     *     val tag2: INBTCompound = mappet.createCompound("""{Count:1b,id:"minecraft:diamond_hoe"}""")
-     *     c.send(tag1.equals(tag2).toString())
-     * }
+     *     var tag1 = mappet.createCompound("{id:\"minecraft:diamond_hoe\",Count:1b}");
+     *     var tag2 = mappet.createCompound("{Count:1b,id:\"minecraft:diamond_hoe\"}");
+     *
+     *     c.send(tag1.equals(tag2));
      * }</pre>
      *
      * @param compound the compound to compare with
@@ -195,12 +194,10 @@ public interface INBTCompound extends INBT
      * Adds a new compound to this compound.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val tag: INBTCompound = mappet.createCompound()
-     *     tag.addCompound("compound")
-     *     (tag.get("compound") as INBTCompound).setString("x", "123")
-     *     c.send(tag.toString()) //{compound:{x:"123"}}
-     * }
+     *    var tag = mappet.createCompound();
+     *    tag.addCompound("compound");
+     *    tag.get("compound").setString("x", "123")
+     *    c.send(tag) //{compound:{x:"123"}}
      * }</pre>
      */
     public void addCompound(String key);
@@ -215,10 +212,8 @@ public interface INBTCompound extends INBT
      * effectively removing the type literal.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val tag: INBTCompound = mappet.createCompound("""{id:"minecraft:diamond_hoe",Count:1b}""")
-     *     c.send(tag.dumpJSON()) //{"id":"minecraft:diamond_hoe","Count":1}
-     * }
+     *   var tag = mappet.createCompound("{id:\"minecraft:diamond_hoe\",Count:1b}");
+     *   c.send(tag.dumpJSON());
      * }</pre>
      */
     public String dumpJSON();
