@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts.user.entities;
 
+import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.mappet.IMappetQuests;
@@ -113,6 +114,25 @@ public interface IScriptPlayer extends IScriptEntity
      * }</pre>
      */
     public void executeCommand(String command);
+
+    /**
+     * Sets the player's spawn point.
+     *
+     * <pre>{@code
+     *   c.getSubject().setSpawnPoint(0, 0, 0);
+     * }</pre>
+     */
+    public void setSpawnPoint(double x, double y, double z);
+
+    /**
+     * Gets the player's spawn point.
+     *
+     * <pre>{@code
+     *   var spawnPoint = c.getSubject().getSpawnPoint();
+     *   c.send("Spawn point: " + spawnPoint.x + ", " + spawnPoint.y + ", " + spawnPoint.z);
+     * }</pre>
+     */
+    public ScriptVector getSpawnPoint();
 
     /**
      * Returns if the player is flying.
@@ -318,42 +338,6 @@ public interface IScriptPlayer extends IScriptEntity
      * Set forcefully player's current hotbar inventory index. Acceptable values are <code>0</code> - <code>8</code>.
      */
     public void setHotbarIndex(int slot);
-
-    /**
-     * Gives the player an item (directly to the inventory)
-     *
-     * <pre>{@code
-     *    function main(c)
-     *    {
-     *        var player = c.getSubject();
-     *        var item = mappet.createItem("minecraft:diamond_sword");
-     *
-     *        player.giveItem(item);
-     *    }
-     * }</pre>
-     *
-     * @return Returns the result of giving the item. (true if the item was given, false if it failed.
-     */
-
-    public boolean giveItem(IScriptItemStack itemStack);
-
-    /**
-     * Gives the player an item (directly to the inventory)
-     *
-     * <pre>{@code
-     *    function main(c)
-     *    {
-     *        var player = c.getSubject();
-     *        var item = mappet.createItem("minecraft:diamond_sword");
-     *
-     *        player.giveItem(item, false);
-     *    }
-     * }</pre>
-     *
-     * @return Returns the result of giving the item. (true if the item was given, false if it failed.
-     */
-
-    public boolean giveItem(IScriptItemStack itemStack, boolean playSound);
 
     /**
      * Send a message to this player.
@@ -799,7 +783,7 @@ public interface IScriptPlayer extends IScriptEntity
     public void closeHUD(String id);
 
     /**
-     * Get all HUD scenes that are currently displayed for this player.
+     * Get all HUD scenes (including global HUDs) that are currently displayed for this player.
      *
      * <pre>{@code
      *   var player = c.getSubject();
@@ -808,6 +792,17 @@ public interface IScriptPlayer extends IScriptEntity
      * }</pre>
      */
     public INBTCompound getDisplayedHUDs();
+
+    /**
+     * Get all global HUD scenes that are currently saved on player and displayed for him and other players.
+     *
+     * <pre>{@code
+     *   var player = c.getSubject();
+     *   var huds = player.getGlobalDisplayedHUDs();
+     *   print(huds);
+     * }</pre>
+     */
+    public INBTCompound getGlobalDisplayedHUDs();
 
 
     /**

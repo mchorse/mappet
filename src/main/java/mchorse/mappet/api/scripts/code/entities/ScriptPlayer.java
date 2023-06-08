@@ -7,6 +7,7 @@ import mchorse.mappet.api.scripts.code.mappet.MappetQuests;
 import mchorse.mappet.api.scripts.code.mappet.MappetUIBuilder;
 import mchorse.mappet.api.scripts.code.mappet.MappetUIContext;
 import mchorse.mappet.api.scripts.code.nbt.ScriptNBTCompound;
+import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptInventory;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
@@ -41,6 +42,7 @@ import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.network.play.server.SPacketHeldItemChange;
 import net.minecraft.network.play.server.SPacketTitle;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.GameType;
@@ -141,6 +143,25 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     }
 
     @Override
+    public void setSpawnPoint(double x, double y, double z)
+    {
+        this.entity.setSpawnPoint(new BlockPos(x, y, z), true);
+    }
+
+    @Override
+    public ScriptVector getSpawnPoint()
+    {
+        BlockPos pos = this.entity.getBedLocation(this.entity.dimension);
+
+        if (pos == null)
+        {
+            pos = this.entity.world.getSpawnPoint();
+        }
+
+        return new ScriptVector(pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    @Override
     public boolean isFlying()
     {
         return this.entity.capabilities.isFlying;
@@ -207,37 +228,6 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
         this.entity.inventory.currentItem = slot;
 
         this.entity.connection.sendPacket(new SPacketHeldItemChange(slot));
-    }
-
-    @Override
-    public boolean giveItem(IScriptItemStack itemStack)
-    {
-        return this.giveItem(itemStack, true);
-    }
-
-    public boolean giveItem(IScriptItemStack itemStack, boolean playSound)
-    {
-        ItemStack minecraftItemStack = itemStack.getMinecraftItemStack();
-
-        if (minecraftItemStack.isEmpty())
-        {
-            return false;
-        }
-
-        boolean result = this.entity.inventory.addItemStackToInventory(minecraftItemStack.copy());
-
-        if (result)
-        {
-            if (playSound)
-            {
-                float pitch = ((this.entity.getRNG().nextFloat() - this.entity.getRNG().nextFloat()) * 0.7F + 1.0F) * 2.0F;
-                this.entity.world.playSound(null, this.entity.getPosition(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.NEUTRAL, 0.2F, pitch);
-            }
-
-            this.entity.inventoryContainer.detectAndSendChanges();
-        }
-
-        return result;
     }
 
     @Override
@@ -500,7 +490,7 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     @Override
     public boolean setupHUD(String id)
     {
-        return Character.get(this.entity).setupHUD(id);
+        return Character.get(this.entity).setupHUD(id, true);
     }
 
     @Override
@@ -542,6 +532,14 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     {
         ICharacter character = Character.get(this.entity);
         NBTTagCompound tag = ((Character) character).getDisplayedHUDsTag();
+        return new ScriptNBTCompound(tag);
+    }
+
+    @Override
+    public INBTCompound getGlobalDisplayedHUDs()
+    {
+        ICharacter character = Character.get(this.entity);
+        NBTTagCompound tag = ((Character) character).getGlobalDisplayedHUDsTag();
         return new ScriptNBTCompound(tag);
     }
 

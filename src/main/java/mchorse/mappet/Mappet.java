@@ -57,7 +57,18 @@ import java.util.logging.Handler;
  * <p>
  * Adventure map toolset mod
  */
-@Mod(modid = Mappet.MOD_ID, name = "Mappet", version = Mappet.VERSION, dependencies = "required-after:mclib@[@MCLIB@,);required-after:metamorph@[@METAMORPH@,);after:blockbuster@[@BLOCKBUSTER@,);after:aperture@[@APERTURE@,);", updateJSON = "https://raw.githubusercontent.com/mchorse/mappet/master/version.json")
+@Mod(
+    modid = Mappet.MOD_ID,
+    name = "Mappet",
+    version = Mappet.VERSION,
+    dependencies =
+        "required-after:mclib@[%MCLIB%,);"+
+        "required-after:metamorph@[%METAMORPH%,);"+
+        "after:blockbuster@[%BLOCKBUSTER%,);"+
+        "after:aperture@[%APERTURE%,);",
+    updateJSON = "https://raw.githubusercontent.com/mchorse/mappet/master/version.json"
+)
+
 public final class Mappet
 {
     public static final String MOD_ID = "mappet";
@@ -128,6 +139,8 @@ public final class Mappet
     /* Configuration */
     public static ValueBoolean generalDataCaching;
 
+    public static ValueBoolean loadCustomSoundsOnLogin;
+
     public static ValueBoolean npcsPeacefulDamage;
 
     public static ValueBoolean npcsToolOnlyOP;
@@ -175,6 +188,7 @@ public final class Mappet
         builder.category("general").register(new ValueButtons("buttons").clientSide());
         generalDataCaching = builder.getBoolean("data_caching", true);
         enableForgeTriggers = builder.getBoolean("enable_forge_triggers", false);
+        loadCustomSoundsOnLogin = builder.getBoolean("load_custom_sounds_on_login", true);
 
         npcsPeacefulDamage = builder.category("npc").getBoolean("peaceful_damage", true);
         npcsToolOnlyOP = builder.getBoolean("tool_only_op", true);

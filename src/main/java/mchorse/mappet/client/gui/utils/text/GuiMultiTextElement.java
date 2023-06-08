@@ -426,7 +426,7 @@ public class GuiMultiTextElement <T extends TextLine> extends GuiElement impleme
     }
 
     /**
-     * Select only a textful >:)
+     * Select only a textful &gt; :)
      */
     public boolean selectTextful(String text, boolean reverse)
     {

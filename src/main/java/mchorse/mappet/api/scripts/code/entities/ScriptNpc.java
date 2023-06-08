@@ -3,6 +3,7 @@ package mchorse.mappet.api.scripts.code.entities;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.npcs.Npc;
 import mchorse.mappet.api.npcs.NpcState;
+import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.entities.IScriptNpc;
 import mchorse.mappet.api.triggers.Trigger;
 import mchorse.mappet.api.triggers.blocks.AbstractTriggerBlock;
@@ -36,7 +37,7 @@ public class ScriptNpc extends ScriptEntity<EntityNpc> implements IScriptNpc
     {
         this.entity.getState().morph = MorphUtils.copy(morph);
         this.entity.setMorph(this.entity.getState().morph);
-        this.entity.sendMorph();
+        this.entity.sendNpcStateChangePacket();
 
         return true;
     }
@@ -69,7 +70,7 @@ public class ScriptNpc extends ScriptEntity<EntityNpc> implements IScriptNpc
             }
         }
 
-        this.entity.sendMorph();
+        this.entity.sendNpcStateChangePacket();
     }
 
     @Override
@@ -235,8 +236,271 @@ public class ScriptNpc extends ScriptEntity<EntityNpc> implements IScriptNpc
     }
 
     @Override
-    public void setFaction(String factionName)
+    public void setCanBeSteered(boolean enabled)
     {
-        this.entity.getState().faction = factionName;
+        NpcState state = this.entity.getState();
+        state.canBeSteered = enabled;
+        this.entity.sendNpcStateChangePacket();
+    }
+
+    @Override
+    public boolean canBeSteered()
+    {
+        return this.entity.getState().canBeSteered;
+    }
+
+    @Override
+    public void setSteeringOffset(float x, float y, float z)
+    {
+        NpcState state = this.entity.getState();
+        //state.steeringXOffset = x;
+        //state.steeringYOffset = y;
+        //state.steeringZOffset = z;
+        this.entity.sendNpcStateChangePacket();
+    }
+
+    @Override
+    public ScriptVector getSteeringOffset()
+    {
+        NpcState state = this.entity.getState();
+        return new ScriptVector(0, 0, 0/*state.steeringXOffset, state.steeringYOffset, state.steeringZOffset*/);
+    }
+
+    @Override
+    public void setNpcSpeed(float speed)
+    {
+        NpcState state = this.entity.getState();
+        state.speed = speed;
+        this.entity.sendNpcStateChangePacket();
+    }
+
+    @Override
+    public float getNpcSpeed()
+    {
+        return this.entity.getState().speed;
+    }
+
+    @Override
+    public void setjumpPower(float jumpHeight)
+    {
+        NpcState state = this.entity.getState();
+        state.jumpPower = jumpHeight;
+        this.entity.sendNpcStateChangePacket();
+    }
+
+    @Override
+    public float getjumpPower()
+    {
+        return this.entity.getState().jumpPower;
+    }
+
+    @Override
+    public void setInvincible(boolean invencible)
+    {
+        NpcState state = this.entity.getState();
+        state.invincible = invencible;
+        this.entity.sendNpcStateChangePacket();
+    }
+
+    @Override
+    public boolean isInvincible()
+    {
+        return this.entity.getState().invincible;
+    }
+
+    @Override
+    public void setCanSwim(boolean canSwim)
+    {
+        NpcState state = this.entity.getState();
+        state.canSwim = canSwim;
+        this.entity.sendNpcStateChangePacket();
+    }
+
+    @Override
+    public boolean canSwim()
+    {
+        return this.entity.getState().canSwim;
+    }
+
+    @Override
+    public void setImmovable(boolean immovable)
+    {
+        NpcState state = this.entity.getState();
+        state.immovable = immovable;
+        this.entity.sendNpcStateChangePacket();
+    }
+
+    @Override
+    public boolean isImmovable()
+    {
+        return this.entity.getState().immovable;
+    }
+
+    @Override
+    public void setShadowSize(float size)
+    {
+        NpcState state = this.entity.getState();
+        state.shadowSize = size;
+        this.entity.sendNpcStateChangePacket();
+    }
+
+    @Override
+    public float getShadowSize()
+    {
+        return this.entity.getState().shadowSize;
+    }
+
+    @Override
+    public float setXpValue(int xp)
+    {
+        NpcState state = this.entity.getState();
+        state.xp = xp;
+        this.entity.sendNpcStateChangePacket();
+        return xp;
+    }
+
+    @Override
+    public int getXpValue()
+    {
+        return this.entity.getState().xp;
+    }
+
+    @Override
+    public float getPathDistance()
+    {
+        NpcState state = this.entity.getState();
+        return state.pathDistance;
+    }
+
+    @Override
+    public void setPathDistance(float sightRadius)
+    {
+        NpcState state = this.entity.getState();
+        state.pathDistance = sightRadius;
+        this.entity.sendNpcStateChangePacket();
+    }
+
+    @Override
+    public void setAttackRange(float sightDistance){
+        NpcState state = this.entity.getState();
+        state.sightDistance = sightDistance;
+        this.entity.sendNpcStateChangePacket();
+    }
+
+    @Override
+    public float getAttackRange(){
+        return this.entity.getState().sightDistance;
+    }
+
+    @Override
+    public void setKillable(boolean killable)
+    {
+        NpcState state = this.entity.getState();
+        state.killable = killable;
+        this.entity.sendNpcStateChangePacket();
+    }
+
+    @Override
+    public boolean isKillable()
+    {
+        return this.entity.getState().killable;
+    }
+
+    @Override
+    public boolean canGetBurned()
+    {
+        return this.entity.getState().canGetBurned;
+    }
+
+    @Override
+    public void canGetBurned(boolean canGetBurned)
+    {
+        NpcState state = this.entity.getState();
+        state.canGetBurned = canGetBurned;
+        this.entity.sendNpcStateChangePacket();
+    }
+
+    @Override
+    public boolean canFallDamage()
+    {
+        return this.entity.getState().canFallDamage;
+    }
+
+    @Override
+    public void canFallDamage(boolean canFallDamage)
+    {
+        NpcState state = this.entity.getState();
+        state.canFallDamage = canFallDamage;
+        this.entity.sendNpcStateChangePacket();
+    }
+
+    @Override
+    public float getDamage()
+    {
+        return this.entity.getState().damage;
+    }
+
+    @Override
+    public void setDamage(float damage)
+    {
+        NpcState state = this.entity.getState();
+        state.damage = damage;
+        this.entity.sendNpcStateChangePacket();
+    }
+
+    @Override
+    public int getDamageDelay()
+    {
+        return this.entity.getState().damageDelay;
+    }
+
+    @Override
+    public void setDamageDelay(int damageDelay)
+    {
+        NpcState state = this.entity.getState();
+        state.damageDelay = damageDelay;
+        this.entity.sendNpcStateChangePacket();
+    }
+
+    @Override
+    public boolean doesWander()
+    {
+        return this.entity.getState().wander;
+    }
+
+    @Override
+    public void setWander(boolean wander)
+    {
+        NpcState state = this.entity.getState();
+        state.wander = wander;
+        this.entity.sendNpcStateChangePacket();
+    }
+
+    @Override
+    public boolean doesLookAround()
+    {
+        return this.entity.getState().lookAround;
+    }
+
+    @Override
+    public void setLookAround(boolean lookAround)
+    {
+        NpcState state = this.entity.getState();
+        state.lookAround = lookAround;
+        this.entity.sendNpcStateChangePacket();
+    }
+
+    @Override
+    public boolean doesLookAtPlayer()
+    {
+        return this.entity.getState().lookAtPlayer;
+    }
+
+    @Override
+    public void setLookAtPlayer(boolean lookAtPlayer)
+    {
+        NpcState state = this.entity.getState();
+        state.lookAtPlayer = lookAtPlayer;
+        this.entity.sendNpcStateChangePacket();
     }
 }

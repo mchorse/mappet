@@ -16,6 +16,7 @@ import mchorse.mappet.api.scripts.code.items.ScriptInventory;
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
+import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.triggers.Trigger;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.utils.IExecutable;
@@ -24,16 +25,21 @@ import mchorse.mappet.capabilities.character.CharacterProvider;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.client.KeyboardHandler;
 import mchorse.mappet.client.RenderingHandler;
+import mchorse.mappet.client.SoundPack;
 import mchorse.mappet.commands.data.CommandDataClear;
+import mchorse.mappet.common.ScriptedItemProps;
 import mchorse.mappet.entities.EntityNpc;
 import mchorse.mappet.entities.utils.MappetNpcRespawnManager;
 import mchorse.mappet.events.StateChangedEvent;
 import mchorse.mappet.network.Dispatcher;
+import mchorse.mappet.network.common.npc.PacketNpcJump;
 import mchorse.mappet.network.common.events.PacketEventHotkeys;
 import mchorse.mappet.network.common.huds.PacketHUDScene;
 import mchorse.mappet.network.common.quests.PacketQuest;
 import mchorse.mappet.network.common.quests.PacketQuests;
 import mchorse.mappet.network.common.scripts.PacketClick;
+import mchorse.mappet.utils.NBTUtils;
+import mchorse.mappet.utils.RunnableExecutionFork;
 import mchorse.mclib.utils.ReflectionUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -51,11 +57,13 @@ import net.minecraft.inventory.ContainerChest;
 import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -79,6 +87,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
@@ -205,6 +214,10 @@ public class EventHandler
 
         if (event.isCancelable() && context.isCanceled())
         {
+            if (event instanceof LivingEquipmentChangeEvent || event instanceof TickEvent.PlayerTickEvent)
+            {
+                return; //otherwise game crashes
+            }
             event.setCanceled(true);
         }
     }
@@ -535,6 +548,27 @@ public class EventHandler
     }
 
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onPlayerClientLogsIn(PlayerEvent.PlayerLoggedInEvent event)
+    {
+        EntityPlayerMP player = (EntityPlayerMP) event.player;
+
+        // play sounds for the player if he has config "reload all sounds on log in" set to true
+        if (Mappet.loadCustomSoundsOnLogin.get())
+        {
+            IScriptPlayer scriptPlayer = new ScriptPlayer(player);
+            for (String sound : SoundPack.getCustomSoundEvents())
+            {
+                scriptPlayer.playStaticSound(sound, 0.000000001f, 1);
+                CommonProxy.eventHandler.addExecutable(new RunnableExecutionFork(1, () ->
+                {
+                    scriptPlayer.stopSound(sound);
+                }));
+            }
+        }
+    }
+
+    @SubscribeEvent
     public void onPlayerLogsIn(PlayerEvent.PlayerLoggedInEvent event)
     {
         EntityPlayerMP player = (EntityPlayerMP) event.player;
@@ -563,6 +597,29 @@ public class EventHandler
             {
                 // Send the PacketHUDScene for each HUDScene
                 Dispatcher.sendTo(new PacketHUDScene(id, scene.serializeNBT()), player);
+            }
+        }
+
+        // display present global HUDs player on any player that has a global HUD in his displayed HUDs scenes list
+        for (EntityPlayerMP p : FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers())
+        {
+            ICharacter c = Character.get(p);
+            if (c != null)
+            {
+                Map<String, List<HUDScene>> displayed = c.getDisplayedHUDs();
+                for (Map.Entry<String, List<HUDScene>> entry : displayed.entrySet())
+                {
+                    String id = entry.getKey();
+                    List<HUDScene> scenes = entry.getValue();
+
+                    for (HUDScene scene : scenes)
+                    {
+                        if (scene.global)
+                        {
+                            Dispatcher.sendTo(new PacketHUDScene(id, scene.serializeNBT()), player);
+                        }
+                    }
+                }
             }
         }
 
@@ -1148,11 +1205,13 @@ public class EventHandler
 
             context.getValues().put("item", ScriptItemStack.create(event.getTo()));
 
+            context.getValues().put("previous", ScriptItemStack.create(event.getFrom()));
+
             if (event.getEntity() instanceof EntityPlayerMP)
             {
                 ScriptPlayer player = new ScriptPlayer((EntityPlayerMP) event.getEntity());
 
-                context.getValues().put("player", player.getHotbarIndex());
+                context.getValues().put("slot", player.getHotbarIndex());
             }
             else
             {
@@ -1160,6 +1219,240 @@ public class EventHandler
             }
 
             this.trigger(event, trigger, context);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void onKeyInput(InputEvent.KeyInputEvent event) {
+        if (Minecraft.getMinecraft().gameSettings.keyBindJump.isPressed()) {
+            EntityPlayer player = Minecraft.getMinecraft().player;
+
+            if (
+                    player.isRiding() &&
+                    player.getRidingEntity() instanceof EntityNpc
+                    && ((EntityNpc) player.getRidingEntity()).getState().canBeSteered
+            ) {
+                float jumpPower = ((EntityNpc) player.getRidingEntity()).getState().jumpPower;
+                Dispatcher.sendToServer(new PacketNpcJump(player.getRidingEntity().getEntityId(), jumpPower));
+            }
+        }
+    }
+
+    /* Scripted items */
+
+    @SubscribeEvent
+    public void onScriptedItemRightClick(PlayerInteractEvent.RightClickItem event)
+    {
+        EntityPlayer playerIn = event.getEntityPlayer();
+        World worldIn = event.getWorld();
+        EnumHand handIn = event.getHand();
+
+        if (!worldIn.isRemote) {
+            ItemStack item = playerIn.getHeldItem(handIn);
+            ScriptedItemProps props = NBTUtils.getScriptedItemProps(item);
+            double reachDistance = playerIn.capabilities.isCreativeMode ? 5.0D : 4.5D;
+
+            RayTraceResult rayTraceResult = playerIn.rayTrace(reachDistance, 1.0F);
+            List<Entity> entityList = getEntitiesInPlayerReach(worldIn, playerIn, reachDistance);
+
+            triggerInteractWithAir(event, props.interactWithAir, rayTraceResult, entityList, playerIn);
+        }
+    }
+
+    private void triggerInteractWithAir(PlayerInteractEvent.RightClickItem event, Trigger interactWithAirTrigger, RayTraceResult rayTraceResult, List<Entity> entityList, EntityPlayer playerIn) {
+        if (interactWithAirTrigger != null && !interactWithAirTrigger.blocks.isEmpty() &&
+                (rayTraceResult == null || rayTraceResult.typeOfHit != RayTraceResult.Type.BLOCK) && entityList.isEmpty()) {
+            DataContext context = new DataContext(playerIn)
+                .set("x", event.getPos().getX())
+                .set("y", event.getPos().getY())
+                .set("z", event.getPos().getZ())
+                .set("hand", event.getHand() == EnumHand.MAIN_HAND ? "main" : "off");
+            this.trigger(event, interactWithAirTrigger, context);
+        }
+    }
+
+    private List<Entity> getEntitiesInPlayerReach(World worldIn, EntityPlayer playerIn, double reachDistance) {
+        Vec3d eyePos = playerIn.getPositionEyes(1.0F);
+        Vec3d lookVec = playerIn.getLookVec();
+        Vec3d reachVec = eyePos.add(new Vec3d(lookVec.x * reachDistance, lookVec.y * reachDistance, lookVec.z * reachDistance));
+
+        AxisAlignedBB playerReach = new AxisAlignedBB(eyePos.x, eyePos.y, eyePos.z, reachVec.x, reachVec.y, reachVec.z);
+
+        List<Entity> list = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerReach);
+
+        list.removeIf(entity -> !entity.canBeCollidedWith() || !EntitySelectors.NOT_SPECTATING.apply(entity));
+        list.removeIf(entity -> entity.getEntityBoundingBox().calculateIntercept(eyePos, reachVec) == null);
+
+        return list;
+    }
+
+    @SubscribeEvent
+    public void onPlayerWithScriptedItemInteractWithEntity(PlayerInteractEvent.EntityInteract event)
+    {
+        if (!event.getWorld().isRemote) {
+            ItemStack item = event.getEntityPlayer().getHeldItem(event.getHand());
+            ScriptedItemProps props = NBTUtils.getScriptedItemProps(item);
+
+            if (props != null && props.interactWithEntity != null && !props.interactWithEntity.blocks.isEmpty()) {
+                DataContext context = new DataContext(event.getEntityPlayer(), event.getTarget());
+                context.set("hand", event.getHand() == EnumHand.MAIN_HAND ? "main" : "off");
+                this.trigger(event, props.interactWithEntity, context);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onEntityAttackedWithScriptedItem(LivingAttackEvent event)
+    {
+        if (!event.getEntity().world.isRemote && event.getSource().getTrueSource() instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
+            ItemStack item = player.getHeldItem(EnumHand.MAIN_HAND);
+            ScriptedItemProps props = NBTUtils.getScriptedItemProps(item);
+
+            if (props != null && props.attackEntity != null && !props.attackEntity.blocks.isEmpty()) {
+                DamageSource source = event.getSource();
+                DataContext context = new DataContext(event.getEntityLiving(), source.getTrueSource())
+                    .set("damage", event.getAmount());
+                this.trigger(event, props.interactWithEntity, context);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerWithScriptedItemRightClickBlock(PlayerInteractEvent.RightClickBlock event)
+    {
+        if (!event.getWorld().isRemote) {
+            ItemStack item = event.getEntityPlayer().getHeldItem(event.getHand());
+            ScriptedItemProps props = NBTUtils.getScriptedItemProps(item);
+
+            if (props != null && props.interactWithBlock != null && !props.interactWithBlock.blocks.isEmpty()) {
+                IBlockState state = event.getWorld().getBlockState(event.getPos());
+                DataContext context = new DataContext(event.getWorld(), event.getPos())
+                    .set("block", state.getBlock().getRegistryName().toString())
+                    .set("meta", state.getBlock().getMetaFromState(state))
+                    .set("x", event.getPos().getX())
+                    .set("y", event.getPos().getY())
+                    .set("z", event.getPos().getZ())
+                    .set("hand", event.getHand() == EnumHand.MAIN_HAND ? "main" : "off");
+                this.trigger(event, props.interactWithBlock, context);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerHoldingScriptedItemTick(TickEvent.PlayerTickEvent event)
+    {
+        if (!event.player.world.isRemote) {
+            for (EnumHand hand : EnumHand.values()) { // Check for both main and off hands
+                ItemStack item = event.player.getHeldItem(hand);
+                ScriptedItemProps props = NBTUtils.getScriptedItemProps(item);
+
+                if (props != null && props.onHolderTick != null && !props.onHolderTick.blocks.isEmpty()) {
+                    DataContext context = new DataContext(event.player);
+                    context.set("hand", hand == EnumHand.MAIN_HAND ? "main" : "off"); // Add the hand used to the context
+                    this.trigger(event, props.onHolderTick, context);
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerWithScriptedItemLeftClick(PlayerInteractEvent.LeftClickBlock event)
+    {
+        if (!event.getWorld().isRemote) {
+            ItemStack item = event.getEntityPlayer().getHeldItem(event.getHand());
+            ScriptedItemProps props = NBTUtils.getScriptedItemProps(item);
+
+            if (props != null && props.hitBlock != null && !props.hitBlock.blocks.isEmpty()) {
+                DataContext context = new DataContext(event.getEntityPlayer())
+                    .set("x", event.getPos().getX())
+                    .set("y", event.getPos().getY())
+                    .set("z", event.getPos().getZ())
+                    .set("hand", event.getHand() == EnumHand.MAIN_HAND ? "main" : "off");
+                this.trigger(event, props.hitBlock, context);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerWithScriptedItemPlaceBlock(BlockEvent.PlaceEvent event)
+    {
+        if (!event.getWorld().isRemote) {
+            EntityPlayer player = event.getPlayer();
+            EnumHand handIn = EnumHand.MAIN_HAND;
+            ItemStack item = player.getHeldItem(handIn);
+
+            // Check if the item is not in the main hand, if so, switch to off hand
+            if (item.isEmpty()) {
+                handIn = EnumHand.OFF_HAND;
+                item = player.getHeldItem(handIn);
+            }
+
+            ScriptedItemProps props = NBTUtils.getScriptedItemProps(item);
+
+            if (props != null && props.placeBlock != null && !props.placeBlock.blocks.isEmpty()) {
+                IBlockState state = event.getPlacedBlock();
+                DataContext context = new DataContext(player)
+                    .set("block", state.getBlock().getRegistryName().toString())
+                    .set("meta", state.getBlock().getMetaFromState(state))
+                    .set("x", event.getPos().getX())
+                    .set("y", event.getPos().getY())
+                    .set("z", event.getPos().getZ())
+                    .set("hand", handIn == EnumHand.MAIN_HAND ? "main" : "off");
+                this.trigger(event, props.placeBlock, context);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerPickUpScriptedItem(EntityItemPickupEvent event)
+    {
+        if (!event.getItem().world.isRemote) {
+            EntityPlayer player = event.getEntityPlayer();
+            ItemStack item = event.getItem().getItem();
+            ScriptedItemProps props = NBTUtils.getScriptedItemProps(item);
+
+            if (props != null && props.pickup != null && !props.pickup.blocks.isEmpty()) {
+                DataContext context = new DataContext(player);
+                context.getValues().put("item", ScriptItemStack.create(event.getItem().getItem()));
+                this.trigger(event, props.pickup, context);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerWithScriptedItemBreakBlock(BlockEvent.BreakEvent event) {
+        if (!event.getWorld().isRemote) {
+            EntityPlayer player = event.getPlayer();
+            ItemStack item = player.getHeldItem(EnumHand.MAIN_HAND);
+            ScriptedItemProps props = NBTUtils.getScriptedItemProps(item);
+
+            if (props != null && props.breakBlock != null && !props.breakBlock.blocks.isEmpty()) {
+                IBlockState state = event.getState();
+                DataContext context = new DataContext(player)
+                    .set("block", state.getBlock().getRegistryName().toString())
+                    .set("meta", state.getBlock().getMetaFromState(state))
+                    .set("x", event.getPos().getX())
+                    .set("y", event.getPos().getY())
+                    .set("z", event.getPos().getZ());
+                this.trigger(event, props.breakBlock, context);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerWithScriptedItemTick(TickEvent.PlayerTickEvent event)
+    {
+        if (!event.player.world.isRemote && event.side == Side.SERVER && event.phase == TickEvent.Phase.START) {
+            for (ItemStack item : event.player.getHeldEquipment()) {
+                ScriptedItemProps props = NBTUtils.getScriptedItemProps(item);
+
+                if (props != null && props.onHolderTick != null && !props.onHolderTick.blocks.isEmpty()) {
+                    DataContext context = new DataContext(event.player);
+                    this.trigger(event, props.onHolderTick, context);
+                }
+            }
         }
     }
 }

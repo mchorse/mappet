@@ -5,6 +5,8 @@ import mchorse.mappet.api.states.States;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.entities.EntityNpc;
+import mchorse.metamorph.api.models.IMorphProvider;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -99,5 +101,40 @@ public class EntityUtils
         }
 
         return 0;
+    }
+
+    public static float getHeight(Entity entity)
+    {
+        if (entity instanceof IMorphProvider)
+        {
+            AbstractMorph morphProvider = ((IMorphProvider) entity).getMorph();
+
+            if (entity instanceof EntityPlayer) {
+                return entity.isSneaking() ? morphProvider.hitbox.sneakingHeight : morphProvider.hitbox.height;
+            }
+        }
+
+        return entity.height;
+    }
+
+    public static float getEyeHeight(Entity entity)
+    {
+        if (entity instanceof IMorphProvider)
+        {
+            AbstractMorph morphProvider = ((IMorphProvider) entity).getMorph();
+
+            if (entity instanceof EntityPlayer) {
+                float height = getHeight(entity);
+                float eyeHeight = height * morphProvider.hitbox.eye;
+                float minEyeToHeadDifference = 0.1F;
+                if (eyeHeight + minEyeToHeadDifference > height) {
+                    eyeHeight = height - minEyeToHeadDifference;
+                }
+
+                return eyeHeight;
+            }
+        }
+
+        return entity.getEyeHeight();
     }
 }

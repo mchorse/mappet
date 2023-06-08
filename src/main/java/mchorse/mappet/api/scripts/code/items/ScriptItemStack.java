@@ -285,15 +285,30 @@ public class ScriptItemStack implements IScriptItemStack
 
         if (tag == null)
         {
-            this.stack.setTagCompound(new NBTTagCompound());
+            tag = new NBTTagCompound();
+            this.stack.setTagCompound(tag);
         }
 
+        NBTTagList canDestroyList;
         if (!tag.hasKey(CAN_DESTROY, Constants.NBT.TAG_LIST))
         {
-            tag.setTag(CAN_DESTROY, new NBTTagList());
+            canDestroyList = new NBTTagList();
+            tag.setTag(CAN_DESTROY, canDestroyList);
+        }
+        else
+        {
+            canDestroyList = tag.getTagList(CAN_DESTROY, Constants.NBT.TAG_STRING);
         }
 
-        tag.getTagList(CAN_DESTROY, Constants.NBT.TAG_STRING).appendTag(new NBTTagString(block));
+        for (int i = 0; i < canDestroyList.tagCount(); i++)
+        {
+            if (canDestroyList.getStringTagAt(i).equals(block))
+            {
+                return; // If the block is already in the list, do not add it again.
+            }
+        }
+
+        canDestroyList.appendTag(new NBTTagString(block));
     }
 
     @Override
@@ -428,5 +443,23 @@ public class ScriptItemStack implements IScriptItemStack
         {
             tag.setBoolean("Unbreakable", unbreakable);
         }
+    }
+
+    @Override
+    public void add(int amount)
+    {
+        int newCount = this.stack.getCount() + amount;
+
+        if (newCount <= 0) {
+            this.stack.shrink(this.stack.getCount());
+        } else {
+            this.stack.setCount(newCount);
+        }
+    }
+
+    @Override
+    public boolean equals(ScriptItemStack other)
+    {
+        return this.stack.isItemEqual(other.stack) && ItemStack.areItemStackTagsEqual(this.stack, other.stack);
     }
 }

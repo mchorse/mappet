@@ -70,6 +70,7 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
             .action(Icons.POSE, IKey.lang("mappet.gui.scripts.context.paste_morph"), () -> openMorphPicker(editor))
             .action(MMIcons.ITEM, IKey.lang("mappet.gui.scripts.context.paste_item"), () -> openItemPicker(editor))
             .action(Icons.BLOCK, IKey.lang("mappet.gui.scripts.context.paste_player_pos"), () -> pastePlayerPosition(editor))
+            .action(Icons.LIMB, IKey.lang("mappet.gui.scripts.context.paste_player_rot"), () -> pastePlayerRotation(editor))
             .action(Icons.VISIBLE, IKey.lang("mappet.gui.scripts.context.paste_block_pos"), () -> pasteBlockPosition(editor))
             .action(Icons.SOUND, IKey.lang("mappet.gui.scripts.context.paste_sound"), () -> openSoundPicker(editor));
 
@@ -152,6 +153,14 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
         DecimalFormat format = GuiTrackpadElement.FORMAT;
 
         editor.pasteText(format.format(player.posX) + ", " + format.format(player.posY) + ", " + format.format(player.posZ));
+    }
+
+    private static void pastePlayerRotation(GuiTextEditor editor)
+    {
+        EntityPlayer player = Minecraft.getMinecraft().player;
+        DecimalFormat format = GuiTrackpadElement.FORMAT;
+
+        editor.pasteText(format.format(player.rotationPitch) + ",  " + format.format(player.rotationYaw) + ", " + format.format(player.getRotationYawHead()));
     }
 
     private static void pasteBlockPosition(GuiTextEditor editor)

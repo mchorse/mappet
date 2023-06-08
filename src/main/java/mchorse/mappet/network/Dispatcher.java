@@ -17,10 +17,12 @@ import mchorse.mappet.network.client.events.ClientHandlerPlayerJournal;
 import mchorse.mappet.network.client.factions.ClientHandlerFactions;
 import mchorse.mappet.network.client.huds.ClientHandlerHUDMorph;
 import mchorse.mappet.network.client.huds.ClientHandlerHUDScene;
+import mchorse.mappet.network.client.items.ClientHandlerScriptedItemInfo;
 import mchorse.mappet.network.client.logs.ClientHandlerLogs;
 import mchorse.mappet.network.client.npc.ClientHandlerNpcList;
-import mchorse.mappet.network.client.npc.ClientHandlerNpcMorph;
+import mchorse.mappet.network.client.npc.ClientHandlerNpcStateChange;
 import mchorse.mappet.network.client.npc.ClientHandlerNpcState;
+import mchorse.mappet.network.common.npc.PacketNpcJump;
 import mchorse.mappet.network.client.quests.ClientHandlerQuest;
 import mchorse.mappet.network.client.quests.ClientHandlerQuests;
 import mchorse.mappet.network.client.scripts.ClientHandlerEntityRotations;
@@ -56,10 +58,11 @@ import mchorse.mappet.network.common.factions.PacketFactions;
 import mchorse.mappet.network.common.factions.PacketRequestFactions;
 import mchorse.mappet.network.common.huds.PacketHUDMorph;
 import mchorse.mappet.network.common.huds.PacketHUDScene;
+import mchorse.mappet.network.common.items.PacketScriptedItemInfo;
 import mchorse.mappet.network.common.logs.PacketLogs;
 import mchorse.mappet.network.common.logs.PacketRequestLogs;
 import mchorse.mappet.network.common.npc.PacketNpcList;
-import mchorse.mappet.network.common.npc.PacketNpcMorph;
+import mchorse.mappet.network.common.npc.PacketNpcStateChange;
 import mchorse.mappet.network.common.npc.PacketNpcState;
 import mchorse.mappet.network.common.npc.PacketNpcTool;
 import mchorse.mappet.network.common.quests.PacketQuest;
@@ -94,7 +97,9 @@ import mchorse.mappet.network.server.dialogue.ServerHandlerPickReply;
 import mchorse.mappet.network.server.events.ServerHandlerEventHotkey;
 import mchorse.mappet.network.server.events.ServerHandlerPlayerJournal;
 import mchorse.mappet.network.server.factions.ServerHandlerRequestFactions;
+import mchorse.mappet.network.server.items.ServerHandlerScriptedItemInfo;
 import mchorse.mappet.network.server.logs.ServerHandlerLogs;
+import mchorse.mappet.network.server.npc.ServerHandlerNpcJump;
 import mchorse.mappet.network.server.npc.ServerHandlerNpcList;
 import mchorse.mappet.network.server.npc.ServerHandlerNpcState;
 import mchorse.mappet.network.server.npc.ServerHandlerNpcTool;
@@ -147,6 +152,10 @@ public class Dispatcher
             this.register(PacketEditConditionModel.class, ClientHandlerEditConditionModel.class, Side.CLIENT);
             this.register(PacketEditConditionModel.class, ServerHandlerEditConditionModel.class, Side.SERVER);
 
+            /* Scripted item */
+            this.register(PacketScriptedItemInfo.class, ClientHandlerScriptedItemInfo.class, Side.CLIENT);
+            this.register(PacketScriptedItemInfo.class, ServerHandlerScriptedItemInfo.class, Side.SERVER);
+
             /* Creative editing */
             this.register(PacketContentRequestNames.class, ServerHandlerContentRequestNames.class, Side.SERVER);
             this.register(PacketContentRequestData.class, ServerHandlerContentRequestData.class, Side.SERVER);
@@ -164,12 +173,13 @@ public class Dispatcher
             this.register(PacketRequestStates.class, ServerHandlerRequestStates.class, Side.SERVER);
 
             /* NPCs */
-            this.register(PacketNpcMorph.class, ClientHandlerNpcMorph.class, Side.CLIENT);
+            this.register(PacketNpcStateChange.class, ClientHandlerNpcStateChange.class, Side.CLIENT);
             this.register(PacketNpcState.class, ClientHandlerNpcState.class, Side.CLIENT);
             this.register(PacketNpcState.class, ServerHandlerNpcState.class, Side.SERVER);
             this.register(PacketNpcList.class, ClientHandlerNpcList.class, Side.CLIENT);
             this.register(PacketNpcList.class, ServerHandlerNpcList.class, Side.SERVER);
             this.register(PacketNpcTool.class, ServerHandlerNpcTool.class, Side.SERVER);
+            this.register(PacketNpcJump.class, ServerHandlerNpcJump.class, Side.SERVER);
 
             /* Quests */
             this.register(PacketQuest.class, ClientHandlerQuest.class, Side.CLIENT);

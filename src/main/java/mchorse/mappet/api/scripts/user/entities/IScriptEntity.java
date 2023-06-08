@@ -5,6 +5,7 @@ import mchorse.mappet.api.scripts.user.IScriptFactory;
 import mchorse.mappet.api.scripts.user.IScriptFancyWorld;
 import mchorse.mappet.api.scripts.user.IScriptRayTrace;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
+import mchorse.mappet.api.scripts.user.data.ScriptBox;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.mappet.IMappetStates;
@@ -416,6 +417,15 @@ public interface IScriptEntity
     public void setOffItem(IScriptItemStack stack);
 
     /**
+     * Give item to this entity. (like the /give command)
+     *
+     * <pre>{@code
+     *    c.getSubject().giveItem(mappet.createItem("minecraft:diamond", 64));
+     * }</pre>
+     */
+    public void giveItem(IScriptItemStack stack);
+
+    /**
      * Return the entity's helmet's item stack.
      *
      * <pre>{@code
@@ -816,6 +826,19 @@ public interface IScriptEntity
      */
 
     public IScriptEntity getMount();
+
+    /**
+     * Returns the bounding box of this entity.
+     *
+     * <pre>{@code
+     *    var s = c.getSubject();
+     *    var box = s.getBoundingBox();
+     *    c.send("The bounding box of " + s.getName() + " is " + box.minX + ", " + box.minY + ", " + box.minZ + " to " + box.maxX + ", " + box.maxY + ", " + box.maxZ);
+     * }</pre>
+     *
+     * @return the bounding box of this entity
+     */
+    public ScriptBox getBoundingBox();
 
     /**
      * Drop the item an entity is holding.
@@ -1264,33 +1287,33 @@ public interface IScriptEntity
      * with the given <b>interpolation type</b> and <b>duration</b>.
      * The following interpolation types are supported:</p>
      * <ul>
-     *     §7<li>linear</li>§r
-     *     §7<li>quad_in</li>§r
-     *     §7<li>quad_out</li>§r
-     *     §7<li>quad_inout</li>§r
-     *     §7<li>cubic_in</li>§r
-     *     §7<li>cubic_out</li>§r
-     *     §7<li>cubic_inout</li>§r
-     *     §7<li>exp_in</li>§r
-     *     §7<li>exp_out</li>§r
-     *     §7<li>exp_inout</li>§r
-     *     §7<li>back_in</li>§r
-     *     §7<li>back_out</li>§r
-     *     §7<li>back_inout</li>§r
-     *     §7<li>elastic_in</li>§r
-     *     §7<li>elastic_out</li>§r
-     *     §7<li>elastic_inout</li>§r
-     *     §7<li>bounce_in</li>§r
-     *     §7<li>bounce_out</li>§r
-     *     §7<li>bounce_inout</li>§r
-     *     §7<li>sine_in</li>§r
-     *     §7<li>sine_out</li>§r
-     *     §7<li>sine_inout</li>§r
-     *     §7<li>quart_in</li>§r
-     *     §7<li>quart_out</li>§r
-     *     §7<li>quart_inout</li>§r
-     *     §7<li>quint_in</li>§r
-     *     §7<li>quint_out</li>§r
+     *     <li>§7linear§r</li>
+     *     <li>§7quad_in§r</li>
+     *     <li>§7quad_out§r</li>
+     *     <li>§7quad_inout§r</li>
+     *     <li>§7cubic_in§r</li>
+     *     <li>§7cubic_out§r</li>
+     *     <li>§7cubic_inout§r</li>
+     *     <li>§7exp_in§r</li>
+     *     <li>§7exp_out§r</li>
+     *     <li>§7exp_inout§r</li>
+     *     <li>§7back_in§r</li>
+     *     <li>§7back_out§r</li>
+     *     <li>§7back_inout§r</li>
+     *     <li>§7elastic_in§r</li>
+     *     <li>§7elastic_out§r</li>
+     *     <li>§7elastic_inout§r</li>
+     *     <li>§7bounce_in§r</li>
+     *     <li>§7bounce_out§r</li>
+     *     <li>§7bounce_inout§r</li>
+     *     <li>§7sine_in§r</li>
+     *     <li>§7sine_out§r</li>
+     *     <li>§7sine_inout§r</li>
+     *     <li>§7quart_in§r</li>
+     *     <li>§7quart_out§r</li>
+     *     <li>§7quart_inout§r</li>
+     *     <li>§7quint_in§r</li>
+     *     <li>§7quint_out§r</li>
      * </ul>
      *
      * <pre>{@code

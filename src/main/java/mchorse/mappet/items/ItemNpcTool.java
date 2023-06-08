@@ -37,6 +37,7 @@ public class ItemNpcTool extends Item
     public ItemNpcTool()
     {
         this.setCreativeTab(Mappet.creativeTab);
+        this.setMaxStackSize(1);
     }
 
     @Override

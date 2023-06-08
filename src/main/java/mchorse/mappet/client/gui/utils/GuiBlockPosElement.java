@@ -41,6 +41,18 @@ public class GuiBlockPosElement extends GuiElement
         return new GuiSimpleContextMenu(this.mc).action(Icons.MOVE_TO, IKey.lang("mappet.gui.block_pos.context.paste"), this::pastePosition);
     }
 
+    public GuiSimpleContextMenu createDefaultContextMenu(boolean shouldAddPasteCurrentLocationOption)
+    {
+        GuiSimpleContextMenu contextMenu = new GuiSimpleContextMenu(this.mc);
+
+        if (shouldAddPasteCurrentLocationOption)
+        {
+            contextMenu.action(Icons.MOVE_TO, IKey.lang("mappet.gui.block_pos.context.paste"), this::pastePosition);
+        }
+
+        return contextMenu;
+    }
+
     private void pastePosition()
     {
         this.set(new BlockPos(this.mc.player));

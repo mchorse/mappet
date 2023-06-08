@@ -7,6 +7,7 @@ import mchorse.blockbuster.common.entity.EntityGunProjectile;
 import mchorse.blockbuster.common.tileentity.TileEntityModel;
 import mchorse.blockbuster.common.tileentity.TileEntityModelSettings;
 import mchorse.blockbuster.network.common.PacketModifyModelBlock;
+import mchorse.mappet.CommonProxy;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.npcs.Npc;
 import mchorse.mappet.api.npcs.NpcState;
@@ -22,6 +23,7 @@ import mchorse.mappet.api.scripts.user.IScriptRayTrace;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.blocks.IScriptTileEntity;
+import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntityItem;
 import mchorse.mappet.api.scripts.user.entities.IScriptNpc;
@@ -34,6 +36,7 @@ import mchorse.mappet.client.morphs.WorldMorph;
 import mchorse.mappet.entities.EntityNpc;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.scripts.PacketWorldMorph;
+import mchorse.mappet.utils.RunnableExecutionFork;
 import mchorse.mappet.utils.WorldUtils;
 import mchorse.mclib.utils.MathUtils;
 import mchorse.metamorph.api.MorphManager;
@@ -64,6 +67,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.Loader;
@@ -71,11 +75,13 @@ import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
+import javax.vecmath.Vector3d;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import com.google.common.base.Predicate;
 
 public class ScriptWorld implements IScriptWorld
 {
@@ -104,7 +110,18 @@ public class ScriptWorld implements IScriptWorld
             return;
         }
 
-        this.world.setBlockState(this.pos, state.getMinecraftBlockState());
+        this.world.setBlockState(this.pos, state.getMinecraftBlockState(), 2|4);
+    }
+
+    @Override
+    public void removeBlock(int x, int y, int z)
+    {
+        if (!this.world.isBlockLoaded(this.pos.setPos(x, y, z)))
+        {
+            return;
+        }
+
+        this.world.setBlockToAir(this.pos);
     }
 
     @Override
@@ -121,6 +138,12 @@ public class ScriptWorld implements IScriptWorld
     }
 
     @Override
+    public IScriptBlockState getBlock(ScriptVector pos)
+    {
+        return getBlock((int) pos.x, (int) pos.y, (int) pos.z);
+    }
+
+    @Override
     public boolean hasTileEntity(int x, int y, int z)
     {
         if (!this.world.isBlockLoaded(this.pos.setPos(x, y, z)))
@@ -129,6 +152,99 @@ public class ScriptWorld implements IScriptWorld
         }
 
         return this.world.getTileEntity(this.pos) != null;
+    }
+
+
+
+    //@Override
+    public void replaceBlocks(IScriptBlockState blockToBeReplaced, IScriptBlockState newBlock, Vector3d pos, int radius) {
+        processBlocksInRegion(pos, radius, (x, y, z) -> {
+            IScriptBlockState currentBlock = getBlock(x, y, z);
+
+            if (currentBlock.isSame(blockToBeReplaced)) {
+                setBlock(newBlock, x, y, z);
+            }
+        });
+    }
+
+    //@Override
+    public void replaceBlocks(IScriptBlockState blockToBeReplaced, IScriptBlockState newBlock, INBTCompound tileData, Vector3d pos, int radius) {
+        processBlocksInRegion(pos, radius, (x, y, z) -> {
+            IScriptBlockState currentBlock = getBlock(x, y, z);
+
+            if (currentBlock.isSame(blockToBeReplaced)) {
+                setTileEntity(x, y, z, newBlock, tileData);
+            }
+        });
+    }
+
+    private void processBlocksInRegion(Vector3d pos, int radius, BlockPosConsumer consumer) {
+        int minX = (int) Math.floor(pos.x - radius);
+        int maxX = (int) Math.ceil(pos.x + radius);
+        int minY = (int) Math.floor(pos.y - radius);
+        int maxY = (int) Math.ceil(pos.y + radius);
+        int minZ = (int) Math.floor(pos.z - radius);
+        int maxZ = (int) Math.ceil(pos.z + radius);
+
+        for (int x = minX; x <= maxX; x++) {
+            for (int y = minY; y <= maxY; y++) {
+                for (int z = minZ; z <= maxZ; z++) {
+                    if (!this.world.isBlockLoaded(this.pos.setPos(x, y, z))) {
+                        continue;
+                    }
+
+                    double dx = pos.x - (x + 0.5);
+                    double dy = pos.y - (y + 0.5);
+                    double dz = pos.z - (z + 0.5);
+                    double distanceSquared = dx * dx + dy * dy + dz * dz;
+
+                    if (distanceSquared <= (radius * radius)) {
+                        consumer.accept(x, y, z);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void replaceBlocks(IScriptBlockState blockToBeReplaced, IScriptBlockState newBlock, Vector3d pos1, Vector3d pos2) {
+        processBlocksInRegion(pos1, pos2, (x, y, z) -> {
+            IScriptBlockState currentBlock = getBlock(x, y, z);
+
+            if (currentBlock.isSame(blockToBeReplaced)) {
+                setBlock(newBlock, x, y, z);
+            }
+        });
+    }
+
+    @Override
+    public void replaceBlocks(IScriptBlockState blockToBeReplaced, IScriptBlockState newBlock, INBTCompound tileData, Vector3d pos1, Vector3d pos2) {
+        processBlocksInRegion(pos1, pos2, (x, y, z) -> {
+            IScriptBlockState currentBlock = getBlock(x, y, z);
+
+            if (currentBlock.isSame(blockToBeReplaced)) {
+                setTileEntity(x, y, z, newBlock, tileData);
+            }
+        });
+    }
+
+    private void processBlocksInRegion(Vector3d pos1, Vector3d pos2, BlockPosConsumer consumer) {
+        for (int x = (int) Math.min(pos1.x, pos2.x); x <= Math.max(pos1.x, pos2.x); x++) {
+            for (int y = (int) Math.min(pos1.y, pos2.y); y <= Math.max(pos1.y, pos2.y); y++) {
+                for (int z = (int) Math.min(pos1.z, pos2.z); z <= Math.max(pos1.z, pos2.z); z++) {
+                    if (!this.world.isBlockLoaded(this.pos.setPos(x, y, z))) {
+                        continue;
+                    }
+
+                    consumer.accept(x, y, z);
+                }
+            }
+        }
+    }
+
+    @FunctionalInterface
+    private interface BlockPosConsumer {
+        void accept(int x, int y, int z);
     }
 
     @Override
@@ -321,8 +437,12 @@ public class ScriptWorld implements IScriptWorld
     }
 
     @Override
-    public List<IScriptEntity> getEntities(double x1, double y1, double z1, double x2, double y2, double z2)
-    {
+    public List<IScriptEntity> getEntities(double x1, double y1, double z1, double x2, double y2, double z2) {
+        return getEntities(x1, y1, z1, x2, y2, z2, false);
+    }
+
+    @Override
+    public List<IScriptEntity> getEntities(double x1, double y1, double z1, double x2, double y2, double z2, boolean ignoreVolumeLimit) {
         List<IScriptEntity> entities = new ArrayList<IScriptEntity>();
 
         double minX = Math.min(x1, x2);
@@ -332,19 +452,37 @@ public class ScriptWorld implements IScriptWorld
         double maxY = Math.max(y1, y2);
         double maxZ = Math.max(z1, z2);
 
-        if (maxX - minX > MAX_VOLUME || maxY - minY > MAX_VOLUME || maxZ - minZ > MAX_VOLUME)
-        {
+        if (!ignoreVolumeLimit && (maxX - minX > MAX_VOLUME || maxY - minY > MAX_VOLUME || maxZ - minZ > MAX_VOLUME)) {
             return entities;
         }
 
-        if (!this.world.isBlockLoaded(this.pos.setPos(minX, minY, minZ)) || !this.world.isBlockLoaded(this.pos.setPos(maxX, maxY, maxZ)))
-        {
-            return entities;
-        }
+        int minChunkX = ((int) minX) >> 4;
+        int minChunkZ = ((int) minZ) >> 4;
+        int maxChunkX = ((int) maxX) >> 4;
+        int maxChunkZ = ((int) maxZ) >> 4;
 
-        for (Entity entity : this.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ)))
-        {
-            entities.add(ScriptEntity.create(entity));
+        Predicate<Entity> filter = entity -> entity != null;
+
+        for (int chunkX = minChunkX; chunkX <= maxChunkX; chunkX++) {
+            for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; chunkZ++) {
+                if (this.world.isChunkGeneratedAt(chunkX, chunkZ)) {
+                    Chunk chunk = this.world.getChunkFromChunkCoords(chunkX, chunkZ);
+                    AxisAlignedBB chunkAABB = new AxisAlignedBB(
+                            Math.max(chunk.getPos().getXStart(), minX),
+                            minY,
+                            Math.max(chunk.getPos().getZStart(), minZ),
+                            Math.min(chunk.getPos().getXEnd(), maxX),
+                            maxY,
+                            Math.min(chunk.getPos().getZEnd(), maxZ)
+                    );
+
+                    List<Entity> chunkEntities = new ArrayList<>();
+                    chunk.getEntitiesWithinAABBForEntity(null, chunkAABB, chunkEntities, filter);
+                    for (Entity entity : chunkEntities) {
+                        entities.add(ScriptEntity.create(entity));
+                    }
+                }
+            }
         }
 
         return entities;
@@ -524,15 +662,87 @@ public class ScriptWorld implements IScriptWorld
                 model.setMorph(morph);
 
                 PacketModifyModelBlock message = new PacketModifyModelBlock(model.getPos(), model, true);
-                NetworkRegistry.TargetPoint point = new NetworkRegistry.TargetPoint(this.world.provider.getDimension(), x, y, z, 64);
 
-                mchorse.blockbuster.network.Dispatcher.DISPATCHER.get().sendToAllAround(message, point);
+                mchorse.blockbuster.network.Dispatcher.DISPATCHER.get().sendToAll(message);
             }
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void setModelBlockEnabled(int x, int y, int z, boolean enabled)
+    {
+        if (!this.world.isBlockLoaded(this.pos.setPos(x, y, z)))
+        {
+            return;
+        }
+
+        if (Loader.isModLoaded("blockbuster"))
+        {
+            this.setModelBlockEnabledBlockbuster(x, y, z, enabled);
+        }
+    }
+
+    @Optional.Method(modid = "blockbuster")
+    private void setModelBlockEnabledBlockbuster(int x, int y, int z, boolean enabled)
+    {
+        try
+        {
+            TileEntity tile = this.world.getTileEntity(new BlockPos(x, y, z));
+
+            if (tile instanceof TileEntityModel)
+            {
+                TileEntityModel model = (TileEntityModel) tile;
+                model.getSettings().setEnabled(enabled);
+
+                PacketModifyModelBlock message = new PacketModifyModelBlock(model.getPos(), model, true);
+
+                mchorse.blockbuster.network.Dispatcher.DISPATCHER.get().sendToAll(message);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean isModelBlockEnabled(int x, int y, int z)
+    {
+        if (!this.world.isBlockLoaded(this.pos.setPos(x, y, z)))
+        {
+            return false;
+        }
+
+        if (Loader.isModLoaded("blockbuster"))
+        {
+            return this.isModelBlockEnabledBlockbuster(x, y, z);
+        }
+
+        return false;
+    }
+
+    @Optional.Method(modid = "blockbuster")
+    private boolean isModelBlockEnabledBlockbuster(int x, int y, int z)
+    {
+        try
+        {
+            TileEntity tile = this.world.getTileEntity(new BlockPos(x, y, z));
+
+            if (tile instanceof TileEntityModel)
+            {
+                TileEntityModel model = (TileEntityModel) tile;
+                return model.getSettings().isEnabled();
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
@@ -570,6 +780,45 @@ public class ScriptWorld implements IScriptWorld
                 for (int z = zMin; z <= zMax; z++)
                 {
                     this.setBlock(state, x, y, z);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void fill(IScriptBlockState state, int x1, int y1, int z1, int x2, int y2, int z2, int chunkSize, int delayTicks) {
+        int xMin = Math.min(x1, x2);
+        int xMax = Math.max(x1, x2);
+        int yMin = Math.min(y1, y2);
+        int yMax = Math.max(y1, y2);
+        int zMin = Math.min(z1, z2);
+        int zMax = Math.max(z1, z2);
+
+        for (int xChunk = xMin; xChunk <= xMax; xChunk += chunkSize) {
+            for (int yChunk = yMin; yChunk <= yMax; yChunk += chunkSize) {
+                for (int zChunk = zMin; zChunk <= zMax; zChunk += chunkSize) {
+                    int finalXChunk = xChunk;
+                    int finalYChunk = yChunk;
+                    int finalZChunk = zChunk;
+                    CommonProxy.eventHandler.addExecutable(new RunnableExecutionFork(delayTicks, () -> {
+                        fillChunk(state, xMin, yMin, zMin, xMax, yMax, zMax, finalXChunk, finalYChunk, finalZChunk);
+                    }));
+
+                    delayTicks += 2;
+                }
+            }
+        }
+    }
+
+    private void fillChunk(IScriptBlockState state, int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, int xChunk, int yChunk, int zChunk) {
+        int xChunkMax = Math.min(xChunk + 16, xMax + 1);
+        int yChunkMax = Math.min(yChunk + 16, yMax + 1);
+        int zChunkMax = Math.min(zChunk + 16, zMax + 1);
+
+        for (int x = xChunk; x < xChunkMax; x++) {
+            for (int y = yChunk; y < yChunkMax; y++) {
+                for (int z = zChunk; z < zChunkMax; z++) {
+                    setBlock(state, x, y, z);
                 }
             }
         }
@@ -718,15 +967,15 @@ public class ScriptWorld implements IScriptWorld
         int yCentre = (yMin + yMax) / 2;
         int zCentre = (zMin + zMax) / 2;
 
-        //to-do: make this process on server start
-        File path = new File("saves/" + this.world.getWorldInfo().getWorldName() + "/mappet/schematics");
+        File worldDirectory = this.world.getSaveHandler().getWorldDirectory();
+        File path = new File(worldDirectory, "mappet/schematics");
 
         if (!path.exists())
         {
             path.mkdirs();
         }
 
-        File file = new File("saves/" + this.world.getWorldInfo().getWorldName() + "/mappet/schematics/" + name + ".nbt");
+        File file = new File(path, name + ".nbt");
 
         try
         {
@@ -803,7 +1052,9 @@ public class ScriptWorld implements IScriptWorld
     @Deprecated
     public void loadSchematic(String name, int x, int y, int z)
     {
-        File file = new File("saves/" + this.world.getWorldInfo().getWorldName() + "/mappet/schematics/" + name + ".nbt");
+        File worldDirectory = this.world.getSaveHandler().getWorldDirectory();
+        File path = new File(worldDirectory, "mappet/schematics");
+        File file = new File(path, name + ".nbt");
 
         if (file.exists())
         {
@@ -847,7 +1098,9 @@ public class ScriptWorld implements IScriptWorld
     @Deprecated
     public INBTCompound serializeSchematic(String name)
     {
-        File file = new File("saves/" + this.world.getWorldInfo().getWorldName() + "/mappet/schematics/" + name + ".nbt");
+        File worldDirectory = this.world.getSaveHandler().getWorldDirectory();
+        File path = new File(worldDirectory, "mappet/schematics");
+        File file = new File(path, name + ".nbt");
 
         if (file.exists())
         {

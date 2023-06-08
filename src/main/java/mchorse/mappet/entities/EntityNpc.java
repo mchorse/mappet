@@ -20,10 +20,11 @@ import mchorse.mappet.entities.ai.EntityAIPatrol;
 import mchorse.mappet.entities.ai.EntityAIReturnToPost;
 import mchorse.mappet.entities.utils.MappetNpcRespawnManager;
 import mchorse.mappet.entities.utils.NpcDamageSource;
+import mchorse.mappet.items.ItemNpcTool;
 import mchorse.mappet.network.Dispatcher;
-import mchorse.mappet.network.common.npc.PacketNpcMorph;
+import mchorse.mappet.network.common.npc.PacketNpcStateChange;
+import mchorse.mappet.utils.EntityUtils;
 import mchorse.mclib.utils.Interpolations;
-import mchorse.mclib.utils.MathUtils;
 import mchorse.metamorph.api.Morph;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.models.IMorphProvider;
@@ -44,6 +45,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -103,6 +105,114 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         if (!this.state.immovable)
         {
             super.collideWithEntity(entityIn);
+        }
+
+        if (world.isRemote) {
+            return;
+        }
+
+        // Call the trigger for entity collision
+        this.state.triggerEntityCollision.trigger(new DataContext(this, entityIn));
+    }
+
+    @Override
+    public boolean hasNoGravity() {
+        return this.state.hasNoGravity;
+    }
+
+    @Override
+    public boolean canPickUpLoot() {
+        return this.state.canPickUpLoot;
+    }
+
+    @Override
+    public boolean canBeSteered() {
+        return this.state.canBeSteered;
+    }
+
+    @Override
+    public void updatePassenger(Entity passenger)
+    {
+        if (this.isPassenger(passenger))
+        {
+            int index = this.getPassengers().indexOf(passenger);
+
+            BlockPos offsetPos;
+            if (this.state.steeringOffset.isEmpty() || index >= this.state.steeringOffset.size())
+            {
+                offsetPos = new BlockPos(0, 0, 0); // default offset
+            }
+            else
+            {
+                offsetPos = this.state.steeringOffset.get(index);
+            }
+
+            double offsetX = offsetPos.getX();
+            double offsetY = this.posY - 0.5 + EntityUtils.getHeight(this) + offsetPos.getY();
+            double offsetZ = offsetPos.getZ();
+
+            // Convert bodyYaw to radians as Java Math functions expect arguments in radians
+            double bodyYaw = Math.toRadians(this.renderYawOffset);
+
+            // Rotate the offset vector by the entity's bodyYaw
+            double rotatedOffsetX = offsetX * Math.cos(bodyYaw) - offsetZ * Math.sin(bodyYaw);
+            double rotatedOffsetZ = offsetX * Math.sin(bodyYaw) + offsetZ * Math.cos(bodyYaw);
+
+            // Add the rotated offset to the entity's position
+            double finalPosX = this.posX + rotatedOffsetX;
+            double finalPosZ = this.posZ + rotatedOffsetZ;
+
+            // Update the passenger's position on both the server and the client
+            passenger.setPosition(finalPosX, offsetY, finalPosZ);
+            passenger.setPositionAndRotationDirect(finalPosX, offsetY, finalPosZ, passenger.rotationYaw, passenger.rotationPitch, 3, true);
+        }
+
+        // Check if the passenger is a player and the entity can be steered and only allow the first passanger to steer it.
+        if (passenger instanceof EntityPlayer && canBeSteered() && this.getPassengers().indexOf(passenger) == (this.getPassengers().size()-1))
+        {
+            handleSteering((EntityPlayer) passenger);
+        }
+    }
+
+    private void handleSteering(EntityPlayer player) {
+        if (!this.world.isRemote) {
+            float forward = player.moveForward;
+            float strafe = player.moveStrafing;
+            this.rotationYaw = player.rotationYaw;
+            this.rotationYawHead = player.rotationYawHead;
+
+            if (forward != 0 || strafe != 0) {
+                float baseSpeed = state.speed / 15; // slightly faster speed than walking (from testing)
+                //boolean sprinting = GameSettings.isKeyDown(Minecraft.getMinecraft().gameSettings.keyBindSprint);
+                //float sprintMultiplier = sprinting ? 1.5F : 1.0F; // adjust the multiplier according to desired sprint speed
+                float speed = baseSpeed;// * sprintMultiplier
+
+                // Calculate motion based on player input
+                double motionX = -Math.sin(Math.toRadians(this.rotationYaw)) * forward + Math.cos(Math.toRadians(this.rotationYaw)) * strafe;
+                double motionZ = Math.cos(Math.toRadians(this.rotationYaw)) * forward + Math.sin(Math.toRadians(this.rotationYaw)) * strafe;
+
+                // Normalize motion vector
+                double motionMagnitude = Math.sqrt(motionX * motionX + motionZ * motionZ);
+                motionX /= motionMagnitude;
+                motionZ /= motionMagnitude;
+
+                // Apply speed
+                this.motionX = motionX * speed;
+                this.motionZ = motionZ * speed;
+
+                // Use the move method to handle collisions and movement more accurately
+                this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
+
+                // Set position and rotation on the client side
+                this.setPositionAndRotation(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+            }
+        }
+    }
+
+    @Override
+    public void fall(float distance, float damageMultiplier) {
+        if (!this.isBeingRidden()) {
+            super.fall(distance, damageMultiplier);
         }
     }
 
@@ -220,12 +330,6 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     public void initialize()
     {
         this.state.triggerInitialize.trigger(this);
-
-        if (this.state.canPickUpLoot){
-            INBTCompound fullData = new ScriptNBTCompound(this.writeToNBT(new NBTTagCompound()));
-            fullData.setByte("CanPickUpLoot", (byte) (this.state.canPickUpLoot ? 1 : 0));
-            this.readFromNBT(fullData.getNBTTagCompound());
-        }
     }
 
     /* Getter and setters */
@@ -269,6 +373,11 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
     public void setState(NpcState state, boolean notify)
     {
+        notify = true;
+        // I added this because it is fine if it always notified the clients.
+        // If I faced issues later I can revert this and check all usages of this method
+        // to see if they need to notify the clients or not. (to make sure that e.g. shadowSize, steer-, etc.)
+
         this.state = new NpcState();
         this.state.deserializeNBT(state.serializeNBT());
 
@@ -291,7 +400,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
         if (notify)
         {
-            this.sendMorph();
+            this.sendNpcStateChangePacket();
         }
 
         this.faction = null;
@@ -299,9 +408,11 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         this.initEntityAI();
     }
 
-    public void sendMorph()
+    public void sendNpcStateChangePacket()
     {
-        Dispatcher.sendToTracked(this, new PacketNpcMorph(this));
+        if (this.world instanceof WorldServer){
+            Dispatcher.sendToTracked(this, new PacketNpcStateChange(this));
+        }
     }
 
     @Override
@@ -591,6 +702,16 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
             {
                 this.state.triggerInteract.trigger(new DataContext(this, player));
             }
+
+            // Start riding the NPC when interacted with
+            if (
+                    ((this.getPassengers().size() < this.state.steeringOffset.size()) || this.state.steeringOffset.isEmpty()) &&
+                    this.canBeSteered() &&
+                    !(player.getHeldItem(hand).getItem() instanceof ItemNpcTool)
+            )
+            {
+                player.startRiding(this, true);
+            }
         }
 
         return true;
@@ -650,12 +771,14 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     public void writeSpawnData(ByteBuf buf)
     {
         MorphUtils.morphToBuf(buf, this.morph.get());
+        this.state.writeToBuf(buf);
     }
 
     @Override
     public void readSpawnData(ByteBuf buf)
     {
         this.morph.setDirect(MorphUtils.morphFromBuf(buf));
+        this.state.readFromBuf(buf);
 
         this.prevRotationYawHead = this.rotationYawHead;
         this.smoothYawHead = this.rotationYawHead;

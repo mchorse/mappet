@@ -3,6 +3,7 @@ package mchorse.mappet.api.scripts.user;
 import mchorse.mappet.api.scripts.code.mappet.MappetSchematic;
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.blocks.IScriptTileEntity;
+import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntityItem;
 import mchorse.mappet.api.scripts.user.entities.IScriptNpc;
@@ -15,6 +16,7 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 
+import javax.vecmath.Vector3d;
 import java.util.List;
 
 /**
@@ -59,6 +61,15 @@ public interface IScriptWorld
     public void setBlock(IScriptBlockState state, int x, int y, int z);
 
     /**
+     * Remove a block at given XYZ.
+     *
+     * <pre>{@code
+     *   c.getWorld().removeBlock(214, 3, 509);
+     * }</pre>
+     */
+    public void removeBlock(int x, int y, int z);
+
+    /**
      * Get block state at given XYZ.
      *
      * <pre>{@code
@@ -70,6 +81,19 @@ public interface IScriptWorld
      * @return a block state at given XYZ, or null if the chunk isn't loaded
      */
     public IScriptBlockState getBlock(int x, int y, int z);
+
+    /**
+     * Get block state at given XYZ.
+     *
+     * <pre>{@code
+     *    var block = c.getWorld().getBlock(mappet.vector3(214, 3, 509));
+     *
+     *    c.send("Block at (214, 3, 509) is " + block.getBlockId());
+     * }</pre>
+     *
+     * @return a block state at given XYZ, or null if the chunk isn't loaded
+     */
+    public IScriptBlockState getBlock(ScriptVector pos);
 
     /**
      * Whether a tile entity is present at given XYZ.
@@ -84,6 +108,35 @@ public interface IScriptWorld
      * }</pre>
      */
     public boolean hasTileEntity(int x, int y, int z);
+
+    /**
+     * Replace all blocks in the given area with the given block state.
+     *
+     * <pre>{@code
+     * c.getWorld().replaceBlocks(
+     *    mappet.createBlockState("minecraft:dirt", 0),
+     *    mappet.createBlockState("minecraft:dirt", 1),
+     *    mappet.vector3(214, 3, 509),
+     *    mappet.vector3(214, 3, 509)
+     * );
+     * }</pre>
+     */
+    public void replaceBlocks(IScriptBlockState blockToBeReplaced, IScriptBlockState newBlock, Vector3d pos1, Vector3d pos2);
+
+    /**
+     * Replace all blocks in the given area with the given block state and tile entity data.
+     *
+     * <pre>{@code
+     * c.getWorld().replaceBlocks(
+     *    mappet.createBlockState("minecraft:dirt", 0),
+     *    mappet.createBlockState("blockbuster:model", 0),
+     *    mappet.createCompound('{Morph:{Settings:{Hands:1b},Name:"blockbuster.fred"},id:"minecraft:blockbuster_model_tile_entity"}'),
+     *    mappet.vector3(171, 61, 279),
+     *    mappet.vector3(176, 64, 276)
+     * );
+     * }</pre>
+     */
+    public void replaceBlocks(IScriptBlockState blockToBeReplaced, IScriptBlockState newBlock, INBTCompound tileData, Vector3d pos1, Vector3d pos2);
 
     /**
      * Get tile entity at given XYZ.
@@ -374,6 +427,28 @@ public interface IScriptWorld
     public List<IScriptEntity> getEntities(double x1, double y1, double z1, double x2, double y2, double z2);
 
     /**
+     * Get entities within the box specified by given coordinates in this world ignoring the volume limit.
+     * This method does not limit to scanning entities only within <b>100 blocks</b>
+     *
+     * <pre>{@code
+     *    // Y position is at the feet, while X and Z is at center
+     *    var pos = c.getSubject().getPosition();
+     *    var entities = c.getWorld().getEntities(pos.x - 30, pos.y - 30, pos.z - 30, pos.x + 30, pos.y + 30, pos.z + 30, true);
+     *
+     *    for (var i in entities)
+     *    {
+     *        var entity = entities[i];
+     *
+     *        if (!entity.isSame(c.getSubject()))
+     *        {
+     *            entity.damage(2.0);
+     *        }
+     *    }
+     * }</pre>
+     */
+    public List<IScriptEntity> getEntities(double x1, double y1, double z1, double x2, double y2, double z2, boolean ignoreVolumeLimit);
+
+    /**
      * Get entities within the sphere specified by given coordinates and radius in
      * this world. This method limits to scanning entities only within <b>50 blocks
      * radius</b> in any direction. If the sphere provided has the radius that is
@@ -601,6 +676,41 @@ public interface IScriptWorld
     public void setModelBlockMorph(String nbt, int x, int y, int z, boolean force);
 
     /**
+     * Enable or disable a model block at a given position in this world.
+     * It only works when Blockbuster mod is installed.
+     *
+     * <pre>{@code
+     *     function main(c)
+     *     {
+     *         var pos = c.getSubject().getPosition()
+     *         var enabled = true;
+     *
+     *         c.getWorld().setModelBlockEnabled(pos.x, pos.y, pos.z, enabled);
+     *     }
+     * }</pre>
+     *
+     * @param x X coordinate of a model block.
+     * @param y Y coordinate of a model block.
+     * @param z Z coordinate of a model block.
+     * @param enabled Whether to enable or disable the model block.
+     */
+    public void setModelBlockEnabled(int x, int y, int z, boolean enabled);
+
+    /**
+     * Check whether a model block at a given position in this world is enabled or not.
+     * It only works when Blockbuster mod is installed.
+     *
+     * <pre>{@code
+     *     c.send(c.getWorld().isModelBlockEnabled(0, 4, 0));
+     * }</pre>
+     *
+     * @param x X coordinate of a model block.
+     * @param y Y coordinate of a model block.
+     * @param z Z coordinate of a model block.
+     */
+    public boolean isModelBlockEnabled(int x, int y, int z);
+
+    /**
      * Return whether a button, plate or lever is active or not.
      *
      * <pre>{@code
@@ -646,6 +756,25 @@ public interface IScriptWorld
     public void fill(IScriptBlockState state, int x1, int y1, int z1, int x2, int y2, int z2);
 
     /**
+     * Fill a 3D area with a block with a delay (for huge areas).
+     *
+     * <pre>{@code
+     *     var coarse_dirt = mappet.createBlockState("minecraft:dirt", 1);
+     *
+     *     c.getWorld().fill(coarse_dirt, -3, 100, -3, 3, 100, 3, 16, 5);
+     * }</pre>
+     *
+     * @param state The block to fill the area with.
+     * @param x1    The first x coordinate.
+     * @param y1    The first y coordinate.
+     * @param z1    The first z coordinate.
+     * @param x2    The second x coordinate.
+     * @param y2    The second y coordinate.
+     * @param z2    The second z coordinate.
+     */
+    public void fill(IScriptBlockState state, int x1, int y1, int z1, int x2, int y2, int z2, int chunkSize, int delayTicks);
+
+    /**
      * Summon a falling block with a specific block id and meta.
      *
      * <pre>{@code
@@ -671,7 +800,11 @@ public interface IScriptWorld
      * Sets a tile entity.
      *
      * <pre>{@code
-     * c.getWorld().setTileEntity(530, 152, 546, mappet.createBlockState("blockbuster:model", 0),mappet.createCompound('{,Morph:{Settings:{Hands:1b},Name:"blockbuster.fred"},id:"minecraft:blockbuster_model_tile_entity"}');
+     * c.getWorld().setTileEntity(
+     *     530, 152, 546,
+     *     mappet.createBlockState("blockbuster:model", 0),
+     *     mappet.createCompound('{Morph:{Settings:{Hands:1b},Name:"blockbuster.fred"},id:"minecraft:blockbuster_model_tile_entity"}')
+     * );
      *   }</pre>
      *
      * @param x X coordinate
@@ -684,7 +817,7 @@ public interface IScriptWorld
      * Fills a range with tile entities.
      *
      * <pre>{@code
-     * c.getWorld().fillTileEntities(530, 152, 546, mappet.createBlockState("blockbuster:model", 0),mappet.createCompound('{,Morph:{Settings:{Hands:1b},Name:"blockbuster.fred"},id:"minecraft:blockbuster_model_tile_entity"}');
+     * c.getWorld().fillTileEntities(530, 152, 546, mappet.createBlockState("blockbuster:model", 0), mappet.createCompound('{Morph:{Settings:{Hands:1b},Name:"blockbuster.fred"},id:"minecraft:blockbuster_model_tile_entity"}'));
      *   }</pre>
      *
      * @param x1 X coordinate

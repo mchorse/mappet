@@ -1,8 +1,10 @@
 package mchorse.mappet.api.npcs;
 
+import io.netty.buffer.ByteBuf;
 import mchorse.mappet.api.states.States;
 import mchorse.mappet.api.triggers.Trigger;
 import mchorse.mappet.utils.NBTUtils;
+import mchorse.mappet.utils.NpcStateUtils;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.nbt.JsonToNBT;
@@ -100,7 +102,12 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     /**
      * What is NPC's movement speed
      */
-    public float speed = 1F;
+    public float speed = 3F;
+
+    /**
+     * NPC's jumping power when it's steered
+     */
+    public float jumpPower = 0.6F;
 
     /**
      * Can NPC move around in the water
@@ -151,6 +158,11 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     public List<Trigger> patrolTriggers = new ArrayList<Trigger>();
 
     /**
+     * List of NPC's x-offset when steered
+     */
+    public List<BlockPos> steeringOffset = new ArrayList<BlockPos>();
+
+    /**
      * The UUID of the player that must be followed
      */
     public String follow = "";
@@ -188,6 +200,11 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
      */
     public int xp = 0;
 
+    /**
+     * NPC shadow size
+     */
+    public float shadowSize = 0.6F;
+
     /* Behavior */
 
     /**
@@ -216,6 +233,16 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
      */
     public boolean canPickUpLoot;
 
+    /**
+     * Whether NPC has gravity or not
+     */
+    public boolean hasNoGravity = false;
+
+    /**
+     * Whether NPC can be steered by a player
+     */
+    public boolean canBeSteered = false;
+
     /* Triggers */
 
     public Trigger triggerDied = new Trigger();
@@ -225,6 +252,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     public Trigger triggerTarget = new Trigger();
     public Trigger triggerInitialize = new Trigger();
     public Trigger triggerRespawn = new Trigger();
+    public Trigger triggerEntityCollision = new Trigger();
 
     /* Respawn */
 
@@ -336,6 +364,36 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         {
             this.speed = Float.parseFloat(value);
         }
+        else if (property.equals("jump_power"))
+        {
+            this.jumpPower = Float.parseFloat(value);
+        }
+        /*
+        else if (property.equals("steering_offset"))
+        {
+            int index = Integer.parseInt(property.substring(15));
+            String[] coords = value.split(",");
+            if (coords.length == 3)
+            {
+                try
+                {
+                    int x = Integer.parseInt(coords[0]);
+                    int y = Integer.parseInt(coords[1]);
+                    int z = Integer.parseInt(coords[2]);
+                    BlockPos pos = new BlockPos(x, y, z);
+                    if (index < steeringOffset.size())
+                    {
+                        steeringOffset.set(index, pos);
+                    }
+                    else
+                    {
+                        steeringOffset.add(pos);
+                    }
+                }
+                catch (NumberFormatException ignored) {}
+            }
+        }
+        */
         else if (property.equals("can_swim"))
         {
             this.canSwim = Boolean.parseBoolean(value);
@@ -392,6 +450,18 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         else if (property.equals("xp"))
         {
             this.xp = Integer.parseInt(value);
+        }
+        else if (property.equals("has_no_gravity"))
+        {
+            this.hasNoGravity = Boolean.parseBoolean(value);
+        }
+        else if (property.equals("can_be_steered"))
+        {
+            this.canBeSteered = Boolean.parseBoolean(value);
+        }
+        else if (property.equals("shadow_size"))
+        {
+            this.shadowSize = Float.parseFloat(value);
         }
         /* Behavior */
         else if (property.equals("look_at_player"))
@@ -491,6 +561,18 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
 
         /* Movement */
         if (all || options.contains("speed")) tag.setFloat("Speed", this.speed);
+        if (all || options.contains("jump_power")) tag.setFloat("JumpPower", this.jumpPower);
+        if ((all || options.contains("steering_offset")))
+        {
+            NBTTagList offsets = new NBTTagList();
+
+            for (int i = 0; i < this.steeringOffset.size(); i++)
+            {
+                offsets.appendTag(NBTUtils.blockPosTo(this.steeringOffset.get(i)));
+            }
+
+            tag.setTag("SteeringOffsets", offsets);
+        }
         if (all || options.contains("can_swim")) tag.setBoolean("CanSwim", this.canSwim);
         if (all || options.contains("immovable")) tag.setBoolean("Immovable", this.immovable);
         if (all || options.contains("has_post")) tag.setBoolean("HasPost", this.hasPost);
@@ -538,6 +620,9 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
             tag.setTag("Drops", drops);
         }
         if (all || options.contains("xp")) tag.setInteger("Xp", this.xp);
+        if (all || options.contains("has_no_gravity")) tag.setBoolean("HasNoGravity", this.hasNoGravity);
+        if (all || options.contains("can_be_steered")) tag.setBoolean("CanBeSteered", this.canBeSteered);
+        if (all || options.contains("shadow_size")) tag.setFloat("ShadowSize", this.shadowSize);
 
         /* Behavior */
         if (all || options.contains("look_at_player")) tag.setBoolean("LookAtPlayer", this.lookAtPlayer);
@@ -554,6 +639,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (all || options.contains("trigger_target")) tag.setTag("TriggerTarget", this.triggerTarget.serializeNBT());
         if (all || options.contains("trigger_initialize")) tag.setTag("TriggerInitialize", this.triggerInitialize.serializeNBT());
         if (all || options.contains("trigger_respawn")) tag.setTag("TriggerRespawn", this.triggerRespawn.serializeNBT());
+        if (all || options.contains("trigger_entity_collision")) tag.setTag("TriggerEntityCollision", this.triggerEntityCollision.serializeNBT());
 
         /* Respawn */
         if (all || options.contains("respawn")) tag.setBoolean("Respawn", this.respawn);
@@ -594,6 +680,23 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
 
         /* Movement */
         if (tag.hasKey("Speed")) this.speed = tag.getFloat("Speed");
+        if (tag.hasKey("JumpPower")) this.jumpPower = tag.getFloat("JumpPower");
+        if (tag.hasKey("SteeringOffsets", Constants.NBT.TAG_LIST))
+        {
+            NBTTagList offsets = tag.getTagList("SteeringOffsets", Constants.NBT.TAG_LIST);
+
+            this.steeringOffset.clear();
+
+            for (int i = 0; i < offsets.tagCount(); i++)
+            {
+                BlockPos pos = NBTUtils.blockPosFrom(offsets.get(i));
+
+                if (pos != null)
+                {
+                    this.steeringOffset.add(pos);
+                }
+            }
+        }
         if (tag.hasKey("CanSwim")) this.canSwim = tag.getBoolean("CanSwim");
         if (tag.hasKey("Immovable")) this.immovable = tag.getBoolean("Immovable");
         if (tag.hasKey("HasPost")) this.hasPost = tag.getBoolean("HasPost");
@@ -661,6 +764,9 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
             }
         }
         if (tag.hasKey("Xp")) this.xp = tag.getInteger("Xp");
+        if (tag.hasKey("HasNoGravity")) this.hasNoGravity = tag.getBoolean("HasNoGravity");
+        if (tag.hasKey("CanBeSteered")) this.canBeSteered = tag.getBoolean("CanBeSteered");
+        if (tag.hasKey("ShadowSize")) this.shadowSize = tag.getFloat("ShadowSize");
 
         /* Behavior */
         if (tag.hasKey("LookAtPlayer")) this.lookAtPlayer = tag.getBoolean("LookAtPlayer");
@@ -677,6 +783,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("TriggerTarget")) this.triggerTarget.deserializeNBT(tag.getCompoundTag("TriggerTarget"));
         if (tag.hasKey("TriggerInitialize")) this.triggerInitialize.deserializeNBT(tag.getCompoundTag("TriggerInitialize"));
         if (tag.hasKey("TriggerRespawn")) this.triggerRespawn.deserializeNBT(tag.getCompoundTag("TriggerRespawn"));
+        if (tag.hasKey("TriggerEntityCollision")) this.triggerEntityCollision.deserializeNBT(tag.getCompoundTag("TriggerEntityCollision"));
 
         /* Respawn */
         if (tag.hasKey("Respawn")) this.respawn = tag.getBoolean("Respawn");
@@ -686,5 +793,42 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("RespawnPosY")) this.respawnPosY = tag.getDouble("RespawnPosY");
         if (tag.hasKey("RespawnPosZ")) this.respawnPosZ = tag.getDouble("RespawnPosZ");
         if (tag.hasKey("RespawnSaveUUID")) this.respawnSaveUUID = tag.getBoolean("RespawnSaveUUID");
+    }
+
+    public void writeToBuf(ByteBuf buf) {
+        // these should not be needed, only last line should be needed, but idk why they are still needed
+        // I mean, when they're here everything works perfectly,
+        // when not, the other things work fine but not these (if you left the world and rejoined,
+        // you have to open the npc gui and close it for these to work)
+        buf.writeFloat(shadowSize);
+        buf.writeFloat(jumpPower);
+        /*
+        buf.writeInt(steeringOffset.size());
+        for (BlockPos pos : steeringOffset) {
+            buf.writeInt(pos.getX());
+            buf.writeInt(pos.getY());
+            buf.writeInt(pos.getZ());
+        }
+         */
+
+        NpcStateUtils.stateToBuf(buf, this);
+    }
+
+    public void readFromBuf(ByteBuf buf) {
+        // same comment as writeToBuf above
+        shadowSize = buf.readFloat();
+        jumpPower = buf.readFloat();
+        /*
+        int size = buf.readInt();
+        steeringOffset.clear();
+        for (int i = 0; i < size; i++) {
+            int x = buf.readInt();
+            int y = buf.readInt();
+            int z = buf.readInt();
+            steeringOffset.add(new BlockPos(x, y, z));
+        }
+         */
+
+        NpcStateUtils.stateFromBuf(buf);
     }
 }

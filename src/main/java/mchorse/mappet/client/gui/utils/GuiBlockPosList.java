@@ -1,6 +1,5 @@
 package mchorse.mappet.client.gui.utils;
 
-import mchorse.mappet.api.triggers.Trigger;
 import mchorse.mappet.utils.Colors;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.utils.Icons;
@@ -14,8 +13,6 @@ public class GuiBlockPosList extends GuiElement
 {
     private List<BlockPos> posList;
 
-    private List<Trigger> triggerList;
-
     public GuiBlockPosList(Minecraft mc)
     {
         super(mc);
@@ -25,36 +22,23 @@ public class GuiBlockPosList extends GuiElement
 
     public void addBlockPos()
     {
-        BlockPos pos = new BlockPos(this.mc.player);
-        Trigger trigger = new Trigger();
-
-        this.posList.add(pos);
-        this.triggerList.add(trigger);
-        this.add(this.create(pos, trigger));
+        this.posList.add(new BlockPos(0, 0, 0));
+        this.add(this.create());
 
         this.getParentContainer().resize();
     }
 
-    public void set(List<BlockPos> posList, List<Trigger> triggerList)
+    public void set(List<BlockPos> posList)
     {
         this.posList = posList;
-        this.triggerList = triggerList;
 
         this.removeAll();
 
-        for (int i = 0; i < posList.size(); i++)
+        for (BlockPos pos : posList)
         {
-            BlockPos pos = posList.get(i);
+            GuiSteeringOffsetElement posElement = this.create();
 
-            /* backward compatibility */
-            if (i >= triggerList.size())
-            {
-                triggerList.add(new Trigger());
-            }
-
-            Trigger trigger = triggerList.get(i);
-
-            GuiPatrolPointElement posElement = this.create(pos, trigger);
+            posElement.position.set(pos); // Set the position of the element
 
             this.add(posElement);
         }
@@ -62,31 +46,28 @@ public class GuiBlockPosList extends GuiElement
         this.getParentContainer().resize();
     }
 
-    private GuiPatrolPointElement create(BlockPos pos, Trigger trigger)
+    private GuiSteeringOffsetElement create()
     {
-        GuiPatrolPointElement element = new GuiPatrolPointElement(this.mc);
+        GuiSteeringOffsetElement element = new GuiSteeringOffsetElement(this.mc);
 
-        element.position.set(pos);
-        element.trigger.set(trigger);
         element.position.callback = (blockPos) ->
         {
             this.posList.set(this.getChildren().indexOf(element), blockPos);
         };
         element.position.context(() ->
         {
-            return element.position.createDefaultContextMenu().action(Icons.REMOVE, IKey.lang("mappet.gui.block_pos.context.remove"), () -> this.removeBlock(element), Colors.NEGATIVE);
+            return element.position.createDefaultContextMenu(false).action(Icons.REMOVE, IKey.lang("mappet.gui.block_pos.context.remove"), () -> this.removeBlock(element), Colors.NEGATIVE);
         });
 
         return element;
     }
 
-    private void removeBlock(GuiPatrolPointElement element)
+    private void removeBlock(GuiSteeringOffsetElement element)
     {
         int index = this.getChildren().indexOf(element);
 
         this.remove(element);
         this.posList.remove(index);
-        this.triggerList.remove(index);
 
         this.getParentContainer().resize();
     }
