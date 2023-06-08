@@ -1,4 +1,3 @@
-#PARSE_ESCAPES
 
 # Error
 mappet.error.states.invalid_target=§fГлобальное состояние или состояние игрока §7%s§f отсутствует!
@@ -67,7 +66,7 @@ mappet.commands.mp.state.add=Эта команда добавляет §7<value>
 mappet.commands.mp.state.clear=Эта команда очищает состояние §7[id]§r. Если §7[id]§r не указан, то будут очищены все состояния. Вы можете использовать §7*§r как шаблон в §7[id]§r чтобы очищать несколько состояний сразу.
 mappet.commands.mp.state.if=Эта команда вычисляет §7<expression>§r по значению состояния §7<id>§r, и если результат §7<expression>§r не равен нулю, то ничего не происходит, но если результат равен нулю тогда команда выдаст ошибку.\n\nЭто полезно для командных блоков, которые останавливаются при появлении ошибки.
 mappet.commands.mp.state.print=Эта команда выводит в чат все значения состояний, которые имеются у §7<target>§r.
-mappet.commands.mp.state.set=Эта команда устанавливает §7<value>§r (может быть числом  или произвольным текстом) для состояния §7<id>§r.
+mappet.commands.mp.state.set=Эта команда устанавливает §7<value>§r (может быть числом или произвольным текстом) для состояния §7<id>§r.
 mappet.commands.mp.state.sub=Эта команда вычитает §7<value>§r из состояния §7<id>§r. Если состояние §7<id>§r не существует или является текстом, §7<value>§r будет вычтено из нуля.
 
 mappet.commands.mp.quest.help=Подкоманда управления квестами.
@@ -117,7 +116,6 @@ mappet.commands.mp.morph.add.help=Подкоманда для отображен
 mappet.commands.mp.morph.add.entity=Отображает §7<morph>§r в мире на §7<expiration>§r тиков, прикреплённый ко всем сущностям найденным селектором §7<target>§r. §7<x>§r, §7<y>§r и §7<z>§r относительный сдвиг от центра нижнего края хитбокса энтити. §7<rotate>§r логическое значение (§7true§r или §7false§r), которое переключает, должен ли морф поворачиваться вслед за энтити. §7<yaw>§r и §7<pitch>§r - горизонтальные и вертикальные сдвиги поворота, соответственно.
 mappet.commands.mp.morph.add.world=Отображает §7<morph>§r в мире на §7<expiration>§r тиков.§7<x>§r, §7<y>§r и §7<z>§r - абсолютные мировые координаты, на которых будет отображён морф. §7<yaw>§r и §7<pitch>§r - горизонтальный и вертикальный сдвиг поворота, относительно, соответственно. относительные §7~§r значения поддерживаются для §7<x>§r, §7<y>§r, §7<z>§r, §7<yaw>§r, и §7<pitch>§r аргументов.
 
-# Config
 
 mappet.config.title=Маппет
 
@@ -129,6 +127,8 @@ mappet.config.comments.general.data_caching=Определяет, должны �
 
 mappet.config.general.enable_forge_triggers=Включить forge триггеры
 mappet.config.comments.general.enable_forge_triggers=Определяет, должны ли быть включены forge триггеры. \n\n§c§lВНИМАНИЕ!§r\n\nЭта опция опасна и может §c§lсломать ваш мир§r. Используйте только если знаете что вы делаете, на свой страх и риск.
+mappet.config.general.load_custom_sounds_on_login=Reload all custom sounds on login
+mappet.config.comments.general.load_custom_sounds_on_login=When enabled, reloads all custom sounds when the player logs in.
 
 mappet.config.npc.title=NPC
 mappet.config.npc.tooltip=Настройки мода, относящиеся к NPC
@@ -177,7 +177,6 @@ mappet.config.comments.script_editor.ui_debug=Когда включён, доб�
 mappet.config.script_editor.docs_new_structure=Новая структура документации
 mappet.config.comments.script_editor.docs_new_structure=Когда включено, меняет структуру документации, сортируя классы по их предназначению.
 
-# GUI
 
 mappet.gui.none=<none>
 mappet.gui.search=Искать...
@@ -307,7 +306,7 @@ mappet.gui.settings.triggers.player_respawn=Игрок: при возрожде�
 mappet.gui.settings.triggers.descriptions.player_respawn=Этот триггер срабатывает когда игрок возрождается.
 mappet.gui.settings.triggers.variables.player_respawn=§7N/A§r
 
-mappet.gui.settings.triggers.player_item_pickup=Игрок: при подбирании  предмета
+mappet.gui.settings.triggers.player_item_pickup=Игрок: при подборе предмета
 mappet.gui.settings.triggers.descriptions.player_item_pickup=Этот отменяемый триггер срабатывает когда игрок подбирает предмет.
 mappet.gui.settings.triggers.variables.player_item_pickup=§6item§r, §7IScriptItemStack§r - предмет который подобрал игрок (полезно только в скриптах).\n§6entityItem§r, §7IScriptEntityItem§r сущность предмета который подобрал игрок (полезно только в скриптах).
 
@@ -327,8 +326,8 @@ mappet.gui.settings.triggers.player_open_container=Игрок: при откры
 mappet.gui.settings.triggers.descriptions.player_open_container=Этот триггер срабатывает когда игрок открывает контейнер, такие как сундук, эндер сундук, печь, верстак, и т.д.
 mappet.gui.settings.triggers.variables.player_open_container=§6inventory§r, §7IScriptInventory§r открытый инвентарь (полезно только в скриптах).\n§6x§r, §6y§r, и §6z§r - координаты блока с инвентарём в мире (только если это блок).
 
-mappet.gui.settings.triggers.player_close_container=Игрок: при открытии контейнера
-mappet.gui.settings.triggers.descriptions.player_close_container=Этот триггер срабатывает когда игрок открывает контейнер, такие как сундук, эндер сундук, печь, верстак, и т.д.
+mappet.gui.settings.triggers.player_close_container=Игрок: при закрытии контейнера
+mappet.gui.settings.triggers.descriptions.player_close_container=Этот триггер срабатывает когда игрок закрывает контейнер, такие как сундук, эндер сундук, печь, верстак, и т.д.
 mappet.gui.settings.triggers.variables.player_close_container=§6inventory§r, §7IScriptInventory§r закрытый инвентарь (полезно только в скриптах).\n§6x§r, §6y§r, и §6z§r - координаты блока с инвентарём в мире (только если это блок).
 
 mappet.gui.settings.triggers.player_journal=Игрок: при открытии журнала
@@ -415,6 +414,27 @@ mappet.gui.npc_tool.title=Инструмент NPC
 mappet.gui.npc_tool.npc=NPC
 mappet.gui.npc_tool.state=Состояние
 
+mappet.gui.scripted_item.title=Настройка скриптового предмета
+mappet.gui.scripted_item.interact_with_air=При взаимодействии с воздухом
+mappet.gui.scripted_item.interact_with_entity=При взаимодействии с сущностью
+mappet.gui.scripted_item.interact_with_block=При взаимодействии с блоком
+mappet.gui.scripted_item.attack_entity=При атаке сущности
+mappet.gui.scripted_item.break_block=При разрушении блока
+mappet.gui.scripted_item.place_block=При установке блока
+mappet.gui.scripted_item.hit_block=При ударе по блоку
+mappet.gui.scripted_item.on_holder_tick=При тике (в руке)
+mappet.gui.scripted_item.pickup=При подборе предметаъ
+mappet.gui.scripted_item.descriptions.interact_with_air=This trigger fires when the player interacts with air (empty space) while holding a scripted item. The variables provided in the context are §6x§r, §6y§r, §6z§r coordinates of the interaction, and §6hand§r the hand used for the interaction.
+mappet.gui.scripted_item.descriptions.interact_with_entity=This trigger fires when the player interacts with an entity while holding a scripted item. The variables provided in the context are the §6hand§r the player used to interact with the entity.
+mappet.gui.scripted_item.descriptions.interact_with_block=This trigger fires when the player interacts with a block while holding a scripted item. The variables provided in the context are §6x§r, §6y§r, §6z§r coordinates of the block, §6block§r the block's registry name, §6meta§r the block's meta-data, and §6hand§r the hand used for the interaction.
+mappet.gui.scripted_item.descriptions.attack_entity=This trigger fires when the player attacks an entity while holding a scripted item. The variable provided in the context is §6damage§r the amount of damage dealt to the entity.
+mappet.gui.scripted_item.descriptions.break_block=This trigger fires when the player breaks a block while holding a scripted item. The variables provided in the context are §6x§r, §6y§r, §6z§r coordinates of the block, §6block§r the block's registry name, and §6meta§r the block's meta-data.
+mappet.gui.scripted_item.descriptions.place_block=This trigger fires when the player places a block while holding a scripted item. The variables provided in the context are §6x§r, §6y§r, §6z§r coordinates of the block, §6block§r the block's registry name, §6meta§r the block's meta-data, and §6hand§r the hand used for the action.
+mappet.gui.scripted_item.descriptions.hit_block=This trigger fires when the player hits a block while holding a scripted item. The variables provided in the context are §6x§r, §6y§r, §6z§r coordinates of the block, and §6hand§r the hand used for the action.
+mappet.gui.scripted_item.descriptions.on_holder_tick=This trigger fires on each game tick when the player is holding the scripted item. The variable provided in the context is §6hand§r the hand that's holding the item.
+mappet.gui.scripted_item.descriptions.pickup=This trigger fires when the player picks up a scripted item. The variable provided in the context is §6item§r the item stack that was picked up.
+
+
 mappet.gui.crafting.title=Название таблицы рецептов
 mappet.gui.crafting.action=Название кнопки "Крафт"
 mappet.gui.crafting.recipe.title=Название рецепта
@@ -462,6 +482,7 @@ mappet.gui.conditionModel.remove=Удалить
 mappet.gui.conditionModel.move_up=Переместить вверх
 mappet.gui.conditionModel.move_down=Переместить вниз
 mappet.gui.conditionModel.info.empty=Выберите блок модели с условием из списка справа, или провзаимодействуйте с любым блоком модели с условием в мире, чтобы начать редактировать...
+
 
 mappet.gui.nodes.node.title=Название
 mappet.gui.nodes.event.binary=Бинарный
@@ -515,21 +536,23 @@ mappet.gui.nodes.info.empty_nodes=Чтобы начать работу с нод
 
 mappet.gui.npcs.meta.title=Метаданные
 mappet.gui.npcs.meta.id=ID NPC
-mappet.gui.npcs.meta.states.pick=Edit states...
-mappet.gui.npcs.meta.states.title=Edit NPC's states
+mappet.gui.npcs.meta.states.pick=Отредактировать состояния...
+mappet.gui.npcs.meta.states.title=Отредактировать состояния NPC
 mappet.gui.npcs.meta.unique=Уникальный
 mappet.gui.npcs.meta.path_distance=Расстояние нахождения пути
 mappet.gui.npcs.behavior.title=Поведение
 mappet.gui.npcs.behavior.look_at_player=Смотрит на игрока
 mappet.gui.npcs.behavior.look_around=Осматривается
 mappet.gui.npcs.behavior.wander=Бродит
-mappet.gui.npcs.behavior.can_pick_up_loot=initialization: Can pick up loot
+mappet.gui.npcs.behavior.can_pick_up_loot=При инициализации: Может поднимать лут
+mappet.gui.npcs.behavior.can_be_steered=Can be steered
 mappet.gui.npcs.behavior.initialize=Триггер при инициализации NPC
 mappet.gui.npcs.behavior.interact=Триггер при взаимодействии с NPC
 mappet.gui.npcs.behavior.damaged=Триггер при получении урона NPC
 mappet.gui.npcs.behavior.died=Триггер при смерти NPC
 mappet.gui.npcs.behavior.tick=Триггер на тике NPC
 mappet.gui.npcs.behavior.target=Триггер на цели NPC
+mappet.gui.npcs.behavior.collision=При столкновении
 mappet.gui.npcs.health.title=Здоровье
 mappet.gui.npcs.health.max_hp=Максимальное ХП
 mappet.gui.npcs.health.hp=Начальное ХП
@@ -544,17 +567,24 @@ mappet.gui.npcs.damage.fire=Урон от огня
 mappet.gui.npcs.damage.invincible=Неуязвимый
 mappet.gui.npcs.damage.killable=Смертный
 mappet.gui.npcs.movement.title=Передвижение
+mappet.gui.npcs.movement.jump_power=Сила прыжка
+mappet.gui.npcs.movement.steering_x_offset=Steering X offset
+mappet.gui.npcs.movement.steering_y_offset=Steering Y offset
+mappet.gui.npcs.movement.steering_z_offset=Steering Z offset
 mappet.gui.npcs.movement.speed=Скорость
 mappet.gui.npcs.movement.can_swim=Может плавать
 mappet.gui.npcs.movement.immovable=Недвижимый
 mappet.gui.npcs.movement.post=Точка поста
 mappet.gui.npcs.movement.patrol_circulate=Патрулирует по кругу
+mappet.gui.npcs.movement.steering_offset=Steering offset points
 mappet.gui.npcs.movement.patrol_points=Точки патруля
 mappet.gui.npcs.movement.follow=Следовать за целью
 mappet.gui.npcs.general.title=Общие
 mappet.gui.npcs.general.faction=Фракция
 mappet.gui.npcs.general.morph=Морф NPC
 mappet.gui.npcs.general.xp=Дроп опыта
+mappet.gui.npcs.general.has_no_gravity=Без гравитации
+mappet.gui.npcs.general.shadow_size=Размер тени
 mappet.gui.npcs.drops.title=Дропы NPC
 mappet.gui.npcs.drops.context.remove=Удалить дроп
 mappet.gui.npcs.modals.add=Впишите название для нового состояния NPC:
@@ -709,6 +739,7 @@ mappet.gui.scripts.keys.word_wrap=Toggle word wrapping
 mappet.gui.scripts.context.paste_morph=Вставьте NBT морфа...
 mappet.gui.scripts.context.paste_item=Вставьте NBT предмета...
 mappet.gui.scripts.context.paste_player_pos=Вставить позицию игрока
+mappet.gui.scripts.context.paste_player_rot=Вставить поворот игрока
 mappet.gui.scripts.context.paste_block_pos=Вставить позицию блока
 mappet.gui.scripts.context.paste_sound=Вставить звуковое событие...
 mappet.gui.scripts.context.docs=Открыть документацию для %s
@@ -726,6 +757,7 @@ mappet.gui.huds.ortho=Орфографический
 mappet.gui.huds.expire=Истекает
 mappet.gui.huds.fov=Поле зрения
 mappet.gui.huds.hide=Прятать в F1
+mappet.gui.huds.global=Глобальный
 mappet.gui.huds.overlay.title=HUD морфы
 mappet.gui.huds.context.add=Добавить HUD морф
 mappet.gui.huds.context.copy=Копировать этот HUD морф
@@ -738,7 +770,6 @@ mappet.gui.logs.toggle.ignore_case=Игнорировать регистр
 mappet.gui.logs.toggle.regex=Регулярное выражение
 mappet.gui.logs.toggle.onlyMessage=Только сообщение
 
-# GUI enums
 
 mappet.gui.shapes.box=Куб
 mappet.gui.shapes.sphere=Сфера
@@ -781,27 +812,27 @@ mappet.gui.trigger_types.item=Предмет
 mappet.gui.trigger_types.state=Состояние
 mappet.gui.trigger_types.morph=Морф
 
-mappet.gui.entity_property.xp=Total experience
-mappet.gui.entity_property.xp_level=Experience level
-mappet.gui.entity_property.hp=Health
-mappet.gui.entity_property.hunger=Hunger
-mappet.gui.entity_property.armor=Armor
-mappet.gui.entity_property.ticks=Ticks existed
-mappet.gui.entity_property.light=Light (torch)
-mappet.gui.entity_property.light_sky=Light (sky)
-mappet.gui.entity_property.sneaking=Is sneaking
-mappet.gui.entity_property.sprinting=Is sprinting
-mappet.gui.entity_property.on_ground=Is on ground
-mappet.gui.entity_property.yaw=Y head rotation (yaw)
-mappet.gui.entity_property.pitch=X head rotation (pitch)
+mappet.gui.entity_property.xp=Весь опыт
+mappet.gui.entity_property.xp_level=Уровень опыта
+mappet.gui.entity_property.hp=Здоровье
+mappet.gui.entity_property.hunger=Голод
+mappet.gui.entity_property.armor=Броня
+mappet.gui.entity_property.ticks=Тиков существует
+mappet.gui.entity_property.light=Свет (факел)
+mappet.gui.entity_property.light_sky=Свет (небо)
+mappet.gui.entity_property.sneaking=Кродётся
+mappet.gui.entity_property.sprinting=Бежит
+mappet.gui.entity_property.on_ground=На земле
+mappet.gui.entity_property.yaw=Поворот головы по Y (yaw)
+mappet.gui.entity_property.pitch=Поворот головы по X (pitch)
 
 mappet.gui.item_trigger.mode.take=Забрать предмет
 mappet.gui.item_trigger.mode.give=Выдать предмет
+mappet.gui.item_trigger.ignoreNBT=Игнорировать NBT
 
 mappet.gui.state_trigger.mode.add=Добавить
 mappet.gui.state_trigger.mode.set=Установить
 mappet.gui.state_trigger.mode.remove=Удалить
-mappet.gui.item_trigger.ignoreNBT=Игнорировать NBT
 
 # Keys
 mappet.keys.category=Маппет
@@ -814,6 +845,9 @@ itemGroup.mappet=Маппет
 
 item.mappet.npc_tool.name=Инструмент NPC
 item.mappet.npc_tool.tooltip=Этот инструмент позволяет призывать и редактировать NPC.
+
+item.mappet.scripted_item.name=Скриптовый предмет
+item.mappet.scripted_item.tooltip=Это предмет который может быть использован чтобы триггерить scripts.mappet.translation.sounds
 
 tile.mappet.emitter.name=Блок-излучатель
 tile.mappet.emitter.tooltip=Проверяет условие выражения и излучает сигнал красного камня при значении больше нуля
