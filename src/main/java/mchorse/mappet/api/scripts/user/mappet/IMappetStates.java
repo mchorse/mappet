@@ -8,12 +8,12 @@ import java.util.Set;
  * and NPCs ({@link mchorse.mappet.api.scripts.user.entities.IScriptNpc}) can have states.
  *
  * <pre>{@code
- *    fun main(c: IScriptEvent) {
- *     // Get global states from the server
- *     val states: IMappetStates = c.getServer().getStates()
+ *    function main(c)
+ *    {
+ *        var states = c.getServer().getStates();
  *
- *     // Do something with global states...
- * }
+ *        // Do something with global states...
+ *    }
  * }</pre>
  */
 public interface IMappetStates
@@ -22,12 +22,10 @@ public interface IMappetStates
      * Add some value to existing state by ID.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val states: IMappetStates = c.getServer().getStates()
+     *    var states = c.getServer().getStates();
      *
-     *     states.add("total_spending", 20.0)
-     *     c.send("Total spending is now ${states.getNumber("total_spending")}")
-     * }
+     *    states.add("total_spending", 20);
+     *    c.send("Total spending is now " + states.getNumber("total_spending"));
      * }</pre>
      *
      * @return original value plus the provided value
@@ -38,12 +36,10 @@ public interface IMappetStates
      * Set numeric value to existing state by ID.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val states: IMappetStates = c.getServer().getStates()
+     *    var states = c.getServer().getStates();
      *
-     *     states.setNumber("total_spending", 1000000001.0)
-     *     c.send("Total spending is now ${states.getNumber("total_spending").toString()}")
-     * }
+     *    states.setNumber("total_spending", 1000000001);
+     *    c.send("Total spending is now " + states.getNumber("total_spending"));
      * }</pre>
      */
     public void setNumber(String id, double value);
@@ -52,14 +48,10 @@ public interface IMappetStates
      * Set string value to existing state by ID.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val subject : IScriptEntity = c.getSubject();
-     *     val subjectStates: IMappetStates? = subject?.getStates()
+     *    var states = c.getSubject().getStates();
      *
-     *     if (subjectStates==null) return;
-     *     subjectStates.setString("name", "Jeff")
-     *     (subject as IScriptPlayer)?.send("Your name is now ${subjectStates.getString("name")}")
-     * }
+     *    states.setString("name", "Jeff");
+     *    c.getSubject().send("Your name is " + states.getString("name"));
      * }</pre>
      */
     public void setString(String id, String value);
@@ -68,11 +60,9 @@ public interface IMappetStates
      * Get a numeric value of a state by given ID.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val states: IMappetStates = c.getServer().getStates()
+     *    var states = c.getServer().getStates();
      *
-     *     c.send("Total spending is ${states.getNumber("total_spending").toString()}")
-     * }
+     *    c.send("Total spending is " + states.getNumber("total_spending"));
      * }</pre>
      *
      * @return state value, or 0 if no state found
@@ -83,11 +73,9 @@ public interface IMappetStates
      * Check if a state instance of number.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val states: IMappetStates = c.getServer().getStates()
+     *    var states = c.getServer().getStates();
      *
-     *     c.send("State is number: ${states.isNumber("state_number")}")
-     * }
+     *    c.send("State is number: " + states.isNumber("state_number"));
      * }</pre>
      */
     public boolean isNumber(String id);
@@ -96,11 +84,9 @@ public interface IMappetStates
      * Get a string value of a state by given ID.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val states: IMappetStates = c.getSubject().getStates()
+     *    var states = c.getSubject().getStates();
      *
-     *     c.send("Your RPG class is: ${states.getString("rpg_class")}")
-     * }
+     *    c.send("Your RPG class is: " + states.getString("class"));
      * }</pre>
      *
      * @return state value, or empty string if no state found
@@ -111,11 +97,9 @@ public interface IMappetStates
      * Check if a state instance of string.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val states: IMappetStates = c.getServer().getStates()
+     *    var states = c.getServer().getStates();
      *
-     *     c.send("State is string: ${states.isString("state_string")}")
-     * }
+     *    c.send("State is string: " + states.isString("state_string"));
      * }</pre>
      */
     public boolean isString(String id);
@@ -124,12 +108,10 @@ public interface IMappetStates
      * Removes a state by given ID.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val states: IMappetStates = c.getServer().getStates()
+     *    var states = c.getServer().getStates();
      *
-     *     // The city has been defaulted
-     *     states.reset("total_spendings")
-     * }
+     *    // The city has been defaulted
+     *    states.reset("total_spendings");
      * }</pre>
      */
     public void reset(String id);
@@ -138,12 +120,10 @@ public interface IMappetStates
      * Removes multiple states by using mask.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val states: IMappetStates = c.getServer().getStates()
+     *    var states = c.getServer().getStates();
      *
-     *     // Remove all states that start with "regions."
-     *     states.resetMasked("regions.*")
-     * }
+     *    // Remove all states that start with "regions."
+     *    states.resetMasked("regions.*");
      * }</pre>
      */
     public void resetMasked(String id);
@@ -152,12 +132,10 @@ public interface IMappetStates
      * Remove all states.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val states: IMappetStates = c.getServer().getStates()
+     *    var states = c.getServer().getStates();
      *
-     *     // Game over
-     *     states.clear()
-     * }
+     *    // Game over
+     *    states.clear();
      * }</pre>
      */
     public void clear();
@@ -166,18 +144,10 @@ public interface IMappetStates
      * Check whether state by given ID exists.
      *
      * <pre>{@code
-     *  fun main(c: IScriptEvent) {
-     *     val subject : IScriptEntity = c.getSubject();
-     *     val subjectStates: IMappetStates? = subject.getStates()
+     *    var states = c.getSubject().getStates();
+     *    var name = states.has("name") ? states.getString("name") : "Jeff";
      *
-     *     if (subjectStates==null) return;
-     *     if (subjectStates.has("name")) {
-     *         (subject as IScriptPlayer).send("Your name is ${subjectStates.getString("name")}")
-     *     }
-     *     else {
-     *         (subject as IScriptPlayer).send("You have no name")
-     *     }
-     * }
+     *    c.getSubject().send("Your name is " + name);
      * }</pre>
      */
     public boolean has(String id);
@@ -186,13 +156,12 @@ public interface IMappetStates
      * Get IDs of all states.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val states: Set<String> = c.getSubject().getStates().keys()
+     *    var states = c.getSubject().getStates().keys();
      *
-     *     for (key in states) {
-     *         c.send("Player states are: " + key)
-     *     }
-     * }
+     *    for each (var key in states)
+     *    {
+     *        c.send("Server has state: " + key);
+     *    }
      * }</pre>
      */
     public Set<String> keys();

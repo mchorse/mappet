@@ -11,8 +11,9 @@ import java.util.List;
  * This interface represent the server passed in the event.
  *
  * <pre>{@code
- *    fun main(c: IScriptEvent) {
- *        val server : IScriptServer = c.getServer();
+ *    function main(c)
+ *    {
+ *        var server = c.getServer();
  *
  *        // Do something with server...
  *    }
@@ -30,11 +31,9 @@ public interface IScriptServer
      * Get world at dimension ID.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val overworld : IScriptWorld = c.getServer().getWorld(0)
+     *    var overworld = c.getServer().getWorld(0);
      *
-     *     // Do something with the world...
-     * }
+     *    // Do something with the world...
      * }</pre>
      */
     public IScriptWorld getWorld(int dimension);
@@ -43,11 +42,9 @@ public interface IScriptServer
      * Get fancy world at dimension ID.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val overworld : IScriptFancyWorld = c.getServer().getFancyWorld(0)
+     *    var overworld = c.getServer().getFancyWorld(0);
      *
-     *     // Do something with the world...
-     * }
+     *    // Do something with the world...
      * }</pre>
      */
     public IScriptFancyWorld getFancyWorld(int dimension);
@@ -56,14 +53,13 @@ public interface IScriptServer
      * Get all entities matching giving target selector.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val allCows : List<IScriptEntity> = c.getServer().getEntities("@e[type=minecraft:cow]")
+     *    var cows = c.getServer().getEntities("@e[type=minecraft:cow]");
      *
-     *     // Despawn all cows
-     *     for (cow in allCows) {
-     *         cow.remove()
-     *     }
-     * }
+     *    // Despawn all cows
+     *    for (var i in cows)
+     *    {
+     *        cows[i].remove();
+     *    }
      * }</pre>
      */
     public List<IScriptEntity> getEntities(String targetSelector);
@@ -72,11 +68,10 @@ public interface IScriptServer
      * Get an entity by its UUID.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val entity : IScriptEntity = c.getServer().getEntity("02e4ead1-b6ac-42f5-ac8e-a80aa301527b");
-     *     val subject : IScriptEntity = c.getSubject();
-     *     c.send("Is entity OtakuGamer_? ${entity.isSame(subject)}")
-     * }
+     *    var uuid = "29a91933-86f2-4683-8a87-218084d8c927";
+     *    var entity = c.getServer().getEntity(uuid);
+     *
+     *    print(entity.getUniqueId() === uuid); // true
      * }</pre>
      */
     public IScriptEntity getEntity(String uuid);
@@ -85,13 +80,13 @@ public interface IScriptServer
      * Get all players on the server.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val allPlayers : List<IScriptPlayer> = c.getServer().getAllPlayers()
+     *    var players = c.getServer().getAllPlayers();
      *
-     *     for (player in allPlayers){
-     *         player.setMotion(0.0, 0.5, 0.0)
-     *     }
-     * }
+     *    for (var i in players)
+     *    {
+     *        // Surprise :)
+     *        players[i].setMotion(0, 0.5, 0);
+     *    }
      * }</pre>
      */
     public List<IScriptPlayer> getAllPlayers();
@@ -100,16 +95,14 @@ public interface IScriptServer
      * Get a player by their username.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val player : IScriptPlayer = c.getServer().getPlayer("Notch")
+     *    var player = c.getServer().getPlayer("Notch");
      *
-     *     if (player != null)
-     *     {
-     *         // I'm about to pull a prank on Notch... >:)
-     *         //
-     *         // Or give a nice present... :)
-     *     }
-     * }
+     *    if (player)
+     *    {
+     *        // I'm about to pull a prank on Notch... >:)
+     *        //
+     *        // Or give a nice present... :)
+     *    }
      * }</pre>
      */
     public IScriptPlayer getPlayer(String username);
@@ -118,12 +111,10 @@ public interface IScriptServer
      * Check if a player is online.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     if (!c.getServer().isOnline("McHorse"))
-     *     {
-     *         c.send("McHorse is not online. :(")
-     *     }
-     * }
+     *    if (!c.getServer().isOnline("McHorse"))
+     *    {
+     *        c.send("McHorse is not online. :(")
+     *    }
      * }</pre>
      */
     public default boolean isOnline(String username)
@@ -135,14 +126,12 @@ public interface IScriptServer
      * Get global (server) states.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     val states = c.getServer().getStates()
+     *    var states = c.getServer().getStates();
      *
-     *     if (states.getNumber("total_money_earned") > 1000000000)
-     *     {
-     *         // Give all players an achievement or something...
-     *     }
-     * }
+     *    if (states.getNumber("total_money_earned") > 1000000000)
+     *    {
+     *        // Give all players an achievement or something...
+     *    }
      * }</pre>
      */
     public IMappetStates getStates();
@@ -151,12 +140,10 @@ public interface IScriptServer
      * Check if an entity with given UUID exists.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     if (c.getServer().entityExists("29a91933-86f2-4683-8a87-218084d8c927"))
-     *     {
-     *         // Do something...
-     *     }
-     * }
+     *    if (c.getServer().entityExists("29a91933-86f2-4683-8a87-218084d8c927"))
+     *    {
+     *        // Do something...
+     *    }
      * }</pre>
      *
      * @param uuid The UUID of the entity to check for existence.
@@ -169,9 +156,7 @@ public interface IScriptServer
      * Execute a script with a given script name and the default function "main".
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     c.getServer().executeScript("example_script.kts")
-     * }
+     *    c.getServer().executeScript("example_script.js");
      * }</pre>
      *
      * @param scriptName The name of the script to execute.
@@ -182,9 +167,7 @@ public interface IScriptServer
      * Execute a script with a given script name and a specified function.
      *
      * <pre>{@code
-     * fun main(c: IScriptEvent) {
-     *     c.getServer().executeScript("example_script.kts", "custom_function")
-     * }
+     *    c.getServer().executeScript("example_script.js", "custom_function");
      * }</pre>
      *
      * @param scriptName The name of the script to execute.

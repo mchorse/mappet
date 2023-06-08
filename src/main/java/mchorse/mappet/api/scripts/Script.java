@@ -187,42 +187,43 @@ public class Script extends AbstractData
             finalCode.append(this.code);
         }
     }
-    
+
+
+    private String DEFAULT_KOTLIN_IMPORTS =
+            "import mchorse.metamorph.api.morphs.AbstractMorph"+"\n"+
+                    "import mchorse.mappet.entities.EntityNpc"+"\n"+
+                    "import net.minecraft.potion.Potion"+"\n"+
+                    "import net.minecraft.entity.Entity"+"\n"+
+                    "import net.minecraft.inventory.IInventory"+"\n"+
+                    "import net.minecraft.entity.player.EntityPlayerMP"+"\n"+
+                    "import net.minecraft.item.Item"+"\n"+
+                    "import net.minecraft.item.ItemStack"+"\n"+
+                    "import net.minecraft.tileentity.TileEntity"+"\n"+
+                    "import net.minecraft.block.state.IBlockState"+"\n"+
+                    "import net.minecraft.util.EnumParticleTypes"+"\n"+
+
+                    "import javax.vecmath.*"+"\n"+
+                    "import java.lang.Math.*"+"\n"+
+
+                    "import mchorse.mappet.api.scripts.user.*"+"\n"+
+                    "import mchorse.mappet.api.scripts.user.blocks.*"+"\n"+
+                    "import mchorse.mappet.api.scripts.user.data.*"+"\n"+
+                    "import mchorse.mappet.api.scripts.user.entities.*"+"\n"+
+                    "import mchorse.mappet.api.scripts.user.items.*"+"\n"+
+                    "import mchorse.mappet.api.scripts.user.mappet.*"+"\n"+
+                    "import mchorse.mappet.api.scripts.user.nbt.*"+"\n"+
+
+                    "import mchorse.mappet.api.scripts.code.*"+"\n"+
+                    "import mchorse.mappet.api.scripts.code.blocks.*"+"\n"+
+                    "import mchorse.mappet.api.scripts.code.entities.*"+"\n"+
+                    "import mchorse.mappet.api.scripts.code.items.*"+"\n"+
+                    "import mchorse.mappet.api.scripts.code.mappet.*"+"\n"+
+                    "import mchorse.mappet.api.scripts.code.nbt.*"+"\n";
+
     private void evalEngineCode(boolean isKotlin, Set<String> uniqueImports, StringBuilder finalCode) throws ScriptException
     {
         if (isKotlin)
         {
-            String DEFAULT_KOTLIN_IMPORTS =
-                "import mchorse.metamorph.api.morphs.AbstractMorph" + "\n" +
-                "import mchorse.mappet.entities.EntityNpc" + "\n" +
-                "import net.minecraft.potion.Potion" + "\n" +
-                "import net.minecraft.entity.Entity" + "\n" +
-                "import net.minecraft.inventory.IInventory" + "\n" +
-                "import net.minecraft.entity.player.EntityPlayerMP" + "\n" +
-                "import net.minecraft.item.Item" + "\n" +
-                "import net.minecraft.item.ItemStack" + "\n" +
-                "import net.minecraft.tileentity.TileEntity" + "\n" +
-                "import net.minecraft.block.state.IBlockState" + "\n" +
-                "import net.minecraft.util.EnumParticleTypes" + "\n" +
-
-                "import javax.vecmath.*" + "\n" +
-                "import java.lang.Math.*" + "\n" +
-
-                "import mchorse.mappet.api.scripts.user.*" + "\n" +
-                "import mchorse.mappet.api.scripts.user.blocks.*" + "\n" +
-                "import mchorse.mappet.api.scripts.user.data.*" + "\n" +
-                "import mchorse.mappet.api.scripts.user.entities.*" + "\n" +
-                "import mchorse.mappet.api.scripts.user.items.*" + "\n" +
-                "import mchorse.mappet.api.scripts.user.mappet.*" + "\n" +
-                "import mchorse.mappet.api.scripts.user.nbt.*" + "\n" +
-
-                "import mchorse.mappet.api.scripts.code.*" + "\n" +
-                "import mchorse.mappet.api.scripts.code.blocks.*" + "\n" +
-                "import mchorse.mappet.api.scripts.code.entities.*" + "\n" +
-                "import mchorse.mappet.api.scripts.code.items.*" + "\n" +
-                "import mchorse.mappet.api.scripts.code.mappet.*" + "\n" +
-                "import mchorse.mappet.api.scripts.code.nbt.*" + "\n";
-
             String allCode = DEFAULT_KOTLIN_IMPORTS + "\n" + String.join("\n", uniqueImports) + "\n" + finalCode.toString();
             this.engine.eval(allCode);
         }
