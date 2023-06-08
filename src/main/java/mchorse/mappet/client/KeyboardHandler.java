@@ -107,6 +107,7 @@ public class KeyboardHandler
         ClientRegistry.registerKeyBinding(this.openMappetDashboard);
         ClientRegistry.registerKeyBinding(this.openJournal);
         ClientRegistry.registerKeyBinding(this.runCurrentScript);
+        ClientRegistry.registerKeyBinding(this.openScriptedItem);
     }
 
     @SubscribeEvent
@@ -145,6 +146,16 @@ public class KeyboardHandler
 
             if (Keyboard.getEventKeyState()) {
                 handleKeys();
+            }
+        }
+
+        if (this.openScriptedItem.isPressed())
+        {
+            ItemStack stack = mc.player.getHeldItemMainhand();
+
+            if (!stack.getItem().equals(Items.AIR))
+            {
+                mc.displayGuiScreen(new GuiScriptedItemScreen(stack));
             }
         }
     }
