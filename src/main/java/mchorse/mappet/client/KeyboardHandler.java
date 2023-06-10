@@ -5,7 +5,7 @@ import mchorse.mappet.api.misc.hotkeys.TriggerHotkey;
 import mchorse.mappet.api.scripts.Script;
 import mchorse.mappet.client.gui.GuiJournalScreen;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
-import mchorse.mappet.client.gui.GuiScriptedItemScreen;
+import mchorse.mappet.client.gui.scripts.scriptedItem.GuiScriptedItemScreen;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.events.PacketEventHotkey;
 import mchorse.mappet.network.common.events.PacketPlayerJournal;
@@ -149,7 +149,7 @@ public class KeyboardHandler
 
                 if (!stack.getItem().equals(Items.AIR))
                 {
-                    mc.displayGuiScreen(new GuiScriptedItemScreen(stack));
+                    mc.displayGuiScreen(new GuiScriptedItemScreen(mc, stack));
                 }
             }
 
@@ -165,7 +165,7 @@ public class KeyboardHandler
 
             if (!stack.getItem().equals(Items.AIR))
             {
-                mc.displayGuiScreen(new GuiScriptedItemScreen(stack));
+                mc.displayGuiScreen(new GuiScriptedItemScreen(mc, stack));
             }
         }
     }
