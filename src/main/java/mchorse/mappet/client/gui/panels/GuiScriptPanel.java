@@ -67,12 +67,12 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
     {
         /* These GUI QoL features are getting out of hand... */
         GuiSimpleContextMenu menu = new GuiSimpleContextMenu(mc)
-            .action(Icons.POSE, IKey.lang("mappet.gui.scripts.context.paste_morph"), () -> openMorphPicker(editor))
-            .action(MMIcons.ITEM, IKey.lang("mappet.gui.scripts.context.paste_item"), () -> openItemPicker(editor))
-            .action(Icons.BLOCK, IKey.lang("mappet.gui.scripts.context.paste_player_pos"), () -> pastePlayerPosition(editor))
-            .action(Icons.LIMB, IKey.lang("mappet.gui.scripts.context.paste_player_rot"), () -> pastePlayerRotation(editor))
-            .action(Icons.VISIBLE, IKey.lang("mappet.gui.scripts.context.paste_block_pos"), () -> pasteBlockPosition(editor))
-            .action(Icons.SOUND, IKey.lang("mappet.gui.scripts.context.paste_sound"), () -> openSoundPicker(editor));
+                .action(Icons.POSE, IKey.lang("mappet.gui.scripts.context.paste_morph"), () -> openMorphPicker(editor))
+                .action(MMIcons.ITEM, IKey.lang("mappet.gui.scripts.context.paste_item"), () -> openItemPicker(editor))
+                .action(Icons.BLOCK, IKey.lang("mappet.gui.scripts.context.paste_player_pos"), () -> pastePlayerPosition(editor))
+                .action(Icons.LIMB, IKey.lang("mappet.gui.scripts.context.paste_player_rot"), () -> pastePlayerRotation(editor))
+                .action(Icons.VISIBLE, IKey.lang("mappet.gui.scripts.context.paste_block_pos"), () -> pasteBlockPosition(editor))
+                .action(Icons.SOUND, IKey.lang("mappet.gui.scripts.context.paste_sound"), () -> openSoundPicker(editor));
 
         if (editor.isSelected())
         {
@@ -139,7 +139,8 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
                 tag = JsonToNBT.getTagFromJson(tag.getString("String"));
             }
             catch (Exception e)
-            {}
+            {
+            }
 
             return tag;
         }
@@ -211,8 +212,8 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
         this.code = new GuiTextEditor(mc, null);
         this.code.background().context(() -> createScriptContextMenu(this.mc, this.code));
         this.code.keys().ignoreFocus().register(IKey.lang("mappet.gui.scripts.keys.word_wrap"), Keyboard.KEY_P, this::toggleWordWrap)
-            .category(GuiMappetDashboardPanel.KEYS_CATEGORY)
-            .held(Keyboard.KEY_LCONTROL);
+                .category(GuiMappetDashboardPanel.KEYS_CATEGORY)
+                .held(Keyboard.KEY_LCONTROL);
 
         this.repl = new GuiRepl(mc);
 

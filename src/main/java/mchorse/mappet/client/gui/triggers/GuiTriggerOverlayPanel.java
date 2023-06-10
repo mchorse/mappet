@@ -46,9 +46,7 @@ public class GuiTriggerOverlayPanel extends GuiEditorOverlayPanel<AbstractTrigge
     public static final Map<
             Class<? extends AbstractTriggerBlock>,
             Class<? extends GuiAbstractTriggerBlockPanel<? extends AbstractTriggerBlock>>>
-        PANELS = new HashMap<
-            Class<? extends AbstractTriggerBlock>,
-            Class<? extends GuiAbstractTriggerBlockPanel<? extends AbstractTriggerBlock>>>();
+            PANELS = new HashMap<>();
 
     private Trigger trigger;
     private Runnable onClose;

@@ -222,7 +222,7 @@ public interface IScriptEvent
      * }</pre>
      *
      * @return How many successful commands were run. 0 - command errored, 1 - command was successful,
-     *      2 or above - multiple commands were executed using target selectors.
+     * 2 or above - multiple commands were executed using target selectors.
      */
     public int executeCommand(String command);
 

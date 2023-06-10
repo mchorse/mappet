@@ -14,7 +14,6 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
-import mchorse.metamorph.util.MMIcons;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 
@@ -44,7 +43,7 @@ public class GuiCraftingTablePanel extends GuiMappetRunPanel<CraftingTable>
         this.recipes.sorting().context(() ->
         {
             GuiSimpleContextMenu menu = new GuiSimpleContextMenu(this.mc)
-                .action(Icons.ADD, IKey.lang("mappet.gui.crafting.context.add"), this::addRecipe);
+                    .action(Icons.ADD, IKey.lang("mappet.gui.crafting.context.add"), this::addRecipe);
 
             if (!this.recipes.isDeselected())
             {

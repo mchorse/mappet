@@ -44,13 +44,13 @@ public class GuiEmitterBlockScreen extends GuiBase
         this.disable.tooltip(IKey.lang("mappet.gui.emitter_block.disable_tootlip"));
 
         GuiElement frame = Elements.column(mc, 5,
-            Elements.label(IKey.lang("mappet.gui.emitter_block.condition")),
-            this.checker,
-            Elements.row(mc, 5,
-                Elements.column(mc, 5, Elements.label(IKey.lang("mappet.gui.emitter_block.radius")), this.radius),
-                Elements.column(mc, 5, Elements.label(IKey.lang("mappet.gui.emitter_block.update")), this.update)
-            ).marginTop(12),
-            this.disable
+                Elements.label(IKey.lang("mappet.gui.emitter_block.condition")),
+                this.checker,
+                Elements.row(mc, 5,
+                        Elements.column(mc, 5, Elements.label(IKey.lang("mappet.gui.emitter_block.radius")), this.radius),
+                        Elements.column(mc, 5, Elements.label(IKey.lang("mappet.gui.emitter_block.update")), this.update)
+                ).marginTop(12),
+                this.disable
         );
 
         frame.flex().relative(this.viewport).xy(0.5F, 0.5F).w(0.5F).anchor(0.5F, 0.5F);

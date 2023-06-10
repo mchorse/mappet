@@ -95,7 +95,8 @@ public class ScriptFactory implements IScriptFactory
         return ScriptBlockState.create(null);
     }
 
-    public IScriptBlockState createBlockState(String blockId){
+    public IScriptBlockState createBlockState(String blockId)
+    {
         return createBlockState(blockId, -1);
     }
 
@@ -169,7 +170,7 @@ public class ScriptFactory implements IScriptFactory
         }
         else if (object instanceof Boolean)
         {
-            return new NBTTagByte((Boolean)object ? Byte.valueOf("1") : Byte.valueOf("0"));
+            return new NBTTagByte((Boolean) object ? Byte.valueOf("1") : Byte.valueOf("0"));
         }
         else if (object instanceof ScriptObjectMirror)
         {
@@ -460,22 +461,22 @@ public class ScriptFactory implements IScriptFactory
     private boolean isPointInBounds2D(Vector2d point, Vector2d bound1, Vector2d bound2)
     {
         return point.x >= Math.min(bound1.x, bound2.x) && point.x <= Math.max(bound1.x, bound2.x)
-            && point.y >= Math.min(bound1.y, bound2.y) && point.y <= Math.max(bound1.y, bound2.y);
+                && point.y >= Math.min(bound1.y, bound2.y) && point.y <= Math.max(bound1.y, bound2.y);
     }
 
     private boolean isPointInBounds3D(Vector3d point, Vector3d bound1, Vector3d bound2)
     {
         return point.x >= Math.min(bound1.x, bound2.x) && point.x <= Math.max(bound1.x, bound2.x)
-            && point.y >= Math.min(bound1.y, bound2.y) && point.y <= Math.max(bound1.y, bound2.y)
-            && point.z >= Math.min(bound1.z, bound2.z) && point.z <= Math.max(bound1.z, bound2.z);
+                && point.y >= Math.min(bound1.y, bound2.y) && point.y <= Math.max(bound1.y, bound2.y)
+                && point.z >= Math.min(bound1.z, bound2.z) && point.z <= Math.max(bound1.z, bound2.z);
     }
 
     private boolean isPointInBounds4D(Vector4d point, Vector4d bound1, Vector4d bound2)
     {
         return point.x >= Math.min(bound1.x, bound2.x) && point.x <= Math.max(bound1.x, bound2.x)
-            && point.y >= Math.min(bound1.y, bound2.y) && point.y <= Math.max(bound1.y, bound2.y)
-            && point.z >= Math.min(bound1.z, bound2.z) && point.z <= Math.max(bound1.z, bound2.z)
-            && point.w >= Math.min(bound1.w, bound2.w) && point.w <= Math.max(bound1.w, bound2.w);
+                && point.y >= Math.min(bound1.y, bound2.y) && point.y <= Math.max(bound1.y, bound2.y)
+                && point.z >= Math.min(bound1.z, bound2.z) && point.z <= Math.max(bound1.z, bound2.z)
+                && point.w >= Math.min(bound1.w, bound2.w) && point.w <= Math.max(bound1.w, bound2.w);
     }
 
     @Override

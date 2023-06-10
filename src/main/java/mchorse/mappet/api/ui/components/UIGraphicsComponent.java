@@ -16,7 +16,6 @@ import mchorse.mclib.utils.resources.RLUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -278,7 +277,7 @@ public class UIGraphicsComponent extends UIComponent
      * @param primary ARGB color that fills inside.
      * @param secondary ARGB color that fills outside.
      * @param offset Fading shadow's distance from the given box using <code>x</code>,
-     *               <code>y</code>, <code>w</code>, and <code>h</code> arguments.
+     * <code>y</code>, <code>w</code>, and <code>h</code> arguments.
      */
     public Graphic shadow(int primary, int secondary, int offset)
     {
@@ -293,7 +292,7 @@ public class UIGraphicsComponent extends UIComponent
      * @param primary ARGB color that fills inside.
      * @param secondary ARGB color that fills outside.
      * @param offset Fading shadow's distance from the given box using <code>x</code>,
-     *               <code>y</code>, <code>w</code>, and <code>h</code> arguments.
+     * <code>y</code>, <code>w</code>, and <code>h</code> arguments.
      */
     public Graphic shadow(int x, int y, int w, int h, int primary, int secondary, int offset)
     {

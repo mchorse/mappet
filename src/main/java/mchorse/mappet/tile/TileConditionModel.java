@@ -210,7 +210,7 @@ public class TileConditionModel extends TileEntity implements ITickable
         NBTTagCompound settings = new NBTTagCompound();
         this.settings.toNBT(settings);
 
-        tag.setTag("settings",settings);
+        tag.setTag("settings", settings);
 
         this.toNBT(tag);
 

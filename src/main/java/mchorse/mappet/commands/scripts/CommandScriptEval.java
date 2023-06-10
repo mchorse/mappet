@@ -1,7 +1,6 @@
 package mchorse.mappet.commands.scripts;
 
 import mchorse.mappet.Mappet;
-import mchorse.mappet.api.utils.DataContext;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;

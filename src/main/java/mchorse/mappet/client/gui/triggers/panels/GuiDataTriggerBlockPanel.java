@@ -17,8 +17,8 @@ public abstract class GuiDataTriggerBlockPanel <T extends DataTriggerBlock> exte
         super(mc, overlay, block);
 
         this.data = GuiMappetUtils.fullWindowContext(
-            new GuiTextElement(mc, 100000, (text) -> this.block.customData = text),
-            IKey.lang("mappet.gui.nodes.event.data")
+                new GuiTextElement(mc, 100000, (text) -> this.block.customData = text),
+                IKey.lang("mappet.gui.nodes.event.data")
         );
         this.data.tooltip(IKey.lang("mappet.gui.nodes.event.data_tooltip"));
         this.data.setText(block.customData);

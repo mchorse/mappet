@@ -41,6 +41,7 @@ public class Schematic extends AbstractData
     {
         this(1, 1, 1);
     }
+
     public Schematic(int width, int height, int length)
     {
         this.width = width;
@@ -292,7 +293,6 @@ public class Schematic extends AbstractData
     {
         return this.entities;
     }
-
 
 
     @Override

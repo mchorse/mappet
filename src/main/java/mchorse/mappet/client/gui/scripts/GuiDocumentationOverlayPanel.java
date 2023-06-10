@@ -297,6 +297,7 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
             return new GuiDocEntryList(minecraft, consumer);
         }
     }
+
     public static class GuiDocEntryList extends GuiListElement<DocEntry>
     {
         public GuiDocEntryList(Minecraft mc, Consumer<List<DocEntry>> callback)

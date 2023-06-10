@@ -1,8 +1,8 @@
 package mchorse.mappet.api.crafting;
 
 import mchorse.mappet.api.conditions.Checker;
-import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.api.triggers.Trigger;
+import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.utils.InventoryUtils;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;

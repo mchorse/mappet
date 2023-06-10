@@ -215,7 +215,6 @@ public class TileConditionModelRenderer extends TileEntitySpecialRenderer<TileCo
                 GlStateManager.enableTexture2D();
                 GlStateManager.popMatrix();
             }
-
         }
     }
 
@@ -243,7 +242,6 @@ public class TileConditionModelRenderer extends TileEntitySpecialRenderer<TileCo
         {
             GlStateManager.scale(teSettings.getSx(), teSettings.getSy(), teSettings.getSz());
         }
-
     }
 
     public static class RenderShadow extends Render<Entity>

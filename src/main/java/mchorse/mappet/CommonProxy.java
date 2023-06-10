@@ -73,11 +73,10 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import javax.script.ScriptEngine;
 import java.io.File;
 
 /**
- * Common proxy 
+ * Common proxy
  */
 public class CommonProxy
 {
@@ -92,22 +91,27 @@ public class CommonProxy
     {
         return events;
     }
+
     public static IFactory<EventBaseNode> getDialogues()
     {
         return dialogues;
     }
+
     public static IFactory<QuestNode> getChains()
     {
         return chains;
     }
+
     public static IFactory<AbstractConditionBlock> getConditionBlocks()
     {
         return conditionBlocks;
     }
+
     public static IFactory<AbstractTriggerBlock> getTriggerBlocks()
     {
         return triggerBlocks;
     }
+
     public static IFactory<UIComponent> getUiComponents()
     {
         return uiComponents;
@@ -148,91 +152,90 @@ public class CommonProxy
     }
 
 
-
     public void postInit(FMLPostInitializationEvent event)
     {
         /* Register event nodes */
         MapFactory<EventBaseNode> eventNodes = new MapFactory<EventBaseNode>()
-            .register("command", CommandNode.class, Colors.COMMAND)
-            .register("comment", CommentNode.class, Colors.COMMENT)
-            .register("condition", ConditionNode.class, Colors.CONDITION)
-            .register("switch", SwitchNode.class, Colors.FACTION)
-            .register("timer", TimerNode.class, Colors.TIME)
-            .register("trigger", TriggerNode.class, Colors.STATE)
+                .register("command", CommandNode.class, Colors.COMMAND)
+                .register("comment", CommentNode.class, Colors.COMMENT)
+                .register("condition", ConditionNode.class, Colors.CONDITION)
+                .register("switch", SwitchNode.class, Colors.FACTION)
+                .register("timer", TimerNode.class, Colors.TIME)
+                .register("trigger", TriggerNode.class, Colors.STATE)
                 /* Backward compatibility with gamma build */
                 .alias("trigger", "event")
                 .alias("trigger", "dialogue")
                 .alias("trigger", "script")
-            .register("cancel", CancelNode.class, Colors.CANCEL);
+                .register("cancel", CancelNode.class, Colors.CANCEL);
 
         events = eventNodes;
         Mappet.EVENT_BUS.post(new RegisterEventNodeEvent(eventNodes));
 
         /* Register dialogue nodes */
         MapFactory<EventBaseNode> dialogueNodes = eventNodes.copy()
-            .register("reply", ReplyNode.class, Colors.REPLY)
-            .register("reaction", ReactionNode.class, Colors.STATE)
-            .register("crafting", CraftingNode.class, Colors.CRAFTING)
-            .register("quest_chain", QuestChainNode.class, Colors.QUEST)
-            .register("quest", QuestDialogueNode.class, Colors.QUEST)
-            .unregister("timer");
+                .register("reply", ReplyNode.class, Colors.REPLY)
+                .register("reaction", ReactionNode.class, Colors.STATE)
+                .register("crafting", CraftingNode.class, Colors.CRAFTING)
+                .register("quest_chain", QuestChainNode.class, Colors.QUEST)
+                .register("quest", QuestDialogueNode.class, Colors.QUEST)
+                .unregister("timer");
 
         dialogues = dialogueNodes;
         Mappet.EVENT_BUS.post(new RegisterDialogueNodeEvent(dialogueNodes));
 
         /* Register quest chain blocks */
         MapFactory<QuestNode> questChainNodes = new MapFactory<QuestNode>()
-            .register("quest", QuestNode.class, Colors.QUEST);
+                .register("quest", QuestNode.class, Colors.QUEST);
 
         chains = questChainNodes;
         Mappet.EVENT_BUS.post(new RegisterQuestChainNodeEvent(questChainNodes));
 
         /* Register condition blocks */
         MapFactory<AbstractConditionBlock> conditions = new MapFactory<AbstractConditionBlock>()
-            .register("quest", QuestConditionBlock.class, Colors.QUEST)
-            .register("state", StateConditionBlock.class, Colors.STATE)
-            .register("dialogue", DialogueConditionBlock.class, Colors.DIALOGUE)
-            .register("faction", FactionConditionBlock.class, Colors.FACTION)
-            .register("item", ItemConditionBlock.class, Colors.CRAFTING)
-            .register("world_time", WorldTimeConditionBlock.class, Colors.TIME)
-            .register("entity", EntityConditionBlock.class, Colors.ENTITY)
-            .register("condition", ConditionConditionBlock.class, Colors.CONDITION)
-            .register("morph", MorphConditionBlock.class, Colors.MORPH)
-            .register("expression", ExpressionConditionBlock.class, Colors.CANCEL);
+                .register("quest", QuestConditionBlock.class, Colors.QUEST)
+                .register("state", StateConditionBlock.class, Colors.STATE)
+                .register("dialogue", DialogueConditionBlock.class, Colors.DIALOGUE)
+                .register("faction", FactionConditionBlock.class, Colors.FACTION)
+                .register("item", ItemConditionBlock.class, Colors.CRAFTING)
+                .register("world_time", WorldTimeConditionBlock.class, Colors.TIME)
+                .register("entity", EntityConditionBlock.class, Colors.ENTITY)
+                .register("condition", ConditionConditionBlock.class, Colors.CONDITION)
+                .register("morph", MorphConditionBlock.class, Colors.MORPH)
+                .register("expression", ExpressionConditionBlock.class, Colors.CANCEL);
 
         conditionBlocks = conditions;
         Mappet.EVENT_BUS.post(new RegisterConditionBlockEvent(conditions));
 
         /* Register condition blocks */
         MapFactory<AbstractTriggerBlock> triggers = new MapFactory<AbstractTriggerBlock>()
-            .register("command", CommandTriggerBlock.class, Colors.COMMAND)
-            .register("sound", SoundTriggerBlock.class, Colors.REPLY)
-            .register("event", EventTriggerBlock.class, Colors.STATE)
-            .register("dialogue", DialogueTriggerBlock.class, Colors.DIALOGUE)
-            .register("script", ScriptTriggerBlock.class, Colors.ENTITY)
-            .register("item", ItemTriggerBlock.class, Colors.CRAFTING)
-            .register("state", StateTriggerBlock.class, Colors.STATE)
-            .register("morph", MorphTriggerBlock.class, Colors.MORPH);
+                .register("command", CommandTriggerBlock.class, Colors.COMMAND)
+                .register("sound", SoundTriggerBlock.class, Colors.REPLY)
+                .register("event", EventTriggerBlock.class, Colors.STATE)
+                .register("dialogue", DialogueTriggerBlock.class, Colors.DIALOGUE)
+                .register("script", ScriptTriggerBlock.class, Colors.ENTITY)
+                .register("item", ItemTriggerBlock.class, Colors.CRAFTING)
+                .register("state", StateTriggerBlock.class, Colors.STATE)
+                .register("morph", MorphTriggerBlock.class, Colors.MORPH);
 
         triggerBlocks = triggers;
         Mappet.EVENT_BUS.post(new RegisterTriggerBlockEvent(triggers));
 
         /* Register UI components */
         MapFactory<UIComponent> ui = new MapFactory<UIComponent>()
-            .register("graphics", UIGraphicsComponent.class, 0xffffff)
-            .register("button", UIButtonComponent.class, 0xffffff)
-            .register("icon", UIIconButtonComponent.class, 0xffffff)
-            .register("label", UILabelComponent.class, 0xffffff)
-            .register("text", UITextComponent.class, 0xffffff)
-            .register("textbox", UITextboxComponent.class, 0xffffff)
-            .register("textarea", UITextareaComponent.class, 0xffffff)
-            .register("toggle", UIToggleComponent.class, 0xffffff)
-            .register("trackpad", UITrackpadComponent.class, 0xffffff)
-            .register("strings", UIStringListComponent.class, 0xffffff)
-            .register("item", UIStackComponent.class, 0xffffff)
-            .register("layout", UILayoutComponent.class, 0xffffff)
-            .register("morph", UIMorphComponent.class, 0xffffff)
-            .register("clickarea", UIClickComponent.class, 0xffffff);
+                .register("graphics", UIGraphicsComponent.class, 0xffffff)
+                .register("button", UIButtonComponent.class, 0xffffff)
+                .register("icon", UIIconButtonComponent.class, 0xffffff)
+                .register("label", UILabelComponent.class, 0xffffff)
+                .register("text", UITextComponent.class, 0xffffff)
+                .register("textbox", UITextboxComponent.class, 0xffffff)
+                .register("textarea", UITextareaComponent.class, 0xffffff)
+                .register("toggle", UIToggleComponent.class, 0xffffff)
+                .register("trackpad", UITrackpadComponent.class, 0xffffff)
+                .register("strings", UIStringListComponent.class, 0xffffff)
+                .register("item", UIStackComponent.class, 0xffffff)
+                .register("layout", UILayoutComponent.class, 0xffffff)
+                .register("morph", UIMorphComponent.class, 0xffffff)
+                .register("clickarea", UIClickComponent.class, 0xffffff);
 
         uiComponents = ui;
         Mappet.EVENT_BUS.post(new RegisterUIComponentEvent(ui));

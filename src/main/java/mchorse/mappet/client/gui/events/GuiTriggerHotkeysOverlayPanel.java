@@ -2,8 +2,8 @@ package mchorse.mappet.client.gui.events;
 
 import mchorse.mappet.api.misc.hotkeys.TriggerHotkey;
 import mchorse.mappet.api.misc.hotkeys.TriggerHotkeys;
-import mchorse.mappet.client.gui.triggers.GuiTriggerElement;
 import mchorse.mappet.client.gui.conditions.GuiCheckerElement;
+import mchorse.mappet.client.gui.triggers.GuiTriggerElement;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlayPanel;
 import mchorse.mappet.utils.Colors;

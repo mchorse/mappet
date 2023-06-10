@@ -41,7 +41,7 @@ public class GuiWorldTimeConditionBlockPanel extends GuiAbstractConditionBlockPa
         this.add(Elements.label(IKey.lang("mappet.gui.conditions.world_time.check")).marginTop(12), this.type);
         this.add(a, b);
 
-        this.elements = new GuiElement[]{a, b};
+        this.elements = new GuiElement[] {a, b};
         this.toggleMode(this.type);
     }
 

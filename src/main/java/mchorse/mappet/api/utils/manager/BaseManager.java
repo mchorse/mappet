@@ -6,8 +6,6 @@ import mchorse.mappet.utils.NBTToJsonLike;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Base JSON manager which loads and saves different data

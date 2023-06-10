@@ -52,9 +52,7 @@ public class GuiConditionOverlayPanel extends GuiEditorOverlayPanel<AbstractCond
     public static final Map<
             Class<? extends AbstractConditionBlock>,
             Class<? extends GuiAbstractConditionBlockPanel<? extends AbstractConditionBlock>>>
-        PANELS = new HashMap<
-            Class<? extends AbstractConditionBlock>,
-            Class<? extends GuiAbstractConditionBlockPanel<? extends AbstractConditionBlock>>>();
+            PANELS = new HashMap<>();
 
     private Condition condition;
 
@@ -208,7 +206,7 @@ public class GuiConditionOverlayPanel extends GuiEditorOverlayPanel<AbstractCond
                 y -= 4;
                 int w = this.font.getStringWidth(label);
 
-                GuiDraw.drawTextBackground(this.font, label, this.scroll.mx(w), y,0xffffff, ColorUtils.HALF_BLACK, 2);
+                GuiDraw.drawTextBackground(this.font, label, this.scroll.mx(w), y, 0xffffff, ColorUtils.HALF_BLACK, 2);
             }
         }
 
@@ -222,7 +220,7 @@ public class GuiConditionOverlayPanel extends GuiEditorOverlayPanel<AbstractCond
 
             if (element.not)
             {
-                GuiDraw.drawTextBackground(this.font, "!", x + 6, y + this.scroll.scrollItemSize / 2 - this.font.FONT_HEIGHT / 2,0xffffff, ColorUtils.HALF_BLACK, 2);
+                GuiDraw.drawTextBackground(this.font, "!", x + 6, y + this.scroll.scrollItemSize / 2 - this.font.FONT_HEIGHT / 2, 0xffffff, ColorUtils.HALF_BLACK, 2);
             }
 
             super.drawElementPart(element, i, x + 4, y, hover, selected);

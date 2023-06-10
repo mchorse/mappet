@@ -35,7 +35,7 @@ public class InventoryUtils
     {
         int count = 0;
 
-        for (int i = 0, c = player.inventory.getSizeInventory(); i < c; i ++)
+        for (int i = 0, c = player.inventory.getSizeInventory(); i < c; i++)
         {
             ItemStack stack = player.inventory.getStackInSlot(i);
 
@@ -57,7 +57,7 @@ public class InventoryUtils
     {
         int count = 0;
 
-        for (int i = 0, c = inventory.size(); i < c; i ++)
+        for (int i = 0, c = inventory.size(); i < c; i++)
         {
             ItemStack stack = inventory.get(i);
 

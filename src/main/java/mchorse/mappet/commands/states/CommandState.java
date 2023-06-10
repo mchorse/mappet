@@ -2,13 +2,10 @@ package mchorse.mappet.commands.states;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.states.States;
-import mchorse.mappet.capabilities.character.Character;
-import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.commands.MappetSubCommandBase;
 import mchorse.mappet.commands.factions.CommandFaction;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 
 public class CommandState extends MappetSubCommandBase

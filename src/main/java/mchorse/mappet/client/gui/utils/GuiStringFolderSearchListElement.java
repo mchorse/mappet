@@ -14,7 +14,8 @@ public class GuiStringFolderSearchListElement extends GuiStringSearchListElement
         super(mc, callback);
     }
 
-    protected GuiListElement<String> createList(Minecraft mc, Consumer<List<String>> callback) {
+    protected GuiListElement<String> createList(Minecraft mc, Consumer<List<String>> callback)
+    {
         return new GuiStringFolderList(mc, callback);
     }
 }

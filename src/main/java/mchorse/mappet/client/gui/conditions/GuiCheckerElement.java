@@ -1,7 +1,6 @@
 package mchorse.mappet.client.gui.conditions;
 
 import mchorse.mappet.api.conditions.Checker;
-import mchorse.mappet.client.gui.conditions.GuiConditionOverlayPanel;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
 import mchorse.mclib.client.gui.framework.GuiBase;
@@ -32,8 +31,8 @@ public class GuiCheckerElement extends GuiElement
         super(mc);
 
         this.expression = GuiMappetUtils.fullWindowContext(
-            new GuiTextElement(mc, 10000, (text) -> this.checker.expression = text),
-            IKey.lang("mappet.gui.checker.expression")
+                new GuiTextElement(mc, 10000, (text) -> this.checker.expression = text),
+                IKey.lang("mappet.gui.checker.expression")
         );
         this.toggle = new GuiIconElement(mc, Icons.REFRESH, this::toggleMode);
         this.toggle.tooltip(IKey.lang("mappet.gui.checker.toggle"), 300, Direction.BOTTOM);

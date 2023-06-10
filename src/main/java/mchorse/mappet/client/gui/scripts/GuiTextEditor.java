@@ -122,12 +122,13 @@ public class GuiTextEditor extends GuiMultiTextElement<HighlightedTextLine>
     protected String getFromChar(char typedChar)
     {
         if (
-            this.wasDoubleInsert(typedChar, ')', '(') ||
-            this.wasDoubleInsert(typedChar, ']', '[') ||
-            this.wasDoubleInsert(typedChar, '}', '{') ||
-            this.wasDoubleInsert(typedChar, '"', '"') ||
-            this.wasDoubleInsert(typedChar, '\'', '\'')
-        ) {
+                this.wasDoubleInsert(typedChar, ')', '(') ||
+                        this.wasDoubleInsert(typedChar, ']', '[') ||
+                        this.wasDoubleInsert(typedChar, '}', '{') ||
+                        this.wasDoubleInsert(typedChar, '"', '"') ||
+                        this.wasDoubleInsert(typedChar, '\'', '\'')
+        )
+        {
             this.moveCursor(1, 0);
             this.playSound(SoundEvents.BLOCK_STONE_PLACE);
 
@@ -168,10 +169,10 @@ public class GuiTextEditor extends GuiMultiTextElement<HighlightedTextLine>
         String line = this.text.get(this.cursor.line).text;
 
         return line.length() >= 2
-            && this.cursor.offset > 0
-            && this.cursor.offset < line.length()
-            && line.charAt(this.cursor.offset) == target
-            && line.charAt(this.cursor.offset - 1) == supplementary;
+                && this.cursor.offset > 0
+                && this.cursor.offset < line.length()
+                && line.charAt(this.cursor.offset) == target
+                && line.charAt(this.cursor.offset - 1) == supplementary;
     }
 
     @Override
@@ -179,10 +180,10 @@ public class GuiTextEditor extends GuiMultiTextElement<HighlightedTextLine>
     {
         String line = this.text.get(this.cursor.line).text;
         boolean unwrap = line.length() >= 2
-            && this.cursor.offset > 0
-            && this.cursor.offset < line.length()
-            && line.charAt(this.cursor.offset) == '}'
-            && line.charAt(this.cursor.offset - 1) == '{';
+                && this.cursor.offset > 0
+                && this.cursor.offset < line.length()
+                && line.charAt(this.cursor.offset) == '}'
+                && line.charAt(this.cursor.offset - 1) == '{';
 
         int indent = this.getIndent(line) + (unwrap ? 4 : 0);
 

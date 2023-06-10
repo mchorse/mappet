@@ -96,10 +96,11 @@ public class EntityAIFollowTarget extends EntityAIBase
         this.timer = 10;
 
         if ((!this.target.getNavigator().tryMoveToEntityLiving(this.follow, this.speed) &&
-            !this.target.getLeashed() &&
-            !this.target.isRiding()) ||
-            this.target.getDistanceSq(this.follow) >= TELEPORT_DISTANCE
-        ) {
+                !this.target.getLeashed() &&
+                !this.target.isRiding()) ||
+                this.target.getDistanceSq(this.follow) >= TELEPORT_DISTANCE
+        )
+        {
             int x = MathHelper.floor(this.follow.posX) - 2;
             int z = MathHelper.floor(this.follow.posZ) - 2;
             int y = MathHelper.floor(this.follow.getEntityBoundingBox().minY);
@@ -110,7 +111,7 @@ public class EntityAIFollowTarget extends EntityAIBase
                 {
                     if ((bx < 1 || bz < 1 || bx > 3 || bz > 3) && this.canTeleport(x, z, y, bx, bz))
                     {
-                        this.target.setLocationAndAngles((double)((float)(x + bx) + 0.5F), (double)y, (double)((float)(z + bz) + 0.5F), this.target.rotationYaw, this.target.rotationPitch);
+                        this.target.setLocationAndAngles((double) ((float) (x + bx) + 0.5F), (double) y, (double) ((float) (z + bz) + 0.5F), this.target.rotationYaw, this.target.rotationPitch);
                         this.target.getNavigator().clearPath();
 
                         return;

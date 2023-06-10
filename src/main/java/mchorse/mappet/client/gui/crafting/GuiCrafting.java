@@ -5,7 +5,6 @@ import mchorse.mappet.api.crafting.CraftingTable;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.crafting.PacketCraft;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
-import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;

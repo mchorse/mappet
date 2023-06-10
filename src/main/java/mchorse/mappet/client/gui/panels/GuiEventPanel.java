@@ -48,7 +48,7 @@ public class GuiEventPanel extends GuiMappetRunPanel<NodeSystem<EventBaseNode>>
     public static final Map<
             Class<? extends EventBaseNode>,
             Class<? extends GuiEventBaseNodePanel<? extends EventBaseNode>>>
-        PANELS = new HashMap<
+            PANELS = new HashMap<
             Class<? extends EventBaseNode>,
             Class<? extends GuiEventBaseNodePanel<? extends EventBaseNode>>>();
 
@@ -101,8 +101,8 @@ public class GuiEventPanel extends GuiMappetRunPanel<NodeSystem<EventBaseNode>>
             try
             {
                 panel = GuiEventPanel.PANELS.get(node.getClass())
-                    .getConstructor(Minecraft.class)
-                    .newInstance(this.mc);
+                        .getConstructor(Minecraft.class)
+                        .newInstance(this.mc);
 
                 panel.set(node);
             }

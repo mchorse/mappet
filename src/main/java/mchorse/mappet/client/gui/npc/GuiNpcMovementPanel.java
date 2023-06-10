@@ -1,8 +1,8 @@
 package mchorse.mappet.client.gui.npc;
 
 import mchorse.mappet.api.npcs.NpcState;
-import mchorse.mappet.client.gui.utils.GuiBlockPosElement;
 import mchorse.mappet.client.gui.utils.GuiBlockPosAndTriggerList;
+import mchorse.mappet.client.gui.utils.GuiBlockPosElement;
 import mchorse.mappet.client.gui.utils.GuiBlockPosList;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;

@@ -57,7 +57,8 @@ public class CommandQuestDecline extends CommandQuestBase
                 return getListOfStringsMatchingLastWord(args, character.getQuests().quests.keySet());
             }
             catch (Exception e)
-            {}
+            {
+            }
 
             return Collections.emptyList();
         }

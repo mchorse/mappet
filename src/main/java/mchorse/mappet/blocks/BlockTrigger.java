@@ -71,9 +71,9 @@ public class BlockTrigger extends Block implements ITileEntityProvider
             if (tile instanceof TileTrigger)
             {
                 ((TileTrigger) tile).leftClick.trigger(new DataContext(playerIn)
-                    .set("x", pos.getX())
-                    .set("y", pos.getY())
-                    .set("z", pos.getZ()));
+                        .set("x", pos.getX())
+                        .set("y", pos.getY())
+                        .set("z", pos.getZ()));
             }
         }
     }
@@ -99,9 +99,9 @@ public class BlockTrigger extends Block implements ITileEntityProvider
             else
             {
                 trigger.rightClick.trigger(new DataContext(playerIn)
-                    .set("x", pos.getX())
-                    .set("y", pos.getY())
-                    .set("z", pos.getZ()));
+                        .set("x", pos.getX())
+                        .set("y", pos.getY())
+                        .set("z", pos.getZ()));
             }
         }
 

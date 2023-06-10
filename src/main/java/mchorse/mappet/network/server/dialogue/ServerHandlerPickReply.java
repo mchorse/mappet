@@ -1,8 +1,8 @@
 package mchorse.mappet.network.server.dialogue;
 
 import mchorse.mappet.Mappet;
-import mchorse.mappet.api.dialogues.DialogueContext;
 import mchorse.mappet.api.dialogues.Dialogue;
+import mchorse.mappet.api.dialogues.DialogueContext;
 import mchorse.mappet.api.dialogues.nodes.ReactionNode;
 import mchorse.mappet.api.events.nodes.EventBaseNode;
 import mchorse.mappet.capabilities.character.Character;

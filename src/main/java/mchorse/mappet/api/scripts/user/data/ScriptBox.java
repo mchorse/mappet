@@ -5,7 +5,8 @@ import javax.vecmath.Vector3d;
 /**
  * Script box represents a box in the space
  */
-public class ScriptBox {
+public class ScriptBox
+{
     /**
      * minX coordinate
      */
@@ -36,20 +37,24 @@ public class ScriptBox {
      */
     public double maxZ;
 
-    public ScriptBox(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
-        if (minX > maxX) {
+    public ScriptBox(double minX, double minY, double minZ, double maxX, double maxY, double maxZ)
+    {
+        if (minX > maxX)
+        {
             double temp = minX;
             minX = maxX;
             maxX = temp;
         }
 
-        if (minY > maxY) {
+        if (minY > maxY)
+        {
             double temp = minY;
             minY = maxY;
             maxY = temp;
         }
 
-        if (minZ > maxZ) {
+        if (minZ > maxZ)
+        {
             double temp = minZ;
             minZ = maxZ;
             maxZ = temp;

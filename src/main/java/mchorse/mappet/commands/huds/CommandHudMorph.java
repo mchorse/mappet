@@ -55,7 +55,8 @@ public class CommandHudMorph extends CommandHudBase
             tag = JsonToNBT.getTagFromJson(String.join(" ", SubCommandBase.dropFirstArguments(args, 3)));
         }
         catch (Exception e)
-        {}
+        {
+        }
 
         Character.get(player).changeHUDMorph(scene, index, tag);
     }

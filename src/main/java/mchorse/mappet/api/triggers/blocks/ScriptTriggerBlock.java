@@ -111,6 +111,5 @@ public class ScriptTriggerBlock extends DataTriggerBlock
         {
             this.code = tag.getString("Code");
         }
-
     }
 }

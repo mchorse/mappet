@@ -82,7 +82,7 @@ public class ItemStackReward implements IReward
         {
             NBTTagList items = tag.getTagList("Items", Constants.NBT.TAG_COMPOUND);
 
-            for (int i = 0; i < items.tagCount(); i ++)
+            for (int i = 0; i < items.tagCount(); i++)
             {
                 ItemStack stack = new ItemStack(items.getCompoundTagAt(i));
 
@@ -97,7 +97,7 @@ public class ItemStackReward implements IReward
     @Override
     public void fromBytes(ByteBuf buf)
     {
-        for (int i = 0, c = buf.readInt(); i < c; i ++)
+        for (int i = 0, c = buf.readInt(); i < c; i++)
         {
             this.stacks.add(ByteBufUtils.readItemStack(buf));
         }

@@ -1,7 +1,6 @@
 package mchorse.mappet.client.gui.scripts.utils.documentation;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class Docs

@@ -50,7 +50,8 @@ public abstract class CommandFactionBase extends MappetCommandBase
                 return getListOfStringsMatchingLastWord(args, Mappet.factions.getKeys());
             }
             catch (Exception e)
-            {}
+            {
+            }
         }
 
         return super.getTabCompletions(server, sender, args, targetPos);

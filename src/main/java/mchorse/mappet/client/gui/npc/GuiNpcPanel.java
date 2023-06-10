@@ -2,7 +2,6 @@ package mchorse.mappet.client.gui.npc;
 
 import mchorse.mappet.api.npcs.NpcState;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
-import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import net.minecraft.client.Minecraft;
 
 public abstract class GuiNpcPanel extends GuiElement

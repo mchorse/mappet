@@ -1,7 +1,7 @@
 package mchorse.mappet.api.triggers.blocks;
 
-import mchorse.mappet.api.utils.TargetMode;
 import mchorse.mappet.api.utils.DataContext;
+import mchorse.mappet.api.utils.TargetMode;
 import mchorse.mappet.utils.EnumUtils;
 import mchorse.mappet.utils.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;

@@ -261,16 +261,37 @@ public class UITrackpadComponent extends UIComponent
             }
         };
 
-        if (this.value != null) element.setValue(this.value);
-        if (this.min != null) element.min = this.min;
-        if (this.max != null) element.max = this.max;
+        if (this.value != null)
+        {
+            element.setValue(this.value);
+        }
+        if (this.min != null)
+        {
+            element.min = this.min;
+        }
+        if (this.max != null)
+        {
+            element.max = this.max;
+        }
 
         element.integer = this.integer;
 
-        if (this.normal != null) element.normal = this.normal;
-        if (this.weak != null) element.weak = this.weak;
-        if (this.strong != null) element.strong = this.strong;
-        if (this.increment != null) element.increment = this.increment;
+        if (this.normal != null)
+        {
+            element.normal = this.normal;
+        }
+        if (this.weak != null)
+        {
+            element.weak = this.weak;
+        }
+        if (this.strong != null)
+        {
+            element.strong = this.strong;
+        }
+        if (this.increment != null)
+        {
+            element.increment = this.increment;
+        }
 
         return this.apply(element, context);
     }
@@ -300,16 +321,37 @@ public class UITrackpadComponent extends UIComponent
     {
         super.serializeNBT(tag);
 
-        if (this.value != null) tag.setDouble("Value", this.value);
-        if (this.min != null) tag.setDouble("Min", this.min);
-        if (this.max != null) tag.setDouble("Max", this.max);
+        if (this.value != null)
+        {
+            tag.setDouble("Value", this.value);
+        }
+        if (this.min != null)
+        {
+            tag.setDouble("Min", this.min);
+        }
+        if (this.max != null)
+        {
+            tag.setDouble("Max", this.max);
+        }
 
         tag.setBoolean("Integer", this.integer);
 
-        if (this.normal != null) tag.setDouble("Normal", this.normal);
-        if (this.weak != null) tag.setDouble("Weak", this.weak);
-        if (this.strong != null) tag.setDouble("Strong", this.strong);
-        if (this.increment != null) tag.setDouble("Increment", this.increment);
+        if (this.normal != null)
+        {
+            tag.setDouble("Normal", this.normal);
+        }
+        if (this.weak != null)
+        {
+            tag.setDouble("Weak", this.weak);
+        }
+        if (this.strong != null)
+        {
+            tag.setDouble("Strong", this.strong);
+        }
+        if (this.increment != null)
+        {
+            tag.setDouble("Increment", this.increment);
+        }
     }
 
     @Override
@@ -318,13 +360,37 @@ public class UITrackpadComponent extends UIComponent
     {
         super.deserializeNBT(tag);
 
-        if (tag.hasKey("Value")) this.value = tag.getDouble("Value");
-        if (tag.hasKey("Min")) this.min = tag.getDouble("Min");
-        if (tag.hasKey("Max")) this.max = tag.getDouble("Max");
-        if (tag.hasKey("Integer")) this.integer = tag.getBoolean("Integer");
-        if (tag.hasKey("Normal")) this.normal = tag.getDouble("Normal");
-        if (tag.hasKey("Weak")) this.weak = tag.getDouble("Weak");
-        if (tag.hasKey("Strong")) this.strong = tag.getDouble("Strong");
-        if (tag.hasKey("Increment")) this.increment = tag.getDouble("Increment");
+        if (tag.hasKey("Value"))
+        {
+            this.value = tag.getDouble("Value");
+        }
+        if (tag.hasKey("Min"))
+        {
+            this.min = tag.getDouble("Min");
+        }
+        if (tag.hasKey("Max"))
+        {
+            this.max = tag.getDouble("Max");
+        }
+        if (tag.hasKey("Integer"))
+        {
+            this.integer = tag.getBoolean("Integer");
+        }
+        if (tag.hasKey("Normal"))
+        {
+            this.normal = tag.getDouble("Normal");
+        }
+        if (tag.hasKey("Weak"))
+        {
+            this.weak = tag.getDouble("Weak");
+        }
+        if (tag.hasKey("Strong"))
+        {
+            this.strong = tag.getDouble("Strong");
+        }
+        if (tag.hasKey("Increment"))
+        {
+            this.increment = tag.getDouble("Increment");
+        }
     }
 }

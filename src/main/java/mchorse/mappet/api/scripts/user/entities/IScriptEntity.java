@@ -1012,7 +1012,7 @@ public interface IScriptEntity
      * }</pre>
      *
      * @return <code>true</code> if there was effect, and it was successfully removed,
-     *         <code>false</code> if had no given effect present.
+     * <code>false</code> if had no given effect present.
      */
     public boolean removePotion(Potion potion);
 
@@ -1203,7 +1203,7 @@ public interface IScriptEntity
     /**
      * Execute for the entity a script with a given script name.
      *
-     *<pre>{@code
+     * <pre>{@code
      *    c.getSubject().executeScript("example_script.js", "custom_function");
      * }</pre>
      * @param function The name of the function within the script to execute.

@@ -937,7 +937,7 @@ public class GuiNodeGraph <T extends Node> extends GuiCanvas
         int c1 = Mappet.nodePulseBackgroundMcLibPrimary.get() ? McLib.primaryColor.get() : Mappet.nodePulseBackgroundColor.get();
         int c2 = this.getNodeActiveColor(node, r);
 
-        for (int i = 0; i < segments; i ++)
+        for (int i = 0; i < segments; i++)
         {
             float factor1 = i / segments;
             float factor2 = (i + 1) / segments;

@@ -3,7 +3,6 @@ package mchorse.mappet.network.common.events;
 import io.netty.buffer.ByteBuf;
 import mchorse.mappet.api.misc.ServerSettings;
 import mchorse.mappet.api.misc.hotkeys.TriggerHotkey;
-import mchorse.mappet.api.misc.hotkeys.TriggerHotkeys;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 import java.util.ArrayList;

@@ -7,7 +7,8 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class CommandNpc {
+public class CommandNpc
+{
     public String command = "";
 
     public CommandNpc()
@@ -69,6 +70,5 @@ public class CommandNpc {
         {
             return this.npc.world.getMinecraftServer();
         }
-
     }
 }

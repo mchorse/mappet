@@ -294,20 +294,20 @@ public interface IScriptWorld
      *    c.getWorld().spawnParticles(explode, false, pos.x, pos.y, pos.z, 10, 0.1, 0.1, 0.1, 0.1);
      * }</pre>
      *
-     * @param type         Particle type, you can use {@link IScriptFactory#getParticleType(String)}
-     *                     to get the desired particle type.
+     * @param type Particle type, you can use {@link IScriptFactory#getParticleType(String)}
+     * to get the desired particle type.
      * @param longDistance Whether particles should be spawned regardless of the distance
-     * @param x            X coordinate of position where particles should be spawned
-     * @param y            Y coordinate of position where particles should be spawned
-     * @param z            Z coordinate of position where particles should be spawned
-     * @param n            How many particles of given type should be spawned
-     * @param dx           X random offset that shift particle relative to X coordinate where it spawned
-     * @param dy           Y random offset that shift particle relative to Y coordinate where it spawned
-     * @param dz           Z random offset that shift particle relative to Z coordinate where it spawned
-     * @param speed        The speed of particle, different particles might use this argument differently
-     * @param args         Additional arguments that can be passed into a particle, for example for
-     *                     "iconcrack" particle you can pass item numeric ID to spawn item particle for
-     *                     a specific item (F3 + H shows the numeric ID of an item)
+     * @param x X coordinate of position where particles should be spawned
+     * @param y Y coordinate of position where particles should be spawned
+     * @param z Z coordinate of position where particles should be spawned
+     * @param n How many particles of given type should be spawned
+     * @param dx X random offset that shift particle relative to X coordinate where it spawned
+     * @param dy Y random offset that shift particle relative to Y coordinate where it spawned
+     * @param dz Z random offset that shift particle relative to Z coordinate where it spawned
+     * @param speed The speed of particle, different particles might use this argument differently
+     * @param args Additional arguments that can be passed into a particle, for example for
+     * "iconcrack" particle you can pass item numeric ID to spawn item particle for
+     * a specific item (F3 + H shows the numeric ID of an item)
      */
     public void spawnParticles(EnumParticleTypes type, boolean longDistance, double x, double y, double z, int n, double dx, double dy, double dz, double speed, int... args);
 
@@ -321,21 +321,21 @@ public interface IScriptWorld
      *    c.getWorld().spawnParticles(c.getSubject(), explode, false, pos.x, pos.y, pos.z, 10, 0.1, 0.1, 0.1, 0.1);
      * }</pre>
      *
-     * @param player       The player that you want to limit seeing the particle only to
-     * @param type         Particle type, you can use {@link IScriptFactory#getParticleType(String)}
-     *                     to get the desired particle type.
+     * @param player The player that you want to limit seeing the particle only to
+     * @param type Particle type, you can use {@link IScriptFactory#getParticleType(String)}
+     * to get the desired particle type.
      * @param longDistance Whether particles should be spawned regardless of the distance
-     * @param x            X coordinate of position where particles should be spawned
-     * @param y            Y coordinate of position where particles should be spawned
-     * @param z            Z coordinate of position where particles should be spawned
-     * @param n            How many particles of given type should be spawned
-     * @param dx           X random offset that shift particle relative to X coordinate where it spawned
-     * @param dy           Y random offset that shift particle relative to Y coordinate where it spawned
-     * @param dz           Z random offset that shift particle relative to Z coordinate where it spawned
-     * @param speed        The speed of particle, different particles might use this argument differently
-     * @param args         Additional arguments that can be passed into a particle, for example for
-     *                     "iconcrack" particle you can pass item numeric ID to spawn item particle for
-     *                     a specific item (F3 + H shows the numeric ID of an item)
+     * @param x X coordinate of position where particles should be spawned
+     * @param y Y coordinate of position where particles should be spawned
+     * @param z Z coordinate of position where particles should be spawned
+     * @param n How many particles of given type should be spawned
+     * @param dx X random offset that shift particle relative to X coordinate where it spawned
+     * @param dy Y random offset that shift particle relative to Y coordinate where it spawned
+     * @param dz Z random offset that shift particle relative to Z coordinate where it spawned
+     * @param speed The speed of particle, different particles might use this argument differently
+     * @param args Additional arguments that can be passed into a particle, for example for
+     * "iconcrack" particle you can pass item numeric ID to spawn item particle for
+     * a specific item (F3 + H shows the numeric ID of an item)
      */
     public void spawnParticles(IScriptPlayer player, EnumParticleTypes type, boolean longDistance, double x, double y, double z, int n, double dx, double dy, double dz, double speed, int... args);
 
@@ -617,12 +617,12 @@ public interface IScriptWorld
      * }
      * }</pre>
      *
-     * @param exploder       Entity that causes explosion that won't receive damage from it.
-     * @param x              X coordinate in the world at which explosion must be caused.
-     * @param y              Y coordinate in the world at which explosion must be caused.
-     * @param z              Z coordinate in the world at which explosion must be caused.
-     * @param distance       Radius (in blocks of the explosion).
-     * @param blazeGround    Whether fire blocks should be placed randomly on top of remaining blocks.
+     * @param exploder Entity that causes explosion that won't receive damage from it.
+     * @param x X coordinate in the world at which explosion must be caused.
+     * @param y Y coordinate in the world at which explosion must be caused.
+     * @param z Z coordinate in the world at which explosion must be caused.
+     * @param distance Radius (in blocks of the explosion).
+     * @param blazeGround Whether fire blocks should be placed randomly on top of remaining blocks.
      * @param destroyTerrain Whether blocks should be destroyed by the explosion.
      */
     public void explode(IScriptEntity exploder, double x, double y, double z, float distance, boolean blazeGround, boolean destroyTerrain);
@@ -746,12 +746,12 @@ public interface IScriptWorld
      * }</pre>
      *
      * @param state The block to fill the area with.
-     * @param x1    The first x coordinate.
-     * @param y1    The first y coordinate.
-     * @param z1    The first z coordinate.
-     * @param x2    The second x coordinate.
-     * @param y2    The second y coordinate.
-     * @param z2    The second z coordinate.
+     * @param x1 The first x coordinate.
+     * @param y1 The first y coordinate.
+     * @param z1 The first z coordinate.
+     * @param x2 The second x coordinate.
+     * @param y2 The second y coordinate.
+     * @param z2 The second z coordinate.
      */
     public void fill(IScriptBlockState state, int x1, int y1, int z1, int x2, int y2, int z2);
 
@@ -765,12 +765,12 @@ public interface IScriptWorld
      * }</pre>
      *
      * @param state The block to fill the area with.
-     * @param x1    The first x coordinate.
-     * @param y1    The first y coordinate.
-     * @param z1    The first z coordinate.
-     * @param x2    The second x coordinate.
-     * @param y2    The second y coordinate.
-     * @param z2    The second z coordinate.
+     * @param x1 The first x coordinate.
+     * @param y1 The first y coordinate.
+     * @param z1 The first z coordinate.
+     * @param x2 The second x coordinate.
+     * @param y2 The second y coordinate.
+     * @param z2 The second z coordinate.
      */
     public void fill(IScriptBlockState state, int x1, int y1, int z1, int x2, int y2, int z2, int chunkSize, int delayTicks);
 
@@ -917,7 +917,6 @@ public interface IScriptWorld
      * }
      * }</pre>
      *
-     *
      * @return {@link IMappetSchematic}
      */
     public MappetSchematic createSchematic();
@@ -983,9 +982,9 @@ public interface IScriptWorld
      *    c.getWorld().displayMorph(morph, 100, pos.x, pos.y + s.getHeight() + 0.5, pos.z, 64);
      * }</pre>
      *
-     * @param morph      Morph that will be displayed (if <code>null</code>, then it won't send anything).
+     * @param morph Morph that will be displayed (if <code>null</code>, then it won't send anything).
      * @param expiration For how many ticks will this displayed morph exist on the client side.
-     * @param range      How many blocks far away will this send to players around given point.
+     * @param range How many blocks far away will this send to players around given point.
      */
     public default void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, int range)
     {
@@ -1006,10 +1005,10 @@ public interface IScriptWorld
      *    c.getWorld().displayMorph(morph, 100, pos.x, pos.y + s.getHeight() + 0.5, pos.z, 90, 0);
      * }</pre>
      *
-     * @param morph      Morph that will be displayed (if <code>null</code>, then it won't send anything).
+     * @param morph Morph that will be displayed (if <code>null</code>, then it won't send anything).
      * @param expiration For how many ticks will this displayed morph exist on the client side.
-     * @param yaw        Horizontal rotation in degrees.
-     * @param pitch      Vertical rotation in degrees.
+     * @param yaw Horizontal rotation in degrees.
+     * @param pitch Vertical rotation in degrees.
      */
     public default void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, float yaw, float pitch)
     {
@@ -1034,11 +1033,11 @@ public interface IScriptWorld
      * }
      * }</pre>
      *
-     * @param morph      Morph that will be displayed (if <code>null</code>, then it won't send anything).
+     * @param morph Morph that will be displayed (if <code>null</code>, then it won't send anything).
      * @param expiration For how many ticks will this displayed morph exist on the client side.
-     * @param yaw        Horizontal rotation in degrees.
-     * @param pitch      Vertical rotation in degrees.
-     * @param range      How many blocks far away will this send to players around given point.
+     * @param yaw Horizontal rotation in degrees.
+     * @param pitch Vertical rotation in degrees.
+     * @param range How many blocks far away will this send to players around given point.
      */
     public default void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, float yaw, float pitch, int range)
     {
@@ -1063,12 +1062,12 @@ public interface IScriptWorld
      * }
      * }</pre>
      *
-     * @param morph      Morph that will be displayed (if <code>null</code>, then it won't send anything).
+     * @param morph Morph that will be displayed (if <code>null</code>, then it won't send anything).
      * @param expiration For how many ticks will this displayed morph exist on the client side.
-     * @param yaw        Horizontal rotation in degrees.
-     * @param pitch      Vertical rotation in degrees.
-     * @param range      How many blocks far away will this send to players around given point.
-     * @param player     The player that only should see the morph, or null for everyone.
+     * @param yaw Horizontal rotation in degrees.
+     * @param pitch Vertical rotation in degrees.
+     * @param range How many blocks far away will this send to players around given point.
+     * @param player The player that only should see the morph, or null for everyone.
      */
     public void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, float yaw, float pitch, int range, IScriptPlayer player);
 }

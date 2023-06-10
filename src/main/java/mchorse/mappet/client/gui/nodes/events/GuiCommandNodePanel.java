@@ -17,8 +17,8 @@ public class GuiCommandNodePanel extends GuiEventBaseNodePanel<CommandNode>
         super(mc);
 
         this.command = GuiMappetUtils.fullWindowContext(
-            new GuiTextElement(mc, 10000, (text) -> this.node.command = text),
-            IKey.lang("mappet.gui.nodes.event.command")
+                new GuiTextElement(mc, 10000, (text) -> this.node.command = text),
+                IKey.lang("mappet.gui.nodes.event.command")
         );
 
         this.add(Elements.label(IKey.lang("mappet.gui.nodes.event.command")).marginTop(12), this.command, this.binary);

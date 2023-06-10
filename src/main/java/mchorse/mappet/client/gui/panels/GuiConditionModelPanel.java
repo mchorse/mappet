@@ -171,11 +171,13 @@ public class GuiConditionModelPanel extends GuiDashboardPanel<GuiMappetDashboard
         return "mappet.gui.panels.condition_models";
     }
 
-    public boolean isOpened() {
+    public boolean isOpened()
+    {
         return this.wasOpened;
     }
 
-    public boolean isSelected(TileConditionModel tileEntityModel) {
+    public boolean isSelected(TileConditionModel tileEntityModel)
+    {
         return this.tile == tileEntityModel;
     }
 
@@ -404,7 +406,6 @@ public class GuiConditionModelPanel extends GuiDashboardPanel<GuiMappetDashboard
                 this.one.toggled(model.getSettings().isUniform());
                 this.updateScaleFields();
             }
-
         }
 
         public void setT(double x, double y, double z)

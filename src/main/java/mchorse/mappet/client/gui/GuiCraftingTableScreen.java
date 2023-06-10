@@ -7,7 +7,6 @@ import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.crafting.PacketCraftingTable;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 
 public class GuiCraftingTableScreen extends GuiBase implements ICraftingScreen
 {

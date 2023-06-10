@@ -450,9 +450,12 @@ public class ScriptItemStack implements IScriptItemStack
     {
         int newCount = this.stack.getCount() + amount;
 
-        if (newCount <= 0) {
+        if (newCount <= 0)
+        {
             this.stack.shrink(this.stack.getCount());
-        } else {
+        }
+        else
+        {
             this.stack.setCount(newCount);
         }
     }

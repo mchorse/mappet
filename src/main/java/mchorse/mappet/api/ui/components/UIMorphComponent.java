@@ -330,7 +330,7 @@ public class UIMorphComponent extends UIComponent
         GuiMorphRenderer renderer = (GuiMorphRenderer) element;
 
         renderer.context(() -> new GuiSimpleContextMenu(Minecraft.getMinecraft())
-            .action(Icons.SEARCH, IKey.lang("mappet.gui.context.copy_camera"), () -> this.copyCameraProperties(renderer)));
+                .action(Icons.SEARCH, IKey.lang("mappet.gui.context.copy_camera"), () -> this.copyCameraProperties(renderer)));
     }
 
     @Override
@@ -353,13 +353,13 @@ public class UIMorphComponent extends UIComponent
         DecimalFormat formatter = GuiTrackpadElement.FORMAT;
 
         GuiScreen.setClipboardString(".position(" +
-            formatter.format(renderer.pos.x) + ", " +
-            formatter.format(renderer.pos.y) + ", " +
-            formatter.format(renderer.pos.z) + ").rotation(" +
-            formatter.format(renderer.pitch) + ", " +
-            formatter.format(renderer.yaw) + ").distance(" +
-            formatter.format(renderer.scale) + ").fov(" +
-            formatter.format(renderer.fov) + ")");
+                formatter.format(renderer.pos.x) + ", " +
+                formatter.format(renderer.pos.y) + ", " +
+                formatter.format(renderer.pos.z) + ").rotation(" +
+                formatter.format(renderer.pitch) + ", " +
+                formatter.format(renderer.yaw) + ").distance(" +
+                formatter.format(renderer.scale) + ").fov(" +
+                formatter.format(renderer.fov) + ")");
     }
 
     @Override

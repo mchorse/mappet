@@ -12,7 +12,8 @@ import java.util.HashMap;
  * Including Triggers and display morphs.
  * <p>
  */
-public class ScriptedItemProps {
+public class ScriptedItemProps
+{
     private HashMap<Trigger, String> initialState = new HashMap<>();
     public Trigger interactWithAir = new Trigger();
     public Trigger interactWithEntity = new Trigger();
@@ -24,11 +25,13 @@ public class ScriptedItemProps {
     public Trigger onHolderTick = new Trigger();
     public Trigger pickup = new Trigger();
 
-    public ScriptedItemProps() {
+    public ScriptedItemProps()
+    {
         reset();
     }
 
-    public ScriptedItemProps(NBTTagCompound tag) {
+    public ScriptedItemProps(NBTTagCompound tag)
+    {
         reset();
         this.fromNBT(tag);
     }
@@ -36,7 +39,8 @@ public class ScriptedItemProps {
     /**
      * Reset properties to default values
      */
-    public void reset() {
+    public void reset()
+    {
         this.interactWithAir = new Trigger();
         this.interactWithEntity = new Trigger();
         this.interactWithBlock = new Trigger();
@@ -48,39 +52,50 @@ public class ScriptedItemProps {
         this.pickup = new Trigger();
     }
 
-    public void fromNBT(NBTTagCompound tag) {
+    public void fromNBT(NBTTagCompound tag)
+    {
         this.reset();
 
-        if (tag.hasKey("InteractWithAir")) {
+        if (tag.hasKey("InteractWithAir"))
+        {
             this.interactWithAir.deserializeNBT(tag.getCompoundTag("InteractWithAir"));
         }
-        if (tag.hasKey("InteractWithEntity")) {
+        if (tag.hasKey("InteractWithEntity"))
+        {
             this.interactWithEntity.deserializeNBT(tag.getCompoundTag("InteractWithEntity"));
         }
-        if (tag.hasKey("InteractWithBlock")) {
+        if (tag.hasKey("InteractWithBlock"))
+        {
             this.interactWithBlock.deserializeNBT(tag.getCompoundTag("InteractWithBlock"));
         }
-        if (tag.hasKey("AttackEntity")) {
+        if (tag.hasKey("AttackEntity"))
+        {
             this.attackEntity.deserializeNBT(tag.getCompoundTag("AttackEntity"));
         }
-        if (tag.hasKey("BreakBlock")) {
+        if (tag.hasKey("BreakBlock"))
+        {
             this.breakBlock.deserializeNBT(tag.getCompoundTag("BreakBlock"));
         }
-        if (tag.hasKey("PlaceBlock")) {
+        if (tag.hasKey("PlaceBlock"))
+        {
             this.placeBlock.deserializeNBT(tag.getCompoundTag("PlaceBlock"));
         }
-        if (tag.hasKey("HitBlock")) {
+        if (tag.hasKey("HitBlock"))
+        {
             this.hitBlock.deserializeNBT(tag.getCompoundTag("HitBlock"));
         }
-        if (tag.hasKey("OnHolderTick")) {
+        if (tag.hasKey("OnHolderTick"))
+        {
             this.onHolderTick.deserializeNBT(tag.getCompoundTag("OnHolderTick"));
         }
-        if (tag.hasKey("Pickup")) {
+        if (tag.hasKey("Pickup"))
+        {
             this.pickup.deserializeNBT(tag.getCompoundTag("Pickup"));
         }
     }
 
-    public NBTTagCompound toNBT() {
+    public NBTTagCompound toNBT()
+    {
         NBTTagCompound tag = new NBTTagCompound();
         tag.setTag("InteractWithAir", this.interactWithAir.serializeNBT());
         tag.setTag("InteractWithEntity", this.interactWithEntity.serializeNBT());
@@ -96,39 +111,46 @@ public class ScriptedItemProps {
     }
 
     /* These methods are responsable for doing nothing if the properties has not been changed when the gui closes. */
-    public void storeInitialState() {
+    public void storeInitialState()
+    {
         initialState.clear();
 
-        for (Trigger trigger : getTriggers()) {
+        for (Trigger trigger : getTriggers())
+        {
             initialState.put(trigger, trigger.serializeNBT().toString());
         }
     }
 
-    public boolean hasChanged() {
-        for (Trigger trigger : getTriggers()) {
+    public boolean hasChanged()
+    {
+        for (Trigger trigger : getTriggers())
+        {
             String initial = initialState.get(trigger);
             String current = trigger.serializeNBT().toString();
-            if (initial == null) {
+            if (initial == null)
+            {
                 return true;
             }
-            if (!initial.equals(current)) {
+            if (!initial.equals(current))
+            {
                 return true;
             }
         }
         return false;
     }
 
-    public Trigger[] getTriggers() {
+    public Trigger[] getTriggers()
+    {
         return new Trigger[] {
-            this.interactWithAir,
-            this.interactWithEntity,
-            this.interactWithBlock,
-            this.attackEntity,
-            this.breakBlock,
-            this.placeBlock,
-            this.hitBlock,
-            this.onHolderTick,
-            this.pickup
+                this.interactWithAir,
+                this.interactWithEntity,
+                this.interactWithBlock,
+                this.attackEntity,
+                this.breakBlock,
+                this.placeBlock,
+                this.hitBlock,
+                this.onHolderTick,
+                this.pickup
         };
     }
 }

@@ -44,8 +44,8 @@ public class GuiReactionNodePanel extends GuiDialogueNodePanel
 
         this.add(this.morph);
         this.add(
-            Elements.label(IKey.lang("mappet.gui.nodes.dialogue.marker")).marginTop(12),
-            Elements.row(mc, 5, this.marker, this.read)
+                Elements.label(IKey.lang("mappet.gui.nodes.dialogue.marker")).marginTop(12),
+                Elements.row(mc, 5, this.marker, this.read)
         );
     }
 

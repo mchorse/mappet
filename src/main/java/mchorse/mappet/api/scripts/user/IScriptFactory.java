@@ -1,9 +1,9 @@
 package mchorse.mappet.api.scripts.user;
 
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
-import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
 import mchorse.mappet.api.scripts.user.data.ScriptBox;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
+import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
 import mchorse.mappet.api.scripts.user.entities.IScriptPlayer;
 import mchorse.mappet.api.scripts.user.items.IScriptItemStack;
 import mchorse.mappet.api.scripts.user.logs.IMappetLogger;
@@ -177,7 +177,7 @@ public interface IScriptFactory
      * }</pre>
      *
      * @return an item stack from the string NBT data, or an empty item stack
-     *         if the data doesn't have a valid reference to an existing item
+     * if the data doesn't have a valid reference to an existing item
      */
     public default IScriptItemStack createItemNBT(String nbt)
     {
@@ -196,7 +196,7 @@ public interface IScriptFactory
      * }</pre>
      *
      * @return an item stack from the NBT data, or an empty item stack if the
-     *         data doesn't have a valid reference to an existing item
+     * data doesn't have a valid reference to an existing item
      */
     public IScriptItemStack createItem(INBTCompound compound);
 
@@ -211,7 +211,7 @@ public interface IScriptFactory
      * }</pre>
      *
      * @return an item stack with an item specified by ID, or an empty item
-     *         stack if the block doesn't exist
+     * stack if the block doesn't exist
      */
     public default IScriptItemStack createItem(String itemId)
     {
@@ -229,7 +229,7 @@ public interface IScriptFactory
      * }</pre>
      *
      * @return an item stack with an item specified by ID, or an empty item
-     *         stack if the block doesn't exist
+     * stack if the block doesn't exist
      */
     public default IScriptItemStack createItem(String itemId, int count)
     {
@@ -247,7 +247,7 @@ public interface IScriptFactory
      * }</pre>
      *
      * @return an item stack with an item specified by ID, or an empty item
-     *         stack if the block doesn't exist
+     * stack if the block doesn't exist
      */
     public IScriptItemStack createItem(String itemId, int count, int meta);
 
@@ -262,7 +262,7 @@ public interface IScriptFactory
      * }</pre>
      *
      * @return an item stack with an item specified by ID, or an empty item
-     *          stack if the block doesn't exist
+     * stack if the block doesn't exist
      */
     public default IScriptItemStack createBlockItem(String blockId)
     {
@@ -280,7 +280,7 @@ public interface IScriptFactory
      * }</pre>
      *
      * @return an item stack with an item specified by ID, or an empty item
-     *         stack if the block doesn't exist
+     * stack if the block doesn't exist
      */
     public default IScriptItemStack createBlockItem(String blockId, int count)
     {
@@ -298,7 +298,7 @@ public interface IScriptFactory
      * }</pre>
      *
      * @return an item stack with block specified by ID, or an empty item
-     *         stack if the block doesn't exist
+     * stack if the block doesn't exist
      */
     public IScriptItemStack createBlockItem(String blockId, int count, int meta);
 
@@ -522,7 +522,7 @@ public interface IScriptFactory
      * }</pre>
      *
      * @param simple Whether you want to see simple or full information about
-     *               the object.
+     * the object.
      */
     public String dump(Object object, boolean simple);
 
@@ -837,9 +837,7 @@ public interface IScriptFactory
      * Converts an object to an INBTCompound representation.
      *
      * @param object The object to convert to an INBTCompound.
-     *
      * @return The INBTCompound representation of the object or null if the object is not of the expected types.
      */
     public INBTCompound toNBT(Object object);
-
 }

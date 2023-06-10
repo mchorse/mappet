@@ -26,7 +26,6 @@ public class GuiHUDMorphTransformations extends GuiTransformations
             this.fillS(morph.scale.x, morph.scale.y, morph.scale.z);
             this.fillR(morph.rotate.x, morph.rotate.y, morph.rotate.z);
         }
-
     }
 
     public void setT(double x, double y, double z)

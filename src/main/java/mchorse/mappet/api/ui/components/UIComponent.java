@@ -100,9 +100,9 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
      * }</pre>
      *
      * @param direction <code>0</code> is bottom.
-     *                  <code>1</code> is top.
-     *                  <code>2</code> is right.
-     *                  <code>3</code> is left.
+     * <code>1</code> is top.
+     * <code>2</code> is right.
+     * <code>3</code> is left.
      */
     public UIComponent tooltip(String tooltip, int direction)
     {
@@ -683,9 +683,18 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
 
             List<Integer> held = new ArrayList<Integer>();
 
-            if (keybind.isCtrl()) held.add(Keyboard.KEY_LCONTROL);
-            if (keybind.isShift()) held.add(Keyboard.KEY_LSHIFT);
-            if (keybind.isAlt()) held.add(Keyboard.KEY_LMENU);
+            if (keybind.isCtrl())
+            {
+                held.add(Keyboard.KEY_LCONTROL);
+            }
+            if (keybind.isShift())
+            {
+                held.add(Keyboard.KEY_LSHIFT);
+            }
+            if (keybind.isAlt())
+            {
+                held.add(Keyboard.KEY_LMENU);
+            }
 
             if (!held.isEmpty())
             {
@@ -978,10 +987,22 @@ public abstract class UIComponent implements INBTSerializable<NBTTagCompound>
             }
         }
 
-        if (tag.hasKey("X")) this.x.deserializeNBT(tag.getCompoundTag("X"));
-        if (tag.hasKey("Y")) this.y.deserializeNBT(tag.getCompoundTag("Y"));
-        if (tag.hasKey("W")) this.w.deserializeNBT(tag.getCompoundTag("W"));
-        if (tag.hasKey("H")) this.h.deserializeNBT(tag.getCompoundTag("H"));
+        if (tag.hasKey("X"))
+        {
+            this.x.deserializeNBT(tag.getCompoundTag("X"));
+        }
+        if (tag.hasKey("Y"))
+        {
+            this.y.deserializeNBT(tag.getCompoundTag("Y"));
+        }
+        if (tag.hasKey("W"))
+        {
+            this.w.deserializeNBT(tag.getCompoundTag("W"));
+        }
+        if (tag.hasKey("H"))
+        {
+            this.h.deserializeNBT(tag.getCompoundTag("H"));
+        }
 
         if (tag.hasKey("UpdateDelay"))
         {

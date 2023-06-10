@@ -2,7 +2,6 @@ package mchorse.mappet.network.server.content;
 
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.capabilities.character.Character;
-import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.content.PacketContentData;
 import mchorse.mappet.network.common.content.PacketContentRequestData;

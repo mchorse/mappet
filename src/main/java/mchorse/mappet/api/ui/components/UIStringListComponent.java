@@ -123,7 +123,7 @@ public class UIStringListComponent extends UIComponent
      *
      * <pre>{@code
      *    var values = uiContext.get("strings").getValues();
-     *    
+     *
      *    for (var i in values)
      *    {
      *        c.send(values[i]);

@@ -1,7 +1,5 @@
 package mchorse.mappet.client;
 
-import mchorse.blockbuster.Blockbuster;
-import mchorse.blockbuster.client.gui.GuiGun;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.misc.hotkeys.TriggerHotkey;
 import mchorse.mappet.api.scripts.Script;
@@ -42,7 +40,7 @@ import java.util.Set;
 /**
  * Keyboard handler
  *
- * This class is responsible for handling keyboard input (i.e. key 
+ * This class is responsible for handling keyboard input (i.e. key
  * presses) and storing keybindings associated with this mod.
  */
 @SideOnly(Side.CLIENT)
@@ -111,40 +109,52 @@ public class KeyboardHandler
     }
 
     @SubscribeEvent
-    public void onKeyPress(KeyInputEvent event) {
+    public void onKeyPress(KeyInputEvent event)
+    {
         Minecraft mc = Minecraft.getMinecraft();
 
-        if (this.openMappetDashboard.isPressed() && OpHelper.isPlayerOp()) {
-            if (Mappet.dashboardOnlyCreative.get()) {
-                if (mc.player.capabilities.isCreativeMode) {
+        if (this.openMappetDashboard.isPressed() && OpHelper.isPlayerOp())
+        {
+            if (Mappet.dashboardOnlyCreative.get())
+            {
+                if (mc.player.capabilities.isCreativeMode)
+                {
                     mc.displayGuiScreen(GuiMappetDashboard.get(mc));
                 }
-            } else {
+            }
+            else
+            {
                 mc.displayGuiScreen(GuiMappetDashboard.get(mc));
             }
         }
 
-        if (this.openJournal.isPressed()) {
+        if (this.openJournal.isPressed())
+        {
             openPlayerJournal();
         }
 
-        if (this.runCurrentScript.isPressed()) {
+        if (this.runCurrentScript.isPressed())
+        {
             Script script = GuiMappetDashboard.get(mc).script.getData();
 
-            if (script == null) {
+            if (script == null)
+            {
                 return;
             }
 
             mc.player.sendChatMessage("/mp script exec " + mc.player.getName() + " " + script.getId());
-            if (this.openScriptedItem.isPressed()) {
+            if (this.openScriptedItem.isPressed())
+            {
                 ItemStack stack = mc.player.getHeldItemMainhand();
 
-                if (!stack.getItem().equals(Items.AIR)) {
+                if (!stack.getItem().equals(Items.AIR))
+                {
                     mc.displayGuiScreen(new GuiScriptedItemScreen(stack));
                 }
             }
 
-            if (Keyboard.getEventKeyState()) {
+            if (Keyboard.getEventKeyState())
+            {
                 handleKeys();
             }
         }

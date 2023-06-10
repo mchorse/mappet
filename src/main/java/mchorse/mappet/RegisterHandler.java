@@ -94,20 +94,20 @@ public class RegisterHandler
     public void onItemsRegister(RegistryEvent.Register<Item> event)
     {
         event.getRegistry().register(Mappet.npcTool = new ItemNpcTool()
-            .setRegistryName(new ResourceLocation(Mappet.MOD_ID, "npc_tool"))
-            .setUnlocalizedName(Mappet.MOD_ID + ".npc_tool"));
+                .setRegistryName(new ResourceLocation(Mappet.MOD_ID, "npc_tool"))
+                .setUnlocalizedName(Mappet.MOD_ID + ".npc_tool"));
 
         event.getRegistry().register(new ItemBlock(Mappet.emitterBlock)
-            .setRegistryName(new ResourceLocation(Mappet.MOD_ID, "emitter"))
-            .setUnlocalizedName(Mappet.MOD_ID + ".emitter"));
+                .setRegistryName(new ResourceLocation(Mappet.MOD_ID, "emitter"))
+                .setUnlocalizedName(Mappet.MOD_ID + ".emitter"));
 
         event.getRegistry().register(new ItemBlock(Mappet.triggerBlock)
-            .setRegistryName(new ResourceLocation(Mappet.MOD_ID, "trigger"))
-            .setUnlocalizedName(Mappet.MOD_ID + ".trigger"));
+                .setRegistryName(new ResourceLocation(Mappet.MOD_ID, "trigger"))
+                .setUnlocalizedName(Mappet.MOD_ID + ".trigger"));
 
         event.getRegistry().register(new ItemBlock(Mappet.regionBlock)
-            .setRegistryName(new ResourceLocation(Mappet.MOD_ID, "region"))
-            .setUnlocalizedName(Mappet.MOD_ID + ".region"));
+                .setRegistryName(new ResourceLocation(Mappet.MOD_ID, "region"))
+                .setUnlocalizedName(Mappet.MOD_ID + ".region"));
 
         event.getRegistry().register(new ItemBlock(Mappet.conditionModelBlock)
                 .setRegistryName(new ResourceLocation(Mappet.MOD_ID, "condition_model"))
@@ -118,11 +118,11 @@ public class RegisterHandler
     public void onEntityRegister(RegistryEvent.Register<EntityEntry> event)
     {
         event.getRegistry().register(EntityEntryBuilder.create()
-            .entity(EntityNpc.class)
-            .name(Mappet.MOD_ID + ".npc")
-            .id(new ResourceLocation(Mappet.MOD_ID, "npc"), 0)
-            .tracker(EntityNpc.RENDER_DISTANCE, 3, false)
-            .build());
+                .entity(EntityNpc.class)
+                .name(Mappet.MOD_ID + ".npc")
+                .id(new ResourceLocation(Mappet.MOD_ID, "npc"), 0)
+                .tracker(EntityNpc.RENDER_DISTANCE, 3, false)
+                .build());
 
         GameRegistry.registerTileEntity(TileEmitter.class, Mappet.MOD_ID + ":emitter");
         GameRegistry.registerTileEntity(TileTrigger.class, Mappet.MOD_ID + ":trigger");

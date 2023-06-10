@@ -2,8 +2,8 @@ package mchorse.mappet.api.dialogues;
 
 import mchorse.mappet.api.events.nodes.EventBaseNode;
 import mchorse.mappet.api.triggers.Trigger;
-import mchorse.mappet.api.utils.nodes.NodeSystem;
 import mchorse.mappet.api.utils.factory.IFactory;
+import mchorse.mappet.api.utils.nodes.NodeSystem;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class Dialogue extends NodeSystem<EventBaseNode>

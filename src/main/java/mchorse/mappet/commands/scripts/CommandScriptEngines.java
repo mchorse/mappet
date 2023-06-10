@@ -49,6 +49,6 @@ public class CommandScriptEngines extends CommandScriptBase
             strings.add(factory.getEngineName() + " (" + factory.getLanguageName() + ")");
         }
 
-        this.getL10n().info(sender, "scripts.engines",String.join(", ", strings));
+        this.getL10n().info(sender, "scripts.engines", String.join(", ", strings));
     }
 }

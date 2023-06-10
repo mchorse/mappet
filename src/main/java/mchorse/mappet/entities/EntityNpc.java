@@ -31,7 +31,11 @@ import mchorse.metamorph.api.models.IMorphProvider;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.command.EntitySelector;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.MoverType;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
@@ -107,7 +111,8 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
             super.collideWithEntity(entityIn);
         }
 
-        if (world.isRemote) {
+        if (world.isRemote)
+        {
             return;
         }
 
@@ -116,17 +121,20 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     }
 
     @Override
-    public boolean hasNoGravity() {
+    public boolean hasNoGravity()
+    {
         return this.state.hasNoGravity;
     }
 
     @Override
-    public boolean canPickUpLoot() {
+    public boolean canPickUpLoot()
+    {
         return this.state.canPickUpLoot;
     }
 
     @Override
-    public boolean canBeSteered() {
+    public boolean canBeSteered()
+    {
         return this.state.canBeSteered;
     }
 
@@ -168,20 +176,23 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
         }
 
         // Check if the passenger is a player and the entity can be steered and only allow the first passanger to steer it.
-        if (passenger instanceof EntityPlayer && canBeSteered() && this.getPassengers().indexOf(passenger) == (this.getPassengers().size()-1))
+        if (passenger instanceof EntityPlayer && canBeSteered() && this.getPassengers().indexOf(passenger) == (this.getPassengers().size() - 1))
         {
             handleSteering((EntityPlayer) passenger);
         }
     }
 
-    private void handleSteering(EntityPlayer player) {
-        if (!this.world.isRemote) {
+    private void handleSteering(EntityPlayer player)
+    {
+        if (!this.world.isRemote)
+        {
             float forward = player.moveForward;
             float strafe = player.moveStrafing;
             this.rotationYaw = player.rotationYaw;
             this.rotationYawHead = player.rotationYawHead;
 
-            if (forward != 0 || strafe != 0) {
+            if (forward != 0 || strafe != 0)
+            {
                 float baseSpeed = state.speed / 15; // slightly faster speed than walking (from testing)
                 //boolean sprinting = GameSettings.isKeyDown(Minecraft.getMinecraft().gameSettings.keyBindSprint);
                 //float sprintMultiplier = sprinting ? 1.5F : 1.0F; // adjust the multiplier according to desired sprint speed
@@ -210,8 +221,10 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     }
 
     @Override
-    public void fall(float distance, float damageMultiplier) {
-        if (!this.isBeingRidden()) {
+    public void fall(float distance, float damageMultiplier)
+    {
+        if (!this.isBeingRidden())
+        {
             super.fall(distance, damageMultiplier);
         }
     }
@@ -327,6 +340,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
         return null;
     }
+
     public void initialize()
     {
         this.state.triggerInitialize.trigger(this);
@@ -410,7 +424,8 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
     public void sendNpcStateChangePacket()
     {
-        if (this.world instanceof WorldServer){
+        if (this.world instanceof WorldServer)
+        {
             Dispatcher.sendToTracked(this, new PacketNpcStateChange(this));
         }
     }
@@ -464,7 +479,8 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
                 return player == null ? this.world.getPlayerEntityByUUID(UUID.fromString(this.state.follow)) : player;
             }
             catch (Exception e)
-            {}
+            {
+            }
         }
 
         return null;
@@ -706,8 +722,8 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
             // Start riding the NPC when interacted with
             if (
                     ((this.getPassengers().size() < this.state.steeringOffset.size()) || this.state.steeringOffset.isEmpty()) &&
-                    this.canBeSteered() &&
-                    !(player.getHeldItem(hand).getItem() instanceof ItemNpcTool)
+                            this.canBeSteered() &&
+                            !(player.getHeldItem(hand).getItem() instanceof ItemNpcTool)
             )
             {
                 player.startRiding(this, true);

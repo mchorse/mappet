@@ -164,7 +164,7 @@ public class ScriptFancyWorld implements IScriptFancyWorld
         int yMax = Math.max(y1, y2);
         int zMin = Math.min(z1, z2);
         int zMax = Math.max(z1, z2);
-        
+
         switch (mode)
         {
             case "0":

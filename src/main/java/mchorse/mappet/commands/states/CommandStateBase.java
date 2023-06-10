@@ -4,13 +4,11 @@ import mchorse.mappet.api.states.States;
 import mchorse.mappet.commands.CommandMappet;
 import mchorse.mappet.commands.MappetCommandBase;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class CommandStateBase extends MappetCommandBase
 {

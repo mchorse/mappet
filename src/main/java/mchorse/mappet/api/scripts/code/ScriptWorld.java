@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts.code;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import io.netty.buffer.Unpooled;
 import mchorse.blockbuster.common.GunProps;
@@ -54,7 +55,11 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTException;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SPacketCustomPayload;
 import net.minecraft.tileentity.TileEntity;
@@ -81,7 +86,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import com.google.common.base.Predicate;
 
 public class ScriptWorld implements IScriptWorld
 {
@@ -110,7 +114,7 @@ public class ScriptWorld implements IScriptWorld
             return;
         }
 
-        this.world.setBlockState(this.pos, state.getMinecraftBlockState(), 2|4);
+        this.world.setBlockState(this.pos, state.getMinecraftBlockState(), 2 | 4);
     }
 
     @Override
@@ -155,30 +159,36 @@ public class ScriptWorld implements IScriptWorld
     }
 
 
-
     //@Override
-    public void replaceBlocks(IScriptBlockState blockToBeReplaced, IScriptBlockState newBlock, Vector3d pos, int radius) {
-        processBlocksInRegion(pos, radius, (x, y, z) -> {
+    public void replaceBlocks(IScriptBlockState blockToBeReplaced, IScriptBlockState newBlock, Vector3d pos, int radius)
+    {
+        processBlocksInRegion(pos, radius, (x, y, z) ->
+        {
             IScriptBlockState currentBlock = getBlock(x, y, z);
 
-            if (currentBlock.isSame(blockToBeReplaced)) {
+            if (currentBlock.isSame(blockToBeReplaced))
+            {
                 setBlock(newBlock, x, y, z);
             }
         });
     }
 
     //@Override
-    public void replaceBlocks(IScriptBlockState blockToBeReplaced, IScriptBlockState newBlock, INBTCompound tileData, Vector3d pos, int radius) {
-        processBlocksInRegion(pos, radius, (x, y, z) -> {
+    public void replaceBlocks(IScriptBlockState blockToBeReplaced, IScriptBlockState newBlock, INBTCompound tileData, Vector3d pos, int radius)
+    {
+        processBlocksInRegion(pos, radius, (x, y, z) ->
+        {
             IScriptBlockState currentBlock = getBlock(x, y, z);
 
-            if (currentBlock.isSame(blockToBeReplaced)) {
+            if (currentBlock.isSame(blockToBeReplaced))
+            {
                 setTileEntity(x, y, z, newBlock, tileData);
             }
         });
     }
 
-    private void processBlocksInRegion(Vector3d pos, int radius, BlockPosConsumer consumer) {
+    private void processBlocksInRegion(Vector3d pos, int radius, BlockPosConsumer consumer)
+    {
         int minX = (int) Math.floor(pos.x - radius);
         int maxX = (int) Math.ceil(pos.x + radius);
         int minY = (int) Math.floor(pos.y - radius);
@@ -186,10 +196,14 @@ public class ScriptWorld implements IScriptWorld
         int minZ = (int) Math.floor(pos.z - radius);
         int maxZ = (int) Math.ceil(pos.z + radius);
 
-        for (int x = minX; x <= maxX; x++) {
-            for (int y = minY; y <= maxY; y++) {
-                for (int z = minZ; z <= maxZ; z++) {
-                    if (!this.world.isBlockLoaded(this.pos.setPos(x, y, z))) {
+        for (int x = minX; x <= maxX; x++)
+        {
+            for (int y = minY; y <= maxY; y++)
+            {
+                for (int z = minZ; z <= maxZ; z++)
+                {
+                    if (!this.world.isBlockLoaded(this.pos.setPos(x, y, z)))
+                    {
                         continue;
                     }
 
@@ -198,7 +212,8 @@ public class ScriptWorld implements IScriptWorld
                     double dz = pos.z - (z + 0.5);
                     double distanceSquared = dx * dx + dy * dy + dz * dz;
 
-                    if (distanceSquared <= (radius * radius)) {
+                    if (distanceSquared <= (radius * radius))
+                    {
                         consumer.accept(x, y, z);
                     }
                 }
@@ -207,32 +222,43 @@ public class ScriptWorld implements IScriptWorld
     }
 
     @Override
-    public void replaceBlocks(IScriptBlockState blockToBeReplaced, IScriptBlockState newBlock, Vector3d pos1, Vector3d pos2) {
-        processBlocksInRegion(pos1, pos2, (x, y, z) -> {
+    public void replaceBlocks(IScriptBlockState blockToBeReplaced, IScriptBlockState newBlock, Vector3d pos1, Vector3d pos2)
+    {
+        processBlocksInRegion(pos1, pos2, (x, y, z) ->
+        {
             IScriptBlockState currentBlock = getBlock(x, y, z);
 
-            if (currentBlock.isSame(blockToBeReplaced)) {
+            if (currentBlock.isSame(blockToBeReplaced))
+            {
                 setBlock(newBlock, x, y, z);
             }
         });
     }
 
     @Override
-    public void replaceBlocks(IScriptBlockState blockToBeReplaced, IScriptBlockState newBlock, INBTCompound tileData, Vector3d pos1, Vector3d pos2) {
-        processBlocksInRegion(pos1, pos2, (x, y, z) -> {
+    public void replaceBlocks(IScriptBlockState blockToBeReplaced, IScriptBlockState newBlock, INBTCompound tileData, Vector3d pos1, Vector3d pos2)
+    {
+        processBlocksInRegion(pos1, pos2, (x, y, z) ->
+        {
             IScriptBlockState currentBlock = getBlock(x, y, z);
 
-            if (currentBlock.isSame(blockToBeReplaced)) {
+            if (currentBlock.isSame(blockToBeReplaced))
+            {
                 setTileEntity(x, y, z, newBlock, tileData);
             }
         });
     }
 
-    private void processBlocksInRegion(Vector3d pos1, Vector3d pos2, BlockPosConsumer consumer) {
-        for (int x = (int) Math.min(pos1.x, pos2.x); x <= Math.max(pos1.x, pos2.x); x++) {
-            for (int y = (int) Math.min(pos1.y, pos2.y); y <= Math.max(pos1.y, pos2.y); y++) {
-                for (int z = (int) Math.min(pos1.z, pos2.z); z <= Math.max(pos1.z, pos2.z); z++) {
-                    if (!this.world.isBlockLoaded(this.pos.setPos(x, y, z))) {
+    private void processBlocksInRegion(Vector3d pos1, Vector3d pos2, BlockPosConsumer consumer)
+    {
+        for (int x = (int) Math.min(pos1.x, pos2.x); x <= Math.max(pos1.x, pos2.x); x++)
+        {
+            for (int y = (int) Math.min(pos1.y, pos2.y); y <= Math.max(pos1.y, pos2.y); y++)
+            {
+                for (int z = (int) Math.min(pos1.z, pos2.z); z <= Math.max(pos1.z, pos2.z); z++)
+                {
+                    if (!this.world.isBlockLoaded(this.pos.setPos(x, y, z)))
+                    {
                         continue;
                     }
 
@@ -243,7 +269,8 @@ public class ScriptWorld implements IScriptWorld
     }
 
     @FunctionalInterface
-    private interface BlockPosConsumer {
+    private interface BlockPosConsumer
+    {
         void accept(int x, int y, int z);
     }
 
@@ -437,12 +464,14 @@ public class ScriptWorld implements IScriptWorld
     }
 
     @Override
-    public List<IScriptEntity> getEntities(double x1, double y1, double z1, double x2, double y2, double z2) {
+    public List<IScriptEntity> getEntities(double x1, double y1, double z1, double x2, double y2, double z2)
+    {
         return getEntities(x1, y1, z1, x2, y2, z2, false);
     }
 
     @Override
-    public List<IScriptEntity> getEntities(double x1, double y1, double z1, double x2, double y2, double z2, boolean ignoreVolumeLimit) {
+    public List<IScriptEntity> getEntities(double x1, double y1, double z1, double x2, double y2, double z2, boolean ignoreVolumeLimit)
+    {
         List<IScriptEntity> entities = new ArrayList<IScriptEntity>();
 
         double minX = Math.min(x1, x2);
@@ -452,7 +481,8 @@ public class ScriptWorld implements IScriptWorld
         double maxY = Math.max(y1, y2);
         double maxZ = Math.max(z1, z2);
 
-        if (!ignoreVolumeLimit && (maxX - minX > MAX_VOLUME || maxY - minY > MAX_VOLUME || maxZ - minZ > MAX_VOLUME)) {
+        if (!ignoreVolumeLimit && (maxX - minX > MAX_VOLUME || maxY - minY > MAX_VOLUME || maxZ - minZ > MAX_VOLUME))
+        {
             return entities;
         }
 
@@ -463,9 +493,12 @@ public class ScriptWorld implements IScriptWorld
 
         Predicate<Entity> filter = entity -> entity != null;
 
-        for (int chunkX = minChunkX; chunkX <= maxChunkX; chunkX++) {
-            for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; chunkZ++) {
-                if (this.world.isChunkGeneratedAt(chunkX, chunkZ)) {
+        for (int chunkX = minChunkX; chunkX <= maxChunkX; chunkX++)
+        {
+            for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; chunkZ++)
+            {
+                if (this.world.isChunkGeneratedAt(chunkX, chunkZ))
+                {
                     Chunk chunk = this.world.getChunkFromChunkCoords(chunkX, chunkZ);
                     AxisAlignedBB chunkAABB = new AxisAlignedBB(
                             Math.max(chunk.getPos().getXStart(), minX),
@@ -478,7 +511,8 @@ public class ScriptWorld implements IScriptWorld
 
                     List<Entity> chunkEntities = new ArrayList<>();
                     chunk.getEntitiesWithinAABBForEntity(null, chunkAABB, chunkEntities, filter);
-                    for (Entity entity : chunkEntities) {
+                    for (Entity entity : chunkEntities)
+                    {
                         entities.add(ScriptEntity.create(entity));
                     }
                 }
@@ -786,7 +820,8 @@ public class ScriptWorld implements IScriptWorld
     }
 
     @Override
-    public void fill(IScriptBlockState state, int x1, int y1, int z1, int x2, int y2, int z2, int chunkSize, int delayTicks) {
+    public void fill(IScriptBlockState state, int x1, int y1, int z1, int x2, int y2, int z2, int chunkSize, int delayTicks)
+    {
         int xMin = Math.min(x1, x2);
         int xMax = Math.max(x1, x2);
         int yMin = Math.min(y1, y2);
@@ -794,13 +829,17 @@ public class ScriptWorld implements IScriptWorld
         int zMin = Math.min(z1, z2);
         int zMax = Math.max(z1, z2);
 
-        for (int xChunk = xMin; xChunk <= xMax; xChunk += chunkSize) {
-            for (int yChunk = yMin; yChunk <= yMax; yChunk += chunkSize) {
-                for (int zChunk = zMin; zChunk <= zMax; zChunk += chunkSize) {
+        for (int xChunk = xMin; xChunk <= xMax; xChunk += chunkSize)
+        {
+            for (int yChunk = yMin; yChunk <= yMax; yChunk += chunkSize)
+            {
+                for (int zChunk = zMin; zChunk <= zMax; zChunk += chunkSize)
+                {
                     int finalXChunk = xChunk;
                     int finalYChunk = yChunk;
                     int finalZChunk = zChunk;
-                    CommonProxy.eventHandler.addExecutable(new RunnableExecutionFork(delayTicks, () -> {
+                    CommonProxy.eventHandler.addExecutable(new RunnableExecutionFork(delayTicks, () ->
+                    {
                         fillChunk(state, xMin, yMin, zMin, xMax, yMax, zMax, finalXChunk, finalYChunk, finalZChunk);
                     }));
 
@@ -810,14 +849,18 @@ public class ScriptWorld implements IScriptWorld
         }
     }
 
-    private void fillChunk(IScriptBlockState state, int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, int xChunk, int yChunk, int zChunk) {
+    private void fillChunk(IScriptBlockState state, int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, int xChunk, int yChunk, int zChunk)
+    {
         int xChunkMax = Math.min(xChunk + 16, xMax + 1);
         int yChunkMax = Math.min(yChunk + 16, yMax + 1);
         int zChunkMax = Math.min(zChunk + 16, zMax + 1);
 
-        for (int x = xChunk; x < xChunkMax; x++) {
-            for (int y = yChunk; y < yChunkMax; y++) {
-                for (int z = zChunk; z < zChunkMax; z++) {
+        for (int x = xChunk; x < xChunkMax; x++)
+        {
+            for (int y = yChunk; y < yChunkMax; y++)
+            {
+                for (int z = zChunk; z < zChunkMax; z++)
+                {
                     setBlock(state, x, y, z);
                 }
             }
@@ -1123,6 +1166,7 @@ public class ScriptWorld implements IScriptWorld
     {
         return MappetSchematic.create(this);
     }
+
     @Override
     public IScriptItemStack getBlockStackWithTile(int x, int y, int z)
     {
@@ -1210,5 +1254,4 @@ public class ScriptWorld implements IScriptWorld
 
         return spawnedEntity;
     }
-
 }

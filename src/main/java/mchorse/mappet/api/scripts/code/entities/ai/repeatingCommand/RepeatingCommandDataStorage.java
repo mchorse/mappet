@@ -7,7 +7,11 @@ import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class RepeatingCommandDataStorage extends WorldSavedData
 {
@@ -55,7 +59,6 @@ public class RepeatingCommandDataStorage extends WorldSavedData
 
             repeatingCommandDataMap.computeIfAbsent(entityId, k -> new ArrayList<>()).add(new RepeatingCommandData(command, frequency));
         }
-
     }
 
     @Override

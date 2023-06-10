@@ -26,8 +26,9 @@ public class GuiTextLabeledElement extends GuiTextElement
     public void draw(GuiContext context)
     {
         super.draw(context);
-        if (!this.field.isFocused() && this.field.getText().isEmpty()) {
-            this.font.drawStringWithShadow(this.label.get(), (float)(this.area.x + 5), (float)(this.area.y + 6), 8947848);
+        if (!this.field.isFocused() && this.field.getText().isEmpty())
+        {
+            this.font.drawStringWithShadow(this.label.get(), (float) (this.area.x + 5), (float) (this.area.y + 6), 8947848);
         }
     }
 }

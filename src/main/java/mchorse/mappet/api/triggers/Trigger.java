@@ -102,11 +102,26 @@ public class Trigger implements INBTSerializable<NBTTagCompound>
         this.blocks.clear();
 
         /* Backward compatibility with alpha and beta builds */
-        if (tag.hasKey("Sound")) this.blocks.add(new SoundTriggerBlock(tag.getString("Sound")));
-        if (tag.hasKey("Trigger")) this.blocks.add(new EventTriggerBlock(tag.getString("Trigger")));
-        if (tag.hasKey("Command")) this.blocks.add(new CommandTriggerBlock(tag.getString("Command")));
-        if (tag.hasKey("Dialogue")) this.blocks.add(new DialogueTriggerBlock(tag.getString("Dialogue")));
-        if (tag.hasKey("Script")) this.blocks.add(new ScriptTriggerBlock(tag.getString("Script"), tag.getString("ScriptFunction")));
+        if (tag.hasKey("Sound"))
+        {
+            this.blocks.add(new SoundTriggerBlock(tag.getString("Sound")));
+        }
+        if (tag.hasKey("Trigger"))
+        {
+            this.blocks.add(new EventTriggerBlock(tag.getString("Trigger")));
+        }
+        if (tag.hasKey("Command"))
+        {
+            this.blocks.add(new CommandTriggerBlock(tag.getString("Command")));
+        }
+        if (tag.hasKey("Dialogue"))
+        {
+            this.blocks.add(new DialogueTriggerBlock(tag.getString("Dialogue")));
+        }
+        if (tag.hasKey("Script"))
+        {
+            this.blocks.add(new ScriptTriggerBlock(tag.getString("Script"), tag.getString("ScriptFunction")));
+        }
 
         if (tag.hasKey("Blocks"))
         {

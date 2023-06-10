@@ -153,7 +153,7 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     public List<BlockPos> patrol = new ArrayList<BlockPos>();
 
     /**
-     *  List of triggers on each patrol point
+     * List of triggers on each patrol point
      */
     public List<Trigger> patrolTriggers = new ArrayList<Trigger>();
 
@@ -538,30 +538,84 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         }
 
         /* Meta */
-        if (all || options.contains("id")) tag.setString("Id", this.id);
-        if (all || options.contains("states")) tag.setTag("States", this.states.serializeNBT());
-        if (all || options.contains("unique")) tag.setBoolean("Unique", this.unique);
-        if (all || options.contains("path_distance")) tag.setFloat("PathDistance", this.pathDistance);
-        if (all || options.contains("state_name")) tag.setString("StateName", this.stateName);
+        if (all || options.contains("id"))
+        {
+            tag.setString("Id", this.id);
+        }
+        if (all || options.contains("states"))
+        {
+            tag.setTag("States", this.states.serializeNBT());
+        }
+        if (all || options.contains("unique"))
+        {
+            tag.setBoolean("Unique", this.unique);
+        }
+        if (all || options.contains("path_distance"))
+        {
+            tag.setFloat("PathDistance", this.pathDistance);
+        }
+        if (all || options.contains("state_name"))
+        {
+            tag.setString("StateName", this.stateName);
+        }
 
         /* Health */
-        if (all || options.contains("max_health")) tag.setFloat("MaxHealth", this.maxHealth);
-        if (all || options.contains("health")) tag.setFloat("Health", this.health);
-        if (all || options.contains("regen_delay")) tag.setInteger("RegenDelay", this.regenDelay);
-        if (all || options.contains("regen_frequency")) tag.setInteger("RegenFrequency", this.regenFrequency);
+        if (all || options.contains("max_health"))
+        {
+            tag.setFloat("MaxHealth", this.maxHealth);
+        }
+        if (all || options.contains("health"))
+        {
+            tag.setFloat("Health", this.health);
+        }
+        if (all || options.contains("regen_delay"))
+        {
+            tag.setInteger("RegenDelay", this.regenDelay);
+        }
+        if (all || options.contains("regen_frequency"))
+        {
+            tag.setInteger("RegenFrequency", this.regenFrequency);
+        }
 
         /* Damage */
-        if (all || options.contains("damage")) tag.setFloat("Damage", this.damage);
-        if (all || options.contains("damage_delay")) tag.setInteger("DamageDelay", this.damageDelay);
-        if (all || options.contains("can_ranged")) tag.setBoolean("CanRanged", this.canRanged);
-        if (all || options.contains("can_fall_damage")) tag.setBoolean("CanFallDamage", this.canFallDamage);
-        if (all || options.contains("can_get_burned")) tag.setBoolean("CanGetBurned", this.canGetBurned);
-        if (all || options.contains("invincible")) tag.setBoolean("Invincible", this.invincible);
-        if (all || options.contains("killable")) tag.setBoolean("Killable", this.killable);
+        if (all || options.contains("damage"))
+        {
+            tag.setFloat("Damage", this.damage);
+        }
+        if (all || options.contains("damage_delay"))
+        {
+            tag.setInteger("DamageDelay", this.damageDelay);
+        }
+        if (all || options.contains("can_ranged"))
+        {
+            tag.setBoolean("CanRanged", this.canRanged);
+        }
+        if (all || options.contains("can_fall_damage"))
+        {
+            tag.setBoolean("CanFallDamage", this.canFallDamage);
+        }
+        if (all || options.contains("can_get_burned"))
+        {
+            tag.setBoolean("CanGetBurned", this.canGetBurned);
+        }
+        if (all || options.contains("invincible"))
+        {
+            tag.setBoolean("Invincible", this.invincible);
+        }
+        if (all || options.contains("killable"))
+        {
+            tag.setBoolean("Killable", this.killable);
+        }
 
         /* Movement */
-        if (all || options.contains("speed")) tag.setFloat("Speed", this.speed);
-        if (all || options.contains("jump_power")) tag.setFloat("JumpPower", this.jumpPower);
+        if (all || options.contains("speed"))
+        {
+            tag.setFloat("Speed", this.speed);
+        }
+        if (all || options.contains("jump_power"))
+        {
+            tag.setFloat("JumpPower", this.jumpPower);
+        }
         if ((all || options.contains("steering_offset")))
         {
             NBTTagList offsets = new NBTTagList();
@@ -573,16 +627,34 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
 
             tag.setTag("SteeringOffsets", offsets);
         }
-        if (all || options.contains("can_swim")) tag.setBoolean("CanSwim", this.canSwim);
-        if (all || options.contains("immovable")) tag.setBoolean("Immovable", this.immovable);
-        if (all || options.contains("has_post")) tag.setBoolean("HasPost", this.hasPost);
+        if (all || options.contains("can_swim"))
+        {
+            tag.setBoolean("CanSwim", this.canSwim);
+        }
+        if (all || options.contains("immovable"))
+        {
+            tag.setBoolean("Immovable", this.immovable);
+        }
+        if (all || options.contains("has_post"))
+        {
+            tag.setBoolean("HasPost", this.hasPost);
+        }
         if ((all || options.contains("post")))
         {
             tag.setTag("Post", this.postPosition == null ? new NBTTagList() : NBTUtils.blockPosTo(this.postPosition));
         }
-        if (all || options.contains("post_radius")) tag.setFloat("PostRadius", this.postRadius);
-        if (all || options.contains("fallback")) tag.setFloat("Fallback", this.fallback);
-        if (all || options.contains("patrol_circulate")) tag.setBoolean("PatrolCirculate", this.patrolCirculate);
+        if (all || options.contains("post_radius"))
+        {
+            tag.setFloat("PostRadius", this.postRadius);
+        }
+        if (all || options.contains("fallback"))
+        {
+            tag.setFloat("Fallback", this.fallback);
+        }
+        if (all || options.contains("patrol_circulate"))
+        {
+            tag.setBoolean("PatrolCirculate", this.patrolCirculate);
+        }
         if ((all || options.contains("patrol")))
         {
             NBTTagList points = new NBTTagList();
@@ -601,13 +673,28 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
             tag.setTag("Patrol", points);
             tag.setTag("PatrolTriggers", triggers);
         }
-        if ((all || options.contains("follow"))) tag.setString("Follow", this.follow);
+        if ((all || options.contains("follow")))
+        {
+            tag.setString("Follow", this.follow);
+        }
 
         /* General */
-        if (all || options.contains("faction")) tag.setString("Faction", this.faction);
-        if ((all || options.contains("morph"))) tag.setTag("Morph", this.morph == null ? new NBTTagCompound() : this.morph.toNBT());
-        if (all || options.contains("sight_distance")) tag.setFloat("SightDistance", this.sightDistance);
-        if (all || options.contains("sight_radius")) tag.setFloat("SightRadius", this.sightRadius);
+        if (all || options.contains("faction"))
+        {
+            tag.setString("Faction", this.faction);
+        }
+        if ((all || options.contains("morph")))
+        {
+            tag.setTag("Morph", this.morph == null ? new NBTTagCompound() : this.morph.toNBT());
+        }
+        if (all || options.contains("sight_distance"))
+        {
+            tag.setFloat("SightDistance", this.sightDistance);
+        }
+        if (all || options.contains("sight_radius"))
+        {
+            tag.setFloat("SightRadius", this.sightRadius);
+        }
         if ((all || options.contains("drops")))
         {
             NBTTagList drops = new NBTTagList();
@@ -619,36 +706,108 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
 
             tag.setTag("Drops", drops);
         }
-        if (all || options.contains("xp")) tag.setInteger("Xp", this.xp);
-        if (all || options.contains("has_no_gravity")) tag.setBoolean("HasNoGravity", this.hasNoGravity);
-        if (all || options.contains("can_be_steered")) tag.setBoolean("CanBeSteered", this.canBeSteered);
-        if (all || options.contains("shadow_size")) tag.setFloat("ShadowSize", this.shadowSize);
+        if (all || options.contains("xp"))
+        {
+            tag.setInteger("Xp", this.xp);
+        }
+        if (all || options.contains("has_no_gravity"))
+        {
+            tag.setBoolean("HasNoGravity", this.hasNoGravity);
+        }
+        if (all || options.contains("can_be_steered"))
+        {
+            tag.setBoolean("CanBeSteered", this.canBeSteered);
+        }
+        if (all || options.contains("shadow_size"))
+        {
+            tag.setFloat("ShadowSize", this.shadowSize);
+        }
 
         /* Behavior */
-        if (all || options.contains("look_at_player")) tag.setBoolean("LookAtPlayer", this.lookAtPlayer);
-        if (all || options.contains("look_around")) tag.setBoolean("LookAround", this.lookAround);
-        if (all || options.contains("wander")) tag.setBoolean("Wander", this.wander);
-        if (all || options.contains("flee")) tag.setFloat("Flee", this.flee);
-        if (all || options.contains("can_pick_up_loot")) tag.setBoolean("CanPickUpLoot", this.canPickUpLoot);
+        if (all || options.contains("look_at_player"))
+        {
+            tag.setBoolean("LookAtPlayer", this.lookAtPlayer);
+        }
+        if (all || options.contains("look_around"))
+        {
+            tag.setBoolean("LookAround", this.lookAround);
+        }
+        if (all || options.contains("wander"))
+        {
+            tag.setBoolean("Wander", this.wander);
+        }
+        if (all || options.contains("flee"))
+        {
+            tag.setFloat("Flee", this.flee);
+        }
+        if (all || options.contains("can_pick_up_loot"))
+        {
+            tag.setBoolean("CanPickUpLoot", this.canPickUpLoot);
+        }
 
         /* Triggers */
-        if (all || options.contains("trigger_died")) tag.setTag("TriggerDied", this.triggerDied.serializeNBT());
-        if (all || options.contains("trigger_damaged")) tag.setTag("TriggerDamaged", this.triggerDamaged.serializeNBT());
-        if (all || options.contains("trigger_interact")) tag.setTag("TriggerInteract", this.triggerInteract.serializeNBT());
-        if (all || options.contains("trigger_tick")) tag.setTag("TriggerTick", this.triggerTick.serializeNBT());
-        if (all || options.contains("trigger_target")) tag.setTag("TriggerTarget", this.triggerTarget.serializeNBT());
-        if (all || options.contains("trigger_initialize")) tag.setTag("TriggerInitialize", this.triggerInitialize.serializeNBT());
-        if (all || options.contains("trigger_respawn")) tag.setTag("TriggerRespawn", this.triggerRespawn.serializeNBT());
-        if (all || options.contains("trigger_entity_collision")) tag.setTag("TriggerEntityCollision", this.triggerEntityCollision.serializeNBT());
+        if (all || options.contains("trigger_died"))
+        {
+            tag.setTag("TriggerDied", this.triggerDied.serializeNBT());
+        }
+        if (all || options.contains("trigger_damaged"))
+        {
+            tag.setTag("TriggerDamaged", this.triggerDamaged.serializeNBT());
+        }
+        if (all || options.contains("trigger_interact"))
+        {
+            tag.setTag("TriggerInteract", this.triggerInteract.serializeNBT());
+        }
+        if (all || options.contains("trigger_tick"))
+        {
+            tag.setTag("TriggerTick", this.triggerTick.serializeNBT());
+        }
+        if (all || options.contains("trigger_target"))
+        {
+            tag.setTag("TriggerTarget", this.triggerTarget.serializeNBT());
+        }
+        if (all || options.contains("trigger_initialize"))
+        {
+            tag.setTag("TriggerInitialize", this.triggerInitialize.serializeNBT());
+        }
+        if (all || options.contains("trigger_respawn"))
+        {
+            tag.setTag("TriggerRespawn", this.triggerRespawn.serializeNBT());
+        }
+        if (all || options.contains("trigger_entity_collision"))
+        {
+            tag.setTag("TriggerEntityCollision", this.triggerEntityCollision.serializeNBT());
+        }
 
         /* Respawn */
-        if (all || options.contains("respawn")) tag.setBoolean("Respawn", this.respawn);
-        if (all || options.contains("respawn_delay")) tag.setInteger("RespawnDelay", this.respawnDelay);
-        if (all || options.contains("respawn_on_coordinates")) tag.setBoolean("RespawnOnCoordinates", this.respawnOnCoordinates);
-        if (all || options.contains("respawn_pos_x")) tag.setDouble("RespawnPosX", this.respawnPosX);
-        if (all || options.contains("respawn_pos_y")) tag.setDouble("RespawnPosY", this.respawnPosY);
-        if (all || options.contains("respawn_pos_z")) tag.setDouble("RespawnPosZ", this.respawnPosZ);
-        if (all || options.contains("respawn_save_uuid")) tag.setBoolean("RespawnSaveUUID", this.respawnSaveUUID);
+        if (all || options.contains("respawn"))
+        {
+            tag.setBoolean("Respawn", this.respawn);
+        }
+        if (all || options.contains("respawn_delay"))
+        {
+            tag.setInteger("RespawnDelay", this.respawnDelay);
+        }
+        if (all || options.contains("respawn_on_coordinates"))
+        {
+            tag.setBoolean("RespawnOnCoordinates", this.respawnOnCoordinates);
+        }
+        if (all || options.contains("respawn_pos_x"))
+        {
+            tag.setDouble("RespawnPosX", this.respawnPosX);
+        }
+        if (all || options.contains("respawn_pos_y"))
+        {
+            tag.setDouble("RespawnPosY", this.respawnPosY);
+        }
+        if (all || options.contains("respawn_pos_z"))
+        {
+            tag.setDouble("RespawnPosZ", this.respawnPosZ);
+        }
+        if (all || options.contains("respawn_save_uuid"))
+        {
+            tag.setBoolean("RespawnSaveUUID", this.respawnSaveUUID);
+        }
 
         return tag;
     }
@@ -657,30 +816,84 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     public void deserializeNBT(NBTTagCompound tag)
     {
         /* Meta */
-        if (tag.hasKey("Id")) this.id = tag.getString("Id");
-        if (tag.hasKey("States")) this.states.deserializeNBT(tag.getCompoundTag("States"));
-        if (tag.hasKey("Unique")) this.unique = tag.getBoolean("Unique");
-        if (tag.hasKey("PathDistance")) this.pathDistance = tag.getFloat("PathDistance");
-        if (tag.hasKey("StateName")) this.stateName = tag.getString("StateName");
+        if (tag.hasKey("Id"))
+        {
+            this.id = tag.getString("Id");
+        }
+        if (tag.hasKey("States"))
+        {
+            this.states.deserializeNBT(tag.getCompoundTag("States"));
+        }
+        if (tag.hasKey("Unique"))
+        {
+            this.unique = tag.getBoolean("Unique");
+        }
+        if (tag.hasKey("PathDistance"))
+        {
+            this.pathDistance = tag.getFloat("PathDistance");
+        }
+        if (tag.hasKey("StateName"))
+        {
+            this.stateName = tag.getString("StateName");
+        }
 
         /* Health */
-        if (tag.hasKey("MaxHealth")) this.maxHealth = tag.getFloat("MaxHealth");
-        if (tag.hasKey("Health")) this.health = tag.getFloat("Health");
-        if (tag.hasKey("RegenDelay")) this.regenDelay = tag.getInteger("RegenDelay");
-        if (tag.hasKey("RegenFrequency")) this.regenFrequency = tag.getInteger("RegenFrequency");
+        if (tag.hasKey("MaxHealth"))
+        {
+            this.maxHealth = tag.getFloat("MaxHealth");
+        }
+        if (tag.hasKey("Health"))
+        {
+            this.health = tag.getFloat("Health");
+        }
+        if (tag.hasKey("RegenDelay"))
+        {
+            this.regenDelay = tag.getInteger("RegenDelay");
+        }
+        if (tag.hasKey("RegenFrequency"))
+        {
+            this.regenFrequency = tag.getInteger("RegenFrequency");
+        }
 
         /* Damage */
-        if (tag.hasKey("Damage")) this.damage = tag.getFloat("Damage");
-        if (tag.hasKey("DamageDelay")) this.damageDelay = tag.getInteger("DamageDelay");
-        if (tag.hasKey("CanRanged")) this.canRanged = tag.getBoolean("CanRanged");
-        if (tag.hasKey("CanFallDamage")) this.canFallDamage = tag.getBoolean("CanFallDamage");
-        if (tag.hasKey("CanGetBurned")) this.canGetBurned = tag.getBoolean("CanGetBurned");
-        if (tag.hasKey("Invincible")) this.invincible = tag.getBoolean("Invincible");
-        if (tag.hasKey("Killable")) this.killable = tag.getBoolean("Killable");
+        if (tag.hasKey("Damage"))
+        {
+            this.damage = tag.getFloat("Damage");
+        }
+        if (tag.hasKey("DamageDelay"))
+        {
+            this.damageDelay = tag.getInteger("DamageDelay");
+        }
+        if (tag.hasKey("CanRanged"))
+        {
+            this.canRanged = tag.getBoolean("CanRanged");
+        }
+        if (tag.hasKey("CanFallDamage"))
+        {
+            this.canFallDamage = tag.getBoolean("CanFallDamage");
+        }
+        if (tag.hasKey("CanGetBurned"))
+        {
+            this.canGetBurned = tag.getBoolean("CanGetBurned");
+        }
+        if (tag.hasKey("Invincible"))
+        {
+            this.invincible = tag.getBoolean("Invincible");
+        }
+        if (tag.hasKey("Killable"))
+        {
+            this.killable = tag.getBoolean("Killable");
+        }
 
         /* Movement */
-        if (tag.hasKey("Speed")) this.speed = tag.getFloat("Speed");
-        if (tag.hasKey("JumpPower")) this.jumpPower = tag.getFloat("JumpPower");
+        if (tag.hasKey("Speed"))
+        {
+            this.speed = tag.getFloat("Speed");
+        }
+        if (tag.hasKey("JumpPower"))
+        {
+            this.jumpPower = tag.getFloat("JumpPower");
+        }
         if (tag.hasKey("SteeringOffsets", Constants.NBT.TAG_LIST))
         {
             NBTTagList offsets = tag.getTagList("SteeringOffsets", Constants.NBT.TAG_LIST);
@@ -697,16 +910,34 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
                 }
             }
         }
-        if (tag.hasKey("CanSwim")) this.canSwim = tag.getBoolean("CanSwim");
-        if (tag.hasKey("Immovable")) this.immovable = tag.getBoolean("Immovable");
-        if (tag.hasKey("HasPost")) this.hasPost = tag.getBoolean("HasPost");
+        if (tag.hasKey("CanSwim"))
+        {
+            this.canSwim = tag.getBoolean("CanSwim");
+        }
+        if (tag.hasKey("Immovable"))
+        {
+            this.immovable = tag.getBoolean("Immovable");
+        }
+        if (tag.hasKey("HasPost"))
+        {
+            this.hasPost = tag.getBoolean("HasPost");
+        }
         if (tag.hasKey("Post", Constants.NBT.TAG_LIST))
         {
             this.postPosition = NBTUtils.blockPosFrom(tag.getTag("Post"));
         }
-        if (tag.hasKey("PostRadius")) this.postRadius = tag.getFloat("PostRadius");
-        if (tag.hasKey("Fallback")) this.fallback = tag.getFloat("Fallback");
-        if (tag.hasKey("PatrolCirculate")) this.patrolCirculate = tag.getBoolean("PatrolCirculate");
+        if (tag.hasKey("PostRadius"))
+        {
+            this.postRadius = tag.getFloat("PostRadius");
+        }
+        if (tag.hasKey("Fallback"))
+        {
+            this.fallback = tag.getFloat("Fallback");
+        }
+        if (tag.hasKey("PatrolCirculate"))
+        {
+            this.patrolCirculate = tag.getBoolean("PatrolCirculate");
+        }
         if (tag.hasKey("Patrol", Constants.NBT.TAG_LIST))
         {
             NBTTagList points = tag.getTagList("Patrol", Constants.NBT.TAG_LIST);
@@ -735,13 +966,28 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
                 this.patrolTriggers.add(trigger);
             }
         }
-        if (tag.hasKey("Follow", Constants.NBT.TAG_STRING)) this.follow = tag.getString("Follow");
+        if (tag.hasKey("Follow", Constants.NBT.TAG_STRING))
+        {
+            this.follow = tag.getString("Follow");
+        }
 
         /* General */
-        if (tag.hasKey("Faction")) this.faction = tag.getString("Faction");
-        if (tag.hasKey("Morph", Constants.NBT.TAG_COMPOUND)) this.morph = MorphManager.INSTANCE.morphFromNBT(tag.getCompoundTag("Morph"));
-        if (tag.hasKey("SightDistance")) this.sightDistance = tag.getFloat("SightDistance");
-        if (tag.hasKey("SightRadius")) this.sightRadius = tag.getFloat("SightRadius");
+        if (tag.hasKey("Faction"))
+        {
+            this.faction = tag.getString("Faction");
+        }
+        if (tag.hasKey("Morph", Constants.NBT.TAG_COMPOUND))
+        {
+            this.morph = MorphManager.INSTANCE.morphFromNBT(tag.getCompoundTag("Morph"));
+        }
+        if (tag.hasKey("SightDistance"))
+        {
+            this.sightDistance = tag.getFloat("SightDistance");
+        }
+        if (tag.hasKey("SightRadius"))
+        {
+            this.sightRadius = tag.getFloat("SightRadius");
+        }
         if (tag.hasKey("Drops"))
         {
             NBTTagList drops = tag.getTagList("Drops", Constants.NBT.TAG_COMPOUND);
@@ -763,39 +1009,112 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
                 this.drops.add(drop);
             }
         }
-        if (tag.hasKey("Xp")) this.xp = tag.getInteger("Xp");
-        if (tag.hasKey("HasNoGravity")) this.hasNoGravity = tag.getBoolean("HasNoGravity");
-        if (tag.hasKey("CanBeSteered")) this.canBeSteered = tag.getBoolean("CanBeSteered");
-        if (tag.hasKey("ShadowSize")) this.shadowSize = tag.getFloat("ShadowSize");
+        if (tag.hasKey("Xp"))
+        {
+            this.xp = tag.getInteger("Xp");
+        }
+        if (tag.hasKey("HasNoGravity"))
+        {
+            this.hasNoGravity = tag.getBoolean("HasNoGravity");
+        }
+        if (tag.hasKey("CanBeSteered"))
+        {
+            this.canBeSteered = tag.getBoolean("CanBeSteered");
+        }
+        if (tag.hasKey("ShadowSize"))
+        {
+            this.shadowSize = tag.getFloat("ShadowSize");
+        }
 
         /* Behavior */
-        if (tag.hasKey("LookAtPlayer")) this.lookAtPlayer = tag.getBoolean("LookAtPlayer");
-        if (tag.hasKey("LookAround")) this.lookAround = tag.getBoolean("LookAround");
-        if (tag.hasKey("Wander")) this.wander = tag.getBoolean("Wander");
-        if (tag.hasKey("Flee")) this.flee = tag.getFloat("Flee");
-        if (tag.hasKey("CanPickUpLoot")) this.canPickUpLoot = tag.getBoolean("CanPickUpLoot");
+        if (tag.hasKey("LookAtPlayer"))
+        {
+            this.lookAtPlayer = tag.getBoolean("LookAtPlayer");
+        }
+        if (tag.hasKey("LookAround"))
+        {
+            this.lookAround = tag.getBoolean("LookAround");
+        }
+        if (tag.hasKey("Wander"))
+        {
+            this.wander = tag.getBoolean("Wander");
+        }
+        if (tag.hasKey("Flee"))
+        {
+            this.flee = tag.getFloat("Flee");
+        }
+        if (tag.hasKey("CanPickUpLoot"))
+        {
+            this.canPickUpLoot = tag.getBoolean("CanPickUpLoot");
+        }
 
         /* Triggers */
-        if (tag.hasKey("TriggerDied")) this.triggerDied.deserializeNBT(tag.getCompoundTag("TriggerDied"));
-        if (tag.hasKey("TriggerDamaged")) this.triggerDamaged.deserializeNBT(tag.getCompoundTag("TriggerDamaged"));
-        if (tag.hasKey("TriggerInteract")) this.triggerInteract.deserializeNBT(tag.getCompoundTag("TriggerInteract"));
-        if (tag.hasKey("TriggerTick")) this.triggerTick.deserializeNBT(tag.getCompoundTag("TriggerTick"));
-        if (tag.hasKey("TriggerTarget")) this.triggerTarget.deserializeNBT(tag.getCompoundTag("TriggerTarget"));
-        if (tag.hasKey("TriggerInitialize")) this.triggerInitialize.deserializeNBT(tag.getCompoundTag("TriggerInitialize"));
-        if (tag.hasKey("TriggerRespawn")) this.triggerRespawn.deserializeNBT(tag.getCompoundTag("TriggerRespawn"));
-        if (tag.hasKey("TriggerEntityCollision")) this.triggerEntityCollision.deserializeNBT(tag.getCompoundTag("TriggerEntityCollision"));
+        if (tag.hasKey("TriggerDied"))
+        {
+            this.triggerDied.deserializeNBT(tag.getCompoundTag("TriggerDied"));
+        }
+        if (tag.hasKey("TriggerDamaged"))
+        {
+            this.triggerDamaged.deserializeNBT(tag.getCompoundTag("TriggerDamaged"));
+        }
+        if (tag.hasKey("TriggerInteract"))
+        {
+            this.triggerInteract.deserializeNBT(tag.getCompoundTag("TriggerInteract"));
+        }
+        if (tag.hasKey("TriggerTick"))
+        {
+            this.triggerTick.deserializeNBT(tag.getCompoundTag("TriggerTick"));
+        }
+        if (tag.hasKey("TriggerTarget"))
+        {
+            this.triggerTarget.deserializeNBT(tag.getCompoundTag("TriggerTarget"));
+        }
+        if (tag.hasKey("TriggerInitialize"))
+        {
+            this.triggerInitialize.deserializeNBT(tag.getCompoundTag("TriggerInitialize"));
+        }
+        if (tag.hasKey("TriggerRespawn"))
+        {
+            this.triggerRespawn.deserializeNBT(tag.getCompoundTag("TriggerRespawn"));
+        }
+        if (tag.hasKey("TriggerEntityCollision"))
+        {
+            this.triggerEntityCollision.deserializeNBT(tag.getCompoundTag("TriggerEntityCollision"));
+        }
 
         /* Respawn */
-        if (tag.hasKey("Respawn")) this.respawn = tag.getBoolean("Respawn");
-        if (tag.hasKey("RespawnDelay")) this.respawnDelay = tag.getInteger("RespawnDelay");
-        if (tag.hasKey("RespawnOnCoordinates")) this.respawnOnCoordinates = tag.getBoolean("RespawnOnCoordinates");
-        if (tag.hasKey("RespawnPosX")) this.respawnPosX = tag.getDouble("RespawnPosX");
-        if (tag.hasKey("RespawnPosY")) this.respawnPosY = tag.getDouble("RespawnPosY");
-        if (tag.hasKey("RespawnPosZ")) this.respawnPosZ = tag.getDouble("RespawnPosZ");
-        if (tag.hasKey("RespawnSaveUUID")) this.respawnSaveUUID = tag.getBoolean("RespawnSaveUUID");
+        if (tag.hasKey("Respawn"))
+        {
+            this.respawn = tag.getBoolean("Respawn");
+        }
+        if (tag.hasKey("RespawnDelay"))
+        {
+            this.respawnDelay = tag.getInteger("RespawnDelay");
+        }
+        if (tag.hasKey("RespawnOnCoordinates"))
+        {
+            this.respawnOnCoordinates = tag.getBoolean("RespawnOnCoordinates");
+        }
+        if (tag.hasKey("RespawnPosX"))
+        {
+            this.respawnPosX = tag.getDouble("RespawnPosX");
+        }
+        if (tag.hasKey("RespawnPosY"))
+        {
+            this.respawnPosY = tag.getDouble("RespawnPosY");
+        }
+        if (tag.hasKey("RespawnPosZ"))
+        {
+            this.respawnPosZ = tag.getDouble("RespawnPosZ");
+        }
+        if (tag.hasKey("RespawnSaveUUID"))
+        {
+            this.respawnSaveUUID = tag.getBoolean("RespawnSaveUUID");
+        }
     }
 
-    public void writeToBuf(ByteBuf buf) {
+    public void writeToBuf(ByteBuf buf)
+    {
         // these should not be needed, only last line should be needed, but idk why they are still needed
         // I mean, when they're here everything works perfectly,
         // when not, the other things work fine but not these (if you left the world and rejoined,
@@ -814,7 +1133,8 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         NpcStateUtils.stateToBuf(buf, this);
     }
 
-    public void readFromBuf(ByteBuf buf) {
+    public void readFromBuf(ByteBuf buf)
+    {
         // same comment as writeToBuf above
         shadowSize = buf.readFloat();
         jumpPower = buf.readFloat();

@@ -23,15 +23,15 @@ import java.util.function.Consumer;
 public class GuiThemeEditorOverlayPanel extends GuiEditorOverlayPanel<GuiThemeEditorOverlayPanel.SyntaxStyleEntry>
 {
     public static final String CODE_SAMPLE = "/* Main function */\n" +
-        "function main(e) {\n" +
-        "    // Set subject's position one block higher\n" +
-        "    var pos = e.subject().position();\n" +
-        "    \n" +
-        "    this.orange = \"Hello, world!\";\n" +
-        "    \n" +
-        "    e.send(this.orange);\n" +
-        "    e.subject().position(pos.x, pos.y + 1, pos.z);\n" +
-        "}";
+            "function main(e) {\n" +
+            "    // Set subject's position one block higher\n" +
+            "    var pos = e.subject().position();\n" +
+            "    \n" +
+            "    this.orange = \"Hello, world!\";\n" +
+            "    \n" +
+            "    e.send(this.orange);\n" +
+            "    e.subject().position(pos.x, pos.y + 1, pos.z);\n" +
+            "}";
 
     public GuiIconElement open;
 
