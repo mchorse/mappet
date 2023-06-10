@@ -4,6 +4,7 @@ import mchorse.mappet.api.triggers.Trigger;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Scripted item properties
@@ -15,6 +16,7 @@ import java.util.HashMap;
 public class ScriptedItemProps
 {
     private HashMap<Trigger, String> initialState = new HashMap<>();
+    public HashMap<String, Trigger> registered = new LinkedHashMap<>();
     public Trigger interactWithAir = new Trigger();
     public Trigger interactWithEntity = new Trigger();
     public Trigger interactWithBlock = new Trigger();
@@ -41,15 +43,21 @@ public class ScriptedItemProps
      */
     public void reset()
     {
-        this.interactWithAir = new Trigger();
-        this.interactWithEntity = new Trigger();
-        this.interactWithBlock = new Trigger();
-        this.attackEntity = new Trigger();
-        this.breakBlock = new Trigger();
-        this.placeBlock = new Trigger();
-        this.hitBlock = new Trigger();
-        this.onHolderTick = new Trigger();
-        this.pickup = new Trigger();
+        this.interactWithAir = register("interact_with_air", new Trigger());
+        this.interactWithEntity = register("interact_with_entity", new Trigger());
+        this.interactWithBlock = register("interact_with_block", new Trigger());
+        this.attackEntity = register("attack_entity", new Trigger());
+        this.breakBlock = register("break_block", new Trigger());
+        this.placeBlock = register("place_block", new Trigger());
+        this.hitBlock = register("hit_block", new Trigger());
+        this.onHolderTick = register("on_holder_tick", new Trigger());
+        this.pickup = register("pickup", new Trigger());
+    }
+
+    public Trigger register(String key, Trigger trigger)
+    {
+        this.registered.put(key, trigger);
+        return trigger;
     }
 
     public void fromNBT(NBTTagCompound tag)
@@ -108,49 +116,5 @@ public class ScriptedItemProps
         tag.setTag("Pickup", this.pickup.serializeNBT());
 
         return tag;
-    }
-
-    /* These methods are responsable for doing nothing if the properties has not been changed when the gui closes. */
-    public void storeInitialState()
-    {
-        initialState.clear();
-
-        for (Trigger trigger : getTriggers())
-        {
-            initialState.put(trigger, trigger.serializeNBT().toString());
-        }
-    }
-
-    public boolean hasChanged()
-    {
-        for (Trigger trigger : getTriggers())
-        {
-            String initial = initialState.get(trigger);
-            String current = trigger.serializeNBT().toString();
-            if (initial == null)
-            {
-                return true;
-            }
-            if (!initial.equals(current))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public Trigger[] getTriggers()
-    {
-        return new Trigger[] {
-                this.interactWithAir,
-                this.interactWithEntity,
-                this.interactWithBlock,
-                this.attackEntity,
-                this.breakBlock,
-                this.placeBlock,
-                this.hitBlock,
-                this.onHolderTick,
-                this.pickup
-        };
     }
 }

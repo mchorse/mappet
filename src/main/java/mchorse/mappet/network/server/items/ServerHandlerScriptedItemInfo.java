@@ -1,6 +1,5 @@
 package mchorse.mappet.network.server.items;
 
-import mchorse.mappet.common.ScriptedItemProps;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.network.common.items.PacketScriptedItemInfo;
 import mchorse.mappet.utils.NBTUtils;
@@ -21,15 +20,12 @@ public class ServerHandlerScriptedItemInfo extends ServerMessageHandler<PacketSc
         }
 
         ItemStack stack = player.getHeldItemMainhand();
-        ScriptedItemProps newProps = new ScriptedItemProps(message.tag);
-        if (newProps.hasChanged())
+
+        if (NBTUtils.saveScriptedItemProps(stack, message.tag))
         {
-            if (NBTUtils.saveScriptedItemProps(stack, message.tag))
-            {
-                IMessage packet = new PacketScriptedItemInfo(message.tag, player.getEntityId());
-                Dispatcher.sendTo(packet, player);
-                Dispatcher.sendToTracked(player, packet);
-            }
+            IMessage packet = new PacketScriptedItemInfo(message.tag, player.getEntityId());
+            Dispatcher.sendTo(packet, player);
+            Dispatcher.sendToTracked(player, packet);
         }
     }
 }

@@ -1,6 +1,5 @@
 package mchorse.mappet.network.client.items;
 
-import mchorse.mappet.common.ScriptedItemProps;
 import mchorse.mappet.network.common.items.PacketScriptedItemInfo;
 import mchorse.mappet.utils.NBTUtils;
 import mchorse.mclib.network.ClientMessageHandler;
@@ -30,11 +29,7 @@ public class ClientHandlerScriptedItemInfo extends ClientMessageHandler<PacketSc
                 return;
             }
 
-            ScriptedItemProps newProps = new ScriptedItemProps(message.tag);
-            if (newProps.hasChanged())
-            {
-                NBTUtils.saveScriptedItemProps(stack, message.tag);
-            }
+            NBTUtils.saveScriptedItemProps(stack, message.tag);
         }
     }
 }
