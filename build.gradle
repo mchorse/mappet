@@ -144,30 +144,24 @@ shadowJar {
     }
 }
 
-processResources {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+task prepareAssets(type: Copy) {
+    group = 'build'
 
-    // This will ensure that this task is redone when the versions change.
     inputs.property 'version', project.version
     inputs.property "mcversion", mcversion
 
     project.version += "-" + mcversion
 
-    from(sourceSets.main.resources.srcDirs) {
+    from (sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
 
         // Replace version
         expand(project.properties)
     }
-
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
-}
 
-task prepareAssets(type: Copy) {
-    group = 'build'
-    from project.file('src/main/resources')
     into project.file('build/classes/java/main')
 }
 
