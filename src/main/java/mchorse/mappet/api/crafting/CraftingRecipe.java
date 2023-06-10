@@ -68,7 +68,7 @@ public class CraftingRecipe implements INBTSerializable<NBTTagCompound>
     {
         for (ItemStack stack : this.input)
         {
-            if (InventoryUtils.countItems(player, stack) < stack.getCount())
+            if (InventoryUtils.countItems(player, stack, true, this.ignoreNBT) < stack.getCount())
             {
                 return false;
             }
