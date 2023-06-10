@@ -12,8 +12,6 @@ public interface IMappetSchematic
      *     schematic.loadFromWorld(0, 4, 0, 4, 8, 4).saveToFile("mySchematic").place(0, 4, 4).place(0, 4, 8);
      * }
      * }</pre>
-     *
-     * @return {@link IMappetSchematic}
      */
     IMappetSchematic loadFromWorld(int x1, int y1, int z1, int x2, int y2, int z2);
 
@@ -27,8 +25,6 @@ public interface IMappetSchematic
      *      schematic.loadFromFile("myTestSchematic").place(0, 0, 0, true, true);
      * }
      * }</pre>
-     *
-     * @return {@link IMappetSchematic}
      */
     IMappetSchematic place(int x, int y, int z, boolean replaceBlocks, boolean placeAir);
 
@@ -42,8 +38,6 @@ public interface IMappetSchematic
      *      schematic.loadFromFile("myTestSchematic").place(0, 0, 0, true);
      * }
      * }</pre>
-     *
-     * @return {@link IMappetSchematic}
      */
     IMappetSchematic place(int x, int y, int z, boolean replaceBlocks);
 
@@ -57,8 +51,6 @@ public interface IMappetSchematic
      *      schematic.loadFromFile("myTestSchematic").place(0, 0, 0);
      * }
      * }</pre>
-     *
-     * @return {@link IMappetSchematic}
      */
     IMappetSchematic place(int x, int y, int z);
 
@@ -72,8 +64,6 @@ public interface IMappetSchematic
      *     schematic.loadFromWorld(0, 4, 0, 4, 8, 4).saveToFile("mySchematic");
      * }
      * }</pre>
-     *
-     * @return {@link IMappetSchematic}
      */
     IMappetSchematic saveToFile(String name);
 
@@ -87,8 +77,6 @@ public interface IMappetSchematic
      *     schematic.loadFromFile("mySchematic").place(0, 4, 4);
      * }
      * }</pre>
-     *
-     * @return {@link IMappetSchematic}
      */
     IMappetSchematic loadFromFile(String name);
 }
