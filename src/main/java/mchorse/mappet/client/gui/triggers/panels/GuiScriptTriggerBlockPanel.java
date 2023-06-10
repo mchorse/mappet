@@ -25,35 +25,32 @@ public class GuiScriptTriggerBlockPanel extends GuiDataTriggerBlockPanel<ScriptT
         GuiToggleElement inline = new GuiToggleElement(mc, IKey.lang("mappet.gui.triggers.script.inline"), this.block.inline, (b) -> this.toggleInline(b.isToggled()));
         GuiTextEditor code = new GuiTextEditor(mc, (s) -> this.block.code = s);
         code.setText(this.block.code);
+        code.background();
 
         this.function = new GuiTextElement(mc, 100, (text) -> this.block.function = text);
         this.function.setText(block.function);
         this.function.tooltip(IKey.lang("mappet.gui.triggers.script.function_tooltip"));
 
-        this.add(inline);
-
-        GuiElement layouts = new GuiElement(mc);
-        layouts.flex().relative(this).wh(1F, 0.7F);
-
-        this.standartLayout = Elements.column(mc, 5,
+        this.standartLayout = new GuiElement(mc);
+        GuiElement standartElements = Elements.column(mc, 5,
                 this.picker,
                 Elements.label(IKey.lang("mappet.gui.nodes.event.data")).marginTop(12), this.data,
                 Elements.label(IKey.lang("mappet.gui.triggers.function")).marginTop(12), this.function);
+        this.standartLayout.add(standartElements);
+        this.standartLayout.flex().relative(this).w(1F).h(122);
+        standartElements.flex().relative(this.standartLayout).wh(1F,1F);
 
-        this.standartLayout.setVisible(!this.block.inline);
-        this.standartLayout.flex().relative(layouts).wh(1F, 1F);
+        this.inlineLayout = new GuiElement(mc);
+        GuiElement inlineElements = Elements.column(mc, 5, code);
+        this.inlineLayout.add(inlineElements);
+        this.inlineLayout.flex().relative(this).w(1F).h(140);
+        inlineElements.flex().relative(this.inlineLayout).wh(1F,1F);
+        code.flex().relative(inlineElements).wh(1F, 1F);
 
-        this.inlineLayout = Elements.column(mc, 5, code);
 
-        this.inlineLayout.setVisible(this.block.inline);
-        this.inlineLayout.flex().relative(layouts).wh(1F, 1F);
-
-        code.flex().relative(this.inlineLayout).wh(1F, 1.1F);
-        code.background();
-
-        layouts.add(standartLayout, inlineLayout);
-        this.add(inline, layouts);
-
+        this.add(inline, standartLayout, inlineLayout);
+        this.toggleInline(inline.isToggled());
+        code.resize();
         this.addDelay();
     }
 
@@ -62,7 +59,10 @@ public class GuiScriptTriggerBlockPanel extends GuiDataTriggerBlockPanel<ScriptT
     {
         this.block.inline = state;
         this.standartLayout.setVisible(!state);
+        int size = 140;
+        this.standartLayout.flex().h(state ? 0 : size);
         this.inlineLayout.setVisible(state);
+        this.inlineLayout.flex().h(state ? size : 0);
     }
 
     @Override
