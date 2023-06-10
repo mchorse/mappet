@@ -1,6 +1,5 @@
 package mchorse.mappet.client.gui.utils;
 
-import mchorse.mappet.api.triggers.Trigger;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.BlockPos;

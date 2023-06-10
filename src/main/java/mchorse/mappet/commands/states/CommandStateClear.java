@@ -37,12 +37,12 @@ public class CommandStateClear extends CommandStateBase
         {
             String id = args[1];
 
-            CommandState.getStates(server, sender,args[0]).resetMasked(id);
+            CommandState.getStates(server, sender, args[0]).resetMasked(id);
             this.getL10n().info(sender, "states.clear", id);
         }
         else
         {
-            CommandState.getStates(server, sender,args[0]).clear();
+            CommandState.getStates(server, sender, args[0]).clear();
             this.getL10n().info(sender, "states.clear_all", args[0]);
         }
     }

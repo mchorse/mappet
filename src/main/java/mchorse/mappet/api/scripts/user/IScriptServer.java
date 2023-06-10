@@ -147,7 +147,6 @@ public interface IScriptServer
      * }</pre>
      *
      * @param uuid The UUID of the entity to check for existence.
-     *
      * @return true if an entity with the specified UUID exists, false otherwise.
      */
     public boolean entityExists(String uuid);
@@ -171,7 +170,7 @@ public interface IScriptServer
      * }</pre>
      *
      * @param scriptName The name of the script to execute.
-     * @param function   The name of the function within the script to execute.
+     * @param function The name of the function within the script to execute.
      */
     public void executeScript(String scriptName, String function);
 }

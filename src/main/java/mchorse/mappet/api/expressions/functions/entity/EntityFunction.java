@@ -6,8 +6,6 @@ import mchorse.mclib.math.IValue;
 import mchorse.mclib.math.functions.SNFunction;
 import net.minecraft.command.CommandBase;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 
 public class EntityFunction extends SNFunction
 {

@@ -244,9 +244,11 @@ public class GuiStringFolderList extends GuiStringListElement
             this.setCurrentScroll(path.substring(lastIndex + 1));
         }
     }
+
     @Override
-    protected void drawElementPart(String element, int i, int x, int y, boolean hover, boolean selected) {
-        GlStateManager.color(1,1,1,1);
+    protected void drawElementPart(String element, int i, int x, int y, boolean hover, boolean selected)
+    {
+        GlStateManager.color(1, 1, 1, 1);
         (element.endsWith("/") ? Icons.FOLDER : this.fileIcon).render(x, y);
 
         super.drawElementPart(element, i, x + 12, y, hover, selected);

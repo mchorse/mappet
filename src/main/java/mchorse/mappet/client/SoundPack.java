@@ -98,13 +98,15 @@ public class SoundPack implements IResourcePack
         return object;
     }
 
-    public static List<String> getCustomSoundEvents() {
+    public static List<String> getCustomSoundEvents()
+    {
         List<String> soundEvents = new ArrayList<>();
         File soundsFolder = new File(CommonProxy.configFolder, "sounds");
         SoundPack soundPack = new SoundPack(soundsFolder);
         JsonObject soundJson = soundPack.generateJson(soundsFolder, "", new JsonObject());
 
-        for (Entry<String, JsonElement> entry : soundJson.entrySet()) {
+        for (Entry<String, JsonElement> entry : soundJson.entrySet())
+        {
             soundEvents.add("mp.sounds:" + entry.getKey());
         }
 

@@ -190,6 +190,7 @@ public interface INBTCompound extends INBT
      * @return whether this compound is equal to the given compound
      */
     public boolean equals(INBTCompound compound);
+
     /**
      * Adds a new compound to this compound.
      *

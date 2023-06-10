@@ -1,16 +1,16 @@
 package mchorse.mappet.client.gui.utils;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
-
 import mchorse.mappet.api.utils.logs.LoggerLevel;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 public class GuiLoggingLevelList extends GuiListElement<Boolean>
 {

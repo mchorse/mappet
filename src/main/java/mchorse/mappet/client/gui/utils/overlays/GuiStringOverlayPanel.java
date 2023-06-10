@@ -6,7 +6,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 
 import java.util.Collection;
-import java.util.Set;
 import java.util.function.Consumer;
 
 public class GuiStringOverlayPanel extends GuiOverlayPanel

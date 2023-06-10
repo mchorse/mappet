@@ -4,8 +4,8 @@ import mchorse.mappet.api.conditions.blocks.DialogueConditionBlock;
 import mchorse.mappet.api.utils.ContentType;
 import mchorse.mappet.api.utils.TargetMode;
 import mchorse.mappet.client.gui.conditions.GuiConditionOverlayPanel;
-import mchorse.mappet.client.gui.utils.GuiTargetElement;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
+import mchorse.mappet.client.gui.utils.GuiTargetElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.utils.Elements;
@@ -28,8 +28,8 @@ public class GuiDialogueConditionBlockPanel extends GuiAbstractConditionBlockPan
         this.target = new GuiTargetElement(mc, block.target).skipGlobal().skip(TargetMode.NPC);
 
         this.add(Elements.row(mc, 5,
-            Elements.column(mc, 5, Elements.label(IKey.lang("mappet.gui.conditions.dialogue.id")).marginTop(12), this.id),
-            Elements.column(mc, 5, Elements.label(IKey.lang("mappet.gui.conditions.dialogue.marker")).marginTop(12), this.marker)
+                Elements.column(mc, 5, Elements.label(IKey.lang("mappet.gui.conditions.dialogue.id")).marginTop(12), this.id),
+                Elements.column(mc, 5, Elements.label(IKey.lang("mappet.gui.conditions.dialogue.marker")).marginTop(12), this.marker)
         ));
         this.add(this.target.marginTop(12));
     }

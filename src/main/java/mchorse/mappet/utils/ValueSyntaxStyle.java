@@ -9,8 +9,6 @@ import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
-import mchorse.mclib.client.gui.framework.elements.utils.GuiLabel;
-import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.config.gui.GuiConfigPanel;
 import mchorse.mclib.config.values.IConfigGuiProvider;

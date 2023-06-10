@@ -60,6 +60,5 @@ public class ClientHandlerEditConditionModel extends ClientMessageHandler<Packet
                 tileConditionModel.entity.ticksExisted = 0;
             }
         }
-
     }
 }

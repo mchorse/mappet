@@ -57,8 +57,8 @@ public class GuiCraftingRecipeEditor extends GuiElement
         this.add(Elements.label(IKey.lang("mappet.gui.crafting.recipe.title")), this.title);
         this.add(Elements.label(IKey.lang("mappet.gui.crafting.recipe.description")).marginTop(12), this.description, this.input, this.ignoreNBT, this.output);
         this.add(Elements.row(mc, 5,
-            Elements.column(mc, 4, Elements.label(IKey.lang("mappet.gui.crafting.recipe.visible")), this.checker),
-            Elements.column(mc, 4, Elements.label(IKey.lang("mappet.gui.crafting.recipe.hotkey")), this.hotkey)
+                Elements.column(mc, 4, Elements.label(IKey.lang("mappet.gui.crafting.recipe.visible")), this.checker),
+                Elements.column(mc, 4, Elements.label(IKey.lang("mappet.gui.crafting.recipe.hotkey")), this.hotkey)
         ).marginTop(12));
         this.add(Elements.label(IKey.lang("mappet.gui.crafting.recipe.trigger")).background().marginTop(12).marginBottom(5), this.trigger);
     }

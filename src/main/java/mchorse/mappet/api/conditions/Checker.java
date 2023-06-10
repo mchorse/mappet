@@ -1,7 +1,6 @@
 package mchorse.mappet.api.conditions;
 
 import mchorse.mappet.Mappet;
-import mchorse.mappet.api.conditions.Condition;
 import mchorse.mappet.api.expressions.ExpressionManager;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.utils.EnumUtils;

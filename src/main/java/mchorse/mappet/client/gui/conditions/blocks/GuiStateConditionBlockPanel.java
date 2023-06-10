@@ -22,7 +22,7 @@ public class GuiStateConditionBlockPanel extends GuiAbstractConditionBlockPanel<
         this.id = new GuiTextElement(mc, 1000, (t) -> this.block.id = t);
         this.id.setText(block.id);
         this.comparison = new GuiComparisonElement(mc, block.comparison);
-        this.target= new GuiTargetElement(mc, block.target);
+        this.target = new GuiTargetElement(mc, block.target);
 
         this.add(Elements.label(IKey.lang("mappet.gui.conditions.state.id")).marginTop(12), this.id);
         this.add(this.target.marginTop(12));

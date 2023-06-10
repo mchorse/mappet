@@ -109,7 +109,8 @@ public class EntityUtils
         {
             AbstractMorph morphProvider = ((IMorphProvider) entity).getMorph();
 
-            if (entity instanceof EntityPlayer) {
+            if (entity instanceof EntityPlayer)
+            {
                 return entity.isSneaking() ? morphProvider.hitbox.sneakingHeight : morphProvider.hitbox.height;
             }
         }
@@ -123,11 +124,13 @@ public class EntityUtils
         {
             AbstractMorph morphProvider = ((IMorphProvider) entity).getMorph();
 
-            if (entity instanceof EntityPlayer) {
+            if (entity instanceof EntityPlayer)
+            {
                 float height = getHeight(entity);
                 float eyeHeight = height * morphProvider.hitbox.eye;
                 float minEyeToHeadDifference = 0.1F;
-                if (eyeHeight + minEyeToHeadDifference > height) {
+                if (eyeHeight + minEyeToHeadDifference > height)
+                {
                     eyeHeight = height - minEyeToHeadDifference;
                 }
 

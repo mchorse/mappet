@@ -3,7 +3,6 @@ package mchorse.mappet.commands.npc;
 import mchorse.mappet.api.npcs.NpcLexer;
 import mchorse.mappet.api.npcs.NpcState;
 import mchorse.mappet.entities.EntityNpc;
-import mchorse.mclib.commands.McCommandBase;
 import mchorse.mclib.commands.SubCommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;

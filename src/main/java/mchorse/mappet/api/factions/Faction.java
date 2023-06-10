@@ -1,8 +1,8 @@
 package mchorse.mappet.api.factions;
 
+import mchorse.mappet.api.conditions.Checker;
 import mchorse.mappet.api.states.States;
 import mchorse.mappet.api.utils.AbstractData;
-import mchorse.mappet.api.conditions.Checker;
 import mchorse.mappet.api.utils.DataContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -119,13 +119,34 @@ public class Faction extends AbstractData
     @Override
     public void deserializeNBT(NBTTagCompound tag)
     {
-        if (tag.hasKey("Title")) this.title = tag.getString("Title");
-        if (tag.hasKey("Visible")) this.visible.deserializeNBT(tag.getTag("Visible"));
-        if (tag.hasKey("Color")) this.color = tag.getInteger("Color");
-        if (tag.hasKey("DefaultScore")) this.score = tag.getInteger("DefaultScore");
-        if (tag.hasKey("PlayerAttitude")) this.playerAttitude = FactionAttitude.get(tag.getString("PlayerAttitude"));
-        if (tag.hasKey("OthersAttitude")) this.othersAttitude = FactionAttitude.get(tag.getString("OthersAttitude"));
-        if (tag.hasKey("OwnRelation")) this.ownRelation.deserializeNBT(tag.getCompoundTag("OwnRelation"));
+        if (tag.hasKey("Title"))
+        {
+            this.title = tag.getString("Title");
+        }
+        if (tag.hasKey("Visible"))
+        {
+            this.visible.deserializeNBT(tag.getTag("Visible"));
+        }
+        if (tag.hasKey("Color"))
+        {
+            this.color = tag.getInteger("Color");
+        }
+        if (tag.hasKey("DefaultScore"))
+        {
+            this.score = tag.getInteger("DefaultScore");
+        }
+        if (tag.hasKey("PlayerAttitude"))
+        {
+            this.playerAttitude = FactionAttitude.get(tag.getString("PlayerAttitude"));
+        }
+        if (tag.hasKey("OthersAttitude"))
+        {
+            this.othersAttitude = FactionAttitude.get(tag.getString("OthersAttitude"));
+        }
+        if (tag.hasKey("OwnRelation"))
+        {
+            this.ownRelation.deserializeNBT(tag.getCompoundTag("OwnRelation"));
+        }
         if (tag.hasKey("Relations"))
         {
             NBTTagCompound relations = tag.getCompoundTag("Relations");

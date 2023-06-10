@@ -214,9 +214,18 @@ public class Quest extends AbstractData implements INBTPartialSerializable
         NBTTagCompound decline = this.decline.serializeNBT();
         NBTTagCompound complete = this.complete.serializeNBT();
 
-        if (accept.getSize() > 0) tag.setTag("Accept", accept);
-        if (decline.getSize() > 0) tag.setTag("Decline", decline);
-        if (complete.getSize() > 0) tag.setTag("Complete", complete);
+        if (accept.getSize() > 0)
+        {
+            tag.setTag("Accept", accept);
+        }
+        if (decline.getSize() > 0)
+        {
+            tag.setTag("Decline", decline);
+        }
+        if (complete.getSize() > 0)
+        {
+            tag.setTag("Complete", complete);
+        }
 
         tag.setTag("Objectives", objectives);
         tag.setTag("Rewards", rewards);
@@ -280,7 +289,7 @@ public class Quest extends AbstractData implements INBTPartialSerializable
         {
             NBTTagList list = tag.getTagList("Objectives", Constants.NBT.TAG_COMPOUND);
 
-            for (int i = 0; i < list.tagCount(); i ++)
+            for (int i = 0; i < list.tagCount(); i++)
             {
                 NBTTagCompound tagCompound = list.getCompoundTagAt(i);
                 AbstractObjective objective = AbstractObjective.fromType(tagCompound.getString("Type"));
@@ -297,7 +306,7 @@ public class Quest extends AbstractData implements INBTPartialSerializable
         {
             NBTTagList list = tag.getTagList("Rewards", Constants.NBT.TAG_COMPOUND);
 
-            for (int i = 0; i < list.tagCount(); i ++)
+            for (int i = 0; i < list.tagCount(); i++)
             {
                 NBTTagCompound tagCompound = list.getCompoundTagAt(i);
                 IReward reward = IReward.fromType(tagCompound.getString("Type"));

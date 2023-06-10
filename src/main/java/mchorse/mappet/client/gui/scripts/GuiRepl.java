@@ -136,7 +136,7 @@ public class GuiRepl extends GuiElement
             this.padding(10, vertical);
 
             this.context(() -> new GuiSimpleContextMenu(mc)
-                .action(Icons.COPY, IKey.str("Copy text"), () -> GuiScreen.setClipboardString(this.getText().get())));
+                    .action(Icons.COPY, IKey.str("Copy text"), () -> GuiScreen.setClipboardString(this.getText().get())));
         }
 
         @Override

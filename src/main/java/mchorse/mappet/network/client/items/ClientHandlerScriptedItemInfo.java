@@ -12,10 +12,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 
-public class ClientHandlerScriptedItemInfo extends ClientMessageHandler<PacketScriptedItemInfo> {
+public class ClientHandlerScriptedItemInfo extends ClientMessageHandler<PacketScriptedItemInfo>
+{
     @Override
     @SideOnly(Side.CLIENT)
-    public void run(EntityPlayerSP player, PacketScriptedItemInfo message) {
+    public void run(EntityPlayerSP player, PacketScriptedItemInfo message)
+    {
         Entity entity = player.world.getEntityByID(message.entity);
 
         if (entity instanceof EntityLivingBase)
@@ -29,7 +31,8 @@ public class ClientHandlerScriptedItemInfo extends ClientMessageHandler<PacketSc
             }
 
             ScriptedItemProps newProps = new ScriptedItemProps(message.tag);
-            if (newProps.hasChanged()) {
+            if (newProps.hasChanged())
+            {
                 NBTUtils.saveScriptedItemProps(stack, message.tag);
             }
         }

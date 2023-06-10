@@ -33,10 +33,10 @@ public class GuiObjectives extends GuiElement
     public GuiSimpleContextMenu getAdds()
     {
         return new GuiSimpleContextMenu(Minecraft.getMinecraft())
-            .action(Icons.ADD, IKey.lang("mappet.gui.quests.objectives.context.add_kill"), () -> this.addObjective(new KillObjective(), true))
-            .action(Icons.ADD, IKey.lang("mappet.gui.quests.objectives.context.add_collect"), () -> this.addObjective(new CollectObjective(), true))
-            .action(Icons.ADD, IKey.lang("mappet.gui.quests.objectives.context.add_state"), () -> this.addObjective(new StateObjective(), true))
-            .action(Icons.ADD, IKey.lang("mappet.gui.quests.objectives.context.add_dialogue_read"), () -> this.addObjective(this.createDialogueReadObjective(), true));
+                .action(Icons.ADD, IKey.lang("mappet.gui.quests.objectives.context.add_kill"), () -> this.addObjective(new KillObjective(), true))
+                .action(Icons.ADD, IKey.lang("mappet.gui.quests.objectives.context.add_collect"), () -> this.addObjective(new CollectObjective(), true))
+                .action(Icons.ADD, IKey.lang("mappet.gui.quests.objectives.context.add_state"), () -> this.addObjective(new StateObjective(), true))
+                .action(Icons.ADD, IKey.lang("mappet.gui.quests.objectives.context.add_dialogue_read"), () -> this.addObjective(this.createDialogueReadObjective(), true));
     }
 
     private AbstractObjective createDialogueReadObjective()
@@ -75,7 +75,7 @@ public class GuiObjectives extends GuiElement
             final GuiObjective finalElement = element;
 
             element.context(() -> new GuiSimpleContextMenu(Minecraft.getMinecraft())
-                .action(Icons.REMOVE, IKey.lang("mappet.gui.quests.objectives.context.remove"), () -> this.removeObjective(finalElement), Colors.NEGATIVE));
+                    .action(Icons.REMOVE, IKey.lang("mappet.gui.quests.objectives.context.remove"), () -> this.removeObjective(finalElement), Colors.NEGATIVE));
 
             if (add)
             {

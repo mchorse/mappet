@@ -81,9 +81,9 @@ public abstract class AbstractShape implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("PosX") && tag.hasKey("PosY") && tag.hasKey("PosZ"))
         {
             this.pos = new Vector3d(
-                tag.getDouble("PosX"),
-                tag.getDouble("PosY"),
-                tag.getDouble("PosZ")
+                    tag.getDouble("PosX"),
+                    tag.getDouble("PosY"),
+                    tag.getDouble("PosZ")
             );
         }
     }

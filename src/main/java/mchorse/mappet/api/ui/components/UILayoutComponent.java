@@ -344,9 +344,18 @@ public class UILayoutComponent extends UIParentComponent
     {
         super.deserializeNBT(tag);
 
-        if (tag.hasKey("Scroll")) this.scroll = tag.getBoolean("Scroll");
-        if (tag.hasKey("ScrollSize")) this.scrollSize = tag.getInteger("ScrollSize");
-        if (tag.hasKey("Horizontal")) this.horizontal = tag.getBoolean("Horizontal");
+        if (tag.hasKey("Scroll"))
+        {
+            this.scroll = tag.getBoolean("Scroll");
+        }
+        if (tag.hasKey("ScrollSize"))
+        {
+            this.scrollSize = tag.getInteger("ScrollSize");
+        }
+        if (tag.hasKey("Horizontal"))
+        {
+            this.horizontal = tag.getBoolean("Horizontal");
+        }
 
         if (tag.hasKey("LayoutType"))
         {
@@ -358,9 +367,21 @@ public class UILayoutComponent extends UIParentComponent
             }
         }
 
-        if (tag.hasKey("Margin")) this.margin = tag.getInteger("Margin");
-        if (tag.hasKey("Padding")) this.padding = tag.getInteger("Padding");
-        if (tag.hasKey("Width")) this.width = tag.getInteger("Width");
-        if (tag.hasKey("Items")) this.items = tag.getInteger("Items");
+        if (tag.hasKey("Margin"))
+        {
+            this.margin = tag.getInteger("Margin");
+        }
+        if (tag.hasKey("Padding"))
+        {
+            this.padding = tag.getInteger("Padding");
+        }
+        if (tag.hasKey("Width"))
+        {
+            this.width = tag.getInteger("Width");
+        }
+        if (tag.hasKey("Items"))
+        {
+            this.items = tag.getInteger("Items");
+        }
     }
 }

@@ -11,7 +11,8 @@ public class PacketScriptedItemInfo implements IMessage
     public NBTTagCompound tag;
     public int entity;
 
-    public PacketScriptedItemInfo() {
+    public PacketScriptedItemInfo()
+    {
         this.tag = new NBTTagCompound();
     }
 

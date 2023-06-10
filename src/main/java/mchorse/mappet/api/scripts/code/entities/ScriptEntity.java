@@ -78,7 +78,9 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.Optional;
 
 import javax.script.ScriptException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class ScriptEntity <T extends Entity> implements IScriptEntity
 {
@@ -272,6 +274,7 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
 
         return 0;
     }
+
     @Override
     public void setMaxHp(float hp)
     {
@@ -394,7 +397,8 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     }
 
     @Override
-    public void giveItem(IScriptItemStack stack) {
+    public void giveItem(IScriptItemStack stack)
+    {
         if (stack == null || stack.isEmpty())
         {
             return;
@@ -1311,22 +1315,29 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
         }
     }
 
-    public IScriptEntity getObservedEntity() {
-        if (this.entity instanceof EntityLiving) {
+    public IScriptEntity getObservedEntity()
+    {
+        if (this.entity instanceof EntityLiving)
+        {
             EntityLiving entityLiving = (EntityLiving) this.entity;
 
-            for (EntityAITasks.EntityAITaskEntry task : entityLiving.tasks.taskEntries) {
+            for (EntityAITasks.EntityAITaskEntry task : entityLiving.tasks.taskEntries)
+            {
                 Entity target = null;
 
-                if (task.action instanceof EntityAILookAtTarget) {
+                if (task.action instanceof EntityAILookAtTarget)
+                {
                     EntityAILookAtTarget lookAtTask = (EntityAILookAtTarget) task.action;
                     target = lookAtTask.getTarget();
-                } else if (task.action instanceof EntityAIWatchClosest) {
+                }
+                else if (task.action instanceof EntityAIWatchClosest)
+                {
                     EntityAIWatchClosest watchClosestTask = (EntityAIWatchClosest) task.action;
                     target = getEntityFromWatchClosest(watchClosestTask);
                 }
 
-                if (target != null) {
+                if (target != null)
+                {
                     return ScriptEntity.create(target);
                 }
             }
@@ -1335,11 +1346,15 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
         return null;
     }
 
-    private Entity getEntityFromWatchClosest(EntityAIWatchClosest watchClosestTask) {
+    private Entity getEntityFromWatchClosest(EntityAIWatchClosest watchClosestTask)
+    {
         Entity target = null;
-        try {
+        try
+        {
             target = ObfuscationReflectionHelper.getPrivateValue(EntityAIWatchClosest.class, watchClosestTask, "field_75334_a", "closestEntity");
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
 

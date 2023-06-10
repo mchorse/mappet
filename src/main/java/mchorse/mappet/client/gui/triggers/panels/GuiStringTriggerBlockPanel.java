@@ -23,6 +23,7 @@ public abstract class GuiStringTriggerBlockPanel <T extends StringTriggerBlock> 
     {
         this.add(this.picker);
     }
+
     protected abstract IKey getLabel();
 
     protected abstract ContentType getType();

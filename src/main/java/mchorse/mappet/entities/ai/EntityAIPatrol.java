@@ -84,9 +84,9 @@ public class EntityAIPatrol extends EntityAIBase
             {
                 Trigger triggerPatrol = state.patrolTriggers.get(this.index);
                 DataContext context = new DataContext(this.target)
-                    .set("last", this.index == state.patrol.size() - 1 ? 1 : 0)
-                    .set("index", this.index)
-                    .set("count", state.patrol.size());
+                        .set("last", this.index == state.patrol.size() - 1 ? 1 : 0)
+                        .set("index", this.index)
+                        .set("count", state.patrol.size());
 
                 triggerPatrol.trigger(context);
             }

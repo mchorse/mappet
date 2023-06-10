@@ -124,9 +124,9 @@ public class TileRegionRenderer extends TileBaseBlockRenderer<TileRegion>
     private void renderBoxShape(BoxShape shape, Vector3d diff, Color color)
     {
         RenderGlobal.drawBoundingBox(
-            diff.x - shape.size.x, diff.y - shape.size.y, diff.z - shape.size.z,
-            diff.x + shape.size.x, diff.y + shape.size.y, diff.z + shape.size.z,
-            color.r, color.g, color.b, 1
+                diff.x - shape.size.x, diff.y - shape.size.y, diff.z - shape.size.z,
+                diff.x + shape.size.x, diff.y + shape.size.y, diff.z + shape.size.z,
+                color.r, color.g, color.b, 1
         );
     }
 
@@ -142,20 +142,20 @@ public class TileRegionRenderer extends TileBaseBlockRenderer<TileRegion>
             double a1 = i / SEGMENTS * Math.PI * 2;
             double a2 = (i + 1) / SEGMENTS * Math.PI * 2;
 
-            buffer.pos(diff.x + Math.cos(a1) * shape.horizontal, diff.y + shape.vertical,  diff.z + Math.sin(a1) * shape.horizontal).endVertex();
-            buffer.pos(diff.x + Math.cos(a2) * shape.horizontal, diff.y + shape.vertical,  diff.z + Math.sin(a2) * shape.horizontal).endVertex();
+            buffer.pos(diff.x + Math.cos(a1) * shape.horizontal, diff.y + shape.vertical, diff.z + Math.sin(a1) * shape.horizontal).endVertex();
+            buffer.pos(diff.x + Math.cos(a2) * shape.horizontal, diff.y + shape.vertical, diff.z + Math.sin(a2) * shape.horizontal).endVertex();
 
-            buffer.pos(diff.x + Math.cos(a1) * shape.horizontal, diff.y + shape.vertical,  diff.z + Math.sin(a1) * shape.horizontal).endVertex();
-            buffer.pos(diff.x + Math.cos(a1) * shape.horizontal, diff.y - shape.vertical,  diff.z + Math.sin(a1) * shape.horizontal).endVertex();
+            buffer.pos(diff.x + Math.cos(a1) * shape.horizontal, diff.y + shape.vertical, diff.z + Math.sin(a1) * shape.horizontal).endVertex();
+            buffer.pos(diff.x + Math.cos(a1) * shape.horizontal, diff.y - shape.vertical, diff.z + Math.sin(a1) * shape.horizontal).endVertex();
 
             if (i == SEGMENTS - 1)
             {
-                buffer.pos(diff.x + Math.cos(a2) * shape.horizontal, diff.y + shape.vertical,  diff.z + Math.sin(a2) * shape.horizontal).endVertex();
-                buffer.pos(diff.x + Math.cos(a2) * shape.horizontal, diff.y - shape.vertical,  diff.z + Math.sin(a2) * shape.horizontal).endVertex();
+                buffer.pos(diff.x + Math.cos(a2) * shape.horizontal, diff.y + shape.vertical, diff.z + Math.sin(a2) * shape.horizontal).endVertex();
+                buffer.pos(diff.x + Math.cos(a2) * shape.horizontal, diff.y - shape.vertical, diff.z + Math.sin(a2) * shape.horizontal).endVertex();
             }
 
-            buffer.pos(diff.x + Math.cos(a1) * shape.horizontal, diff.y - shape.vertical,  diff.z + Math.sin(a1) * shape.horizontal).endVertex();
-            buffer.pos(diff.x + Math.cos(a2) * shape.horizontal, diff.y - shape.vertical,  diff.z + Math.sin(a2) * shape.horizontal).endVertex();
+            buffer.pos(diff.x + Math.cos(a1) * shape.horizontal, diff.y - shape.vertical, diff.z + Math.sin(a1) * shape.horizontal).endVertex();
+            buffer.pos(diff.x + Math.cos(a2) * shape.horizontal, diff.y - shape.vertical, diff.z + Math.sin(a2) * shape.horizontal).endVertex();
         }
 
         Tessellator.getInstance().draw();
@@ -177,31 +177,31 @@ public class TileRegionRenderer extends TileBaseBlockRenderer<TileRegion>
             double a1 = i / SEGMENTS * Math.PI * 2;
             double a2 = (i + 1) / SEGMENTS * Math.PI * 2;
 
-            buffer.pos(diff.x + Math.cos(a1) * shape.horizontal, diff.y,  diff.z + Math.sin(a1) * shape.horizontal).endVertex();
-            buffer.pos(diff.x + Math.cos(a2) * shape.horizontal, diff.y,  diff.z + Math.sin(a2) * shape.horizontal).endVertex();
+            buffer.pos(diff.x + Math.cos(a1) * shape.horizontal, diff.y, diff.z + Math.sin(a1) * shape.horizontal).endVertex();
+            buffer.pos(diff.x + Math.cos(a2) * shape.horizontal, diff.y, diff.z + Math.sin(a2) * shape.horizontal).endVertex();
 
-            buffer.pos(diff.x + Math.cos(a1) * shape.horizontal, diff.y + Math.sin(a1) * shape.vertical,  diff.z).endVertex();
-            buffer.pos(diff.x + Math.cos(a2) * shape.horizontal, diff.y + Math.sin(a2) * shape.vertical,  diff.z).endVertex();
+            buffer.pos(diff.x + Math.cos(a1) * shape.horizontal, diff.y + Math.sin(a1) * shape.vertical, diff.z).endVertex();
+            buffer.pos(diff.x + Math.cos(a2) * shape.horizontal, diff.y + Math.sin(a2) * shape.vertical, diff.z).endVertex();
 
             /* Rotate 90  */
-            Vector3d vector = this.rotate(this.a1,Math.cos(a1) * shape.horizontal, Math.sin(a1) * shape.vertical, 0);
+            Vector3d vector = this.rotate(this.a1, Math.cos(a1) * shape.horizontal, Math.sin(a1) * shape.vertical, 0);
             buffer.pos(diff.x + vector.x, diff.y + vector.y, diff.z + vector.z).endVertex();
 
-            vector = this.rotate(this.a1,Math.cos(a2) * shape.horizontal, Math.sin(a2) * shape.vertical, 0);
+            vector = this.rotate(this.a1, Math.cos(a2) * shape.horizontal, Math.sin(a2) * shape.vertical, 0);
             buffer.pos(diff.x + vector.x, diff.y + vector.y, diff.z + vector.z).endVertex();
 
             /* Rotate 45 */
-            vector = this.rotate(this.a2,Math.cos(a1) * shape.horizontal, Math.sin(a1) * shape.vertical, 0);
+            vector = this.rotate(this.a2, Math.cos(a1) * shape.horizontal, Math.sin(a1) * shape.vertical, 0);
             buffer.pos(diff.x + vector.x, diff.y + vector.y, diff.z + vector.z).endVertex();
 
-            vector = this.rotate(this.a2,Math.cos(a2) * shape.horizontal, Math.sin(a2) * shape.vertical, 0);
+            vector = this.rotate(this.a2, Math.cos(a2) * shape.horizontal, Math.sin(a2) * shape.vertical, 0);
             buffer.pos(diff.x + vector.x, diff.y + vector.y, diff.z + vector.z).endVertex();
 
             /* Rotate -45 */
-            vector = this.rotate(this.a3,Math.cos(a1) * shape.horizontal, Math.sin(a1) * shape.vertical, 0);
+            vector = this.rotate(this.a3, Math.cos(a1) * shape.horizontal, Math.sin(a1) * shape.vertical, 0);
             buffer.pos(diff.x + vector.x, diff.y + vector.y, diff.z + vector.z).endVertex();
 
-            vector = this.rotate(this.a3,Math.cos(a2) * shape.horizontal, Math.sin(a2) * shape.vertical, 0);
+            vector = this.rotate(this.a3, Math.cos(a2) * shape.horizontal, Math.sin(a2) * shape.vertical, 0);
             buffer.pos(diff.x + vector.x, diff.y + vector.y, diff.z + vector.z).endVertex();
         }
 

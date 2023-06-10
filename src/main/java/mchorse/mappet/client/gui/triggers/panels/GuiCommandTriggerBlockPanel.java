@@ -16,8 +16,8 @@ public class GuiCommandTriggerBlockPanel extends GuiAbstractTriggerBlockPanel<Co
         super(mc, overlay, block);
 
         this.command = GuiMappetUtils.fullWindowContext(
-            new GuiTextElement(mc, 10000, (text) -> this.block.string = text),
-            IKey.lang("mappet.gui.trigger_types.command")
+                new GuiTextElement(mc, 10000, (text) -> this.block.string = text),
+                IKey.lang("mappet.gui.trigger_types.command")
         );
         this.command.setText(block.string);
 

@@ -226,7 +226,7 @@ public class GuiRegionPanel extends GuiDashboardPanel<GuiMappetDashboard>
         protected String elementToString(TileRegion element)
         {
             BlockPos pos = element.getPos();
-            String first = element.region.shapes.isEmpty() ? "" : I18n.format("mappet.gui.shapes."  + element.region.shapes.get(0).getType()) + " ";
+            String first = element.region.shapes.isEmpty() ? "" : I18n.format("mappet.gui.shapes." + element.region.shapes.get(0).getType()) + " ";
 
             return first + "(" + pos.getX() + ", " + pos.getY() + ", " + pos.getZ() + ")";
         }

@@ -1,7 +1,6 @@
 package mchorse.mappet.commands;
 
 import mchorse.mappet.Mappet;
-import mchorse.mclib.commands.McCommandBase;
 import mchorse.mclib.commands.SubCommandBase;
 import mchorse.mclib.commands.utils.L10n;
 

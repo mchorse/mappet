@@ -312,7 +312,8 @@ public class SyntaxHighlighter
             return true;
         }
         catch (NumberFormatException e)
-        {}
+        {
+        }
 
         int length = keyword.trim().length();
 
@@ -325,7 +326,8 @@ public class SyntaxHighlighter
                 return true;
             }
             catch (Exception e)
-            {}
+            {
+            }
         }
 
         return false;
@@ -355,23 +357,23 @@ public class SyntaxHighlighter
     {
         NBTTagList tagListOperators = new NBTTagList();
         NBTUtils.writeStringList(tagListOperators, operators);
-        tag.setTag("operators",tagListOperators);
+        tag.setTag("operators", tagListOperators);
 
         NBTTagList tagListPrimaryKeywords = new NBTTagList();
         NBTUtils.writeStringList(tagListPrimaryKeywords, primaryKeywords);
-        tag.setTag("primaryKeywords",tagListPrimaryKeywords);
+        tag.setTag("primaryKeywords", tagListPrimaryKeywords);
 
         NBTTagList tagListSecondaryKeywords = new NBTTagList();
         NBTUtils.writeStringList(tagListSecondaryKeywords, secondaryKeywords);
-        tag.setTag("secondaryKeywords",tagListSecondaryKeywords);
+        tag.setTag("secondaryKeywords", tagListSecondaryKeywords);
 
         NBTTagList tagListSpecial = new NBTTagList();
         NBTUtils.writeStringList(tagListSpecial, special);
-        tag.setTag("special",tagListSpecial);
+        tag.setTag("special", tagListSpecial);
 
         NBTTagList tagListTypeKeywords = new NBTTagList();
         NBTUtils.writeStringList(tagListTypeKeywords, typeKeywords);
-        tag.setTag("typeKeywords",tagListTypeKeywords);
+        tag.setTag("typeKeywords", tagListTypeKeywords);
 
         tag.setString("functionName", functionName.toString());
 

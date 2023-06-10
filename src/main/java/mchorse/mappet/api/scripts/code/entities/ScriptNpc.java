@@ -381,14 +381,16 @@ public class ScriptNpc extends ScriptEntity<EntityNpc> implements IScriptNpc
     }
 
     @Override
-    public void setAttackRange(float sightDistance){
+    public void setAttackRange(float sightDistance)
+    {
         NpcState state = this.entity.getState();
         state.sightDistance = sightDistance;
         this.entity.sendNpcStateChangePacket();
     }
 
     @Override
-    public float getAttackRange(){
+    public float getAttackRange()
+    {
         return this.entity.getState().sightDistance;
     }
 

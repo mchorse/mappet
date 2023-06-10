@@ -419,9 +419,9 @@ public interface IScriptNpc extends IScriptEntity
 
     /**
      * Sets the killable status of the NPC.
-     *  If false, then NPCs can be killed only by a command.
-     *  Regardless of the state, killable allows to make this NPC damaged
-     *  until 0 health.
+     * If false, then NPCs can be killed only by a command.
+     * Regardless of the state, killable allows to make this NPC damaged
+     * until 0 health.
      *
      * <pre>{@code
      * c.getSubject().setKillable(true);
@@ -433,9 +433,9 @@ public interface IScriptNpc extends IScriptEntity
 
     /**
      * Gets the killable status of the NPC.
-     *  If false, then NPCs can be killed only by a command.
-     *  Regardless of the state, killable allows to make this NPC damaged
-     *  until 0 health.
+     * If false, then NPCs can be killed only by a command.
+     * Regardless of the state, killable allows to make this NPC damaged
+     * until 0 health.
      *
      * <pre>{@code
      * var isKillable = c.getSubject().isKillable();
@@ -598,5 +598,4 @@ public interface IScriptNpc extends IScriptEntity
      * @param lookAtPlayer the new status for the NPC's behavior to look at the player.
      */
     public void setLookAtPlayer(boolean lookAtPlayer);
-
 }

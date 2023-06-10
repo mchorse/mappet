@@ -41,12 +41,12 @@ public class GuiScriptTriggerBlockPanel extends GuiDataTriggerBlockPanel<ScriptT
                 Elements.label(IKey.lang("mappet.gui.triggers.function")).marginTop(12), this.function);
 
         this.standartLayout.setVisible(!this.block.inline);
-        this.standartLayout.flex().relative(layouts).wh(1F,1F);
+        this.standartLayout.flex().relative(layouts).wh(1F, 1F);
 
         this.inlineLayout = Elements.column(mc, 5, code);
 
         this.inlineLayout.setVisible(this.block.inline);
-        this.inlineLayout.flex().relative(layouts).wh(1F,1F);
+        this.inlineLayout.flex().relative(layouts).wh(1F, 1F);
 
         code.flex().relative(this.inlineLayout).wh(1F, 1.1F);
         code.background();

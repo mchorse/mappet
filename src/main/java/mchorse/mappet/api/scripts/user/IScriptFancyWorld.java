@@ -21,13 +21,15 @@ import java.util.List;
  *    }
  * }</pre>
  */
-public interface IScriptFancyWorld {
+public interface IScriptFancyWorld
+{
     /**
      * Transforms a block to a falling block in specific coordinates.
      *
      * <pre>{@code
      * c.getFancyWorld().explode(-2, 100, -2, 2, 100, 2, 100);
      * }</pre>
+     *
      * @return The falling block entities in a list.
      */
     public List<IScriptEntity> explode(int x1, int y1, int z1, int x2, int y2, int z2, int blocksPercentage);
@@ -38,6 +40,7 @@ public interface IScriptFancyWorld {
      * <pre>{@code
      * c.getFancyWorld().explode(0, 100, 0, 3, 100);
      * }</pre>
+     *
      * @return The falling block entities in a list.
      */
     public List<IScriptEntity> explode(int x, int y, int z, int radius, int blocksPercentage);
@@ -114,6 +117,7 @@ public interface IScriptFancyWorld {
      * <pre>{@code
      * c.getFancyWorld().spawnNpc("McHorse", "default", 500, 166, 569, 0, 90, 0, mappet.getParticleType("cloud"), 0.1, 20, "minecraft:entity.zombie.infect", 0.3, 0.8);
      * }</pre>
+     *
      * @return The spawned NPC.
      */
     public IScriptNpc spawnNpc(String id, String state, double x, double y, double z, float yaw, float pitch, float yawHead, EnumParticleTypes particleType, double particleSpeed, int particlesAmount, String soundEvent, float volume, float volumePitch);

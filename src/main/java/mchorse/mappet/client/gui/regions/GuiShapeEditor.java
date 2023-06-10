@@ -39,7 +39,7 @@ public class GuiShapeEditor extends GuiElement
         super(mc);
 
         this.context(() -> new GuiSimpleContextMenu(this.mc)
-            .action(Icons.REMOVE, IKey.lang("mappet.gui.region.context.remove"), this::removeShape, Colors.NEGATIVE));
+                .action(Icons.REMOVE, IKey.lang("mappet.gui.region.context.remove"), this::removeShape, Colors.NEGATIVE));
 
         this.shapeSwitch = new GuiCirculateElement(mc, this::changeShape);
         this.shapeSwitch.addLabel(IKey.lang("mappet.gui.shapes.box"));

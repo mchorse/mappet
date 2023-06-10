@@ -66,7 +66,7 @@ public class GuiComparisonElement extends GuiElement
 
         this.removeAll();
         this.add(Elements.column(this.mc, 5,
-            Elements.label(IKey.lang("mappet.gui.conditions.comparison")), this.mode)
+                Elements.label(IKey.lang("mappet.gui.conditions.comparison")), this.mode)
         );
 
         if (insert != null)

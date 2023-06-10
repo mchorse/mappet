@@ -10,9 +10,11 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public class ServerHandlerScriptedItemInfo extends ServerMessageHandler<PacketScriptedItemInfo> {
+public class ServerHandlerScriptedItemInfo extends ServerMessageHandler<PacketScriptedItemInfo>
+{
     @Override
-    public void run(EntityPlayerMP player, PacketScriptedItemInfo message) {
+    public void run(EntityPlayerMP player, PacketScriptedItemInfo message)
+    {
         if (!OpHelper.isPlayerOp(player))
         {
             return;
@@ -20,7 +22,8 @@ public class ServerHandlerScriptedItemInfo extends ServerMessageHandler<PacketSc
 
         ItemStack stack = player.getHeldItemMainhand();
         ScriptedItemProps newProps = new ScriptedItemProps(message.tag);
-        if (newProps.hasChanged()) {
+        if (newProps.hasChanged())
+        {
             if (NBTUtils.saveScriptedItemProps(stack, message.tag))
             {
                 IMessage packet = new PacketScriptedItemInfo(message.tag, player.getEntityId());

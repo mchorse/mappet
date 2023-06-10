@@ -24,14 +24,16 @@ import java.util.Arrays;
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
-public class GuiScriptedItemScreen extends GuiBase {
+public class GuiScriptedItemScreen extends GuiBase
+{
     private ScriptedItemProps props;
 
     private List<GuiTriggerElement> triggerElements;
     private List<String> triggerLabels;
     private List<String> contextLabels;
 
-    public GuiScriptedItemScreen(ItemStack stack) {
+    public GuiScriptedItemScreen(ItemStack stack)
+    {
         super();
 
         // Initialize properties and store initial state
@@ -84,7 +86,8 @@ public class GuiScriptedItemScreen extends GuiBase {
                 "mappet.gui.scripted_item.pickup"
         );
 
-        for (int i = 0; i < triggerElements.size(); i++) {
+        for (int i = 0; i < triggerElements.size(); i++)
+        {
             GuiTriggerElement triggerElement = triggerElements.get(i);
             String triggerLabel = triggerLabels.get(i);
             String contextLabel = contextLabels.get(i);
@@ -112,7 +115,8 @@ public class GuiScriptedItemScreen extends GuiBase {
     protected void closeScreen()
     {
         super.closeScreen();
-        if (this.props.hasChanged()) {
+        if (this.props.hasChanged())
+        {
             Dispatcher.sendToServer(new PacketScriptedItemInfo(this.props.toNBT(), 0));
         }
     }

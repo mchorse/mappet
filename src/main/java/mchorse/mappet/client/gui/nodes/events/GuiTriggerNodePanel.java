@@ -23,8 +23,8 @@ public class GuiTriggerNodePanel extends GuiEventBaseNodePanel<TriggerNode>
 
         this.trigger = new GuiTriggerElement(mc);
         this.customData = GuiMappetUtils.fullWindowContext(
-            new GuiTextElement(mc, 100000, (text) -> this.node.customData = text),
-            IKey.lang("mappet.gui.nodes.event.data")
+                new GuiTextElement(mc, 100000, (text) -> this.node.customData = text),
+                IKey.lang("mappet.gui.nodes.event.data")
         );
         this.customData.tooltip(IKey.lang("mappet.gui.nodes.event.data_tooltip"));
         this.cancel = new GuiToggleElement(mc, IKey.lang("mappet.gui.nodes.event.cancel"), (b) -> this.node.cancel = b.isToggled());

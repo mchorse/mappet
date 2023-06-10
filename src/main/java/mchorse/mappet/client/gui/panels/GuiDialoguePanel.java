@@ -68,8 +68,8 @@ public class GuiDialoguePanel extends GuiMappetRunPanel<Dialogue>
             try
             {
                 panel = GuiEventPanel.PANELS.get(node.getClass())
-                    .getConstructor(Minecraft.class)
-                    .newInstance(this.mc);
+                        .getConstructor(Minecraft.class)
+                        .newInstance(this.mc);
 
                 panel.set(node);
             }

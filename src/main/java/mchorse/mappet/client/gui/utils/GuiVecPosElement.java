@@ -43,6 +43,7 @@ public class GuiVecPosElement extends GuiElement
         this.set(new Vec3d(this.mc.player.posX, this.mc.player.posY, this.mc.player.posZ));
         this.callback();
     }
+
     private void callback()
     {
         if (this.callback != null)

@@ -2,11 +2,7 @@ package mchorse.mappet.commands.crafting;
 
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.crafting.CraftingTable;
-import mchorse.mappet.capabilities.character.Character;
-import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.commands.CommandMappet;
-import mchorse.mappet.network.Dispatcher;
-import mchorse.mappet.network.common.crafting.PacketCraftingTable;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;

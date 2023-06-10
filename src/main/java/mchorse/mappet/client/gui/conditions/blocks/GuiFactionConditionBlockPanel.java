@@ -1,12 +1,12 @@
 package mchorse.mappet.client.gui.conditions.blocks;
 
 import mchorse.mappet.api.conditions.blocks.FactionConditionBlock;
-import mchorse.mappet.api.utils.TargetMode;
 import mchorse.mappet.api.utils.ContentType;
+import mchorse.mappet.api.utils.TargetMode;
 import mchorse.mappet.client.gui.conditions.GuiConditionOverlayPanel;
 import mchorse.mappet.client.gui.utils.GuiComparisonElement;
-import mchorse.mappet.client.gui.utils.GuiTargetElement;
 import mchorse.mappet.client.gui.utils.GuiMappetUtils;
+import mchorse.mappet.client.gui.utils.GuiTargetElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiCirculateElement;
 import mchorse.mclib.client.gui.utils.Elements;
@@ -35,8 +35,8 @@ public class GuiFactionConditionBlockPanel extends GuiAbstractConditionBlockPane
         this.faction.setValue(block.faction.ordinal());
 
         this.add(Elements.row(mc, 5,
-            Elements.column(mc, 5, Elements.label(IKey.lang("mappet.gui.conditions.faction.id")).marginTop(12), this.id),
-            Elements.column(mc, 5, Elements.label(IKey.lang("mappet.gui.conditions.faction.check")).marginTop(12), this.faction)
+                Elements.column(mc, 5, Elements.label(IKey.lang("mappet.gui.conditions.faction.id")).marginTop(12), this.id),
+                Elements.column(mc, 5, Elements.label(IKey.lang("mappet.gui.conditions.faction.check")).marginTop(12), this.faction)
         ));
         this.add(this.target.marginTop(12));
         this.add(this.comparison.marginTop(12));

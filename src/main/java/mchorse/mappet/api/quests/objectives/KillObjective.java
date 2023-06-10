@@ -108,8 +108,8 @@ public class KillObjective extends AbstractObjective
         if (!this.message.isEmpty())
         {
             return this.message.replace("${entity}", entity)
-                .replace("${count}", String.valueOf(count))
-                .replace("${total}", String.valueOf(this.count));
+                    .replace("${count}", String.valueOf(count))
+                    .replace("${total}", String.valueOf(this.count));
         }
 
         return I18n.format("mappet.gui.quests.objective_kill.string", entity, count, this.count);

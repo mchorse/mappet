@@ -48,11 +48,11 @@ public class CollectObjective extends AbstractObjective
         if (!this.message.isEmpty())
         {
             return this.message.replace("${name}", name)
-                .replace("${count}", String.valueOf(count))
-                .replace("${total}", String.valueOf(this.stack.getCount()));
+                    .replace("${count}", String.valueOf(count))
+                    .replace("${total}", String.valueOf(this.stack.getCount()));
         }
 
-        return I18n.format( "mappet.gui.quests.objective_collect.string", name, count, this.stack.getCount());
+        return I18n.format("mappet.gui.quests.objective_collect.string", name, count, this.stack.getCount());
     }
 
     @Override

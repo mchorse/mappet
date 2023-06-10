@@ -29,6 +29,6 @@ public class PacketRequestLogs implements IMessage
     @Override
     public void toBytes(ByteBuf buf)
     {
-        ByteBufUtils.writeUTF8String(buf,this.lastLogTime);
+        ByteBufUtils.writeUTF8String(buf, this.lastLogTime);
     }
 }
