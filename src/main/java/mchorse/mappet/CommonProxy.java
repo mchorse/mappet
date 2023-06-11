@@ -60,6 +60,7 @@ import mchorse.mappet.events.RegisterEventNodeEvent;
 import mchorse.mappet.events.RegisterQuestChainNodeEvent;
 import mchorse.mappet.events.RegisterTriggerBlockEvent;
 import mchorse.mappet.events.RegisterUIComponentEvent;
+import mchorse.mappet.events.ScriptedItemEventHandler;
 import mchorse.mappet.network.Dispatcher;
 import mchorse.mappet.utils.Colors;
 import mchorse.mappet.utils.MPIcons;
@@ -124,6 +125,7 @@ public class CommonProxy
     public static File configFolder;
 
     public static EventHandler eventHandler;
+    public static ScriptedItemEventHandler scriptedItemEventHandler;
 
     public void preInit(FMLPreInitializationEvent event)
     {
@@ -136,6 +138,7 @@ public class CommonProxy
         Dispatcher.register();
 
         MinecraftForge.EVENT_BUS.register(eventHandler = new EventHandler());
+        MinecraftForge.EVENT_BUS.register(scriptedItemEventHandler = new ScriptedItemEventHandler());
 
         GameRegistry.registerEntitySelector(new MappetNpcSelector(), MappetNpcSelector.ARGUMENT_MAPPET_NPC_ID, MappetNpcSelector.ARGUMENT_MAPPET_STATES);
 

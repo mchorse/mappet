@@ -392,7 +392,7 @@ mappet.gui.quests.rewards.context.remove=Удалить эту награду
 mappet.gui.quests.rewards.context.add_item=Добавить награду в предметах
 mappet.gui.quests.reward_item.title=Предметы награды
 mappet.gui.quests.info.empty=Чтобы начать редактирование, создайте или выберите квест из списка справа...
-mappet.gui.quests.visible = Видимый
+mappet.gui.quests.visible=Видимый
 
 mappet.gui.interaction.back=Назад
 mappet.gui.interaction.accept=Принять
@@ -423,16 +423,18 @@ mappet.gui.scripted_item.break_block=При разрушении блока
 mappet.gui.scripted_item.place_block=При установке блока
 mappet.gui.scripted_item.hit_block=При ударе по блоку
 mappet.gui.scripted_item.on_holder_tick=При тике (в руке)
-mappet.gui.scripted_item.pickup=При подборе предметаъ
-mappet.gui.scripted_item.descriptions.interact_with_air=This trigger fires when the player interacts with air (empty space) while holding a scripted item. The variables provided in the context are §6x§r, §6y§r, §6z§r coordinates of the interaction, and §6hand§r the hand used for the interaction.
-mappet.gui.scripted_item.descriptions.interact_with_entity=This trigger fires when the player interacts with an entity while holding a scripted item. The variables provided in the context are the §6hand§r the player used to interact with the entity.
-mappet.gui.scripted_item.descriptions.interact_with_block=This trigger fires when the player interacts with a block while holding a scripted item. The variables provided in the context are §6x§r, §6y§r, §6z§r coordinates of the block, §6block§r the block's registry name, §6meta§r the block's meta-data, and §6hand§r the hand used for the interaction.
-mappet.gui.scripted_item.descriptions.attack_entity=This trigger fires when the player attacks an entity while holding a scripted item. The variable provided in the context is §6damage§r the amount of damage dealt to the entity.
-mappet.gui.scripted_item.descriptions.break_block=This trigger fires when the player breaks a block while holding a scripted item. The variables provided in the context are §6x§r, §6y§r, §6z§r coordinates of the block, §6block§r the block's registry name, and §6meta§r the block's meta-data.
-mappet.gui.scripted_item.descriptions.place_block=This trigger fires when the player places a block while holding a scripted item. The variables provided in the context are §6x§r, §6y§r, §6z§r coordinates of the block, §6block§r the block's registry name, §6meta§r the block's meta-data, and §6hand§r the hand used for the action.
-mappet.gui.scripted_item.descriptions.hit_block=This trigger fires when the player hits a block while holding a scripted item. The variables provided in the context are §6x§r, §6y§r, §6z§r coordinates of the block, and §6hand§r the hand used for the action.
-mappet.gui.scripted_item.descriptions.on_holder_tick=This trigger fires on each game tick when the player is holding the scripted item. The variable provided in the context is §6hand§r the hand that's holding the item.
-mappet.gui.scripted_item.descriptions.pickup=This trigger fires when the player picks up a scripted item. The variable provided in the context is §6item§r the item stack that was picked up.
+mappet.gui.scripted_item.pickup=При подборе предмета
+mappet.gui.scripted_item.toss=При выбрасывании предмета
+mappet.gui.scripted_item.descriptions.interact_with_air=Этот триггер срабатывает когда игрок взаимодействует с воздухом, пока держит скриптовый предмет. В переменных доступна §6hand§r рука, используемая для взаимодействия.
+mappet.gui.scripted_item.descriptions.interact_with_entity=Этот триггер срабатывает когда игрок взаимодействует с сущностью пока держит скриптовый предмет. В переменных доступна §6hand§r рука, используемая для взаимодействия.
+mappet.gui.scripted_item.descriptions.interact_with_block=Этот триггер срабатывает когда игрок взаимодействует с блоком пока держит скриптовый предмет. В переменных доступны §6x§r, §6y§r, §6z§r координаты блока, §6block§r ID блока (например minecraft:stone), §6meta§r метаданные блока, и §6hand§r рука, используемая для взаимодействия.
+mappet.gui.scripted_item.descriptions.attack_entity=Этот триггер срабатывает когда игрок атакует сущность пока держит скриптовый предмет. В переменных доступен §6damage§r урон нанесённый сущности.
+mappet.gui.scripted_item.descriptions.break_block=Этот триггер срабатывает когда игрок ломает блок пока держит скриптовый предмет.В переменных доступны §6x§r, §6y§r, §6z§r координаты блока, §6block§r ID блока (например minecraft:stone), §6meta§r метаданные блока.
+mappet.gui.scripted_item.descriptions.place_block=Этот триггер срабатывает когда игрок ставит блок пока держит скриптовый предмет. В переменных доступны §6x§r, §6y§r, §6z§r координаты блока, §6block§r ID блока (например minecraft:stone), §6meta§r метаданные блока, и §6hand§r рука, используемая для взаимодействия.
+mappet.gui.scripted_item.descriptions.hit_block=Этот триггер срабатывает когда игрок бьёт по блоку пока держит скриптовый предмет. В переменных доступны §6x§r, §6y§r, §6z§r координаты блока, и §6hand§r рука, используемая для взаимодействия.
+mappet.gui.scripted_item.descriptions.on_holder_tick=Этот триггер срабатывает в каждый игровой тик пока держит скриптовый предмет. В переменных доступна §6hand§r рука, используемая для взаимодействия.
+mappet.gui.scripted_item.descriptions.pickup=Этот триггер срабатывает когда игрок поднимает скриптовый предмет. В переменных доступен §6item§r - предмет, и §6entityItem§r - §7IScriptEntityItem§r сущность предмета, который подобрали.
+mappet.gui.scripted_item.descriptions.toss=Этот триггер срабатывает когда игрок выбрасывает скриптовый предмет. В переменных доступен §6item§r - предмет, и §6entityItem§r - §7IScriptEntityItem§r сущность предмета, который выбросили.
 
 
 mappet.gui.crafting.title=Название таблицы рецептов
