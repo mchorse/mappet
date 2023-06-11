@@ -425,6 +425,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
         String value = this.data == null ? null : this.data.getId();
 
         this.namesList.fill(names);
+        this.namesList.sort();
         this.namesList.setCurrentFile(value);
     }
 
