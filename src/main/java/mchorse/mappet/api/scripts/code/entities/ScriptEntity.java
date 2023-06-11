@@ -399,6 +399,12 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Override
     public void giveItem(IScriptItemStack stack)
     {
+        this.giveItem(stack, true);
+    }
+
+    @Override
+    public void giveItem(IScriptItemStack stack, boolean playSound)
+    {
         if (stack == null || stack.isEmpty())
         {
             return;
@@ -412,7 +418,11 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
 
             if (flag)
             {
-                player.world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((player.getRNG().nextFloat() - player.getRNG().nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                if (playSound)
+                {
+                    player.world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((player.getRNG().nextFloat() - player.getRNG().nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                }
+
                 player.inventoryContainer.detectAndSendChanges();
             }
 
