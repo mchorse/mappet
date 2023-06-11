@@ -253,4 +253,17 @@ public class GuiStringFolderList extends GuiStringListElement
 
         super.drawElementPart(element, i, x + 12, y, hover, selected);
     }
+
+    @Override
+    protected boolean sortElements() {
+        this.list.sort((p1, p2) ->
+        {
+            int isP1Folder = p1.endsWith("/") ? 1 : 0;
+            int isP2Folder = p2.endsWith("/") ? 1 : 0;
+            int isP1Back = p1.equals("../") ? Integer.MAX_VALUE : 0;
+            int isP2Back = p2.equals("../") ? Integer.MAX_VALUE : 0;
+            return (isP2Folder + isP2Back) - (isP1Folder + isP1Back);
+        });
+        return true;
+    }
 }
