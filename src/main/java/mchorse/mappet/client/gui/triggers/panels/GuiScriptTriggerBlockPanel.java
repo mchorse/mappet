@@ -2,6 +2,7 @@ package mchorse.mappet.client.gui.triggers.panels;
 
 import mchorse.mappet.api.triggers.blocks.ScriptTriggerBlock;
 import mchorse.mappet.api.utils.ContentType;
+import mchorse.mappet.client.gui.panels.GuiScriptPanel;
 import mchorse.mappet.client.gui.scripts.GuiTextEditor;
 import mchorse.mappet.client.gui.triggers.GuiTriggerOverlayPanel;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
@@ -24,6 +25,7 @@ public class GuiScriptTriggerBlockPanel extends GuiDataTriggerBlockPanel<ScriptT
 
         GuiToggleElement inline = new GuiToggleElement(mc, IKey.lang("mappet.gui.triggers.script.inline"), this.block.inline, (b) -> this.toggleInline(b.isToggled()));
         GuiTextEditor code = new GuiTextEditor(mc, (s) -> this.block.code = s);
+        code.context(() -> GuiScriptPanel.createScriptContextMenu(this.mc, code));
         code.setText(this.block.code);
         code.background();
 
@@ -37,7 +39,7 @@ public class GuiScriptTriggerBlockPanel extends GuiDataTriggerBlockPanel<ScriptT
                 Elements.label(IKey.lang("mappet.gui.nodes.event.data")).marginTop(12), this.data,
                 Elements.label(IKey.lang("mappet.gui.triggers.function")).marginTop(12), this.function);
         this.standartLayout.add(standartElements);
-        this.standartLayout.flex().relative(this).w(1F).h(122);
+        this.standartLayout.flex().relative(this).w(1F).h(140);
         standartElements.flex().relative(this.standartLayout).wh(1F,1F);
 
         this.inlineLayout = new GuiElement(mc);
