@@ -431,6 +431,11 @@ mappet.gui.scripted_item.toss=On Item Toss
 mappet.gui.scripted_item.first_pickup=On First Item Pickup
 mappet.gui.scripted_item.started_holding=On Started Holding
 mappet.gui.scripted_item.stopped_holding=On Stopped Holding
+mappet.gui.scripted_item.use_start=On Use Start
+mappet.gui.scripted_item.use_stop=On Use Stop
+mappet.gui.scripted_item.on_use_tick=On Use Tick
+mappet.gui.scripted_item.finished_using=On Finished Using
+
 mappet.gui.scripted_item.descriptions.interact_with_air=This trigger fires when the player interacts with air (empty space) while holding a scripted item. The variables provided in the context are §6x§r, §6y§r, §6z§r coordinates of the interaction, and §6hand§r the hand used for the interaction.
 mappet.gui.scripted_item.descriptions.interact_with_entity=This trigger fires when the player interacts with an entity while holding a scripted item. The variables provided in the context are the §6hand§r the player used to interact with the entity.
 mappet.gui.scripted_item.descriptions.interact_with_block=This trigger fires when the player interacts with a block while holding a scripted item. The variables provided in the context are §6x§r, §6y§r, §6z§r coordinates of the block, §6block§r the block's registry name, §6meta§r the block's meta-data, and §6hand§r the hand used for the interaction.
@@ -444,6 +449,10 @@ mappet.gui.scripted_item.descriptions.toss=This trigger fires when the player to
 mappet.gui.scripted_item.descriptions.first_pickup=This trigger fires when the player picks up a scripted item for the first time. The variable provided in the context is §6item§r the item stack that was picked up, and §6entityItem§r §7IScriptEntityItem§r entity item that player picked.
 mappet.gui.scripted_item.descriptions.started_holding=This trigger fires when the player starts holding a scripted item. The variable provided in the context is §6item§r the item stack that was picked up.
 mappet.gui.scripted_item.descriptions.stopped_holding=This trigger fires when the player stops holding a scripted item. The variable provided in the context is §6item§r the item stack that was picked up.
+mappet.gui.scripted_item.descriptions.use_start=This trigger fires when the player starts using the scripted item. The variables provided in the context are §item§r the item stack that has been started being used and §6duration§r the duration of the use.
+mappet.gui.scripted_item.descriptions.use_stop=This trigger fires when the player stops using the scripted item. The variables provided in the context are §item§r the item stack that has been stopped being used and §6duration§r the duration of the use.
+mappet.gui.scripted_item.descriptions.on_use_tick=This trigger fires at each tick while the player is using the scripted item. The variables provided are §item§r the item stack that is being used and §6duration§r the duration of the use.
+mappet.gui.scripted_item.descriptions.finished_using=This trigger fires when the player finishes using the scripted item. The variables provided are §item§r the item stack that has been used and §6duration§r the duration of the use.
 
 mappet.gui.crafting.title=Crafting table's title
 mappet.gui.crafting.action="Craft" button's title

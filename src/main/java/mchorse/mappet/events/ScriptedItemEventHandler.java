@@ -20,6 +20,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -370,6 +371,76 @@ public class ScriptedItemEventHandler
                 DataContext context = new DataContext(event.getEntityLiving());
                 context.getValues().put("item", ScriptItemStack.create(previousItem));
                 CommonProxy.eventHandler.trigger(event, props.stoppedHolding, context);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onScriptedItemUseStart(LivingEntityUseItemEvent.Start event) {
+        if (!event.getEntityLiving().world.isRemote && event.getEntityLiving() instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+            ItemStack item = event.getItem();
+            ScriptedItemProps props = NBTUtils.getScriptedItemProps(item);
+
+            if (props != null && props.useStart != null && !props.useStart.blocks.isEmpty()) {
+                DataContext context = new DataContext(player);
+                context.getValues().put("item", ScriptItemStack.create(item));
+                context.getValues().put("duration", event.getDuration());
+                CommonProxy.eventHandler.trigger(event, props.useStart, context);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onScriptedItemUseStop(LivingEntityUseItemEvent.Stop event) {
+        if (!event.getEntityLiving().world.isRemote && event.getEntityLiving() instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+            ItemStack item = event.getItem();
+            ScriptedItemProps props = NBTUtils.getScriptedItemProps(item);
+
+            if (props != null && props.useStop != null && !props.useStop.blocks.isEmpty()) {
+                DataContext context = new DataContext(player);
+                context.getValues().put("item", ScriptItemStack.create(item));
+                context.getValues().put("duration", event.getDuration());
+                CommonProxy.eventHandler.trigger(event, props.useStop, context);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onScriptedItemUseTick(LivingEntityUseItemEvent.Tick event) {
+        if (!event.getEntityLiving().world.isRemote && event.getEntityLiving() instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+            ItemStack item = event.getItem();
+            ScriptedItemProps props = NBTUtils.getScriptedItemProps(item);
+
+            if (props != null && props.onUseTick != null && !props.onUseTick.blocks.isEmpty()) {
+                DataContext context = new DataContext(player);
+                context.getValues().put("item", ScriptItemStack.create(item));
+                context.getValues().put("duration", event.getDuration());
+                CommonProxy.eventHandler.trigger(event, props.onUseTick, context);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onScriptedItemUseFinish(LivingEntityUseItemEvent.Finish event)
+    {
+        if (!event.getEntityLiving().getEntityWorld().isRemote)
+        {
+            if(event.getEntityLiving() instanceof EntityPlayer)
+            {
+                EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+                ItemStack item = event.getItem();
+                ScriptedItemProps props = NBTUtils.getScriptedItemProps(item);
+
+                if (props != null && props.finishedUsing != null && !props.finishedUsing.blocks.isEmpty())
+                {
+                    DataContext context = new DataContext(player);
+                    context.getValues().put("item", ScriptItemStack.create(item));
+                    context.getValues().put("duration", event.getDuration());
+                    CommonProxy.eventHandler.trigger(event, props.finishedUsing, context);
+                }
             }
         }
     }
