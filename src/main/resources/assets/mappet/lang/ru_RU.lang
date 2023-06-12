@@ -422,9 +422,16 @@ mappet.gui.scripted_item.attack_entity=При атаке сущности
 mappet.gui.scripted_item.break_block=При разрушении блока
 mappet.gui.scripted_item.place_block=При установке блока
 mappet.gui.scripted_item.hit_block=При ударе по блоку
-mappet.gui.scripted_item.on_holder_tick=При тике (в руке)
+mappet.gui.scripted_item.on_holder_tick=При удерживании (в руке)
 mappet.gui.scripted_item.pickup=При подборе предмета
 mappet.gui.scripted_item.toss=При выбрасывании предмета
+mappet.gui.scripted_item.started_holding=При начале удерживания
+mappet.gui.scripted_item.stopped_holding=При прерывании удерживания
+mappet.gui.scripted_item.use_start=При начале использования
+mappet.gui.scripted_item.use_stop=При прерывании использования
+mappet.gui.scripted_item.on_use_tick=При использовании
+mappet.gui.scripted_item.finished_using=При окончании использования
+
 mappet.gui.scripted_item.descriptions.interact_with_air=Этот триггер срабатывает когда игрок взаимодействует с воздухом, пока держит скриптовый предмет. В переменных доступна §6hand§r рука, используемая для взаимодействия.
 mappet.gui.scripted_item.descriptions.interact_with_entity=Этот триггер срабатывает когда игрок взаимодействует с сущностью пока держит скриптовый предмет. В переменных доступна §6hand§r рука, используемая для взаимодействия.
 mappet.gui.scripted_item.descriptions.interact_with_block=Этот триггер срабатывает когда игрок взаимодействует с блоком пока держит скриптовый предмет. В переменных доступны §6x§r, §6y§r, §6z§r координаты блока, §6block§r ID блока (например minecraft:stone), §6meta§r метаданные блока, и §6hand§r рука, используемая для взаимодействия.
@@ -435,6 +442,13 @@ mappet.gui.scripted_item.descriptions.hit_block=Этот триггер сраб
 mappet.gui.scripted_item.descriptions.on_holder_tick=Этот триггер срабатывает в каждый игровой тик пока держит скриптовый предмет. В переменных доступна §6hand§r рука, используемая для взаимодействия.
 mappet.gui.scripted_item.descriptions.pickup=Этот триггер срабатывает когда игрок поднимает скриптовый предмет. В переменных доступен §6item§r - предмет, и §6entityItem§r - §7IScriptEntityItem§r сущность предмета, который подобрали.
 mappet.gui.scripted_item.descriptions.toss=Этот триггер срабатывает когда игрок выбрасывает скриптовый предмет. В переменных доступен §6item§r - предмет, и §6entityItem§r - §7IScriptEntityItem§r сущность предмета, который выбросили.
+mappet.gui.scripted_item.descriptions.first_pickup=Этот триггер срабатывает когда игрок поднимает скриптовый предмет в первый раз. В переменных доступен §6item§r - предмет, и §6entityItem§r - §7IScriptEntityItem§r сущность предмета, который подобрали.
+mappet.gui.scripted_item.descriptions.started_holding=Этот триггер срабатывает когда игрок начинает держать скриптовый предмет. В переменных доступен §6item§r - предмет, который удерживают в руке.
+mappet.gui.scripted_item.descriptions.stopped_holding=Этот триггер срабатывает когда игрок прекращает держать скриптовый предмет. В переменных доступен §6item§r - предмет, который больше не удерживают в руке.
+mappet.gui.scripted_item.descriptions.use_start=Этот триггер срабатывает когда игрок начинает использовать скриптовый предмет. В переменных доступен §6item§r - предмет, который используют, и §6duration§r длительность использования.
+mappet.gui.scripted_item.descriptions.use_stop=Этот триггер срабатывает когда игрок прерывает использование скриптовый предмет. В переменных доступен §6item§r - предмет, который используют, и §6duration§r длительность использования.
+mappet.gui.scripted_item.descriptions.on_use_tick=Этот триггер срабатывает каждый тик, когда игрок использует скриптовый предмет. В переменных доступен §6item§r - предмет, который используют, и §6duration§r длительность использования.
+mappet.gui.scripted_item.descriptions.finished_using=TЭтот триггер срабатывает когда игрок заканчивает (успешно) использовать скриптовый предмет. В переменных доступен §6item§r - предмет, который используют, и §6duration§r длительность использования.
 
 
 mappet.gui.crafting.title=Название таблицы рецептов
