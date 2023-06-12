@@ -122,6 +122,9 @@ public class GuiScriptedItemScreen extends GuiBase
     {
         super.closeScreen();
 
+        // Reset 'pickedUp' property to false each time properties are edited
+        this.props.pickedUp = false;
+
         Dispatcher.sendToServer(new PacketScriptedItemInfo(this.props.toNBT(), 0));
     }
 
