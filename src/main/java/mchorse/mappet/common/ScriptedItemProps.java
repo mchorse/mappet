@@ -27,6 +27,8 @@ public class ScriptedItemProps
     public Trigger onHolderTick = new Trigger();
     public Trigger pickup = new Trigger();
     public Trigger toss = new Trigger();
+    public Trigger firstPickup = new Trigger();
+    public boolean pickedUp = false;
 
     public ScriptedItemProps()
     {
@@ -54,6 +56,8 @@ public class ScriptedItemProps
         this.onHolderTick = register("on_holder_tick", new Trigger());
         this.pickup = register("pickup", new Trigger());
         this.toss = register("toss", new Trigger());
+        this.firstPickup = register("first_pickup", new Trigger());
+        this.pickedUp = false;
     }
 
     public Trigger register(String key, Trigger trigger)
@@ -106,6 +110,14 @@ public class ScriptedItemProps
         {
             this.toss.deserializeNBT(tag.getCompoundTag("Toss"));
         }
+        if (tag.hasKey("FirstPickup"))
+        {
+            this.firstPickup.deserializeNBT(tag.getCompoundTag("FirstPickup"));
+        }
+        if (tag.hasKey("PickedUp"))
+        {
+            this.pickedUp = tag.getBoolean("PickedUp");
+        }
     }
 
     public NBTTagCompound toNBT()
@@ -121,6 +133,8 @@ public class ScriptedItemProps
         tag.setTag("OnHolderTick", this.onHolderTick.serializeNBT());
         tag.setTag("Pickup", this.pickup.serializeNBT());
         tag.setTag("Toss", this.toss.serializeNBT());
+        tag.setTag("FirstPickup", this.firstPickup.serializeNBT());
+        tag.setBoolean("PickedUp", this.pickedUp);
 
         return tag;
     }
