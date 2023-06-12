@@ -29,6 +29,8 @@ public class ScriptedItemProps
     public Trigger toss = new Trigger();
     public Trigger firstPickup = new Trigger();
     public boolean pickedUp = false;
+    public Trigger startedHolding = new Trigger();
+    public Trigger stoppedHolding = new Trigger();
 
     public ScriptedItemProps()
     {
@@ -58,6 +60,8 @@ public class ScriptedItemProps
         this.toss = register("toss", new Trigger());
         this.firstPickup = register("first_pickup", new Trigger());
         this.pickedUp = false;
+        this.startedHolding = register("started_holding", new Trigger());
+        this.stoppedHolding = register("stopped_holding", new Trigger());
     }
 
     public Trigger register(String key, Trigger trigger)
@@ -118,6 +122,14 @@ public class ScriptedItemProps
         {
             this.pickedUp = tag.getBoolean("PickedUp");
         }
+        if (tag.hasKey("StartedHolding"))
+        {
+            this.startedHolding.deserializeNBT(tag.getCompoundTag("StartedHolding"));
+        }
+        if (tag.hasKey("StoppedHolding"))
+        {
+            this.stoppedHolding.deserializeNBT(tag.getCompoundTag("StoppedHolding"));
+        }
     }
 
     public NBTTagCompound toNBT()
@@ -135,6 +147,8 @@ public class ScriptedItemProps
         tag.setTag("Toss", this.toss.serializeNBT());
         tag.setTag("FirstPickup", this.firstPickup.serializeNBT());
         tag.setBoolean("PickedUp", this.pickedUp);
+        tag.setTag("StartedHolding", this.startedHolding.serializeNBT());
+        tag.setTag("StoppedHolding", this.stoppedHolding.serializeNBT());
 
         return tag;
     }

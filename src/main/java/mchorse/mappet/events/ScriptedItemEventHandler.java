@@ -20,6 +20,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -329,6 +330,46 @@ public class ScriptedItemEventHandler
                     context.getValues().put("entityItem", ScriptEntityItem.create(event.getItem()));
                     CommonProxy.eventHandler.trigger(event, props.firstPickup, context);
                 }
+            }
+        }
+    }
+
+    /**
+     * on started using & on stopped using
+     */
+    @SubscribeEvent
+    public void onLivingEquipmentChange(LivingEquipmentChangeEvent event)
+    {
+        // Skip if on client side
+        if (event.getEntityLiving().world.isRemote)
+        {
+            return;
+        }
+
+        ItemStack previousItem = event.getFrom();
+        ItemStack newItem = event.getTo();
+        int slotIndex = event.getSlot().getSlotIndex(); // Always get slot index from the event
+
+        // Check if entity started holding an item
+        if (previousItem.isEmpty() && !newItem.isEmpty())
+        {
+            ScriptedItemProps props = NBTUtils.getScriptedItemProps(newItem);
+            if (props != null && props.startedHolding != null && !props.startedHolding.blocks.isEmpty())
+            {
+                DataContext context = new DataContext(event.getEntityLiving());
+                context.getValues().put("item", ScriptItemStack.create(newItem));
+                CommonProxy.eventHandler.trigger(event, props.startedHolding, context);
+            }
+        }
+        // Check if entity stopped holding an item
+        else if (!previousItem.isEmpty() && newItem.isEmpty())
+        {
+            ScriptedItemProps props = NBTUtils.getScriptedItemProps(previousItem);
+            if (props != null && props.stoppedHolding != null && !props.stoppedHolding.blocks.isEmpty())
+            {
+                DataContext context = new DataContext(event.getEntityLiving());
+                context.getValues().put("item", ScriptItemStack.create(previousItem));
+                CommonProxy.eventHandler.trigger(event, props.stoppedHolding, context);
             }
         }
     }
