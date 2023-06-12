@@ -27,6 +27,14 @@ public class ScriptedItemProps
     public Trigger onHolderTick = new Trigger();
     public Trigger pickup = new Trigger();
     public Trigger toss = new Trigger();
+    public Trigger firstPickup = new Trigger();
+    public boolean pickedUp = false;
+    public Trigger startedHolding = new Trigger();
+    public Trigger stoppedHolding = new Trigger();
+    public Trigger useStart = new Trigger();
+    public Trigger useStop = new Trigger();
+    public Trigger onUseTick = new Trigger();
+    public Trigger finishedUsing = new Trigger();
 
     public ScriptedItemProps()
     {
@@ -54,6 +62,14 @@ public class ScriptedItemProps
         this.onHolderTick = register("on_holder_tick", new Trigger());
         this.pickup = register("pickup", new Trigger());
         this.toss = register("toss", new Trigger());
+        this.firstPickup = register("first_pickup", new Trigger());
+        this.pickedUp = false;
+        this.startedHolding = register("started_holding", new Trigger());
+        this.stoppedHolding = register("stopped_holding", new Trigger());
+        this.useStart = register("use_start", new Trigger());
+        this.useStop = register("use_stop", new Trigger());
+        this.onUseTick = register("on_use_tick", new Trigger());
+        this.finishedUsing = register("finished_using", new Trigger());
     }
 
     public Trigger register(String key, Trigger trigger)
@@ -106,6 +122,38 @@ public class ScriptedItemProps
         {
             this.toss.deserializeNBT(tag.getCompoundTag("Toss"));
         }
+        if (tag.hasKey("FirstPickup"))
+        {
+            this.firstPickup.deserializeNBT(tag.getCompoundTag("FirstPickup"));
+        }
+        if (tag.hasKey("PickedUp"))
+        {
+            this.pickedUp = tag.getBoolean("PickedUp");
+        }
+        if (tag.hasKey("StartedHolding"))
+        {
+            this.startedHolding.deserializeNBT(tag.getCompoundTag("StartedHolding"));
+        }
+        if (tag.hasKey("StoppedHolding"))
+        {
+            this.stoppedHolding.deserializeNBT(tag.getCompoundTag("StoppedHolding"));
+        }
+        if (tag.hasKey("UseStart"))
+        {
+            this.useStart.deserializeNBT(tag.getCompoundTag("UseStart"));
+        }
+        if (tag.hasKey("UseStop"))
+        {
+            this.useStop.deserializeNBT(tag.getCompoundTag("UseStop"));
+        }
+        if (tag.hasKey("OnUseTick"))
+        {
+            this.onUseTick.deserializeNBT(tag.getCompoundTag("OnUseTick"));
+        }
+        if (tag.hasKey("FinishedUsing"))
+        {
+            this.finishedUsing.deserializeNBT(tag.getCompoundTag("FinishedUsing"));
+        }
     }
 
     public NBTTagCompound toNBT()
@@ -121,6 +169,14 @@ public class ScriptedItemProps
         tag.setTag("OnHolderTick", this.onHolderTick.serializeNBT());
         tag.setTag("Pickup", this.pickup.serializeNBT());
         tag.setTag("Toss", this.toss.serializeNBT());
+        tag.setTag("FirstPickup", this.firstPickup.serializeNBT());
+        tag.setBoolean("PickedUp", this.pickedUp);
+        tag.setTag("StartedHolding", this.startedHolding.serializeNBT());
+        tag.setTag("StoppedHolding", this.stoppedHolding.serializeNBT());
+        tag.setTag("UseStart", this.useStart.serializeNBT());
+        tag.setTag("UseStop", this.useStop.serializeNBT());
+        tag.setTag("OnUseTick", this.onUseTick.serializeNBT());
+        tag.setTag("FinishedUsing", this.finishedUsing.serializeNBT());
 
         return tag;
     }

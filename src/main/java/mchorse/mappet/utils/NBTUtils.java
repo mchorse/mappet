@@ -102,4 +102,19 @@ public class NBTUtils
 
         return new ScriptedItemProps();
     }
+
+    public static void setScriptedItemProps(ItemStack itemStack, ScriptedItemProps props)
+    {
+        NBTTagCompound compound = itemStack.getTagCompound();
+
+        // Ensure the ItemStack has a NBTTagCompound
+        if (compound == null)
+        {
+            compound = new NBTTagCompound();
+            itemStack.setTagCompound(compound);
+        }
+
+        // Write the ScriptedItemProps to the NBTTagCompound
+        compound.setTag("ScriptedItem", props.toNBT());
+    }
 }

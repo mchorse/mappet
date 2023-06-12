@@ -20,6 +20,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
+import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -296,5 +298,150 @@ public class ScriptedItemEventHandler
         list.removeIf(entity -> entity.getEntityBoundingBox().calculateIntercept(eyePos, reachVec) == null);
 
         return list;
+    }
+
+    @SubscribeEvent
+    public void onFirstItemPickup(EntityItemPickupEvent event)
+    {
+        if (!event.getItem().world.isRemote)
+        {
+            EntityPlayer player = event.getEntityPlayer();
+            ItemStack itemStack = event.getItem().getItem();
+
+            ScriptedItemProps props = NBTUtils.getScriptedItemProps(itemStack);
+
+            // Check if the item has been picked up before
+            if (props != null && props.pickedUp) {
+                // The item has been picked up before, so we do nothing
+                return;
+            }
+
+            // This is the first time the item has been picked up
+            // Set the pickedUp property to true
+            if (props != null) {
+                props.pickedUp = true;
+                // Save the updated props back to the item
+                NBTUtils.setScriptedItemProps(itemStack, props);
+
+                // Check that there's a Trigger for first pickup and it has actions
+                if (props.firstPickup != null && !props.firstPickup.blocks.isEmpty())
+                {
+                    DataContext context = new DataContext(player);
+                    context.getValues().put("item", ScriptItemStack.create(itemStack));
+                    context.getValues().put("entityItem", ScriptEntityItem.create(event.getItem()));
+                    CommonProxy.eventHandler.trigger(event, props.firstPickup, context);
+                }
+            }
+        }
+    }
+
+    /**
+     * on started using & on stopped using
+     */
+    @SubscribeEvent
+    public void onLivingEquipmentChange(LivingEquipmentChangeEvent event)
+    {
+        // Skip if on client side
+        if (event.getEntityLiving().world.isRemote)
+        {
+            return;
+        }
+
+        ItemStack previousItem = event.getFrom();
+        ItemStack newItem = event.getTo();
+        int slotIndex = event.getSlot().getSlotIndex(); // Always get slot index from the event
+
+        // Check if entity started holding an item
+        if (previousItem.isEmpty() && !newItem.isEmpty())
+        {
+            ScriptedItemProps props = NBTUtils.getScriptedItemProps(newItem);
+            if (props != null && props.startedHolding != null && !props.startedHolding.blocks.isEmpty())
+            {
+                DataContext context = new DataContext(event.getEntityLiving());
+                context.getValues().put("item", ScriptItemStack.create(newItem));
+                CommonProxy.eventHandler.trigger(event, props.startedHolding, context);
+            }
+        }
+        // Check if entity stopped holding an item
+        else if (!previousItem.isEmpty() && newItem.isEmpty())
+        {
+            ScriptedItemProps props = NBTUtils.getScriptedItemProps(previousItem);
+            if (props != null && props.stoppedHolding != null && !props.stoppedHolding.blocks.isEmpty())
+            {
+                DataContext context = new DataContext(event.getEntityLiving());
+                context.getValues().put("item", ScriptItemStack.create(previousItem));
+                CommonProxy.eventHandler.trigger(event, props.stoppedHolding, context);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onScriptedItemUseStart(LivingEntityUseItemEvent.Start event) {
+        if (!event.getEntityLiving().world.isRemote && event.getEntityLiving() instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+            ItemStack item = event.getItem();
+            ScriptedItemProps props = NBTUtils.getScriptedItemProps(item);
+
+            if (props != null && props.useStart != null && !props.useStart.blocks.isEmpty()) {
+                DataContext context = new DataContext(player);
+                context.getValues().put("item", ScriptItemStack.create(item));
+                context.getValues().put("duration", event.getDuration());
+                CommonProxy.eventHandler.trigger(event, props.useStart, context);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onScriptedItemUseStop(LivingEntityUseItemEvent.Stop event) {
+        if (!event.getEntityLiving().world.isRemote && event.getEntityLiving() instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+            ItemStack item = event.getItem();
+            ScriptedItemProps props = NBTUtils.getScriptedItemProps(item);
+
+            if (props != null && props.useStop != null && !props.useStop.blocks.isEmpty()) {
+                DataContext context = new DataContext(player);
+                context.getValues().put("item", ScriptItemStack.create(item));
+                context.getValues().put("duration", event.getDuration());
+                CommonProxy.eventHandler.trigger(event, props.useStop, context);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onScriptedItemUseTick(LivingEntityUseItemEvent.Tick event) {
+        if (!event.getEntityLiving().world.isRemote && event.getEntityLiving() instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+            ItemStack item = event.getItem();
+            ScriptedItemProps props = NBTUtils.getScriptedItemProps(item);
+
+            if (props != null && props.onUseTick != null && !props.onUseTick.blocks.isEmpty()) {
+                DataContext context = new DataContext(player);
+                context.getValues().put("item", ScriptItemStack.create(item));
+                context.getValues().put("duration", event.getDuration());
+                CommonProxy.eventHandler.trigger(event, props.onUseTick, context);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onScriptedItemUseFinish(LivingEntityUseItemEvent.Finish event)
+    {
+        if (!event.getEntityLiving().getEntityWorld().isRemote)
+        {
+            if(event.getEntityLiving() instanceof EntityPlayer)
+            {
+                EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+                ItemStack item = event.getItem();
+                ScriptedItemProps props = NBTUtils.getScriptedItemProps(item);
+
+                if (props != null && props.finishedUsing != null && !props.finishedUsing.blocks.isEmpty())
+                {
+                    DataContext context = new DataContext(player);
+                    context.getValues().put("item", ScriptItemStack.create(item));
+                    context.getValues().put("duration", event.getDuration());
+                    CommonProxy.eventHandler.trigger(event, props.finishedUsing, context);
+                }
+            }
+        }
     }
 }
