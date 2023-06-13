@@ -143,20 +143,6 @@ public class KeyboardHandler
             }
 
             mc.player.sendChatMessage("/mp script exec " + mc.player.getName() + " " + script.getId());
-            if (this.openScriptedItem.isPressed())
-            {
-                ItemStack stack = mc.player.getHeldItemMainhand();
-
-                if (!stack.getItem().equals(Items.AIR))
-                {
-                    mc.displayGuiScreen(new GuiScriptedItemScreen(mc, stack));
-                }
-            }
-
-            if (Keyboard.getEventKeyState())
-            {
-                handleKeys();
-            }
         }
 
         if (this.openScriptedItem.isPressed())
@@ -167,6 +153,11 @@ public class KeyboardHandler
             {
                 mc.displayGuiScreen(new GuiScriptedItemScreen(mc, stack));
             }
+        }
+
+        if (Keyboard.getEventKeyState())
+        {
+            handleKeys();
         }
     }
 
