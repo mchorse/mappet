@@ -859,6 +859,7 @@ mappet.keys.category=Mappet
 mappet.keys.dashboard=Creative dashboard
 mappet.keys.journal=Player's journal
 mappet.keys.runCurrentScript=Run current script
+mappet.keys.scripted_item=Open scripted item editor
 
 # Items, blocks and entities
 itemGroup.mappet=Mappet
