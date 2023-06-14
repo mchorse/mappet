@@ -90,7 +90,7 @@ public class ScriptedItemEventHandler
                 DamageSource source = event.getSource();
                 DataContext context = new DataContext(event.getEntityLiving(), source.getTrueSource())
                         .set("damage", event.getAmount());
-                CommonProxy.eventHandler.trigger(event, props.interactWithEntity, context);
+                CommonProxy.eventHandler.trigger(event, props.attackEntity, context);
             }
         }
     }
