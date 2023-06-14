@@ -49,10 +49,14 @@ public class GuiQuestCard
         element.add(new GuiText(mc).text(DialogueFragment.process(characterQuest.story)).color(0xaaaaaa, true).marginBottom(12));
         element.add(Elements.label(IKey.lang("mappet.gui.quests.objectives.title")));
 
+        StringBuilder objectives = new StringBuilder();
+
         for (AbstractObjective objective : characterQuest.objectives)
         {
-            element.add(Elements.label(IKey.str("- " + objective.stringify(mc.player))).color(0xaaaaaa));
+            objectives.append(IKey.str("- " + objective.stringify(mc.player)).toString() + "\n");
         }
+
+        element.add(new GuiText(mc).text(objectives.toString()).color(0xaaaaaa, true));
 
         if (!Mappet.questsPreviewRewards.get() && !forceReward)
         {
