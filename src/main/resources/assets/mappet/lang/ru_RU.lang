@@ -348,7 +348,7 @@ mappet.gui.settings.triggers.variables.state_changed=§6entity§r, игрок/NP
 
 mappet.gui.settings.triggers.living_knockback=Живое: при отбрасывании
 mappet.gui.settings.triggers.descriptions.living_knockback=Этот отменяемый триггер срабатывает когда моб/игрок отбрасывается.
-mappet.gui.settings.triggers.variables.living_knockback=§6strength§r, сила отбрасывания (float), §6ratioX§r, коэффициент отбрасывания по оси X (float), §6ratioZ§r, tкоэффициент отбрасывания по оси Z (float).
+mappet.gui.settings.triggers.variables.living_knockback=§6strength§r, сила отбрасывания (float), §6ratioX§r, коэффициент отбрасывания по оси X (float), §6ratioZ§r, коэффициент отбрасывания по оси Z (float).
 
 mappet.gui.settings.forge.add=Добавить произвольный forge триггер
 mappet.gui.settings.forge.add_from_list=Добавить forge триггер из списка событий
@@ -424,6 +424,7 @@ mappet.gui.scripted_item.place_block=При установке блока
 mappet.gui.scripted_item.hit_block=При ударе по блоку
 mappet.gui.scripted_item.on_holder_tick=При удерживании (в руке)
 mappet.gui.scripted_item.pickup=При подборе предмета
+mappet.gui.scripted_item.first_pickup=При подборе предмета (в первый раз)
 mappet.gui.scripted_item.toss=При выбрасывании предмета
 mappet.gui.scripted_item.started_holding=При начале удерживания
 mappet.gui.scripted_item.stopped_holding=При прерывании удерживания
@@ -855,6 +856,7 @@ mappet.keys.category=Маппет
 mappet.keys.dashboard=Креативная панель
 mappet.keys.journal=Журнал игрока
 mappet.keys.runCurrentScript=Запустить текущий скрипт
+mappet.keys.scripted_item=Открыть редактор скриптового предмета
 
 # Items, blocks and entities
 itemGroup.mappet=Маппет
