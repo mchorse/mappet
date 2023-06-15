@@ -33,8 +33,8 @@ public class GuiSoundTriggerBlockPanel extends GuiStringTriggerBlockPanel<SoundT
             }
         }
 
+        this.addPicker();
         this.add(Elements.label(IKey.lang("mappet.gui.conditions.target")).marginTop(12), this.target);
-
         this.addDelay();
     }
 

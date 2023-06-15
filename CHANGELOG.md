@@ -1,3 +1,38 @@
+## Version 0.7
+
+This update is brought to you by TorayLife and OtakuGamer. This update features lots of new scripting API methods, QoL features, and brand new **Scripted Items** feature!
+
+**Compatible** with McLib **2.4.2**, Aperture **1.8.1**, Blockbuster **2.6.1** and Metamorph **1.3.1**. It doesn't mean that future versions of McLib, Blockbuster and Metamorph would be incompatible, but older versions are most likely incompatible.
+
+* New triggers:
+  * Added **On NPC Collision** trigger
+* New features:
+  * Added **Scripted items** feature! It allows you to add triggers to ANY item.
+  * Added **Paste player's rotation** option to script editor context menu.
+  * Added **/mp playsound** command and a config option to load sounds on joining a world.
+  * Added **global** option to HUDs
+  * Added **shadow size**, **has no gravity**, **can be steered** and **steering properties** features on NPC's
+  * Added sorting to new folders lists, so folders appears first (by TorayLife)
+  * Added context menu (just like in regular script editor) to inline scripts (by TorayLife)
+* API changes:
+  * Added `IScriptEntity.getObservedEntity()` and `IScriptEntity.getBoundingBox()` methods
+  * Added a lot of NPC's methods
+  * Added `IScriptPlayer.setSpawnPoint()` and `IScriptPlayer.getSpawnPoint()` methods
+  * Added `IScriptFactory.createBlockState()` and `IScriptFactory.vector()` methods
+  * Added `IScriptWorld.replaceBlocks()`, `IScriptWorld.removeBlock()`, `IScriptWorld.getEntities()`, `IScriptWorld.setModelBlockEnabled()`, 'IScriptWorld.isModelBlockEnabled()' and `IScriptWorld.getBlock(ScriptVector pos)` methods
+  * Added `IScriptItemStack.add()` and `IScriptItemStack.equals()` methods
+  * Changed `IScriptEntity.getEyeHeight()` to work with Metamorph morphs
+  * Moved `IScriptPlayer.giveItem()` to `IScriptEntity`
+* Bugfixes:
+  * Fixed `IScriptWorld.setModelBlockMorph()` method
+  * Fixed `IScriptItemStack.addCanDestroyBlock()` method
+  * Fixed forge triggers (by TorayLife)
+  * Fixed keybinds (:facepalm:) (by TorayLife)
+  * Fixed crafting recipe ignore NBT feature (by TorayLife)
+  * Fixed build.gradle (by TorayLife)
+* Other:
+  * NPC tool is ustackable now
+
 ## Version 0.6
 
 This update is brought to you by TorayLife. It features a lot of scripting related features like listening to Forge events, inline scripts, documentation improvements, and more!
