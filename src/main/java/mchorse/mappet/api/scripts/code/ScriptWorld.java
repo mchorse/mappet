@@ -18,6 +18,8 @@ import mchorse.mappet.api.scripts.code.entities.ScriptEntity;
 import mchorse.mappet.api.scripts.code.entities.ScriptNpc;
 import mchorse.mappet.api.scripts.code.items.ScriptInventory;
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
+import mchorse.mappet.api.scripts.code.mappet.blocks.MappetBlockConditionModel;
+import mchorse.mappet.api.scripts.code.mappet.blocks.MappetBlockRegion;
 import mchorse.mappet.api.scripts.code.mappet.MappetSchematic;
 import mchorse.mappet.api.scripts.code.nbt.ScriptNBTCompound;
 import mchorse.mappet.api.scripts.user.IScriptRayTrace;
@@ -1253,5 +1255,17 @@ public class ScriptWorld implements IScriptWorld
         IScriptEntity spawnedEntity = ScriptEntity.create(projectile);
 
         return spawnedEntity;
+    }
+
+    @Override
+    public MappetBlockRegion getRegionBlock(int x, int y, int z)
+    {
+        return new MappetBlockRegion(this.world, new BlockPos(x, y, z));
+    }
+
+    @Override
+    public MappetBlockConditionModel getConditionBlock(int x, int y, int z)
+    {
+        return new MappetBlockConditionModel(this.world, new BlockPos(x, y, z));
     }
 }

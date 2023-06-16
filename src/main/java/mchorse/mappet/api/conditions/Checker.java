@@ -120,4 +120,10 @@ public class Checker implements INBTSerializable<NBTBase>
     {
         EXPRESSION, CONDITION
     }
+
+    @Override
+    public String toString()
+    {
+        return "Checker[mode:"+mode+",condition:"+condition.toString()+"]";
+    }
 }

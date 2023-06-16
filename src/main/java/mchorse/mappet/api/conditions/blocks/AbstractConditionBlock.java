@@ -1,5 +1,6 @@
 package mchorse.mappet.api.conditions.blocks;
 
+import mchorse.mappet.CommonProxy;
 import mchorse.mappet.api.utils.AbstractBlock;
 import mchorse.mappet.api.utils.DataContext;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,5 +31,16 @@ public abstract class AbstractConditionBlock extends AbstractBlock
     {
         this.not = tag.getBoolean("Not");
         this.or = tag.getBoolean("Or");
+    }
+
+    public NBTTagCompound toNBT(){
+        NBTTagCompound tag = new NBTTagCompound();
+        this.serializeNBT(tag);
+        return tag;
+    }
+
+    @Override
+    public String toString(){
+        return "AbstractConditionBlock[type:"+CommonProxy.getConditionBlocks().getType(this)+"]";
     }
 }

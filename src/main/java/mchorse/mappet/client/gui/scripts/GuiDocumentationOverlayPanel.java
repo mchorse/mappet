@@ -106,6 +106,8 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
             DocList items = new DocList();
             DocList blocks = new DocList();
             DocList ui = new DocList();
+            DocList triggers = new DocList();
+            DocList conditions = new DocList();
 
             topPackage.doc = docs.getPackage("mchorse.mappet.api.scripts.user.mappet").doc;
             scripting.name = "Scripting API";
@@ -139,6 +141,16 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
                 blocks.doc = docs.getPackage("mchorse.mappet.api.scripts.user.blocks").doc;
                 blocks.parent = scripting;
                 scripting.entries.add(blocks);
+
+                triggers.name = "/ Triggers";
+                triggers.doc = docs.getPackage("mchorse.mappet.api.scripts.user.mappet.triggers").doc;
+                triggers.parent = scripting;
+                scripting.entries.add(triggers);
+
+                conditions.name = "/ Conditions";
+                conditions.doc = docs.getPackage("mchorse.mappet.api.scripts.user.mappet.conditions").doc;
+                conditions.parent = scripting;
+                scripting.entries.add(conditions);
             }
 
             for (DocClass docClass : docs.classes)
@@ -171,6 +183,16 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
                     {
                         blocks.entries.add(docClass);
                         docClass.parent = blocks;
+                    }
+                    else if (docClass.name.contains("triggers"))
+                    {
+                        triggers.entries.add(docClass);
+                        docClass.parent = triggers;
+                    }
+                    else if (docClass.name.contains("conditions"))
+                    {
+                        conditions.entries.add(docClass);
+                        docClass.parent = conditions;
                     }
                     else if (!docClass.name.endsWith("Graphic"))
                     {

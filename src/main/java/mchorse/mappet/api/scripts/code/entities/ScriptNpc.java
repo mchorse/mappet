@@ -3,6 +3,7 @@ package mchorse.mappet.api.scripts.code.entities;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.npcs.Npc;
 import mchorse.mappet.api.npcs.NpcState;
+import mchorse.mappet.api.scripts.code.mappet.triggers.MappetTrigger;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.entities.IScriptNpc;
 import mchorse.mappet.api.triggers.Trigger;
@@ -12,6 +13,9 @@ import mchorse.mappet.entities.EntityNpc;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.util.math.BlockPos;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ScriptNpc extends ScriptEntity<EntityNpc> implements IScriptNpc
 {
@@ -90,146 +94,6 @@ public class ScriptNpc extends ScriptEntity<EntityNpc> implements IScriptNpc
     }
 
     @Override
-    public void setOnTickTrigger(String scriptName, String functionName, int frequency, int blockIndex)
-    {
-        NpcState state = this.entity.getState();
-        AbstractTriggerBlock block = blockIndex < state.triggerTick.blocks.size() ? state.triggerTick.blocks.get(blockIndex) : null;
-
-        if (block instanceof ScriptTriggerBlock)
-        {
-            ScriptTriggerBlock script = (ScriptTriggerBlock) block;
-
-            script.string = scriptName;
-            script.function = functionName;
-            script.frequency = frequency;
-
-            this.entity.setState(state, false);
-        }
-    }
-
-    @Override
-    public void addOnTickTrigger(String scriptName, String functionName, int frequency)
-    {
-        NpcState state = this.entity.getState();
-        ScriptTriggerBlock block = new ScriptTriggerBlock();
-
-        block.string = scriptName;
-        block.function = functionName;
-        block.frequency = frequency;
-
-        state.triggerTick.blocks.add(block);
-        this.entity.setState(state, false);
-    }
-
-    @Override
-    public void clearOnTickTriggers()
-    {
-        NpcState state = this.entity.getState();
-
-        state.triggerTick.blocks.clear();
-
-        this.entity.setState(state, false);
-    }
-
-    @Override
-    public void setOnInteractTrigger(String scriptName, String functionName, int blockIndex)
-    {
-        NpcState state = this.entity.getState();
-        AbstractTriggerBlock block = blockIndex < state.triggerInteract.blocks.size() ? state.triggerInteract.blocks.get(blockIndex) : null;
-
-        if (block instanceof ScriptTriggerBlock)
-        {
-            ScriptTriggerBlock script = (ScriptTriggerBlock) block;
-
-            script.string = scriptName;
-            script.function = functionName;
-
-            this.entity.setState(state, false);
-        }
-    }
-
-    @Override
-    public void addOnInteractTrigger(String scriptName, String functionName)
-    {
-        NpcState state = this.entity.getState();
-        ScriptTriggerBlock block = new ScriptTriggerBlock();
-
-        block.string = scriptName;
-        block.function = functionName;
-
-        state.triggerInteract.blocks.add(block);
-        this.entity.setState(state, false);
-    }
-
-    @Override
-    public void clearOnInteractTriggers()
-    {
-        NpcState state = this.entity.getState();
-
-        state.triggerInteract.blocks.clear();
-
-        this.entity.setState(state, false);
-    }
-
-    @Override
-    public void setPatrol(int x, int y, int z, String scriptName, String functionName, int patrolIndex)
-    {
-        NpcState state = this.entity.getState();
-
-        if (patrolIndex >= 0)
-        {
-            if (patrolIndex < state.patrol.size())
-            {
-                state.patrol.set(patrolIndex, new BlockPos(x, y, z));
-            }
-
-            if (patrolIndex < state.patrolTriggers.size())
-            {
-                Trigger trigger = new Trigger();
-                ScriptTriggerBlock block = new ScriptTriggerBlock();
-
-                block.string = scriptName;
-                block.function = functionName;
-
-                trigger.blocks.add(block);
-                state.patrolTriggers.set(patrolIndex, trigger);
-            }
-        }
-
-        this.entity.setState(state, false);
-    }
-
-    @Override
-    public void addPatrol(int x, int y, int z, String scriptName, String functionName)
-    {
-        NpcState state = this.entity.getState();
-
-        state.follow = "";
-        state.patrol.add(new BlockPos(x, y, z));
-
-        Trigger trigger = new Trigger();
-        ScriptTriggerBlock block = new ScriptTriggerBlock();
-
-        block.string = scriptName;
-        block.function = functionName;
-
-        trigger.blocks.add(block);
-        state.patrolTriggers.add(trigger);
-
-        this.entity.setState(state, false);
-    }
-
-    @Override
-    public void clearPatrolPoints()
-    {
-        NpcState state = this.entity.getState();
-
-        state.patrol.clear();
-
-        this.entity.setState(state, false);
-    }
-
-    @Override
     public String getFaction()
     {
         return this.entity.getState().faction;
@@ -250,20 +114,32 @@ public class ScriptNpc extends ScriptEntity<EntityNpc> implements IScriptNpc
     }
 
     @Override
-    public void setSteeringOffset(float x, float y, float z)
-    {
+    public void setSteeringOffset(int index, float x, float y, float z) {
         NpcState state = this.entity.getState();
-        //state.steeringXOffset = x;
-        //state.steeringYOffset = y;
-        //state.steeringZOffset = z;
+        if (index >= 0 && index < state.steeringOffset.size()) {
+            state.steeringOffset.set(index, new BlockPos(x, y, z));
+        } else {
+            throw new IndexOutOfBoundsException("Invalid index: " + index);
+        }
         this.entity.sendNpcStateChangePacket();
     }
 
     @Override
-    public ScriptVector getSteeringOffset()
-    {
+    public void addSteeringOffset(float x, float y, float z) {
         NpcState state = this.entity.getState();
-        return new ScriptVector(0, 0, 0/*state.steeringXOffset, state.steeringYOffset, state.steeringZOffset*/);
+        state.steeringOffset.add(new BlockPos(x, y, z));
+        this.entity.sendNpcStateChangePacket();
+    }
+
+
+    @Override
+    public List<ScriptVector> getSteeringOffsets() {
+        NpcState state = this.entity.getState();
+        List<ScriptVector> steeringOffsets = new ArrayList<>();
+        for (BlockPos pos : state.steeringOffset) {
+            steeringOffsets.add(new ScriptVector(pos.getX(), pos.getY(), pos.getZ()));
+        }
+        return steeringOffsets;
     }
 
     @Override
@@ -281,7 +157,7 @@ public class ScriptNpc extends ScriptEntity<EntityNpc> implements IScriptNpc
     }
 
     @Override
-    public void setjumpPower(float jumpHeight)
+    public void setJumpPower(float jumpHeight)
     {
         NpcState state = this.entity.getState();
         state.jumpPower = jumpHeight;
@@ -289,7 +165,7 @@ public class ScriptNpc extends ScriptEntity<EntityNpc> implements IScriptNpc
     }
 
     @Override
-    public float getjumpPower()
+    public float getJumpPower()
     {
         return this.entity.getState().jumpPower;
     }
@@ -504,5 +380,238 @@ public class ScriptNpc extends ScriptEntity<EntityNpc> implements IScriptNpc
         NpcState state = this.entity.getState();
         state.lookAtPlayer = lookAtPlayer;
         this.entity.sendNpcStateChangePacket();
+    }
+
+    /* Triggers */
+
+    @Override
+    public MappetTrigger getOnInitializeTrigger(){
+        return new MappetTrigger(this.entity.getState().triggerInitialize);
+    }
+
+    @Override
+    public MappetTrigger getOnInteractTrigger(){
+        return new MappetTrigger(this.entity.getState().triggerInteract);
+    }
+
+    @Override
+    public MappetTrigger getOnDamagedTrigger(){
+        return new MappetTrigger(this.entity.getState().triggerDamaged);
+    }
+
+    @Override
+    public MappetTrigger getOnDeathTrigger(){
+        return new MappetTrigger(this.entity.getState().triggerDied);
+    }
+
+    @Override
+    public MappetTrigger getOnTickTrigger(){
+        return new MappetTrigger(this.entity.getState().triggerTick);
+    }
+
+    @Override
+    public MappetTrigger getOnTargetTrigger(){
+        return new MappetTrigger(this.entity.getState().triggerTarget);
+    }
+
+    @Override
+    public MappetTrigger getOnCollisionTrigger(){
+        return new MappetTrigger(this.entity.getState().triggerEntityCollision);
+    }
+
+    @Override
+    public MappetTrigger getOnRespawnTrigger(){
+        return new MappetTrigger(this.entity.getState().triggerRespawn);
+    }
+
+    @Override
+    public void addPatrolPoint(int x, int y, int z, MappetTrigger trigger)
+    {
+        NpcState state = this.entity.getState();
+
+        state.follow = "";
+        state.patrol.add(new BlockPos(x, y, z));
+        state.patrolTriggers.add(trigger.getMinecraftTrigger());
+
+        this.entity.setState(state, false);
+    }
+
+    @Override
+    public void clearPatrolPoints()
+    {
+        NpcState state = this.entity.getState();
+
+        state.patrol.clear();
+
+        this.entity.setState(state, false);
+    }
+
+    @Override
+    public void removePatrolPoint(int index)
+    {
+        NpcState state = this.entity.getState();
+
+        if (index < state.patrol.size())
+        {
+            state.patrol.remove(index);
+            state.patrolTriggers.remove(index);
+        }
+
+        this.entity.setState(state, false);
+    }
+
+    @Override
+    public void removePatrolPoint(int x, int y, int z)
+    {
+        NpcState state = this.entity.getState();
+
+        state.patrol.stream().filter(p -> p.getX() == x && p.getY() == y && p.getZ() == z).forEach(p -> {
+            int index = state.patrol.indexOf(p);
+
+            state.patrol.remove(index);
+            state.patrolTriggers.remove(index);
+        });
+
+        this.entity.setState(state, false);
+    }
+
+    /* Deprecated Methods */
+
+    @Deprecated
+    @Override
+    public void setOnTickTrigger(String scriptName, String functionName, int frequency, int blockIndex)
+    {
+        NpcState state = this.entity.getState();
+        AbstractTriggerBlock block = blockIndex < state.triggerTick.blocks.size() ? state.triggerTick.blocks.get(blockIndex) : null;
+
+        if (block instanceof ScriptTriggerBlock)
+        {
+            ScriptTriggerBlock script = (ScriptTriggerBlock) block;
+
+            script.string = scriptName;
+            script.function = functionName;
+            script.frequency = frequency;
+
+            this.entity.setState(state, false);
+        }
+    }
+
+    @Deprecated
+    @Override
+    public void addOnTickTrigger(String scriptName, String functionName, int frequency)
+    {
+        NpcState state = this.entity.getState();
+        ScriptTriggerBlock block = new ScriptTriggerBlock();
+
+        block.string = scriptName;
+        block.function = functionName;
+        block.frequency = frequency;
+
+        state.triggerTick.blocks.add(block);
+        this.entity.setState(state, false);
+    }
+
+    @Deprecated
+    @Override
+    public void clearOnTickTriggers()
+    {
+        NpcState state = this.entity.getState();
+
+        state.triggerTick.blocks.clear();
+
+        this.entity.setState(state, false);
+    }
+
+    @Deprecated
+    @Override
+    public void setOnInteractTrigger(String scriptName, String functionName, int blockIndex)
+    {
+        NpcState state = this.entity.getState();
+        AbstractTriggerBlock block = blockIndex < state.triggerInteract.blocks.size() ? state.triggerInteract.blocks.get(blockIndex) : null;
+
+        if (block instanceof ScriptTriggerBlock)
+        {
+            ScriptTriggerBlock script = (ScriptTriggerBlock) block;
+
+            script.string = scriptName;
+            script.function = functionName;
+
+            this.entity.setState(state, false);
+        }
+    }
+
+    @Deprecated
+    @Override
+    public void addOnInteractTrigger(String scriptName, String functionName)
+    {
+        NpcState state = this.entity.getState();
+        ScriptTriggerBlock block = new ScriptTriggerBlock();
+
+        block.string = scriptName;
+        block.function = functionName;
+
+        state.triggerInteract.blocks.add(block);
+        this.entity.setState(state, false);
+    }
+
+    @Deprecated
+    @Override
+    public void clearOnInteractTriggers()
+    {
+        NpcState state = this.entity.getState();
+
+        state.triggerInteract.blocks.clear();
+
+        this.entity.setState(state, false);
+    }
+
+    @Deprecated
+    @Override
+    public void setPatrol(int x, int y, int z, String scriptName, String functionName, int patrolIndex)
+    {
+        NpcState state = this.entity.getState();
+
+        if (patrolIndex >= 0)
+        {
+            if (patrolIndex < state.patrol.size())
+            {
+                state.patrol.set(patrolIndex, new BlockPos(x, y, z));
+            }
+
+            if (patrolIndex < state.patrolTriggers.size())
+            {
+                Trigger trigger = new Trigger();
+                ScriptTriggerBlock block = new ScriptTriggerBlock();
+
+                block.string = scriptName;
+                block.function = functionName;
+
+                trigger.blocks.add(block);
+                state.patrolTriggers.set(patrolIndex, trigger);
+            }
+        }
+
+        this.entity.setState(state, false);
+    }
+
+    @Deprecated
+    @Override
+    public void addPatrol(int x, int y, int z, String scriptName, String functionName)
+    {
+        NpcState state = this.entity.getState();
+
+        state.follow = "";
+        state.patrol.add(new BlockPos(x, y, z));
+
+        Trigger trigger = new Trigger();
+        ScriptTriggerBlock block = new ScriptTriggerBlock();
+
+        block.string = scriptName;
+        block.function = functionName;
+
+        trigger.blocks.add(block);
+        state.patrolTriggers.add(trigger);
+
+        this.entity.setState(state, false);
     }
 }

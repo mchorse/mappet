@@ -1,5 +1,7 @@
 package mchorse.mappet.api.scripts.user;
 
+import mchorse.mappet.api.scripts.code.mappet.blocks.MappetBlockConditionModel;
+import mchorse.mappet.api.scripts.code.mappet.blocks.MappetBlockRegion;
 import mchorse.mappet.api.scripts.code.mappet.MappetSchematic;
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.blocks.IScriptTileEntity;
@@ -1070,4 +1072,56 @@ public interface IScriptWorld
      * @param player The player that only should see the morph, or null for everyone.
      */
     public void displayMorph(AbstractMorph morph, int expiration, double x, double y, double z, float yaw, float pitch, int range, IScriptPlayer player);
+
+    /**
+     * Gets the region block at given coordinates to be edited programmatically.
+     *
+     * <pre>{@code
+     * function main(c) {
+     *     var regionBlock = c.getWorld().getRegionBlock(0, 4, 0);
+     *     var allTriggerBlocks = regionBlock.getOnTickTrigger().getAllBlocks();
+     *     if (allTriggerBlocks.size() > 0) {
+     *         for each (var triggerBlock in allTriggerBlocks) {
+     *             var triggerType = triggerBlock.getType();
+     *             if (triggerType === "script") {
+     *                 triggerBlock.remove();
+     *             }
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param x X coordinate of the region block.
+     * @param y Y coordinate of the region block.
+     * @param z Z coordinate of the region block.
+     * @return Region block at given coordinates.
+     */
+    public MappetBlockRegion getRegionBlock(int x, int y, int z);
+
+    /**
+     * Gets the condition block at given coordinates to be edited programmatically.
+     *
+     * <pre>{@code
+     * function main(c)
+     * {
+     *     var conditionBlock = c.getWorld().getConditionBlock(-127, 88, 129);
+     *
+     *     var condition = mappet.createCondition();
+     *     var conditionStateBlock = condition.addStateBlock();
+     *     conditionStateBlock.setStateKey("can_pass");
+     *     conditionStateBlock.setTargetMode("global");
+     *     conditionStateBlock.setComparator("==");
+     *     conditionStateBlock.setComparisonValue(1);
+     *
+     *     var morph = mappet.createMorph("{Name:\"blockbuster.alex\"}");
+     *     conditionBlock.addModel(morph, condition);
+     * }
+     * }</pre>
+     *
+     * @param x X coordinate of the condition block.
+     * @param y Y coordinate of the condition block.
+     * @param z Z coordinate of the condition block.
+     * @return Condition block at given coordinates.
+     */
+    public MappetBlockConditionModel getConditionBlock(int x, int y, int z);
 }

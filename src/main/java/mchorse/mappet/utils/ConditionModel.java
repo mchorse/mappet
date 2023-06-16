@@ -45,4 +45,10 @@ public class ConditionModel implements INBTSerializable<NBTTagCompound>
         this.checker.deserializeNBT(nbt.getCompoundTag("checker"));
         this.morph = MorphManager.INSTANCE.morphFromNBT(nbt.getCompoundTag("morph"));
     }
+
+    @Override
+    public String toString()
+    {
+        return "ConditionModel[morph_name:"+morph.name+",condition:"+checker.toString()+"]";
+    }
 }

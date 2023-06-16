@@ -52,11 +52,70 @@ public class ScriptedItemEventHandler
 
             double reachDistance = playerIn.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue();
 
-            RayTraceResult rayTraceResult = playerIn.rayTrace(reachDistance, 1.0F);
+            RayTraceResult rayTraceResult = rayTraceEntityAndBlocks(worldIn, playerIn, reachDistance);
             List<Entity> entityList = getEntitiesInPlayerReach(worldIn, playerIn, reachDistance);
 
             triggerInteractWithAir(event, props.interactWithAir, rayTraceResult, entityList, playerIn);
         }
+    }
+
+    public RayTraceResult rayTraceEntityAndBlocks(World worldIn, EntityPlayer playerIn, double reachDistance)
+    {
+        Vec3d eyePosition = playerIn.getPositionEyes(1.0F);
+        Vec3d lookVec = playerIn.getLook(1.0F);
+        Vec3d reachVec = eyePosition.add(new Vec3d(lookVec.x * reachDistance, lookVec.y * reachDistance, lookVec.z * reachDistance));
+
+        // This will trace blocks
+        RayTraceResult blockResult = worldIn.rayTraceBlocks(eyePosition, reachVec, false, false, true);
+
+        // This will trace entities
+        RayTraceResult entityResult = null;
+        List<Entity> entities = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerIn.getEntityBoundingBox().expand(lookVec.x * reachDistance, lookVec.y * reachDistance, lookVec.z * reachDistance));
+        double closestDistance = reachDistance;
+
+        for (Entity entity : entities)
+        {
+            if (entity.canBeCollidedWith())
+            {
+                float collisionBorderSize = entity.getCollisionBorderSize();
+                AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().expand(collisionBorderSize, collisionBorderSize, collisionBorderSize);
+                RayTraceResult traceResult = axisalignedbb.calculateIntercept(eyePosition, reachVec);
+
+                if (axisalignedbb.contains(eyePosition))
+                {
+                    if (closestDistance >= 0.0D)
+                    {
+                        entityResult = new RayTraceResult(entity);
+                        entityResult.hitVec = traceResult == null ? eyePosition : traceResult.hitVec;
+                        closestDistance = 0.0D;
+                    }
+                }
+                else if (traceResult != null)
+                {
+                    double distanceToEntity = eyePosition.distanceTo(traceResult.hitVec);
+
+                    if (distanceToEntity < closestDistance || closestDistance == 0.0D)
+                    {
+                        if (entity.getLowestRidingEntity() == playerIn.getLowestRidingEntity() && !entity.canRiderInteract())
+                        {
+                            if (closestDistance == 0.0D)
+                            {
+                                entityResult = traceResult;
+                                entityResult.hitVec = traceResult.hitVec;
+                            }
+                        }
+                        else
+                        {
+                            entityResult = new RayTraceResult(entity);
+                            entityResult.hitVec = traceResult.hitVec;
+                            closestDistance = distanceToEntity;
+                        }
+                    }
+                }
+            }
+        }
+
+        return entityResult == null ? blockResult : entityResult;
     }
 
     @SubscribeEvent
