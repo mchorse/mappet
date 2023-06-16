@@ -1,7 +1,10 @@
 package mchorse.mappet.api.scripts.user.entities;
 
+import mchorse.mappet.api.scripts.code.mappet.triggers.MappetTrigger;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.entities.EntityNpc;
+
+import java.util.List;
 
 /**
  * Mappet's NPC entity interface.
@@ -86,77 +89,6 @@ public interface IScriptNpc extends IScriptEntity
     public void follow(String target);
 
     /**
-     * Sets NPC's tick trigger (Use this if you want to edit an existing `on tick trigger`).
-     *
-     * <pre>{@code
-     *    c.getSubject().setOnTickTrigger("ScriptName", "FunctionName", 1, 0);
-     * }</pre>
-     *
-     * @param scriptName Script name
-     * @param functionName Function name
-     * @param frequency Frequency
-     * @param blockIndex Block number
-     */
-    public void setOnTickTrigger(String scriptName, String functionName, int frequency, int blockIndex);
-
-
-    /**
-     * Adds a new `on tick trigger` to the NPC.
-     *
-     * <pre>{@code
-     *    c.getSubject().addOnTickTrigger("ScriptName", "FunctionName", 1);
-     * }</pre>
-     *
-     * @param scriptName Script name
-     * @param functionName Function name
-     * @param frequency Frequency
-     */
-    public void addOnTickTrigger(String scriptName, String functionName, int frequency);
-
-    /**
-     * Removes all `on tick` triggers from the NPC.
-     *
-     * <pre>{@code
-     *    c.getSubject().clearOnTickTriggers();
-     * }</pre>
-     */
-    public void clearOnTickTriggers();
-
-    /**
-     * Sets NPC's on interaction trigger.
-     *
-     * <pre>{@code
-     *    c.getSubject().setOnInteractTrigger("ScriptName", "FunctionName", 0);
-     * }</pre>
-     *
-     * @param scriptName Script name
-     * @param functionName Function name
-     * @param blockIndex Block number
-     */
-    public void setOnInteractTrigger(String scriptName, String functionName, int blockIndex);
-
-    /**
-     * Adds NPC's on interaction trigger.
-     *
-     * <pre>{@code
-     *    c.getSubject().addOnInteractTrigger("ScriptName", "FunctionName");
-     * }</pre>
-     *
-     * @param scriptName Script name
-     * @param functionName Function name
-     */
-    public void addOnInteractTrigger(String scriptName, String functionName);
-
-    /**
-     * Clears NPC's on interaction triggers.
-     *
-     * <pre>{@code
-     *    c.getSubject().clearOnInteractTriggers();
-     * }</pre>
-     */
-    public void clearOnInteractTriggers();
-
-    /**
      * Sets NPC's patrol point with a script trigger.
      *
      * <pre>{@code
@@ -173,15 +105,48 @@ public interface IScriptNpc extends IScriptEntity
     public void setPatrol(int x, int y, int z, String scriptName, String functionName, int patrolIndex);
 
     /**
-     * Adds a new NPC's patrol point with a script trigger.
+     * Adds a new patrol point with its trigger to the NPC.
      *
-     * @param x X coordinate
-     * @param y Y coordinate
-     * @param z Z coordinate
-     * @param scriptName Script name
-     * @param functionName Function name
+     * <pre>{@code
+     * var npc = c.getSubject();
+     * var pos = npc.getPosition();
+     * var trigger = mappet.createTrigger();
+     * trigger.addCommandBlock().set("say I arrived!");
+     * npc.addPatrolPoint(pos.x, pos.y, pos.z, trigger);
+     * }</pre>
+     *
+     * @param x x coordinate
+     * @param y y coordinate
+     * @param z z coordinate
+     * @param trigger trigger to be executed when NPC arrives at the point
      */
-    public void addPatrol(int x, int y, int z, String scriptName, String functionName);
+    public void addPatrolPoint(int x, int y, int z, MappetTrigger trigger);
+
+    /**
+     * Removes a patrol point at a certain indext from the NPC.
+     *
+     * <pre>{@code
+     * c.getSubject().removePatrolPoint(0);
+     * }</pre>
+     *
+     * @param index index of the patrol point to be removed
+     */
+    public void removePatrolPoint(int index);
+
+    /**
+     * Removes a patrol point at a certain position from the NPC.
+     *
+     * <pre>{@code
+     * var npc = c.getSubject();
+     * var pos = npc.getPosition();
+     * npc.removePatrolPoint(pos.x, pos.y, pos.z);
+     * }</pre>
+     *
+     * @param x x coordinate
+     * @param y y coordinate
+     * @param z z coordinate
+     */
+    public void removePatrolPoint(int x, int y, int z);
 
     /**
      * Removes all NPC's patrol points.
@@ -223,20 +188,30 @@ public interface IScriptNpc extends IScriptEntity
      * Sets the steering offset for the NPC.
      *
      * <pre>{@code
-     * c.getSubject().setSteeringOffset(x, y, z);
+     * c.getSubject().setSteeringOffset(index, x, y, z);
      * }</pre>
      */
-    public void setSteeringOffset(float x, float y, float z);
+    public void setSteeringOffset(int index, float x, float y, float z);
 
     /**
      * Gets the steering offset of the NPC.
      *
      * <pre>{@code
-     * var steeringOffset = c.getSubject().getSteeringOffset();
-     * c.send(steeringOffset.x+" "+steeringOffset.y+" "+steeringOffset.z);
+     * c.getSubject().addSteeringOffset(x, y, z);
      * }</pre>
      */
-    public ScriptVector getSteeringOffset();
+    public void addSteeringOffset(float x, float y, float z);
+
+    /**
+     * Gets the steering offset of the NPC.
+     *
+     * <pre>{@code
+     * c.getSubject().getSteeringOffsets().forEach((offset) -> {
+     *     c.send(offset.x + ", " + offset.y + ", " + offset.z);
+     * });
+     * }</pre>
+     */
+    public List<ScriptVector> getSteeringOffsets();
 
     /**
      * Sets the speed of the NPC.
@@ -260,10 +235,10 @@ public interface IScriptNpc extends IScriptEntity
      * Sets the jump power of the NPC.
      *
      * <pre>{@code
-     * c.getSubject().setjumpPower(jumpHeight);
+     * c.getSubject().setJumpPower(jumpHeight);
      * }</pre>
      */
-    public void setjumpPower(float jumpHeight);
+    public void setJumpPower(float jumpHeight);
 
     /**
      * Gets the jump power of the NPC.
@@ -272,7 +247,7 @@ public interface IScriptNpc extends IScriptEntity
      * c.getSubject().getjumpPower();
      * }</pre>
      */
-    public float getjumpPower();
+    public float getJumpPower();
 
     /**
      * Sets whether the NPC is invincible.
@@ -598,4 +573,211 @@ public interface IScriptNpc extends IScriptEntity
      * @param lookAtPlayer the new status for the NPC's behavior to look at the player.
      */
     public void setLookAtPlayer(boolean lookAtPlayer);
+
+    /* Triggers */
+
+    /**
+     * Gets the NPC's initialize trigger for programmatically editing.
+     *
+     * <pre>{@code
+     * var trigger = c.getSubject().getOnInitializeTrigger();
+     * var scriptTriggerBlock = regionBlockTrigger.addScriptBlock();
+     * scriptTriggerBlock.setInlineCode(function() {
+     *     c.send("NPC initialized!");
+     * });
+     * }</pre>
+     *
+     * @return the NPC's initialize trigger.
+     */
+    public MappetTrigger getOnInitializeTrigger();
+
+    /**
+     * Gets the NPC's interact trigger for programmatically editing.
+     *
+     * <pre>{@code
+     * var trigger = c.getSubject().getOnInteractTrigger();
+     * var scriptTriggerBlock = regionBlockTrigger.addScriptBlock();
+     * scriptTriggerBlock.setInlineCode(function() {
+     *     c.send("Hello, " + c.getObject().getName() + "!");
+     * });
+     * }</pre>
+     *
+     * @return the NPC's interact trigger.
+     */
+    public MappetTrigger getOnInteractTrigger();
+
+    /**
+     * Gets the NPC's damaged trigger for programmatically editing.
+     *
+     * <pre>{@code
+     * var trigger = c.getSubject().getOnDamagedTrigger();
+     * var scriptTriggerBlock = trigger.addScriptBlock();
+     * scriptTriggerBlock.setInlineCode(function() {
+     *     c.send("NPC has been damaged!");
+     * });
+     * }</pre>
+     *
+     * @return the NPC's damaged trigger.
+     */
+    public MappetTrigger getOnDamagedTrigger();
+
+    /**
+     * Gets the NPC's death trigger for programmatically editing.
+     *
+     * <pre>{@code
+     * var trigger = c.getSubject().getOnDeathTrigger();
+     * var scriptTriggerBlock = trigger.addScriptBlock();
+     * scriptTriggerBlock.setInlineCode(function() {
+     *     c.send("NPC has died!");
+     * });
+     * }</pre>
+     *
+     * @return the NPC's death trigger.
+     */
+    public MappetTrigger getOnDeathTrigger();
+
+    /**
+     * Gets the NPC's tick trigger for programmatically editing.
+     *
+     * <pre>{@code
+     * var trigger = c.getSubject().getOnTickTrigger();
+     * var scriptTriggerBlock = trigger.addScriptBlock();
+     * scriptTriggerBlock.setInlineCode(function() {
+     *     c.send("NPC tick!");
+     * });
+     * }</pre>
+     *
+     * @return the NPC's tick trigger.
+     */
+    public MappetTrigger getOnTickTrigger();
+
+    /**
+     * Gets the NPC's target trigger for programmatically editing.
+     *
+     * <pre>{@code
+     * var trigger = c.getSubject().getOnTargetAcquiredTrigger();
+     * var scriptTriggerBlock = trigger.addScriptBlock();
+     * scriptTriggerBlock.setInlineCode(function() {
+     *     c.send("NPC has started targeting!");
+     * });
+     * }</pre>
+     *
+     * @return the NPC's target trigger.
+     */
+    public MappetTrigger getOnTargetTrigger();
+
+    /**
+     * Gets the NPC's collision trigger for programmatically editing.
+     *
+     * <pre>{@code
+     * var trigger = c.getSubject().getOnCollisionTrigger();
+     * var scriptTriggerBlock = trigger.addScriptBlock();
+     * scriptTriggerBlock.setInlineCode(function() {
+     *     c.send("NPC has collided with someone!");
+     * });
+     * }</pre>
+     *
+     * @return the NPC's collision trigger.
+     */
+    public MappetTrigger getOnCollisionTrigger();
+
+    /**
+     * Gets the NPC's respawn trigger for programmatically editing.
+     *
+     * <pre>{@code
+     * var trigger = c.getSubject().getOnRespawnTrigger();
+     * var scriptTriggerBlock = trigger.addScriptBlock();
+     * scriptTriggerBlock.setInlineCode(function() {
+     *     c.send("NPC has respawned!");
+     * });
+     * }</pre>
+     *
+     * @return the NPC's respawn trigger.
+     */
+    public MappetTrigger getOnRespawnTrigger();
+
+
+    /* Deprecated */
+
+    /**
+     * Sets NPC's tick trigger (Use this if you want to edit an existing `on tick trigger`).
+     *
+     * <pre>{@code
+     *    c.getSubject().setOnTickTrigger("ScriptName", "FunctionName", 1, 0);
+     * }</pre>
+     *
+     * @param scriptName Script name
+     * @param functionName Function name
+     * @param frequency Frequency
+     * @param blockIndex Block number
+     */
+    public void setOnTickTrigger(String scriptName, String functionName, int frequency, int blockIndex);
+
+
+    /**
+     * Adds a new `on tick trigger` to the NPC.
+     *
+     * <pre>{@code
+     *    c.getSubject().addOnTickTrigger("ScriptName", "FunctionName", 1);
+     * }</pre>
+     *
+     * @param scriptName Script name
+     * @param functionName Function name
+     * @param frequency Frequency
+     */
+    public void addOnTickTrigger(String scriptName, String functionName, int frequency);
+
+    /**
+     * Removes all `on tick` triggers from the NPC.
+     *
+     * <pre>{@code
+     *    c.getSubject().clearOnTickTriggers();
+     * }</pre>
+     */
+    public void clearOnTickTriggers();
+
+    /**
+     * Sets NPC's on interaction trigger.
+     *
+     * <pre>{@code
+     *    c.getSubject().setOnInteractTrigger("ScriptName", "FunctionName", 0);
+     * }</pre>
+     *
+     * @param scriptName Script name
+     * @param functionName Function name
+     * @param blockIndex Block number
+     */
+    public void setOnInteractTrigger(String scriptName, String functionName, int blockIndex);
+
+    /**
+     * Adds NPC's on interaction trigger.
+     *
+     * <pre>{@code
+     *    c.getSubject().addOnInteractTrigger("ScriptName", "FunctionName");
+     * }</pre>
+     *
+     * @param scriptName Script name
+     * @param functionName Function name
+     */
+    public void addOnInteractTrigger(String scriptName, String functionName);
+
+    /**
+     * Clears NPC's on interaction triggers.
+     *
+     * <pre>{@code
+     *    c.getSubject().clearOnInteractTriggers();
+     * }</pre>
+     */
+    public void clearOnInteractTriggers();
+
+    /**
+     * Adds a new NPC's patrol point with a script trigger.
+     *
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @param z Z coordinate
+     * @param scriptName Script name
+     * @param functionName Function name
+     */
+    public void addPatrol(int x, int y, int z, String scriptName, String functionName);
 }

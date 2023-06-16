@@ -1,5 +1,9 @@
 package mchorse.mappet.api.scripts.user;
 
+import mchorse.mappet.api.scripts.code.mappet.blocks.MappetBlockConditionModel;
+import mchorse.mappet.api.scripts.code.mappet.blocks.MappetBlockRegion;
+import mchorse.mappet.api.scripts.code.mappet.conditions.MappetCondition;
+import mchorse.mappet.api.scripts.code.mappet.triggers.MappetTrigger;
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
 import mchorse.mappet.api.scripts.user.data.ScriptBox;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
@@ -840,4 +844,53 @@ public interface IScriptFactory
      * @return The INBTCompound representation of the object or null if the object is not of the expected types.
      */
     public INBTCompound toNBT(Object object);
+
+    /**
+     * Creates a region block instance that can be manipulated programmatically.
+     *
+     * <pre>{@code
+     *   var regionBlock = mappet.createRegionBlock();
+     *   regionBlock.place(c.getWorld(), 0, 4, 0);
+     * }</pre>
+     *
+     * @return region block instance
+     */
+    public MappetBlockRegion createRegionBlock();
+
+    /**
+     * Creates a condition block instance that can be manipulated programmatically.
+     *
+     * <pre>{@code
+     *   var conditionBlock = mappet.createConditionBlock();
+     *   conditionBlock.place(c.getWorld(), 0, 4, 0);
+     * }</pre>
+     *
+     * @return condition block instance
+     */
+    MappetBlockConditionModel createConditionBlock();
+
+    /**
+     * Creates a trigger instance that can be manipulated programmatically.
+     *
+     * <pre>{@code
+     *
+     * @return
+     */
+    public MappetTrigger createTrigger();
+
+    /**
+     * Creates a condition instance that can be manipulated programmatically.
+     *
+     * <pre>{@code
+     *   var condition = mappet.createCondition();
+     *   condition.setExpression("1==1");
+     *
+     *   var conditionBlock = mappet.createConditionBlock();
+     *   conditionBlock.addModel(mappet.createMorph("{Name:\"blockbuster.alex\"}", condition));
+     *   conditionBlock.place(c.getWorld(), 0, 4, 0);
+     * }</pre>
+     *
+     * @return condition instance
+     */
+    MappetCondition createCondition();
 }

@@ -90,4 +90,16 @@ public class Condition implements INBTSerializable<NBTTagCompound>
             }
         }
     }
+
+    @Override
+    public String toString()
+    {
+        String result = "mappet.condition[";
+        for (AbstractConditionBlock block : this.blocks)
+        {
+            result += block.toString() + ",";
+        }
+        result += "]";
+        return result;
+    }
 }

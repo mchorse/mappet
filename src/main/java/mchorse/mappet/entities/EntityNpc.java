@@ -50,6 +50,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -172,7 +173,26 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
 
             // Update the passenger's position on both the server and the client
             passenger.setPosition(finalPosX, offsetY, finalPosZ);
-            passenger.setPositionAndRotationDirect(finalPosX, offsetY, finalPosZ, passenger.rotationYaw, passenger.rotationPitch, 3, true);
+
+            // Check side and execute appropriate code
+            if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+            {
+                // This is a client
+                passenger.setPositionAndRotationDirect(finalPosX, offsetY, finalPosZ, passenger.rotationYaw, passenger.rotationPitch, 3, true);
+            }
+            else
+            {
+                // This is a server
+                passenger.setPosition(finalPosX, offsetY, finalPosZ);
+
+                // Copy the passenger's rotation to this entity
+                this.rotationYaw = passenger.rotationYaw;
+                this.rotationPitch = passenger.rotationPitch;
+            }
+
+            // Always align this entity's rotation with the passenger
+            this.rotationYaw = passenger.rotationYaw;
+            this.rotationPitch = passenger.rotationPitch;
         }
 
         // Check if the passenger is a player and the entity can be steered and only allow the first passanger to steer it.

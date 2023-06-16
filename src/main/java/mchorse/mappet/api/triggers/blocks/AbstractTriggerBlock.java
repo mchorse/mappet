@@ -53,4 +53,11 @@ public abstract class AbstractTriggerBlock extends AbstractBlock
 
         this.frequency = tag.getInteger("Frequency");
     }
+
+    public NBTTagCompound toNBT()
+    {
+        NBTTagCompound tag = new NBTTagCompound();
+        this.serializeNBT(tag);
+        return tag;
+    }
 }

@@ -20,6 +20,15 @@ import java.util.List;
 
 public class Trigger implements INBTSerializable<NBTTagCompound>
 {
+    public Trigger(){
+
+    }
+
+    public Trigger(List<AbstractTriggerBlock> blocks)
+    {
+        this.blocks.addAll(blocks);
+    }
+
     public final List<AbstractTriggerBlock> blocks = new ArrayList<AbstractTriggerBlock>();
 
     private boolean empty;
