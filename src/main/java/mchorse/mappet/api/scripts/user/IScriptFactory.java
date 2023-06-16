@@ -812,6 +812,18 @@ public interface IScriptFactory
 
     /**
      * Create a bounding box.
+     *
+     * <pre>{@code
+     * function main(c)
+     * {
+     *     var subject = c.getSubject();
+     *     var subjectPosition = subject.getPosition();
+     *     var box = mappet.box(-10, 4, -10, 10, 6, 10);
+     *     if (box.contains(subjectPosition)){
+     *         c.send("the player in in the box")
+     *     }
+     * }
+     * }</pre>
      */
     public default ScriptBox box(double minX, double minY, double minZ, double maxX, double maxY, double maxZ)
     {
