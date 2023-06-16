@@ -25,6 +25,14 @@ public class MappetCondition implements IMappetCondition
     }
 
     @Override
+    public MappetCondition set(MappetCondition condition)
+    {
+        this.blocks = condition.blocks;
+        this.checker = condition.checker;
+        return this;
+    }
+
+    @Override
     public MappetCondition setExpression(String expression)
     {
         this.checker.mode = Checker.Mode.EXPRESSION;

@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts.user.mappet.triggers;
 
+import mchorse.mappet.api.scripts.code.mappet.triggers.MappetTrigger;
 import mchorse.mappet.api.scripts.code.mappet.triggers.MappetTriggerBlock;
 import mchorse.mappet.api.scripts.code.mappet.triggers.triggerBlocks.MappetTriggerBlockCommand;
 import mchorse.mappet.api.scripts.code.mappet.triggers.triggerBlocks.MappetTriggerBlockScript;
@@ -15,7 +16,23 @@ public interface IMappetTrigger
     /**
      * Gets the Minecraft trigger.
      */
-    public Trigger getMinecraftTrigger();
+    Trigger getMinecraftTrigger();
+
+    /**
+     * Sets the Minecraft trigger from the given trigger. (copy)
+     *
+     * <pre>{@code
+     * // This example copies the region block's `on enter trigger` to the region block's `on exit trigger`
+     * var regionBlock = c.getWorld().getRegionBlock(0, 4, 0);
+     * var regionBlockOnEnterTrigger = regionBlock.getOnEnterTrigger();
+     * var regionBlockOnExitTrigger = regionBlock.getOnExitTrigger();
+     * regionBlockOnExitTrigger.set(regionBlockOnEnterTrigger);
+     * }</pre>
+     *
+     * @param trigger trigger to copy
+     * @return the trigger instance
+     */
+    MappetTrigger set(MappetTrigger trigger);
 
     /**
      * Gets all trigger blocks.

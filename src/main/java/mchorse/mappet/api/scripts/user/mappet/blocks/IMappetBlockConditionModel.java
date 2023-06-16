@@ -1,6 +1,7 @@
 package mchorse.mappet.api.scripts.user.mappet.blocks;
 
 import mchorse.mappet.api.scripts.code.mappet.blocks.MappetBlockConditionModel;
+import mchorse.mappet.api.scripts.code.mappet.blocks.MappetModelSettings;
 import mchorse.mappet.api.scripts.code.mappet.conditions.MappetCondition;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
 import mchorse.metamorph.api.morphs.AbstractMorph;
@@ -11,9 +12,11 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
  * <pre>{@code
  * function main(c)
  * {
- *     var conditionBlock = mappet.createConditionBlock()
- *         .setGlobal(true)
- *         .setShadow(false)
+ *     var conditionBlock = mappet.createConditionBlock();
+ *
+ *     var conditionBlockSettings = conditionBlock.getSettings()
+ *         .setGlobalEnabled(true)
+ *         .setShadowEnabled(false)
  *         .scale(1, 0.1, 1);
  *
  *     var morph1 = mappet.createMorph("{Meta:5b,Block:\"minecraft:wool\",Name:\"block\"}");
@@ -57,102 +60,6 @@ public interface IMappetBlockConditionModel
      */
     MappetBlockConditionModel place(IScriptWorld world, int x, int y, int z);
 
-    /**
-     * Sets whether the condition model block should be global.
-     *
-     * <pre>{@code
-     * var conditionBlock = c.getWorld().getConditionBlock(0, 4, 0);
-     * conditionBlock.setGlobal(true);
-     * }</pre>
-     *
-     * @param isGlobal whether the condition model block should be global
-     * @return this condition model block instance
-     */
-    MappetBlockConditionModel setGlobal(boolean isGlobal);
-
-    /**
-     * Sets whether the condition model block should have shadow.
-     *
-     * <pre>{@code
-     * var conditionBlock = c.getWorld().getConditionBlock(0, 4, 0);
-     * conditionBlock.setShadow(false);
-     * }</pre>
-     *
-     * @param isShadow whether the condition model block should be shadow
-     * @return this condition model block instance
-     */
-    MappetBlockConditionModel setShadow(boolean isShadow);
-
-    /**
-     * Sets the update frequency of the condition model block.
-     *
-     * <pre>{@code
-     * var conditionBlock = c.getWorld().getConditionBlock(0, 4, 0);
-     * conditionBlock.setFrequency(20);
-     * }</pre>
-     *
-     * @param frequency frequency of the condition model block
-     * @return this condition model block instance
-     */
-    MappetBlockConditionModel setFrequency(int frequency);
-
-    /**
-     * Translates the condition model block.
-     *
-     * <pre>{@code
-     * var conditionBlock = c.getWorld().getConditionBlock(0, 4, 0);
-     * conditionBlock.translate(1, 2, 3);
-     * }</pre>
-     *
-     * @param x x coordinate
-     * @param y y coordinate
-     * @param z z coordinate
-     * @return this condition model block instance
-     */
-    MappetBlockConditionModel translate(double x, double y, double z);
-
-    /**
-     * Rotates the condition model block.
-     *
-     * <pre>{@code
-     * var conditionBlock = c.getWorld().getConditionBlock(0, 4, 0);
-     * conditionBlock.rotate(0, 90, 0);
-     * }</pre>
-     *
-     * @param x x coordinate
-     * @param y y coordinate
-     * @param z z coordinate
-     * @return this condition model block instance
-     */
-    MappetBlockConditionModel rotate(double x, double y, double z);
-
-    /**
-     * Scales the condition model block.
-     *
-     * <pre>{@code
-     * var conditionBlock = c.getWorld().getConditionBlock(0, 4, 0);
-     * conditionBlock.scale(1, 0.1, 1);
-     * }</pre>
-     *
-     * @param x x coordinate
-     * @param y y coordinate
-     * @param z z coordinate
-     * @return this condition model block instance
-     */
-    MappetBlockConditionModel scale(double x, double y, double z);
-
-    /**
-     * Scales the condition model block.
-     *
-     * <pre>{@code
-     * var conditionBlock = c.getWorld().getConditionBlock(0, 4, 0);
-     * conditionBlock.scale(0.5);
-     * }</pre>
-     *
-     * @param xyz x, y and z coordinate
-     * @return this condition model block instance
-     */
-    MappetBlockConditionModel scale(double xyz);
 
     /**
      * Adds a model to this condition model block.
@@ -214,4 +121,19 @@ public interface IMappetBlockConditionModel
      * @return this condition model block instance
      */
     MappetBlockConditionModel clearModels();
+
+    /**
+     * Get condition model block settings.
+     *
+     * <pre>{@code
+     * var conditionBlock = c.getWorld().getConditionBlock(0, 4, 0);
+     * var conditionBlockSettings = conditionBlock.getSettings()
+     *     .setGlobalEnabled(true)
+     *     .setShadowEnabled(false)
+     *     .scale(1, 0.1, 1);
+     * }</pre>
+     *
+     * @return condition model block settings
+     */
+    MappetModelSettings getSettings();
 }

@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts.user.mappet.blocks;
 
+import mchorse.mappet.api.scripts.code.mappet.conditions.MappetCondition;
 import mchorse.mappet.api.scripts.code.mappet.triggers.MappetTrigger;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
 
@@ -229,4 +230,20 @@ public interface IMappetBlockRegion
      * @return the on tick trigger
      */
     MappetTrigger getOnTickTrigger();
+
+    /**
+     * Gets the condition of the region block.
+     *
+     * <pre>{@code
+     * var regionBlock = c.getWorld().getRegionBlock(0, 4, 0);
+     * var regionConditionStateBlock = regionBlock.getCondition().addStateBlock();
+     * regionConditionStateBlock.setTargetMode("global");
+     * regionConditionStateBlock.setStateKey("can_pass");
+     * regionConditionStateBlock.setComparator("==");
+     * regionConditionStateBlock.setComparisonValue(1);
+     * }</pre>
+     *
+     * @return the condition
+     */
+    MappetCondition getCondition();
 }

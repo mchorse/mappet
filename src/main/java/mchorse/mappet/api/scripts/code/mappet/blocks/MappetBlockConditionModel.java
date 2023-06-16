@@ -7,6 +7,7 @@ import mchorse.mappet.api.scripts.user.IScriptWorld;
 import mchorse.mappet.api.scripts.user.mappet.blocks.IMappetBlockConditionModel;
 import mchorse.mappet.tile.TileConditionModel;
 import mchorse.mappet.utils.ConditionModel;
+import mchorse.mappet.utils.Utils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -17,9 +18,9 @@ import java.util.List;
 
 public class MappetBlockConditionModel implements IMappetBlockConditionModel
 {
-    private TileConditionModel conditionModelBlock;
+    public TileConditionModel conditionModelBlock;
     private List<ConditionModel> list = new ArrayList<>();
-    private TileEntityModelSettings settings;
+    public TileEntityModelSettings settings;
 
     public static MappetBlockConditionModel create()
     {
@@ -67,60 +68,6 @@ public class MappetBlockConditionModel implements IMappetBlockConditionModel
     }
 
     @Override
-    public MappetBlockConditionModel setGlobal(boolean isGlobal)
-    {
-        conditionModelBlock.isGlobal = isGlobal;
-        return this;
-    }
-
-    @Override
-    public MappetBlockConditionModel setShadow(boolean isShadow)
-    {
-        conditionModelBlock.isShadow = isShadow;
-        return this;
-    }
-
-    @Override
-    public MappetBlockConditionModel setFrequency(int frequency)
-    {
-        conditionModelBlock.frequency = frequency;
-        return this;
-    }
-
-    @Override
-    public MappetBlockConditionModel translate(double x, double y, double z)
-    {
-        this.settings.setX((float) x);
-        this.settings.setY((float) y);
-        this.settings.setZ((float) z);
-        return this;
-    }
-
-    @Override
-    public MappetBlockConditionModel rotate(double x, double y, double z)
-    {
-        this.settings.setRotateBody((float) x);
-        this.settings.setRotatePitch((float) y);
-        this.settings.setRotateYawHead((float) z);
-        return this;
-    }
-
-    @Override
-    public MappetBlockConditionModel scale(double x, double y, double z)
-    {
-        this.settings.setSx((float) x);
-        this.settings.setSy((float) y);
-        this.settings.setSz((float) z);
-        return this;
-    }
-
-    @Override
-    public MappetBlockConditionModel scale(double xyz)
-    {
-        return this.scale(xyz, xyz, xyz);
-    }
-
-    @Override
     public MappetBlockConditionModel addModel(AbstractMorph morph, MappetCondition condition)
     {
         ConditionModel model = new ConditionModel();
@@ -128,6 +75,7 @@ public class MappetBlockConditionModel implements IMappetBlockConditionModel
         model.checker = condition.checker;
 
         this.list.add(model);
+        Utils.sendModelUpdatePacket( this.conditionModelBlock);
         return this;
     }
 
@@ -136,6 +84,7 @@ public class MappetBlockConditionModel implements IMappetBlockConditionModel
     public MappetBlockConditionModel removeModel(AbstractMorph morph)
     {
         this.conditionModelBlock.list.removeIf(model -> model.morph.equals(morph));
+        Utils.sendModelUpdatePacket( this.conditionModelBlock);
         return this;
     }
 
@@ -143,7 +92,13 @@ public class MappetBlockConditionModel implements IMappetBlockConditionModel
     public MappetBlockConditionModel clearModels()
     {
         this.conditionModelBlock.list.clear();
+        Utils.sendModelUpdatePacket( this.conditionModelBlock);
         return this;
     }
 
+    @Override
+    public MappetModelSettings getSettings()
+    {
+        return new MappetModelSettings(this);
+    }
 }

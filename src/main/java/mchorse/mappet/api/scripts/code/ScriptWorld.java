@@ -18,6 +18,7 @@ import mchorse.mappet.api.scripts.code.entities.ScriptEntity;
 import mchorse.mappet.api.scripts.code.entities.ScriptNpc;
 import mchorse.mappet.api.scripts.code.items.ScriptInventory;
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
+import mchorse.mappet.api.scripts.code.mappet.blocks.MappetBlockBBModel;
 import mchorse.mappet.api.scripts.code.mappet.blocks.MappetBlockConditionModel;
 import mchorse.mappet.api.scripts.code.mappet.blocks.MappetBlockRegion;
 import mchorse.mappet.api.scripts.code.mappet.MappetSchematic;
@@ -661,6 +662,7 @@ public class ScriptWorld implements IScriptWorld
         }
     }
 
+    @Deprecated //see `getBBModelBlock(x, y, z)`
     @Override
     public void setModelBlockMorph(String nbt, int x, int y, int z, boolean force)
     {
@@ -675,6 +677,7 @@ public class ScriptWorld implements IScriptWorld
         }
     }
 
+    @Deprecated //see `getBBModelBlock(x, y, z)`
     @Optional.Method(modid = "blockbuster")
     private void setModelBlockMorphBlockbuster(String nbt, int x, int y, int z, boolean force)
     {
@@ -708,6 +711,7 @@ public class ScriptWorld implements IScriptWorld
         }
     }
 
+    @Deprecated //see `getBBModelBlock(x, y, z)`
     @Override
     public void setModelBlockEnabled(int x, int y, int z, boolean enabled)
     {
@@ -722,6 +726,7 @@ public class ScriptWorld implements IScriptWorld
         }
     }
 
+    @Deprecated //see `getBBModelBlock(x, y, z)`
     @Optional.Method(modid = "blockbuster")
     private void setModelBlockEnabledBlockbuster(int x, int y, int z, boolean enabled)
     {
@@ -745,6 +750,7 @@ public class ScriptWorld implements IScriptWorld
         }
     }
 
+    @Deprecated //see `getBBModelBlock(x, y, z)`
     @Override
     public boolean isModelBlockEnabled(int x, int y, int z)
     {
@@ -761,6 +767,7 @@ public class ScriptWorld implements IScriptWorld
         return false;
     }
 
+    @Deprecated //see `getBBModelBlock(x, y, z)`
     @Optional.Method(modid = "blockbuster")
     private boolean isModelBlockEnabledBlockbuster(int x, int y, int z)
     {
@@ -1267,5 +1274,11 @@ public class ScriptWorld implements IScriptWorld
     public MappetBlockConditionModel getConditionBlock(int x, int y, int z)
     {
         return new MappetBlockConditionModel(this.world, new BlockPos(x, y, z));
+    }
+
+    @Override
+    public MappetBlockBBModel getBBModelBlock(int x, int y, int z)
+    {
+        return new MappetBlockBBModel(this.world, new BlockPos(x, y, z));
     }
 }

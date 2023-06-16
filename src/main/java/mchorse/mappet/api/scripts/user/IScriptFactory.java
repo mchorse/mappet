@@ -1,7 +1,9 @@
 package mchorse.mappet.api.scripts.user;
 
+import mchorse.mappet.api.scripts.code.mappet.blocks.MappetBlockBBModel;
 import mchorse.mappet.api.scripts.code.mappet.blocks.MappetBlockConditionModel;
 import mchorse.mappet.api.scripts.code.mappet.blocks.MappetBlockRegion;
+import mchorse.mappet.api.scripts.code.mappet.blocks.MappetModelSettings;
 import mchorse.mappet.api.scripts.code.mappet.conditions.MappetCondition;
 import mchorse.mappet.api.scripts.code.mappet.triggers.MappetTrigger;
 import mchorse.mappet.api.scripts.user.blocks.IScriptBlockState;
@@ -849,8 +851,8 @@ public interface IScriptFactory
      * Creates a region block instance that can be manipulated programmatically.
      *
      * <pre>{@code
-     *   var regionBlock = mappet.createRegionBlock();
-     *   regionBlock.place(c.getWorld(), 0, 4, 0);
+     * var regionBlock = mappet.createRegionBlock();
+     * regionBlock.place(c.getWorld(), 0, 4, 0);
      * }</pre>
      *
      * @return region block instance
@@ -861,8 +863,9 @@ public interface IScriptFactory
      * Creates a condition block instance that can be manipulated programmatically.
      *
      * <pre>{@code
-     *   var conditionBlock = mappet.createConditionBlock();
-     *   conditionBlock.place(c.getWorld(), 0, 4, 0);
+     * var conditionBlock = mappet.createConditionBlock();
+     * //do something with the condition block...
+     * conditionBlock.place(c.getWorld(), 0, 4, 0);
      * }</pre>
      *
      * @return condition block instance
@@ -870,27 +873,67 @@ public interface IScriptFactory
     MappetBlockConditionModel createConditionBlock();
 
     /**
+     * Creats a Block Buster model block instance that can be manipulated programmatically.
+     *
+     * <pre>{@code
+     * var bbModelBlock = mappet.createBBModelBlock();
+     * //do something with the model block...
+     * bbModelBlock.place(c.getWorld(), 0, 4, 0);
+     * }</pre>
+     *
+     * @return Block Buster model block instance
+     */
+    MappetBlockBBModel createBBModelBlock();
+
+    /**
      * Creates a trigger instance that can be manipulated programmatically.
      *
      * <pre>{@code
+     * // This example creates and puts a trigger in region block's `on enter trigger` and `on exit trigger`
+     * var trigger = mappet.createTrigger()
+     *     .addCommandBlock()
+     *     .set("/say @s you are on the region block limits!");
      *
-     * @return
+     * var regionBlock = c.getWorld().getRegionBlock(0, 4, 0);
+     *
+     * regionBlock.getOnEnterTrigger().set(trigger);
+     * regionBlock.getOnExitTrigger().set(trigger);
+     *
+     * @return trigger instance
      */
-    public MappetTrigger createTrigger();
+    MappetTrigger createTrigger();
 
     /**
      * Creates a condition instance that can be manipulated programmatically.
      *
      * <pre>{@code
-     *   var condition = mappet.createCondition();
-     *   condition.setExpression("1==1");
+     * var condition = mappet.createCondition();
+     * condition.setExpression("1==1");
      *
-     *   var conditionBlock = mappet.createConditionBlock();
-     *   conditionBlock.addModel(mappet.createMorph("{Name:\"blockbuster.alex\"}", condition));
-     *   conditionBlock.place(c.getWorld(), 0, 4, 0);
+     * var conditionBlock = mappet.createConditionBlock();
+     * conditionBlock.addModel(mappet.createMorph("{Name:\"blockbuster.alex\"}", condition));
+     * conditionBlock.place(c.getWorld(), 0, 4, 0);
      * }</pre>
      *
      * @return condition instance
      */
     MappetCondition createCondition();
+
+    /**
+     * Creates a model settings instance that can be manipulated programmatically.
+     *
+     * <pre>{@code
+     * var world = c.getWorld();
+     * var settings = mappet.createModelSettings()
+     *     .setEnabled(true)
+     *     .setShadowEnabled(false)
+     *     .setGlobalEnabled(true)
+     *
+     * world.getConditionBlock(0, 4, 0).getSettings().set(settings);
+     * world.getConditionBlock(0, 5, 0).getSettings().set(settings);
+     * }</pre>
+     *
+     * @return model instance
+     */
+    MappetModelSettings createModelSettings();
 }

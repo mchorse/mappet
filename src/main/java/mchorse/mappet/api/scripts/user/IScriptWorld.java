@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts.user;
 
+import mchorse.mappet.api.scripts.code.mappet.blocks.MappetBlockBBModel;
 import mchorse.mappet.api.scripts.code.mappet.blocks.MappetBlockConditionModel;
 import mchorse.mappet.api.scripts.code.mappet.blocks.MappetBlockRegion;
 import mchorse.mappet.api.scripts.code.mappet.MappetSchematic;
@@ -1124,4 +1125,24 @@ public interface IScriptWorld
      * @return Condition block at given coordinates.
      */
     public MappetBlockConditionModel getConditionBlock(int x, int y, int z);
+
+    /**
+     * Gets the Blockbuster model block at given coordinates to be edited programmatically.
+     *
+     * <pre>{@code
+     * function main(c)
+     * {
+     *     var bbModelBlock = c.getWorld().getBBModelBlock(-127, 88, 129);
+     *
+     *     var morph = mappet.createMorph("{Name:\"blockbuster.alex\"}");
+     *     bbModelBlock.setMorph(morph);
+     * }
+     * }</pre>
+     *
+     * @param x X coordinate of the model block.
+     * @param y Y coordinate of the model block.
+     * @param z Z coordinate of the model block.
+     * @return Blockbuster model block at given coordinates.
+     */
+    public MappetBlockBBModel getBBModelBlock(int x, int y, int z);
 }

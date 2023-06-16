@@ -62,7 +62,10 @@ public class MappetBlockRegion implements IMappetBlockRegion
 
         if (mcWorld.getBlockState(pos).getBlock() == Mappet.regionBlock)
         {
-            mcWorld.setTileEntity(pos, this.regionBlock);
+            TileRegion tileRegion = (TileRegion) mcWorld.getTileEntity(pos);
+            mcWorld.setTileEntity(pos, tileRegion);
+            tileRegion.markDirty();
+            this.regionBlock = tileRegion;
         }
 
         return this;
@@ -166,6 +169,7 @@ public class MappetBlockRegion implements IMappetBlockRegion
         return new MappetTrigger(this.regionBlock.region.onTick);
     }
 
+    @Override
     public MappetCondition getCondition()
     {
         return new MappetCondition(this.regionBlock.region.enabled);

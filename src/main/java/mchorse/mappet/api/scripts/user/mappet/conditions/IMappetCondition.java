@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts.user.mappet.conditions;
 
+import mchorse.mappet.api.scripts.code.mappet.conditions.MappetCondition;
 import mchorse.mappet.api.scripts.code.mappet.conditions.MappetConditionBlock;
 import mchorse.mappet.api.scripts.code.mappet.conditions.conditionBlocks.MappetConditionBlockExpression;
 import mchorse.mappet.api.scripts.code.mappet.conditions.conditionBlocks.MappetConditionBlockState;
@@ -11,6 +12,24 @@ import java.util.List;
  */
 public interface IMappetCondition
 {
+    /**
+     * Sets the Minecraft condition from the given condition. (copy)
+     *
+     * <pre>{@code
+     * // This example copies the region block's condition to another region block
+     * var world = c.getWorld();
+     * var regionBlock1 = world.getRegionBlock(0, 4, 0);
+     * var regionBlock2 = world.getRegionBlock(0, 5, 0);
+     * var regionBlock1Condition = regionBlock1.getCondition();
+     * var regionBlock2Condition = regionBlock2.getCondition();
+     * regionBlock2Condition.set(regionBlock1Condition);
+     * }</pre>
+     *
+     * @param condition condition to copy
+     * @return the condition instance
+     */
+    MappetCondition set(MappetCondition condition);
+
     /**
      * Set the expression for this condition
      *

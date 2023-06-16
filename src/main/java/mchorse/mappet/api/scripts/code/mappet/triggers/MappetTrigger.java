@@ -30,6 +30,13 @@ public class MappetTrigger implements IMappetTrigger
     }
 
     @Override
+    public MappetTrigger set(MappetTrigger trigger)
+    {
+        this.blocks = trigger.blocks;
+        return this;
+    }
+
+    @Override
     public List<MappetTriggerBlock> getAllBlocks()
     {
         List<MappetTriggerBlock> allTriggerBlocks = new ArrayList<>();
