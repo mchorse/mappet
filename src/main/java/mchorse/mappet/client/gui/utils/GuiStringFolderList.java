@@ -255,15 +255,21 @@ public class GuiStringFolderList extends GuiStringListElement
     }
 
     @Override
-    protected boolean sortElements() {
+    protected boolean sortElements()
+    {
         this.list.sort((p1, p2) ->
         {
-            int isP1Folder = p1.endsWith("/") ? 1 : 0;
-            int isP2Folder = p2.endsWith("/") ? 1 : 0;
-            int isP1Back = p1.equals("../") ? Integer.MAX_VALUE : 0;
-            int isP2Back = p2.equals("../") ? Integer.MAX_VALUE : 0;
-            return (isP2Folder + isP2Back) - (isP1Folder + isP1Back);
+            int isP1Folder = p1.equals("../") ? Integer.MAX_VALUE : p1.endsWith("/") ? 1 : 0;
+            int isP2Folder = p2.equals("../") ? Integer.MAX_VALUE : p2.endsWith("/") ? 1 : 0;
+
+            if (isP1Folder == isP2Folder)
+            {
+                return p1.compareTo(p2);
+            }
+
+            return (isP2Folder) - (isP1Folder);
         });
+
         return true;
     }
 }
