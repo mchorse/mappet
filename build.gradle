@@ -335,3 +335,11 @@ task copyLangStrings {
         print("Done!")
     }
 }
+
+tasks.register('openBuiltJarsDir', Exec) {
+    group = 'build'
+    description = 'Opens the build/libs directory in Explorer'
+
+    commandLine "cmd", "/c", "explorer ${projectDir}\\build\\libs"
+    ignoreExitValue true
+}
