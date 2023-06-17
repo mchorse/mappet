@@ -5,10 +5,11 @@ import mchorse.blockbuster.network.common.PacketModifyModelBlock;
 import mchorse.mappet.network.common.blocks.PacketEditConditionModel;
 import mchorse.mappet.tile.TileConditionModel;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.BlockPos;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+
+import static mchorse.mappet.network.Dispatcher.DISPATCHER;
 
 public class Utils
 {
@@ -28,14 +29,14 @@ public class Utils
             {
                 TileEntityModel bbModelBlock = (TileEntityModel) modelBlock;
                 PacketModifyModelBlock message = new PacketModifyModelBlock(bbModelBlock.getPos(), bbModelBlock, true);
-                mchorse.blockbuster.network.Dispatcher.DISPATCHER.get().sendToAll(message);
+                DISPATCHER.get().sendToAll(message);
             }
             else if (modelBlock instanceof TileConditionModel)
             {
                 TileConditionModel conditionModelBlock = (TileConditionModel) modelBlock;
                 NBTTagCompound tag = new NBTTagCompound();
                 PacketEditConditionModel message = new PacketEditConditionModel(conditionModelBlock.getPos(), conditionModelBlock.toNBT(tag));
-                mchorse.blockbuster.network.Dispatcher.DISPATCHER.get().sendToAll(message);
+                DISPATCHER.get().sendToAll(message);
             }
             else
             {
