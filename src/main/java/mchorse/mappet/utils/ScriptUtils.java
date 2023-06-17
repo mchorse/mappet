@@ -5,7 +5,6 @@ import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import javax.script.Bindings;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
-import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
 import java.lang.reflect.Field;
 import java.util.List;
@@ -22,7 +21,18 @@ public class ScriptUtils
     {
         return getManager().getEngineFactories().stream()
                 .filter(factory -> !factory.getExtensions().contains("scala"))
-                .map(ScriptEngineFactory::getScriptEngine)
+                .map(factory ->
+                {
+                    try
+                    {
+                        return factory.getScriptEngine();
+                    }
+                    catch (Exception | NoClassDefFoundError ignored)
+                    {
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 
