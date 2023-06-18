@@ -149,6 +149,11 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
         }
 
         this.entity.setPositionAndUpdate(x, y, z);
+        //fix if multiple players were teleported to same position, they appear bugged to each other:
+        if (this.entity instanceof EntityPlayerMP)
+        {
+            ((EntityPlayerMP)entity).connection.setPlayerLocation(x, y, z, entity.rotationYaw, entity.rotationPitch);
+        }
     }
 
     @Override
