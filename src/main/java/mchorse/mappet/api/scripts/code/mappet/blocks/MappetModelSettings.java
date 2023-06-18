@@ -1,11 +1,8 @@
 package mchorse.mappet.api.scripts.code.mappet.blocks;
 
-import mchorse.blockbuster.common.tileentity.TileEntityModel;
 import mchorse.blockbuster.common.tileentity.TileEntityModelSettings;
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
 import mchorse.mappet.api.scripts.user.mappet.blocks.IMappetModelSettings;
-import mchorse.mappet.tile.TileConditionModel;
-import mchorse.mappet.utils.Utils;
 
 public class MappetModelSettings implements IMappetModelSettings {
     protected TileEntityModelSettings settings;
@@ -44,7 +41,6 @@ public class MappetModelSettings implements IMappetModelSettings {
         this.settings.setX((float) x);
         this.settings.setY((float) y);
         this.settings.setZ((float) z);
-        sendModelUpdatePacket();
         return this;
     }
 
@@ -54,7 +50,6 @@ public class MappetModelSettings implements IMappetModelSettings {
         this.settings.setSx((float) x);
         this.settings.setSy((float) y);
         this.settings.setSz((float) z);
-        sendModelUpdatePacket();
         return this;
     }
 
@@ -70,7 +65,6 @@ public class MappetModelSettings implements IMappetModelSettings {
         this.settings.setRotateBody((float) x);
         this.settings.setRotatePitch((float) y);
         this.settings.setRotateYawHead((float) z);
-        sendModelUpdatePacket();
         return this;
     }
 
@@ -80,7 +74,6 @@ public class MappetModelSettings implements IMappetModelSettings {
         this.settings.setRx((float) x);
         this.settings.setRy((float) y);
         this.settings.setRz((float) z);
-        sendModelUpdatePacket();
         return this;
     }
 
@@ -88,14 +81,12 @@ public class MappetModelSettings implements IMappetModelSettings {
     public MappetModelSettings setEnabled(boolean enabled)
     {
         this.settings.setEnabled(enabled);
-        sendModelUpdatePacket();
         return this;
     }
 
     @Override
     public MappetModelSettings setGlobalEnabled(boolean enabled) {
         this.settings.setGlobal(enabled);
-        sendModelUpdatePacket();
         return this;
     }
 
@@ -103,7 +94,6 @@ public class MappetModelSettings implements IMappetModelSettings {
     public MappetModelSettings setShadowEnabled(boolean enabled)
     {
         this.settings.setShadow(enabled);
-        sendModelUpdatePacket();
         return this;
     }
 
@@ -111,7 +101,6 @@ public class MappetModelSettings implements IMappetModelSettings {
     public MappetModelSettings setBlockHitboxEnabled(boolean enabled)
     {
         this.settings.setEnableBlockHitbox(enabled);
-        sendModelUpdatePacket();
         return this;
     }
 
@@ -119,7 +108,6 @@ public class MappetModelSettings implements IMappetModelSettings {
     public MappetModelSettings setRenderAlwaysEnabled(boolean enabled)
     {
         this.settings.setRenderAlways(enabled);
-        sendModelUpdatePacket();
         return this;
     }
 
@@ -127,7 +115,6 @@ public class MappetModelSettings implements IMappetModelSettings {
     public MappetModelSettings setRenderLastEnabled(boolean enabled)
     {
         this.settings.setRenderLast(enabled);
-        sendModelUpdatePacket();
         return this;
     }
 
@@ -135,7 +122,6 @@ public class MappetModelSettings implements IMappetModelSettings {
     public MappetModelSettings setLightValue(int value)
     {
         this.settings.setLightValue(value);
-        sendModelUpdatePacket();
         return this;
     }
 
@@ -143,7 +129,6 @@ public class MappetModelSettings implements IMappetModelSettings {
     public MappetModelSettings setSlot(ScriptItemStack item, int slot)
     {
         this.settings.setSlot(item.getMinecraftItemStack(), slot);
-        sendModelUpdatePacket();
         return this;
     }
 
@@ -151,20 +136,6 @@ public class MappetModelSettings implements IMappetModelSettings {
     public MappetModelSettings set(MappetModelSettings source)
     {
         this.settings.copy(source.settings);
-        sendModelUpdatePacket();
         return this;
-    }
-
-    private void sendModelUpdatePacket(){
-        if (this.modelBlock instanceof MappetBlockBBModel)
-        {
-            TileEntityModel model = ((MappetBlockBBModel) this.modelBlock).bbModelBlock;
-            Utils.sendModelUpdatePacket(model);
-        }
-        else if (this.modelBlock instanceof MappetBlockConditionModel)
-        {
-            TileConditionModel model = ((MappetBlockConditionModel) this.modelBlock).conditionModelBlock;
-            Utils.sendModelUpdatePacket(model);
-        }
     }
 }

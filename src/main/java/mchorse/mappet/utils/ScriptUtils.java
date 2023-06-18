@@ -1,6 +1,18 @@
 package mchorse.mappet.utils;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import mchorse.blockbuster.common.tileentity.TileEntityModel;
+import mchorse.blockbuster.network.common.PacketModifyModelBlock;
+import mchorse.mappet.network.common.blocks.PacketEditConditionModel;
+import mchorse.mappet.network.common.blocks.PacketEditRegion;
+import mchorse.mappet.tile.TileConditionModel;
+import mchorse.mappet.tile.TileRegion;
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import javax.script.Bindings;
 import javax.script.ScriptContext;
@@ -9,9 +21,12 @@ import javax.script.ScriptEngineManager;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import static mchorse.mappet.network.Dispatcher.DISPATCHER;
 
 public class ScriptUtils
 {
@@ -153,5 +168,91 @@ public class ScriptUtils
         scriptContent = adjustedScript.toString().trim(); // Removing trailing new line
 
         return scriptContent;
+    }
+
+    /* MappetBlock- */
+
+    /**
+     * This method sends the packet informing about the model block update
+     */
+    public static <T> void sendTileUpdatePacket(T tile)
+    {
+        try
+        {
+            if (tile instanceof TileEntityModel)
+            {
+                TileEntityModel bbModelBlock = (TileEntityModel) tile;
+                PacketModifyModelBlock message = new PacketModifyModelBlock(bbModelBlock.getPos(), bbModelBlock, true);
+                DISPATCHER.get().sendToAll(message);
+            }
+            else if (tile instanceof TileConditionModel)
+            {
+                TileConditionModel conditionModelBlock = (TileConditionModel) tile;
+                NBTTagCompound tag = new NBTTagCompound();
+                PacketEditConditionModel message = new PacketEditConditionModel(conditionModelBlock.getPos(), conditionModelBlock.toNBT(tag));
+                DISPATCHER.get().sendToAll(message);
+            }
+            else if (tile instanceof TileRegion)
+            {
+                TileRegion region = (TileRegion) tile;
+                NBTTagCompound tag = new NBTTagCompound();
+                PacketEditRegion message = new PacketEditRegion(region.getPos(), region.region.serializeNBT());
+                DISPATCHER.get().sendToAll(message);
+            }
+            else
+            {
+                throw new IllegalArgumentException("Invalid tile type");
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * This interface provides a mechanism to perform post-placement operations on a TileEntity.
+     *
+     * @param <T> The type of TileEntity on which to perform operations.
+     */
+    public interface PostPlace<T extends TileEntity> {
+        /**
+         * Apply operation to the given TileEntity.
+         *
+         * @param tileEntity The TileEntity on which to perform operations.
+         */
+        void apply(T tileEntity);
+    }
+
+    /**
+     * Places a block of type T at a given position and performs post-placement operations on the associated TileEntity.
+     *
+     * @param <T> The type of Block to be placed.
+     * @param <U> The type of TileEntity associated with the block.
+     * @param <V> The return type of the method.
+     * @param mcWorld The Minecraft world where the block is to be placed.
+     * @param pos The position where the block is to be placed.
+     * @param blockType The type of block to place.
+     * @param tileEntityType The type of TileEntity associated with the block.
+     * @param postPlace An instance of the PostPlace interface to perform operations on the TileEntity after the block is placed.
+     * @param returnVal A Supplier functional interface instance that supplies the return value of the method.
+     * @return Returns a value of type V, supplied by the returnVal parameter.
+     */
+    public static <T extends Block, U extends TileEntity, V> V place(World mcWorld, BlockPos pos, T blockType, Class<U> tileEntityType, PostPlace<U> postPlace, Supplier<V> returnVal) {
+        if (mcWorld.getBlockState(pos).getBlock() != Blocks.AIR) {
+            mcWorld.setBlockState(pos, Blocks.AIR.getDefaultState(), 2 | 4);
+        }
+
+        mcWorld.setBlockState(pos, blockType.getDefaultState(), 2 | 4);
+
+        if (mcWorld.getBlockState(pos).getBlock() == blockType) {
+            U tileEntity = tileEntityType.cast(mcWorld.getTileEntity(pos));
+            if (tileEntity != null) {
+                postPlace.apply(tileEntity);
+                tileEntity.markDirty();
+            }
+        }
+
+        return returnVal.get();
     }
 }

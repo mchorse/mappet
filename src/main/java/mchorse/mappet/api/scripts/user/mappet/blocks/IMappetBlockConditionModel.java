@@ -60,6 +60,18 @@ public interface IMappetBlockConditionModel
      */
     MappetBlockConditionModel place(IScriptWorld world, int x, int y, int z);
 
+    /**
+     * Notifies all client about all changes.
+     *
+     * <pre>{@code
+     * var conditionBlock = c.getWorld().getConditionBlock(0, 4, 0);
+     * // do something with the condition block...
+     * conditionBlock.notifyUpdate();
+     * }</pre>
+     *
+     * @return this condition model block instance
+     */
+    MappetBlockConditionModel notifyUpdate();
 
     /**
      * Adds a model to this condition model block.
@@ -102,7 +114,8 @@ public interface IMappetBlockConditionModel
      *
      * <pre>{@code
      * var conditionBlock = c.getWorld().getConditionBlock(0, 4, 0);
-     * conditionBlock.removeModel(mappet.createMorph("{Name:\"blockbuster.alex\"}"))
+     * conditionBlock.removeModel(mappet.createMorph("{Name:\"blockbuster.alex\"}"));
+     * conditionBlock.notifyUpdate();
      * }</pre>
      *
      * @param morph morph to remove
@@ -116,6 +129,7 @@ public interface IMappetBlockConditionModel
      * <pre>{@code
      * var conditionBlock = c.getWorld().getConditionBlock(0, 4, 0);
      * conditionBlock.clearModels();
+     * conditionBlock.notifyUpdate();
      * }</pre>
      *
      * @return this condition model block instance
@@ -131,6 +145,7 @@ public interface IMappetBlockConditionModel
      *     .setGlobalEnabled(true)
      *     .setShadowEnabled(false)
      *     .scale(1, 0.1, 1);
+     * conditionBlock.notifyUpdate();
      * }</pre>
      *
      * @return condition model block settings

@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts.user.mappet.blocks;
 
+import mchorse.mappet.api.scripts.code.mappet.blocks.MappetBlockRegion;
 import mchorse.mappet.api.scripts.code.mappet.conditions.MappetCondition;
 import mchorse.mappet.api.scripts.code.mappet.triggers.MappetTrigger;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
@@ -30,17 +31,17 @@ import mchorse.mappet.api.scripts.user.IScriptWorld;
 public interface IMappetBlockRegion
 {
     /**
-     * Sets whether the region block is passable.
+     * Notifies all client about all changes.
      *
      * <pre>{@code
      * var regionBlock = c.getWorld().getRegionBlock(0, 4, 0);
-     * regionBlock.setPassable(true);
+     * //do something with the region block...
+     * regionBlock.notifyUpdate();
      * }</pre>
      *
-     * @param isPassable whether the region block is passable
-     * @return this
+     * @return this region block instance
      */
-    IMappetBlockRegion setPassable(boolean isPassable);
+    MappetBlockRegion notifyUpdate();
 
     /**
      * Places the region block at the given coordinates.
@@ -59,11 +60,26 @@ public interface IMappetBlockRegion
     IMappetBlockRegion place(IScriptWorld world, int x, int y, int z);
 
     /**
+     * Sets whether the region block is passable.
+     *
+     * <pre>{@code
+     * var regionBlock = c.getWorld().getRegionBlock(0, 4, 0);
+     * regionBlock.setPassable(true);
+     * regionBlock.notifyUpdate();
+     * }</pre>
+     *
+     * @param isPassable whether the region block is passable
+     * @return this
+     */
+    IMappetBlockRegion setPassable(boolean isPassable);
+
+    /**
      * Sets whether the region block should check entities.
      *
      * <pre>{@code
      * var regionBlock = c.getWorld().getRegionBlock(0, 4, 0);
      * regionBlock.setCheckEntities(true);
+     * regionBlock.notifyUpdate();
      * }</pre>
      * @param checkEntities whether the region block should check entities
      * @return this
@@ -76,6 +92,7 @@ public interface IMappetBlockRegion
      * <pre>{@code
      * var regionBlock = c.getWorld().getRegionBlock(0, 4, 0);
      * regionBlock.setDelay(20);
+     * regionBlock.notifyUpdate();
      * }</pre>
      * @param delay the delay
      * @return this
@@ -88,6 +105,7 @@ public interface IMappetBlockRegion
      * <pre>{@code
      * var regionBlock = c.getWorld().getRegionBlock(0, 4, 0);
      * regionBlock.setUpdateFrequency(1);
+     * regionBlock.notifyUpdate();
      * }</pre>
      *
      * @param frequency the update frequency
@@ -100,6 +118,7 @@ public interface IMappetBlockRegion
      * <pre>{@code
      * var regionBlock = c.getWorld().getRegionBlock(0, 4, 0);
      * regionBlock.addBoxShape(1, 1, 1, 0, 0, 0);
+     * regionBlock.notifyUpdate();
      * }</pre>
      *
      * @param offsetZ the z offset
@@ -117,6 +136,7 @@ public interface IMappetBlockRegion
      * <pre>{@code
      * var regionBlock = c.getWorld().getRegionBlock(0, 4, 0);
      * regionBlock.addBoxShape(1, 1, 1);
+     * regionBlock.notifyUpdate();
      * }</pre>
      *
      * @param halfSizeX half the size of the x axis
@@ -131,6 +151,7 @@ public interface IMappetBlockRegion
      * <pre>{@code
      * var regionBlock = c.getWorld().getRegionBlock(0, 4, 0);
      * regionBlock.addSphereShape(1, 1);
+     * regionBlock.notifyUpdate();
      * }</pre>
      *
      * @param horizontalRadius the horizontal radius of the sphere
@@ -144,6 +165,7 @@ public interface IMappetBlockRegion
      * <pre>{@code
      * var regionBlock = c.getWorld().getRegionBlock(0, 4, 0);
      * regionBlock.addSphereShape(1, 1, 0, 0, 0);
+     * regionBlock.notifyUpdate();
      * }</pre>
      *
      * @param horizontalRadius the horizontal radius of the sphere
@@ -160,6 +182,7 @@ public interface IMappetBlockRegion
      * <pre>{@code
      * var regionBlock = c.getWorld().getRegionBlock(0, 4, 0);
      * regionBlock.addCylinderShape(1, 1, 0, 0, 0);
+     * regionBlock.notifyUpdate();
      * }</pre>
      *
      * @param radius the radius of the cylinder
@@ -176,6 +199,7 @@ public interface IMappetBlockRegion
      * <pre>{@code
      * var regionBlock = c.getWorld().getRegionBlock(0, 4, 0);
      * regionBlock.addCylinderShape(1, 1);
+     * regionBlock.notifyUpdate();
      * }</pre>
      *
      * @param radius the radius of the cylinder
@@ -193,6 +217,7 @@ public interface IMappetBlockRegion
      * scriptTriggerBlock.setInlineCode(function() {
      *     c.getSubject().send("You entered the region!");
      * });
+     * regionBlock.notifyUpdate();
      * }</pre>
      *
      * @return the on enter trigger
@@ -209,6 +234,7 @@ public interface IMappetBlockRegion
      * scriptTriggerBlock.setInlineCode(function() {
      *     c.getSubject().send("You left the region!");
      * });
+     * regionBlock.notifyUpdate();
      * }</pre>
      *
      * @return the on exit trigger
@@ -225,6 +251,7 @@ public interface IMappetBlockRegion
      * scriptTriggerBlock.setInlineCode(function() {
      *     c.getSubject().send("You are in the region!");
      * });
+     * regionBlock.notifyUpdate();
      * }</pre>
      *
      * @return the on tick trigger
@@ -236,11 +263,14 @@ public interface IMappetBlockRegion
      *
      * <pre>{@code
      * var regionBlock = c.getWorld().getRegionBlock(0, 4, 0);
-     * var regionConditionStateBlock = regionBlock.getCondition().addStateBlock();
-     * regionConditionStateBlock.setTargetMode("global");
-     * regionConditionStateBlock.setStateKey("can_pass");
-     * regionConditionStateBlock.setComparator("==");
-     * regionConditionStateBlock.setComparisonValue(1);
+     *
+     * regionBlock.getCondition().addStateBlock()
+     * .setTargetMode("global")
+     * .setStateKey("can_pass")
+     * .setComparator("==")
+     * .setComparisonValue(1);
+     *
+     * regionBlock.notifyUpdate();
      * }</pre>
      *
      * @return the condition

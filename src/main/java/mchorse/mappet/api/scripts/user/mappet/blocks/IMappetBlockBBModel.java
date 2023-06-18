@@ -11,7 +11,7 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
  * <pre>{@code
  * function main(c)
  * {
- *     var bbBlock = mappet.createBBBlock();
+ *     var bbBlock = mappet.createBBModelBlock();
  *
  *     var bbBlockSettings = bbBlock.getSettings()
  *         .setGlobalEnabled(true)
@@ -43,6 +43,19 @@ public interface IMappetBlockBBModel {
      * @return this Blockbuster model block instance
      */
     MappetBlockBBModel place(IScriptWorld world, int x, int y, int z);
+
+    /**
+     * Notifies all client about all changes.
+     *
+     * <pre>{@code
+     * var bbBlock = c.getWorld().getBBModelBlock(-127, 75, 183);
+     * // do something with the BB block...
+     * bbBlock.notifyUpdate();
+     * }</pre>
+     *
+     * @return this Blockbuster model block instance
+     */
+    MappetBlockBBModel notifyUpdate();
 
     /**
      * Sets the morph to this Blockbuster model block.
@@ -89,6 +102,7 @@ public interface IMappetBlockBBModel {
      * <pre>{@code
      * var bbBlock = c.getWorld().getBBModelBlock(0, 4, 0);
      * bbBlock.clearMorph();
+     * bbBlock.notifyUpdate();
      * }</pre>
      *
      * @return this Blockbuster model block instance
@@ -104,6 +118,7 @@ public interface IMappetBlockBBModel {
      *     .setGlobalEnabled(true)
      *     .setShadowEnabled(false)
      *     .scale(1, 0.1, 1);
+     * bbBlock.notifyUpdate();
      * }</pre>
      *
      * @return Blockbuster model block settings

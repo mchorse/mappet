@@ -5,9 +5,8 @@ import mchorse.blockbuster.common.tileentity.TileEntityModel;
 import mchorse.blockbuster.common.tileentity.TileEntityModelSettings;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
 import mchorse.mappet.api.scripts.user.mappet.blocks.IMappetBlockBBModel;
-import mchorse.mappet.utils.Utils;
+import mchorse.mappet.utils.ScriptUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -36,24 +35,19 @@ public class MappetBlockBBModel implements IMappetBlockBBModel {
     @Override
     public MappetBlockBBModel place(IScriptWorld world, int x, int y, int z)
     {
-        BlockPos pos = new BlockPos(x, y, z);
-        World mcWorld = world.getMinecraftWorld();
+        return ScriptUtils.place(
+                world.getMinecraftWorld(),
+                new BlockPos(x, y, z),
+                Blockbuster.modelBlock,
+                TileEntityModel.class,
+                (TileEntityModel tileEntity) -> this.bbModelBlock = tileEntity,
+                () -> this);
+    }
 
-        if (mcWorld.getBlockState(pos).getBlock() != Blocks.AIR)
-        {
-            mcWorld.setBlockState(pos, Blocks.AIR.getDefaultState(), 2 | 4);
-        }
-
-        mcWorld.setBlockState(pos, Blockbuster.modelBlock.getDefaultState(), 2 | 4);
-
-        if (mcWorld.getBlockState(pos).getBlock() == Blockbuster.modelBlock)
-        {
-            TileEntityModel tileBBModel = (TileEntityModel) mcWorld.getTileEntity(pos);
-            mcWorld.setTileEntity(pos, tileBBModel);
-            tileBBModel.markDirty();
-            this.bbModelBlock = tileBBModel;
-        }
-
+    @Override
+    public MappetBlockBBModel notifyUpdate()
+    {
+        ScriptUtils.sendTileUpdatePacket(this.bbModelBlock);
         return this;
     }
 
@@ -61,7 +55,6 @@ public class MappetBlockBBModel implements IMappetBlockBBModel {
     public MappetBlockBBModel setMorph(AbstractMorph morph)
     {
         this.bbModelBlock.setMorph(morph);
-        Utils.sendModelUpdatePacket(this.bbModelBlock);
         return this;
     }
 
@@ -75,7 +68,6 @@ public class MappetBlockBBModel implements IMappetBlockBBModel {
     public MappetBlockBBModel clearMorph()
     {
         this.bbModelBlock.setMorph(null);
-        Utils.sendModelUpdatePacket(this.bbModelBlock);
         return this;
     }
 

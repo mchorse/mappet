@@ -7,9 +7,8 @@ import mchorse.mappet.api.scripts.user.IScriptWorld;
 import mchorse.mappet.api.scripts.user.mappet.blocks.IMappetBlockConditionModel;
 import mchorse.mappet.tile.TileConditionModel;
 import mchorse.mappet.utils.ConditionModel;
-import mchorse.mappet.utils.Utils;
+import mchorse.mappet.utils.ScriptUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -45,25 +44,22 @@ public class MappetBlockConditionModel implements IMappetBlockConditionModel
     @Override
     public MappetBlockConditionModel place(IScriptWorld world, int x, int y, int z)
     {
-        BlockPos pos = new BlockPos(x, y, z);
-        World mcWorld = world.getMinecraftWorld();
+        return ScriptUtils.place(
+                world.getMinecraftWorld(),
+                new BlockPos(x, y, z),
+                Mappet.conditionModelBlock,
+                TileConditionModel.class,
+                (TileConditionModel tileEntity) -> {
+                    tileEntity.list = this.list;
+                    this.conditionModelBlock = tileEntity;
+                },
+                () -> this);
+    }
 
-        if (mcWorld.getBlockState(pos).getBlock() != Blocks.AIR)
-        {
-            mcWorld.setBlockState(pos, Blocks.AIR.getDefaultState(), 2 | 4);
-        }
-
-        mcWorld.setBlockState(pos, Mappet.conditionModelBlock.getDefaultState(), 2 | 4);
-
-        if (mcWorld.getBlockState(pos).getBlock() == Mappet.conditionModelBlock)
-        {
-            TileConditionModel tileConditionModel = (TileConditionModel) mcWorld.getTileEntity(pos);
-            tileConditionModel.list = this.list;
-            mcWorld.setTileEntity(pos, tileConditionModel);
-            tileConditionModel.markDirty();
-            this.conditionModelBlock = tileConditionModel;
-        }
-
+    @Override
+    public MappetBlockConditionModel notifyUpdate()
+    {
+        ScriptUtils.sendTileUpdatePacket(this.conditionModelBlock);
         return this;
     }
 
@@ -75,7 +71,6 @@ public class MappetBlockConditionModel implements IMappetBlockConditionModel
         model.checker = condition.checker;
 
         this.list.add(model);
-        Utils.sendModelUpdatePacket( this.conditionModelBlock);
         return this;
     }
 
@@ -84,7 +79,6 @@ public class MappetBlockConditionModel implements IMappetBlockConditionModel
     public MappetBlockConditionModel removeModel(AbstractMorph morph)
     {
         this.conditionModelBlock.list.removeIf(model -> model.morph.equals(morph));
-        Utils.sendModelUpdatePacket( this.conditionModelBlock);
         return this;
     }
 
@@ -92,7 +86,6 @@ public class MappetBlockConditionModel implements IMappetBlockConditionModel
     public MappetBlockConditionModel clearModels()
     {
         this.conditionModelBlock.list.clear();
-        Utils.sendModelUpdatePacket( this.conditionModelBlock);
         return this;
     }
 

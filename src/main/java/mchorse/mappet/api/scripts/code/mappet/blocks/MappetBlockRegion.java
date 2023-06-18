@@ -9,7 +9,7 @@ import mchorse.mappet.api.scripts.code.mappet.triggers.MappetTrigger;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
 import mchorse.mappet.api.scripts.user.mappet.blocks.IMappetBlockRegion;
 import mchorse.mappet.tile.TileRegion;
-import net.minecraft.init.Blocks;
+import mchorse.mappet.utils.ScriptUtils;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -41,33 +41,31 @@ public class MappetBlockRegion implements IMappetBlockRegion
     }
 
     @Override
-    public MappetBlockRegion setPassable(boolean isPassable)
+    public MappetBlockRegion place(IScriptWorld world, int x, int y, int z)
     {
-        this.regionBlock.region.passable = isPassable;
+        return ScriptUtils.place(
+                world.getMinecraftWorld(),
+                new BlockPos(x, y, z),
+                Mappet.regionBlock,
+                TileRegion.class,
+                (TileRegion tileEntity) -> {
+                    tileEntity.region = this.regionBlock.region;
+                    this.regionBlock = tileEntity;
+                },
+                () -> this);
+    }
+
+    @Override
+    public MappetBlockRegion notifyUpdate()
+    {
+        ScriptUtils.sendTileUpdatePacket(this.regionBlock);
         return this;
     }
 
     @Override
-    public MappetBlockRegion place(IScriptWorld world, int x, int y, int z)
+    public MappetBlockRegion setPassable(boolean isPassable)
     {
-        BlockPos pos = new BlockPos(x, y, z);
-        World mcWorld = world.getMinecraftWorld();
-
-        if (mcWorld.getBlockState(pos).getBlock() != Blocks.AIR)
-        {
-            mcWorld.setBlockState(pos, Blocks.AIR.getDefaultState(), 2 | 4);
-        }
-
-        mcWorld.setBlockState(pos, Mappet.regionBlock.getDefaultState(), 2 | 4);
-
-        if (mcWorld.getBlockState(pos).getBlock() == Mappet.regionBlock)
-        {
-            TileRegion tileRegion = (TileRegion) mcWorld.getTileEntity(pos);
-            mcWorld.setTileEntity(pos, tileRegion);
-            tileRegion.markDirty();
-            this.regionBlock = tileRegion;
-        }
-
+        this.regionBlock.region.passable = isPassable;
         return this;
     }
 
