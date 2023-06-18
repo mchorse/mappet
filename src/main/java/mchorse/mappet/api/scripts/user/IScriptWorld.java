@@ -145,7 +145,7 @@ public interface IScriptWorld
      * Get tile entity at given XYZ.
      *
      * <pre>{@code
-     *    var tile = c.getWorld().getBlock(214, 3, 509);
+     *    var tile = c.getWorld().getTileEntity(214, 3, 509);
      *
      *    if (tile)
      *    {
