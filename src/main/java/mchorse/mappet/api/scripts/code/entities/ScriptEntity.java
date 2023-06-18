@@ -6,7 +6,6 @@ import mchorse.blockbuster.common.entity.EntityGunProjectile;
 import mchorse.blockbuster.network.common.PacketModifyActor;
 import mchorse.mappet.CommonProxy;
 import mchorse.mappet.Mappet;
-import mchorse.mappet.api.scripts.code.ScriptFactory;
 import mchorse.mappet.api.scripts.code.ScriptFancyWorld;
 import mchorse.mappet.api.scripts.code.ScriptRayTrace;
 import mchorse.mappet.api.scripts.code.ScriptWorld;
@@ -223,7 +222,14 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Override
     public ScriptVector getLook()
     {
-        return new ScriptVector(this.entity.getLookVec());
+        //this.entity.getLookVec() is not used because it does not work on entities that are not moving (but for players)
+        //after many tests, this is the best way to get the most accurate look vector for all entities, whether they are moving or not
+        float f1 = -((entity.rotationPitch) * ((float)Math.PI / 180F));
+        float f2 = (entity.getRotationYawHead() * ((float)Math.PI / 180F));
+        float f3 = -MathHelper.sin(f2);
+        float f4 = MathHelper.cos(f2);
+        float f6 = MathHelper.cos(f1);
+        return new ScriptVector(f3 * f6, this.entity.getLookVec().y, f4 * f6);
     }
 
     @Override
@@ -803,79 +809,80 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
         return new ScriptBox(aabb.minX, aabb.minY, aabb.minZ, aabb.maxX, aabb.maxY, aabb.maxZ);
     }
 
-    @Override
-    public IScriptEntity dropItem(int amount)
+    private ScriptEntityItem dropItemInternal(ItemStack itemStack)
     {
-        IScriptItemStack heldItemStack = this.getMainItem();
-
-        if (heldItemStack.getMinecraftItemStack().isEmpty())
+        if (itemStack.isEmpty())
         {
             return null;
         }
 
-        byte count = heldItemStack.serialize().getByte("Count");
+        EntityItem entityItem = new EntityItem(
+                this.entity.world,
+                this.getPosition().x,
+                this.getPosition().y + this.getEyeHeight(),
+                this.getPosition().z,
+                itemStack
+        );
+
+        entityItem.setPickupDelay(40);
+        if (this.isNpc())
+        {
+            entityItem.setThrower(((EntityNpc) this.entity).getId());
+        }
+        else
+        {
+            entityItem.setThrower(this.entity.getName());
+        }
+
+
+        entityItem.velocityChanged = true;
+        entityItem.addVelocity(getLook().x / 3, getLook().y / 3, getLook().z / 3);
+
+        if (this.entity.world.spawnEntity(entityItem))
+        {
+            return new ScriptEntityItem(entityItem);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    @Override
+    public ScriptEntityItem dropItem(int amount)
+    {
+        ItemStack heldItemStack = this.getMainItem().getMinecraftItemStack();
+
+        if (heldItemStack.isEmpty())
+        {
+            return null;
+        }
+
+        int count = heldItemStack.getCount();
 
         if (amount > count)
         {
             amount = count;
         }
 
-        IScriptEntity spawnedItemEntity = this.getWorld().dropItemStack(heldItemStack, this.entity.posX, this.entity.posY + this.entity.getEyeHeight(), this.entity.posZ);
-        INBTCompound spawnedItemFullData = spawnedItemEntity.getFullData();
-        spawnedItemFullData.setShort("PickupDelay", (short) 40);
-        spawnedItemFullData.getCompound("Item").setByte("Count", (byte) amount);
-        spawnedItemEntity.setFullData(spawnedItemFullData);
+        ItemStack droppedStack = heldItemStack.copy();
+        droppedStack.setCount(amount);
 
-        ScriptVector look = this.getLook();
-        spawnedItemEntity.addMotion(look.x / 3, look.y / 3, look.z / 3);
+        heldItemStack.shrink(amount);
 
-        String heldItemStackData = heldItemStack.serialize().toString();
-        ScriptFactory factory = new ScriptFactory();
-        INBTCompound heldItemNbt = factory.createCompound("{Item:" + heldItemStackData + "}");
-        heldItemNbt.getCompound("Item").setByte("Count", (byte) (heldItemNbt.getCompound("Item").getByte("Count") - amount));
-        IScriptItemStack heldItem = factory.createItemNBT(heldItemNbt.getCompound("Item").toString());
-        heldItemNbt.setCompound("Item", heldItem.serialize());
-        setMainItem(factory.createItem(heldItemNbt.getCompound("Item")));
-
-        return spawnedItemEntity;
+        return dropItemInternal(droppedStack);
     }
 
     @Override
-    public IScriptEntity dropItem()
+    public ScriptEntityItem dropItem()
     {
-        IScriptItemStack heldItemStack = getMainItem();
-
-        if (heldItemStack.getMinecraftItemStack().isEmpty())
-        {
-            return null;
-        }
-
-        byte count = heldItemStack.serialize().getByte("Count");
-        byte amount = 1;
-
-        if (count == 0)
-        {
-            amount = 0;
-        }
-
-        return dropItem(amount);
+        return dropItem(1);
     }
 
     @Override
-    public IScriptEntity dropItem(IScriptItemStack itemStack)
+    public ScriptEntityItem dropItem(IScriptItemStack scriptItemStack)
     {
-        ScriptVector entityPosition = this.getPosition();
-        IScriptEntity spawnedItemEntity = this.getWorld().dropItemStack(itemStack, entityPosition.x, entityPosition.y + this.entity.getEyeHeight(), entityPosition.z);
-        INBTCompound spawnedItemFullData = spawnedItemEntity.getFullData();
-
-        spawnedItemFullData.setShort("PickupDelay", (short) 40);
-        spawnedItemEntity.setFullData(spawnedItemFullData);
-
-        ScriptVector look = this.getLook();
-
-        spawnedItemEntity.addMotion(look.x / 3, look.y / 3, look.z / 3);
-
-        return spawnedItemEntity;
+        return dropItemInternal(scriptItemStack.getMinecraftItemStack());
     }
 
     @Override

@@ -1,5 +1,6 @@
 package mchorse.mappet.api.scripts.user.entities;
 
+import mchorse.mappet.api.scripts.code.entities.ScriptEntityItem;
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
 import mchorse.mappet.api.scripts.user.IScriptFactory;
 import mchorse.mappet.api.scripts.user.IScriptFancyWorld;
@@ -853,35 +854,38 @@ public interface IScriptEntity
      * Drop the item an entity is holding.
      *
      * <pre>{@code
-     *     var s = c.getSubject();
-     *
-     *     s.dropItem(10);
+     * var s = c.getSubject();
+     * var entityItem = s.dropItem(10);
+     * entityItem.setNoDespawn();
+     * entityItem.setInfinitePickupDelay();
      * }</pre>
      */
-    public IScriptEntity dropItem(int amount);
+    public ScriptEntityItem dropItem(int amount);
 
     /**
      * Drop one item of what the entity is holding.
      *
      * <pre>{@code
-     *     var s = c.getSubject();
-     *
-     *     s.dropItem();
+     * var s = c.getSubject();
+     * var entityItem = s.dropItem();
+     * entityItem.setNoDespawn();
+     * entityItem.setInfinitePickupDelay();
      * }</pre>
      */
-    public IScriptEntity dropItem();
+    public ScriptEntityItem dropItem();
 
     /**
      * Drop an item of the entity even if it is not holding it.
      * Therefore, it doesn't remove the item from the entity's inventory.
      *
      * <pre>{@code
-     *     var item = mappet.createItemNBT("{id:\"minecraft:stone\",Count:64b,Damage:0s}");
-     *
-     *     c.getSubject().dropItem(item)
+     * var item = mappet.createItemNBT("{id:\"minecraft:stone\",Count:64b,Damage:0s}");
+     * var entityItem = c.getSubject().dropItem(item);
+     * entityItem.setNoDespawn();
+     * entityItem.setInfinitePickupDelay();
      * }</pre>
      */
-    public IScriptEntity dropItem(IScriptItemStack itemStack);
+    public ScriptEntityItem dropItem(IScriptItemStack itemStack);
 
     /**
      * Get entity's fall distance.
