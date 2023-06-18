@@ -370,26 +370,25 @@ public class ScriptedItemEventHandler
             ScriptedItemProps props = NBTUtils.getScriptedItemProps(itemStack);
 
             // Check if the item has been picked up before
-            if (props != null && props.pickedUp) {
+            if (props != null && props.pickedUp)
+            {
                 // The item has been picked up before, so we do nothing
                 return;
             }
 
-            // This is the first time the item has been picked up
-            // Set the pickedUp property to true
-            if (props != null) {
+            // Check that there's a Trigger for first pickup and it has actions
+            if (props != null && props.firstPickup != null && !props.firstPickup.blocks.isEmpty())
+            {
+                // This is the first time the item has been picked up
+                // Set the pickedUp property to true
                 props.pickedUp = true;
                 // Save the updated props back to the item
                 NBTUtils.setScriptedItemProps(itemStack, props);
 
-                // Check that there's a Trigger for first pickup and it has actions
-                if (props.firstPickup != null && !props.firstPickup.blocks.isEmpty())
-                {
-                    DataContext context = new DataContext(player);
-                    context.getValues().put("item", ScriptItemStack.create(itemStack));
-                    context.getValues().put("entityItem", ScriptEntityItem.create(event.getItem()));
-                    CommonProxy.eventHandler.trigger(event, props.firstPickup, context);
-                }
+                DataContext context = new DataContext(player);
+                context.getValues().put("item", ScriptItemStack.create(itemStack));
+                context.getValues().put("entityItem", ScriptEntityItem.create(event.getItem()));
+                CommonProxy.eventHandler.trigger(event, props.firstPickup, context);
             }
         }
     }
