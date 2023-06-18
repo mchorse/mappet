@@ -28,12 +28,12 @@ public class ScriptBox
 
     public ScriptBox(double minX, double minY, double minZ, double maxX, double maxY, double maxZ)
     {
-        this.minX = Math.min(minX,maxX);
-        this.minY = Math.min(minY,maxY);
-        this.minZ = Math.min(minZ,maxZ);
-        this.maxX = Math.max(minX,maxX);
-        this.maxY = Math.max(minX,maxX);
-        this.maxZ = Math.max(minX,maxX);
+        this.minX = Math.min(minX, maxX);
+        this.minY = Math.min(minY, maxY);
+        this.minZ = Math.min(minZ, maxZ);
+        this.maxX = Math.max(minX, maxX);
+        this.maxY = Math.max(minY, maxY);
+        this.maxZ = Math.max(minZ, maxZ);
     }
 
     @Override
