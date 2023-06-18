@@ -568,6 +568,7 @@ mappet.gui.npcs.behavior.title=Behavior
 mappet.gui.npcs.behavior.look_at_player=Look at player
 mappet.gui.npcs.behavior.look_around=Look around
 mappet.gui.npcs.behavior.wander=Wander
+mappet.gui.npcs.behavior.always_wander=Always wander
 mappet.gui.npcs.behavior.can_pick_up_loot=Can pick up loot
 mappet.gui.npcs.behavior.can_be_steered=Can be steered
 mappet.gui.npcs.behavior.initialize=On NPC initialization trigger

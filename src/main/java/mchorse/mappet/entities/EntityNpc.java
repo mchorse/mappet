@@ -13,11 +13,7 @@ import mchorse.mappet.api.states.States;
 import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
-import mchorse.mappet.entities.ai.EntityAIAttackNpcMelee;
-import mchorse.mappet.entities.ai.EntityAIFollowTarget;
-import mchorse.mappet.entities.ai.EntityAIHurtByTargetNpc;
-import mchorse.mappet.entities.ai.EntityAIPatrol;
-import mchorse.mappet.entities.ai.EntityAIReturnToPost;
+import mchorse.mappet.entities.ai.*;
 import mchorse.mappet.entities.utils.MappetNpcRespawnManager;
 import mchorse.mappet.entities.utils.NpcDamageSource;
 import mchorse.mappet.items.ItemNpcTool;
@@ -294,6 +290,11 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
             if (this.state.wander)
             {
                 this.tasks.addTask(9, new EntityAIWanderAvoidWater(this, speed / 2D));
+            }
+
+            if (this.state.alwaysWander)
+            {
+                this.tasks.addTask(10, new EntityAIAlwaysWander(this, speed / 2D));
             }
         }
 

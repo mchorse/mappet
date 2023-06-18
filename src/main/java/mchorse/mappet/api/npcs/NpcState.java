@@ -224,6 +224,11 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     public boolean wander;
 
     /**
+     * Whether NPC should always wander
+     */
+    public boolean alwaysWander;
+
+    /**
      * The health threshold until NPC starts to run away
      */
     public float flee = 4F;
@@ -475,6 +480,10 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         else if (property.equals("wander"))
         {
             this.wander = Boolean.parseBoolean(value);
+        }
+        else if (property.equals("always_wander"))
+        {
+            this.alwaysWander = Boolean.parseBoolean(value);
         }
         else if (property.equals("flee"))
         {
@@ -735,6 +744,10 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (all || options.contains("wander"))
         {
             tag.setBoolean("Wander", this.wander);
+        }
+        if (all || options.contains("always_wander"))
+        {
+            tag.setBoolean("AlwaysWander", this.alwaysWander);
         }
         if (all || options.contains("flee"))
         {
@@ -1038,6 +1051,10 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("Wander"))
         {
             this.wander = tag.getBoolean("Wander");
+        }
+        if (tag.hasKey("AlwaysWander"))
+        {
+            this.alwaysWander = tag.getBoolean("AlwaysWander");
         }
         if (tag.hasKey("Flee"))
         {
