@@ -1,7 +1,6 @@
 package mchorse.mappet.api.scripts.user.mappet.conditions;
 
 import mchorse.mappet.api.scripts.code.mappet.conditions.MappetCondition;
-import mchorse.mappet.api.scripts.code.mappet.conditions.MappetConditionBlock;
 import mchorse.mappet.api.scripts.code.mappet.conditions.conditionBlocks.MappetConditionBlockExpression;
 import mchorse.mappet.api.scripts.code.mappet.conditions.conditionBlocks.MappetConditionBlockState;
 
@@ -58,7 +57,7 @@ public interface IMappetCondition
      *
      * @return All condition blocks for this condition
      */
-    List<MappetConditionBlock> getAllBlocks();
+    List<IMappetConditionBlock> getAllBlocks();
 
     /**
      * Add an expression condition block to this condition

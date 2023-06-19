@@ -7,6 +7,7 @@ import mchorse.mappet.api.conditions.blocks.StateConditionBlock;
 import mchorse.mappet.api.scripts.code.mappet.conditions.conditionBlocks.MappetConditionBlockExpression;
 import mchorse.mappet.api.scripts.code.mappet.conditions.conditionBlocks.MappetConditionBlockState;
 import mchorse.mappet.api.scripts.user.mappet.conditions.IMappetCondition;
+import mchorse.mappet.api.scripts.user.mappet.conditions.IMappetConditionBlock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,12 +42,12 @@ public class MappetCondition implements IMappetCondition
     }
 
     @Override
-    public List<MappetConditionBlock> getAllBlocks()
+    public List<IMappetConditionBlock> getAllBlocks()
     {
-        List<MappetConditionBlock> allConditionBlocks = new ArrayList<>();
+        List<IMappetConditionBlock> allConditionBlocks = new ArrayList<>();
         for (AbstractConditionBlock block : blocks)
         {
-            allConditionBlocks.add(new MappetConditionBlock(block, blocks));
+            allConditionBlocks.add(MappetConditionBlock.create(block, blocks));
         }
         return allConditionBlocks;
     }

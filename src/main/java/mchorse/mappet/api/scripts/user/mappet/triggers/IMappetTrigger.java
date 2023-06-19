@@ -1,7 +1,6 @@
 package mchorse.mappet.api.scripts.user.mappet.triggers;
 
 import mchorse.mappet.api.scripts.code.mappet.triggers.MappetTrigger;
-import mchorse.mappet.api.scripts.code.mappet.triggers.MappetTriggerBlock;
 import mchorse.mappet.api.scripts.code.mappet.triggers.triggerBlocks.MappetTriggerBlockCommand;
 import mchorse.mappet.api.scripts.code.mappet.triggers.triggerBlocks.MappetTriggerBlockScript;
 import mchorse.mappet.api.triggers.Trigger;
@@ -52,7 +51,7 @@ public interface IMappetTrigger
      *
      * @return list of all trigger blocks
      */
-    List<MappetTriggerBlock> getAllBlocks();
+    List<IMappetTriggerBlock> getAllBlocks();
 
     /**
      * Adds a script trigger block.

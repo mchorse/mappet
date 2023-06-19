@@ -3,6 +3,7 @@ package mchorse.mappet.api.scripts.code.mappet.triggers;
 import mchorse.mappet.api.scripts.code.mappet.triggers.triggerBlocks.MappetTriggerBlockCommand;
 import mchorse.mappet.api.scripts.code.mappet.triggers.triggerBlocks.MappetTriggerBlockScript;
 import mchorse.mappet.api.scripts.user.mappet.triggers.IMappetTrigger;
+import mchorse.mappet.api.scripts.user.mappet.triggers.IMappetTriggerBlock;
 import mchorse.mappet.api.triggers.Trigger;
 import mchorse.mappet.api.triggers.blocks.AbstractTriggerBlock;
 import mchorse.mappet.api.triggers.blocks.CommandTriggerBlock;
@@ -37,14 +38,15 @@ public class MappetTrigger implements IMappetTrigger
     }
 
     @Override
-    public List<MappetTriggerBlock> getAllBlocks()
+    public List<IMappetTriggerBlock> getAllBlocks()
     {
-        List<MappetTriggerBlock> allTriggerBlocks = new ArrayList<>();
+        List<IMappetTriggerBlock> allTriggerBlocks = new ArrayList<>();
         for (AbstractTriggerBlock block : blocks) {
-            allTriggerBlocks.add(new MappetTriggerBlock(block, blocks));
+            allTriggerBlocks.add(MappetTriggerBlock.create(block, blocks));
         }
         return allTriggerBlocks;
     }
+
 
     /* scripts */
     @Override
