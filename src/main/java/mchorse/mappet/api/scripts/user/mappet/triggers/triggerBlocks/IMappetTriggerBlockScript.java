@@ -99,7 +99,7 @@ public interface IMappetTriggerBlockScript
      * var regionBlockTrigger = regionBlock.getOnTickTrigger();
      * var scriptTriggerBlock = regionBlockTrigger.addScriptBlock();
      * scriptTriggerBlock.setScriptName("regionBlock.js");
-     * scriptTriggerBlock.setCustomData("{x:0,y:4,z:0}}");
+     * scriptTriggerBlock.setCustomData("{x:0,y:4,z:0}");
      * }</pre>
      *
      * @param customData The custom data
