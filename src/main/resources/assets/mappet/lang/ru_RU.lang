@@ -404,6 +404,11 @@ mappet.gui.interaction.info.no_replies=Нажмите клавишу Esc, что
 mappet.gui.trigger_block.collidable=Имеет коллизию
 mappet.gui.trigger_block.left=Триггер при левом клике
 mappet.gui.trigger_block.right=Триггер при правом клике
+mappet.gui.trigger_block.bounding_box.title=Хитбокс
+mappet.gui.trigger_block.bounding_box.pos1=Позиция 1
+mappet.gui.trigger_block.bounding_box.pos2=Позиция 2
+mappet.gui.trigger_block.bounding_box.center=Центрировать
+mappet.gui.trigger_block.bounding_box.reset=Сбросить
 
 mappet.gui.emitter_block.condition=Условие сигнала
 mappet.gui.emitter_block.radius=Радиус

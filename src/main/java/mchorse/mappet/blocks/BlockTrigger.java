@@ -25,6 +25,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -160,7 +161,35 @@ public class BlockTrigger extends Block implements ITileEntityProvider
     @Override
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
     {
-        return blockState.getValue(COLLIDABLE) ? Block.FULL_BLOCK_AABB : Block.NULL_AABB;
+        return blockState.getValue(COLLIDABLE) ? getCustomBoundingBox(worldIn, pos) : Block.NULL_AABB;
+    }
+
+    public AxisAlignedBB getCustomBoundingBox(IBlockAccess worldIn, BlockPos pos)
+    {
+        TileEntity tile = worldIn.getTileEntity(pos);
+
+        if (!(tile instanceof TileTrigger))
+        {
+            return Block.FULL_BLOCK_AABB;
+        }
+
+        TileTrigger tileTrigger = (TileTrigger) tile;
+
+        Vec3d pos1 = tileTrigger.boundingBoxPos1;
+        Vec3d pos2 = tileTrigger.boundingBoxPos2;
+
+        if (pos1.equals(pos2))
+        {
+            return Block.FULL_BLOCK_AABB;
+        }
+
+        return new AxisAlignedBB(pos1.x, pos1.y, pos1.z, pos2.x, pos2.y, pos2.z);
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return getCustomBoundingBox(source, pos);
     }
 
     @Nullable

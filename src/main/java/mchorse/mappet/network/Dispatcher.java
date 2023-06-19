@@ -31,6 +31,7 @@ import mchorse.mappet.network.client.scripts.ClientHandlerWorldMorph;
 import mchorse.mappet.network.client.ui.ClientHandlerCloseUI;
 import mchorse.mappet.network.client.ui.ClientHandlerUI;
 import mchorse.mappet.network.client.ui.ClientHandlerUIData;
+import mchorse.mappet.network.client.utils.ClientHandlerChangedBoundingBox;
 import mchorse.mappet.network.common.blocks.PacketEditConditionModel;
 import mchorse.mappet.network.common.blocks.PacketEditEmitter;
 import mchorse.mappet.network.common.blocks.PacketEditRegion;
@@ -77,6 +78,7 @@ import mchorse.mappet.network.common.scripts.PacketWorldMorph;
 import mchorse.mappet.network.common.ui.PacketCloseUI;
 import mchorse.mappet.network.common.ui.PacketUI;
 import mchorse.mappet.network.common.ui.PacketUIData;
+import mchorse.mappet.network.common.utils.PacketChangedBoundingBox;
 import mchorse.mappet.network.server.blocks.ServerHandlerEditConditionModel;
 import mchorse.mappet.network.server.blocks.ServerHandlerEditEmitter;
 import mchorse.mappet.network.server.blocks.ServerHandlerEditRegion;
@@ -218,6 +220,9 @@ public class Dispatcher
             /* Logs */
             this.register(PacketRequestLogs.class, ServerHandlerLogs.class, Side.SERVER);
             this.register(PacketLogs.class, ClientHandlerLogs.class, Side.CLIENT);
+
+            /* Utils */
+            this.register(PacketChangedBoundingBox.class, ClientHandlerChangedBoundingBox.class, Side.CLIENT);
         }
     };
 

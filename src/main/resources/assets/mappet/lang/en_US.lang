@@ -406,6 +406,11 @@ mappet.gui.interaction.info.no_replies=Press Esc key to close the dialogue...
 mappet.gui.trigger_block.collidable=Collidable
 mappet.gui.trigger_block.left=Trigger event on left click
 mappet.gui.trigger_block.right=Trigger event on right click
+mappet.gui.trigger_block.bounding_box.title=Bounding box
+mappet.gui.trigger_block.bounding_box.pos1=Position 1
+mappet.gui.trigger_block.bounding_box.pos2=Position 2
+mappet.gui.trigger_block.bounding_box.center=Center
+mappet.gui.trigger_block.bounding_box.reset=Reset
 
 mappet.gui.emitter_block.condition=Signal condition
 mappet.gui.emitter_block.radius=Radius

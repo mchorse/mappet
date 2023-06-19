@@ -6,10 +6,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTPrimitive;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagDouble;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.Set;
 
@@ -40,6 +42,35 @@ public class NBTUtils
         list.appendTag(new NBTTagInt(pos.getX()));
         list.appendTag(new NBTTagInt(pos.getY()));
         list.appendTag(new NBTTagInt(pos.getZ()));
+
+        return list;
+    }
+
+    public static Vec3d vec3dFrom(NBTBase base)
+    {
+        if (base instanceof NBTTagList && ((NBTTagList) base).tagCount() >= 3)
+        {
+            NBTTagList list = (NBTTagList) base;
+            NBTBase x = list.get(0);
+            NBTBase y = list.get(1);
+            NBTBase z = list.get(2);
+
+            if (x instanceof NBTPrimitive && y instanceof NBTPrimitive && z instanceof NBTPrimitive)
+            {
+                return new Vec3d(((NBTPrimitive) x).getDouble(), ((NBTPrimitive) y).getDouble(), ((NBTPrimitive) z).getDouble());
+            }
+        }
+
+        return null;
+    }
+
+    public static NBTBase vec3dTo(Vec3d vec)
+    {
+        NBTTagList list = new NBTTagList();
+
+        list.appendTag(new NBTTagDouble(vec.x));
+        list.appendTag(new NBTTagDouble(vec.y));
+        list.appendTag(new NBTTagDouble(vec.z));
 
         return list;
     }

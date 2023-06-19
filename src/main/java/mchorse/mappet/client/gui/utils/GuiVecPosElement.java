@@ -33,6 +33,15 @@ public class GuiVecPosElement extends GuiElement
         this.context(this::createDefaultContextMenu);
     }
 
+    public GuiVecPosElement clamp(Vec3d min, Vec3d max)
+    {
+        this.x.limit(min.x, max.x);
+        this.y.limit(min.y, max.y);
+        this.z.limit(min.z, max.z);
+
+        return this;
+    }
+
     public GuiSimpleContextMenu createDefaultContextMenu()
     {
         return new GuiSimpleContextMenu(this.mc).action(Icons.MOVE_TO, IKey.lang("mappet.gui.block_pos.context.paste"), this::pastePosition);
@@ -52,7 +61,7 @@ public class GuiVecPosElement extends GuiElement
         }
     }
 
-    private Vec3d get()
+    public Vec3d get()
     {
         return new Vec3d(this.x.value, this.y.value, this.z.value);
     }
