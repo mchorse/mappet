@@ -171,6 +171,13 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     }
 
     @Override
+    public void setFlyingEnabled(boolean enabled)
+    {
+        this.entity.capabilities.allowFlying = enabled;
+        this.entity.sendPlayerAbilities();
+    }
+
+    @Override
     public float getFlySpeed()
     {
         return this.entity.capabilities.getFlySpeed();

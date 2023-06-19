@@ -157,6 +157,17 @@ public interface IScriptPlayer extends IScriptEntity
     public float getWalkSpeed();
 
     /**
+     * Allows the player to fly in whatever game mode they're in.
+     *
+     * <pre>{@code
+     * c.getSubject().setFlyingEnabled(true);
+     * }</pre>
+     *
+     * @param enabled Whether the player can fly or not.
+     */
+    void setFlyingEnabled(boolean enabled);
+
+    /**
      * Returns if the flight speed of the player.
      *
      * <pre>{@code
