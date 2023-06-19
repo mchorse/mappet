@@ -12,59 +12,81 @@ import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 
+import java.util.List;
+
 public class GuiScriptTriggerBlockPanel extends GuiDataTriggerBlockPanel<ScriptTriggerBlock>
 {
     public GuiTextElement function;
 
-    public GuiElement standartLayout;
-    public GuiElement inlineLayout;
+    public GuiToggleElement inline;
+
+    public GuiTextEditor code;
+
+    private List<GuiElement> allElements;
+
+    private GuiElement elements;
 
     public GuiScriptTriggerBlockPanel(Minecraft mc, GuiTriggerOverlayPanel overlay, ScriptTriggerBlock block)
     {
         super(mc, overlay, block);
 
-        GuiToggleElement inline = new GuiToggleElement(mc, IKey.lang("mappet.gui.triggers.script.inline"), this.block.inline, (b) -> this.toggleInline(b.isToggled()));
-        GuiTextEditor code = new GuiTextEditor(mc, (s) -> this.block.code = s);
-        code.context(() -> GuiScriptPanel.createScriptContextMenu(this.mc, code));
-        code.setText(this.block.code);
-        code.background();
+        this.inline = new GuiToggleElement(mc, IKey.lang("mappet.gui.triggers.script.inline"), this.block.inline, (b) ->
+        {
+            this.block.inline = b.isToggled();
+
+            this.updateFields();
+        });
+
+        this.code = new GuiTextEditor(mc, (s) -> this.block.code = s);
+        this.code.context(() -> GuiScriptPanel.createScriptContextMenu(this.mc, code));
+        this.code.setText(this.block.code);
+        this.code.background().flex().h(160);
 
         this.function = new GuiTextElement(mc, 100, (text) -> this.block.function = text);
         this.function.setText(block.function);
         this.function.tooltip(IKey.lang("mappet.gui.triggers.script.function_tooltip"));
 
-        this.standartLayout = new GuiElement(mc);
-        GuiElement standartElements = Elements.column(mc, 5,
-                this.picker,
-                Elements.label(IKey.lang("mappet.gui.nodes.event.data")).marginTop(12), this.data,
-                Elements.label(IKey.lang("mappet.gui.triggers.function")).marginTop(12), this.function);
-        this.standartLayout.add(standartElements);
-        this.standartLayout.flex().relative(this).w(1F).h(140);
-        standartElements.flex().relative(this.standartLayout).wh(1F,1F);
+        this.elements = Elements.column(mc, 5);
 
-        this.inlineLayout = new GuiElement(mc);
-        GuiElement inlineElements = Elements.column(mc, 5, code);
-        this.inlineLayout.add(inlineElements);
-        this.inlineLayout.flex().relative(this).w(1F).h(140);
-        inlineElements.flex().relative(this.inlineLayout).wh(1F,1F);
-        code.flex().relative(inlineElements).wh(1F, 1F);
+        this.add(this.picker);
+        this.add(Elements.label(IKey.lang("mappet.gui.nodes.event.data")).marginTop(12), this.data);
+        this.add(Elements.label(IKey.lang("mappet.gui.triggers.function")).marginTop(12), this.function);
 
+        this.allElements = this.getChildren(GuiElement.class);
+        this.allElements.remove(0);
 
-        this.add(inline, standartLayout, inlineLayout);
-        this.toggleInline(inline.isToggled());
-        code.resize();
+        for (GuiElement element : this.allElements)
+        {
+            element.removeFromParent();
+            this.elements.add(element);
+        }
+
+        this.add(this.elements);
+        this.updateFields();
         this.addDelay();
     }
 
-
-    public void toggleInline(boolean state)
+    private void updateFields()
     {
-        this.block.inline = state;
-        this.standartLayout.setVisible(!state);
-        int size = 140;
-        this.standartLayout.flex().h(state ? 0 : size);
-        this.inlineLayout.setVisible(state);
-        this.inlineLayout.flex().h(state ? size : 0);
+        this.elements.removeAll();
+        this.elements.add(this.inline);
+
+        if (this.block.inline)
+        {
+            this.elements.add(this.code);
+        }
+        else
+        {
+            for (GuiElement element : this.allElements)
+            {
+                this.elements.add(element);
+            }
+        }
+
+        if (this.hasParent())
+        {
+            this.getParentContainer().resize();
+        }
     }
 
     @Override
