@@ -150,6 +150,13 @@ public class MappetBlockRegion implements IMappetBlockRegion
     }
 
     @Override
+    public MappetBlockRegion clearShapes()
+    {
+        this.regionBlock.region.shapes.clear();
+        return this;
+    }
+
+    @Override
     public MappetTrigger getOnEnterTrigger()
     {
         return new MappetTrigger(this.regionBlock.region.onEnter);

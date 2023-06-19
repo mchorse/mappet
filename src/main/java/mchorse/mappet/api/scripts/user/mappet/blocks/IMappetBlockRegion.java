@@ -55,7 +55,8 @@ public interface IMappetBlockRegion
      * @param x the x coordinate
      * @param y the y coordinate
      * @param z the z coordinate
-     * @return this
+     *
+     * @return this region block instance
      */
     IMappetBlockRegion place(IScriptWorld world, int x, int y, int z);
 
@@ -69,7 +70,8 @@ public interface IMappetBlockRegion
      * }</pre>
      *
      * @param isPassable whether the region block is passable
-     * @return this
+     *
+     * @return this region block instance
      */
     IMappetBlockRegion setPassable(boolean isPassable);
 
@@ -82,7 +84,8 @@ public interface IMappetBlockRegion
      * regionBlock.notifyUpdate();
      * }</pre>
      * @param checkEntities whether the region block should check entities
-     * @return this
+     *
+     * @return this region block instance
      */
     IMappetBlockRegion setCheckEntities(boolean checkEntities);
 
@@ -95,7 +98,7 @@ public interface IMappetBlockRegion
      * regionBlock.notifyUpdate();
      * }</pre>
      * @param delay the delay
-     * @return this
+     * @return this region block instance
      */
     IMappetBlockRegion setDelay(int delay);
 
@@ -109,6 +112,8 @@ public interface IMappetBlockRegion
      * }</pre>
      *
      * @param frequency the update frequency
+     *
+     * @return this region block instance
      */
     IMappetBlockRegion setUpdateFrequency(int frequency);
 
@@ -127,6 +132,8 @@ public interface IMappetBlockRegion
      * @param halfSizeZ half the size of the z axis
      * @param offsetX the x offset
      * @param offsetY the y offset
+     *
+     * @return this region block instance
      */
     IMappetBlockRegion addBoxShape(double halfSizeX, double halfSizeY, double halfSizeZ, double offsetZ, double offsetX, double offsetY);
 
@@ -142,6 +149,8 @@ public interface IMappetBlockRegion
      * @param halfSizeX half the size of the x axis
      * @param halfSizeY half the size of the y axis
      * @param halfSizeZ half the size of the z axis
+     *
+     * @return this region block instance
      */
     IMappetBlockRegion addBoxShape(double halfSizeX, double halfSizeY, double halfSizeZ);
 
@@ -156,6 +165,8 @@ public interface IMappetBlockRegion
      *
      * @param horizontalRadius the horizontal radius of the sphere
      * @param verticalRadius the vertical radius of the sphere
+     *
+     * @return this region block instance
      */
     IMappetBlockRegion addSphereShape(double horizontalRadius, double verticalRadius);
 
@@ -173,6 +184,8 @@ public interface IMappetBlockRegion
      * @param offsetZ the z offset
      * @param offsetX the x offset
      * @param offsetY the y offset
+     *
+     * @return this region block instance
      */
     IMappetBlockRegion addSphereShape(double horizontalRadius, double verticalRadius, double offsetZ, double offsetX, double offsetY);
 
@@ -190,6 +203,8 @@ public interface IMappetBlockRegion
      * @param offsetZ the z offset
      * @param offsetX the x offset
      * @param offsetY the y offset
+     *
+     * @return this region block instance
      */
     IMappetBlockRegion addCylinderShape(double radius, double height, double offsetZ, double offsetX, double offsetY);
 
@@ -204,8 +219,23 @@ public interface IMappetBlockRegion
      *
      * @param radius the radius of the cylinder
      * @param height the height of the cylinder
+     *
+     * @return this region block instance
      */
     IMappetBlockRegion addCylinderShape(double radius, double height);
+
+    /**
+     * Clears all shapes from the region block.
+     *
+     * <pre>{@code
+     * var regionBlock = c.getWorld().getRegionBlock(0, 4, 0);
+     * regionBlock.clearShapes();
+     * regionBlock.notifyUpdate();
+     * }</pre>
+     *
+     * @return this region block instance
+     */
+    MappetBlockRegion clearShapes();
 
     /**
      * Gets on enter trigger of the region block.
@@ -273,7 +303,7 @@ public interface IMappetBlockRegion
      * regionBlock.notifyUpdate();
      * }</pre>
      *
-     * @return the condition
+     * @return region block's condition instance
      */
     MappetCondition getCondition();
 }
