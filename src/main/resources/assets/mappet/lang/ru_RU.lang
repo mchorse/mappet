@@ -1,3 +1,4 @@
+#PARSE_ESCAPES
 
 # Error
 mappet.error.states.invalid_target=§fГлобальное состояние или состояние игрока §7%s§f отсутствует!
@@ -279,7 +280,7 @@ mappet.gui.settings.triggers.descriptions.server_tick=Этот триггер с
 mappet.gui.settings.triggers.variables.server_tick=§7N/A§r
 
 mappet.gui.settings.triggers.player_chat=Игрок: при сообщении в чате
-mappet.gui.settings.triggers.descriptions.player_chat=Этот триггер срабатывает когда игрок пишет сообщение в чат.\n\nКоманды (сообщения начинающиеся с §7/§r) не вызывают этот триггер. Если вы хотите реализовать команды, используйте другой префикс, например §7!§r.
+mappet.gui.settings.triggers.descriptions.player_chat=Этот триггер срабатывает когда игрок пишет сообщение в чат. \n\nКоманды (сообщения начинающиеся с §7/§r) не вызывают этот триггер. Если вы хотите реализовать команды, используйте другой префикс, например §7!§r.
 mappet.gui.settings.triggers.variables.player_chat=§6message§r, сообщение, отправленное игроком.
 
 mappet.gui.settings.triggers.player_login=Игрок: при входе
