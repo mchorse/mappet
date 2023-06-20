@@ -15,6 +15,8 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.Entity;
 import net.minecraft.potion.Potion;
 
+import java.util.List;
+
 /**
  * Entity interface.
  *
@@ -925,6 +927,20 @@ public interface IScriptEntity
      * @param arm <code>0</code> is primary (main), <code>1</code> is secondary (off-hand).
      */
     public void swingArm(int arm);
+
+    /**
+     * Returns leashed entities by this entity.
+     *
+     * <pre>{@code
+     * var leashedEntities = c.getLeashedEntities();
+     * leashedEntities.forEach(function(leashedEntity){
+     *     leashedEntity.kill();
+     * });
+     * }</pre>
+     *
+     * @return leashed entities list
+     */
+    List<IScriptEntity> getLeashedEntities();
 
     /* Modifiers */
 

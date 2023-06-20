@@ -71,6 +71,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
@@ -921,6 +922,27 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
         {
             ((EntityLivingBase) this.entity).swingArm(arm == 1 ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
         }
+    }
+
+    @Override
+    public List<IScriptEntity> getLeashedEntities()
+    {
+        List<IScriptEntity> entities = new ArrayList<>();
+        World world = this.entity.world;
+
+        for (Entity entity : world.loadedEntityList)
+        {
+            if (entity instanceof EntityLiving)
+            {
+                EntityLiving entityLiving = (EntityLiving) entity;
+                if (entityLiving.getLeashed() && entityLiving.getLeashHolder() == this.entity)
+                {
+                    entities.add(ScriptEntity.create(entityLiving));
+                }
+            }
+        }
+
+        return entities;
     }
 
     /* Modifiers */
