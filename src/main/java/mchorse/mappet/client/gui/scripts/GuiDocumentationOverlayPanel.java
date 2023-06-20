@@ -1,14 +1,13 @@
 package mchorse.mappet.client.gui.scripts;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import mchorse.mappet.ClientProxy;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.client.gui.scripts.utils.documentation.DocClass;
 import mchorse.mappet.client.gui.scripts.utils.documentation.DocDelegate;
 import mchorse.mappet.client.gui.scripts.utils.documentation.DocEntry;
 import mchorse.mappet.client.gui.scripts.utils.documentation.DocList;
 import mchorse.mappet.client.gui.scripts.utils.documentation.DocMethod;
+import mchorse.mappet.client.gui.scripts.utils.documentation.DocMerger;
+import mchorse.mappet.client.gui.scripts.utils.documentation.DocPackage;
 import mchorse.mappet.client.gui.scripts.utils.documentation.Docs;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlayPanel;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
@@ -20,16 +19,12 @@ import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.client.resources.Language;
 import net.minecraft.launchwrapper.Launch;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
 {
@@ -70,29 +65,7 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
 
         if (dev || docs == null)
         {
-            InputStream localeStream = null;
-            Language language = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage();
-
-            if (!language.equals(Minecraft.getMinecraft().getLanguageManager().getLanguage("en_us")))
-            {
-                try
-                {
-                    File folder = new File(ClientProxy.configFolder.getPath(), "mappet/documentation");
-
-                    folder.mkdirs();
-
-                    localeStream = new FileInputStream(new File(folder, language.getLanguageCode() + ".json"));
-                }
-                catch (Exception e)
-                {}
-            }
-
-            InputStream stream = GuiDocumentationOverlayPanel.class.getResourceAsStream("/assets/mappet/docs.json");
-
-            Scanner scanner = new Scanner(localeStream != null ? localeStream : stream, "UTF-8");
-
-            Gson gson = new GsonBuilder().create();
-            docs = gson.fromJson(scanner.useDelimiter("\\A").next(), Docs.class);
+            docs = DocMerger.getMergedDocs();
             entry = null;
 
             docs.copyMethods("UILabelBaseComponent", "UIButtonComponent", "UILabelComponent", "UITextComponent", "UITextareaComponent", "UITextboxComponent", "UIToggleComponent");
@@ -119,6 +92,23 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
             ui.parent = topPackage;
 
             boolean useNewStructure = Mappet.scriptDocsNewStructure.get();
+
+            List<DocPackage> extraPackages = docs.packages.stream()
+                    .filter(docPackage -> docPackage.name.startsWith("extra"))
+                    .collect(Collectors.toList());
+
+            List<DocList> docLists = new ArrayList<>();
+
+            for (DocPackage docPackage : extraPackages)
+            {
+                String firstPackage = docPackage.name.substring(0, docPackage.name.indexOf("."));
+                DocList extra = new DocList();
+                extra.name = docPackage.name.substring(docPackage.name.lastIndexOf(".") + 1);
+                extra.doc = docPackage.doc;
+                extra.parent = firstPackage.equals("extraScripting") ? scripting : firstPackage.equals("extraUI") ? ui : topPackage;
+                ((DocList)extra.parent).entries.add(extra);
+                docLists.add(extra);
+            }
 
             if (useNewStructure)
             {
@@ -156,8 +146,25 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
             for (DocClass docClass : docs.classes)
             {
                 docClass.setup();
+                if (docClass.name.startsWith("extra"))
+                {
+                    String packages = docClass.name.substring(docClass.name.indexOf(".") + 1, docClass.name.lastIndexOf("."));
+                    try
+                    {
+                        List<DocList> lists = docLists.stream()
+                                .filter(docList -> docList.name.equals(packages))
+                                .collect(Collectors.toList());
 
-                if (docClass.name.contains("ui.components") || docClass.name.endsWith(".Graphic"))
+                        DocList list = lists.get(0);
+                        if (list != null)
+                        {
+                            list.entries.add(docClass);
+                            docClass.parent = list;
+                        }
+                    }
+                    catch (Exception e) {}
+                }
+                else if (docClass.name.contains("ui.components") || docClass.name.endsWith(".Graphic"))
                 {
                     ui.entries.add(docClass);
                     docClass.parent = ui;
