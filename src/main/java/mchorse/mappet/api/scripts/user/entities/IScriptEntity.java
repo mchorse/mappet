@@ -932,7 +932,7 @@ public interface IScriptEntity
      * Returns leashed entities by this entity.
      *
      * <pre>{@code
-     * var leashedEntities = c.getLeashedEntities();
+     * var leashedEntities = c.getSubject().getLeashedEntities();
      * leashedEntities.forEach(function(leashedEntity){
      *     leashedEntity.kill();
      * });
