@@ -165,7 +165,7 @@ public class ScriptedItemEventHandler
             if (props != null && props.interactWithBlock != null && !props.interactWithBlock.blocks.isEmpty())
             {
                 IBlockState state = event.getWorld().getBlockState(event.getPos());
-                DataContext context = new DataContext(event.getWorld(), event.getPos())
+                DataContext context = new DataContext(event.getEntityPlayer())
                         .set("block", state.getBlock().getRegistryName().toString())
                         .set("meta", state.getBlock().getMetaFromState(state))
                         .set("x", event.getPos().getX())

@@ -102,6 +102,7 @@ public class ScriptFactory implements IScriptFactory
         return ScriptBlockState.create(null);
     }
 
+    @Override
     public IScriptBlockState createBlockState(String blockId)
     {
         return createBlockState(blockId, -1);

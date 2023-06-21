@@ -1,6 +1,14 @@
 package mchorse.mappet.api.scripts.user.data;
 
+import mchorse.mappet.api.scripts.code.ScriptWorld;
+import mchorse.mappet.api.scripts.code.blocks.ScriptBlockState;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+
 import javax.vecmath.Vector3d;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Script box represents a box in the space
@@ -114,5 +122,50 @@ public class ScriptBox
     public boolean contains(Vector3d vector)
     {
         return this.contains(vector.x, vector.y, vector.z);
+    }
+
+    /**
+     * Returns a list of positions for blocks in the box that match a given block state in a given world.
+     *
+     * <pre>{@code
+     * function main(c)
+     * {
+     *     var world = c.getWorld();
+     *     var state = mappet.createBlockState("minecraft:stone");
+     *     var box = mappet.box(-10, 4, -10, 10, 6, 10);
+     *     var blockPositions = box.getBlocksPositions(world, state);
+     *
+     *     var blockPositions = "[";
+     *     blockPositions.forEach(function(position) {
+     *         blockPositions += position.toArrayString() + ", ";
+     *     });
+     *     blockPositions += "]";
+     *     print(blockPositions);
+     * }
+     * }</pre>
+     *
+     * @param scriptWorld The world in which to look for blocks.
+     * @param state The block state to match.
+     * @return A list of positions for blocks that match the given block state.
+     */
+    public List<ScriptVector> getBlocksPositions(ScriptWorld scriptWorld, ScriptBlockState state)
+    {
+        World world = scriptWorld.getMinecraftWorld();
+        IBlockState blockState = state.getMinecraftBlockState();
+
+        List<ScriptVector> blocks = new ArrayList<>();
+
+        for (double x = this.minX; x <= this.maxX; x++) {
+            for (double y = this.minY; y <= this.maxY; y++) {
+                for (double z = this.minZ; z <= this.maxZ; z++) {
+                    BlockPos pos = new BlockPos(x, y, z);
+                    if (world.getBlockState(pos).equals(blockState)) {
+                        blocks.add(new ScriptVector(x, y, z));
+                    }
+                }
+            }
+        }
+
+        return blocks;
     }
 }

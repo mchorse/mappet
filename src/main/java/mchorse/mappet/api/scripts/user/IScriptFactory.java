@@ -58,6 +58,19 @@ public interface IScriptFactory
      */
     public IScriptBlockState createBlockState(String blockId, int meta);
 
+
+    /**
+     * Create a block state that can with the default meta value.
+     *
+     * <pre>{@code
+     * var fence = mappet.createBlockState("minecraft:fence");
+     *
+     * // minecraft:fence 0
+     * c.send(fence.getBlockId() + " " + fence.getMeta());
+     * }</pre>
+     */
+    IScriptBlockState createBlockState(String blockId);
+
     /**
      * Create an empty NBT compound.
      *

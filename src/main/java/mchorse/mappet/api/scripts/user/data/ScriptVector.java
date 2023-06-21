@@ -50,6 +50,24 @@ public class ScriptVector
         return "ScriptVector(" + this.x + ", " + this.y + ", " + this.z + ")";
     }
 
+    /**
+     * Convert this vector to an array string
+     *
+     * <pre>{@code
+     * function main(c)
+     * {
+     *     var subject = c.getSubject();
+     *     var subjectPosition = subject.getPosition();
+     *     c.send("The player is at " + subjectPosition.toArrayString() + "!");
+     *     // The player is at [x, y, z]!
+     * }
+     * }</pre>
+     */
+    public String toArrayString()
+    {
+        return "[" + this.x + ", " + this.y + ", " + this.z + "]";
+    }
+
     public ScriptVector add(ScriptVector other)
     {
         return new ScriptVector(this.x + other.x, this.y + other.y, this.z + other.z);
