@@ -791,9 +791,7 @@ public class ScriptWorld implements IScriptWorld
     @Override
     public boolean isActive(int x, int y, int z)
     {
-        IBlockState blockState = this.world.getBlockState(this.pos.setPos(x, y, z));
-
-        return blockState.getProperties().containsKey(BlockButton.POWERED) ? blockState.getValue(BlockButton.POWERED) : false;
+        return this.world.getRedstonePower(new BlockPos(x, y, z), EnumFacing.UP) > 0;
     }
 
     @Override
