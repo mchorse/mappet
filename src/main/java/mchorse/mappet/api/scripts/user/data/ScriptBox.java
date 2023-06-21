@@ -135,11 +135,12 @@ public class ScriptBox
      *     var box = mappet.box(-10, 4, -10, 10, 6, 10);
      *     var blockPositions = box.getBlocksPositions(world, state);
      *
-     *     var blockPositions = "[";
+     *     var blockPositionsString = "[";
      *     blockPositions.forEach(function(position) {
-     *         blockPositions += position.toArrayString() + ", ";
+     *         blockPositionsString += position.toArrayString() + ", ";
      *     });
-     *     blockPositions += "]";
+     *     blockPositionsString = blockPositionsString.substring(0, blockPositionsString.length - 2);
+     *     blockPositionsString += "]";
      *     print(blockPositions);
      * }
      * }</pre>
