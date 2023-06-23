@@ -13,6 +13,7 @@ public class GuiNpcBehaviorPanel extends GuiNpcPanel
     public GuiToggleElement lookAround;
     public GuiToggleElement wander;
     public GuiToggleElement alwaysWander;
+    public GuiToggleElement canFly;
     public GuiToggleElement canPickUpLoot;
     public GuiToggleElement canBeSteered;
 
@@ -32,6 +33,7 @@ public class GuiNpcBehaviorPanel extends GuiNpcPanel
         this.lookAround = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.behavior.look_around"), (b) -> this.state.lookAround = b.isToggled());
         this.wander = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.behavior.wander"), (b) -> this.state.wander = b.isToggled());
         this.alwaysWander = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.behavior.always_wander"), (b) -> this.state.alwaysWander = b.isToggled());
+        this.canFly = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.behavior.can_fly"), (b) -> this.state.canFly = b.isToggled());
         this.canPickUpLoot = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.behavior.can_pick_up_loot"), (b) -> this.state.canPickUpLoot = b.isToggled());
         this.canBeSteered = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.behavior.can_be_steered"), (b) -> this.state.canBeSteered = b.isToggled());
 
@@ -43,7 +45,7 @@ public class GuiNpcBehaviorPanel extends GuiNpcPanel
         this.triggerEntityCollision = new GuiTriggerElement(mc);
         this.triggerInitialize = new GuiTriggerElement(mc);
 
-        this.add(this.lookAtPlayer, this.lookAround, this.wander, this.alwaysWander, this.canPickUpLoot, this.canBeSteered);
+        this.add(this.lookAtPlayer, this.lookAround, this.wander, this.alwaysWander, this.canFly, this.canPickUpLoot, this.canBeSteered);
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.behavior.initialize")).background().marginTop(12).marginBottom(5), this.triggerInitialize);
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.behavior.interact")).background().marginTop(12).marginBottom(5), this.triggerInteract);
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.behavior.damaged")).background().marginTop(12).marginBottom(5), this.triggerDamaged);
@@ -62,6 +64,7 @@ public class GuiNpcBehaviorPanel extends GuiNpcPanel
         this.lookAround.toggled(state.lookAround);
         this.wander.toggled(state.wander);
         this.alwaysWander.toggled(state.alwaysWander);
+        this.canFly.toggled(state.canFly);
         this.canPickUpLoot.toggled(state.canPickUpLoot);
         this.canBeSteered.toggled(state.canBeSteered);
 

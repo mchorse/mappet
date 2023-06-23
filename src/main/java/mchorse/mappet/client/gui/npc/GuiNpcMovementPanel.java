@@ -18,6 +18,8 @@ import net.minecraft.client.Minecraft;
 public class GuiNpcMovementPanel extends GuiNpcPanel
 {
     public GuiTrackpadElement speed;
+    public GuiTrackpadElement flightMaxHeight;
+    public GuiTrackpadElement flightMinHeight;
     public GuiTrackpadElement jumpPower;
     public GuiBlockPosList steeringOffset;
     public GuiToggleElement canSwim;
@@ -34,6 +36,8 @@ public class GuiNpcMovementPanel extends GuiNpcPanel
         super(mc);
 
         this.speed = new GuiTrackpadElement(mc, (v) -> this.state.speed = v.floatValue());
+        this.flightMaxHeight = new GuiTrackpadElement(mc, (v) -> this.state.flightMaxHeight = v);
+        this.flightMinHeight = new GuiTrackpadElement(mc, (v) -> this.state.flightMinHeight = v);
         this.jumpPower = new GuiTrackpadElement(mc, (v) -> this.state.jumpPower = v.floatValue());
         this.steeringOffset = new GuiBlockPosList(mc);
 
@@ -58,6 +62,8 @@ public class GuiNpcMovementPanel extends GuiNpcPanel
         patrolLabel.add(addPatrol);
 
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.movement.speed")), this.speed);
+        this.add(Elements.label(IKey.lang("mappet.gui.npcs.movement.flight_max_height")), this.flightMaxHeight);
+        this.add(Elements.label(IKey.lang("mappet.gui.npcs.movement.flight_min_height")), this.flightMinHeight);
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.movement.jump_power")), this.jumpPower);
         this.add(this.canSwim, this.immovable);
         this.add(this.hasPost.marginTop(12), this.postPosition, this.postRadius);
@@ -80,6 +86,8 @@ public class GuiNpcMovementPanel extends GuiNpcPanel
         super.set(state);
 
         this.speed.setValue(state.speed);
+        this.flightMaxHeight.setValue(state.flightMaxHeight);
+        this.flightMinHeight.setValue(state.flightMinHeight);
         this.jumpPower.setValue(state.jumpPower);
         this.steeringOffset.set(state.steeringOffset);
         this.canSwim.toggled(state.canSwim);

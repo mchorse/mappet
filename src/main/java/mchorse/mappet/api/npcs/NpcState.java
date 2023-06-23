@@ -229,6 +229,21 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     public boolean alwaysWander;
 
     /**
+     * Whether the NPC should be able to fly. (experimental)
+     */
+    public boolean canFly;
+
+    /**
+     * Flight max height
+     */
+    public double flightMaxHeight = 6.0D;
+
+    /**
+     * Flight min height
+     */
+    public double flightMinHeight = 4.0D;
+
+    /**
      * The health threshold until NPC starts to run away
      */
     public float flee = 4F;
@@ -369,6 +384,14 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         {
             this.speed = Float.parseFloat(value);
         }
+        else if (property.equals("flight_max_height"))
+        {
+            this.flightMaxHeight = Double.parseDouble(value);
+        }
+        else if (property.equals("flight_min_height"))
+        {
+            this.flightMinHeight = Double.parseDouble(value);
+        }
         else if (property.equals("jump_power"))
         {
             this.jumpPower = Float.parseFloat(value);
@@ -484,6 +507,10 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         else if (property.equals("always_wander"))
         {
             this.alwaysWander = Boolean.parseBoolean(value);
+        }
+        else if (property.equals("can_fly"))
+        {
+            this.canFly = Boolean.parseBoolean(value);
         }
         else if (property.equals("flee"))
         {
@@ -621,6 +648,14 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         {
             tag.setFloat("Speed", this.speed);
         }
+        if (all || options.contains("flight_max_height"))
+        {
+            tag.setDouble("FlightMaxHeight", this.flightMaxHeight);
+        }
+        if (all || options.contains("flight_min_height"))
+        {
+            tag.setDouble("FlightMinHeight", this.flightMinHeight);
+        }
         if (all || options.contains("jump_power"))
         {
             tag.setFloat("JumpPower", this.jumpPower);
@@ -748,6 +783,10 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (all || options.contains("always_wander"))
         {
             tag.setBoolean("AlwaysWander", this.alwaysWander);
+        }
+        if (all || options.contains("can_fly"))
+        {
+            tag.setBoolean("CanFly", this.canFly);
         }
         if (all || options.contains("flee"))
         {
@@ -903,6 +942,14 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         {
             this.speed = tag.getFloat("Speed");
         }
+        if (tag.hasKey("FlightMaxHeight"))
+        {
+            this.flightMaxHeight = tag.getDouble("FlightMaxHeight");
+        }
+        if (tag.hasKey("FlightMinHeight"))
+        {
+            this.flightMinHeight = tag.getDouble("FlightMinHeight");
+        }
         if (tag.hasKey("JumpPower"))
         {
             this.jumpPower = tag.getFloat("JumpPower");
@@ -1055,6 +1102,10 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         if (tag.hasKey("AlwaysWander"))
         {
             this.alwaysWander = tag.getBoolean("AlwaysWander");
+        }
+        if (tag.hasKey("CanFly"))
+        {
+            this.canFly = tag.getBoolean("CanFly");
         }
         if (tag.hasKey("Flee"))
         {

@@ -14,6 +14,8 @@ import mchorse.mappet.api.utils.DataContext;
 import mchorse.mappet.capabilities.character.Character;
 import mchorse.mappet.capabilities.character.ICharacter;
 import mchorse.mappet.entities.ai.*;
+import mchorse.mappet.entities.ai.fly.EntityAINpcFly;
+import mchorse.mappet.entities.ai.fly.FlyingMoveHelper;
 import mchorse.mappet.entities.utils.MappetNpcRespawnManager;
 import mchorse.mappet.entities.utils.NpcDamageSource;
 import mchorse.mappet.items.ItemNpcTool;
@@ -40,6 +42,9 @@ import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.pathfinding.PathNavigateFlying;
+import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -246,6 +251,15 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     }
 
     @Override
+    protected PathNavigate createNavigator(World world) {
+        if (this.state != null && this.state.canFly) {
+            return new PathNavigateFlying(this, world);
+        } else {
+            return new PathNavigateGround(this, world);
+        }
+    }
+
+    @Override
     protected void initEntityAI()
     {
         super.initEntityAI();
@@ -292,7 +306,12 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
                 this.tasks.addTask(9, new EntityAIWanderAvoidWater(this, speed / 2D));
             }
 
-            if (this.state.alwaysWander)
+            if (this.state.canFly)
+            {
+                this.moveHelper = new FlyingMoveHelper(this);
+                this.tasks.addTask(10, new EntityAINpcFly(this));
+            }
+            else if (this.state.alwaysWander)
             {
                 this.tasks.addTask(10, new EntityAIAlwaysWander(this, speed / 2D));
             }
