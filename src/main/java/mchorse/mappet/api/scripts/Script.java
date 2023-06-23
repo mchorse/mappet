@@ -241,16 +241,18 @@ public class Script extends AbstractData
         return index >= 0 ? id.substring(index + 1) : "js";
     }
 
-    public Object execute(String function, DataContext context) throws ScriptException, NoSuchMethodException
+    public Object execute(String function, DataContext context, Object... args) throws ScriptException, NoSuchMethodException
     {
         if (function.isEmpty())
         {
             function = "main";
         }
 
+        this.engine.put("context", context);
+
         try
         {
-            return ((Invocable) this.engine).invokeFunction(function, new ScriptEvent(context, this.getId(), function));
+            return ((Invocable) this.engine).invokeFunction(function, args);
         }
         catch (ScriptException e)
         {
@@ -260,6 +262,11 @@ public class Script extends AbstractData
 
             throw exception == null ? e : exception;
         }
+    }
+
+    public Object execute(String function, DataContext context) throws ScriptException, NoSuchMethodException
+    {
+        return this.execute(function, context, new ScriptEvent(context, this.getId(), function));
     }
 
     private ScriptException processScriptException(ScriptException e)

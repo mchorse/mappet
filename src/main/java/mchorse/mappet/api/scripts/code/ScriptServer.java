@@ -154,4 +154,26 @@ public class ScriptServer implements IScriptServer
             throw new RuntimeException("Script Empty: " + scriptName + " - Error: " + e.getClass().getSimpleName() + ": " + e.getMessage(), e);
         }
     }
+
+    @Override
+    public void executeScript(String scriptName, String function, Object... args)
+    {
+        DataContext context = new DataContext(server);
+
+        try
+        {
+            Mappet.scripts.execute(scriptName, function, context, args);
+        }
+        catch (ScriptException e)
+        {
+            String fileName = e.getFileName() == null ? scriptName : e.getFileName();
+            e.printStackTrace();
+            throw new RuntimeException("Script Error: " + fileName + " - Line: " + e.getLineNumber() + " - Column: " + e.getColumnNumber() + " - Message: " + e.getMessage(), e);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            throw new RuntimeException("Script Empty: " + scriptName + " - Error: " + e.getClass().getSimpleName() + ": " + e.getMessage(), e);
+        }
+    }
 }

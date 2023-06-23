@@ -1239,6 +1239,31 @@ public interface IScriptEntity
      */
     public void executeScript(String scriptName, String function);
 
+
+    /**
+     * Execute for the entity a script with a given script name and arguments.
+     *
+     * <pre>{@code
+     * c.getSubject().executeScript("example_script.js", "func_with_context", c, 1, 2, 3);
+     * c.getSubject().executeScript("example_script.js", "func_without_context", 1, 2, 3);
+     *
+     * // example_script.js
+     * function func_with_context(c, arg1, arg2, arg3)
+     * {
+     *     c.getSubject().send("arg1: " + arg1 + ", arg2: " + arg2 + ", arg3: " + arg3);
+     * }
+     *
+     * function func_without_context(arg1, arg2, arg3)
+     * {
+     *     print("arg1: " + arg1 + ", arg2: " + arg2 + ", arg3: " + arg3);
+     * }
+     * }</pre>
+     * @param scriptName The name of the script to execute.
+     * @param function The name of the function within the script to execute.
+     * @param args The arguments to pass to the function.
+     */
+    void executeScript(String scriptName, String function, Object... args);
+
     /**
      * Lock the entity's position.
      *
