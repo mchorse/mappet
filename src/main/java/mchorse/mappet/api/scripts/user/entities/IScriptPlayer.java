@@ -213,10 +213,7 @@ public interface IScriptPlayer extends IScriptEntity
      *    }
      * }</pre>
      */
-    public default void resetFlySpeed()
-    {
-        this.setFlySpeed(0.05F);
-    }
+    public void resetFlySpeed();
 
     /**
      * Reset the walking speed of the player.
@@ -228,10 +225,7 @@ public interface IScriptPlayer extends IScriptEntity
      *    }
      * }</pre>
      */
-    public default void resetWalkSpeed()
-    {
-        this.setWalkSpeed(0.1F);
-    }
+    public void resetWalkSpeed();
 
     /**
      * Get cooldown of a particular inventory index of the player.
@@ -246,10 +240,7 @@ public interface IScriptPlayer extends IScriptEntity
      * }
      * }</pre>
      */
-    public default float getCooldown(int inventorySlot)
-    {
-        return this.getCooldown(this.getInventory().getStack(inventorySlot));
-    }
+    public float getCooldown(int inventorySlot);
 
     /**
      * Get cooldown of a particular inventory index of the player.
@@ -279,10 +270,7 @@ public interface IScriptPlayer extends IScriptEntity
      *    }
      * }</pre>
      */
-    public default void setCooldown(int inventorySlot, int ticks)
-    {
-        this.setCooldown(this.getInventory().getStack(inventorySlot), ticks);
-    }
+    public void setCooldown(int inventorySlot, int ticks);
 
     /**
      * Set cooldown for given item.
@@ -293,7 +281,7 @@ public interface IScriptPlayer extends IScriptEntity
      *        var player = c.getSubject();
      *        var item = mappet.createItem("minecraft:diamond_sword");
      *
-     *        player.setCooldown(item.getItem(), 100);
+     *        player.setCooldown(item, 100);
      *    }
      * }</pre>
      */
@@ -311,10 +299,7 @@ public interface IScriptPlayer extends IScriptEntity
      *    }
      * }</pre>
      */
-    public default void resetCooldown(int inventorySlot)
-    {
-        this.resetCooldown(this.getInventory().getStack(inventorySlot));
-    }
+    public void resetCooldown(int inventorySlot);
 
     /**
      * Reset cooldown of a particular inventory index of the player.
@@ -325,7 +310,7 @@ public interface IScriptPlayer extends IScriptEntity
      *        var player = c.getSubject();
      *        var item = mappet.createItem("minecraft:diamond_sword");
      *
-     *        player.resetCooldown(item.getItem());
+     *        player.resetCooldown(item);
      *    }
      * }</pre>
      */

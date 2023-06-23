@@ -191,10 +191,22 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     }
 
     @Override
+    public void resetFlySpeed()
+    {
+        this.setFlySpeed(0.05F);
+    }
+
+    @Override
     public void setWalkSpeed(float speed)
     {
         this.entity.capabilities.setPlayerWalkSpeed(speed);
         this.entity.sendPlayerAbilities();
+    }
+
+    @Override
+    public void resetWalkSpeed()
+    {
+        this.setWalkSpeed(0.1F);
     }
 
     @Override
@@ -204,15 +216,33 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     }
 
     @Override
+    public float getCooldown(int inventorySlot)
+    {
+        return this.getCooldown(this.getInventory().getStack(inventorySlot));
+    }
+
+    @Override
     public void setCooldown(IScriptItemStack item, int ticks)
     {
         this.entity.getCooldownTracker().setCooldown(item.getMinecraftItemStack().getItem(), ticks);
     }
 
     @Override
+    public void setCooldown(int inventorySlot, int ticks)
+    {
+        this.setCooldown(this.getInventory().getStack(inventorySlot), ticks);
+    }
+
+    @Override
     public void resetCooldown(IScriptItemStack item)
     {
         this.entity.getCooldownTracker().removeCooldown(item.getMinecraftItemStack().getItem());
+    }
+
+    @Override
+    public void resetCooldown(int inventorySlot)
+    {
+        this.resetCooldown(this.getInventory().getStack(inventorySlot));
     }
 
     @Override
