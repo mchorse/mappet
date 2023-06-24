@@ -1343,6 +1343,63 @@ public class GuiMultiTextElement <T extends TextLine> extends GuiElement impleme
 
             return true;
         }
+        else if (ctrl && context.keyCode == Keyboard.KEY_SLASH)
+        {
+            Cursor min = new Cursor(), max = new Cursor();
+
+            // Get the bounds for the operation, either a selection or the current line
+            if (this.isSelected()) {
+                min.copy(this.getMin());
+                max.copy(this.getMax());
+            } else {
+                min.copy(this.cursor);
+                max.copy(this.cursor);
+            }
+
+            // Check if all lines in the selection (or the single current line) are commented or not
+            int numCommentedLines = 0, numUncommentedLines = 0;
+            for (int i = min.line; i <= max.line; i++) {
+                String line = this.text.get(i).text;
+                if (line.startsWith("//")) {
+                    numCommentedLines++;
+                } else {
+                    numUncommentedLines++;
+                }
+            }
+
+            // Apply commenting or uncommenting operation based on the condition
+            for (int i = min.line; i <= max.line; i++) {
+                String line = this.text.get(i).text;
+                if (numUncommentedLines == 0 && numCommentedLines > 0) {
+                    // Uncomment the line, removing the leading "//"
+                    if (line.startsWith("//")) {
+                        this.text.get(i).set(line.substring(2));
+                    }
+                } else if (numUncommentedLines > 0) {
+                    // Comment the line, adding leading "//"
+                    if (!line.startsWith("//")) {
+                        this.text.get(i).set("//" + line);
+                    }
+                }
+            }
+
+            // Update the editor and selection, similar to paste operation
+            if (this.isSelected()) {
+                String selected = this.getSelectedText();
+                this.deleteSelection();
+                this.writeString(selected);
+            } else {
+                String currentLine = this.text.get(this.cursor.line).text;
+                this.text.get(this.cursor.line).set("");
+                this.writeString(currentLine);
+            }
+
+            undo.ready().post("", this.cursor, this.selection);
+            this.changedLineAfter(min.line); // Recalculate line sizes after modifying lines
+            this.playSound(SoundEvents.BLOCK_CHEST_LOCKED);
+
+            return true;
+        }
         else if (context.keyCode == Keyboard.KEY_RETURN)
         {
             this.keyNewLine(undo.ready());
