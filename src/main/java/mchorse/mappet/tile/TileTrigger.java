@@ -9,6 +9,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -20,7 +22,6 @@ public class TileTrigger extends TileEntity
     public Trigger rightClick = new Trigger();
     public Vec3d boundingBoxPos1 = new Vec3d(0, 0, 0);
     public Vec3d boundingBoxPos2 = new Vec3d(1, 1, 1);
-
 
     public void set(NBTTagCompound left, NBTTagCompound right, boolean collidable, Vec3d boundingBoxPos1, Vec3d boundingBoxPos2)
     {
@@ -95,5 +96,23 @@ public class TileTrigger extends TileEntity
         {
             this.boundingBoxPos2 = NBTUtils.vec3dFrom(tag.getTag("BoundingBoxPos2"));
         }
+    }
+
+    @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
+    }
+
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket()
+    {
+        return new SPacketUpdateTileEntity(this.pos, this.getBlockMetadata(), this.getUpdateTag());
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet)
+    {
+        this.readFromNBT(packet.getNbtCompound());
     }
 }
