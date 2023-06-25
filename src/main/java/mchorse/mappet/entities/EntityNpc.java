@@ -529,6 +529,7 @@ public class EntityNpc extends EntityCreature implements IEntityAdditionalSpawnD
     public void setMorph(AbstractMorph morph)
     {
         this.morph.set(morph);
+        this.state.morph = morph;
     }
 
     public void setMaxHealth(double value)
