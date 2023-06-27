@@ -553,4 +553,9 @@ public class ScriptFactory implements IScriptFactory
     {
         return MappetBlockBBModel.create();
     }
+
+    @Override
+    public String format(String format, Object... args) {
+        return String.format(format, args);
+    }
 }

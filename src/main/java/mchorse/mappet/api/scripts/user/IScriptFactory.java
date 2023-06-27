@@ -961,4 +961,27 @@ public interface IScriptFactory
      * @return model instance
      */
     MappetModelSettings createModelSettings();
+
+    /**
+     * Formates strings (placeholders).
+     *
+     * <pre>{@code
+     * // Example:
+     * var name = "Steve";
+     * var age = 18;
+     * var message = mappet.format("Hello %s, you are %d years old!", name, age);
+     * c.send(message);
+     *
+     * // You can also use the positional arguments:
+     * var s = c.getSubject();
+     * var pos = s.getPosition();
+     * var message = mappet.format("Hello %1$s, you are in x:%2$.2f, y:%3$.2f, z:%4$.2f!", s.getName(), pos.x, pos.y, pos.z);
+     * s.send(message);
+     * }</pre>
+     *
+     * @param format string to format
+     * @param args arguments to replace
+     * @return formatted string
+     */
+    String format(String format, Object... args);
 }
