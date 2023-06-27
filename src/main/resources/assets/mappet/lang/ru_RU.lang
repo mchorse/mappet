@@ -747,6 +747,7 @@ mappet.gui.triggers.context.paste=Вставить скопированный т
 mappet.gui.triggers.context.remove=Удалить этот триггер
 
 mappet.gui.scripts.run=Запустить скрипт (функция main)
+mappet.gui.scripts.global_library=Глобальная библиотека
 mappet.gui.scripts.libraries.title=Библиотеки
 mappet.gui.scripts.libraries.tooltip=Управление библиотеками...
 mappet.gui.scripts.libraries.context.add=Добавить библиотеку...

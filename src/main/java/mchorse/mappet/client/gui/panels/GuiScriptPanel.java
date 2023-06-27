@@ -19,11 +19,13 @@ import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
 import mchorse.mappet.client.gui.utils.overlays.GuiSoundOverlayPanel;
 import mchorse.mappet.utils.MPIcons;
 import mchorse.mclib.client.gui.framework.GuiBase;
+import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.context.GuiContextMenu;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
+import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.Direction;
@@ -55,6 +57,7 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
     public GuiTextEditor code;
     public GuiRepl repl;
     public GuiToggleElement unique;
+    public GuiToggleElement globalLibrary;
 
     /**
      * A map of last remembered vertical scrolled within other scripts
@@ -217,17 +220,20 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
 
         this.repl = new GuiRepl(mc);
 
-        this.unique = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.meta.unique"), (b) -> this.data.unique = b.isToggled());
-        this.unique.flex().relative(this.sidebar).x(10).y(1F, -10).w(1F, -20).anchorY(1F);
 
-        this.names.flex().hTo(this.unique.area, -5);
+        this.unique = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.meta.unique"), (b) -> this.data.unique = b.isToggled());
+        this.globalLibrary = new GuiToggleElement(mc, IKey.lang("mappet.gui.scripts.global_library"), (b) -> this.data.globalLibrary = b.isToggled());
+
+        GuiElement sideBarToggles = Elements.column(mc,2,this.unique, this.globalLibrary);
+        sideBarToggles.flex().relative(this.sidebar).x(10).y(1F, -10).w(1F, -20).anchorY(1F);
+
+        this.names.flex().hTo(sideBarToggles.area, -5);
 
         this.code.flex().relative(this.editor).wh(1F, 1F);
         this.repl.flex().relative(this.editor).wh(1F, 1F);
 
         this.editor.add(this.code);
-        this.sidebar.prepend(this.unique);
-
+        this.sidebar.prepend(sideBarToggles);
         this.add(this.repl);
 
         this.fill(null);
@@ -316,6 +322,7 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
 
         this.editor.setVisible(data != null);
         this.unique.setVisible(data != null && allowed);
+        this.globalLibrary.setVisible(data != null && allowed);
         this.updateButtons();
 
         if (data != null)
@@ -344,6 +351,7 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
             }
 
             this.unique.toggled(data.unique);
+            this.globalLibrary.toggled(data.globalLibrary);
         }
     }
 

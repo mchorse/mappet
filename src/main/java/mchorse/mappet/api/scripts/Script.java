@@ -32,6 +32,8 @@ public class Script extends AbstractData
 
     public boolean unique = true;
 
+    public boolean globalLibrary = false;
+
     public List<String> libraries = new ArrayList<String>();
 
     private ScriptEngine engine;
@@ -57,7 +59,11 @@ public class Script extends AbstractData
 
             boolean isKotlin = isKotlinEngine();
 
-            for (String library : this.libraries)
+            List<String> allLibraries = new ArrayList<>();
+            allLibraries.addAll(manager.globalLibraries.keySet());
+            allLibraries.addAll(this.libraries);
+
+            for (String library : allLibraries)
             {
                 if (shouldSkipLibrary(library, alreadyLoaded))
                 {
@@ -315,6 +321,7 @@ public class Script extends AbstractData
         }
 
         tag.setBoolean("Unique", this.unique);
+        tag.setBoolean("GlobalLibrary", this.globalLibrary);
         tag.setTag("Libraries", libraries);
         tag.setByteArray("Code", this.code.getBytes(StandardCharsets.UTF_8));
 
@@ -336,6 +343,11 @@ public class Script extends AbstractData
             {
                 this.libraries.add(libraries.getStringTagAt(i));
             }
+        }
+
+        if (tag.hasKey("GlobalLibrary"))
+        {
+            this.globalLibrary = tag.getBoolean("GlobalLibrary");
         }
 
         this.code = new String(tag.getByteArray("Code"), StandardCharsets.UTF_8);

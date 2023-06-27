@@ -30,6 +30,7 @@ public class ScriptManager extends BaseManager<Script>
     public final Map<String, Object> objects = new HashMap<String, Object>();
 
     private Map<String, Script> uniqueScripts = new HashMap<String, Script>();
+    public Map<String, Script> globalLibraries = new HashMap<String, Script>();
     private Map<Object, ScriptEngine> repls = new HashMap<Object, ScriptEngine>();
     private String replOutput = "";
 
@@ -147,6 +148,11 @@ public class ScriptManager extends BaseManager<Script>
             {
                 this.uniqueScripts.put(id, script);
             }
+
+            if (script != null && script.globalLibrary)
+            {
+                this.globalLibraries.put(id, script);
+            }
         }
 
         if (script == null)
@@ -261,6 +267,11 @@ public class ScriptManager extends BaseManager<Script>
             {
                 this.uniqueScripts.put(id, script);
             }
+
+            if (script != null && script.globalLibrary)
+            {
+                this.globalLibraries.put(id, script);
+            }
         }
 
         return result;
@@ -328,6 +339,11 @@ public class ScriptManager extends BaseManager<Script>
                 {
                     this.uniqueScripts.put(id, script);
                     script.start(this);
+                }
+
+                if (script != null && script.globalLibrary)
+                {
+                    this.globalLibraries.put(id, script);
                 }
             }
             catch (Exception e)
