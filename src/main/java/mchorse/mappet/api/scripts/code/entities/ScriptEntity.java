@@ -945,6 +945,51 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
         return entities;
     }
 
+    @Override
+    public boolean setLeashHolder(IScriptEntity leashHolder) {
+        if (!(this.entity instanceof EntityLiving)) {
+            return false;
+        }
+
+        EntityLiving leashedEntity = (EntityLiving) this.entity;
+        boolean wasLeashed = leashedEntity.getLeashed();
+        leashedEntity.setLeashHolder(leashHolder.getMinecraftEntity(), true);
+
+        // If the entity was not leashed before and is leashed now, the operation was successful.
+        return !wasLeashed && leashedEntity.getLeashed();
+    }
+
+    @Override
+    public IScriptEntity getLeashHolder() {
+        if (!(this.entity instanceof EntityLiving)) {
+            return null;
+        }
+
+        EntityLiving leashedEntity = (EntityLiving) this.entity;
+        Entity leashHolder = leashedEntity.getLeashHolder();
+
+        if (leashHolder == null) {
+            return null;
+        }
+
+        return ScriptEntity.create(leashHolder);
+    }
+
+    @Override
+    public boolean clearLeashHolder(boolean dropLead) {
+        if (!(this.entity instanceof EntityLiving)) {
+            return false;
+        }
+
+        EntityLiving leashedEntity = (EntityLiving) this.entity;
+        boolean wasLeashed = leashedEntity.getLeashed();
+
+        leashedEntity.clearLeashed(true, dropLead);
+
+        // If the entity was leashed before and is not leashed now, the operation was successful.
+        return wasLeashed && !leashedEntity.getLeashed();
+    }
+
     /* Modifiers */
 
     @Override

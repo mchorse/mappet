@@ -345,6 +345,10 @@ mappet.gui.settings.triggers.living_equipment_change=Living: equipment change
 mappet.gui.settings.triggers.descriptions.living_equipment_change=This gets triggered when a living entity equipment change.
 mappet.gui.settings.triggers.variables.living_equipment_change=§6item§r, the current item.\n§6slot§r, the slot where the item was picked up.
 
+mappet.gui.settings.triggers.player_entity_leash=Player: leash an entity
+mappet.gui.settings.triggers.descriptions.player_entity_leash=This cancelable trigger gets triggered when a player leashes an entity.
+mappet.gui.settings.triggers.variables.player_entity_leash=§6hand§r, the hand that leashed the entity (§7main§r or §7off§r).
+
 mappet.gui.settings.triggers.state_changed=Mappet: state changed
 mappet.gui.settings.triggers.descriptions.state_changed=This gets triggered when a state changes.
 mappet.gui.settings.triggers.variables.state_changed=§6entity§r, the player/NPC that changed the state.(null if global)\n§6key§r, the key of the state that changed.\n§6current§r, the current value of the state.\n§6previous§r, the previous value of the state.

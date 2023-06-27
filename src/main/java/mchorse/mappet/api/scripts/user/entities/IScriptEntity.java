@@ -945,6 +945,66 @@ public interface IScriptEntity
     /* Modifiers */
 
     /**
+     * Sets the leash holder of this entity.
+     *
+     * <pre>{@code
+     * // Leash all entities within 5 blocks of the subject
+     * function main(c){
+     *     var tracker = c.getSubject();
+     *     var trackedEntities = c.getServer().getEntities("@e[type=!player]");
+     *     trackedEntities.forEach(function(trackedEntity){
+     *         if (trackedEntity.isEntityInRadius(tracker, 5)){
+     *             trackedEntity.setLeashHolder(tracker);
+     *         }
+     *     });
+     * }
+     * }</pre>
+     * @param leashHolder the entity to leash this entity to
+     * @return whether the leash holder was set successfully
+     */
+    boolean setLeashHolder(IScriptEntity leashHolder);
+
+    /**
+     * Returns the leash holder of this entity.
+     *
+     * <pre>{@code
+     * //in scripted item (player: on entity interaction)
+     * //this leashes the entity to the player if it is not already leashed
+     * function main(c)
+     * {
+     *     var player = c.getSubject();
+     *     var entity = c.getObject();
+     *     if (entity.getLeashHolder()!=null) return;
+     *     c.scheduleScript(0, function (c)
+     *     {
+     *         entity.setLeashHolder(player);
+     *     });
+     * }
+     * }</pre>
+     *
+     * @return the leash holder of this entity
+     */
+    IScriptEntity getLeashHolder();
+
+    /**
+     * Clears the leash holder of this entity.
+     *
+     * <pre>{@code
+     * //free all leashed entities in the world
+     * function main(c)
+     * {
+     *     c.getServer().getEntities("@e[type=!player]").forEach(function(entity){
+     *         entity.clearLeashHolder(true); //true to drop the lead
+     *     });
+     * }
+     * }</pre>
+     *
+     * @param dropLead whether to drop the lead item
+     * @return whether the leash holder was cleared successfully
+     */
+    boolean clearLeashHolder(boolean dropLead);
+
+    /**
      * Set entity's modifier to a certain value.
      *
      * <pre>{@code

@@ -50,10 +50,12 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityThrowable;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerChest;
 import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
@@ -1237,13 +1239,29 @@ public class EventHandler
         }
     }
 
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onPlayerLeashEntity(PlayerInteractEvent.EntityInteract event)
+    {
+        EntityPlayer player = event.getEntityPlayer();
+        ItemStack item = player.getHeldItem(event.getHand());
+        Trigger trigger = Mappet.settings.playerEntityLeash;
+        Entity target = event.getTarget();
 
+        // Check if the player is on the server, has a leash, and if there's an interaction event set
+        if (player.world.isRemote || item.getItem() != Items.LEAD || trigger.isEmpty())
+        {
+            return;
+        }
 
+        // Check if the target entity can be leashed
+        if (!(target instanceof EntityLiving) || ((EntityLiving) target).getLeashed() || !((EntityLiving) target).canBeLeashedTo(player))
+        {
+            return;
+        }
 
+        DataContext context = new DataContext(player, target)
+                .set("hand", event.getHand() == EnumHand.MAIN_HAND ? "main" : "off");
 
-
-
-
-
-
+        this.trigger(event, trigger, context);
+    }
 }
