@@ -14,6 +14,7 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraftforge.common.util.Constants;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
 
 import javax.script.Invocable;
 import javax.script.ScriptContext;
@@ -108,6 +109,13 @@ public class Script extends AbstractData
 
     private void configureEngineContext()
     {
+        String extension = this.getScriptExtension();
+        if (extension.equals("js"))
+        {
+            NashornScriptEngineFactory factory = new NashornScriptEngineFactory();
+            this.engine = factory.getScriptEngine(new String[] {"--language=es6", "-scripting"});
+        }
+
         this.engine.getContext().setAttribute("javax.script.filename", this.getId(), ScriptContext.ENGINE_SCOPE);
         this.engine.getContext().setAttribute("polyglot.js.allowHostAccess", true, ScriptContext.ENGINE_SCOPE);
     }
