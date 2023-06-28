@@ -1230,10 +1230,10 @@ public class EventHandler
             if (
                     player.isRiding() &&
                             player.getRidingEntity() instanceof EntityNpc
-                            && ((EntityNpc) player.getRidingEntity()).getState().canBeSteered
+                            && ((EntityNpc) player.getRidingEntity()).getState().canBeSteered.get()
             )
             {
-                float jumpPower = ((EntityNpc) player.getRidingEntity()).getState().jumpPower;
+                float jumpPower = ((EntityNpc) player.getRidingEntity()).getState().jumpPower.get();
                 Dispatcher.sendToServer(new PacketNpcJump(player.getRidingEntity().getEntityId(), jumpPower));
             }
         }

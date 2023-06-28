@@ -1,10 +1,19 @@
 package mchorse.mappet.api.npcs;
 
+import com.google.common.base.CaseFormat;
 import io.netty.buffer.ByteBuf;
 import mchorse.mappet.api.states.States;
 import mchorse.mappet.api.triggers.Trigger;
 import mchorse.mappet.utils.NBTUtils;
 import mchorse.mappet.utils.NpcStateUtils;
+import mchorse.mclib.config.values.GenericValue;
+import mchorse.mclib.config.values.Value;
+import mchorse.mclib.config.values.ValueBoolean;
+import mchorse.mclib.config.values.ValueDouble;
+import mchorse.mclib.config.values.ValueFloat;
+import mchorse.mclib.config.values.ValueInt;
+import mchorse.mclib.config.values.ValueString;
+import mchorse.mclib.utils.ValueSerializer;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.nbt.JsonToNBT;
@@ -15,253 +24,256 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class NpcState implements INBTSerializable<NBTTagCompound>
 {
+
     /* Meta */
-    public String stateName = "";
+    public ValueString stateName = new ValueString("StateName", "");
 
-    public String id = "";
+    public ValueString id = new ValueString("Id", "");
 
-    public States states = new States();
+    public States states = new States(); //TODO make it work with ValueAPI
 
     /**
      * Unique
      */
-    public boolean unique;
+    public ValueBoolean unique = new ValueBoolean("Unique");
 
     /**
      * Path distance
      */
-    public float pathDistance = 32;
+    public ValueFloat pathDistance = new ValueFloat("PathDistance", 32);
 
     /* Health */
 
     /**
      * Max health an NPC can have
      */
-    public float maxHealth = 20;
+    public ValueFloat maxHealth = new ValueFloat("MaxHealth", 20);
 
     /**
      * The initial health
      */
-    public float health = 20;
+    public ValueFloat health = new ValueFloat("Health", 20);
 
     /**
      * Regeneration delay (in ticks)
      */
-    public int regenDelay = 80;
+    public ValueInt regenDelay = new ValueInt("RegenDelay", 80);
 
     /**
      * How frequently will an NPC regenerate one heart (in ticks)
      */
-    public int regenFrequency = 20;
+    public ValueInt regenFrequency = new ValueInt("RegenFrequency", 20);
 
     /* Damage */
 
     /**
      * What is this NPC's melee damage
      */
-    public float damage = 2F;
+    public ValueFloat damage = new ValueFloat("Damage", 2F);
 
     /**
      * NPC attack delay
      */
-    public int damageDelay = 10;
+    public ValueInt damageDelay = new ValueInt("DamageDelay", 10);
 
     /**
      * Whether this NPC can use ranged weapons
      */
-    public boolean canRanged;
+    public ValueBoolean canRanged = new ValueBoolean("CanRanged");
 
     /**
      * Whether this NPC is resistible to fall damage
      */
-    public boolean canFallDamage = true;
+    public ValueBoolean canFallDamage = new ValueBoolean("CanFallDamage", true);
 
     /**
      * Whether this NPC is resistible to fire damage
      */
-    public boolean canGetBurned = true;
+    public ValueBoolean canGetBurned = new ValueBoolean("CanGetBurned", true);
 
     /**
      * Whether this NPC can be damaged
      */
-    public boolean invincible;
+    public ValueBoolean invincible = new ValueBoolean("Invincible");
 
     /**
      * If false, then NPCs can be killed only by a command.
      * Regardless of the state, killable allows to make this NPC damaged
      * until 0 health.
      */
-    public boolean killable = true;
+    public ValueBoolean killable = new ValueBoolean("Killable", true);
 
     /* Movement */
 
     /**
      * What is NPC's movement speed
      */
-    public float speed = 3F;
+    public ValueFloat speed = new ValueFloat("Speed", 3F);
 
     /**
      * NPC's jumping power when it's steered
      */
-    public float jumpPower = 0.6F;
+    public ValueFloat jumpPower = new ValueFloat("JumpPower", 0.6F);
 
     /**
      * Can NPC move around in the water
      */
-    public boolean canSwim = true;
+    public ValueBoolean canSwim = new ValueBoolean("CanSwim",true);
 
     /**
      * Can NPC be pushed by players moving through an NPC
      */
-    public boolean immovable;
+    public ValueBoolean immovable = new ValueBoolean("Immovable");
 
     /**
      * Whether post options
      */
-    public boolean hasPost;
+    public ValueBoolean hasPost = new ValueBoolean("HasPost");
 
     /**
      * Block position where the NPC must stay on the post
      */
-    public BlockPos postPosition;
+    public BlockPos postPosition; //TODO make it work with ValueAPI
 
     /**
      * What distance away from the post will NPC will return into the
      * radius. This could be used if wandering option wandered NPC out of
      * the radius
      */
-    public float postRadius = 1F;
+    public ValueFloat postRadius = new ValueFloat("PostRadius", 1F);
 
     /**
      * After what distance from the post or patrol point the NPC will
      * stop chasing and come back
      */
-    public float fallback = 15F;
+    public ValueFloat fallback = new ValueFloat("Fallback", 15F);
 
     /**
      * Whether patrol points should circulate rather than ping-pong
      */
-    public boolean patrolCirculate;
+    public ValueBoolean patrolCirculate = new ValueBoolean("PatrolCirculate");
 
     /**
      * List of position through which an NPC must patrol through
      */
-    public List<BlockPos> patrol = new ArrayList<BlockPos>();
+    public List<BlockPos> patrol = new ArrayList<BlockPos>(); //TODO make it work with ValueAPI
 
     /**
      * List of triggers on each patrol point
      */
-    public List<Trigger> patrolTriggers = new ArrayList<Trigger>();
+    public List<Trigger> patrolTriggers = new ArrayList<Trigger>(); //TODO make it work with ValueAPI
 
     /**
      * List of NPC's x-offset when steered
      */
-    public List<BlockPos> steeringOffset = new ArrayList<BlockPos>();
+    public List<BlockPos> steeringOffset = new ArrayList<BlockPos>(); //TODO make it work with ValueAPI
 
     /**
      * The UUID of the player that must be followed
      */
-    public String follow = "";
+    public ValueString follow = new ValueString("Follow", "");
 
     /* General */
 
     /**
      * To which faction does this NPC belongs to
      */
-    public String faction = "";
+    public ValueString faction = new ValueString("Faction", "");
 
     /**
      * How does the NPC looks like
      */
-    public AbstractMorph morph;
+    public AbstractMorph morph; //TODO make it work with ValueAPI
 
     /**
      * Sight distance, is how far away can an NPC find a target to attack
      */
-    public float sightDistance = 25F;
+    public ValueFloat sightDistance = new ValueFloat("SightDistance", 25F);
 
     /**
      * Sight radius determines the angle of how narrow does the NPC has to look
      * in the direction of potential targets
      */
-    public float sightRadius = 120F;
+    public ValueFloat sightRadius = new ValueFloat("SightRadius", 120F);
 
     /**
      * What kind of items will the NPC is going to drop
      */
-    public List<NpcDrop> drops = new ArrayList<NpcDrop>();
+    public List<NpcDrop> drops = new ArrayList<NpcDrop>(); //TODO make it work with ValueAPI
 
     /**
      * How much XP drops an NPC after getting killed
      */
-    public int xp = 0;
+    public ValueInt xp = new ValueInt("Xp", 0);
 
     /**
      * NPC shadow size
      */
-    public float shadowSize = 0.6F;
+    public ValueFloat shadowSize = new ValueFloat("ShadowSize", 0.6F);;
 
     /* Behavior */
 
     /**
      * Whether NPC looks at a player when it
      */
-    public boolean lookAtPlayer;
+    public ValueBoolean lookAtPlayer = new ValueBoolean("LookAtPlayer");
 
     /**
      * Whether NPC pointlessly looks around in its idle state
      */
-    public boolean lookAround;
+    public ValueBoolean lookAround = new ValueBoolean("LookAround");
 
     /**
      * NPCs can go around in different direction, this property
      * sets its maximum distance it can wander off at a time
      */
-    public boolean wander;
+    public ValueBoolean wander = new ValueBoolean("Wander");
 
     /**
      * Whether NPC should always wander
      */
-    public boolean alwaysWander;
+    public ValueBoolean alwaysWander = new ValueBoolean("AlwaysWander");
 
     /**
      * Whether the NPC should be able to fly. (experimental)
      */
-    public boolean canFly;
+    public ValueBoolean canFly = new ValueBoolean("CanFly");
 
     /**
      * Flight max height
      */
-    public double flightMaxHeight = 6.0D;
+    public ValueDouble flightMaxHeight = new ValueDouble("FlightMaxHeight", 6.0D);
 
     /**
      * Flight min height
      */
-    public double flightMinHeight = 4.0D;
+    public ValueDouble flightMinHeight = new ValueDouble("FlightMinHeight", 4.0D);;
 
     /**
      * The health threshold until NPC starts to run away
      */
-    public float flee = 4F;
+    public ValueFloat flee = new ValueFloat("Flee", 4F);
 
     /**
      * NPC will pick up items if this option is enabled and Gamerule canPickupItems is true
      */
-    public boolean canPickUpLoot;
+    public ValueBoolean canPickUpLoot = new ValueBoolean("CanPickUpLoot");
 
     /**
      * Whether NPC has gravity or not
      */
-    public boolean hasNoGravity = false;
+    public ValueBoolean hasNoGravity = new ValueBoolean("HasNoGravity", false);
 
     /**
      * Whether NPC can be steered by a player
      */
-    public boolean canBeSteered = false;
+    public ValueBoolean canBeSteered = new ValueBoolean("CanBeSteered", false);
 
     /* Triggers */
 
@@ -279,278 +291,177 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     /**
      * Is NPC respawns with provided delay
      */
-    public boolean respawn;
+    public ValueBoolean respawn = new ValueBoolean("Respawn");
 
     /**
      * Delay to respawn
      */
-    public int respawnDelay;
+    public ValueInt respawnDelay = new ValueInt("RespawnDelay");
 
     /**
      * Whether NPC respawns at the specified coordinates
      */
-    public boolean respawnOnCoordinates;
+    public ValueBoolean respawnOnCoordinates = new ValueBoolean("RespawnOnCoordinates");
 
     /**
      * X coordinate to respawn
      */
-    public double respawnPosX;
+    public ValueDouble respawnPosX = new ValueDouble("RespawnPosX");
 
     /**
      * Y coordinate to respawn
      */
-    public double respawnPosY;
+    public ValueDouble respawnPosY = new ValueDouble("RespawnPosY");
 
     /**
      * Z coordinate to respawn
      */
-    public double respawnPosZ;
+    public ValueDouble respawnPosZ = new ValueDouble("RespawnPosZ");
 
     /**
      * Whether NPC respawns with same UUID
      */
-    public boolean respawnSaveUUID;
+    public ValueBoolean respawnSaveUUID = new ValueBoolean("RespawnSaveUUID");
+
+    public ValueSerializer serializer;
+    public Map<String, GenericValue> serealizableValues = new HashMap<>();
+    public NpcState()
+    {
+        this.serializer = new ValueSerializer();
+
+        /* Meta */
+        this.registerValue(stateName);
+        this.registerValue(id);
+        this.registerValue(unique);
+        this.registerValue(pathDistance);
+
+        /* Health */
+        this.registerValue(maxHealth);
+        this.registerValue(health);
+        this.registerValue(regenDelay);
+        this.registerValue(regenFrequency);
+
+        /* Damage */
+        this.registerValue(damage);
+        this.registerValue(damageDelay);
+        this.registerValue(canRanged);
+        this.registerValue(canFallDamage);
+        this.registerValue(canGetBurned);
+        this.registerValue(invincible);
+        this.registerValue(killable);
+
+        /* Movement */
+        this.registerValue(speed);
+        this.registerValue(jumpPower);
+        this.registerValue(canSwim);
+        this.registerValue(immovable);
+        this.registerValue(hasPost);
+        this.registerValue(postRadius);
+        this.registerValue(fallback);
+        this.registerValue(patrolCirculate);
+        this.registerValue(follow);
+
+        /* General */
+        this.registerValue(faction);
+        this.registerValue(sightDistance);
+        this.registerValue(sightRadius);
+        this.registerValue(xp);
+        this.registerValue(shadowSize);
+
+        /* Behavior */
+        this.registerValue(lookAtPlayer);
+        this.registerValue(lookAround);
+        this.registerValue(wander);
+        this.registerValue(alwaysWander);
+        this.registerValue(canFly);
+        this.registerValue(flightMaxHeight);
+        this.registerValue(flightMinHeight);
+        this.registerValue(flee);
+        this.registerValue(canPickUpLoot);
+        this.registerValue(hasNoGravity);
+        this.registerValue(canBeSteered);
+
+        /* Respawn */
+        this.registerValue(respawn);
+        this.registerValue(respawnDelay);
+        this.registerValue(respawnOnCoordinates);
+        this.registerValue(respawnPosX);
+        this.registerValue(respawnPosY);
+        this.registerValue(respawnPosZ);
+        this.registerValue(respawnSaveUUID);
+    }
+
+    private void registerValue(GenericValue value)
+    {
+        this.serializer.registerNBTValue(value.id, value, true);
+        this.serealizableValues.put(value.id, value);
+    }
+
+    private String processPropertyName(String property)
+    {
+        return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, property);
+    }
 
     /**
      * I should've used my Value API for this, but now it's too late
      */
     public boolean edit(String property, String value)
     {
-        /* Meta */
-        if (property.equals("id"))
+        Value parameter = this.serealizableValues.get(this.processPropertyName(property));
+        if (parameter == null)
         {
-            this.id = value;
-        }
-        else if (property.equals("unique"))
-        {
-            this.unique = Boolean.parseBoolean(value);
-        }
-        else if (property.equals("state_name"))
-        {
-            this.stateName = value;
-        }
-        else if (property.equals("path_distance"))
-        {
-            this.pathDistance = Float.parseFloat(value);
-        }
-        /* Health */
-        else if (property.equals("max_health"))
-        {
-            this.maxHealth = Float.parseFloat(value);
-        }
-        else if (property.equals("health"))
-        {
-            this.health = Float.parseFloat(value);
-        }
-        else if (property.equals("regen_delay"))
-        {
-            this.regenDelay = Integer.parseInt(value);
-        }
-        else if (property.equals("regen_frequency"))
-        {
-            this.regenFrequency = Integer.parseInt(value);
-        }
-        /* Damage */
-        else if (property.equals("damage"))
-        {
-            this.damage = Float.parseFloat(value);
-        }
-        else if (property.equals("damage_delay"))
-        {
-            this.damageDelay = Integer.parseInt(value);
-        }
-        else if (property.equals("can_ranged"))
-        {
-            this.canRanged = Boolean.parseBoolean(value);
-        }
-        else if (property.equals("can_fall_damage"))
-        {
-            this.canFallDamage = Boolean.parseBoolean(value);
-        }
-        else if (property.equals("can_get_burned"))
-        {
-            this.canGetBurned = Boolean.parseBoolean(value);
-        }
-        else if (property.equals("invincible"))
-        {
-            this.invincible = Boolean.parseBoolean(value);
-        }
-        else if (property.equals("killable"))
-        {
-            this.killable = Boolean.parseBoolean(value);
-        }
-        /* Movement */
-        else if (property.equals("speed"))
-        {
-            this.speed = Float.parseFloat(value);
-        }
-        else if (property.equals("flight_max_height"))
-        {
-            this.flightMaxHeight = Double.parseDouble(value);
-        }
-        else if (property.equals("flight_min_height"))
-        {
-            this.flightMinHeight = Double.parseDouble(value);
-        }
-        else if (property.equals("jump_power"))
-        {
-            this.jumpPower = Float.parseFloat(value);
-        }
-        /*
-        else if (property.equals("steering_offset"))
-        {
-            int index = Integer.parseInt(property.substring(15));
-            String[] coords = value.split(",");
-            if (coords.length == 3)
+            if (property.equals("post"))
+            {
+                String[] splits = value.split(" ");
+
+                if (splits.length >= 3)
+                {
+                    int x = Integer.parseInt(splits[0]);
+                    int y = Integer.parseInt(splits[1]);
+                    int z = Integer.parseInt(splits[2]);
+
+                    this.postPosition = new BlockPos(x, y, z);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else if (property.equals("morph"))
             {
                 try
                 {
-                    int x = Integer.parseInt(coords[0]);
-                    int y = Integer.parseInt(coords[1]);
-                    int z = Integer.parseInt(coords[2]);
-                    BlockPos pos = new BlockPos(x, y, z);
-                    if (index < steeringOffset.size())
-                    {
-                        steeringOffset.set(index, pos);
-                    }
-                    else
-                    {
-                        steeringOffset.add(pos);
-                    }
+                    this.morph = MorphManager.INSTANCE.morphFromNBT(JsonToNBT.getTagFromJson(value));
                 }
-                catch (NumberFormatException ignored) {}
-            }
-        }
-        */
-        else if (property.equals("can_swim"))
-        {
-            this.canSwim = Boolean.parseBoolean(value);
-        }
-        else if (property.equals("immovable"))
-        {
-            this.immovable = Boolean.parseBoolean(value);
-        }
-        else if (property.equals("has_post"))
-        {
-            this.hasPost = Boolean.parseBoolean(value);
-        }
-        else if (property.equals("post"))
-        {
-            String[] splits = value.split(" ");
-
-            if (splits.length >= 3)
-            {
-                int x = Integer.parseInt(splits[0]);
-                int y = Integer.parseInt(splits[1]);
-                int z = Integer.parseInt(splits[2]);
-
-                this.postPosition = new BlockPos(x, y, z);
+                catch (Exception e)
+                {
+                    return false;
+                }
             }
             else
             {
                 return false;
             }
         }
-        else if (property.equals("fallback"))
+        else if (parameter instanceof ValueString)
         {
-            this.fallback = Float.parseFloat(value);
+            ((ValueString) parameter).set(value);
         }
-        else if (property.equals("patrol_circulate"))
+        else if (parameter instanceof ValueBoolean)
         {
-            this.patrolCirculate = Boolean.parseBoolean(value);
+            ((ValueBoolean) parameter).set(Boolean.parseBoolean(value));
         }
-        else if (property.equals("follow"))
+        else if (parameter instanceof ValueInt)
         {
-            this.follow = value;
+            ((ValueInt) parameter).set(Integer.parseInt(value));
         }
-        /* General */
-        else if (property.equals("morph"))
+        else if (parameter instanceof ValueFloat)
         {
-            try
-            {
-                this.morph = MorphManager.INSTANCE.morphFromNBT(JsonToNBT.getTagFromJson(value));
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
+            ((ValueFloat) parameter).set(Float.parseFloat(value));
         }
-        else if (property.equals("xp"))
+        else if (parameter instanceof ValueDouble)
         {
-            this.xp = Integer.parseInt(value);
-        }
-        else if (property.equals("has_no_gravity"))
-        {
-            this.hasNoGravity = Boolean.parseBoolean(value);
-        }
-        else if (property.equals("can_be_steered"))
-        {
-            this.canBeSteered = Boolean.parseBoolean(value);
-        }
-        else if (property.equals("shadow_size"))
-        {
-            this.shadowSize = Float.parseFloat(value);
-        }
-        /* Behavior */
-        else if (property.equals("look_at_player"))
-        {
-            this.lookAtPlayer = Boolean.parseBoolean(value);
-        }
-        else if (property.equals("look_around"))
-        {
-            this.lookAround = Boolean.parseBoolean(value);
-        }
-        else if (property.equals("wander"))
-        {
-            this.wander = Boolean.parseBoolean(value);
-        }
-        else if (property.equals("always_wander"))
-        {
-            this.alwaysWander = Boolean.parseBoolean(value);
-        }
-        else if (property.equals("can_fly"))
-        {
-            this.canFly = Boolean.parseBoolean(value);
-        }
-        else if (property.equals("flee"))
-        {
-            this.flee = Float.parseFloat(value);
-        }
-        else if (property.equals("can_pick_up_loot"))
-        {
-            this.canPickUpLoot = Boolean.parseBoolean(value);
-        }
-        else if (property.equals("respawn"))
-        {
-            this.respawn = Boolean.parseBoolean(value);
-        }
-        else if (property.equals("respawn_delay"))
-        {
-            this.respawnDelay = Integer.parseInt(value);
-        }
-        else if (property.equals("respawn_on_coordinates"))
-        {
-            this.respawnOnCoordinates = Boolean.parseBoolean(value);
-        }
-        else if (property.equals("respawn_pos_x"))
-        {
-            this.respawnPosX = Double.parseDouble(value);
-        }
-        else if (property.equals("respawn_pos_y"))
-        {
-            this.respawnPosY = Double.parseDouble(value);
-        }
-        else if (property.equals("respawn_pos_z"))
-        {
-            this.respawnPosZ = Double.parseDouble(value);
-        }
-        else if (property.equals("respawn_save_uuid"))
-        {
-            this.respawnSaveUUID = Boolean.parseBoolean(value);
-        }
-        else
-        {
-            return false;
+            ((ValueDouble) parameter).set(Double.parseDouble(value));
         }
 
         return true;
@@ -573,92 +484,11 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
             return tag;
         }
 
-        /* Meta */
-        if (all || options.contains("id"))
-        {
-            tag.setString("Id", this.id);
-        }
+        this.serializer.toNBT(tag);
+
         if (all || options.contains("states"))
         {
             tag.setTag("States", this.states.serializeNBT());
-        }
-        if (all || options.contains("unique"))
-        {
-            tag.setBoolean("Unique", this.unique);
-        }
-        if (all || options.contains("path_distance"))
-        {
-            tag.setFloat("PathDistance", this.pathDistance);
-        }
-        if (all || options.contains("state_name"))
-        {
-            tag.setString("StateName", this.stateName);
-        }
-
-        /* Health */
-        if (all || options.contains("max_health"))
-        {
-            tag.setFloat("MaxHealth", this.maxHealth);
-        }
-        if (all || options.contains("health"))
-        {
-            tag.setFloat("Health", this.health);
-        }
-        if (all || options.contains("regen_delay"))
-        {
-            tag.setInteger("RegenDelay", this.regenDelay);
-        }
-        if (all || options.contains("regen_frequency"))
-        {
-            tag.setInteger("RegenFrequency", this.regenFrequency);
-        }
-
-        /* Damage */
-        if (all || options.contains("damage"))
-        {
-            tag.setFloat("Damage", this.damage);
-        }
-        if (all || options.contains("damage_delay"))
-        {
-            tag.setInteger("DamageDelay", this.damageDelay);
-        }
-        if (all || options.contains("can_ranged"))
-        {
-            tag.setBoolean("CanRanged", this.canRanged);
-        }
-        if (all || options.contains("can_fall_damage"))
-        {
-            tag.setBoolean("CanFallDamage", this.canFallDamage);
-        }
-        if (all || options.contains("can_get_burned"))
-        {
-            tag.setBoolean("CanGetBurned", this.canGetBurned);
-        }
-        if (all || options.contains("invincible"))
-        {
-            tag.setBoolean("Invincible", this.invincible);
-        }
-        if (all || options.contains("killable"))
-        {
-            tag.setBoolean("Killable", this.killable);
-        }
-
-        /* Movement */
-        if (all || options.contains("speed"))
-        {
-            tag.setFloat("Speed", this.speed);
-        }
-        if (all || options.contains("flight_max_height"))
-        {
-            tag.setDouble("FlightMaxHeight", this.flightMaxHeight);
-        }
-        if (all || options.contains("flight_min_height"))
-        {
-            tag.setDouble("FlightMinHeight", this.flightMinHeight);
-        }
-        if (all || options.contains("jump_power"))
-        {
-            tag.setFloat("JumpPower", this.jumpPower);
         }
         if ((all || options.contains("steering_offset")))
         {
@@ -671,33 +501,9 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
 
             tag.setTag("SteeringOffsets", offsets);
         }
-        if (all || options.contains("can_swim"))
-        {
-            tag.setBoolean("CanSwim", this.canSwim);
-        }
-        if (all || options.contains("immovable"))
-        {
-            tag.setBoolean("Immovable", this.immovable);
-        }
-        if (all || options.contains("has_post"))
-        {
-            tag.setBoolean("HasPost", this.hasPost);
-        }
         if ((all || options.contains("post")))
         {
             tag.setTag("Post", this.postPosition == null ? new NBTTagList() : NBTUtils.blockPosTo(this.postPosition));
-        }
-        if (all || options.contains("post_radius"))
-        {
-            tag.setFloat("PostRadius", this.postRadius);
-        }
-        if (all || options.contains("fallback"))
-        {
-            tag.setFloat("Fallback", this.fallback);
-        }
-        if (all || options.contains("patrol_circulate"))
-        {
-            tag.setBoolean("PatrolCirculate", this.patrolCirculate);
         }
         if ((all || options.contains("patrol")))
         {
@@ -717,27 +523,9 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
             tag.setTag("Patrol", points);
             tag.setTag("PatrolTriggers", triggers);
         }
-        if ((all || options.contains("follow")))
-        {
-            tag.setString("Follow", this.follow);
-        }
-
-        /* General */
-        if (all || options.contains("faction"))
-        {
-            tag.setString("Faction", this.faction);
-        }
         if ((all || options.contains("morph")))
         {
             tag.setTag("Morph", this.morph == null ? new NBTTagCompound() : this.morph.toNBT());
-        }
-        if (all || options.contains("sight_distance"))
-        {
-            tag.setFloat("SightDistance", this.sightDistance);
-        }
-        if (all || options.contains("sight_radius"))
-        {
-            tag.setFloat("SightRadius", this.sightRadius);
         }
         if ((all || options.contains("drops")))
         {
@@ -749,52 +537,6 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
             }
 
             tag.setTag("Drops", drops);
-        }
-        if (all || options.contains("xp"))
-        {
-            tag.setInteger("Xp", this.xp);
-        }
-        if (all || options.contains("has_no_gravity"))
-        {
-            tag.setBoolean("HasNoGravity", this.hasNoGravity);
-        }
-        if (all || options.contains("can_be_steered"))
-        {
-            tag.setBoolean("CanBeSteered", this.canBeSteered);
-        }
-        if (all || options.contains("shadow_size"))
-        {
-            tag.setFloat("ShadowSize", this.shadowSize);
-        }
-
-        /* Behavior */
-        if (all || options.contains("look_at_player"))
-        {
-            tag.setBoolean("LookAtPlayer", this.lookAtPlayer);
-        }
-        if (all || options.contains("look_around"))
-        {
-            tag.setBoolean("LookAround", this.lookAround);
-        }
-        if (all || options.contains("wander"))
-        {
-            tag.setBoolean("Wander", this.wander);
-        }
-        if (all || options.contains("always_wander"))
-        {
-            tag.setBoolean("AlwaysWander", this.alwaysWander);
-        }
-        if (all || options.contains("can_fly"))
-        {
-            tag.setBoolean("CanFly", this.canFly);
-        }
-        if (all || options.contains("flee"))
-        {
-            tag.setFloat("Flee", this.flee);
-        }
-        if (all || options.contains("can_pick_up_loot"))
-        {
-            tag.setBoolean("CanPickUpLoot", this.canPickUpLoot);
         }
 
         /* Triggers */
@@ -831,128 +573,17 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
             tag.setTag("TriggerEntityCollision", this.triggerEntityCollision.serializeNBT());
         }
 
-        /* Respawn */
-        if (all || options.contains("respawn"))
-        {
-            tag.setBoolean("Respawn", this.respawn);
-        }
-        if (all || options.contains("respawn_delay"))
-        {
-            tag.setInteger("RespawnDelay", this.respawnDelay);
-        }
-        if (all || options.contains("respawn_on_coordinates"))
-        {
-            tag.setBoolean("RespawnOnCoordinates", this.respawnOnCoordinates);
-        }
-        if (all || options.contains("respawn_pos_x"))
-        {
-            tag.setDouble("RespawnPosX", this.respawnPosX);
-        }
-        if (all || options.contains("respawn_pos_y"))
-        {
-            tag.setDouble("RespawnPosY", this.respawnPosY);
-        }
-        if (all || options.contains("respawn_pos_z"))
-        {
-            tag.setDouble("RespawnPosZ", this.respawnPosZ);
-        }
-        if (all || options.contains("respawn_save_uuid"))
-        {
-            tag.setBoolean("RespawnSaveUUID", this.respawnSaveUUID);
-        }
-
         return tag;
     }
 
     @Override
     public void deserializeNBT(NBTTagCompound tag)
     {
-        /* Meta */
-        if (tag.hasKey("Id"))
-        {
-            this.id = tag.getString("Id");
-        }
+        this.serializer.fromNBT(tag);
+
         if (tag.hasKey("States"))
         {
             this.states.deserializeNBT(tag.getCompoundTag("States"));
-        }
-        if (tag.hasKey("Unique"))
-        {
-            this.unique = tag.getBoolean("Unique");
-        }
-        if (tag.hasKey("PathDistance"))
-        {
-            this.pathDistance = tag.getFloat("PathDistance");
-        }
-        if (tag.hasKey("StateName"))
-        {
-            this.stateName = tag.getString("StateName");
-        }
-
-        /* Health */
-        if (tag.hasKey("MaxHealth"))
-        {
-            this.maxHealth = tag.getFloat("MaxHealth");
-        }
-        if (tag.hasKey("Health"))
-        {
-            this.health = tag.getFloat("Health");
-        }
-        if (tag.hasKey("RegenDelay"))
-        {
-            this.regenDelay = tag.getInteger("RegenDelay");
-        }
-        if (tag.hasKey("RegenFrequency"))
-        {
-            this.regenFrequency = tag.getInteger("RegenFrequency");
-        }
-
-        /* Damage */
-        if (tag.hasKey("Damage"))
-        {
-            this.damage = tag.getFloat("Damage");
-        }
-        if (tag.hasKey("DamageDelay"))
-        {
-            this.damageDelay = tag.getInteger("DamageDelay");
-        }
-        if (tag.hasKey("CanRanged"))
-        {
-            this.canRanged = tag.getBoolean("CanRanged");
-        }
-        if (tag.hasKey("CanFallDamage"))
-        {
-            this.canFallDamage = tag.getBoolean("CanFallDamage");
-        }
-        if (tag.hasKey("CanGetBurned"))
-        {
-            this.canGetBurned = tag.getBoolean("CanGetBurned");
-        }
-        if (tag.hasKey("Invincible"))
-        {
-            this.invincible = tag.getBoolean("Invincible");
-        }
-        if (tag.hasKey("Killable"))
-        {
-            this.killable = tag.getBoolean("Killable");
-        }
-
-        /* Movement */
-        if (tag.hasKey("Speed"))
-        {
-            this.speed = tag.getFloat("Speed");
-        }
-        if (tag.hasKey("FlightMaxHeight"))
-        {
-            this.flightMaxHeight = tag.getDouble("FlightMaxHeight");
-        }
-        if (tag.hasKey("FlightMinHeight"))
-        {
-            this.flightMinHeight = tag.getDouble("FlightMinHeight");
-        }
-        if (tag.hasKey("JumpPower"))
-        {
-            this.jumpPower = tag.getFloat("JumpPower");
         }
         if (tag.hasKey("SteeringOffsets", Constants.NBT.TAG_LIST))
         {
@@ -970,33 +601,9 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
                 }
             }
         }
-        if (tag.hasKey("CanSwim"))
-        {
-            this.canSwim = tag.getBoolean("CanSwim");
-        }
-        if (tag.hasKey("Immovable"))
-        {
-            this.immovable = tag.getBoolean("Immovable");
-        }
-        if (tag.hasKey("HasPost"))
-        {
-            this.hasPost = tag.getBoolean("HasPost");
-        }
         if (tag.hasKey("Post", Constants.NBT.TAG_LIST))
         {
             this.postPosition = NBTUtils.blockPosFrom(tag.getTag("Post"));
-        }
-        if (tag.hasKey("PostRadius"))
-        {
-            this.postRadius = tag.getFloat("PostRadius");
-        }
-        if (tag.hasKey("Fallback"))
-        {
-            this.fallback = tag.getFloat("Fallback");
-        }
-        if (tag.hasKey("PatrolCirculate"))
-        {
-            this.patrolCirculate = tag.getBoolean("PatrolCirculate");
         }
         if (tag.hasKey("Patrol", Constants.NBT.TAG_LIST))
         {
@@ -1026,27 +633,9 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
                 this.patrolTriggers.add(trigger);
             }
         }
-        if (tag.hasKey("Follow", Constants.NBT.TAG_STRING))
-        {
-            this.follow = tag.getString("Follow");
-        }
-
-        /* General */
-        if (tag.hasKey("Faction"))
-        {
-            this.faction = tag.getString("Faction");
-        }
         if (tag.hasKey("Morph", Constants.NBT.TAG_COMPOUND))
         {
             this.morph = MorphManager.INSTANCE.morphFromNBT(tag.getCompoundTag("Morph"));
-        }
-        if (tag.hasKey("SightDistance"))
-        {
-            this.sightDistance = tag.getFloat("SightDistance");
-        }
-        if (tag.hasKey("SightRadius"))
-        {
-            this.sightRadius = tag.getFloat("SightRadius");
         }
         if (tag.hasKey("Drops"))
         {
@@ -1068,52 +657,6 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
 
                 this.drops.add(drop);
             }
-        }
-        if (tag.hasKey("Xp"))
-        {
-            this.xp = tag.getInteger("Xp");
-        }
-        if (tag.hasKey("HasNoGravity"))
-        {
-            this.hasNoGravity = tag.getBoolean("HasNoGravity");
-        }
-        if (tag.hasKey("CanBeSteered"))
-        {
-            this.canBeSteered = tag.getBoolean("CanBeSteered");
-        }
-        if (tag.hasKey("ShadowSize"))
-        {
-            this.shadowSize = tag.getFloat("ShadowSize");
-        }
-
-        /* Behavior */
-        if (tag.hasKey("LookAtPlayer"))
-        {
-            this.lookAtPlayer = tag.getBoolean("LookAtPlayer");
-        }
-        if (tag.hasKey("LookAround"))
-        {
-            this.lookAround = tag.getBoolean("LookAround");
-        }
-        if (tag.hasKey("Wander"))
-        {
-            this.wander = tag.getBoolean("Wander");
-        }
-        if (tag.hasKey("AlwaysWander"))
-        {
-            this.alwaysWander = tag.getBoolean("AlwaysWander");
-        }
-        if (tag.hasKey("CanFly"))
-        {
-            this.canFly = tag.getBoolean("CanFly");
-        }
-        if (tag.hasKey("Flee"))
-        {
-            this.flee = tag.getFloat("Flee");
-        }
-        if (tag.hasKey("CanPickUpLoot"))
-        {
-            this.canPickUpLoot = tag.getBoolean("CanPickUpLoot");
         }
 
         /* Triggers */
@@ -1149,36 +692,6 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         {
             this.triggerEntityCollision.deserializeNBT(tag.getCompoundTag("TriggerEntityCollision"));
         }
-
-        /* Respawn */
-        if (tag.hasKey("Respawn"))
-        {
-            this.respawn = tag.getBoolean("Respawn");
-        }
-        if (tag.hasKey("RespawnDelay"))
-        {
-            this.respawnDelay = tag.getInteger("RespawnDelay");
-        }
-        if (tag.hasKey("RespawnOnCoordinates"))
-        {
-            this.respawnOnCoordinates = tag.getBoolean("RespawnOnCoordinates");
-        }
-        if (tag.hasKey("RespawnPosX"))
-        {
-            this.respawnPosX = tag.getDouble("RespawnPosX");
-        }
-        if (tag.hasKey("RespawnPosY"))
-        {
-            this.respawnPosY = tag.getDouble("RespawnPosY");
-        }
-        if (tag.hasKey("RespawnPosZ"))
-        {
-            this.respawnPosZ = tag.getDouble("RespawnPosZ");
-        }
-        if (tag.hasKey("RespawnSaveUUID"))
-        {
-            this.respawnSaveUUID = tag.getBoolean("RespawnSaveUUID");
-        }
     }
 
     public void writeToBuf(ByteBuf buf)
@@ -1187,8 +700,8 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
         // I mean, when they're here everything works perfectly,
         // when not, the other things work fine but not these (if you left the world and rejoined,
         // you have to open the npc gui and close it for these to work)
-        buf.writeFloat(shadowSize);
-        buf.writeFloat(jumpPower);
+        buf.writeFloat(shadowSize.get());
+        buf.writeFloat(jumpPower.get());
         /*
         buf.writeInt(steeringOffset.size());
         for (BlockPos pos : steeringOffset) {
@@ -1204,8 +717,8 @@ public class NpcState implements INBTSerializable<NBTTagCompound>
     public void readFromBuf(ByteBuf buf)
     {
         // same comment as writeToBuf above
-        shadowSize = buf.readFloat();
-        jumpPower = buf.readFloat();
+        shadowSize.set(buf.readFloat());
+        jumpPower.set(buf.readFloat());
         /*
         int size = buf.readInt();
         steeringOffset.clear();

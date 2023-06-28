@@ -23,25 +23,25 @@ public class GuiNpcRespawnPanel extends GuiNpcPanel
     {
         super(mc);
 
-        this.respawn = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.respawn.respawn"), (b) -> this.state.respawn = b.isToggled());
-        this.respawnDelay = new GuiTrackpadElement(mc, (v) -> this.state.respawnDelay = v.intValue());
+        this.respawn = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.respawn.respawn"), (b) -> this.state.respawn.set(b.isToggled()));
+        this.respawnDelay = new GuiTrackpadElement(mc, (v) -> this.state.respawnDelay.set(v.intValue()));
         this.respawnDelay.integer().limit(0);
-        this.respawnOnCoordinates = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.respawn.respawn_on_coordinates"), (b) -> this.state.respawnOnCoordinates = b.isToggled());
+        this.respawnOnCoordinates = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.respawn.respawn_on_coordinates"), (b) -> this.state.respawnOnCoordinates.set(b.isToggled()));
         this.respawnCoordinates = new GuiVecPosElement(mc, (pos) ->
         {
-            this.state.respawnPosX = pos.x;
-            this.state.respawnPosY = pos.y;
-            this.state.respawnPosZ = pos.z;
+            this.state.respawnPosX.set(pos.x);
+            this.state.respawnPosY.set(pos.y);
+            this.state.respawnPosZ.set(pos.z);
         });
         this.respawnSaveUUID = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.respawn.respawn_save_uuid"), (b) ->
         {
-            this.state.respawnSaveUUID = b.isToggled();
+            this.state.respawnSaveUUID.set(b.isToggled());
 
             /* Prevents final NPC despawn if the original NPC still exists */
-            if (this.state.respawnSaveUUID && this.state.respawnDelay < 20)
+            if (this.state.respawnSaveUUID.get() && this.state.respawnDelay.get() < 20)
             {
                 this.respawnDelay.setValue(20);
-                this.state.respawnDelay = 20;
+                this.state.respawnDelay.set(20);
             }
         });
         this.triggerRespawn = new GuiTriggerElement(mc);
@@ -58,11 +58,11 @@ public class GuiNpcRespawnPanel extends GuiNpcPanel
     {
         super.set(state);
 
-        this.respawn.toggled(state.respawn);
-        this.respawnDelay.setValue(state.respawnDelay);
-        this.respawnOnCoordinates.toggled(state.respawnOnCoordinates);
-        this.respawnCoordinates.set(new Vec3d(state.respawnPosX, state.respawnPosY, state.respawnPosZ));
-        this.respawnSaveUUID.toggled(state.respawnSaveUUID);
+        this.respawn.toggled(state.respawn.get());
+        this.respawnDelay.setValue(state.respawnDelay.get());
+        this.respawnOnCoordinates.toggled(state.respawnOnCoordinates.get());
+        this.respawnCoordinates.set(new Vec3d(state.respawnPosX.get(), state.respawnPosY.get(), state.respawnPosZ.get()));
+        this.respawnSaveUUID.toggled(state.respawnSaveUUID.get());
         this.triggerRespawn.set(state.triggerRespawn);
     }
 }

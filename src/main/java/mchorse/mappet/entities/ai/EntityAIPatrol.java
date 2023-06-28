@@ -91,7 +91,7 @@ public class EntityAIPatrol extends EntityAIBase
                 triggerPatrol.trigger(context);
             }
 
-            if (state.patrolCirculate)
+            if (state.patrolCirculate.get())
             {
                 this.index = MathUtils.cycler(this.index + this.direction, 0, state.patrol.size() - 1);
             }

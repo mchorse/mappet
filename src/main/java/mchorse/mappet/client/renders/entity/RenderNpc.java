@@ -26,7 +26,7 @@ public class RenderNpc extends RenderLiving<EntityNpc>
     @Override
     public void doRender(EntityNpc entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
-        this.shadowSize = entity.getState().shadowSize;
+        this.shadowSize = entity.getState().shadowSize.get();
 
         float yawHead = entity.rotationYawHead;
         float prevYawHead = entity.prevRotationYawHead;

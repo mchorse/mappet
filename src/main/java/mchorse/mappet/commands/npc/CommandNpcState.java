@@ -68,7 +68,7 @@ public class CommandNpcState extends CommandNpcBase
             state.deserializeNBT(original);
         }
 
-        state.id = entity.getId();
+        state.id.set(entity.getId());
         entity.setState(state, true);
     }
 }

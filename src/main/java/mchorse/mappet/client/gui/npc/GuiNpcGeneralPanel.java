@@ -31,9 +31,9 @@ public class GuiNpcGeneralPanel extends GuiNpcPanel
         this.faction = new GuiButtonElement(mc, IKey.lang("mappet.gui.overlays.faction"), (t) -> this.openFactions());
         this.morph = new GuiNestedEdit(mc, this::openMorphMenu);
         this.drops = new GuiNpcDrops(mc);
-        this.xp = new GuiTrackpadElement(mc, (v) -> this.state.xp = v.intValue());
-        this.hasNoGravity = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.general.has_no_gravity"), (b) -> this.state.hasNoGravity = b.isToggled());
-        this.shadowSize = new GuiTrackpadElement(mc, (v) -> this.state.shadowSize = v.floatValue());
+        this.xp = new GuiTrackpadElement(mc, (v) -> this.state.xp.set(v.intValue()));
+        this.hasNoGravity = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.general.has_no_gravity"), (b) -> this.state.hasNoGravity.set(b.isToggled()));
+        this.shadowSize = new GuiTrackpadElement(mc, (v) -> this.state.shadowSize.set(v.floatValue()));
 
         this.xp.limit(0).integer();
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.general.faction")), this.faction);
@@ -46,7 +46,7 @@ public class GuiNpcGeneralPanel extends GuiNpcPanel
 
     private void openFactions()
     {
-        GuiMappetUtils.openPicker(ContentType.FACTION, this.state.faction, (name) -> this.state.faction = name);
+        GuiMappetUtils.openPicker(ContentType.FACTION, this.state.faction.get(), (name) -> this.state.faction.set(name));
     }
 
     private void openMorphMenu(boolean editing)
@@ -67,8 +67,8 @@ public class GuiNpcGeneralPanel extends GuiNpcPanel
 
         this.morph.setMorph(state.morph);
         this.drops.set(state.drops);
-        this.xp.setValue(state.xp);
-        this.hasNoGravity.toggled(state.hasNoGravity);
-        this.shadowSize.setValue(state.shadowSize);
+        this.xp.setValue(state.xp.get());
+        this.hasNoGravity.toggled(state.hasNoGravity.get());
+        this.shadowSize.setValue(state.shadowSize.get());
     }
 }

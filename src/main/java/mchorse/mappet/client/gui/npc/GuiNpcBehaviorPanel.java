@@ -29,13 +29,13 @@ public class GuiNpcBehaviorPanel extends GuiNpcPanel
     {
         super(mc);
 
-        this.lookAtPlayer = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.behavior.look_at_player"), (b) -> this.state.lookAtPlayer = b.isToggled());
-        this.lookAround = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.behavior.look_around"), (b) -> this.state.lookAround = b.isToggled());
-        this.wander = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.behavior.wander"), (b) -> this.state.wander = b.isToggled());
-        this.alwaysWander = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.behavior.always_wander"), (b) -> this.state.alwaysWander = b.isToggled());
-        this.canFly = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.behavior.can_fly"), (b) -> this.state.canFly = b.isToggled());
-        this.canPickUpLoot = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.behavior.can_pick_up_loot"), (b) -> this.state.canPickUpLoot = b.isToggled());
-        this.canBeSteered = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.behavior.can_be_steered"), (b) -> this.state.canBeSteered = b.isToggled());
+        this.lookAtPlayer = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.behavior.look_at_player"), (b) -> this.state.lookAtPlayer.set(b.isToggled()));
+        this.lookAround = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.behavior.look_around"), (b) -> this.state.lookAround.set(b.isToggled()));
+        this.wander = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.behavior.wander"), (b) -> this.state.wander.set(b.isToggled()));
+        this.alwaysWander = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.behavior.always_wander"), (b) -> this.state.alwaysWander.set(b.isToggled()));
+        this.canFly = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.behavior.can_fly"), (b) -> this.state.canFly.set(b.isToggled()));
+        this.canPickUpLoot = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.behavior.can_pick_up_loot"), (b) -> this.state.canPickUpLoot.set(b.isToggled()));
+        this.canBeSteered = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.behavior.can_be_steered"), (b) -> this.state.canBeSteered.set(b.isToggled()));
 
         this.triggerDied = new GuiTriggerElement(mc);
         this.triggerDamaged = new GuiTriggerElement(mc);
@@ -60,13 +60,13 @@ public class GuiNpcBehaviorPanel extends GuiNpcPanel
     {
         super.set(state);
 
-        this.lookAtPlayer.toggled(state.lookAtPlayer);
-        this.lookAround.toggled(state.lookAround);
-        this.wander.toggled(state.wander);
-        this.alwaysWander.toggled(state.alwaysWander);
-        this.canFly.toggled(state.canFly);
-        this.canPickUpLoot.toggled(state.canPickUpLoot);
-        this.canBeSteered.toggled(state.canBeSteered);
+        this.lookAtPlayer.toggled(state.lookAtPlayer.get());
+        this.lookAround.toggled(state.lookAround.get());
+        this.wander.toggled(state.wander.get());
+        this.alwaysWander.toggled(state.alwaysWander.get());
+        this.canFly.toggled(state.canFly.get());
+        this.canPickUpLoot.toggled(state.canPickUpLoot.get());
+        this.canBeSteered.toggled(state.canBeSteered.get());
 
         this.triggerDied.set(state.triggerDied);
         this.triggerDamaged.set(state.triggerDamaged);

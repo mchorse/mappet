@@ -21,16 +21,16 @@ public class GuiNpcDamagePanel extends GuiNpcPanel
     {
         super(mc);
 
-        this.damage = new GuiTrackpadElement(mc, (v) -> this.state.damage = v.floatValue());
+        this.damage = new GuiTrackpadElement(mc, (v) -> this.state.damage.set(v.floatValue()));
         this.damage.limit(0);
-        this.damageDelay = new GuiTrackpadElement(mc, (v) -> this.state.damageDelay = v.intValue());
+        this.damageDelay = new GuiTrackpadElement(mc, (v) -> this.state.damageDelay.set(v.intValue()));
         this.damageDelay.limit(0, 200);
-        this.fallback = new GuiTrackpadElement(mc, (v) -> this.state.fallback = v.floatValue());
+        this.fallback = new GuiTrackpadElement(mc, (v) -> this.state.fallback.set(v.floatValue()));
         this.fallback.limit(0, 64);
-        this.canFallDamage = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.damage.fall"), (b) -> this.state.canFallDamage = b.isToggled());
-        this.canGetBurned = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.damage.fire"), (b) -> this.state.canGetBurned = b.isToggled());
-        this.invincible = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.damage.invincible"), (b) -> this.state.invincible = b.isToggled());
-        this.killable = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.damage.killable"), (b) -> this.state.killable = b.isToggled());
+        this.canFallDamage = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.damage.fall"), (b) -> this.state.canFallDamage.set(b.isToggled()));
+        this.canGetBurned = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.damage.fire"), (b) -> this.state.canGetBurned.set(b.isToggled()));
+        this.invincible = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.damage.invincible"), (b) -> this.state.invincible.set(b.isToggled()));
+        this.killable = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.damage.killable"), (b) -> this.state.killable.set(b.isToggled()));
 
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.damage.damage")), this.damage);
         this.add(Elements.label(IKey.lang("mappet.gui.npcs.damage.damage_delay")), this.damageDelay);
@@ -43,12 +43,12 @@ public class GuiNpcDamagePanel extends GuiNpcPanel
     {
         super.set(state);
 
-        this.damageDelay.setValue(state.damageDelay);
-        this.damage.setValue(state.damage);
-        this.canFallDamage.toggled(state.canFallDamage);
-        this.canGetBurned.toggled(state.canGetBurned);
-        this.invincible.toggled(state.invincible);
-        this.killable.toggled(state.killable);
-        this.fallback.setValue(state.fallback);
+        this.damageDelay.setValue(state.damageDelay.get());
+        this.damage.setValue(state.damage.get());
+        this.canFallDamage.toggled(state.canFallDamage.get());
+        this.canGetBurned.toggled(state.canGetBurned.get());
+        this.invincible.toggled(state.invincible.get());
+        this.killable.toggled(state.killable.get());
+        this.fallback.setValue(state.fallback.get());
     }
 }

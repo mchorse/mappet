@@ -20,9 +20,9 @@ public class EntityAINpcFly extends EntityAIBase {
 
     public EntityAINpcFly(EntityCreature creature) {
         this.creature = creature;
-        this.speed = ((EntityNpc) creature).getState().speed / 2D;
-        this.minHeight = ((EntityNpc) creature).getState().flightMinHeight;
-        this.maxHeight = ((EntityNpc) creature).getState().flightMaxHeight;
+        this.speed = ((EntityNpc) creature).getState().speed.get() / 2D;
+        this.minHeight = ((EntityNpc) creature).getState().flightMinHeight.get();
+        this.maxHeight = ((EntityNpc) creature).getState().flightMaxHeight.get();
         this.rand = new Random();
         this.setMutexBits(1);
     }

@@ -23,10 +23,10 @@ public class GuiNpcMetaPanel extends GuiNpcPanel
     {
         super(mc);
 
-        this.id = new GuiTextElement(mc, 1000, (t) -> this.state.id = t);
+        this.id = new GuiTextElement(mc, 1000, (t) -> this.state.id.set(t));
         this.states = new GuiButtonElement(mc, IKey.lang("mappet.gui.npcs.meta.states.pick"), (b) -> this.openStates());
-        this.unique = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.meta.unique"), (b) -> this.state.unique = b.isToggled());
-        this.pathDistance = new GuiTrackpadElement(mc, (v) -> this.state.pathDistance = v.floatValue());
+        this.unique = new GuiToggleElement(mc, IKey.lang("mappet.gui.npcs.meta.unique"), (b) -> this.state.unique.set(b.isToggled()));
+        this.pathDistance = new GuiTrackpadElement(mc, (v) -> this.state.pathDistance.set(v.floatValue()));
 
         if (id)
         {
@@ -49,8 +49,8 @@ public class GuiNpcMetaPanel extends GuiNpcPanel
     {
         super.set(state);
 
-        this.id.setText(state.id);
-        this.unique.toggled(state.unique);
-        this.pathDistance.setValue(state.pathDistance);
+        this.id.setText(state.id.get());
+        this.unique.toggled(state.unique.get());
+        this.pathDistance.setValue(state.pathDistance.get());
     }
 }
