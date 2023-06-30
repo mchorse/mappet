@@ -427,6 +427,10 @@ mappet.gui.npc_tool.npc=NPC
 mappet.gui.npc_tool.state=State
 
 mappet.gui.scripted_item.title=Scripted item configuration
+mappet.gui.scripted_item.item_title=Display name
+mappet.gui.scripted_item.item_lore=Lore
+mappet.gui.scripted_item.item_lore_add=Add a line of lore
+mappet.gui.scripted_item.item_lore_remove=Remove this line of lore
 mappet.gui.scripted_item.interact_with_air=Player: On air interaction
 mappet.gui.scripted_item.interact_with_entity=Player: On entity interaction
 mappet.gui.scripted_item.interact_with_block=Player: On block interaction

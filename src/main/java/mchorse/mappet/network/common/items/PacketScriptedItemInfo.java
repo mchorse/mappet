@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 public class PacketScriptedItemInfo implements IMessage
 {
     public NBTTagCompound tag;
+    public NBTTagCompound stackTag;
     public int entity;
 
     public PacketScriptedItemInfo()
@@ -16,9 +17,10 @@ public class PacketScriptedItemInfo implements IMessage
         this.tag = new NBTTagCompound();
     }
 
-    public PacketScriptedItemInfo(NBTTagCompound tag, int entity)
+    public PacketScriptedItemInfo(NBTTagCompound tag, NBTTagCompound stackTag, int entity)
     {
         this.tag = tag;
+        this.stackTag = stackTag;
         this.entity = entity;
     }
 
@@ -26,6 +28,12 @@ public class PacketScriptedItemInfo implements IMessage
     public void fromBytes(ByteBuf buf)
     {
         this.tag = NBTUtils.readInfiniteTag(buf);
+
+        if (buf.readBoolean())
+        {
+            this.stackTag = NBTUtils.readInfiniteTag(buf);
+        }
+
         this.entity = buf.readInt();
     }
 
@@ -33,6 +41,14 @@ public class PacketScriptedItemInfo implements IMessage
     public void toBytes(ByteBuf buf)
     {
         ByteBufUtils.writeTag(buf, this.tag);
+
+        buf.writeBoolean(this.stackTag != null);
+
+        if (this.stackTag != null)
+        {
+            ByteBufUtils.writeTag(buf, this.stackTag);
+        }
+
         buf.writeInt(this.entity);
     }
 }
