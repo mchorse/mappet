@@ -1226,11 +1226,10 @@ public class EventHandler
             EntityPlayer player = Minecraft.getMinecraft().player;
 
             if (
-                    player.isRiding() &&
-                            player.getRidingEntity() instanceof EntityNpc
-                            && ((EntityNpc) player.getRidingEntity()).getState().canBeSteered
-            )
-            {
+                player.isRiding() &&
+                player.getRidingEntity() instanceof EntityNpc &&
+                ((EntityNpc) player.getRidingEntity()).getState().canBeSteered
+            ) {
                 float jumpPower = ((EntityNpc) player.getRidingEntity()).getState().jumpPower;
                 Dispatcher.sendToServer(new PacketNpcJump(player.getRidingEntity().getEntityId(), jumpPower));
             }

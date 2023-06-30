@@ -21,9 +21,14 @@ public class ServerHandlerScriptedItemInfo extends ServerMessageHandler<PacketSc
 
         ItemStack stack = player.getHeldItemMainhand();
 
+        if (message.stackTag != null)
+        {
+            stack.setTagCompound(message.stackTag);
+        }
+
         if (NBTUtils.saveScriptedItemProps(stack, message.tag))
         {
-            IMessage packet = new PacketScriptedItemInfo(message.tag, player.getEntityId());
+            IMessage packet = new PacketScriptedItemInfo(message.tag, message.stackTag, player.getEntityId());
             Dispatcher.sendTo(packet, player);
             Dispatcher.sendToTracked(player, packet);
         }

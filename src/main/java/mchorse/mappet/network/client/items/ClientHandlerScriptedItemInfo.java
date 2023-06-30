@@ -29,6 +29,11 @@ public class ClientHandlerScriptedItemInfo extends ClientMessageHandler<PacketSc
                 return;
             }
 
+            if (message.stackTag != null)
+            {
+                stack.setTagCompound(message.stackTag);
+            }
+
             NBTUtils.saveScriptedItemProps(stack, message.tag);
         }
     }
