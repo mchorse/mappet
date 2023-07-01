@@ -6,7 +6,6 @@ import mchorse.blockbuster.common.entity.EntityGunProjectile;
 import mchorse.blockbuster.network.common.PacketModifyActor;
 import mchorse.mappet.CommonProxy;
 import mchorse.mappet.Mappet;
-import mchorse.mappet.api.scripts.code.ScriptFancyWorld;
 import mchorse.mappet.api.scripts.code.ScriptRayTrace;
 import mchorse.mappet.api.scripts.code.ScriptWorld;
 import mchorse.mappet.api.scripts.code.entities.ai.EntitiesAIPatrol;
@@ -18,7 +17,6 @@ import mchorse.mappet.api.scripts.code.entities.ai.rotations.RotationDataStorage
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
 import mchorse.mappet.api.scripts.code.mappet.MappetStates;
 import mchorse.mappet.api.scripts.code.nbt.ScriptNBTCompound;
-import mchorse.mappet.api.scripts.user.IScriptFancyWorld;
 import mchorse.mappet.api.scripts.user.IScriptRayTrace;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
 import mchorse.mappet.api.scripts.user.data.ScriptBox;
@@ -125,12 +123,6 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     public IScriptWorld getWorld()
     {
         return new ScriptWorld(this.entity.world);
-    }
-
-    @Override
-    public IScriptFancyWorld getFancyWorld()
-    {
-        return new ScriptFancyWorld(this.entity.world);
     }
 
     /* Entity properties */

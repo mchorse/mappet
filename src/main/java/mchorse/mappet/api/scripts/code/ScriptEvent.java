@@ -5,7 +5,6 @@ import mchorse.mappet.CommonProxy;
 import mchorse.mappet.api.scripts.ScriptExecutionFork;
 import mchorse.mappet.api.scripts.code.entities.ScriptEntity;
 import mchorse.mappet.api.scripts.user.IScriptEvent;
-import mchorse.mappet.api.scripts.user.IScriptFancyWorld;
 import mchorse.mappet.api.scripts.user.IScriptServer;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
@@ -27,7 +26,6 @@ public class ScriptEvent implements IScriptEvent
     private IScriptEntity subject;
     private IScriptEntity object;
     private IScriptWorld world;
-    private IScriptFancyWorld fancyWorld;
     private IScriptServer server;
 
     public ScriptEvent(DataContext context, String script, String function)
@@ -116,17 +114,6 @@ public class ScriptEvent implements IScriptEvent
         }
 
         return this.world;
-    }
-
-    @Override
-    public IScriptFancyWorld getFancyWorld()
-    {
-        if (this.fancyWorld == null && this.context.world != null)
-        {
-            this.fancyWorld = new ScriptFancyWorld(this.context.world);
-        }
-
-        return this.fancyWorld;
     }
 
     @Override

@@ -4,7 +4,6 @@ import mchorse.mappet.Mappet;
 import mchorse.mappet.api.scripts.code.entities.ScriptEntity;
 import mchorse.mappet.api.scripts.code.entities.ScriptPlayer;
 import mchorse.mappet.api.scripts.code.mappet.MappetStates;
-import mchorse.mappet.api.scripts.user.IScriptFancyWorld;
 import mchorse.mappet.api.scripts.user.IScriptServer;
 import mchorse.mappet.api.scripts.user.IScriptWorld;
 import mchorse.mappet.api.scripts.user.entities.IScriptEntity;
@@ -42,12 +41,6 @@ public class ScriptServer implements IScriptServer
     public IScriptWorld getWorld(int dimension)
     {
         return new ScriptWorld(this.server.getWorld(dimension));
-    }
-
-    @Override
-    public IScriptFancyWorld getFancyWorld(int dimension)
-    {
-        return new ScriptFancyWorld(this.server.getWorld(dimension));
     }
 
     @Override
