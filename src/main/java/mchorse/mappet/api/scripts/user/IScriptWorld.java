@@ -656,62 +656,6 @@ public interface IScriptWorld
      */
     public IScriptRayTrace rayTraceBlock(double x1, double y1, double z1, double x2, double y2, double z2);
 
-    /**
-     * Set morph (from NBT) to a model block at given position in this world.
-     * It only works when Blockbuster mod is installed.
-     *
-     * <pre>{@code
-     *     function main(c)
-     *     {
-     *         var pos = c.getSubject().getPosition()
-     *         var nbt = '{Settings:{Hands:1b},Name:"blockbuster.fred"}';
-     *
-     *         c.getWorld().setModelBlock(nbt, pos.x, pos.y, pos.z, true);
-     *     }
-     * }</pre>
-     *
-     * @param nbt NBT of a morph to be replaced for given model block.
-     * @param x X coordinate of a model block.
-     * @param y Y coordinate of a model block.
-     * @param z Z coordinate of a model block.
-     * @param force Force update model block to update the morph even if the morph is same.
-     */
-    public void setModelBlockMorph(String nbt, int x, int y, int z, boolean force);
-
-    /**
-     * Enable or disable a model block at a given position in this world.
-     * It only works when Blockbuster mod is installed.
-     *
-     * <pre>{@code
-     *     function main(c)
-     *     {
-     *         var pos = c.getSubject().getPosition()
-     *         var enabled = true;
-     *
-     *         c.getWorld().setModelBlockEnabled(pos.x, pos.y, pos.z, enabled);
-     *     }
-     * }</pre>
-     *
-     * @param x X coordinate of a model block.
-     * @param y Y coordinate of a model block.
-     * @param z Z coordinate of a model block.
-     * @param enabled Whether to enable or disable the model block.
-     */
-    public void setModelBlockEnabled(int x, int y, int z, boolean enabled);
-
-    /**
-     * Check whether a model block at a given position in this world is enabled or not.
-     * It only works when Blockbuster mod is installed.
-     *
-     * <pre>{@code
-     *     c.send(c.getWorld().isModelBlockEnabled(0, 4, 0));
-     * }</pre>
-     *
-     * @param x X coordinate of a model block.
-     * @param y Y coordinate of a model block.
-     * @param z Z coordinate of a model block.
-     */
-    public boolean isModelBlockEnabled(int x, int y, int z);
 
     /**
      * Return whether a button, plate or lever is active or not.
@@ -757,25 +701,6 @@ public interface IScriptWorld
      * @param z2 The second z coordinate.
      */
     public void fill(IScriptBlockState state, int x1, int y1, int z1, int x2, int y2, int z2);
-
-    /**
-     * Fill a 3D area with a block with a delay (for huge areas).
-     *
-     * <pre>{@code
-     *     var coarse_dirt = mappet.createBlockState("minecraft:dirt", 1);
-     *
-     *     c.getWorld().fill(coarse_dirt, -3, 100, -3, 3, 100, 3, 16, 5);
-     * }</pre>
-     *
-     * @param state The block to fill the area with.
-     * @param x1 The first x coordinate.
-     * @param y1 The first y coordinate.
-     * @param z1 The first z coordinate.
-     * @param x2 The second x coordinate.
-     * @param y2 The second y coordinate.
-     * @param z2 The second z coordinate.
-     */
-    public void fill(IScriptBlockState state, int x1, int y1, int z1, int x2, int y2, int z2, int chunkSize, int delayTicks);
 
     /**
      * Summon a falling block with a specific block id and meta.
@@ -863,51 +788,21 @@ public interface IScriptWorld
      */
     public void clone(int x, int y, int z, int xNew, int yNew, int zNew);
 
-    /**
-     * Saves a schematic file in the world's schematics folder in world/mappet/schematics.
-     *
-     * <pre>{@code
-     * c.getWorld().saveSchematic("my_schematic", 0, 100, 0, 3, 100, 3);
-     * }</pre>
-     *
-     * @param x1 The first x coordinate.
-     * @param y1 The first y coordinate.
-     * @param z1 The first z coordinate.
-     * @param x2 The second x coordinate.
-     * @param y2 The second y coordinate.
-     * @param z2 The second z coordinate.
-     * @param name The name of the schematic.
-     */
-    @Deprecated
-    public void saveSchematic(String name, int x1, int y1, int z1, int x2, int y2, int z2);
 
     /**
-     * Loads a schematic file from the world's schematics folder in world/mappet/schematics.
+     * Gets the block stack at given position, including tile entity data.
      *
      * <pre>{@code
-     * c.getWorld().loadSchematic("my_schematic", 0, 100, 0);
+     *    var x= 0, y = 100, z = 0;
+     *    var world = c.getWorld();
+     *    var blockItemStack = world.getBlockStackWithTile(x, y, z);
+     *    world.setBlock(mappet.createBlockState("minecraft:air", 0), x, y, z)
+     *    world.dropItemStack(blockItemStack, x+0.5, y+0.5, z+0.5);
      * }</pre>
-     *
-     * @param name The name of the schematic.
-     * @param x The x coordinate.
-     * @param y The y coordinate.
-     * @param z The z coordinate.
      */
-    @Deprecated
-    public void loadSchematic(String name, int x, int y, int z);
+    public IScriptItemStack getBlockStackWithTile(int x, int y, int z);
 
-    /**
-     * Serialize a schematic into a NBT compound.
-     *
-     * <pre>{@code
-     *   var nbt = c.getWorld().serializeSchematic(schematic);
-     *   }</pre>
-     *
-     * @param name Schematic name
-     * @return NBT compound
-     */
-    @Deprecated
-    public INBTCompound serializeSchematic(String name);
+    /* Mappet stuff */
 
     /**
      * Returns a new empty Schematic object.
@@ -923,35 +818,6 @@ public interface IScriptWorld
      * @return {@link IMappetSchematic}
      */
     public MappetSchematic createSchematic();
-
-    /**
-     * Gets the block stack at given position, including tile entity data.
-     *
-     * <pre>{@code
-     *    var x= 0, y = 100, z = 0;
-     *    var world = c.getWorld();
-     *    var blockItemStack = world.getBlockStackWithTile(x, y, z);
-     *    world.setBlock(mappet.createBlockState("minecraft:air", 0), x, y, z)
-     *    world.dropItemStack(blockItemStack, x+0.5, y+0.5, z+0.5);
-     * }</pre>
-     */
-    public IScriptItemStack getBlockStackWithTile(int x, int y, int z);
-
-    /**
-     * Shoots a gun projectile entity.
-     *
-     * <pre>{@code
-     *     var projectile = c.getWorld().shootBBGunProjectile(c.getSubject(), 547, 160, 497, 0, -90, '{Gun:{TickCommand:"particle heart ~ ~1 ~ 0.2 0.2 0.2 1",StoredAmmo:0,Ticking:1,Damage:1.0f,Projectile:{Meta:0b,Block:"minecraft:stone",Name:"block"},Gravity:0.0f}}')
-     *     c.scheduleScript(20, function (c){
-     *         projectile.executeCommand("summon tnt ~ ~ ~")
-     *         projectile.remove()
-     *     });
-     * }</pre>
-     */
-    public IScriptEntity shootBBGunProjectile(IScriptEntity shooter, double x, double y, double z, double yaw, double pitch, String gunPropsNbtString);
-
-
-    /* Mappet stuff */
 
     /**
      * Display a world morph to all players around 64 blocks away from given point.
@@ -1126,6 +992,8 @@ public interface IScriptWorld
      */
     public MappetBlockConditionModel getConditionBlock(int x, int y, int z);
 
+    /* BlockBuster stuff */
+
     /**
      * Gets the Blockbuster model block at given coordinates to be edited programmatically.
      *
@@ -1145,4 +1013,17 @@ public interface IScriptWorld
      * @return Blockbuster model block at given coordinates.
      */
     public MappetBlockBBModel getBBModelBlock(int x, int y, int z);
+
+    /**
+     * Shoots a gun projectile entity.
+     *
+     * <pre>{@code
+     *     var projectile = c.getWorld().shootBBGunProjectile(c.getSubject(), 547, 160, 497, 0, -90, '{Gun:{TickCommand:"particle heart ~ ~1 ~ 0.2 0.2 0.2 1",StoredAmmo:0,Ticking:1,Damage:1.0f,Projectile:{Meta:0b,Block:"minecraft:stone",Name:"block"},Gravity:0.0f}}')
+     *     c.scheduleScript(20, function (c){
+     *         projectile.executeCommand("summon tnt ~ ~ ~")
+     *         projectile.remove()
+     *     });
+     * }</pre>
+     */
+    public IScriptEntity shootBBGunProjectile(IScriptEntity shooter, double x, double y, double z, double yaw, double pitch, String gunPropsNbtString);
 }
