@@ -76,7 +76,6 @@ public interface IScriptNpc extends IScriptEntity
      */
     public void canPickUpLoot(boolean canPickUpLoot);
 
-
     /**
      * Make NPC follow a target.
      *
@@ -87,75 +86,6 @@ public interface IScriptNpc extends IScriptEntity
      * @param target Target to follow (can be a player name, @r)
      */
     public void follow(String target);
-
-    /**
-     * Sets NPC's patrol point with a script trigger.
-     *
-     * <pre>{@code
-     *    c.getSubject().setPatrol(x, y, z, "ScriptName", "FunctionName", 0);
-     * }</pre>
-     *
-     * @param x X coordinate
-     * @param y Y coordinate
-     * @param z Z coordinate
-     * @param scriptName Script name
-     * @param functionName Function name
-     * @param patrolIndex Patrol index
-     */
-    public void setPatrol(int x, int y, int z, String scriptName, String functionName, int patrolIndex);
-
-    /**
-     * Adds a new patrol point with its trigger to the NPC.
-     *
-     * <pre>{@code
-     * var npc = c.getSubject();
-     * var pos = npc.getPosition();
-     * var trigger = mappet.createTrigger();
-     * trigger.addCommandBlock().set("say I arrived!");
-     * npc.addPatrolPoint(pos.x, pos.y, pos.z, trigger);
-     * }</pre>
-     *
-     * @param x x coordinate
-     * @param y y coordinate
-     * @param z z coordinate
-     * @param trigger trigger to be executed when NPC arrives at the point
-     */
-    public void addPatrolPoint(int x, int y, int z, MappetTrigger trigger);
-
-    /**
-     * Removes a patrol point at a certain indext from the NPC.
-     *
-     * <pre>{@code
-     * c.getSubject().removePatrolPoint(0);
-     * }</pre>
-     *
-     * @param index index of the patrol point to be removed
-     */
-    public void removePatrolPoint(int index);
-
-    /**
-     * Removes a patrol point at a certain position from the NPC.
-     *
-     * <pre>{@code
-     * var npc = c.getSubject();
-     * var pos = npc.getPosition();
-     * npc.removePatrolPoint(pos.x, pos.y, pos.z);
-     * }</pre>
-     *
-     * @param x x coordinate
-     * @param y y coordinate
-     * @param z z coordinate
-     */
-    public void removePatrolPoint(int x, int y, int z);
-
-    /**
-     * Removes all NPC's patrol points.
-     *
-     * <pre>{@code
-     * c.getSubject().clearPatrolPoints();
-     * }</pre>
-     */
-    public void clearPatrolPoints();
 
     /**
      * Returns the faction of the NPC as a string
@@ -256,7 +186,7 @@ public interface IScriptNpc extends IScriptEntity
      * c.getSubject().setInvincible(true);
      * }</pre>
      */
-    public void setInvincible(boolean invencible);
+    public void setInvincible(boolean invincible);
 
     /**
      * Checks if the NPC is invincible.
@@ -696,88 +626,58 @@ public interface IScriptNpc extends IScriptEntity
      */
     public MappetTrigger getOnRespawnTrigger();
 
-
-    /* Deprecated */
+    /* Patrol points */
 
     /**
-     * Sets NPC's tick trigger (Use this if you want to edit an existing `on tick trigger`).
+     * Adds a new patrol point with its trigger to the NPC.
      *
      * <pre>{@code
-     *    c.getSubject().setOnTickTrigger("ScriptName", "FunctionName", 1, 0);
+     * var npc = c.getSubject();
+     * var pos = npc.getPosition();
+     * var trigger = mappet.createTrigger();
+     * trigger.addCommandBlock().set("say I arrived!");
+     * npc.addPatrolPoint(pos.x, pos.y, pos.z, trigger);
      * }</pre>
      *
-     * @param scriptName Script name
-     * @param functionName Function name
-     * @param frequency Frequency
-     * @param blockIndex Block number
+     * @param x x coordinate
+     * @param y y coordinate
+     * @param z z coordinate
+     * @param trigger trigger to be executed when NPC arrives at the point
      */
-    public void setOnTickTrigger(String scriptName, String functionName, int frequency, int blockIndex);
-
+    public void addPatrolPoint(int x, int y, int z, MappetTrigger trigger);
 
     /**
-     * Adds a new `on tick trigger` to the NPC.
+     * Removes a patrol point at a certain indext from the NPC.
      *
      * <pre>{@code
-     *    c.getSubject().addOnTickTrigger("ScriptName", "FunctionName", 1);
+     * c.getSubject().removePatrolPoint(0);
      * }</pre>
      *
-     * @param scriptName Script name
-     * @param functionName Function name
-     * @param frequency Frequency
+     * @param index index of the patrol point to be removed
      */
-    public void addOnTickTrigger(String scriptName, String functionName, int frequency);
+    public void removePatrolPoint(int index);
 
     /**
-     * Removes all `on tick` triggers from the NPC.
+     * Removes a patrol point at a certain position from the NPC.
      *
      * <pre>{@code
-     *    c.getSubject().clearOnTickTriggers();
+     * var npc = c.getSubject();
+     * var pos = npc.getPosition();
+     * npc.removePatrolPoint(pos.x, pos.y, pos.z);
      * }</pre>
+     *
+     * @param x x coordinate
+     * @param y y coordinate
+     * @param z z coordinate
      */
-    public void clearOnTickTriggers();
+    public void removePatrolPoint(int x, int y, int z);
 
     /**
-     * Sets NPC's on interaction trigger.
+     * Removes all NPC's patrol points.
      *
      * <pre>{@code
-     *    c.getSubject().setOnInteractTrigger("ScriptName", "FunctionName", 0);
-     * }</pre>
-     *
-     * @param scriptName Script name
-     * @param functionName Function name
-     * @param blockIndex Block number
-     */
-    public void setOnInteractTrigger(String scriptName, String functionName, int blockIndex);
-
-    /**
-     * Adds NPC's on interaction trigger.
-     *
-     * <pre>{@code
-     *    c.getSubject().addOnInteractTrigger("ScriptName", "FunctionName");
-     * }</pre>
-     *
-     * @param scriptName Script name
-     * @param functionName Function name
-     */
-    public void addOnInteractTrigger(String scriptName, String functionName);
-
-    /**
-     * Clears NPC's on interaction triggers.
-     *
-     * <pre>{@code
-     *    c.getSubject().clearOnInteractTriggers();
+     * c.getSubject().clearPatrolPoints();
      * }</pre>
      */
-    public void clearOnInteractTriggers();
-
-    /**
-     * Adds a new NPC's patrol point with a script trigger.
-     *
-     * @param x X coordinate
-     * @param y Y coordinate
-     * @param z Z coordinate
-     * @param scriptName Script name
-     * @param functionName Function name
-     */
-    public void addPatrol(int x, int y, int z, String scriptName, String functionName);
+    public void clearPatrolPoints();
 }
