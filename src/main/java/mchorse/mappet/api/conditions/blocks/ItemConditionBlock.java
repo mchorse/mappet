@@ -69,7 +69,7 @@ public class ItemConditionBlock extends TargetConditionBlock
             return I18n.format("mappet.gui.conditions.item.equipment", name);
         }
 
-        return I18n.format("mappet.gui.conditions.item.inventory", name + "x" + this.stack.getCount());
+        return I18n.format("mappet.gui.conditions.item.inventory", name + " x" + this.stack.getCount());
     }
 
     @Override
