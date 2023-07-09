@@ -1244,14 +1244,14 @@ public class EventHandler
     {
         EntityPlayer player = event.getEntityPlayer();
         ItemStack item = player.getHeldItem(event.getHand());
-        Trigger trigger = Mappet.settings.playerEntityLeash;
-        Entity target = event.getTarget();
 
         // Check if the player is on the server, has a leash, and if there's an interaction event set
-        if (player.world.isRemote || item.getItem() != Items.LEAD || trigger.isEmpty())
+        if (player.world.isRemote || item.getItem() != Items.LEAD || Mappet.settings.playerEntityLeash.isEmpty())
         {
             return;
         }
+
+        Entity target = event.getTarget();
 
         // Check if the target entity can be leashed
         if (!(target instanceof EntityLiving) || ((EntityLiving) target).getLeashed() || !((EntityLiving) target).canBeLeashedTo(player))
@@ -1262,6 +1262,6 @@ public class EventHandler
         DataContext context = new DataContext(player, target)
                 .set("hand", event.getHand() == EnumHand.MAIN_HAND ? "main" : "off");
 
-        this.trigger(event, trigger, context);
+        this.trigger(event, Mappet.settings.playerEntityLeash, context);
     }
 }
