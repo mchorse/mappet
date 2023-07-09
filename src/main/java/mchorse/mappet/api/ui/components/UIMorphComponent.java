@@ -329,8 +329,17 @@ public class UIMorphComponent extends UIComponent
     {
         GuiMorphRenderer renderer = (GuiMorphRenderer) element;
 
-        renderer.context(() -> new GuiSimpleContextMenu(Minecraft.getMinecraft())
-                .action(Icons.SEARCH, IKey.lang("mappet.gui.context.copy_camera"), () -> this.copyCameraProperties(renderer)));
+        renderer.context(() ->
+        {
+            GuiSimpleContextMenu menu = new GuiSimpleContextMenu(Minecraft.getMinecraft());
+
+            if (Mappet.scriptUIDebug.get())
+            {
+                menu.action(Icons.SEARCH, IKey.lang("mappet.gui.context.copy_camera"), () -> this.copyCameraProperties(renderer));
+            }
+
+            return menu;
+        });
     }
 
     @Override
