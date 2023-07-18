@@ -93,6 +93,35 @@ public interface IScriptEntity
     public void setPosition(double x, double y, double z);
 
     /**
+     * Returns the dimension of the entity.
+     *
+     * <pre>{@code
+     *   var dimension = c.getSubject().getDimension();
+     *   switch (dimension)
+     *   {
+     *       case 0: c.send("Overworld"); break;
+     *       case 1: c.send("The End"); break;
+     *       case -1: c.send("The Nether"); break;
+     *       default: c.send("Unknown dimension"); break;
+     *   }
+     * }</pre>
+     *
+     * @return The dimension of the entity as an integer.
+     */
+    public int getDimension();
+
+    /**
+     * Set the dimension of the entity.
+     *
+     * <pre>{@code
+     *   c.getSubject().setDimension(1); // Teleport to The End
+     * }</pre>
+     *
+     * @param dimension The dimension to teleport the entity to.
+     */
+    public void setDimension(int dimension);
+
+    /**
      * Get entity's motion.
      *
      * <pre>{@code

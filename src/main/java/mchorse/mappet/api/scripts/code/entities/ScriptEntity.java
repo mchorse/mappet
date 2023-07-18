@@ -62,6 +62,7 @@ import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
@@ -69,6 +70,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.Loader;
@@ -146,6 +148,54 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
         if (this.entity instanceof EntityPlayerMP)
         {
             ((EntityPlayerMP)entity).connection.setPlayerLocation(x, y, z, entity.rotationYaw, entity.rotationPitch);
+        }
+    }
+
+    @Override
+    public int getDimension()
+    {
+        return this.entity.dimension;
+    }
+
+    @Override
+    public void setDimension(int dimension)
+    {
+        // Check if the entity is already in the target dimension.
+        if (this.entity.dimension == dimension)
+        {
+            return;
+        }
+
+        if (dimension < -1 || dimension > 1)
+        {
+            throw new IllegalArgumentException("Dimension must be -1 (Nether), 0 (Overworld), or 1 (End).");
+        }
+
+        MinecraftServer minecraftServer = this.entity.getServer();
+        WorldServer worldServer = minecraftServer.getWorld(dimension);
+
+        // anonymous class to override the Teleporter within the method itself
+        Teleporter teleporter = new Teleporter(worldServer) {
+            @Override
+            public void placeInPortal(Entity entityIn, float rotationYaw) {
+                // This method is intentionally left blank to prevent portal creation.
+            }
+
+            @Override
+            public boolean placeInExistingPortal(Entity entityIn, float rotationYaw) {
+                // We always return false to prevent the game from placing the entity in an existing portal.
+                return false;
+            }
+        };
+
+        if (this.entity instanceof EntityPlayerMP)
+        {
+            EntityPlayerMP player = (EntityPlayerMP) entity;
+            minecraftServer.getPlayerList().transferPlayerToDimension(player, dimension, teleporter);
+        }
+        else
+        {
+            this.entity.changeDimension(dimension, teleporter);
         }
     }
 
