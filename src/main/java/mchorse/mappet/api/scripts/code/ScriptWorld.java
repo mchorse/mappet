@@ -96,6 +96,49 @@ public class ScriptWorld implements IScriptWorld
     }
 
     @Override
+    public void setGameRule(String gameRule, Object value)
+    {
+        if (value instanceof Boolean || value instanceof String || value instanceof Integer)
+        {
+            this.world.getGameRules().setOrCreateGameRule(gameRule, String.valueOf(value));
+        }
+        else
+        {
+            throw new IllegalArgumentException("Unsupported game rule value type: " + value.getClass());
+        }
+    }
+
+    @Override
+    public Object getGameRule(String gameRule)
+    {
+        if (this.world.getGameRules().hasRule(gameRule))
+        {
+            String value = this.world.getGameRules().getString(gameRule);
+
+            if (value.equals("true") || value.equals("false"))
+            {
+                return Boolean.valueOf(value);
+            }
+            else
+            {
+                try
+                {
+                    return Integer.valueOf(value);
+                }
+                catch (NumberFormatException e)
+                {
+                    return value;
+                }
+            }
+        }
+        else
+        {
+            throw new IllegalArgumentException("No such game rule: " + gameRule);
+        }
+    }
+
+
+    @Override
     public void setBlock(IScriptBlockState state, int x, int y, int z)
     {
         if (!this.world.isBlockLoaded(this.pos.setPos(x, y, z)))

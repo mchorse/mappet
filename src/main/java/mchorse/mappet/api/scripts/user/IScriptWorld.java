@@ -52,6 +52,35 @@ public interface IScriptWorld
     public World getMinecraftWorld();
 
     /**
+     * Set a game rule to a given value.
+     *
+     * <pre>{@code
+     *   c.getWorld().setGameRule("keepInventory", true); //btw you can NOT write 1 instead of true
+     *   c.getWorld().setGameRule("randomTickSpeed", 100);
+     * }</pre>
+     *
+     * @param gameRule The name of the game rule to be set.
+     * @param value The value to set the game rule to. The type of the value should match the expected type for the game rule.
+     */
+    public void setGameRule(String gameRule, Object value);
+
+    /**
+     * Get a game rule value.
+     *
+     * <pre>{@code
+     *   var keepInventory = c.getWorld().getGameRule("keepInventory");
+     *   var randomTickSpeed = c.getWorld().getGameRule("randomTickSpeed");
+     *
+     *   c.send("Keep inventory: " + keepInventory);
+     *   c.send("Random tick speed: " + randomTickSpeed);
+     * }</pre>
+     *
+     * @param gameRule The name of the game rule to get the value of.
+     * @return The value of the game rule. The type of the value will match the expected type for the game rule.
+     */
+    public Object getGameRule(String gameRule);
+
+    /**
      * Set a block at XYZ, use {@link IScriptFactory#createBlockState(String, int)}
      * to get the block state.
      *
