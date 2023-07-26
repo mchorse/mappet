@@ -19,6 +19,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.mutable.MutableInt;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -95,7 +96,7 @@ public class TileRegion extends TileEntity implements ITickable
 
     private void checkRegion()
     {
-        List<? extends Entity> list = this.region.checkEntities ? this.world.loadedEntityList : this.world.playerEntities;
+        List<? extends Entity> list = new ArrayList<>(this.region.checkEntities ? this.world.loadedEntityList : this.world.playerEntities);
         for (Entity entity : list)
         {
             boolean enabled = this.region.isEnabled(entity);
