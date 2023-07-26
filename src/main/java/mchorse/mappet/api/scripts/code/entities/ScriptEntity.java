@@ -1375,10 +1375,6 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Override
     public void lockRotation(float yaw, float pitch, float yawHead)
     {
-        if (this.entity instanceof EntityPlayer)
-        {
-            return;
-        }
         this.entity.getEntityData().setBoolean("rotationLocked", true);
         this.entity.getEntityData().setFloat("lockYaw", yaw);
         this.entity.getEntityData().setFloat("lockPitch", pitch);
@@ -1388,10 +1384,6 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Override
     public void unlockRotation()
     {
-        if (this.entity instanceof EntityPlayer)
-        {
-            return;
-        }
         this.entity.getEntityData().setBoolean("rotationLocked", false);
     }
 
