@@ -146,9 +146,9 @@ public class Schematic extends AbstractData
         int maxY = Math.max(y1, y2);
         int maxZ = Math.max(z1, z2);
 
-        this.width = maxX - minX;
-        this.height = maxY - minY;
-        this.length = maxZ - minZ;
+        this.width = maxX - minX + 1;
+        this.height = maxY - minY + 1;
+        this.length = maxZ - minZ + 1;
 
         this.init();
 
