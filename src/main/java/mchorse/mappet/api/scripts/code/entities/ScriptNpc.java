@@ -3,12 +3,8 @@ package mchorse.mappet.api.scripts.code.entities;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.npcs.Npc;
 import mchorse.mappet.api.npcs.NpcState;
-import mchorse.mappet.api.scripts.code.mappet.triggers.MappetTrigger;
 import mchorse.mappet.api.scripts.user.data.ScriptVector;
 import mchorse.mappet.api.scripts.user.entities.IScriptNpc;
-import mchorse.mappet.api.triggers.Trigger;
-import mchorse.mappet.api.triggers.blocks.AbstractTriggerBlock;
-import mchorse.mappet.api.triggers.blocks.ScriptTriggerBlock;
 import mchorse.mappet.entities.EntityNpc;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
@@ -383,68 +379,6 @@ public class ScriptNpc extends ScriptEntity<EntityNpc> implements IScriptNpc
     }
 
     /* Triggers */
-
-    @Override
-    public MappetTrigger getOnInitializeTrigger()
-    {
-        return new MappetTrigger(this.entity.getState().triggerInitialize);
-    }
-
-    @Override
-    public MappetTrigger getOnInteractTrigger()
-    {
-        return new MappetTrigger(this.entity.getState().triggerInteract);
-    }
-
-    @Override
-    public MappetTrigger getOnDamagedTrigger()
-    {
-        return new MappetTrigger(this.entity.getState().triggerDamaged);
-    }
-
-    @Override
-    public MappetTrigger getOnDeathTrigger()
-    {
-        return new MappetTrigger(this.entity.getState().triggerDied);
-    }
-
-    @Override
-    public MappetTrigger getOnTickTrigger()
-    {
-        return new MappetTrigger(this.entity.getState().triggerTick);
-    }
-
-    @Override
-    public MappetTrigger getOnTargetTrigger()
-    {
-        return new MappetTrigger(this.entity.getState().triggerTarget);
-    }
-
-    @Override
-    public MappetTrigger getOnCollisionTrigger()
-    {
-        return new MappetTrigger(this.entity.getState().triggerEntityCollision);
-    }
-
-    @Override
-    public MappetTrigger getOnRespawnTrigger()
-    {
-        return new MappetTrigger(this.entity.getState().triggerRespawn);
-    }
-
-    /* Patrol points */
-
-    @Override
-    public void addPatrolPoint(int x, int y, int z, MappetTrigger trigger)
-    {
-        NpcState state = this.entity.getState();
-
-        state.follow.set("");
-        state.patrol.add(new BlockPos(x, y, z));
-        state.patrolTriggers.add(trigger.getMinecraftTrigger());
-
-        this.entity.setState(state, false);
-    }
 
     @Override
     public void clearPatrolPoints()

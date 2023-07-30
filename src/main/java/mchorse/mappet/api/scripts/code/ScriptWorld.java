@@ -14,9 +14,6 @@ import mchorse.mappet.api.scripts.code.entities.ScriptEntity;
 import mchorse.mappet.api.scripts.code.entities.ScriptNpc;
 import mchorse.mappet.api.scripts.code.items.ScriptInventory;
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
-import mchorse.mappet.api.scripts.code.mappet.blocks.MappetBlockBBModel;
-import mchorse.mappet.api.scripts.code.mappet.blocks.MappetBlockConditionModel;
-import mchorse.mappet.api.scripts.code.mappet.blocks.MappetBlockRegion;
 import mchorse.mappet.api.scripts.code.mappet.MappetSchematic;
 import mchorse.mappet.api.scripts.code.nbt.ScriptNBTCompound;
 import mchorse.mappet.api.scripts.user.IScriptRayTrace;
@@ -915,25 +912,8 @@ public class ScriptWorld implements IScriptWorld
         return MappetSchematic.create(this);
     }
 
-    @Override
-    public MappetBlockRegion getRegionBlock(int x, int y, int z)
-    {
-        return new MappetBlockRegion(this.world, new BlockPos(x, y, z));
-    }
-
-    @Override
-    public MappetBlockConditionModel getConditionBlock(int x, int y, int z)
-    {
-        return new MappetBlockConditionModel(this.world, new BlockPos(x, y, z));
-    }
 
     /* BlockBuster stuff */
-
-    @Override
-    public MappetBlockBBModel getBBModelBlock(int x, int y, int z)
-    {
-        return new MappetBlockBBModel(this.world, new BlockPos(x, y, z));
-    }
 
     @Override
     public IScriptEntity shootBBGunProjectile(IScriptEntity shooter, double x, double y, double z, double yaw, double pitch, String gunPropsNbtString)

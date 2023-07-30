@@ -6,13 +6,7 @@ import mchorse.mappet.api.conditions.Checker;
 import mchorse.mappet.api.scripts.code.blocks.ScriptBlockState;
 import mchorse.mappet.api.scripts.code.entities.ScriptEntity;
 import mchorse.mappet.api.scripts.code.items.ScriptItemStack;
-import mchorse.mappet.api.scripts.code.mappet.blocks.MappetBlockBBModel;
-import mchorse.mappet.api.scripts.code.mappet.blocks.MappetBlockConditionModel;
-import mchorse.mappet.api.scripts.code.mappet.blocks.MappetBlockRegion;
 import mchorse.mappet.api.scripts.code.mappet.MappetUIBuilder;
-import mchorse.mappet.api.scripts.code.mappet.blocks.MappetModelSettings;
-import mchorse.mappet.api.scripts.code.mappet.conditions.MappetCondition;
-import mchorse.mappet.api.scripts.code.mappet.triggers.MappetTrigger;
 import mchorse.mappet.api.scripts.code.nbt.ScriptNBTCompound;
 import mchorse.mappet.api.scripts.code.nbt.ScriptNBTList;
 import mchorse.mappet.api.scripts.user.IScriptFactory;
@@ -516,42 +510,6 @@ public class ScriptFactory implements IScriptFactory
     public IScriptEntity getMappetEntity(Entity minecraftEntity)
     {
         return ScriptEntity.create(minecraftEntity);
-    }
-
-    @Override
-    public MappetBlockRegion createRegionBlock()
-    {
-        return MappetBlockRegion.create();
-    }
-
-    @Override
-    public MappetBlockConditionModel createConditionBlock()
-    {
-        return MappetBlockConditionModel.create();
-    }
-
-    @Override
-    public MappetCondition createCondition()
-    {
-        return new MappetCondition(new Checker());
-    }
-
-    @Override
-    public MappetTrigger createTrigger()
-    {
-        return new MappetTrigger();
-    }
-
-    @Override
-    public MappetModelSettings createModelSettings()
-    {
-        return new MappetModelSettings();
-    }
-
-    @Override
-    public MappetBlockBBModel createBBModelBlock()
-    {
-        return MappetBlockBBModel.create();
     }
 
     @Override
