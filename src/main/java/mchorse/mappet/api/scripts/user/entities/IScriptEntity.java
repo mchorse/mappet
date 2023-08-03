@@ -1389,7 +1389,7 @@ public interface IScriptEntity
      *
      * <pre>{@code
      * var s = c.getSubject();
-     * var rot = s.getRotation();
+     * var rot = s.getRotations();
      * s.lockRotation(rot.x, rot.y, rot.z);
      * }</pre>
      *
