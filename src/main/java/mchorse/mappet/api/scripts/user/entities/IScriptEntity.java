@@ -700,7 +700,13 @@ public interface IScriptEntity
     /**
      * Check whether this entity is an NPC.
      */
+    @Deprecated
     public boolean isNpc();
+
+    /**
+     * Check whether this entity is an NPC.
+     */
+    public boolean isNPC();
 
     /**
      * Check whether this entity is an item.

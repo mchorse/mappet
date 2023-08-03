@@ -768,7 +768,14 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     }
 
     @Override
+    @Deprecated
     public boolean isNpc()
+    {
+        return this.isNPC();
+    }
+
+    @Override
+    public boolean isNPC()
     {
         return this.entity instanceof EntityNpc;
     }
