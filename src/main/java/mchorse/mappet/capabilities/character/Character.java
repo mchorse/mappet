@@ -240,11 +240,16 @@ public class Character implements ICharacter
         Dispatcher.sendTo(new PacketHUDMorph(id, index, tag), (EntityPlayerMP) this.player);
 
         //if the hud is global, display change it for all players as well
-        for (EntityPlayer player : this.player.world.playerEntities)
+        HUDScene scene = Mappet.huds.load(id);
+
+        if (scene.global)
         {
-            if (player != this.player)
+            for (EntityPlayer player : this.player.world.playerEntities)
             {
-                Dispatcher.sendTo(new PacketHUDMorph(id, index, tag), (EntityPlayerMP) player);
+                if (player != this.player)
+                {
+                    Dispatcher.sendTo(new PacketHUDMorph(id, index, tag), (EntityPlayerMP) player);
+                }
             }
         }
 
@@ -256,7 +261,7 @@ public class Character implements ICharacter
                 List<HUDScene> scenes = entry.getValue();
                 if (!scenes.isEmpty())
                 {
-                    HUDScene scene = scenes.get(0);
+                    scene = scenes.get(0);
                     if (scene.morphs.size() > index)
                     {
                         HUDMorph newMorph = scene.morphs.get(index).copy();
