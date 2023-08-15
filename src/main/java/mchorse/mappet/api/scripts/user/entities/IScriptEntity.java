@@ -450,10 +450,10 @@ public interface IScriptEntity
      * Give item to this entity. (like the /give command)
      *
      * <pre>{@code
-     *    c.getSubject().giveItem(mappet.createItem("minecraft:diamond", 64), false);
+     *    c.getSubject().giveItem(mappet.createItem("minecraft:diamond", 64), false, true);
      * }</pre>
      */
-    public void giveItem(IScriptItemStack stack, boolean playSound);
+    public void giveItem(IScriptItemStack stack, boolean playSound, boolean dropIfInventoryFull);
 
     /**
      * Return the entity's helmet's item stack.

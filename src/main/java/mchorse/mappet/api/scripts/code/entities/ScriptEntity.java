@@ -39,7 +39,6 @@ import mchorse.mclib.utils.Interpolation;
 import mchorse.mclib.utils.RayTracing;
 import mchorse.metamorph.api.models.IMorphProvider;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import net.minecraft.command.CommandResultStats;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -453,11 +452,11 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
     @Override
     public void giveItem(IScriptItemStack stack)
     {
-        this.giveItem(stack, true);
+        this.giveItem(stack, true, true);
     }
 
     @Override
-    public void giveItem(IScriptItemStack stack, boolean playSound)
+    public void giveItem(IScriptItemStack stack, boolean playSound, boolean dropIfInventoryFull)
     {
         if (stack == null || stack.isEmpty())
         {
@@ -479,29 +478,15 @@ public class ScriptEntity <T extends Entity> implements IScriptEntity
 
                 player.inventoryContainer.detectAndSendChanges();
             }
-
-            EntityItem entityItem;
-
-            if (flag && itemStack.isEmpty())
+            else if (dropIfInventoryFull)
             {
-                itemStack.setCount(1);
-                player.setCommandStat(CommandResultStats.Type.AFFECTED_ITEMS, stack.getCount());
-                entityItem = player.dropItem(itemStack, false);
-
-                if (entityItem != null)
+                if (!player.world.isRemote)
                 {
-                    entityItem.makeFakeItem();
-                }
-            }
-            else
-            {
-                player.setCommandStat(CommandResultStats.Type.AFFECTED_ITEMS, stack.getCount() - itemStack.getCount());
-                entityItem = player.dropItem(itemStack, false);
+                    EntityItem entityItem = new EntityItem(player.world, player.posX, player.posY, player.posZ, itemStack);
 
-                if (entityItem != null)
-                {
                     entityItem.setNoPickupDelay();
-                    entityItem.setOwner(player.getName());
+
+                    player.getEntityWorld().spawnEntity(entityItem);
                 }
             }
         }
