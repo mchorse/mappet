@@ -338,14 +338,21 @@ public class EventHandler
         DamageSource source = event.getSource();
         EntityLivingBase attacker = source.getTrueSource() instanceof EntityLivingBase ? (EntityLivingBase) source.getTrueSource() : null;
 
-        if (!Mappet.settings.entityDamaged.isEmpty())
+        //potential compability with zettasword
+        if (
+                Mappet.settings == null ||
+                Mappet.settings.entityDamaged == null ||
+                Mappet.settings.entityDamaged.isEmpty()
+        )
         {
-            DataContext context = new DataContext(event.getEntityLiving(), source.getTrueSource())
-                    .set("damage", event.getAmount());
-            context.getValues().put("attacker", ScriptEntity.create(attacker));
-
-            this.trigger(event, Mappet.settings.entityDamaged, context);
+            return;
         }
+
+        DataContext context = new DataContext(event.getEntityLiving(), source.getTrueSource())
+                .set("damage", event.getAmount());
+        context.getValues().put("attacker", ScriptEntity.create(attacker));
+
+        this.trigger(event, Mappet.settings.entityDamaged, context);
     }
 
     @SubscribeEvent
@@ -353,7 +360,14 @@ public class EventHandler
     {
         DamageSource source = event.getSource();
 
-        if (event.getEntity().world.isRemote || Mappet.settings.entityAttacked.isEmpty())
+        //potential compability with zettasword
+        if (
+                event.getEntity() == null ||
+                event.getEntity().world.isRemote ||
+                Mappet.settings == null ||
+                Mappet.settings.entityAttacked == null ||
+                Mappet.settings.entityAttacked.isEmpty()
+        )
         {
             return;
         }
