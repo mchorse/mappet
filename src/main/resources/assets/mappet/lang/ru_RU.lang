@@ -755,6 +755,7 @@ mappet.gui.scripts.libraries.context.remove=Удалить эту библиот
 mappet.gui.scripts.documentation.title=Скриптовая документация
 mappet.gui.scripts.documentation.javadocs=Открыть онлайн документацию (Javadocs)
 mappet.gui.scripts.documentation.javadocs_url=https://mchorse.github.io/mappet/
+mappet.gui.scripts.documentation.source=Из §6%s§r\n
 mappet.gui.scripts.repl.title=REPL (интерактивная консоль)
 mappet.gui.scripts.repl.hello_world=Hello, world!
 mappet.gui.scripts.repl.welcome=Это интерактивная консоль Маппета, (Read-Eval-Print Loop, REPL). Вы можете писать §6JS§r код, и выполнять его по нажатию клавиши Enter. Вы можете прокручиваться по истории выполнения зажав §6Ctrl§r и стрелку §6Вверх§r или §6Вниз§r.\n\nСледующие переменные доступны:\n\n- §6c§r это IScriptEvent в котором субъектом является игрок.\n- §6s§r это IScriptPlayer\n- §6mappet§r это IScriptFactory\n\nВы можете выполнить §7clear()§r функцию чтобы очистить все сообщения на экране.

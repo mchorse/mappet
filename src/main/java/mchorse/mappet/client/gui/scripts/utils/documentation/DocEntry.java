@@ -5,6 +5,7 @@ import mchorse.mappet.Mappet;
 import mchorse.mappet.client.gui.scripts.GuiTextEditor;
 import mchorse.mappet.client.gui.utils.text.GuiText;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
+import mchorse.mclib.client.gui.utils.keys.IKey;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.TextFormatting;
 
@@ -19,6 +20,7 @@ public abstract class DocEntry
 
     public String name = "";
     public String doc = "";
+    public String source = "Mappet";
 
     public static String processCode(String code)
     {
@@ -151,6 +153,8 @@ public abstract class DocEntry
 
     public void fillIn(Minecraft mc, GuiScrollElement target)
     {
+        target.add(new GuiText(mc).text( IKey.format("mappet.gui.scripts.documentation.source",this.source)));
+
         process(this.doc, mc, target);
     }
 

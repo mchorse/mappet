@@ -106,6 +106,7 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
                 extra.name = docPackage.name.substring(docPackage.name.lastIndexOf(".") + 1);
                 extra.doc = docPackage.doc;
                 extra.parent = firstPackage.equals("extraScripting") ? scripting : firstPackage.equals("extraUI") ? ui : topPackage;
+                extra.source = docPackage.source;
                 ((DocList)extra.parent).entries.add(extra);
                 docLists.add(extra);
             }

@@ -61,7 +61,10 @@ public class DocMerger
     {
         for (DocClass classAdd : docsAdd.classes)
         {
+            classAdd.source = docsAdd.source;
+
             DocClass classMain = docsMain.getClass(classAdd.name);
+
             if (classMain == null)
             {
                 docsMain.classes.add(classAdd);
@@ -75,7 +78,10 @@ public class DocMerger
 
         for (DocPackage packageAdd : docsAdd.packages)
         {
+            packageAdd.source = docsAdd.source;
+
             DocPackage packageMain = docsMain.getPackage(packageAdd.name);
+
             if (packageMain == null)
             {
                 docsMain.packages.add(packageAdd);
@@ -92,7 +98,10 @@ public class DocMerger
     {
         for (DocMethod methodAdd : classAdd.methods)
         {
+            methodAdd.source = classAdd.source;
+
             DocMethod methodMain = classMain.getMethod(methodAdd.name);
+
             if (methodMain == null)
             {
                 classMain.methods.add(methodAdd);
@@ -111,7 +120,9 @@ public class DocMerger
         {
             InputStream stream = new FileInputStream(file);
             Scanner scanner = new Scanner(stream, "UTF-8");
-            list.add(gson.fromJson(scanner.useDelimiter("\\A").next(), Docs.class));
+            Docs docs = gson.fromJson(scanner.useDelimiter("\\A").next(), Docs.class);
+            docs.source = new File(ClientProxy.configFolder.getPath()).toPath().relativize(file.toPath()).toFile().getPath();
+            list.add(docs);
         }
         catch (FileNotFoundException e)
         {
