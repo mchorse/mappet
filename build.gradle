@@ -15,8 +15,6 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'com.github.johnrengelman.shadow'
 
-version = project.version
-
 var dev = "dev"
 
 if (project.hasProperty("dev")) {
@@ -110,6 +108,8 @@ jar.finalizedBy('reobfJar')
 import org.apache.tools.ant.filters.ReplaceTokens
 
 task processSource(type: Sync) {
+    outputs.upToDateWhen { false }
+
     from sourceSets.main.java
     filter(ReplaceTokens, tokens: [
             MAPPET     : version,
