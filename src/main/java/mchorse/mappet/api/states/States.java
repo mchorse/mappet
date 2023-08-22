@@ -60,6 +60,8 @@ public class States implements INBTSerializable<NBTTagCompound>
 
     public void setNumber(String id, double value)
     {
+        if (Double.isNaN(value)) return;
+
         Object previous = this.values.get(id);
 
         this.values.put(id, value);
