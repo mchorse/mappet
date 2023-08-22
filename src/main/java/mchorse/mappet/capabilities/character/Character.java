@@ -279,11 +279,16 @@ public class Character implements ICharacter
         Dispatcher.sendTo(new PacketHUDScene(id == null ? "" : id, null), (EntityPlayerMP) this.player);
 
         //if the hud is global, close it for all players as well
-        for (EntityPlayer player : this.player.world.playerEntities)
+        HUDScene scene = Mappet.huds.load(id);
+
+        if (scene.global)
         {
-            if (player != this.player)
+            for (EntityPlayer player : this.player.world.playerEntities)
             {
-                Dispatcher.sendTo(new PacketHUDScene(id == null ? "" : id, null), (EntityPlayerMP) player);
+                if (player != this.player)
+                {
+                    Dispatcher.sendTo(new PacketHUDScene(id == null ? "" : id, null), (EntityPlayerMP) player);
+                }
             }
         }
 
