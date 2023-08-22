@@ -1,3 +1,70 @@
+## Version 0.8
+
+This update is brought to you by TorayLife and OtakuGamer.
+
+This update fixes a lot of bugs, improve scripting documentation and provides new scripting features!
+
+**Compatible** with  
+McLib **2.4.2**,
+Aperture **1.8.1**,
+Blockbuster **2.6.1** and
+Metamorph **1.3.1**.
+It doesn't mean that future versions of McLib, Blockbuster and Metamorph would be incompatible,
+but older versions are most likely incompatible.
+
+* New triggers:
+  * Player: leash an entity
+
+* New features:
+  * Added custom bounding box feature to BlockTrigger
+  * Added always wander option in NPCs
+  * Added `-scripting` argument if using Nashorn, for more scripting features
+  * Added title and lore editor in scripted items
+  * Added source line in documentation
+
+* API changes:
+  * Refactored NPCs scripting API
+  * Deprecated old model blocks methods in ScriptWorld
+  * Added setFlyingEnabled() to ScriptPlayer
+  * Added documentation to ScriptBox
+  * Changed the drop methods to return `ScriptEntityItem`
+  * Added ScriptEntity leashing API
+  * Removed FancyWorld
+  * Removed deprecated ScriptWorld methods
+  * Removed deprecated ScriptNpc methods
+  * Added `IScriptEntity.getDimension` and `IScriptEntity.setDimension` methods
+  * Added `IScriptWorld.getGameRule` and `IScriptWorld.setGameRule` methods
+  * Changed giveItem signature: `giveItem(IScriptItemStack stack, boolean playSound, boolean dropIfInventoryFull)`
+
+* Bugfixes:
+  * Fixed crash when script engine doesn't load correctly
+  * Fixed sorting order in all mappet folder lists
+  * Fixed inline scripts visibility issue
+  * Fixed escaped characters in ru_RU localization
+  * Fixed steering NPCs crashed servers
+  * Fixed morph trigger
+  * Fixed `IScriptFactory.createBlockState` method
+  * Fixed `isActive()` method
+  * Fixed context subject in `onPlayerWithScriptedItemRightClickBlock`
+  * Fixed docs of setCooldown
+  * Fixed documentation for getTileEntity
+  * Fixed multiple players teleporting to same position bug
+  * Fixed getLook() for standing entities
+  * Fixed ui debug option doesn't work
+  * Fixed server crash when interact with entity
+  * Fixed schematics when created were generated with boundaries 1 block smaller on all axes
+  * Fixed lockRotation did not work with players
+  * Fixed server crashed if an entity that drops loot on death entered a region with a block that kills entities on region entry
+  * Fixed description for lockRotation method
+  * Fixed a problem when non-global morphs were updated for all players at once when changed
+  * Fixed crash if Arte Magicum mod is installed
+  * Fixed a problem when `giveItem` method triggers the Player: toss an item trigger
+
+* Other:
+  * Refactored user's documentation system, it allows you to add your own packages, classes, methods in documentation.
+  * Added `ctrl + /` keybind for commenting in scripting text editor
+  * Added `Global library` option to scripts
+
 ## Version 0.7
 
 This update is brought to you by TorayLife and OtakuGamer. This update features lots of new scripting API methods, QoL features, and brand new **Scripted Items** feature!
