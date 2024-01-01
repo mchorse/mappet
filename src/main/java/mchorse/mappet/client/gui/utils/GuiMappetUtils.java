@@ -1,7 +1,7 @@
 package mchorse.mappet.client.gui.utils;
 
 import mchorse.mappet.ClientProxy;
-import mchorse.mappet.api.utils.ContentType;
+import mchorse.mappet.api.utils.IContentType;
 import mchorse.mappet.api.utils.TargetMode;
 import mchorse.mappet.client.gui.utils.overlays.GuiContentNamesOverlayPanel;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
@@ -46,7 +46,7 @@ public class GuiMappetUtils
         return text;
     }
 
-    public static void openPicker(ContentType type, String value, Consumer<String> callback)
+    public static void openPicker(IContentType type, String value, Consumer<String> callback)
     {
         ClientProxy.requestNames(type, (names) ->
         {

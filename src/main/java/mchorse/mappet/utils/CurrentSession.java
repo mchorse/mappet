@@ -1,24 +1,24 @@
 package mchorse.mappet.utils;
 
-import mchorse.mappet.api.utils.ContentType;
+import mchorse.mappet.api.utils.IContentType;
 
 import java.util.Objects;
 
 public class CurrentSession
 {
-    public ContentType type;
+    public IContentType type;
     public String id = "";
 
-    public ContentType activeType;
+    public IContentType activeType;
     public String activeId = "";
 
-    public void set(ContentType type, String id)
+    public void set(IContentType type, String id)
     {
         this.type = type;
         this.id = id;
     }
 
-    public void setActive(ContentType type, String id)
+    public void setActive(IContentType type, String id)
     {
         this.activeType = type;
         this.activeId = id;
@@ -30,12 +30,12 @@ public class CurrentSession
         this.setActive(null, "");
     }
 
-    public boolean isEditing(ContentType type, String id)
+    public boolean isEditing(IContentType type, String id)
     {
         return this.type == type && Objects.equals(this.id, id);
     }
 
-    public boolean isActive(ContentType type, String id)
+    public boolean isActive(IContentType type, String id)
     {
         return this.activeType == type && Objects.equals(this.activeId, id);
     }

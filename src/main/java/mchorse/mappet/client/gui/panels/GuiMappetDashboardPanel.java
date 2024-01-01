@@ -1,7 +1,7 @@
 package mchorse.mappet.client.gui.panels;
 
 import mchorse.mappet.api.utils.AbstractData;
-import mchorse.mappet.api.utils.ContentType;
+import mchorse.mappet.api.utils.IContentType;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.utils.GuiStringFolderList;
 import mchorse.mappet.client.gui.utils.GuiStringFolderSearchListElement;
@@ -129,7 +129,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
             {
                 NBTTagCompound tag = JsonToNBT.getTagFromJson(GuiScreen.getClipboardString());
 
-                if (tag.getInteger("_ContentType") == this.getType().ordinal())
+                if (tag.getString("_ContentType").equals(this.getType().getName()))
                 {
                     menu.action(Icons.PASTE, IKey.lang("mappet.gui.panels.context.paste"), () -> this.paste(tag));
                 }
@@ -167,7 +167,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
     {
         NBTTagCompound tag = this.data.serializeNBT();
 
-        tag.setInteger("_ContentType", this.getType().ordinal());
+        tag.setString("_ContentType", this.getType().getName());
         GuiScreen.setClipboardString(tag.toString());
     }
 
@@ -210,7 +210,7 @@ public abstract class GuiMappetDashboardPanel <T extends AbstractData> extends G
     /**
      * Get the content type of this panel
      */
-    public abstract ContentType getType();
+    public abstract IContentType getType();
 
     public abstract String getTitle();
 
