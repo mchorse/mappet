@@ -56,12 +56,13 @@ public class MappetLogger extends Logger implements IMappetLogger
                     return "[" + LocalDateTime.now().format(dtf) + "] " + "[" + record.getLevel().getName() + "] " + this.formatMessage(record) + "\n";
                 }
             });
+            this.addHandler(handler);
         }
-        catch (IOException e)
+        catch (Exception e)
         {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
-        this.addHandler(handler);
+
         this.setUseParentHandlers(false);
         this.setLevel(Level.ALL);
     }
