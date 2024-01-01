@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 
 public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
 {
-    private static Docs docs;
+    public static Docs docs;
     private static DocEntry top;
     private static DocEntry entry;
 
@@ -79,8 +79,6 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
             DocList items = new DocList();
             DocList blocks = new DocList();
             DocList ui = new DocList();
-            DocList triggers = new DocList();
-            DocList conditions = new DocList();
 
             topPackage.doc = docs.getPackage("mchorse.mappet.api.scripts.user.mappet").doc;
             scripting.name = "Scripting API";
@@ -182,16 +180,6 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
                         blocks.entries.add(docClass);
                         docClass.parent = blocks;
                     }
-                    else if (docClass.name.contains("triggers"))
-                    {
-                        triggers.entries.add(docClass);
-                        docClass.parent = triggers;
-                    }
-                    else if (docClass.name.contains("conditions"))
-                    {
-                        conditions.entries.add(docClass);
-                        docClass.parent = conditions;
-                    }
                     else if (!docClass.name.endsWith("Graphic"))
                     {
                         scripting.entries.add(docClass);
@@ -225,8 +213,8 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
         this.list.label(IKey.lang("mappet.gui.search"));
         this.documentation = new GuiScrollElement(mc);
 
-        this.list.flex().relative(this.content).w(120).h(1F);
-        this.documentation.flex().relative(this.content).x(120).w(1F, -120).h(1F).column(4).vertical().stretch().scroll().padding(10);
+        this.list.flex().relative(this.content).w(240).h(1F);
+        this.documentation.flex().relative(this.content).x(240).w(1F, -240).h(1F).column(4).vertical().stretch().scroll().padding(10);
 
         this.content.add(this.list, this.documentation);
         this.javadocs = new GuiIconElement(mc, Icons.SERVER, (b) -> this.openJavadocs());
@@ -245,7 +233,7 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
         List<DocEntry> entries = entryIn.getEntries();
         boolean wasSame = this.list.list.getList().size() >= 2 && this.list.list.getList().get(1).parent == entryIn.parent;
 
-        /* If the list isn't the same or if the the current item got double clicked
+        /* If the list isn't the same or if the current item got double-clicked
          * to enter into the section */
         if (entry == entryIn || !wasSame)
         {

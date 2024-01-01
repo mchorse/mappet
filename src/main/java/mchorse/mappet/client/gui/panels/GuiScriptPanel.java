@@ -192,7 +192,7 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
     {
         GuiDocumentationOverlayPanel panel = new GuiDocumentationOverlayPanel(Minecraft.getMinecraft(), method);
 
-        GuiOverlay.addOverlay(GuiBase.getCurrent(), panel, 0.7F, 0.9F);
+        GuiOverlay.addOverlay(GuiBase.getCurrent(), panel, 0.9F, 0.9F);
     }
 
     public GuiScriptPanel(Minecraft mc, GuiMappetDashboard dashboard)
@@ -251,7 +251,7 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
     {
         GuiDocumentationOverlayPanel panel = new GuiDocumentationOverlayPanel(this.mc);
 
-        GuiOverlay.addOverlay(GuiBase.getCurrent(), panel, 0.7F, 0.9F);
+        GuiOverlay.addOverlay(GuiBase.getCurrent(), panel, 0.9F, 0.9F);
     }
 
     private void runScript(GuiIconElement element)
