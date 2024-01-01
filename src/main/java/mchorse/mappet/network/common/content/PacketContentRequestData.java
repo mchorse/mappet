@@ -1,7 +1,7 @@
 package mchorse.mappet.network.common.content;
 
 import io.netty.buffer.ByteBuf;
-import mchorse.mappet.api.utils.ContentType;
+import mchorse.mappet.api.utils.IContentType;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 public class PacketContentRequestData extends PacketContentBase
@@ -13,7 +13,7 @@ public class PacketContentRequestData extends PacketContentBase
         super();
     }
 
-    public PacketContentRequestData(ContentType type, String name)
+    public PacketContentRequestData(IContentType type, String name)
     {
         super(type);
 

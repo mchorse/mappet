@@ -1,6 +1,6 @@
 package mchorse.mappet;
 
-import mchorse.mappet.api.utils.ContentType;
+import mchorse.mappet.api.utils.IContentType;
 import mchorse.mappet.client.KeyboardHandler;
 import mchorse.mappet.client.RenderingHandler;
 import mchorse.mappet.client.SoundPack;
@@ -40,7 +40,7 @@ public class ClientProxy extends CommonProxy
 
     public static File sounds;
 
-    public static void requestNames(ContentType type, Consumer<List<String>> consumer)
+    public static void requestNames(IContentType type, Consumer<List<String>> consumer)
     {
         consumers.put(requestId, consumer);
         Dispatcher.sendToServer(new PacketContentRequestNames(type, requestId));

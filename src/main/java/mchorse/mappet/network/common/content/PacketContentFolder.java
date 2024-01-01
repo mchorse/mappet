@@ -1,7 +1,7 @@
 package mchorse.mappet.network.common.content;
 
 import io.netty.buffer.ByteBuf;
-import mchorse.mappet.api.utils.ContentType;
+import mchorse.mappet.api.utils.IContentType;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 public class PacketContentFolder extends PacketContentBase
@@ -16,7 +16,7 @@ public class PacketContentFolder extends PacketContentBase
         super();
     }
 
-    public PacketContentFolder(ContentType type, String name, String path)
+    public PacketContentFolder(IContentType type, String name, String path)
     {
         super(type);
         this.path = path;

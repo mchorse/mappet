@@ -1,23 +1,24 @@
 package mchorse.mappet.network.common.content;
 
 import io.netty.buffer.ByteBuf;
-import mchorse.mappet.api.utils.ContentType;
+import mchorse.mappet.api.utils.IContentType;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public abstract class PacketContentBase implements IMessage
 {
-    public ContentType type;
+    public IContentType type;
     public int requestId = -1;
 
     public PacketContentBase()
     {}
 
-    public PacketContentBase(ContentType type)
+    public PacketContentBase(IContentType type)
     {
         this.type = type;
     }
 
-    public PacketContentBase(ContentType type, int requestId)
+    public PacketContentBase(IContentType type, int requestId)
     {
         this.type = type;
         this.requestId = requestId;
@@ -26,14 +27,14 @@ public abstract class PacketContentBase implements IMessage
     @Override
     public void fromBytes(ByteBuf buf)
     {
-        this.type = ContentType.values()[buf.readInt()];
+        this.type = IContentType.getType(ByteBufUtils.readUTF8String(buf));
         this.requestId = buf.readInt();
     }
 
     @Override
     public void toBytes(ByteBuf buf)
     {
-        buf.writeInt(this.type.ordinal());
+        ByteBufUtils.writeUTF8String(buf, this.type.getName());
         buf.writeInt(this.requestId);
     }
 }

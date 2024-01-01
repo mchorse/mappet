@@ -1,6 +1,6 @@
 package mchorse.mappet.network.common.content;
 
-import mchorse.mappet.api.utils.ContentType;
+import mchorse.mappet.api.utils.IContentType;
 
 public class PacketContentRequestNames extends PacketContentBase
 {
@@ -9,12 +9,12 @@ public class PacketContentRequestNames extends PacketContentBase
         super();
     }
 
-    public PacketContentRequestNames(ContentType type)
+    public PacketContentRequestNames(IContentType type)
     {
         super(type);
     }
 
-    public PacketContentRequestNames(ContentType type, int requestId)
+    public PacketContentRequestNames(IContentType type, int requestId)
     {
         super(type, requestId);
     }

@@ -11,7 +11,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * Mappet content types
  */
-public enum ContentType
+public enum ContentType implements IContentType
 {
     QUEST()
     {
@@ -33,6 +33,11 @@ public enum ContentType
         public IKey getPickLabel()
         {
             return IKey.lang("mappet.gui.overlays.quest");
+        }
+
+        @Override
+        public String getName() {
+            return "QUEST";
         }
     },
     CRAFTING_TABLE()
@@ -56,6 +61,11 @@ public enum ContentType
         {
             return IKey.lang("mappet.gui.overlays.crafting");
         }
+
+        @Override
+        public String getName() {
+            return "CRAFTING_TABLE";
+        }
     },
     EVENT()
     {
@@ -77,6 +87,11 @@ public enum ContentType
         public IKey getPickLabel()
         {
             return IKey.lang("mappet.gui.overlays.event");
+        }
+
+        @Override
+        public String getName() {
+            return "EVENT";
         }
     },
     DIALOGUE()
@@ -100,6 +115,11 @@ public enum ContentType
         {
             return IKey.lang("mappet.gui.overlays.dialogue");
         }
+
+        @Override
+        public String getName() {
+            return "DIALOGUE";
+        }
     },
     NPC()
     {
@@ -121,6 +141,11 @@ public enum ContentType
         public IKey getPickLabel()
         {
             return IKey.lang("mappet.gui.overlays.npc");
+        }
+
+        @Override
+        public String getName() {
+            return "NPC";
         }
     },
     FACTION()
@@ -144,6 +169,11 @@ public enum ContentType
         {
             return IKey.lang("mappet.gui.overlays.faction");
         }
+
+        @Override
+        public String getName() {
+            return "FACTION";
+        }
     },
     CHAINS()
     {
@@ -165,6 +195,11 @@ public enum ContentType
         public IKey getPickLabel()
         {
             return IKey.lang("mappet.gui.overlays.chain");
+        }
+
+        @Override
+        public String getName() {
+            return "CHAINS";
         }
     },
     SCRIPTS()
@@ -188,6 +223,11 @@ public enum ContentType
         {
             return IKey.lang("mappet.gui.overlays.script");
         }
+
+        @Override
+        public String getName() {
+            return "SCRIPTS";
+        }
     },
     HUDS()
     {
@@ -209,14 +249,10 @@ public enum ContentType
         {
             return IKey.lang("mappet.gui.overlays.hud");
         }
+
+        @Override
+        public String getName() {
+            return "HUDS";
+        }
     };
-
-    /* Every Karen be like :D */
-    public abstract IManager<? extends AbstractData> getManager();
-
-    @SideOnly(Side.CLIENT)
-    public abstract GuiMappetDashboardPanel get(GuiMappetDashboard dashboard);
-
-    @SideOnly(Side.CLIENT)
-    public abstract IKey getPickLabel();
 }

@@ -1,6 +1,6 @@
 package mchorse.mappet.client.gui.utils.overlays;
 
-import mchorse.mappet.api.utils.ContentType;
+import mchorse.mappet.api.utils.IContentType;
 import mchorse.mappet.client.gui.GuiMappetDashboard;
 import mchorse.mappet.client.gui.panels.GuiMappetDashboardPanel;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
@@ -15,9 +15,9 @@ public class GuiContentNamesOverlayPanel extends GuiStringOverlayPanel
 {
     public GuiIconElement edit;
 
-    private ContentType type;
+    private IContentType type;
 
-    public GuiContentNamesOverlayPanel(Minecraft mc, IKey title, ContentType type, Collection<String> strings, Consumer<String> callback)
+    public GuiContentNamesOverlayPanel(Minecraft mc, IKey title, IContentType type, Collection<String> strings, Consumer<String> callback)
     {
         super(mc, title, strings, callback);
 
