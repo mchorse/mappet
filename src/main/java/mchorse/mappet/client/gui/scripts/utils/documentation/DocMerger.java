@@ -32,14 +32,25 @@ public class DocMerger
 
         docsFolder.mkdirs();
 
+        addAddonsDocs(gson, docsList);
+
         List<File> files = FileUtils.listFiles(docsFolder, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE).stream()
                 .filter(File::isFile).collect(Collectors.toList());
 
+        List<File> translationFiles = files.stream().filter(file -> file.getParent().equals("translation")).collect(Collectors.toList());
         for (File file : files)
         {
             boolean isTranslation = file.getParent().equals("translation");
-            boolean isSelectedLanguage = language.getLanguageCode().equals(file.getName());
-            if (!isTranslation || isSelectedLanguage)
+            if (!isTranslation)
+            {
+                addDocToList(gson, docsList, file);
+            }
+        }
+
+
+        for (File file : translationFiles)
+        {
+            if (language.getLanguageCode().equals(file.getName()))
             {
                 addDocToList(gson, docsList, file);
             }
@@ -57,6 +68,10 @@ public class DocMerger
         return mainDocs;
     }
 
+    private static void addAddonsDocs(Gson gson, List<Docs> docsList) {
+        /* Place for mixins */
+    }
+
     private static void mergeDocs(Docs docsMain, Docs docsAdd)
     {
         for (DocClass classAdd : docsAdd.classes)
@@ -71,7 +86,7 @@ public class DocMerger
             }
             else
             {
-                classMain.doc = classAdd.doc;
+                classMain.doc = classAdd.doc.trim().isEmpty() ? classMain.doc : classAdd.doc.trim();
                 DocMerger.mergeClasses(classMain, classAdd);
             }
         }
@@ -100,7 +115,7 @@ public class DocMerger
         {
             methodAdd.source = classAdd.source;
 
-            DocMethod methodMain = classMain.getMethod(methodAdd.name);
+            DocMethod methodMain = classMain.getExactMethod(methodAdd.name);
 
             if (methodMain == null)
             {
@@ -122,6 +137,10 @@ public class DocMerger
             Scanner scanner = new Scanner(stream, "UTF-8");
             Docs docs = gson.fromJson(scanner.useDelimiter("\\A").next(), Docs.class);
             docs.source = new File(ClientProxy.configFolder.getPath()).toPath().relativize(file.toPath()).toFile().getPath();
+            docs.classes.forEach(clazz -> {
+                clazz.source = docs.source;
+                clazz.methods.forEach(method -> method.source = docs.source);
+            });
             list.add(docs);
         }
         catch (FileNotFoundException e)

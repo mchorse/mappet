@@ -30,6 +30,16 @@ public class DocClass extends DocEntry
         return null;
     }
 
+    public DocMethod getExactMethod(String name) {
+        for (DocMethod method : this.methods) {
+            if (method.getName().equals(name)) {
+                return method;
+            }
+        }
+
+        return null;
+    }
+
     public void setup()
     {
         this.methods.removeIf(method -> method.annotations.contains("mchorse.mappet.api.ui.utils.DiscardMethod"));
