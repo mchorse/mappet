@@ -1390,14 +1390,14 @@ public interface IScriptEntity
      * <pre>{@code
      * var s = c.getSubject();
      * var rot = s.getRotations();
-     * s.lockRotation(rot.x, rot.y, rot.z);
+     * s.lockRotation(rot.y, rot.x, rot.z);
      * }</pre>
      *
-     * @param pitch Pitch rotation
      * @param yaw Yaw rotation
+     * @param pitch Pitch rotation
      * @param yawHead Yaw rotation of the head
      */
-    public void lockRotation(float pitch, float yaw, float yawHead);
+    public void lockRotation(float yaw, float pitch, float yawHead);
 
     /**
      * Unlock the entity's rotation.
