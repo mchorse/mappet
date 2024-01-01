@@ -329,6 +329,8 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
         {
             this.code.setHighlighter(Highlighters.readHighlighter(Highlighters.highlighterFile(data.getScriptExtension())));
 
+            updateStyle();
+
             if (!this.code.getText().equals(data.code))
             {
                 if (last != null)
@@ -379,6 +381,10 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
     {
         super.open();
 
+        updateStyle();
+    }
+
+    public void updateStyle() {
         SyntaxStyle style = Mappet.scriptEditorSyntaxStyle.get();
 
         if (this.code.getHighlighter().getStyle() != style)
