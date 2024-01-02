@@ -41,6 +41,8 @@ import mchorse.mappet.utils.RunnableExecutionFork;
 import mchorse.mclib.utils.ReflectionUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.command.EntitySelector;
@@ -1006,16 +1008,14 @@ public class EventHandler
 
         Map<ResourceLocation, ITextureObject> map = ReflectionUtils.getTextures(mc.renderEngine);
 
-        for (ResourceLocation location : map.keySet())
+        for (EntityPlayer player : mc.world.playerEntities)
         {
-            if (location.getResourceDomain().equals("mp.skins"))
+            if (player instanceof EntityOtherPlayerMP)
             {
-                EntityPlayer player = mc.world.getPlayerEntityByName(location.getResourcePath());
-
-                if (player instanceof EntityPlayerSP)
-                {
-                    map.put(location, map.get(((EntityPlayerSP) player).getLocationSkin()));
-                }
+                map.put(AbstractClientPlayer.getLocationSkin(player.getName()), map.get(((EntityOtherPlayerMP)player).getLocationSkin()));
+            }
+            else if (player instanceof EntityPlayerSP) {
+                map.put(AbstractClientPlayer.getLocationSkin(player.getName()), map.get(((EntityPlayerSP)player).getLocationSkin()));
             }
         }
     }
