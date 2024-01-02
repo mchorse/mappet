@@ -39,6 +39,7 @@ import net.minecraft.network.play.server.SPacketCustomPayload;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.network.play.server.SPacketHeldItemChange;
 import net.minecraft.network.play.server.SPacketTitle;
+import net.minecraft.util.StringUtils;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
@@ -284,7 +285,7 @@ public class ScriptPlayer extends ScriptEntity<EntityPlayerMP> implements IScrip
     @Override
     public String getSkin()
     {
-        return "mp.skins:" + this.getName();
+        return "minecraft:skins/" + StringUtils.stripControlCodes(this.getName().toLowerCase());
     }
 
     @Override
