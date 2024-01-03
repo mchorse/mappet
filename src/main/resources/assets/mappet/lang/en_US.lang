@@ -263,15 +263,15 @@ mappet.gui.settings.triggers.variables.block_interact=§6block§r, the ID of the
 
 mappet.gui.settings.triggers.entity_damaged=Entity: hurt
 mappet.gui.settings.triggers.descriptions.entity_damaged=This cancelable trigger gets triggered when a mob/a player gets hurt (damaged).
-mappet.gui.settings.triggers.variables.entity_damaged=§6damage§r, how many HP this mob/player took of damage.
+mappet.gui.settings.triggers.variables.entity_damaged=§6damage§r, how many HP this mob/player took of damage.\n§6damageType§r, the type of reacieved damage.
 
 mappet.gui.settings.triggers.entity_attacked=Entity: attacked
 mappet.gui.settings.triggers.descriptions.entity_attacked=This cancelable trigger gets triggered when a mob/a player attacked by another entity.
-mappet.gui.settings.triggers.variables.entity_attacked=§6damage§r, how many HP this mob/player took of damage.
+mappet.gui.settings.triggers.variables.entity_attacked=§6damage§r, how many HP this mob/player took of damage.\n§6damageType§r, the type of reacieved damage.
 
 mappet.gui.settings.triggers.entity_death=Entity: death
 mappet.gui.settings.triggers.descriptions.entity_death=This gets triggered when a mob dies.
-mappet.gui.settings.triggers.variables.entity_death=§7N/A§r
+mappet.gui.settings.triggers.variables.entity_death=§6damageType§r, the type of reacieved damage.
 
 mappet.gui.settings.triggers.server_load=Server: loaded
 mappet.gui.settings.triggers.descriptions.server_load=This gets triggered after server gets booted up, but world(s) aren't loaded yet.
@@ -303,7 +303,7 @@ mappet.gui.settings.triggers.variables.player_rmb=§7N/A§r
 
 mappet.gui.settings.triggers.player_death=Player: death
 mappet.gui.settings.triggers.descriptions.player_death=This cancelable trigger gets triggered when a player dies.\n\nProTip: if you want to cancel the death, make sure to give some health to the player, or otherwise the player will end up in eternal dying cycle.
-mappet.gui.settings.triggers.variables.player_death=§7N/A§r
+mappet.gui.settings.triggers.variables.player_death=§6damageType§r, the type of reacieved damage.
 
 mappet.gui.settings.triggers.player_respawn=Player: respawn
 mappet.gui.settings.triggers.descriptions.player_respawn=This gets triggered when a player respawns. 

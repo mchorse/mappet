@@ -261,15 +261,15 @@ mappet.gui.settings.triggers.variables.block_interact=§6block§r, ID блока
 
 mappet.gui.settings.triggers.entity_damaged=Сущность: при получении урона
 mappet.gui.settings.triggers.descriptions.entity_damaged=Этот отменяемый триггер срабатывает когда сущность (игрок, моб, и тд) получает урон.
-mappet.gui.settings.triggers.variables.entity_damaged=§6damage§r, сколько урона будет нанесено сущности.
+mappet.gui.settings.triggers.variables.entity_damaged=§6damage§r, сколько урона будет нанесено сущности.\n§6damageType§r, тип урона который получает сущность.
 
 mappet.gui.settings.triggers.entity_attacked=Сущность: будучи атакованным
 mappet.gui.settings.triggers.descriptions.entity_attacked=Этот отменяемый триггер вызывается когда сущность (игрок, моб, и тд) атакована другой сущностью.
-mappet.gui.settings.triggers.variables.entity_attacked=§6damage§r, сколько урона будет нанесено сущности.
+mappet.gui.settings.triggers.variables.entity_attacked=§6damage§r, сколько урона будет нанесено сущности.\n§6damageType§r, тип урона который получает сущность.
 
 mappet.gui.settings.triggers.entity_death=Сущность: при смерти
 mappet.gui.settings.triggers.descriptions.entity_death=Этот триггер срабатывает когда сущность умирает.
-mappet.gui.settings.triggers.variables.entity_death=§7N/A§r
+mappet.gui.settings.triggers.variables.entity_death=§6damageType§r, тип урона который получает сущность.
 
 mappet.gui.settings.triggers.server_load=Сервер: при загрузке
 mappet.gui.settings.triggers.descriptions.server_load=Этот триггер срабатывает когда сервер запустился, но миры ещё не загрузились.
@@ -301,7 +301,7 @@ mappet.gui.settings.triggers.variables.player_rmb=§7N/A§r
 
 mappet.gui.settings.triggers.player_death=Игрок: при смерти
 mappet.gui.settings.triggers.descriptions.player_death=Этот отменяемый триггер срабатывает когда игрок умирает.\n\nСовет от профи: если вы хотите отменить смерть, выдайте немного здоровья игроку, иначе игрок будет бесконечно умирать.
-mappet.gui.settings.triggers.variables.player_death=§7N/A§r
+mappet.gui.settings.triggers.variables.player_death=§6damageType§r, тип урона который получает сущность.
 
 mappet.gui.settings.triggers.player_respawn=Игрок: при возрождении
 mappet.gui.settings.triggers.descriptions.player_respawn=Этот триггер срабатывает когда игрок возрождается.
