@@ -352,6 +352,7 @@ public class EventHandler
 
         DataContext context = new DataContext(event.getEntityLiving(), source.getTrueSource())
                 .set("damage", event.getAmount());
+        context.getValues().put("damageType", source.getDamageType());
         context.getValues().put("attacker", ScriptEntity.create(attacker));
 
         this.trigger(event, Mappet.settings.entityDamaged, context);
@@ -376,6 +377,7 @@ public class EventHandler
 
         DataContext context = new DataContext(event.getEntityLiving(), source.getTrueSource())
                 .set("damage", event.getAmount());
+        context.getValues().put("damageType", source.getDamageType());
 
         this.trigger(event, Mappet.settings.entityAttacked, context);
     }
@@ -748,6 +750,7 @@ public class EventHandler
         }
 
         Entity source = event.getSource().getTrueSource();
+        String damageType = event.getSource().getDamageType();
         Trigger trigger = event.getEntity() instanceof EntityPlayer
                 ? Mappet.settings.playerDeath
                 : Mappet.settings.entityDeath;
@@ -755,6 +758,8 @@ public class EventHandler
         if (!trigger.isEmpty())
         {
             DataContext context = new DataContext(event.getEntityLiving(), source);
+
+            context.getValues().put("damageType", damageType);
 
             if (source != null)
             {
