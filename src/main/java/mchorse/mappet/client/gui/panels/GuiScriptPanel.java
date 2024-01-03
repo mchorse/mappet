@@ -1,5 +1,7 @@
 package mchorse.mappet.client.gui.panels;
 
+import mchorse.aperture.utils.APIcons;
+import mchorse.blockbuster.utils.mclib.BBIcons;
 import mchorse.mappet.Mappet;
 import mchorse.mappet.api.scripts.Script;
 import mchorse.mappet.api.utils.ContentType;
@@ -16,6 +18,7 @@ import mchorse.mappet.client.gui.scripts.utils.SyntaxStyle;
 import mchorse.mappet.client.gui.scripts.utils.documentation.DocClass;
 import mchorse.mappet.client.gui.scripts.utils.documentation.DocMethod;
 import mchorse.mappet.client.gui.utils.overlays.GuiOverlay;
+import mchorse.mappet.client.gui.utils.overlays.GuiOverlayPanel;
 import mchorse.mappet.client.gui.utils.overlays.GuiSoundOverlayPanel;
 import mchorse.mappet.utils.MPIcons;
 import mchorse.mclib.client.gui.framework.GuiBase;
@@ -25,9 +28,13 @@ import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.context.GuiContextMenu;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
+import mchorse.mclib.client.gui.framework.elements.input.color.GuiColorPicker;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.mclib.config.values.ValueInt;
+import mchorse.mclib.utils.Color;
+import mchorse.mclib.utils.ColorUtils;
 import mchorse.mclib.utils.Direction;
 import mchorse.mclib.utils.RayTracing;
 import mchorse.metamorph.api.MorphManager;
@@ -75,7 +82,9 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
                 .action(Icons.BLOCK, IKey.lang("mappet.gui.scripts.context.paste_player_pos"), () -> pastePlayerPosition(editor))
                 .action(Icons.LIMB, IKey.lang("mappet.gui.scripts.context.paste_player_rot"), () -> pastePlayerRotation(editor))
                 .action(Icons.VISIBLE, IKey.lang("mappet.gui.scripts.context.paste_block_pos"), () -> pasteBlockPosition(editor))
-                .action(Icons.SOUND, IKey.lang("mappet.gui.scripts.context.paste_sound"), () -> openSoundPicker(editor));
+                .action(Icons.SOUND, IKey.lang("mappet.gui.scripts.context.paste_sound"), () -> openSoundPicker(editor))
+                .action(Icons.MATERIAL, IKey.lang("mappet.gui.scripts.context.paste_colorRGB"), () -> openColorPicker(editor, false))
+                .action(Icons.MATERIAL, IKey.lang("mappet.gui.scripts.context.paste_colorARGB"), () -> openColorPicker(editor, true));
 
         if (editor.isSelected())
         {
@@ -186,6 +195,29 @@ public class GuiScriptPanel extends GuiMappetDashboardPanel<Script>
         GuiSoundOverlayPanel panel = new GuiScriptSoundOverlayPanel(Minecraft.getMinecraft(), editor);
 
         GuiOverlay.addOverlay(GuiBase.getCurrent(), panel, 0.5F, 0.9F);
+    }
+
+    private static void openColorPicker(GuiTextEditor editor, boolean isArgb)
+    {
+        ValueInt valueInt = isArgb ? new ValueInt("color_picker", 0).colorAlpha() : new ValueInt("color_picker", 0).color();
+        GuiOverlayPanel panel = new GuiOverlayPanel(Minecraft.getMinecraft(), IKey.lang("mappet.gui.scripts.context.paste_color" + (isArgb ? "A" : "") + "RGB")) {
+
+            @Override
+            public void onClose() {
+                super.onClose();
+
+                editor.pasteText(new Color(valueInt.get(), isArgb).stringify(isArgb).replaceAll("#", "0x"));
+            }
+        };
+        GuiColorPicker picker = new GuiColorPicker(Minecraft.getMinecraft(), (color) -> valueInt.set(color));
+        if (isArgb) {
+            picker.editAlpha();
+        }
+        picker.markIgnored().flex().relative(panel.content).xy(0.5f, 0.5f).anchor(0.5f, 0.5f).wh(200, 85).bounds(panel.content, 2);
+
+        panel.content.add(picker);
+
+        GuiOverlay.addOverlay(GuiBase.getCurrent(), panel, 200, 160);
     }
 
     private static void searchDocumentation(GuiTextEditor editor, DocMethod method)
