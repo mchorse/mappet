@@ -1,3 +1,27 @@
+## Version 0.9
+
+This update is brought to you by TorayLife.
+
+It features some scripting improvements, fixes and breaking API changes.
+
+**Compatible** with McLib 2.4.2, Aperture 1.8.1, Blockbuster 2.6.1 and Metamorph 1.3.1.
+
+* New features:
+  * Add QoL color pickers into script editor
+  * Add damageType to some global triggers
+
+* API changes:
+  * BREAKING CHANGE: remove UIStackComponent.count(boolean) and UIStackComponent.search(boolean) methods
+
+* Bugfixes:
+  * Fix working of ScriptPlayer.getSkin method
+  * Fix scripting themes
+  * Fix documentation issues (compatibility with extra docs and addons)
+  * Fix Logger crash
+  * Fix lockRotation description
+* Other:
+  * Edit panel ContentType system to be compatible with addons
+
 ## Version 0.8
 
 This update is brought to you by TorayLife and OtakuGamer.
