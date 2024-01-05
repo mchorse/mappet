@@ -158,11 +158,11 @@ public class Schematic extends AbstractData
 
     public void place(World world, int x, int y, int z, boolean replaceBlocks, boolean placeAir)
     {
-        for (int localX = 0; localX <= this.width; localX++)
+        for (int localX = 0; localX < this.width; localX++)
         {
-            for (int localY = 0; localY <= this.height; localY++)
+            for (int localY = 0; localY < this.height; localY++)
             {
-                for (int localZ = 0; localZ <= this.length; localZ++)
+                for (int localZ = 0; localZ < this.length; localZ++)
                 {
                     BlockPos blockPos = new BlockPos(x + localX, y + localY, z + localZ);
                     BlockPos localPos = new BlockPos(localX, localY, localZ);
