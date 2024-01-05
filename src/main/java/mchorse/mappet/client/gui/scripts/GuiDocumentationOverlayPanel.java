@@ -22,8 +22,12 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.launchwrapper.Launch;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
@@ -71,7 +75,7 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
             docs.copyMethods("UILabelBaseComponent", "UIButtonComponent", "UILabelComponent", "UITextComponent", "UITextareaComponent", "UITextboxComponent", "UIToggleComponent");
             docs.remove("UIParentComponent");
             docs.remove("UILabelBaseComponent");
-
+            Map<String, DocList> docLists = new HashMap<>();
             DocList topPackage = new DocList();
             DocList scripting = new DocList();
             DocList entities = new DocList();
@@ -79,6 +83,15 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
             DocList items = new DocList();
             DocList blocks = new DocList();
             DocList ui = new DocList();
+            docLists.put("topPackage", topPackage);
+            docLists.put("scripting", scripting);
+            docLists.put("entities", entities);
+            docLists.put("nbt", nbt);
+            docLists.put("items", items);
+            docLists.put("blocks", blocks);
+            docLists.put("ui", ui);
+            mixinsHook();
+            /* Place for mixins */
 
             topPackage.doc = docs.getPackage("mchorse.mappet.api.scripts.user.mappet").doc;
             scripting.name = "Scripting API";
@@ -95,7 +108,7 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
                     .filter(docPackage -> docPackage.name.startsWith("extra"))
                     .collect(Collectors.toList());
 
-            List<DocList> docLists = new ArrayList<>();
+            List<DocList> extraDocLists = new ArrayList<>();
 
             for (DocPackage docPackage : extraPackages)
             {
@@ -106,7 +119,7 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
                 extra.parent = firstPackage.equals("extraScripting") ? scripting : firstPackage.equals("extraUI") ? ui : topPackage;
                 extra.source = docPackage.source;
                 ((DocList)extra.parent).entries.add(extra);
-                docLists.add(extra);
+                extraDocLists.add(extra);
             }
 
             if (useNewStructure)
@@ -140,7 +153,7 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
                     String packages = docClass.name.substring(docClass.name.indexOf(".") + 1, docClass.name.lastIndexOf("."));
                     try
                     {
-                        List<DocList> lists = docLists.stream()
+                        List<DocList> lists = extraDocLists.stream()
                                 .filter(docList -> docList.name.equals(packages))
                                 .collect(Collectors.toList());
 
@@ -160,30 +173,27 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
                 }
                 else if (useNewStructure)
                 {
-                    if (docClass.name.contains("entities"))
+                    List<Callable<Boolean>> functions = new ArrayList<>();
+                    boolean added = false;
+                    functions.add(() -> addWithNewStructure(input -> input.name.contains("entities"), docClass, docLists.get("entities")));
+                    functions.add(() -> addWithNewStructure(input -> input.name.contains("nbt"), docClass, docLists.get("nbt")));
+                    functions.add(() -> addWithNewStructure(input -> input.name.contains("items"), docClass, docLists.get("items")));
+                    functions.add(() -> addWithNewStructure(input -> input.name.contains("blocks"), docClass, docLists.get("blocks")));
+                    mixinsHook();
+                    /* Place for mixins */
+                    functions.add(() -> addWithNewStructure(input -> !input.name.endsWith("Graphic"), docClass, docLists.get("scripting")));
+
+                    for (Callable<Boolean> function : functions)
                     {
-                        entities.entries.add(docClass);
-                        docClass.parent = entities;
-                    }
-                    else if (docClass.name.contains("nbt"))
-                    {
-                        nbt.entries.add(docClass);
-                        docClass.parent = nbt;
-                    }
-                    else if (docClass.name.contains("items"))
-                    {
-                        items.entries.add(docClass);
-                        docClass.parent = items;
-                    }
-                    else if (docClass.name.contains("blocks"))
-                    {
-                        blocks.entries.add(docClass);
-                        docClass.parent = blocks;
-                    }
-                    else if (!docClass.name.endsWith("Graphic"))
-                    {
-                        scripting.entries.add(docClass);
-                        docClass.parent = scripting;
+                        if (added) break;
+                        try
+                        {
+                            added = function.call();
+                        }
+                        catch (Exception e)
+                        {
+                            throw new RuntimeException(e);
+                        }
                     }
                 }
                 else if (!docClass.name.endsWith("Graphic"))
@@ -198,6 +208,18 @@ public class GuiDocumentationOverlayPanel extends GuiOverlayPanel
 
             top = topPackage;
         }
+    }
+
+    public static void mixinsHook()
+    {}
+
+    public static boolean addWithNewStructure(Function<DocClass, Boolean> predicate, DocClass docClass, DocList list)
+    {
+        if (!predicate.apply(docClass)) return false;
+
+        list.entries.add(docClass);
+        docClass.parent = list;
+        return true;
     }
 
     public GuiDocumentationOverlayPanel(Minecraft mc)
