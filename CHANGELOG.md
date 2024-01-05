@@ -14,6 +14,7 @@ It features some scripting improvements, fixes and breaking API changes.
   * BREAKING CHANGE: remove UIStackComponent.count(boolean) and UIStackComponent.search(boolean) methods
 
 * Bugfixes:
+  * Fix bug with schematics, that remove blocks in positive direction
   * Fix working of ScriptPlayer.getSkin method
   * Fix scripting themes
   * Fix documentation issues (compatibility with extra docs and addons)
