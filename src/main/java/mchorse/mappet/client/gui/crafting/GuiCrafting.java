@@ -89,8 +89,26 @@ public class GuiCrafting extends GuiElement implements ICraftingScreen
         if (this.mc.player.isCreative() && this.table != null)
         {
             int w = this.font.getStringWidth(this.table.getId());
-
+            
             GuiDraw.drawTextBackground(this.font, this.table.getId(), this.area.mx(w), this.craft.area.my(this.font.FONT_HEIGHT - 2), 0xffffff, ColorUtils.HALF_BLACK);
         }
+    }
+
+    @Override
+    public boolean mouseClicked(GuiContext context)
+    {
+        if (this.craft.area.isInside(context) && context.mouseButton == 0)
+        {
+            this.craft(this.craft);
+
+            return true;
+        }
+
+        if (super.mouseClicked(context))
+        {
+            return true;
+        }
+
+        return false;
     }
 }
